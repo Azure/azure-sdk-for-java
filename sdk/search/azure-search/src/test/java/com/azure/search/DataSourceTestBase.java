@@ -6,8 +6,9 @@ package com.azure.search;
 import com.azure.search.models.DataDeletionDetectionPolicy;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.DataSourceCredentials;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class DataSourceTestBase extends SearchServiceTestBase {
 
@@ -87,7 +88,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
 
         // Create an initial dataSource
         DataSource initial = createTestBlobDataSource(null);
-        Assert.assertEquals(initial.getCredentials().getConnectionString(),
+        assertEquals(initial.getCredentials().getConnectionString(),
             FAKE_STORAGE_CONNECTION_STRING);
 
         // tweak the connection string and verify it was changed
@@ -95,7 +96,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
             "DefaultEndpointsProtocol=https;AccountName=NotaRealYetDifferentAccount;AccountKey=AnotherFakeKey;";
         initial.setCredentials(new DataSourceCredentials().setConnectionString(newConnString));
 
-        Assert.assertEquals(initial.getCredentials().getConnectionString(), newConnString);
+        assertEquals(initial.getCredentials().getConnectionString(), newConnString);
     }
 
     DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {

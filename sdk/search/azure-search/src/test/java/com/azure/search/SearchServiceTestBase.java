@@ -7,8 +7,8 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.search.models.AnalyzerName;
@@ -39,7 +39,6 @@ import com.azure.search.models.TagScoringFunction;
 import com.azure.search.models.TagScoringParameters;
 import com.azure.search.models.TextWeights;
 import com.azure.search.test.environment.setup.AzureSearchResources;
-import com.azure.search.test.environment.setup.SearchIndexService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -47,13 +46,11 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.reactivestreams.Publisher;
-import org.unitils.reflectionassert.ReflectionAssert;
 import reactor.test.StepVerifier;
 
 import java.text.SimpleDateFormat;
@@ -67,6 +64,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class SearchServiceTestBase extends TestBase {
 
@@ -93,7 +94,6 @@ public abstract class SearchServiceTestBase extends TestBase {
     private String searchDnsSuffix;
     protected String endpoint;
     SearchApiKeyCredential searchApiKeyCredential;
-    SearchIndexService searchServiceHotelsIndex;
 
     private ObjectMapper objectMapper;
 
@@ -560,7 +560,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     }
 
     protected void assertIndexesEqual(Index expected, Index actual) {
-        ReflectionAssert.assertLenientEquals(expected, actual);
+        assertTrue(TestHelpers.areIndexesEqual(actual, expected));
     }
 
     protected void waitForIndexing() {
@@ -605,7 +605,7 @@ public abstract class SearchServiceTestBase extends TestBase {
         Runnable exceptionThrower, HttpResponseStatus expectedResponseStatus, String expectedMessage) {
         try {
             exceptionThrower.run();
-            Assert.fail();
+            fail();
 
         } catch (Throwable ex) {
             verifyHttpResponseError(ex, expectedResponseStatus, expectedMessage);
@@ -624,16 +624,16 @@ public abstract class SearchServiceTestBase extends TestBase {
     private void verifyHttpResponseError(
         Throwable ex, HttpResponseStatus expectedResponseStatus, String expectedMessage) {
 
-        Assert.assertEquals(HttpResponseException.class, ex.getClass());
+        assertEquals(HttpResponseException.class, ex.getClass());
 
         if (expectedResponseStatus != null) {
-            Assert.assertEquals(
+            assertEquals(
                 expectedResponseStatus.code(),
                 ((HttpResponseException) ex).getResponse().getStatusCode());
         }
 
         if (expectedMessage != null) {
-            Assert.assertTrue(ex.getMessage().contains(expectedMessage));
+            assertTrue(ex.getMessage().contains(expectedMessage));
         }
     }
 

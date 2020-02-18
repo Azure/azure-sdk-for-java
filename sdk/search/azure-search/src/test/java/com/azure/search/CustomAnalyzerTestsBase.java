@@ -64,7 +64,6 @@ import com.azure.search.models.UaxUrlEmailTokenizer;
 import com.azure.search.models.UniqueTokenFilter;
 import com.azure.search.models.WordDelimiterTokenFilter;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.unitils.reflectionassert.ReflectionAssert;
 
@@ -77,6 +76,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
     private static final String NAME_PREFIX = "azsmnet";
@@ -160,8 +161,9 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
 
     private void assertAnalyzersEqual(List<Analyzer> expected, List<Analyzer> actual) {
         if (expected != null && actual != null) {
-            Assert.assertEquals(expected.size(), actual.size());
+            assertEquals(expected.size(), actual.size());
             for (int i = 0; i < expected.size(); i++) {
+
                 ReflectionAssert.assertLenientEquals(
                     expected.get(i).setName("none"), actual.get(i).setName("none"));
             }
@@ -170,7 +172,7 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
 
     private void assertTokenizersEqual(List<Tokenizer> expected, List<Tokenizer> actual) {
         if (expected != null && actual != null) {
-            Assert.assertEquals(expected.size(), actual.size());
+            assertEquals(expected.size(), actual.size());
             for (int i = 0; i < expected.size(); i++) {
                 ReflectionAssert.assertLenientEquals(
                     expected.get(i).setName("none"), actual.get(i).setName("none"));
@@ -180,7 +182,7 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
 
     private void assertCharFiltersEqual(List<CharFilter> expected, List<CharFilter> actual) {
         if (expected != null && actual != null) {
-            Assert.assertEquals(expected.size(), actual.size());
+            assertEquals(expected.size(), actual.size());
             for (int i = 0; i < expected.size(); i++) {
                 ReflectionAssert.assertLenientEquals(
                     expected.get(i).setName("none"), actual.get(i).setName("none"));
@@ -795,15 +797,12 @@ public abstract class CustomAnalyzerTestsBase extends SearchServiceTestBase {
             ));
     }
 
-    void assertTokenInfoEqual(String expectedToken,
-        Integer expectedStartOffset,
-        Integer expectedEndOffset,
-        Integer expectedPosition,
-        TokenInfo actual) {
-        Assert.assertEquals(expectedToken, actual.getToken());
-        Assert.assertEquals(expectedStartOffset, actual.getStartOffset());
-        Assert.assertEquals(expectedEndOffset, actual.getEndOffset());
-        Assert.assertEquals(expectedPosition, actual.getPosition());
+    void assertTokenInfoEqual(String expectedToken, Integer expectedStartOffset, Integer expectedEndOffset,
+        Integer expectedPosition, TokenInfo actual) {
+        assertEquals(expectedToken, actual.getToken());
+        assertEquals(expectedStartOffset, actual.getStartOffset());
+        assertEquals(expectedEndOffset, actual.getEndOffset());
+        assertEquals(expectedPosition, actual.getPosition());
     }
 
     private String generateSimpleName(int n) {

@@ -24,7 +24,6 @@ import com.azure.search.models.SynonymMap;
 import com.azure.search.test.AccessConditionTests;
 import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -36,6 +35,13 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class IndexManagementSyncTests extends IndexManagementTestBase {
     private SearchServiceClient client;
@@ -106,10 +112,10 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         Index indexResponse = client.createIndex(index);
         ScoringProfile scoringProfile = indexResponse.getScoringProfiles().get(0);
-        Assert.assertNull(indexResponse.getCorsOptions().getMaxAgeInSeconds());
-        Assert.assertEquals(ScoringFunctionAggregation.SUM, scoringProfile.getFunctionAggregation());
-        Assert.assertNotNull(scoringProfile.getFunctions().get(0));
-        Assert.assertEquals(ScoringFunctionInterpolation.LINEAR, scoringProfile.getFunctions().get(0).getInterpolation());
+        assertNull(indexResponse.getCorsOptions().getMaxAgeInSeconds());
+        assertEquals(ScoringFunctionAggregation.SUM, scoringProfile.getFunctionAggregation());
+        assertNotNull(scoringProfile.getFunctions().get(0));
+        assertEquals(ScoringFunctionInterpolation.LINEAR, scoringProfile.getFunctions().get(0).getInterpolation());
     }
 
     @Test
@@ -128,11 +134,11 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         try {
             client.createIndex(index);
-            Assert.fail("createOrUpdateIndex did not throw an expected Exception");
+            fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-            Assert.assertTrue(ex.getMessage().contains(expectedMessage));
+            assertEquals(HttpResponseException.class, ex.getClass());
+            assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
+            assertTrue(ex.getMessage().contains(expectedMessage));
         }
     }
 
@@ -197,17 +203,17 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
                     .setKey(true)
             ));
         Response<Void> deleteResponse = client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
+        assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
         Response<Index> createResponse = client.createIndexWithResponse(index, generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
+        assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
 
         // Delete the same index twice
         deleteResponse = client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
+        assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
 
         deleteResponse = client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
+        assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
     @Test
@@ -216,7 +222,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         client.createIndex(index);
         client.deleteIndex(index.getName());
 
-        Assert.assertFalse(client.indexExists(index.getName()));
+        assertThrows(HttpResponseException.class, () -> client.getIndex(index.getName()));
     }
 
     @Test
@@ -230,9 +236,9 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         PagedIterable<Index> actual = client.listIndexes();
         List<Index> result = actual.stream().collect(Collectors.toList());
 
-        Assert.assertEquals(2, result.size());
-        Assert.assertEquals(index1.getName(), result.get(0).getName());
-        Assert.assertEquals(index2.getName(), result.get(1).getName());
+        assertEquals(2, result.size());
+        assertEquals(index1.getName(), result.get(0).getName());
+        assertEquals(index2.getName(), result.get(1).getName());
     }
 
     @Test
@@ -248,21 +254,21 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         List<Index> result = selectedFieldListResponse.stream().collect(Collectors.toList());
 
         result.forEach(res -> {
-            Assert.assertNotNull(res.getName());
-            Assert.assertNull(res.getFields());
-            Assert.assertNull(res.getDefaultScoringProfile());
-            Assert.assertNull(res.getCorsOptions());
-            Assert.assertNull(res.getScoringProfiles());
-            Assert.assertNull(res.getSuggesters());
-            Assert.assertNull(res.getAnalyzers());
-            Assert.assertNull(res.getTokenizers());
-            Assert.assertNull(res.getTokenFilters());
-            Assert.assertNull(res.getCharFilters());
+            assertNotNull(res.getName());
+            assertNull(res.getFields());
+            assertNull(res.getDefaultScoringProfile());
+            assertNull(res.getCorsOptions());
+            assertNull(res.getScoringProfiles());
+            assertNull(res.getSuggesters());
+            assertNull(res.getAnalyzers());
+            assertNull(res.getTokenizers());
+            assertNull(res.getTokenFilters());
+            assertNull(res.getCharFilters());
         });
 
-        Assert.assertEquals(2, result.size());
-        Assert.assertEquals(result.get(0).getName(), index1.getName());
-        Assert.assertEquals(result.get(1).getName(), index2.getName());
+        assertEquals(2, result.size());
+        assertEquals(result.get(0).getName(), index1.getName());
+        assertEquals(result.get(1).getName(), index2.getName());
     }
 
     @Test
@@ -288,7 +294,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         List<String> actualSynonym = index.getFields().get(1).getSynonymMaps();
         List<String> expectedSynonym = createdIndex.getFields().get(1).getSynonymMaps();
-        Assert.assertEquals(actualSynonym, expectedSynonym);
+        assertEquals(actualSynonym, expectedSynonym);
     }
 
     @Test
@@ -426,7 +432,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         assertIndexesEqual(expected, actual);
 
         Index res = client.createOrUpdateIndex(expected.setName("hotel2"));
-        Assert.assertEquals(expected.getName(), res.getName());
+        assertEquals(expected.getName(), res.getName());
     }
 
     @Test
@@ -443,7 +449,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         Response<Index> createOrUpdateResponse = client.createOrUpdateIndexWithResponse(expected.setName("hotel2"),
             false, new AccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
+        assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
     }
 
     @Test
@@ -506,8 +512,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         client.createOrUpdateIndex(index);
         GetIndexStatisticsResult indexStatistics = client.getIndexStatistics(index.getName());
-        Assert.assertEquals(0, indexStatistics.getDocumentCount());
-        Assert.assertEquals(0, indexStatistics.getStorageSize());
+        assertEquals(0, indexStatistics.getDocumentCount());
+        assertEquals(0, indexStatistics.getStorageSize());
     }
 
     @Test
@@ -517,7 +523,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         Response<GetIndexStatisticsResult> indexStatisticsResponse = client.getIndexStatisticsWithResponse(index.getName(),
             generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(0, indexStatisticsResponse.getValue().getDocumentCount());
-        Assert.assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());
+        assertEquals(0, indexStatisticsResponse.getValue().getDocumentCount());
+        assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());
     }
 }

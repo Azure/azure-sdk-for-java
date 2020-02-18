@@ -3,8 +3,9 @@
 package com.azure.search;
 
 import com.azure.search.models.SynonymMap;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase {
     @Test
@@ -76,21 +77,9 @@ public abstract class SynonymMapManagementTestBase extends SearchServiceTestBase
     @Test
     public abstract void canListSynonymMapsWithSelectedField();
 
-    @Test
-    public abstract void existsReturnsTrueForExistingSynonymMap();
-
-    @Test
-    public abstract void existsReturnsTrueForExistingSynonymMapWithResponse();
-
-    @Test
-    public abstract void existsReturnsFalseForNonExistingSynonymMap();
-
-    @Test
-    public abstract void existsReturnsFalseForNonExistingSynonymMapWithResponse();
-
     void assertSynonymMapsEqual(SynonymMap actual, SynonymMap expected) {
-        Assert.assertEquals(actual.getName(), expected.getName());
-        Assert.assertEquals(actual.getSynonyms(), expected.getSynonyms());
+        assertEquals(actual.getName(), expected.getName());
+        assertEquals(actual.getSynonyms(), expected.getSynonyms());
     }
 
     SynonymMap createTestSynonymMap() {

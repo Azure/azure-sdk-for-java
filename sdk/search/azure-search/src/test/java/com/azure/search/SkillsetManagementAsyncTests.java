@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.models.AccessCondition;
@@ -19,25 +19,27 @@ import com.azure.search.models.TextSplitMode;
 import com.azure.search.test.AccessConditionAsyncTests;
 import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     private SearchServiceAsyncClient client;
 
     // commonly used lambda definitions
-    private BiFunction<Skillset,
-        AccessOptions,
-        Mono<Skillset>> createOrUpdateSkillsetAsyncFunc =
-            (Skillset skillset, AccessOptions ac) ->
-                createSkillset(skillset, ac.getAccessCondition(), ac.getRequestOptions());
+    private BiFunction<Skillset, AccessOptions, Mono<Skillset>> createOrUpdateSkillsetAsyncFunc =
+        (Skillset skillset, AccessOptions ac) ->
+            createSkillset(skillset, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Skillset> newSkillsetFunc =
         () -> createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
@@ -48,14 +50,12 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         (String name, AccessOptions ac) ->
             deleteSkillset(name, ac.getAccessCondition(), ac.getRequestOptions());
 
-    private Mono<Void> deleteSkillset(String skillsetName,
-        AccessCondition accessCondition,
+    private Mono<Void> deleteSkillset(String skillsetName, AccessCondition accessCondition,
         RequestOptions requestOptions) {
         return client.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions).flatMap(FluxUtil::toMono);
     }
 
-    private Mono<Skillset> createSkillset(Skillset skillset,
-        AccessCondition accessCondition,
+    private Mono<Skillset> createSkillset(Skillset skillset, AccessCondition accessCondition,
         RequestOptions requestOptions) {
         return client.createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions)
             .map(Response::getValue);
@@ -354,15 +354,11 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         Skillset skillset1 = createSkillsetWithCognitiveServicesKey();
         Skillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
 
-        PagedFlux<Skillset> listResponse = client.listSkillsets();
-
-        StepVerifier
-            .create(
-                client.createSkillset(skillset1)
-                .then(client.createSkillset(skillset2))
-                .thenMany(client.listSkillsets()))
-            .assertNext(resSkillSet1 -> Assert.assertEquals(skillset1.getName(), resSkillSet1.getName()))
-            .assertNext(resSkillSet2 -> Assert.assertEquals(skillset2.getName(), resSkillSet2.getName()))
+        StepVerifier.create(client.createSkillset(skillset1)
+            .then(client.createSkillset(skillset2))
+            .thenMany(client.listSkillsets()))
+            .assertNext(resSkillSet1 -> assertEquals(skillset1.getName(), resSkillSet1.getName()))
+            .assertNext(resSkillSet2 -> assertEquals(skillset2.getName(), resSkillSet2.getName()))
             .verifyComplete();
     }
 
@@ -375,19 +371,21 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .then(client.createSkillset(skillset2))
             .thenMany(client.listSkillsets("name", generateRequestOptions())))
             .assertNext(resSkillSet1 -> {
-                Assert.assertEquals(skillset1.getName(), resSkillSet1.getName());
-                Assert.assertNotNull(resSkillSet1.getName());
-                Assert.assertNull(resSkillSet1.getCognitiveServicesAccount());
-                Assert.assertNull(resSkillSet1.getDescription());
-                Assert.assertNull(resSkillSet1.getSkills());
-                Assert.assertNull(resSkillSet1.getETag()); })
+                assertEquals(skillset1.getName(), resSkillSet1.getName());
+                assertNotNull(resSkillSet1.getName());
+                assertNull(resSkillSet1.getCognitiveServicesAccount());
+                assertNull(resSkillSet1.getDescription());
+                assertNull(resSkillSet1.getSkills());
+                assertNull(resSkillSet1.getETag());
+            })
             .assertNext(resSkillSet2 -> {
-                Assert.assertEquals(skillset2.getName(), resSkillSet2.getName());
-                Assert.assertNotNull(resSkillSet2.getName());
-                Assert.assertNull(resSkillSet2.getCognitiveServicesAccount());
-                Assert.assertNull(resSkillSet2.getDescription());
-                Assert.assertNull(resSkillSet2.getSkills());
-                Assert.assertNull(resSkillSet2.getETag()); })
+                assertEquals(skillset2.getName(), resSkillSet2.getName());
+                assertNotNull(resSkillSet2.getName());
+                assertNull(resSkillSet2.getCognitiveServicesAccount());
+                assertNull(resSkillSet2.getDescription());
+                assertNull(resSkillSet2.getSkills());
+                assertNull(resSkillSet2.getETag());
+            })
             .verifyComplete();
     }
 
@@ -398,7 +396,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         StepVerifier
             .create(client.deleteSkillsetWithResponse(skillset.getName(), new AccessCondition(), generateRequestOptions()))
             .assertNext(deleteResponse ->
-                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode())
+                assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode())
             )
             .verifyComplete();
 
@@ -407,14 +405,14 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         StepVerifier
             .create(client.deleteSkillsetWithResponse(skillset.getName(), new AccessCondition(), generateRequestOptions()))
             .assertNext(deleteResponse ->
-                Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode())
+                assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode())
             )
             .verifyComplete();
 
         StepVerifier
             .create(client.deleteSkillsetWithResponse(skillset.getName(), new AccessCondition(), generateRequestOptions()))
             .assertNext(deleteResponse ->
-                Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode())
+                assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode())
             )
             .verifyComplete();
     }
@@ -423,13 +421,10 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     public void canCreateAndDeleteSkillset() {
         Skillset expected = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
 
-        StepVerifier
-            .create(
-                client.createSkillset(expected)
-                .then(client.deleteSkillset(expected.getName()))
-                .then(client.skillsetExists(expected.getName())))
-            .assertNext(Assert::assertFalse)
-            .verifyComplete();
+        StepVerifier.create(client.createSkillset(expected)
+            .then(client.deleteSkillset(expected.getName()))
+            .then(client.getSkillset(expected.getName())))
+            .verifyError(HttpResponseException.class);
     }
 
     @Test
@@ -449,7 +444,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         StepVerifier
             .create(client.createOrUpdateSkillsetWithResponse(expected, new AccessCondition(),
                 generateRequestOptions()))
-            .assertNext(res -> Assert.assertEquals(HttpResponseStatus.CREATED.code(), res.getStatusCode()))
+            .assertNext(res -> assertEquals(HttpResponseStatus.CREATED.code(), res.getStatusCode()))
             .verifyComplete();
     }
 
@@ -459,44 +454,14 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
         StepVerifier
             .create(client.createOrUpdateSkillsetWithResponse(skillset, new AccessCondition(),
                 generateRequestOptions()))
-            .assertNext(res -> Assert.assertEquals(HttpResponseStatus.CREATED.code(), res.getStatusCode()))
+            .assertNext(res -> assertEquals(HttpResponseStatus.CREATED.code(), res.getStatusCode()))
             .verifyComplete();
 
         skillset = createTestOcrSkillSet(2, TextExtractionAlgorithm.PRINTED, false);
         StepVerifier
             .create(client.createOrUpdateSkillsetWithResponse(skillset, new AccessCondition(),
                 generateRequestOptions()))
-            .assertNext(res -> Assert.assertEquals(HttpResponseStatus.OK.code(), res.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void existsReturnsFalseForNonExistingSkillset() {
-        StepVerifier
-            .create(client.skillsetExists("nonexistent"))
-            .assertNext(Assert::assertFalse)
-            .verifyComplete();
-    }
-
-    @Test
-    public void existsReturnsTrueForExistingSkillset() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
-
-        StepVerifier
-            .create(client.createSkillset(skillset)
-                .then(client.skillsetExists(skillset.getName())))
-            .assertNext(Assert::assertTrue)
-            .verifyComplete();
-    }
-
-    @Test
-    public void existsReturnsTrueForExistingSkillsetWithResponse() {
-        Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
-
-        StepVerifier
-            .create(client.createSkillset(skillset)
-                .then(client.skillsetExistsWithResponse(skillset.getName(), generateRequestOptions())))
-            .assertNext(res -> Assert.assertTrue(res.getValue()))
+            .assertNext(res -> assertEquals(HttpResponseStatus.OK.code(), res.getStatusCode()))
             .verifyComplete();
     }
 

@@ -8,9 +8,6 @@ import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
-import com.microsoft.azure.storage.core.Base64;
-import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -21,14 +18,15 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
 import static java.lang.Double.POSITIVE_INFINITY;
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LookupAsyncTests extends LookupTestBase {
     private SearchIndexAsyncClient client;
@@ -41,7 +39,7 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, expected);
 
         StepVerifier.create(client.getDocument(expected.hotelId()))
-            .assertNext(res -> assertReflectionEquals(expected, convertToType(res, Hotel.class), IGNORE_DEFAULTS))
+            .assertNext(res -> assertTrue(TestHelpers.areHotelsEqual(convertToType(res, Hotel.class), expected)))
             .verifyComplete();
     }
 
@@ -53,7 +51,7 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, expected);
 
         StepVerifier.create(client.getDocument(expected.hotelId()))
-            .assertNext(res -> assertReflectionEquals(expected, convertToType(res, Hotel.class), IGNORE_DEFAULTS))
+            .assertNext(res -> assertTrue(TestHelpers.areHotelsEqual(convertToType(res, Hotel.class), expected)))
             .verifyComplete();
     }
 
@@ -65,7 +63,7 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, expected);
 
         StepVerifier.create(client.getDocument(expected.hotelId()))
-            .assertNext(res -> assertReflectionEquals(expected, convertToType(res, Hotel.class), IGNORE_DEFAULTS))
+            .assertNext(res -> assertTrue(TestHelpers.areHotelsEqual(convertToType(res, Hotel.class), expected)))
             .verifyComplete();
     }
 
@@ -78,7 +76,7 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, expected);
 
         StepVerifier.create(client.getDocument(expected.key()))
-            .assertNext(res -> assertReflectionEquals(expected, convertToType(res, ModelWithPrimitiveCollections.class), IGNORE_DEFAULTS))
+            .assertNext(res -> assertTrue(TestHelpers.areModelsWithPrimitivesEqual(convertToType(res, ModelWithPrimitiveCollections.class), expected)))
             .verifyComplete();
     }
 
@@ -100,8 +98,8 @@ public class LookupAsyncTests extends LookupTestBase {
 
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
 
-        StepVerifier.create(client.getDocument(indexedDoc.hotelId(), selectedFields, generateRequestOptions()))
-            .assertNext(res -> assertReflectionEquals(expected, convertToType(res, Hotel.class), IGNORE_DEFAULTS))
+        StepVerifier.create(client.getDocumentWithResponse(indexedDoc.hotelId(), selectedFields, generateRequestOptions()))
+            .assertNext(res -> assertTrue(TestHelpers.areHotelsEqual(convertToType(res, Hotel.class), expected)))
             .verifyComplete();
     }
 
@@ -132,8 +130,8 @@ public class LookupAsyncTests extends LookupTestBase {
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded", "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
-        StepVerifier.create(client.getDocument("1", selectedFields, generateRequestOptions()))
-            .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
+        StepVerifier.create(client.getDocumentWithResponse("1", selectedFields, generateRequestOptions()))
+            .assertNext(response -> assertEquals(expectedDoc, response.getValue()))
             .verifyComplete();
     }
 
@@ -167,8 +165,8 @@ public class LookupAsyncTests extends LookupTestBase {
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "Address");
 
-        StepVerifier.create(client.getDocument("1", selectedFields, generateRequestOptions()))
-            .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
+        StepVerifier.create(client.getDocumentWithResponse("1", selectedFields, generateRequestOptions()))
+            .assertNext(response -> assertEquals(expectedDoc, response.getValue()))
             .verifyComplete();
     }
 
@@ -208,7 +206,7 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, originalDoc);
 
         StepVerifier.create(client.getDocument(docKey))
-            .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
+            .assertNext(actualDoc -> assertEquals(expectedDoc, actualDoc))
             .verifyComplete();
     }
 
@@ -269,8 +267,8 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms");
 
-        StepVerifier.create(client.getDocument("1", selectedFields, generateRequestOptions()))
-            .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
+        StepVerifier.create(client.getDocumentWithResponse("1", selectedFields, generateRequestOptions()))
+            .assertNext(response -> assertEquals(expectedDoc, response.getValue()))
             .verifyComplete();
     }
 
@@ -302,8 +300,8 @@ public class LookupAsyncTests extends LookupTestBase {
             .verifyComplete();
 
         // Select only the fields set in the test case so we don't get superfluous data back.
-        StepVerifier.create(client.getDocument("1", new ArrayList<>(indexedDoc.keySet()), null))
-            .assertNext(actualDoc -> Assertions.assertEquals(actualDoc, expectedDoc))
+        StepVerifier.create(client.getDocumentWithResponse("1", new ArrayList<>(indexedDoc.keySet()), null))
+            .assertNext(response -> assertEquals(expectedDoc, response.getValue()))
             .verifyComplete();
     }
 
@@ -312,7 +310,7 @@ public class LookupAsyncTests extends LookupTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
 
-        String complexKey = Base64.encode(new byte[]{1, 2, 3, 4, 5});
+        String complexKey = Base64.getEncoder().encodeToString(new byte[]{1, 2, 3, 4, 5});
 
         Document expectedDoc = new Document();
         expectedDoc.put("HotelId", complexKey);
@@ -324,8 +322,8 @@ public class LookupAsyncTests extends LookupTestBase {
             .expectNextCount(1)
             .verifyComplete();
 
-        StepVerifier.create(client.getDocument(complexKey, new ArrayList<>(expectedDoc.keySet()), null))
-            .assertNext(actualDoc -> Assertions.assertEquals(actualDoc, expectedDoc))
+        StepVerifier.create(client.getDocumentWithResponse(complexKey, new ArrayList<>(expectedDoc.keySet()), null))
+            .assertNext(response -> assertEquals(expectedDoc, response.getValue()))
             .verifyComplete();
     }
 
@@ -345,14 +343,14 @@ public class LookupAsyncTests extends LookupTestBase {
         expectedDoc.put("LastRenovationDate", dateFormat.parse("2010-06-27T08:00:00Z"));
 
         IndexBatch<Document> batch = new IndexBatch<>();
-        batch.addUploadAction(expectedDoc);
+        batch.addUploadAction(indexedDoc);
 
         StepVerifier.create(client.index(batch))
             .expectNextCount(1)
             .verifyComplete();
 
         StepVerifier.create(client.getDocument("1"))
-            .assertNext(actualDoc -> Assertions.assertEquals(actualDoc, expectedDoc))
+            .assertNext(actualDoc -> assertEquals(actualDoc, expectedDoc))
             .verifyComplete();
     }
 
@@ -398,8 +396,8 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
-        StepVerifier.create(client.getDocument("1", selectedFields, generateRequestOptions()))
-            .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
+        StepVerifier.create(client.getDocumentWithResponse("1", selectedFields, generateRequestOptions()))
+            .assertNext(response -> assertEquals(expectedDoc, response.getValue()))
             .verifyComplete();
     }
 
@@ -442,7 +440,7 @@ public class LookupAsyncTests extends LookupTestBase {
         uploadDocument(client, indexedDoc);
 
         StepVerifier.create(client.getDocument(docKey))
-            .assertNext(actualDoc -> Assert.assertEquals(expectedDoc, actualDoc))
+            .assertNext(actualDoc -> assertEquals(expectedDoc, actualDoc))
             .verifyComplete();
     }
 }

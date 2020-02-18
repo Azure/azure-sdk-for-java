@@ -2,15 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.search.models.GeoPoint;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
-import com.microsoft.azure.storage.core.Base64;
-import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
@@ -20,14 +19,15 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
 import static java.lang.Double.POSITIVE_INFINITY;
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LookupSyncTests extends LookupTestBase {
     private SearchIndexClient client;
@@ -42,7 +42,7 @@ public class LookupSyncTests extends LookupTestBase {
 
         Document result = client.getDocument(expected.hotelId());
         Hotel actual = convertToType(result, Hotel.class);
-        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
+        assertTrue(TestHelpers.areHotelsEqual(actual, expected));
     }
 
     @Test
@@ -55,7 +55,7 @@ public class LookupSyncTests extends LookupTestBase {
 
         Document result = client.getDocument(expected.hotelId());
         Hotel actual = convertToType(result, Hotel.class);
-        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
+        assertTrue(TestHelpers.areHotelsEqual(actual, expected));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class LookupSyncTests extends LookupTestBase {
 
         Document result = client.getDocument(expected.hotelId());
         Hotel actual = convertToType(result, Hotel.class);
-        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
+        assertTrue(TestHelpers.areHotelsEqual(actual, expected));
     }
 
     @Test
@@ -81,7 +81,7 @@ public class LookupSyncTests extends LookupTestBase {
 
         Document result = client.getDocument(expected.key());
         ModelWithPrimitiveCollections actual = convertToType(result, ModelWithPrimitiveCollections.class);
-        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
+        assertTrue(TestHelpers.areModelsWithPrimitivesEqual(actual, expected));
     }
 
     @Test
@@ -99,9 +99,9 @@ public class LookupSyncTests extends LookupTestBase {
         uploadDocument(client, indexedDoc);
 
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
-        Document result = client.getDocument(indexedDoc.hotelId(), selectedFields, generateRequestOptions());
-        Hotel actual = convertToType(result, Hotel.class);
-        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
+        Response<Document> response = client.getDocumentWithResponse(indexedDoc.hotelId(), selectedFields, generateRequestOptions(), Context.NONE);
+        Hotel actual = convertToType(response.getValue(), Hotel.class);
+        assertTrue(TestHelpers.areHotelsEqual(actual, expected));
     }
 
     @Test
@@ -137,8 +137,8 @@ public class LookupSyncTests extends LookupTestBase {
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded", "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
-        Document actualDoc = client.getDocument("1", selectedFields, generateRequestOptions());
-        Assert.assertEquals(expectedDoc, actualDoc);
+        Response<Document> response = client.getDocumentWithResponse("1", selectedFields, generateRequestOptions(), Context.NONE);
+        assertEquals(expectedDoc, response.getValue());
     }
 
     @Test
@@ -172,8 +172,8 @@ public class LookupSyncTests extends LookupTestBase {
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "Address");
 
-        Document actualDoc = client.getDocument("1", selectedFields, generateRequestOptions());
-        Assert.assertEquals(expectedDoc, actualDoc);
+        Response<Document> response = client.getDocumentWithResponse("1", selectedFields, generateRequestOptions(), Context.NONE);
+        assertEquals(expectedDoc, response.getValue());
     }
 
     @Test
@@ -212,7 +212,7 @@ public class LookupSyncTests extends LookupTestBase {
         uploadDocument(client, originalDoc);
 
         Document actualDoc = client.getDocument(docKey);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -273,8 +273,8 @@ public class LookupSyncTests extends LookupTestBase {
         uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms");
 
-        Document actualDoc = client.getDocument("1", selectedFields, generateRequestOptions());
-        Assert.assertEquals(expectedDoc, actualDoc);
+        Response<Document> response = client.getDocumentWithResponse("1", selectedFields, generateRequestOptions(), Context.NONE);
+        assertEquals(expectedDoc, response.getValue());
     }
 
     @Override
@@ -300,7 +300,7 @@ public class LookupSyncTests extends LookupTestBase {
         client.index(new IndexBatch<>().addUploadAction(expectedDoc));
 
         // Select only the fields set in the test case so we don't get superfluous data back.
-        Assertions.assertEquals(client.getDocument("1", new ArrayList<>(indexedDoc.keySet()), null), expectedDoc);
+        assertEquals(client.getDocumentWithResponse("1", new ArrayList<>(indexedDoc.keySet()), null, Context.NONE).getValue(), expectedDoc);
     }
 
     @Override
@@ -308,13 +308,13 @@ public class LookupSyncTests extends LookupTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        String complexKey = Base64.encode(new byte[]{1, 2, 3, 4, 5});
+        String complexKey = Base64.getEncoder().encodeToString(new byte[]{1, 2, 3, 4, 5});
 
         Document expectedDoc = new Document();
         expectedDoc.put("HotelId", complexKey);
 
         client.index(new IndexBatch<>().addUploadAction(expectedDoc));
-        Assertions.assertEquals(client.getDocument(complexKey, new ArrayList<>(expectedDoc.keySet()), null), expectedDoc);
+        assertEquals(client.getDocumentWithResponse(complexKey, new ArrayList<>(expectedDoc.keySet()), null, Context.NONE).getValue(), expectedDoc);
     }
 
     @Override
@@ -332,8 +332,8 @@ public class LookupSyncTests extends LookupTestBase {
         expectedDoc.put("HotelId", "1");
         expectedDoc.put("LastRenovationDate", dateFormat.parse("2010-06-27T08:00:00Z"));
 
-        client.index(new IndexBatch<>().addUploadAction(expectedDoc));
-        Assertions.assertEquals(client.getDocument("1"), expectedDoc);
+        client.index(new IndexBatch<>().addUploadAction(indexedDoc));
+        assertEquals(client.getDocument("1"), expectedDoc);
     }
 
     @Test
@@ -379,8 +379,8 @@ public class LookupSyncTests extends LookupTestBase {
         uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
-        Document actualDoc = client.getDocument("1", selectedFields, generateRequestOptions());
-        Assert.assertEquals(expectedDoc, actualDoc);
+        Response<Document> response = client.getDocumentWithResponse("1", selectedFields, generateRequestOptions(), Context.NONE);
+        assertEquals(expectedDoc, response.getValue());
     }
 
     @Test
@@ -422,6 +422,6 @@ public class LookupSyncTests extends LookupTestBase {
         uploadDocument(client, indexedDoc);
 
         Document actualDoc = client.getDocument(docKey);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 }

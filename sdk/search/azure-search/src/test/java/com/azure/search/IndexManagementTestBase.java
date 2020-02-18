@@ -7,8 +7,10 @@ import com.azure.search.models.Index;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.unitils.reflectionReflectionassertReflectionEquals;
+import static org.unitils.reflectionReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public abstract class IndexManagementTestBase extends SearchServiceTestBase {
 
@@ -117,16 +119,15 @@ public abstract class IndexManagementTestBase extends SearchServiceTestBase {
             .findFirst().get();
     }
 
-    void indexeWithSelectedFieldAssertions(Index actualIndex) {
-        Assert.assertNull(actualIndex.getFields());
-        Assert.assertNull(actualIndex.getDefaultScoringProfile());
-        Assert.assertNull(actualIndex.getCorsOptions());
-        Assert.assertNull(actualIndex.getScoringProfiles());
-        Assert.assertNull(actualIndex.getSuggesters());
-        Assert.assertNull(actualIndex.getAnalyzers());
-        Assert.assertNull(actualIndex.getTokenizers());
-        Assert.assertNull(actualIndex.getTokenFilters());
-        Assert.assertNull(actualIndex.getCharFilters());
+    void indexWithSelectedFieldAssertions(Index actualIndex) {
+        assertNull(actualIndex.getFields());
+        assertNull(actualIndex.getDefaultScoringProfile());
+        assertNull(actualIndex.getCorsOptions());
+        assertNull(actualIndex.getScoringProfiles());
+        assertNull(actualIndex.getSuggesters());
+        assertNull(actualIndex.getAnalyzers());
+        assertNull(actualIndex.getTokenizers());
+        assertNull(actualIndex.getTokenFilters());
+        assertNull(actualIndex.getCharFilters());
     }
-
 }

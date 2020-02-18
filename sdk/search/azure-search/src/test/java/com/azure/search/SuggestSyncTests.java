@@ -13,7 +13,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -29,7 +28,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     private SearchIndexClient client;
 
     @Test
-    public void canSuggestDynamicDocuments() throws IOException {
+    public void canSuggestDynamicDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -47,7 +46,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void searchFieldsExcludesFieldsFromSuggest() throws IOException {
+    public void searchFieldsExcludesFieldsFromSuggest() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -65,7 +64,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void canUseSuggestHitHighlighting() throws IOException {
+    public void canUseSuggestHitHighlighting() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -86,7 +85,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void canGetFuzzySuggestions() throws IOException {
+    public void canGetFuzzySuggestions() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -104,7 +103,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void canSuggestStaticallyTypedDocuments() throws IOException {
+    public void canSuggestStaticallyTypedDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -153,7 +152,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void fuzzyIsOffByDefault() throws IOException {
+    public void fuzzyIsOffByDefault() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -204,7 +203,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void testCanSuggestWithMinimumCoverage() throws IOException {
+    public void testCanSuggestWithMinimumCoverage() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -227,7 +226,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void testTopTrimsResults() throws IOException {
+    public void testTopTrimsResults() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -248,7 +247,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void testCanFilter() throws IOException {
+    public void testCanFilter() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -272,7 +271,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void testOrderByProgressivelyBreaksTies() throws IOException {
+    public void testOrderByProgressivelyBreaksTies() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -296,7 +295,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void testCanSuggestWithSelectedFields() throws IOException {
+    public void testCanSuggestWithSelectedFields() {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
 

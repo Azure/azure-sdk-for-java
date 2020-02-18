@@ -7,7 +7,6 @@ import com.azure.search.models.IndexingResult;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
@@ -17,6 +16,11 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     static final String INDEX_NAME = "hotels";
@@ -129,16 +133,16 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     }
 
     void assertSuccessfulIndexResult(IndexingResult result, String key, int statusCode) {
-        Assert.assertEquals(result.getKey(), key);
-        Assert.assertEquals(result.getStatusCode(), statusCode);
-        Assert.assertTrue(result.isSucceeded());
+        assertEquals(result.getKey(), key);
+        assertEquals(result.getStatusCode(), statusCode);
+        assertTrue(result.isSucceeded());
     }
 
     void assertFailedIndexResult(IndexingResult result, String key, int statusCode, String errorMessage) {
-        Assert.assertEquals(result.getKey(), key);
-        Assert.assertEquals(result.getStatusCode(), statusCode);
-        Assert.assertEquals(result.getErrorMessage(), errorMessage);
-        Assert.assertFalse(result.isSucceeded());
+        assertEquals(result.getKey(), key);
+        assertEquals(result.getStatusCode(), statusCode);
+        assertEquals(result.getErrorMessage(), errorMessage);
+        assertFalse(result.isSucceeded());
     }
 
     @Test
@@ -172,10 +176,10 @@ public abstract class IndexingTestBase extends SearchIndexClientTestBase {
     public abstract void canIndexAndAccessResponse();
 
     void assertIndexActionSucceeded(String key, IndexingResult result, int expectedStatusCode) {
-        Assert.assertEquals(key, result.getKey());
-        Assert.assertTrue(result.isSucceeded());
-        Assert.assertNull(result.getErrorMessage());
-        Assert.assertEquals(expectedStatusCode, result.getStatusCode());
+        assertEquals(key, result.getKey());
+        assertTrue(result.isSucceeded());
+        assertNull(result.getErrorMessage());
+        assertEquals(expectedStatusCode, result.getStatusCode());
     }
 
     List<Hotel> getBoundaryValues() throws ParseException {

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.http.rest.Response;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.GeoPoint;
@@ -36,8 +35,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IndexingAsyncTests extends IndexingTestBase {
     private SearchIndexAsyncClient client;
@@ -46,11 +45,9 @@ public class IndexingAsyncTests extends IndexingTestBase {
     public void countingDocsOfNewIndexGivesZero() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
-        Mono<Long> result = client.getDocumentCount();
-        Long expected = 0L;
 
-        StepVerifier.create(result)
-            .expectNext(expected)
+        StepVerifier.create(client.getDocumentCount())
+            .assertNext(count -> assertEquals(0, count))
             .verifyComplete();
     }
 
@@ -60,24 +57,17 @@ public class IndexingAsyncTests extends IndexingTestBase {
         client = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
 
         String expectedHotelId = "1";
-        Long expectedHotelCount = 1L;
+        List<Hotel> hotels = Collections.singletonList(new Hotel().hotelId(expectedHotelId));
 
-        List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel()
-            .hotelId(expectedHotelId)
-        );
-        Mono<IndexDocumentsResult> asyncResult = client.uploadDocuments(hotels);
-
-        StepVerifier.create(asyncResult).assertNext(res -> {
-            List<IndexingResult> result = res.getResults();
-            this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
-        }).verifyComplete();
+        StepVerifier.create(client.uploadDocuments(hotels))
+            .assertNext(res -> assertIndexActionSucceeded(expectedHotelId, res.getResults().get(0), 201))
+            .verifyComplete();
 
         waitForIndexing();
 
-        StepVerifier.create(client.getDocumentCount()).
-            expectNext(expectedHotelCount).
-            verifyComplete();
+        StepVerifier.create(client.getDocumentCount())
+            .assertNext(count -> assertEquals(1, count))
+            .verifyComplete();
     }
 
     @Test
@@ -85,27 +75,22 @@ public class IndexingAsyncTests extends IndexingTestBase {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
 
-        List<Book> books = new ArrayList<>();
-        books.add(new Book()
+        List<Book> books = Collections.singletonList(new Book()
             .ISBN("123")
             .title("Lord of the Rings")
             .author(new Author()
                 .firstName("J.R.R")
-                .lastName("Tolkien"))
-        );
+                .lastName("Tolkien")));
 
-        Mono<IndexDocumentsResult> asyncResult = client.uploadDocuments(books);
-
-        StepVerifier.create(asyncResult).assertNext(res -> {
-            List<IndexingResult> result = res.getResults();
-            this.assertIndexActionSucceeded("123", result.get(0), 201);
-        }).verifyComplete();
+        StepVerifier.create(client.uploadDocuments(books))
+            .assertNext(res -> assertIndexActionSucceeded("123", res.getResults().get(0), 201))
+            .verifyComplete();
 
         waitForIndexing();
 
-        StepVerifier.create(client.getDocumentCount()).
-            expectNext(1L).
-            verifyComplete();
+        StepVerifier.create(client.getDocumentCount())
+            .assertNext(count -> assertEquals(1, count))
+            .verifyComplete();
     }
 
     @Test
@@ -126,15 +111,13 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .addMergeOrUploadAction(hotel3)
             .addUploadAction(hotel2);
 
-        Mono<IndexDocumentsResult> response = client.index(batch);
-
-        StepVerifier.create(response)
+        StepVerifier.create(client.index(batch))
             .verifyErrorSatisfies(err -> {
-                Assert.assertEquals(IndexBatchException.class, err.getClass());
+                assertEquals(IndexBatchException.class, err.getClass());
 
                 List<IndexingResult> indexingResults = ((IndexBatchException) err).getIndexingResults();
 
-                Assert.assertEquals(batch.getActions().size(), indexingResults.size());
+                assertEquals(batch.getActions().size(), indexingResults.size());
 
                 assertSuccessfulIndexResult(indexingResults.get(0), "1", 201);
                 assertSuccessfulIndexResult(indexingResults.get(1), "randomId", 200);
@@ -144,24 +127,15 @@ public class IndexingAsyncTests extends IndexingTestBase {
             });
 
         StepVerifier.create(client.getDocument(hotel1.hotelId()))
-            .assertNext(result -> {
-                Hotel actual = convertToType(result, Hotel.class);
-                assertReflectionEquals(hotel1, actual, IGNORE_DEFAULTS);
-            })
+            .assertNext(result -> assertTrue(TestHelpers.areHotelsEqual(convertToType(result, Hotel.class), hotel1)))
             .verifyComplete();
 
         StepVerifier.create(client.getDocument(hotel2.hotelId()))
-            .assertNext(result -> {
-                Hotel actual = convertToType(result, Hotel.class);
-                assertReflectionEquals(hotel2, actual, IGNORE_DEFAULTS);
-            })
+            .assertNext(result -> assertTrue(TestHelpers.areHotelsEqual(convertToType(result, Hotel.class), hotel2)))
             .verifyComplete();
 
         StepVerifier.create(client.getDocument(hotel3.hotelId()))
-            .assertNext(result -> {
-                Hotel actual = convertToType(result, Hotel.class);
-                assertReflectionEquals(hotel3, actual, IGNORE_DEFAULTS);
-            })
+            .assertNext(result -> assertTrue(TestHelpers.areHotelsEqual(convertToType(result, Hotel.class), hotel3)))
             .verifyComplete();
     }
 
@@ -187,7 +161,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         StepVerifier.create(response)
             .verifyErrorSatisfies(err -> {
-                Assert.assertEquals(IndexBatchException.class, err.getClass());
+                assertEquals(IndexBatchException.class, err.getClass());
 
                 List<IndexingResult> results = ((IndexBatchException) err).getIndexingResults();
 
@@ -196,7 +170,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
                 assertFailedIndexResult(results.get(2), "nonExistingHotel", 404, "Document not found.");
                 assertSuccessfulIndexResult(results.get(3), "3", 201);
                 assertSuccessfulIndexResult(results.get(4), "2", 201);
-                Assert.assertEquals(batch.getActions().size(), results.size());
+                assertEquals(batch.getActions().size(), results.size());
             });
 
         StepVerifier.create(client.getDocument(hotel1.get("HotelId").toString()))
@@ -249,11 +223,9 @@ public class IndexingAsyncTests extends IndexingTestBase {
         doc.put("ID", "1");
         docs.add(doc);
 
-        client.uploadDocuments(docs)
-            .block();
+        client.uploadDocuments(docs).block();
 
-        StepVerifier
-            .create(client.getDocument("1"))
+        StepVerifier.create(client.getDocument("1"))
             .assertNext(Assert::assertNotNull)
             .verifyComplete();
     }
@@ -271,10 +243,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         for (Hotel expected : boundaryConditionDocs) {
             StepVerifier.create(client.getDocument(expected.hotelId()))
-                .assertNext(d -> {
-                    Hotel actual = convertToType(d, Hotel.class);
-                    assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
-                })
+                .assertNext(d -> assertTrue(TestHelpers.areHotelsEqual(convertToType(d, Hotel.class), expected)))
                 .verifyComplete();
         }
 
@@ -285,15 +254,9 @@ public class IndexingAsyncTests extends IndexingTestBase {
         setupIndexFromJsonFile(BOOKS_INDEX_JSON);
         client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildAsyncClient();
 
-        OffsetDateTime utcTime = OffsetDateTime.of(
-            LocalDateTime.of(2010, 1, 1, 0, 0, 0),
-            ZoneOffset.UTC
-        );
-        OffsetDateTime utcTimeMinusEight = OffsetDateTime.of(
-            // UTC-8
-            LocalDateTime.of(2010, 1, 1, 0, 0, 0),
-            ZoneOffset.ofHours(-8)
-        );
+        OffsetDateTime utcTime = OffsetDateTime.of(2010, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+
+        OffsetDateTime utcTimeMinusEight = OffsetDateTime.of(2010, 1, 1, 0, 0, 0, 0, ZoneOffset.ofHours(-8));
 
         List<Map<String, Object>> books = new ArrayList<>();
 
@@ -307,22 +270,18 @@ public class IndexingAsyncTests extends IndexingTestBase {
         book2.put("PublishDate", utcTimeMinusEight);
         books.add(book2);
 
-        client.uploadDocuments(books)
-            .block();
+        client.uploadDocuments(books).block();
+
         waitForIndexing();
 
-        Mono<Document> actualBook1 = client.getDocument("1");
-        Mono<Document> actualBook2 = client.getDocument("2");
-
-        StepVerifier
-            .create(actualBook1)
-            .assertNext(res -> Assert.assertEquals(utcTime, res.get("PublishDate")))
+        StepVerifier.create(client.getDocument("1"))
+            .assertNext(res -> assertEquals(utcTime, res.get("PublishDate")))
             .verifyComplete();
 
         // Azure Cognitive Search normalizes to UTC, so we compare instants
-        StepVerifier
-            .create(actualBook2)
-            .assertNext(res -> Assert.assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC), ((OffsetDateTime) res.get("PublishDate")).withOffsetSameInstant(ZoneOffset.UTC)))
+        StepVerifier.create(client.getDocument("2"))
+            .assertNext(res -> assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC),
+                ((OffsetDateTime) res.get("PublishDate")).withOffsetSameInstant(ZoneOffset.UTC)))
             .verifyComplete();
     }
 
@@ -334,16 +293,13 @@ public class IndexingAsyncTests extends IndexingTestBase {
         List<Hotel> hotels = new ArrayList<>();
         hotels.add(prepareStaticallyTypedHotel("1"));
 
-        Mono<IndexDocumentsResult> documentIndexResult = client.mergeDocuments(hotels);
-
-        StepVerifier
-            .create(documentIndexResult)
+        StepVerifier.create(client.mergeDocuments(hotels))
             .verifyErrorSatisfies(err -> {
-                Assert.assertEquals(IndexBatchException.class, err.getClass());
+                assertEquals(IndexBatchException.class, err.getClass());
 
                 List<IndexingResult> indexingResults = ((IndexBatchException) err).getIndexingResults();
                 assertFailedIndexResult(indexingResults.get(0), "1", HttpResponseStatus.NOT_FOUND.code(), "Document not found.");
-                Assert.assertEquals(1, indexingResults.size());
+                assertEquals(1, indexingResults.size());
             });
     }
 
@@ -368,17 +324,13 @@ public class IndexingAsyncTests extends IndexingTestBase {
         );
         client.uploadDocuments(books).block();
 
-        Mono<Document> actualBook1 = client.getDocument("1");
-        StepVerifier
-            .create(actualBook1)
-            .assertNext(res -> Assert.assertEquals(books.get(0).publishDate(), convertToType(res, Book.class).publishDate()))
+        StepVerifier.create(client.getDocument("1"))
+            .assertNext(res -> assertEquals(books.get(0).publishDate(), convertToType(res, Book.class).publishDate()))
             .verifyComplete();
 
         // Azure Cognitive Search normalizes to UTC, so we compare instants
-        Mono<Document> actualBook2 = client.getDocument("2");
-        StepVerifier
-            .create(actualBook2)
-            .assertNext(res -> Assert.assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC), convertToType(res, Book.class).publishDate().withOffsetSameInstant(ZoneOffset.UTC)))
+        StepVerifier.create(client.getDocument("2"))
+            .assertNext(res -> assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC), convertToType(res, Book.class).publishDate().withOffsetSameInstant(ZoneOffset.UTC)))
             .verifyComplete();
     }
 
@@ -488,14 +440,14 @@ public class IndexingAsyncTests extends IndexingTestBase {
         client.mergeDocuments(updatedDocs).block();
 
         StepVerifier.create(client.getDocument("1"))
-            .assertNext(result -> assertReflectionEquals(expectedDoc, convertToType(result, Hotel.class), IGNORE_DEFAULTS))
+            .assertNext(result -> assertTrue(TestHelpers.areHotelsEqual(convertToType(result, Hotel.class), expectedDoc)))
             .verifyComplete();
 
         client.mergeDocuments(originalDocs).block();
 
         // Verify
         StepVerifier.create(client.getDocument("1"))
-            .assertNext(result -> assertReflectionEquals(originalDoc, convertToType(result, Hotel.class), IGNORE_DEFAULTS))
+            .assertNext(result -> assertTrue(TestHelpers.areHotelsEqual(convertToType(result, Hotel.class), originalDoc)))
             .verifyComplete();
     }
 
@@ -511,7 +463,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         waitForIndexing();
 
         StepVerifier.create(client.getDocumentCount())
-            .expectNext(2L)
+            .assertNext(count -> assertEquals(2, count))
             .verifyComplete();
 
         IndexBatch<Hotel> deleteBatch = new IndexBatch<Hotel>()
@@ -520,7 +472,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
 
         StepVerifier.create(documentIndexResult)
             .assertNext(res -> {
-                Assert.assertEquals(2, res.getResults().size());
+                assertEquals(2, res.getResults().size());
                 assertIndexActionSucceeded("1", res.getResults().get(0), 200);
                 assertIndexActionSucceeded("2", res.getResults().get(1), 200);
             })
@@ -528,7 +480,7 @@ public class IndexingAsyncTests extends IndexingTestBase {
         waitForIndexing();
 
         StepVerifier.create(client.getDocumentCount())
-            .expectNext(0L)
+            .assertNext(count -> assertEquals(0, count))
             .verifyComplete();
     }
 
@@ -551,11 +503,10 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
 
         hotel.category("ignored");
-        Mono<IndexDocumentsResult> documentIndexResult = client.deleteDocuments(hotels);
 
-        StepVerifier.create(documentIndexResult)
+        StepVerifier.create(client.deleteDocuments(hotels))
             .assertNext(res -> {
-                Assert.assertEquals(1, res.getResults().size());
+                assertEquals(1, res.getResults().size());
                 assertIndexActionSucceeded("1", res.getResults().get(0), 200);
             })
             .verifyComplete();
@@ -586,11 +537,10 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .verifyComplete();
 
         document.put("Category", "ignored");
-        Mono<IndexDocumentsResult> documentIndexResult = client.deleteDocuments(docs);
 
-        StepVerifier.create(documentIndexResult)
+        StepVerifier.create(client.deleteDocuments(docs))
             .assertNext(res -> {
-                Assert.assertEquals(1, res.getResults().size());
+                assertEquals(1, res.getResults().size());
                 assertIndexActionSucceeded("1", res.getResults().get(0), 200);
             })
             .verifyComplete();
@@ -609,24 +559,24 @@ public class IndexingAsyncTests extends IndexingTestBase {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
         LoudHotel originalDoc = new LoudHotel()
-            .HOTELID("1")
-            .HOTELNAME("Secret Point Motel")
-            .DESCRIPTION("The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
-            .DESCRIPTIONFRENCH("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
-            .CATEGORY("Boutique")
-            .TAGS(Arrays.asList("pool", "air conditioning", "concierge"))
-            .PARKINGINCLUDED(false)
-            .SMOKINGALLOWED(false)
-            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
-            .RATING(4)
-            .LOCATION(GeoPoint.create(40.760586, -73.975403))
-            .ADDRESS(new HotelAddress()
+            .hotelId("1")
+            .hotelName("Secret Point Motel")
+            .description("The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
+            .descriptionFrench("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .category("Boutique")
+            .tags(Arrays.asList("pool", "air conditioning", "concierge"))
+            .parkingIncluded(false)
+            .smokingAllowed(false)
+            .lastRenovationDate(dateFormat.parse("1970-01-18T05:00:00Z"))
+            .rating(4)
+            .location(GeoPoint.create(40.760586, -73.975403))
+            .address(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
                 .stateProvince("NY")
                 .country("USA")
                 .postalCode("10022")
-            ).ROOMS(Arrays.asList(
+            ).rooms(Arrays.asList(
                 new HotelRoom()
                     .description("Budget Room, 1 Queen Bed (Cityside)")
                     .descriptionFr("Chambre Économique, 1 grand lit (côté ville)")
@@ -648,16 +598,16 @@ public class IndexingAsyncTests extends IndexingTestBase {
             ));
 
         LoudHotel updatedDoc = new LoudHotel()
-            .HOTELID("1")
-            .DESCRIPTION(null)  // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
-            .CATEGORY(null)     // This property doesn't have JsonInclude.Include.ALWAYS, so this should have no effect.
-            .TAGS(Arrays.asList("pool", "air conditioning"))
-            .PARKINGINCLUDED(true)
-            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
-            .RATING(3)
-            .LOCATION(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
-            .ADDRESS(new HotelAddress())
-            .ROOMS(Collections.singletonList(
+            .hotelId("1")
+            .description(null)  // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
+            .category(null)     // This property doesn't have JsonInclude.Include.ALWAYS, so this should have no effect.
+            .tags(Arrays.asList("pool", "air conditioning"))
+            .parkingIncluded(true)
+            .lastRenovationDate(dateFormat.parse("1970-01-18T05:00:00Z"))
+            .rating(3)
+            .location(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
+            .address(new HotelAddress())
+            .rooms(Collections.singletonList(
                 new HotelRoom()
                     .description(null)
                     .type("Budget Room")
@@ -667,24 +617,24 @@ public class IndexingAsyncTests extends IndexingTestBase {
             ));
 
         LoudHotel expectedDoc = new LoudHotel()
-            .HOTELID("1")
-            .HOTELNAME("Secret Point Motel")
-            .DESCRIPTION(null)
-            .DESCRIPTIONFRENCH("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
-            .CATEGORY("Boutique")
-            .TAGS(Arrays.asList("pool", "air conditioning"))
-            .PARKINGINCLUDED(true)
-            .SMOKINGALLOWED(false)
-            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
-            .RATING(3)
-            .LOCATION(null)
-            .ADDRESS(new HotelAddress()
+            .hotelId("1")
+            .hotelName("Secret Point Motel")
+            .description(null)
+            .descriptionFrench("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .category("Boutique")
+            .tags(Arrays.asList("pool", "air conditioning"))
+            .parkingIncluded(true)
+            .smokingAllowed(false)
+            .lastRenovationDate(dateFormat.parse("1970-01-18T05:00:00Z"))
+            .rating(3)
+            .location(null)
+            .address(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
                 .stateProvince("NY")
                 .country("USA")
                 .postalCode("10022")
-            ).ROOMS(Collections.singletonList(
+            ).rooms(Collections.singletonList(
                 // Regardless of NullValueHandling, this should look like the merged doc with unspecified fields as null
                 // because we don't support partial updates for complex collections.
                 new HotelRoom()
@@ -708,24 +658,15 @@ public class IndexingAsyncTests extends IndexingTestBase {
         client.mergeDocuments(updatedDocs).block();
         waitForIndexing();
 
-        Mono<Document> mono = client.getDocument("1");
-
-        StepVerifier.create(mono)
-            .assertNext(result -> {
-                LoudHotel actual = convertToType(result, LoudHotel.class);
-                assertReflectionEquals(expectedDoc, actual, IGNORE_DEFAULTS);
-            })
+        StepVerifier.create(client.getDocument("1"))
+            .assertNext(result -> assertTrue(TestHelpers.areLoudHotelsEqual(convertToType(result, LoudHotel.class), expectedDoc)))
             .verifyComplete();
 
         client.uploadDocuments(originalDocs).block();
         waitForIndexing();
 
-        mono = client.getDocument("1");
-        StepVerifier.create(mono)
-            .assertNext(result -> {
-                LoudHotel actual = convertToType(result, LoudHotel.class);
-                assertReflectionEquals(originalDoc, actual, IGNORE_DEFAULTS);
-            })
+        StepVerifier.create(client.getDocument("1"))
+            .assertNext(result -> assertTrue(TestHelpers.areLoudHotelsEqual(convertToType(result, LoudHotel.class), originalDoc)))
             .verifyComplete();
     }
 
@@ -831,30 +772,25 @@ public class IndexingAsyncTests extends IndexingTestBase {
         expectedRoom.put("SmokingAllowed", true);
         expectedRoom.put("Tags", Arrays.asList("vcr/dvd", "balcony"));
 
-        List<LinkedHashMap<String, Object>> expectedRooms = new ArrayList<>();
-        expectedRooms.add(expectedRoom);
+        List<LinkedHashMap<String, Object>> expectedRooms = Collections.singletonList(expectedRoom);
         expectedDoc.put("Rooms", expectedRooms);
 
-        List<Document> originalDocs = new ArrayList<>();
-        originalDocs.add(originalDoc);
+        List<Document> originalDocs = Collections.singletonList(originalDoc);
         client.mergeOrUploadDocuments(originalDocs).block();
         waitForIndexing();
 
-        List<Document> updatedDocs = new ArrayList<>();
-        updatedDocs.add(updatedDoc);
+        List<Document> updatedDocs = Collections.singletonList(updatedDoc);
         client.mergeDocuments(updatedDocs).block();
         waitForIndexing();
 
-        Mono<Document> actualMono = client.getDocument("1");
-        StepVerifier.create(actualMono)
+        StepVerifier.create(client.getDocument("1"))
             .expectNext(expectedDoc)
             .verifyComplete();
 
         client.mergeOrUploadDocuments(originalDocs).block();
         waitForIndexing();
 
-        actualMono = client.getDocument("1");
-        StepVerifier.create(actualMono)
+        StepVerifier.create(client.getDocument("1"))
             .expectNext(originalDoc)
             .verifyComplete();
     }
@@ -891,79 +827,71 @@ public class IndexingAsyncTests extends IndexingTestBase {
             .addUploadAction(hotelsToUpload)
             .addMergeOrUploadAction(hotelsToMergeOrUpload);
 
-        Mono<Response<IndexDocumentsResult>> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload);
-        StepVerifier.create(indexResponse)
+        StepVerifier.create(client.uploadDocumentsWithResponse(hotelsToUpload))
             .assertNext(res -> {
-                Assert.assertEquals(200, res.getStatusCode());
+                assertEquals(200, res.getStatusCode());
 
                 IndexDocumentsResult result = res.getValue();
-                Assert.assertEquals(2, result.getResults().size());
+                assertEquals(2, result.getResults().size());
             })
             .expectComplete();
         waitForIndexing();
 
-        Mono<Response<IndexDocumentsResult>> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge);
-        StepVerifier.create(updateResponse)
+        StepVerifier.create(client.mergeDocumentsWithResponse(hotelsToMerge))
             .assertNext(res -> {
-                Assert.assertEquals(200, res.getStatusCode());
+                assertEquals(200, res.getStatusCode());
 
                 IndexDocumentsResult result = res.getValue();
-                Assert.assertEquals(1, result.getResults().size());
+                assertEquals(1, result.getResults().size());
             })
             .expectComplete();
         waitForIndexing();
 
-        Mono<Response<IndexDocumentsResult>> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(hotelsToMergeOrUpload);
-        StepVerifier.create(mergeOrUploadResponse)
+        StepVerifier.create(client.mergeOrUploadDocumentsWithResponse(hotelsToMergeOrUpload))
             .assertNext(res -> {
-                Assert.assertEquals(200, res.getStatusCode());
+                assertEquals(200, res.getStatusCode());
 
                 IndexDocumentsResult result = res.getValue();
-                Assert.assertEquals(2, result.getResults().size());
+                assertEquals(2, result.getResults().size());
             })
             .expectComplete();
         waitForIndexing();
 
-        Mono<Response<IndexDocumentsResult>> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete);
-        StepVerifier.create(deleteResponse)
+        StepVerifier.create(client.deleteDocumentsWithResponse(hotelsToDelete))
             .assertNext(res -> {
-                Assert.assertEquals(200, res.getStatusCode());
+                assertEquals(200, res.getStatusCode());
 
                 IndexDocumentsResult result = res.getValue();
-                Assert.assertEquals(1, result.getResults().size());
+                assertEquals(1, result.getResults().size());
             })
             .expectComplete();
         waitForIndexing();
 
-        Mono<Response<IndexDocumentsResult>> batchResponse = client.indexWithResponse(batch);
-        StepVerifier.create(batchResponse)
+        StepVerifier.create(client.indexWithResponse(batch))
             .assertNext(res -> {
-                Assert.assertEquals(200, res.getStatusCode());
+                assertEquals(200, res.getStatusCode());
 
                 IndexDocumentsResult result = res.getValue();
-                Assert.assertEquals(4, result.getResults().size());
+                assertEquals(4, result.getResults().size());
             })
             .expectComplete();
         waitForIndexing();
 
-        Mono<Response<Document>> documentResponse = client.getDocumentWithResponse("3", null,
-            generateRequestOptions());
-        StepVerifier.create(documentResponse)
+        StepVerifier.create(client.getDocumentWithResponse("3", null, generateRequestOptions()))
             .assertNext(res -> {
-                Assert.assertEquals(200, res.getStatusCode());
+                assertEquals(200, res.getStatusCode());
 
                 Document doc = res.getValue();
-                Assert.assertEquals(4, doc.get("Rating"));
+                assertEquals(4, doc.get("Rating"));
             })
             .expectComplete();
 
-        Mono<Response<Long>> countResponse = client.getDocumentCountWithResponse();
-        StepVerifier.create(countResponse)
+        StepVerifier.create(client.getDocumentCountWithResponse())
             .assertNext(res -> {
-                Assert.assertEquals(200, res.getStatusCode());
+                assertEquals(200, res.getStatusCode());
 
                 Long count = res.getValue();
-                Assert.assertEquals(4L, count.longValue());
+                assertEquals(4L, count.longValue());
             })
             .expectComplete();
     }

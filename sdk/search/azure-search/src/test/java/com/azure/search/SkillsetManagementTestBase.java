@@ -37,8 +37,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
+import static org.unitils.reflectionReflectionassertReflectionEquals;
+import static org.unitils.reflectionReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
 
@@ -128,15 +128,6 @@ public abstract class SkillsetManagementTestBase extends SearchServiceTestBase {
 
     @Test
     public abstract void createOrUpdateUpdatesWhenSkillsetExists();
-
-    @Test
-    public abstract void existsReturnsFalseForNonExistingSkillset();
-
-    @Test
-    public abstract void existsReturnsTrueForExistingSkillset();
-
-    @Test
-    public abstract void existsReturnsTrueForExistingSkillsetWithResponse();
 
     @Test
     public abstract void createCustomSkillsetReturnsCorrectDefinition();

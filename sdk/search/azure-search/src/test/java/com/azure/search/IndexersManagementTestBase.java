@@ -3,24 +3,23 @@
 package com.azure.search;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.search.models.IndexingSchedule;
-import com.azure.search.models.Index;
-import com.azure.search.models.Indexer;
-import com.azure.search.models.InputFieldMappingEntry;
-import com.azure.search.models.OutputFieldMappingEntry;
-import com.azure.search.models.Skill;
-import com.azure.search.models.IndexingParameters;
-import com.azure.search.models.OcrSkill;
-import com.azure.search.models.Skillset;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.FieldMapping;
-import com.azure.search.models.IndexerExecutionResult;
+import com.azure.search.models.Index;
+import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
-import com.azure.search.models.IndexerLimits;
+import com.azure.search.models.IndexerExecutionResult;
 import com.azure.search.models.IndexerExecutionStatus;
+import com.azure.search.models.IndexerLimits;
+import com.azure.search.models.IndexingParameters;
+import com.azure.search.models.IndexingSchedule;
+import com.azure.search.models.InputFieldMappingEntry;
+import com.azure.search.models.OcrSkill;
+import com.azure.search.models.OutputFieldMappingEntry;
+import com.azure.search.models.Skill;
+import com.azure.search.models.Skillset;
 import com.azure.search.test.CustomQueryPipelinePolicy;
-
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
@@ -30,9 +29,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     static final String TARGET_INDEX_NAME = "indexforindexers";
@@ -136,15 +132,6 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
     public abstract void updateIndexerIfNotChangedSucceedsWhenResourceUnchanged();
 
     @Test
-    public abstract void existsReturnsTrueForExistingIndexer();
-
-    @Test
-    public abstract void existsReturnsTrueForExistingIndexerWithResponse();
-
-    @Test
-    public abstract void existsReturnsFalseForNonExistingIndexer();
-
-    @Test
     public abstract  void canRunIndexerWithResponse();
 
     @Test
@@ -183,15 +170,6 @@ public abstract class IndexersManagementTestBase extends SearchServiceTestBase {
             .setName("ocr-skillset")
             .setDescription("Skillset for testing default configuration")
             .setSkills(skills);
-    }
-
-    void assertIndexersEqual(Indexer expected, Indexer actual) {
-        expected.setETag("none");
-        actual.setETag("none");
-
-        // we ignore defaults as when properties are not set they are returned from the service with
-        // default values
-        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
     Indexer createBaseTestIndexerObject(String indexerName, String targetIndexName) {

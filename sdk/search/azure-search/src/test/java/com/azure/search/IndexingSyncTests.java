@@ -18,7 +18,6 @@ import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.LoudHotel;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
@@ -35,8 +34,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class IndexingSyncTests extends IndexingTestBase {
     private SearchIndexClient client;
@@ -46,10 +47,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        Long actual = client.getDocumentCount();
-        Long expected = 0L;
-
-        Assert.assertEquals(expected, actual);
+        assertEquals(0L, client.getDocumentCount());
     }
 
     @Test
@@ -58,18 +56,13 @@ public class IndexingSyncTests extends IndexingTestBase {
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
         String expectedHotelId = "1";
-        Long expectedHotelCount = 1L;
-
-        List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel()
-            .hotelId(expectedHotelId)
-        );
+        List<Hotel> hotels = Collections.singletonList(new Hotel().hotelId(expectedHotelId));
 
         List<IndexingResult> result = client.uploadDocuments(hotels).getResults();
         this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
 
         waitForIndexing();
-        Assert.assertEquals(expectedHotelCount, client.getDocumentCount());
+        assertEquals(1L, client.getDocumentCount());
     }
 
     @Test
@@ -86,12 +79,11 @@ public class IndexingSyncTests extends IndexingTestBase {
                 .lastName("Tolkien"))
         );
 
-        List<IndexingResult> result = client.uploadDocuments(books)
-            .getResults();
+        List<IndexingResult> result = client.uploadDocuments(books).getResults();
         this.assertIndexActionSucceeded("123", result.get(0), 201);
 
         waitForIndexing();
-        Assert.assertEquals(1L, client.getDocumentCount().longValue());
+        assertEquals(1L, client.getDocumentCount());
     }
 
     @Test
@@ -104,7 +96,7 @@ public class IndexingSyncTests extends IndexingTestBase {
             new Hotel().hotelId("2")
         ));
         waitForIndexing();
-        Assert.assertEquals(2, client.getDocumentCount().intValue());
+        assertEquals(2, client.getDocumentCount());
 
         IndexBatch<Hotel> deleteBatch = new IndexBatch<Hotel>()
             .addDeleteAction("HotelId", "1", "2");
@@ -112,11 +104,11 @@ public class IndexingSyncTests extends IndexingTestBase {
         IndexDocumentsResult documentIndexResult = client.index(deleteBatch);
         waitForIndexing();
 
-        Assert.assertEquals(2, documentIndexResult.getResults().size());
+        assertEquals(2, documentIndexResult.getResults().size());
         assertIndexActionSucceeded("1", documentIndexResult.getResults().get(0), 200);
         assertIndexActionSucceeded("2", documentIndexResult.getResults().get(1), 200);
 
-        Assert.assertEquals(0, client.getDocumentCount().intValue());
+        assertEquals(0, client.getDocumentCount());
     }
 
     @Test
@@ -132,15 +124,15 @@ public class IndexingSyncTests extends IndexingTestBase {
 
         client.uploadDocuments(hotels);
         waitForIndexing();
-        Assert.assertEquals(1, client.getDocumentCount().intValue());
+        assertEquals(1, client.getDocumentCount());
 
         hotel.category("ignored");
         IndexDocumentsResult documentIndexResult = client.deleteDocuments(hotels);
         waitForIndexing();
 
-        Assert.assertEquals(1, documentIndexResult.getResults().size());
+        assertEquals(1, documentIndexResult.getResults().size());
         assertIndexActionSucceeded("1", documentIndexResult.getResults().get(0), 200);
-        Assert.assertEquals(0, client.getDocumentCount().intValue());
+        assertEquals(0, client.getDocumentCount());
     }
 
     @Test
@@ -159,15 +151,15 @@ public class IndexingSyncTests extends IndexingTestBase {
         client.uploadDocuments(docs);
 
         waitForIndexing();
-        Assert.assertEquals(1, client.getDocumentCount().intValue());
+        assertEquals(1, client.getDocumentCount());
 
         document.put("Category", "ignored");
         IndexDocumentsResult documentIndexResult = client.deleteDocuments(docs);
         waitForIndexing();
 
-        Assert.assertEquals(1, documentIndexResult.getResults().size());
+        assertEquals(1, documentIndexResult.getResults().size());
         assertIndexActionSucceeded("1", documentIndexResult.getResults().get(0), 200);
-        Assert.assertEquals(0, client.getDocumentCount().intValue());
+        assertEquals(0, client.getDocumentCount());
     }
 
     public void canIndexStaticallyTypedDocuments() throws ParseException {
@@ -189,10 +181,10 @@ public class IndexingSyncTests extends IndexingTestBase {
 
         try {
             client.index(batch);
-            Assert.fail("indexing did not throw an expected Exception");
+            fail("indexing did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
-            Assert.assertEquals(results.size(), batch.getActions().size());
+            assertEquals(results.size(), batch.getActions().size());
 
             assertSuccessfulIndexResult(results.get(0), "1", 201);
             assertSuccessfulIndexResult(results.get(1), "randomId", 200);
@@ -200,17 +192,17 @@ public class IndexingSyncTests extends IndexingTestBase {
             assertSuccessfulIndexResult(results.get(3), "3", 201);
             assertSuccessfulIndexResult(results.get(4), "2", 201);
         } catch (Exception ex) {
-            Assert.fail(String.format("indexing failed with an unexpected Exception: %s", ex.getMessage()));
+            fail(String.format("indexing failed with an unexpected Exception: %s", ex.getMessage()));
         }
 
         Hotel actualHotel1 = convertToType(client.getDocument(hotel1.hotelId()), Hotel.class);
-        assertReflectionEquals(hotel1, actualHotel1, IGNORE_DEFAULTS);
+        assertTrue(TestHelpers.areHotelsEqual(actualHotel1, hotel1));
 
         Hotel actualHotel2 = convertToType(client.getDocument(hotel2.hotelId()), Hotel.class);
-        assertReflectionEquals(hotel2, actualHotel2, IGNORE_DEFAULTS);
+        assertTrue(TestHelpers.areHotelsEqual(actualHotel2, hotel2));
 
         Hotel actualHotel3 = convertToType(client.getDocument(hotel3.hotelId()), Hotel.class);
-        assertReflectionEquals(hotel3, actualHotel3, IGNORE_DEFAULTS);
+        assertTrue(TestHelpers.areHotelsEqual(actualHotel3, hotel3));
     }
 
     @Test
@@ -233,10 +225,10 @@ public class IndexingSyncTests extends IndexingTestBase {
 
         try {
             client.index(batch);
-            Assert.fail("indexing did not throw an expected Exception");
+            fail("indexing did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
-            Assert.assertEquals(results.size(), batch.getActions().size());
+            assertEquals(results.size(), batch.getActions().size());
 
             assertSuccessfulIndexResult(results.get(0), "1", 201);
             assertSuccessfulIndexResult(results.get(1), "randomId", 200);
@@ -244,17 +236,17 @@ public class IndexingSyncTests extends IndexingTestBase {
             assertSuccessfulIndexResult(results.get(3), "3", 201);
             assertSuccessfulIndexResult(results.get(4), "2", 201);
         } catch (Exception ex) {
-            Assert.fail(String.format("indexing failed with an unexpected Exception: %s", ex.getMessage()));
+            fail(String.format("indexing failed with an unexpected Exception: %s", ex.getMessage()));
         }
 
         Document actualHotel1 = client.getDocument(hotel1.get("HotelId").toString());
-        Assert.assertEquals(hotel1, actualHotel1);
+        assertEquals(hotel1, actualHotel1);
 
         Document actualHotel2 = client.getDocument(hotel2.get("HotelId").toString());
-        Assert.assertEquals(hotel2, actualHotel2);
+        assertEquals(hotel2, actualHotel2);
 
         Document actualHotel3 = client.getDocument(hotel3.get("HotelId").toString());
-        Assert.assertEquals(hotel3, actualHotel3);
+        assertEquals(hotel3, actualHotel3);
     }
 
     @Test
@@ -298,7 +290,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         client.uploadDocuments(docs);
 
         Document actual = client.getDocument("1");
-        Assert.assertNotNull(actual);
+        assertNotNull(actual);
     }
 
     @Test
@@ -314,7 +306,7 @@ public class IndexingSyncTests extends IndexingTestBase {
         for (Hotel expected : boundaryConditionDocs) {
             Document doc = client.getDocument(expected.hotelId());
             Hotel actual = convertToType(doc, Hotel.class);
-            assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
+            assertTrue(TestHelpers.areHotelsEqual(actual, expected));
         }
     }
 
@@ -349,11 +341,11 @@ public class IndexingSyncTests extends IndexingTestBase {
         waitForIndexing();
 
         Document actualBook1 = client.getDocument("1");
-        Assert.assertEquals(utcTime, actualBook1.get("PublishDate"));
+        assertEquals(utcTime, actualBook1.get("PublishDate"));
 
         // Azure Cognitive Search normalizes to UTC, so we compare instants
         Document actualBook2 = client.getDocument("2");
-        Assert.assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC), ((OffsetDateTime) actualBook2.get("PublishDate")).withOffsetSameInstant(ZoneOffset.UTC));
+        assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC), ((OffsetDateTime) actualBook2.get("PublishDate")).withOffsetSameInstant(ZoneOffset.UTC));
     }
 
     @Test
@@ -379,11 +371,11 @@ public class IndexingSyncTests extends IndexingTestBase {
         client.uploadDocuments(books);
 
         Document actualBook1 = client.getDocument("1");
-        Assert.assertEquals(books.get(0).publishDate(), convertToType(actualBook1, Book.class).publishDate());
+        assertEquals(books.get(0).publishDate(), convertToType(actualBook1, Book.class).publishDate());
 
         // Azure Cognitive Search normalizes to UTC, so we compare instants
         Document actualBook2 = client.getDocument("2");
-        Assert.assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC), convertToType(actualBook2, Book.class).publishDate().withOffsetSameInstant(ZoneOffset.UTC));
+        assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC), convertToType(actualBook2, Book.class).publishDate().withOffsetSameInstant(ZoneOffset.UTC));
     }
 
     @Test
@@ -492,10 +484,10 @@ public class IndexingSyncTests extends IndexingTestBase {
         List<Hotel> updatedDocs = new ArrayList<>();
         updatedDocs.add(updatedDoc);
         client.mergeDocuments(updatedDocs);
-        assertReflectionEquals(expectedDoc, convertToType(client.getDocument("1"), Hotel.class), IGNORE_DEFAULTS);
+        assertTrue(TestHelpers.areHotelsEqual(convertToType(client.getDocument("1"), Hotel.class), expectedDoc));
 
         client.mergeDocuments(originalDocs);
-        assertReflectionEquals(originalDoc, convertToType(client.getDocument("1"), Hotel.class), IGNORE_DEFAULTS);
+        assertTrue(TestHelpers.areHotelsEqual(convertToType(client.getDocument("1"), Hotel.class), originalDoc));
     }
 
     @Test
@@ -509,13 +501,13 @@ public class IndexingSyncTests extends IndexingTestBase {
 
         try {
             client.mergeDocuments(hotels);
-            Assert.fail("merge did not throw an expected Exception");
+            fail("merge did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
             assertFailedIndexResult(results.get(0), "1", HttpResponseStatus.NOT_FOUND.code(), "Document not found.");
-            Assert.assertEquals(1, results.size());
+            assertEquals(1, results.size());
         } catch (Exception ex) {
-            Assert.fail(String.format("indexing failed with an unexpected Exception: %s", ex.getMessage()));
+            fail(String.format("indexing failed with an unexpected Exception: %s", ex.getMessage()));
         }
     }
 
@@ -527,24 +519,24 @@ public class IndexingSyncTests extends IndexingTestBase {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
         LoudHotel originalDoc = new LoudHotel()
-            .HOTELID("1")
-            .HOTELNAME("Secret Point Motel")
-            .DESCRIPTION("The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
-            .DESCRIPTIONFRENCH("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
-            .CATEGORY("Boutique")
-            .TAGS(Arrays.asList("pool", "air conditioning", "concierge"))
-            .PARKINGINCLUDED(false)
-            .SMOKINGALLOWED(false)
-            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
-            .RATING(4)
-            .LOCATION(GeoPoint.create(40.760586, -73.975403))
-            .ADDRESS(new HotelAddress()
+            .hotelId("1")
+            .hotelName("Secret Point Motel")
+            .description("The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
+            .descriptionFrench("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .category("Boutique")
+            .tags(Arrays.asList("pool", "air conditioning", "concierge"))
+            .parkingIncluded(false)
+            .smokingAllowed(false)
+            .lastRenovationDate(dateFormat.parse("1970-01-18T05:00:00Z"))
+            .rating(4)
+            .location(GeoPoint.create(40.760586, -73.975403))
+            .address(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
                 .stateProvince("NY")
                 .country("USA")
                 .postalCode("10022")
-            ).ROOMS(Arrays.asList(
+            ).rooms(Arrays.asList(
                 new HotelRoom()
                     .description("Budget Room, 1 Queen Bed (Cityside)")
                     .descriptionFr("Chambre Économique, 1 grand lit (côté ville)")
@@ -566,16 +558,16 @@ public class IndexingSyncTests extends IndexingTestBase {
             ));
 
         LoudHotel updatedDoc = new LoudHotel()
-            .HOTELID("1")
-            .DESCRIPTION(null)  // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
-            .CATEGORY(null)     // This property doesn't have JsonInclude.Include.ALWAYS, so this should have no effect.
-            .TAGS(Arrays.asList("pool", "air conditioning"))
-            .PARKINGINCLUDED(true)
-            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
-            .RATING(3)
-            .LOCATION(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
-            .ADDRESS(new HotelAddress())
-            .ROOMS(Collections.singletonList(
+            .hotelId("1")
+            .description(null)  // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
+            .category(null)     // This property doesn't have JsonInclude.Include.ALWAYS, so this should have no effect.
+            .tags(Arrays.asList("pool", "air conditioning"))
+            .parkingIncluded(true)
+            .lastRenovationDate(dateFormat.parse("1970-01-18T05:00:00Z"))
+            .rating(3)
+            .location(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
+            .address(new HotelAddress())
+            .rooms(Collections.singletonList(
                 new HotelRoom()
                     .description(null)
                     .type("Budget Room")
@@ -585,24 +577,24 @@ public class IndexingSyncTests extends IndexingTestBase {
             ));
 
         LoudHotel expectedDoc = new LoudHotel()
-            .HOTELID("1")
-            .HOTELNAME("Secret Point Motel")
-            .DESCRIPTION(null)
-            .DESCRIPTIONFRENCH("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
-            .CATEGORY("Boutique")
-            .TAGS(Arrays.asList("pool", "air conditioning"))
-            .PARKINGINCLUDED(true)
-            .SMOKINGALLOWED(false)
-            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
-            .RATING(3)
-            .LOCATION(null)
-            .ADDRESS(new HotelAddress()
+            .hotelId("1")
+            .hotelName("Secret Point Motel")
+            .description(null)
+            .descriptionFrench("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .category("Boutique")
+            .tags(Arrays.asList("pool", "air conditioning"))
+            .parkingIncluded(true)
+            .smokingAllowed(false)
+            .lastRenovationDate(dateFormat.parse("1970-01-18T05:00:00Z"))
+            .rating(3)
+            .location(null)
+            .address(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
                 .stateProvince("NY")
                 .country("USA")
                 .postalCode("10022")
-            ).ROOMS(Collections.singletonList(
+            ).rooms(Collections.singletonList(
                 // Regardless of NullValueHandling, this should look like the merged doc with unspecified fields as null
                 // because we don't support partial updates for complex collections.
                 new HotelRoom()
@@ -628,14 +620,14 @@ public class IndexingSyncTests extends IndexingTestBase {
 
         Document result = client.getDocument("1");
         LoudHotel actualDoc = convertToType(result, LoudHotel.class);
-        assertReflectionEquals(expectedDoc, actualDoc, IGNORE_DEFAULTS);
+        assertTrue(TestHelpers.areLoudHotelsEqual(actualDoc, expectedDoc));
 
         client.uploadDocuments(originalDocs);
         waitForIndexing();
 
         result = client.getDocument("1");
         actualDoc = convertToType(result, LoudHotel.class);
-        assertReflectionEquals(originalDoc, actualDoc, IGNORE_DEFAULTS);
+        assertTrue(TestHelpers.areLoudHotelsEqual(actualDoc, originalDoc));
     }
 
     @Test
@@ -755,13 +747,13 @@ public class IndexingSyncTests extends IndexingTestBase {
         waitForIndexing();
 
         Document actualDoc = client.getDocument("1");
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
 
         client.mergeOrUploadDocuments(originalDocs);
         waitForIndexing();
 
         actualDoc = client.getDocument("1");
-        Assert.assertEquals(originalDoc, actualDoc);
+        assertEquals(originalDoc, actualDoc);
     }
 
     @Test
@@ -799,48 +791,48 @@ public class IndexingSyncTests extends IndexingTestBase {
         Response<IndexDocumentsResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload, Context.NONE);
         waitForIndexing();
 
-        Assert.assertEquals(200, indexResponse.getStatusCode());
+        assertEquals(200, indexResponse.getStatusCode());
         IndexDocumentsResult result = indexResponse.getValue();
-        Assert.assertEquals(2, result.getResults().size());
+        assertEquals(2, result.getResults().size());
 
         Response<IndexDocumentsResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge, Context.NONE);
         waitForIndexing();
 
-        Assert.assertEquals(200, updateResponse.getStatusCode());
+        assertEquals(200, updateResponse.getStatusCode());
         result = updateResponse.getValue();
-        Assert.assertEquals(1, result.getResults().size());
+        assertEquals(1, result.getResults().size());
 
         Response<IndexDocumentsResult> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(
             hotelsToMergeOrUpload, Context.NONE);
         waitForIndexing();
 
-        Assert.assertEquals(200, mergeOrUploadResponse.getStatusCode());
+        assertEquals(200, mergeOrUploadResponse.getStatusCode());
         result = mergeOrUploadResponse.getValue();
-        Assert.assertEquals(2, result.getResults().size());
+        assertEquals(2, result.getResults().size());
 
         Response<IndexDocumentsResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete, Context.NONE);
         waitForIndexing();
 
-        Assert.assertEquals(200, deleteResponse.getStatusCode());
+        assertEquals(200, deleteResponse.getStatusCode());
         result = deleteResponse.getValue();
-        Assert.assertEquals(1, result.getResults().size());
+        assertEquals(1, result.getResults().size());
 
         Response<IndexDocumentsResult> batchResponse = client.indexWithResponse(batch, Context.NONE);
         waitForIndexing();
 
-        Assert.assertEquals(200, batchResponse.getStatusCode());
+        assertEquals(200, batchResponse.getStatusCode());
         result = batchResponse.getValue();
-        Assert.assertEquals(4, result.getResults().size());
+        assertEquals(4, result.getResults().size());
 
         Response<Document> documentResponse = client.getDocumentWithResponse("3",
             null, generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(200, documentResponse.getStatusCode());
+        assertEquals(200, documentResponse.getStatusCode());
         Document doc = documentResponse.getValue();
-        Assert.assertEquals(4, doc.get("Rating"));
+        assertEquals(4, doc.get("Rating"));
 
         Response<Long> countResponse = client.getDocumentCountWithResponse(Context.NONE);
-        Assert.assertEquals(200, countResponse.getStatusCode());
+        assertEquals(200, countResponse.getStatusCode());
         Long count = countResponse.getValue();
-        Assert.assertEquals(4L, count.longValue());
+        assertEquals(4L, count.longValue());
     }
 }

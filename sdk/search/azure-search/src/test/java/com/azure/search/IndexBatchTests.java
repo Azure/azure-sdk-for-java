@@ -5,7 +5,6 @@ package com.azure.search;
 import com.azure.search.models.IndexAction;
 import com.azure.search.models.IndexActionType;
 import com.azure.search.models.IndexBatch;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -13,6 +12,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IndexBatchTests {
 
@@ -329,14 +330,14 @@ public class IndexBatchTests {
     }
 
     private void validate(IndexBatch<Document> expected, IndexBatch<Document> actual) {
-        Assert.assertEquals(expected.getActions().size(), actual.getActions().size());
+        assertEquals(expected.getActions().size(), actual.getActions().size());
 
         for (int i = 0; i < actual.getActions().size(); i++) {
             IndexAction<Document> expectedIndexAction = expected.getActions().get(i);
             IndexAction<Document> actualIndexAction = actual.getActions().get(i);
 
-            Assert.assertEquals(expectedIndexAction.getActionType(), actualIndexAction.getActionType());
-            Assert.assertEquals(expectedIndexAction.getDocument(), actualIndexAction.getDocument());
+            assertEquals(expectedIndexAction.getActionType(), actualIndexAction.getActionType());
+            assertEquals(expectedIndexAction.getDocument(), actualIndexAction.getDocument());
         }
     }
 }

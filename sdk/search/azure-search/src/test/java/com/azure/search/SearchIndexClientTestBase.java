@@ -15,7 +15,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Assert;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,6 +26,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class SearchIndexClientTestBase extends SearchServiceTestBase {
 
@@ -129,7 +130,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
             try {
                 searchIndexService.initializeAndCreateIndex(jsonFile);
             } catch (IOException e) {
-                Assert.fail(e.getMessage());
+                fail(e.getMessage());
             }
         }
     }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
@@ -18,34 +19,33 @@ import com.azure.search.test.AccessConditionTests;
 import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     private SearchServiceClient client;
 
     // commonly used lambda definitions
-    private BiFunction<Indexer,
-        AccessOptions,
-        Indexer> createOrUpdateIndexerFunc =
-            (Indexer indexer, AccessOptions ac) ->
-                createOrUpdateIndexer(indexer, ac.getAccessCondition(), ac.getRequestOptions());
+    private BiFunction<Indexer, AccessOptions, Indexer> createOrUpdateIndexerFunc =
+        (Indexer indexer, AccessOptions ac) ->
+            createOrUpdateIndexer(indexer, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Indexer> newIndexerFunc =
-        () -> createBaseTestIndexerObject("name", TARGET_INDEX_NAME)
-            .setDataSourceName(SQL_DATASOURCE_NAME);
+        () -> createBaseTestIndexerObject("name", TARGET_INDEX_NAME).setDataSourceName(SQL_DATASOURCE_NAME);
 
     private Function<Indexer, Indexer> mutateIndexerFunc =
         (Indexer indexer) -> indexer.setDescription("ABrandNewDescription");
@@ -105,10 +105,9 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Index index = createTestIndexForLiveDatasource(TARGET_INDEX_NAME);
         client.createIndex(index);
 
-        Indexer initial =
-            createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
-                .setDataSourceName(dataSourceName)
-                .setIsDisabled(true);
+        Indexer initial = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
+            .setDataSourceName(dataSourceName)
+            .setIsDisabled(true);
 
         // create this indexer in the service
         client.createIndexer(initial);
@@ -118,7 +117,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         // verify the returned updated indexer is as expected
         setSameStartTime(updatedIndexer, indexerResponse);
-        assertIndexersEqual(updatedIndexer, indexerResponse);
+        assertTrue(TestHelpers.areIndexersEqual(indexerResponse, updatedIndexer));
     }
 
     /**
@@ -136,7 +135,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         // verify the returned updated indexer is as expected
         setSameStartTime(indexer, indexerResponse);
-        assertIndexersEqual(indexer, indexerResponse);
+        assertTrue(TestHelpers.areIndexersEqual(indexerResponse, indexer));
     }
 
     @Override
@@ -145,8 +144,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         client = getSearchServiceClientBuilder().buildClient();
     }
 
-    private Indexer createOrUpdateIndexer(Indexer indexer,
-        AccessCondition accessCondition,
+    private Indexer createOrUpdateIndexer(Indexer indexer, AccessCondition accessCondition,
         RequestOptions requestOptions) {
         return client.createOrUpdateIndexerWithResponse(
             indexer, accessCondition, requestOptions, Context.NONE)
@@ -167,13 +165,11 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         Indexer actualIndexer = client.createIndexer(expectedIndexer);
 
-        IndexingParameters ip = new IndexingParameters();
-        Map<String, Object> config = new HashMap<>();
-        ip.setConfiguration(config);
-        expectedIndexer.setParameters(ip); // Get returns empty dictionary.
+        expectedIndexer.setParameters(new IndexingParameters()
+            .setConfiguration(Collections.emptyMap()));
         setSameStartTime(expectedIndexer, actualIndexer);
 
-        assertIndexersEqual(expectedIndexer, actualIndexer);
+        assertTrue(TestHelpers.areIndexersEqual(actualIndexer, expectedIndexer));
     }
 
     @Test
@@ -196,26 +192,27 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         client.createIndexer(indexer1);
         client.createIndexer(indexer2);
 
-        List<Indexer> indexers = client.listIndexers().stream().collect(Collectors.toList());
-        Assert.assertEquals(2, indexers.size());
-        assertIndexersEqual(indexer1, indexers.get(0));
-        assertIndexersEqual(indexer2, indexers.get(1));
+        Iterator<Indexer> indexers = client.listIndexers().iterator();
+        assertTrue(TestHelpers.areIndexersEqual(indexers.next(), indexer1));
+        assertTrue(TestHelpers.areIndexersEqual(indexers.next(), indexer2));
+        assertFalse(indexers.hasNext());
     }
 
     @Test
     public void canCreateAndListIndexerNames() {
         List<Indexer> indexers = prepareIndexersForCreateAndListIndexers();
 
-        List<Indexer> indexersRes = client.listIndexers("name", generateRequestOptions(), Context.NONE)
-            .stream().collect(Collectors.toList());
+        Iterator<Indexer> indexersRes = client.listIndexers("name", generateRequestOptions(), Context.NONE).iterator();
 
-        Assert.assertEquals(2, indexersRes.size());
-        Assert.assertEquals(indexers.get(0).getName(), indexersRes.get(0).getName());
-        Assert.assertEquals(indexers.get(1).getName(), indexersRes.get(1).getName());
+        Indexer actualIndexer = indexersRes.next();
+        assertTrue(TestHelpers.areIndexersEqual(actualIndexer, indexers.get(0)));
+        assertAllIndexerFieldsNullExceptName(actualIndexer);
 
-        // Assert all other fields than "name" are null:
-        assertAllIndexerFieldsNullExceptName(indexersRes.get(0));
-        assertAllIndexerFieldsNullExceptName(indexersRes.get(1));
+        actualIndexer = indexersRes.next();
+        assertTrue(TestHelpers.areIndexersEqual(actualIndexer, indexers.get(1)));
+        assertAllIndexerFieldsNullExceptName(actualIndexer);
+
+        assertFalse(indexersRes.hasNext());
     }
 
     @Test
@@ -235,8 +232,8 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         client.resetIndexer(indexer.getName());
         IndexerExecutionInfo indexerStatus = client.getIndexerStatus(indexer.getName());
-        Assert.assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
-        Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
+        assertEquals(IndexerStatus.RUNNING, indexerStatus.getStatus());
+        assertEquals(IndexerExecutionStatus.RESET, indexerStatus.getLastResult().getStatus());
     }
 
     @Test
@@ -246,8 +243,8 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         client.resetIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
         IndexerExecutionInfo indexerStatusResponse = client.getIndexerStatusWithResponse(indexer.getName(),
             generateRequestOptions(), Context.NONE).getValue();
-        Assert.assertEquals(IndexerStatus.RUNNING, indexerStatusResponse.getStatus());
-        Assert.assertEquals(IndexerExecutionStatus.RESET, indexerStatusResponse.getLastResult().getStatus());
+        assertEquals(IndexerStatus.RUNNING, indexerStatusResponse.getStatus());
+        assertEquals(IndexerExecutionStatus.RESET, indexerStatusResponse.getLastResult().getStatus());
     }
 
     @Test
@@ -256,7 +253,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         client.runIndexer(indexer.getName());
 
         IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
-        Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
+        assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
 
     @Test
@@ -265,8 +262,8 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Response<Void> response = client.runIndexerWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE);
         IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
 
-        Assert.assertEquals(HttpURLConnection.HTTP_ACCEPTED, response.getStatusCode());
-        Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
+        assertEquals(HttpURLConnection.HTTP_ACCEPTED, response.getStatusCode());
+        assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
     }
 
     @Test
@@ -286,11 +283,11 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         client.createIndexer(indexer);
 
         IndexerExecutionInfo indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
-        Assert.assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
+        assertEquals(IndexerStatus.RUNNING, indexerExecutionInfo.getStatus());
 
         Response<Void> indexerRunResponse = client.runIndexerWithResponse(indexer.getName(), new RequestOptions(),
             Context.NONE);
-        Assert.assertEquals(HttpResponseStatus.ACCEPTED.code(), indexerRunResponse.getStatusCode());
+        assertEquals(HttpResponseStatus.ACCEPTED.code(), indexerRunResponse.getStatusCode());
 
         indexerExecutionInfo = client.getIndexerStatus(indexer.getName());
 
@@ -437,7 +434,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         client.createIndexer(indexer);
 
         client.deleteIndexer(indexer.getName());
-        Assert.assertFalse(client.indexerExists(indexer.getName()));
+        assertThrows(HttpResponseException.class, () -> client.getIndexer(indexer.getName()));
     }
 
     @Test
@@ -448,8 +445,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         client.createIndexerWithResponse(indexer, new RequestOptions(), Context.NONE);
 
         client.deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), new RequestOptions(), Context.NONE);
-        Assert.assertFalse(client.indexerExistsWithResponse(indexer.getName(), new RequestOptions(), Context.NONE)
-            .getValue());
+        assertThrows(HttpResponseException.class, () -> client.getIndexer(indexer.getName()));
     }
 
     @Test
@@ -464,7 +460,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         // Try delete before the indexer even exists.
         Response<Void> result = client.deleteIndexerWithResponse(
             indexer.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
+        assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
 
         // Actually create the indexer
         client.createIndexer(indexer);
@@ -472,11 +468,11 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         // Now delete twice.
         result = client.deleteIndexerWithResponse(
             indexer.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpURLConnection.HTTP_NO_CONTENT, result.getStatusCode());
+        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, result.getStatusCode());
 
         result = client.deleteIndexerWithResponse(
             indexer.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
+        assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
     }
 
     @Test
@@ -493,10 +489,10 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
         client.createIndexer(indexer);
         Indexer indexerResult = client.getIndexer(indexerName);
-        assertIndexersEqual(indexer, indexerResult);
+        assertTrue(TestHelpers.areIndexersEqual(indexerResult, indexer));
 
         indexerResult = client.getIndexerWithResponse(indexerName, generateRequestOptions(), Context.NONE).getValue();
-        assertIndexersEqual(indexer, indexerResult);
+        assertTrue(TestHelpers.areIndexersEqual(indexerResult, indexer));
     }
 
     @Test
@@ -514,11 +510,10 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         // Prepare data source and index
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
-        Indexer indexerResult = act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateIndexerFunc,
+        Indexer indexerResult = act.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateIndexerFunc,
             newIndexerFunc);
 
-        Assert.assertTrue(StringUtils.isNoneEmpty(indexerResult.getETag()));
+        assertTrue(StringUtils.isNoneEmpty(indexerResult.getETag()));
     }
 
     @Test
@@ -529,10 +524,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         String indexerName = "name";
-        act.deleteIfExistsWorksOnlyWhenResourceExists(
-            deleteIndexerFunc,
-            createOrUpdateIndexerFunc,
-            newIndexerFunc,
+        act.deleteIfExistsWorksOnlyWhenResourceExists(deleteIndexerFunc, createOrUpdateIndexerFunc, newIndexerFunc,
             indexerName);
     }
 
@@ -544,19 +536,14 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         String indexerName = "name";
-        act.deleteIfNotChangedWorksOnlyOnCurrentResource(
-            deleteIndexerFunc,
-            newIndexerFunc,
-            createOrUpdateIndexerFunc,
+        act.deleteIfNotChangedWorksOnlyOnCurrentResource(deleteIndexerFunc, newIndexerFunc, createOrUpdateIndexerFunc,
             indexerName);
     }
 
     @Test
     public void updateIndexerIfExistsFailsOnNoResource() {
         AccessConditionTests act = new AccessConditionTests();
-        act.updateIfExistsFailsOnNoResource(
-            newIndexerFunc,
-            createOrUpdateIndexerFunc);
+        act.updateIfExistsFailsOnNoResource(newIndexerFunc, createOrUpdateIndexerFunc);
     }
 
     @Test
@@ -565,10 +552,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         AccessConditionTests act = new AccessConditionTests();
-        act.updateIfExistsSucceedsOnExistingResource(
-            newIndexerFunc,
-            createOrUpdateIndexerFunc,
-            mutateIndexerFunc);
+        act.updateIfExistsSucceedsOnExistingResource(newIndexerFunc, createOrUpdateIndexerFunc, mutateIndexerFunc);
     }
 
     @Test
@@ -577,10 +561,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         AccessConditionTests act = new AccessConditionTests();
-        act.updateIfNotChangedFailsWhenResourceChanged(
-            newIndexerFunc,
-            createOrUpdateIndexerFunc,
-            mutateIndexerFunc);
+        act.updateIfNotChangedFailsWhenResourceChanged(newIndexerFunc, createOrUpdateIndexerFunc, mutateIndexerFunc);
     }
 
     @Test
@@ -589,9 +570,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
 
         AccessConditionTests act = new AccessConditionTests();
-        act.updateIfNotChangedSucceedsWhenResourceUnchanged(
-            newIndexerFunc,
-            createOrUpdateIndexerFunc,
+        act.updateIfNotChangedSucceedsWhenResourceUnchanged(newIndexerFunc, createOrUpdateIndexerFunc,
             mutateIndexerFunc);
     }
 
@@ -628,25 +607,5 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             .setDataSourceName(dataSource.getName());
 
         createAndValidateIndexer(indexer);
-    }
-
-    @Test
-    public void existsReturnsTrueForExistingIndexer() {
-        Indexer indexer = createTestDataSourceAndIndexer();
-
-        Assert.assertTrue(client.indexerExists(indexer.getName()));
-    }
-
-    @Test
-    public void existsReturnsTrueForExistingIndexerWithResponse() {
-        Indexer indexer = createTestDataSourceAndIndexer();
-
-        Assert.assertTrue(
-            client.indexerExistsWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE).getValue());
-    }
-
-    @Test
-    public void existsReturnsFalseForNonExistingIndexer() {
-        Assert.assertFalse(client.indexerExists("invalidindex"));
     }
 }
