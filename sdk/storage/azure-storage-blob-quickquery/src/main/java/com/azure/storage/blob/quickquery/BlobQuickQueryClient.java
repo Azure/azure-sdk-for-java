@@ -12,12 +12,13 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.quickquery.models.BlobQuickQueryDelimitedSerialization;
 import com.azure.storage.blob.quickquery.models.BlobQuickQueryError;
-import com.azure.storage.blob.quickquery.models.BlobQuickQueryProgress;
 import com.azure.storage.blob.quickquery.models.BlobQuickQueryResponse;
-import com.azure.storage.blob.quickquery.models.BlobQuickQueryResultData;
 import com.azure.storage.blob.quickquery.models.BlobQuickQuerySerialization;
+import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import org.apache.avro.file.DataFileReader;
@@ -36,6 +37,7 @@ import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.Random;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
@@ -49,14 +51,15 @@ public class BlobQuickQueryClient {
     }
 
     public void query(OutputStream stream, String expression) {
-        queryWithResponse(stream, expression, null, null, null, Context.NONE);
+        queryWithResponse(stream, expression, null, null, null, null, Context.NONE);
     }
 
     public BlobQuickQueryResponse queryWithResponse(OutputStream stream, String expression,
-        BlobQuickQuerySerialization input, BlobQuickQuerySerialization output, Duration timeout, Context context) {
+        BlobQuickQuerySerialization input, BlobQuickQuerySerialization output, BlobRequestConditions requestConditions,
+        Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobQuickQueryResponse> download = client
-            .queryWithResponse(expression, input, output, context)
+            .queryWithResponse(expression, input, output, requestConditions, context)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
                     outputStream.write(FluxUtil.byteBufferToArray(buffer));
@@ -76,6 +79,10 @@ public class BlobQuickQueryClient {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
             .wiretap(true)
             .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)));
+
+            byte[] key = new byte[32]; // 256 bit key
+            new Random().nextBytes(key);
+
 
         BlobServiceClient sc = new BlobServiceClientBuilder()
             .endpoint("https://" + accountName + ".blob.preprod.core.windows.net")
@@ -100,6 +107,8 @@ public class BlobQuickQueryClient {
 
         bc.upload(inputStream, data.length, true);
 
+        BlobClientBase blob = bc.createSnapshot();
+
         String expression = "SELECT _2 from BlobStorage WHERE _1 > 250;";
 
         BlobQuickQueryDelimitedSerialization input = new BlobQuickQueryDelimitedSerialization()
@@ -116,10 +125,10 @@ public class BlobQuickQueryClient {
             .setFieldQuote('\'')
             .setHeadersPresent(true);
 
-        BlobQuickQueryClient qqc = new BlobQuickQueryClientBuilder(bc).buildClient();
+        BlobQuickQueryClient qqc = new BlobQuickQueryClientBuilder(blob).buildClient();
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        qqc.queryWithResponse(os, expression, input, output, null, null);
+        qqc.queryWithResponse(os, expression, input, output, null, null, null);
 
         ByteArrayOutputStream realOutputStream = new ByteArrayOutputStream();
 
@@ -132,14 +141,12 @@ public class BlobQuickQueryClient {
             GenericRecord record = reader.next();
 
             if (record.getSchema().getName().equals("resultData")) {
-                BlobQuickQueryResultData resultData = new BlobQuickQueryResultData(new String(((ByteBuffer) record.get("data")).array()));
                 realOutputStream.write(((ByteBuffer) record.get("data")).array());
             } else if (record.getSchema().getName().equals("end")) {
                 System.out.println("end");
                 break;
             } else if (record.getSchema().getName().equals("progress")) {
-                BlobQuickQueryProgress progress = new BlobQuickQueryProgress((Long) record.get("bytesScanned"), (Long) record.get("totalBytes"));
-                System.out.println("progress: " + progress.getBytesScanned() + "/" + progress.getTotalBytes());
+                System.out.println("progress: " + record.get("bytesScanned") + "/" + record.get("totalBytes"));
             }  else if (record.getSchema().getName().equals("error")) {
                 BlobQuickQueryError error =
                     new BlobQuickQueryError((Boolean) record.get("fatal"), record.get("name").toString(), record.get("description").toString(), (Long) record.get("position"));

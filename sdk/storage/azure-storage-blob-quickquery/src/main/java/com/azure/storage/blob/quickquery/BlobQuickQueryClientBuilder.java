@@ -6,6 +6,7 @@ package com.azure.storage.blob.quickquery;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlobClientBase;
 
@@ -20,6 +21,7 @@ public class BlobQuickQueryClientBuilder {
     private final String blobUrl;
     private final HttpPipeline pipeline;
     private final BlobServiceVersion version;
+    private final CpkInfo customerProvidedKey;
 
     /**
      * Constructs the {@link BlobQuickQueryClientBuilder} using the {@link BlobClientBase#getBlobUrl()} () blob URL} 
@@ -31,6 +33,7 @@ public class BlobQuickQueryClientBuilder {
         this.blobUrl = client.getBlobUrl();
         this.pipeline = client.getHttpPipeline();
         this.version = client.getServiceVersion();
+        this.customerProvidedKey = client.getCustomerProvidedKey();
     }
 
     /**
@@ -44,6 +47,7 @@ public class BlobQuickQueryClientBuilder {
         this.blobUrl = client.getBlobUrl();
         this.pipeline = client.getHttpPipeline();
         this.version = client.getServiceVersion();
+        this.customerProvidedKey = client.getCustomerProvidedKey();
     }
 
     /**
@@ -69,6 +73,6 @@ public class BlobQuickQueryClientBuilder {
      * @return a {@link BlobQuickQueryAsyncClient} created from the configurations in this builder.
      */
     public BlobQuickQueryAsyncClient buildAsyncClient() {
-        return new BlobQuickQueryAsyncClient(blobUrl, pipeline, version);
+        return new BlobQuickQueryAsyncClient(blobUrl, pipeline, version, customerProvidedKey);
     }
 }

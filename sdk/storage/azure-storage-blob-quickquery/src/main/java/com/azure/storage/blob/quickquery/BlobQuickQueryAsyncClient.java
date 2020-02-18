@@ -15,6 +15,8 @@ import com.azure.storage.blob.implementation.models.QueryRequest;
 import com.azure.storage.blob.implementation.models.QuickQueryFormat;
 import com.azure.storage.blob.implementation.models.QuickQuerySerialization;
 import com.azure.storage.blob.implementation.models.QuickQueryType;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.quickquery.models.BlobQuickQueryAsyncResponse;
 import com.azure.storage.blob.quickquery.models.BlobQuickQueryDelimitedSerialization;
 import com.azure.storage.blob.quickquery.models.BlobQuickQueryJsonSerialization;
@@ -32,32 +34,37 @@ public class BlobQuickQueryAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlobQuickQueryAsyncClient.class);
 
     private final AzureBlobStorageImpl client;
+    private final CpkInfo customerProvidedKey;
 
-    BlobQuickQueryAsyncClient(String url, HttpPipeline pipeline, BlobServiceVersion serviceVersion) {
+    BlobQuickQueryAsyncClient(String url, HttpPipeline pipeline, BlobServiceVersion serviceVersion,
+        CpkInfo customerProvidedKey) {
         this.client = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
             .version("2019-12-12")
             .build();
+        this.customerProvidedKey = customerProvidedKey;
     }
 
     public Flux<ByteBuffer> query(String expression) {
-        return queryWithResponse(expression, null, null)
+        return queryWithResponse(expression, null, null, null)
             .flatMapMany(BlobQuickQueryAsyncResponse::getValue);
     }
 
     public Mono<BlobQuickQueryAsyncResponse> queryWithResponse(String expression, BlobQuickQuerySerialization input,
-        BlobQuickQuerySerialization output) {
+        BlobQuickQuerySerialization output, BlobRequestConditions requestConditions) {
         try {
             return withContext(context ->
-                queryWithResponse(expression, input, output, context));
+                queryWithResponse(expression, input, output, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<BlobQuickQueryAsyncResponse> queryWithResponse(String expression, BlobQuickQuerySerialization input,
-        BlobQuickQuerySerialization output, Context context) {
+        BlobQuickQuerySerialization output, BlobRequestConditions requestConditions, Context context) {
+
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         QuickQuerySerialization in = transformSerialization(input, logger);
         QuickQuerySerialization out = transformSerialization(output, logger);
@@ -67,9 +74,10 @@ public class BlobQuickQueryAsyncClient {
             .setInputSerialization(in)
             .setOutputSerialization(out);
 
-
-        return client.blobs().quickQueryWithRestResponseAsync(null, null, qr, null, null, null, null, null, null, null,
-            null, null, null, null, null, context)
+        return client.blobs().quickQueryWithRestResponseAsync(null, null, qr, null, null,
+            requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
             .map(response -> new BlobQuickQueryAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue(), response.getDeserializedHeaders()));
     }
@@ -101,7 +109,8 @@ public class BlobQuickQueryAsyncClient {
         return new QuickQuerySerialization().setFormat(generatedFormat);
     }
 
-    private static DelimitedTextConfiguration transformDelimited(BlobQuickQueryDelimitedSerialization delimitedSerialization) {
+    private static DelimitedTextConfiguration transformDelimited(
+        BlobQuickQueryDelimitedSerialization delimitedSerialization) {
         if (delimitedSerialization == null) {
             return null;
         }
