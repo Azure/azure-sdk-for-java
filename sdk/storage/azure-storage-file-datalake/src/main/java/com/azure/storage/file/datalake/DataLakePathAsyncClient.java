@@ -48,6 +48,7 @@ import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
 
 /**
  * This class provides a client that contains all operations that apply to any path object.
@@ -264,7 +265,7 @@ public class DataLakePathAsyncClient {
         Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
         try {
             return withContext(context -> createWithResponse(permissions, umask, pathResourceType, headers, metadata,
-                requestConditions, context));
+                requestConditions, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -535,7 +536,7 @@ public class DataLakePathAsyncClient {
         String group, String owner, DataLakeRequestConditions requestConditions) {
         try {
             return withContext(context -> setAccessControlWithResponse(accessControlList, null, group, owner,
-                requestConditions, context));
+                requestConditions, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -584,7 +585,7 @@ public class DataLakePathAsyncClient {
         DataLakeRequestConditions requestConditions) {
         try {
             return withContext(context -> setAccessControlWithResponse(null, permissions, group, owner,
-                requestConditions, context));
+                requestConditions, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -654,7 +655,7 @@ public class DataLakePathAsyncClient {
         DataLakeRequestConditions requestConditions) {
         try {
             return withContext(context -> getAccessControlWithResponse(userPrincipalNameReturned, requestConditions,
-                context));
+                context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

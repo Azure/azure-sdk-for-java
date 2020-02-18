@@ -47,6 +47,7 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a share in Azure
@@ -245,7 +246,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareInfo>> createWithResponse(Map<String, String> metadata, Integer quotaInGB) {
         try {
-            return withContext(context -> createWithResponse(metadata, quotaInGB, context));
+            return withContext(context -> createWithResponse(metadata, quotaInGB, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -301,7 +302,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareSnapshotInfo>> createSnapshotWithResponse(Map<String, String> metadata) {
         try {
-            return withContext(context -> createSnapshotWithResponse(metadata, context));
+            return withContext(context -> createSnapshotWithResponse(metadata, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -352,7 +353,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<Void>> deleteWithResponse() {
         try {
-            return withContext(this::deleteWithResponse);
+            return withContext(context -> deleteWithResponse(context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -407,7 +408,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareProperties>> getPropertiesWithResponse() {
         try {
-            return withContext(this::getPropertiesWithResponse);
+            return withContext(context -> getPropertiesWithResponse(context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -462,7 +463,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareInfo>> setQuotaWithResponse(int quotaInGB) {
         try {
-            return withContext(context -> setQuotaWithResponse(quotaInGB, context));
+            return withContext(context -> setQuotaWithResponse(quotaInGB, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -528,7 +529,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareInfo>> setMetadataWithResponse(Map<String, String> metadata) {
         try {
-            return withContext(context -> setMetadataWithResponse(metadata, context));
+            return withContext(context -> setMetadataWithResponse(metadata, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -617,7 +618,8 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareInfo>> setAccessPolicyWithResponse(List<ShareSignedIdentifier> permissions) {
         try {
-            return withContext(context -> setAccessPolicyWithResponse(permissions, context));
+            return withContext(context -> setAccessPolicyWithResponse(permissions, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -687,7 +689,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareStatistics>> getStatisticsWithResponse() {
         try {
-            return withContext(this::getStatisticsWithResponse);
+            return withContext(context -> getStatisticsWithResponse(context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -750,7 +752,8 @@ public class ShareAsyncClient {
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
         try {
             return withContext(context ->
-                createDirectoryWithResponse(directoryName, smbProperties, filePermission, metadata, context));
+                createDirectoryWithResponse(directoryName, smbProperties, filePermission, metadata, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -870,7 +873,7 @@ public class ShareAsyncClient {
         try {
             return withContext(context ->
                 createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
-                    requestConditions, context));
+                    requestConditions, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -927,7 +930,8 @@ public class ShareAsyncClient {
      */
     public Mono<Response<Void>> deleteDirectoryWithResponse(String directoryName) {
         try {
-            return withContext(context -> deleteDirectoryWithResponse(directoryName, context));
+            return withContext(context -> deleteDirectoryWithResponse(directoryName, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1000,7 +1004,8 @@ public class ShareAsyncClient {
      */
     public Mono<Response<Void>> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> deleteFileWithResponse(fileName, requestConditions, context));
+            return withContext(context -> deleteFileWithResponse(fileName, requestConditions, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1087,7 +1092,8 @@ public class ShareAsyncClient {
      */
     public Mono<Response<String>> getPermissionWithResponse(String filePermissionKey) {
         try {
-            return withContext(context -> getPermissionWithResponse(filePermissionKey, context));
+            return withContext(context -> getPermissionWithResponse(filePermissionKey, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
