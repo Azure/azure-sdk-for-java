@@ -24,8 +24,8 @@ import java.time.Instant;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 
@@ -49,10 +49,9 @@ public final class QueueReceiverAsyncClient implements Closeable {
     private final ReceiveMode defaultReceiveMode = ReceiveMode.PEEK_LOCK;
 
     /**
-     * Keeps track of the open consumers keyed by linkName. The link name is generated as: {@code
-     * "partitionId_GUID"}. For receiving from all partitions, links are prefixed with {@code "all-GUID-partitionId"}.
+     * Consumer to maintain single connection per queue.
      */
-    private final ConcurrentHashMap<String, ServiceBusAsyncConsumer> openConsumers = new ConcurrentHashMap<>();
+    private final AtomicReference<ServiceBusAsyncConsumer> openConsumer =  new AtomicReference<>();
 
     QueueReceiverAsyncClient(String fullyQualifiedNamespace, String queueName,
                              ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
@@ -131,19 +130,21 @@ public final class QueueReceiverAsyncClient implements Closeable {
         if (isDisposed.getAndSet(true)) {
             return;
         }
-        openConsumers.forEach((key, value) -> value.close());
-        openConsumers.clear();
+        if (openConsumer.get() != null) {
+            openConsumer.get().close();
+        }
+
 
         connectionProcessor.dispose();
 
     }
 
     private Flux<Message> createConsumer(String linkName, ReceiveMode receiveMode) {
-        return openConsumers
-            .computeIfAbsent(linkName, name -> {
-                logger.info("{}: Creating receive consumer.", linkName);
-                return createServiceBusConsumer(name, receiveMode);
-            })
+        if (openConsumer.get() == null) {
+            logger.info("{}: Creating receive consumer.", linkName);
+            openConsumer.set(createServiceBusConsumer(linkName, receiveMode));
+        }
+        return openConsumer.get()
             .receive()
             .doOnCancel(() -> removeLink(linkName, SignalType.CANCEL))
             .doOnComplete(() -> removeLink(linkName, SignalType.ON_COMPLETE))
@@ -152,10 +153,9 @@ public final class QueueReceiverAsyncClient implements Closeable {
 
     private void removeLink(String linkName, SignalType signalType) {
         logger.info("{}: Receiving completed. Signal[{}]", linkName, signalType);
-        final ServiceBusAsyncConsumer consumer = openConsumers.remove(linkName);
 
-        if (consumer != null) {
-            consumer.close();
+        if (openConsumer.get() != null) {
+            openConsumer.get().close();
         }
     }
     private ServiceBusAsyncConsumer createServiceBusConsumer(String linkName, ReceiveMode receiveMode) {

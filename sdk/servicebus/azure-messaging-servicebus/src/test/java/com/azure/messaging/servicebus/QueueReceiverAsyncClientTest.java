@@ -122,32 +122,21 @@ public class QueueReceiverAsyncClientTest {
 
         // Arrange
         final int numberOfEvents = 1;
-        String connectionString = baseConnectionString + ";EntityPath=queue-test1";
+        String connectionString = baseConnectionString + ";EntityPath=hemant-test1";
 
         // Instantiate a client that will be used to call the service.
 
         consumer = new QueueClientBuilder()
             .connectionString(connectionString)
             .createAsyncReceiverClient(numberOfEvents);
-        Thread.sleep(3000);
 
-        consumer.receive()
-            .take(2)
-            .doOnError(error -> {
-                System.out.println("Got error response " + error.toString());
-                error.printStackTrace();
-            })
-            .subscribe(message -> {
-                System.out.println("!!!!!! Got message from queue: " + message.getBody().toString());
-                try {
-                    String converted = new String(message.getBody(), "UTF-8");
-                    System.out.println("Got message from queue: " + converted);
-                } catch (Exception ee) {
-                    ee.printStackTrace();
-
-                }
-
-            });
+        // Act & Assert
+        StepVerifier.create(
+            consumer.receive().take(numberOfEvents)
+        )
+            .then(() -> sendMessages(numberOfEvents))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
         Thread.sleep(5000);
     }
 
@@ -158,7 +147,6 @@ public class QueueReceiverAsyncClientTest {
             sink.next(getMessage(PAYLOAD_BYTES, messageTrackingUUID));
         }
     }
-
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
