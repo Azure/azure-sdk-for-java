@@ -11,7 +11,7 @@ variables:
 
 jobs:
   - job: SmokeTest
-    timeoutInMinutes: 5
+    timeoutInMinutes: 15
 
     strategy:
       matrix:
