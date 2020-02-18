@@ -18,6 +18,6 @@ module com.azure.core.amqp {
         com.azure.messaging.servicebus;
 
     exports com.azure.core.amqp.implementation.handler to
-        com.azure.messaging.eventhubs
+        com.azure.messaging.eventhubs,
         com.azure.messaging.servicebus;
 }
