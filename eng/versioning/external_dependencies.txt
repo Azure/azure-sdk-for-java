@@ -145,6 +145,7 @@ org.nanohttpd:nanohttpd;2.3.1
 org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
 
+
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than
 # what was defined in the parent pom.

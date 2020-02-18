@@ -6,10 +6,10 @@ package com.azure.storage.blob.perf;
 import com.azure.perf.test.core.RandomFlux;
 import com.azure.perf.test.core.RandomStream;
 import com.azure.perf.test.core.SizeOptions;
-import com.azure.storage.blob.perf.core.RandomBlobTest;
+import com.azure.storage.blob.perf.core.BlobTestBase;
 import reactor.core.publisher.Mono;
 
-public class UploadBlockBlobTest extends RandomBlobTest<SizeOptions> {
+public class UploadBlockBlobTest extends BlobTestBase<SizeOptions> {
     public UploadBlockBlobTest(SizeOptions options) {
         super(options);
     }

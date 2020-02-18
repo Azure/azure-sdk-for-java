@@ -12,10 +12,10 @@ import java.nio.file.Path;
 
 import com.azure.perf.test.core.RandomStream;
 import com.azure.perf.test.core.SizeOptions;
-import com.azure.storage.blob.perf.core.RandomBlobTest;
+import com.azure.storage.blob.perf.core.BlobTestBase;
 import reactor.core.publisher.Mono;
 
-public class UploadFromFileTest extends RandomBlobTest<SizeOptions> {
+public class UploadFromFileTest extends BlobTestBase<SizeOptions> {
 
     private static Path tempFile;
 

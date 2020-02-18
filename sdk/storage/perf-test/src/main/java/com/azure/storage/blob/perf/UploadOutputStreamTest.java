@@ -8,12 +8,12 @@ import java.io.InputStream;
 
 import com.azure.perf.test.core.RandomStream;
 import com.azure.perf.test.core.SizeOptions;
-import com.azure.storage.blob.perf.core.RandomBlobTest;
+import com.azure.storage.blob.perf.core.BlobTestBase;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 
 import reactor.core.publisher.Mono;
 
-public class UploadOutputStreamTest extends RandomBlobTest<SizeOptions> {
+public class UploadOutputStreamTest extends BlobTestBase<SizeOptions> {
 
     public UploadOutputStreamTest(SizeOptions options) {
         super(options);

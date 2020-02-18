@@ -25,11 +25,6 @@ class ExceptionTest extends PerfStressTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        try {
-            throw new IllegalArgumentException();
-        } catch (Exception ex) {
-        }
-
-        return Mono.empty();
+        return Mono.error(new IllegalArgumentException());
     }
 }

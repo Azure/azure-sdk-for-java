@@ -14,13 +14,13 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 
-public abstract class RandomBlobTest<TOptions extends PerfStressOptions> extends ContainerTest<TOptions> {
+public abstract class BlobTestBase<TOptions extends PerfStressOptions> extends ContainerTest<TOptions> {
     protected final BlobClient blobClient;
     protected final BlockBlobClient blockBlobClient;
     protected final BlobAsyncClient blobAsyncClient;
     protected final BlockBlobAsyncClient blockBlobAsyncClient;
 
-    public RandomBlobTest(TOptions options) {
+    public BlobTestBase(TOptions options) {
         super(options);
 
         String blobName = "randomblobtest-" + UUID.randomUUID().toString();

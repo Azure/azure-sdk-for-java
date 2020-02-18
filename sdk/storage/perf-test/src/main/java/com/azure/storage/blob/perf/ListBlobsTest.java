@@ -10,8 +10,8 @@ import com.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class GetBlobsTest extends ContainerTest<CountOptions> {
-    public GetBlobsTest(CountOptions options) {
+public class ListBlobsTest extends ContainerTest<CountOptions> {
+    public ListBlobsTest(CountOptions options) {
         super(options);
     }
 
