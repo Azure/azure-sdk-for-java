@@ -124,11 +124,12 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals(2, lastRenovationDateFacets.get(1).getCount().intValue());
     }
 
-    List<RangeFacetResult<String>> getRangeFacetsForField(
+    @SuppressWarnings("unchecked")
+    <T> List<RangeFacetResult<T>> getRangeFacetsForField(
         Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
-        return facetCollection.stream().map(facetResult -> new RangeFacetResult<String>(facetResult.getCount(),
-            (String) facetResult.getDocument().get(FACET_FROM),  (String) facetResult.getDocument().get(FACET_TO)))
+        return facetCollection.stream().map(facetResult -> new RangeFacetResult<T>(facetResult.getCount(),
+            (T) facetResult.getDocument().get(FACET_FROM),  (T) facetResult.getDocument().get(FACET_TO)))
             .collect(Collectors.toList());
     }
 
