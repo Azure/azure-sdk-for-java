@@ -8,6 +8,7 @@ import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.MetaDataDiagnosticContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
@@ -90,7 +91,7 @@ public class GlobalAddressResolverTest {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
         collectionCache = Mockito.mock(RxCollectionCache.class);
-        Mockito.when(collectionCache.resolveCollectionAsync(Matchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(new Utils.ValueHolder<>(collectionDefinition)));
+        Mockito.when(collectionCache.resolveCollectionAsync(Matchers.any(MetaDataDiagnosticContext.class), Matchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(new Utils.ValueHolder<>(collectionDefinition)));
         routingMapProvider = Mockito.mock(RxPartitionKeyRangeCache.class);
         userAgentContainer = Mockito.mock(UserAgentContainer.class);
         serviceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
@@ -148,7 +149,7 @@ public class GlobalAddressResolverTest {
         partitionKeyRanges.add(range);
         Mockito.when(collectionRoutingMap.getOrderedPartitionKeyRanges()).thenReturn(partitionKeyRanges);
         Mono<Utils.ValueHolder<CollectionRoutingMap>> collectionRoutingMapSingle = Mono.just(new Utils.ValueHolder<>(collectionRoutingMap));
-        Mockito.when(routingMapProvider.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(collectionRoutingMapSingle);
+        Mockito.when(routingMapProvider.tryLookupAsync(Mockito.any(MetaDataDiagnosticContext.class), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(collectionRoutingMapSingle);
 
         List<PartitionKeyRangeIdentity> ranges = new ArrayList<>();
         for (PartitionKeyRange partitionKeyRange : (List<PartitionKeyRange>) collectionRoutingMap.getOrderedPartitionKeyRanges()) {

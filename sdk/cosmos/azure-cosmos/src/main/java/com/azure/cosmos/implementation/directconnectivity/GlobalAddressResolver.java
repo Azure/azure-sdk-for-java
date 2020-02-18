@@ -78,7 +78,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     Mono<Void> openAsync(DocumentCollection collection) {
-        Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMap = this.routingMapProvider.tryLookupAsync(collection.getId(), null, null);
+        Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMap = this.routingMapProvider.tryLookupAsync(null, collection.getId(), null, null);
         return routingMap.flatMap(collectionRoutingMap -> {
 
             if ( collectionRoutingMap.v == null) {

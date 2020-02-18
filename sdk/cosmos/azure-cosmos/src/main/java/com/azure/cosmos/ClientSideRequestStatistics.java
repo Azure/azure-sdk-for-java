@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.MetaDataDiagnosticContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
@@ -38,8 +39,6 @@ import java.util.Set;
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
-    private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
-        DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US);
 
     private ConnectionMode connectionMode;
 
@@ -55,6 +54,7 @@ class ClientSideRequestStatistics {
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
     private RequestTimeline transportRequestTimeline;
+    private MetaDataDiagnosticContext metaDataDiagnosticContext;
 
     ClientSideRequestStatistics() {
         this.requestStartTime = ZonedDateTime.now(ZoneOffset.UTC);
@@ -67,6 +67,7 @@ class ClientSideRequestStatistics {
         this.regionsContacted = new HashSet<>();
         this.connectionMode = ConnectionMode.DIRECT;
         this.retryContext = retryContext;
+        this.metaDataDiagnosticContext = new MetaDataDiagnosticContext();
     }
 
     Duration getRequestLatency() {
@@ -202,14 +203,11 @@ class ClientSideRequestStatistics {
         this.regionsContacted = regionsContacted;
     }
 
-    private static String formatDateTime(ZonedDateTime dateTime) {
-        if (dateTime == null) {
-            return null;
-        }
-        return dateTime.format(RESPONSE_TIME_FORMATTER);
+    MetaDataDiagnosticContext getMetaDataDiagnosticContext(){
+        return this.metaDataDiagnosticContext;
     }
 
-    public void recordRetryContext(RxDocumentServiceRequest request) {
+    void recordRetryContext(RxDocumentServiceRequest request) {
         if(request.requestContext.retryContext != null) {
             request.requestContext.retryContext.retryEndTime =  ZonedDateTime.now(ZoneOffset.UTC);
             this.retryContext = new RetryContext(request.requestContext.retryContext);
@@ -249,21 +247,7 @@ class ClientSideRequestStatistics {
         public String systemCpuLoad;
     }
 
-    private static class ZonedDateTimeSerializer extends StdSerializer<ZonedDateTime> {
-
-        public ZonedDateTimeSerializer() {
-            super(ZonedDateTime.class);
-        }
-
-        @Override
-        public void serialize(ZonedDateTime zonedDateTime,
-                              JsonGenerator jsonGenerator,
-                              SerializerProvider serializerProvider) throws IOException {
-            jsonGenerator.writeObject(formatDateTime(zonedDateTime));
-        }
-    }
-
-    public static class ClientSideRequestStatisticsSerializer extends StdSerializer<ClientSideRequestStatistics> {
+    static class ClientSideRequestStatisticsSerializer extends StdSerializer<ClientSideRequestStatistics> {
 
         public ClientSideRequestStatisticsSerializer(){
             super(ClientSideRequestStatistics.class);
@@ -274,8 +258,8 @@ class ClientSideRequestStatistics {
             generator.writeStartObject();
             long requestLatency = statistics.getRequestLatency().toMillis();;
             generator.writeNumberField("requestLatency", requestLatency);
-            generator.writeStringField("requestStartTime", formatDateTime(statistics.requestStartTime));
-            generator.writeStringField("requestEndTime", formatDateTime(statistics.requestEndTime));
+            generator.writeStringField("requestStartTime", ZonedDateTimeSerializer.formatDateTime(statistics.requestStartTime));
+            generator.writeStringField("requestEndTime", ZonedDateTimeSerializer.formatDateTime(statistics.requestEndTime));
             generator.writeObjectField("connectionMode", statistics.connectionMode);
             generator.writeObjectField("responseStatisticsList", statistics.responseStatisticsList);
             int supplementalResponseStatisticsListCount = statistics.supplementalResponseStatisticsList.size();
@@ -291,6 +275,7 @@ class ClientSideRequestStatistics {
             generator.writeObjectField("addressResolutionStatistics", statistics.addressResolutionStatistics);
             generator.writeObjectField("regionsContacted", statistics.regionsContacted);
             generator.writeObjectField("retryContext", statistics.retryContext);
+            generator.writeObjectField("metaDataDiagnosticContext", statistics.getMetaDataDiagnosticContext());
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
 
             try {

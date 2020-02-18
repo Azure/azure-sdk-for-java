@@ -121,7 +121,8 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRangesById(String resourceId,
                                                                                       String partitionKeyRangeIdInternal) {
         return client.getPartitionKeyRangeCache()
-                   .tryGetPartitionKeyRangeByIdAsync(resourceId,
+                   .tryGetPartitionKeyRangeByIdAsync(null,
+                                                     resourceId,
                                                      partitionKeyRangeIdInternal,
                                                      false,
                                                      null)

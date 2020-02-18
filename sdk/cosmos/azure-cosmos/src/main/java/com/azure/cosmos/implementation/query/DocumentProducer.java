@@ -242,7 +242,7 @@ class DocumentProducer<T extends Resource> {
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getReplacementRanges(Range<String> range) {
-        return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(collectionRid, range, true, feedOptions.properties());
+        return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(null, collectionRid, range, true, feedOptions.properties());
     }
 
     private boolean isSplit(CosmosClientException e) {

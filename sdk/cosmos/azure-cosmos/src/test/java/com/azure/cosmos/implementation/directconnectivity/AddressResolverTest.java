@@ -13,6 +13,7 @@ import com.azure.cosmos.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
+import com.azure.cosmos.implementation.MetaDataDiagnosticContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
@@ -340,7 +341,7 @@ public class AddressResolverTest {
             }
 
             return new Utils.ValueHolder<>(null);
-        }).when(this.collectionCache).resolveCollectionAsync(Mockito.any(RxDocumentServiceRequest.class));
+        }).when(this.collectionCache).resolveCollectionAsync(Mockito.any(MetaDataDiagnosticContext.class), Mockito.any(RxDocumentServiceRequest.class));
 
         // Routing map cache
         Map<String, CollectionRoutingMap> currentRoutingMap =
@@ -351,8 +352,8 @@ public class AddressResolverTest {
             String collectionRid = invocationOnMock.getArgumentAt(0, String.class);
             CollectionRoutingMap previousValue = invocationOnMock.getArgumentAt(1, CollectionRoutingMap.class);
 
-            return collectionRoutingMapCache.tryLookupAsync(collectionRid, previousValue, false, null);
-        }).when(this.collectionRoutingMapCache).tryLookupAsync(Mockito.anyString(), Mockito.any(CollectionRoutingMap.class), Mockito.anyMap());
+            return collectionRoutingMapCache.tryLookupAsync(null, collectionRid, previousValue, false, null);
+        }).when(this.collectionRoutingMapCache).tryLookupAsync(Mockito.any(MetaDataDiagnosticContext.class), Mockito.anyString(), Mockito.any(CollectionRoutingMap.class), Mockito.anyMap());
 
         // Refresh case
         Mockito.doAnswer(invocationOnMock -> {
@@ -388,7 +389,7 @@ public class AddressResolverTest {
             }
 
             return Mono.error(new NotImplementedException("not mocked"));
-        }).when(this.collectionRoutingMapCache).tryLookupAsync(Mockito.anyString(), Mockito.any(CollectionRoutingMap.class), Mockito.anyBoolean(), Mockito.anyMap());
+        }).when(this.collectionRoutingMapCache).tryLookupAsync( Mockito.any(MetaDataDiagnosticContext.class), Mockito.anyString(), Mockito.any(CollectionRoutingMap.class), Mockito.anyBoolean(), Mockito.anyMap());
 
 
         // Fabric Address Cache

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
@@ -24,6 +25,7 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
     private final String collectionLink;
     private final FeedOptions feedOptions;
     private volatile boolean retried;
+    private RxDocumentServiceRequest request;
 
     public PartitionKeyRangeGoneRetryPolicy(
             RxCollectionCache collectionCache,
@@ -64,17 +66,23 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
             if (this.feedOptions != null) {
                 request.properties = this.feedOptions.properties();
             }
-            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(
+                BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
+                request);
 
             return collectionObs.flatMap(collectionValueHolder -> {
 
-                Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(collectionValueHolder.v.getResourceId(),
-                    null, request.properties);
+                Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(
+                    BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
+                    collectionValueHolder.v.getResourceId(),
+                    null,
+                    request.properties);
 
                 Mono<Utils.ValueHolder<CollectionRoutingMap>> refreshedRoutingMapObs = routingMapObs.flatMap(routingMapValueHolder -> {
                     if (routingMapValueHolder.v != null) {
                         // Force refresh.
                         return this.partitionKeyRangeCache.tryLookupAsync(
+                            null,
                             collectionValueHolder.v.getResourceId(),
                             routingMapValueHolder.v,
                             request.properties);
@@ -98,6 +106,7 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
 
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
+        this.request = request;
         this.nextRetryPolicy.onBeforeSendRequest(request);
     }
 

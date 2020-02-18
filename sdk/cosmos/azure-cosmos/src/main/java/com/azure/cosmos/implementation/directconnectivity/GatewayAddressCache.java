@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.JavaStreamUtils;
+import com.azure.cosmos.implementation.MetaDataDiagnosticContext.*;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Paths;
@@ -44,6 +45,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -299,6 +302,7 @@ public class GatewayAddressCache implements IAddressCache {
             httpHeaders.set(entry.getKey(), entry.getValue());
         }
 
+        ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
 
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
@@ -306,6 +310,11 @@ public class GatewayAddressCache implements IAddressCache {
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
         return dsrObs.map(
                 dsr -> {
+                    ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                    MetaDataDiagnostic metaDataDiagnostic  = new MetaDataDiagnostic(addressCallStartTime,
+                        addressCallEndTime,
+                        MetaDataEnum.ServerAddressLookup);
+                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics).addMetaDataDiagnostic(metaDataDiagnostic);
                     if (logger.isDebugEnabled()) {
                         logger.debug("getServerAddressesViaGatewayAsync deserializes result");
                     }
@@ -478,12 +487,17 @@ public class GatewayAddressCache implements IAddressCache {
 
         HttpRequest httpRequest;
         httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
-
+        ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
 
         return dsrObs.map(
                 dsr -> {
+                    ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                    MetaDataDiagnostic metaDataDiagnostic  = new MetaDataDiagnostic(addressCallStartTime,
+                        addressCallEndTime,
+                        MetaDataEnum.MasterAddressLookUp);
+                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics).addMetaDataDiagnostic(metaDataDiagnostic);
                     logAddressResolutionEnd(request, identifier);
                     return dsr.getQueryResponse(Address.class);
                 });

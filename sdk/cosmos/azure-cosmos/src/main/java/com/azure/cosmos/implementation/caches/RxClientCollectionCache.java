@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.ClearingSessionContainerClientRetryPolicy
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
+import com.azure.cosmos.implementation.MetaDataDiagnosticContext;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PathsHelper;
@@ -25,6 +26,8 @@ import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,21 +53,24 @@ public class RxClientCollectionCache extends RxCollectionCache {
         this.sessionContainer = sessionContainer;
     }
 
-    protected Mono<DocumentCollection> getByRidAsync(String collectionRid, Map<String, Object> properties) {
+    protected Mono<DocumentCollection> getByRidAsync(MetaDataDiagnosticContext metaDataDiagnosticContext, String collectionRid, Map<String, Object> properties) {
         DocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy());
         return ObservableHelper.inlineIfPossible(
-                () -> this.readCollectionAsync(PathsHelper.generatePath(ResourceType.DocumentCollection, collectionRid, false), retryPolicyInstance, properties)
+                () -> this.readCollectionAsync(metaDataDiagnosticContext, PathsHelper.generatePath(ResourceType.DocumentCollection, collectionRid, false), retryPolicyInstance, properties)
                 , retryPolicyInstance);
     }
 
-    protected Mono<DocumentCollection> getByNameAsync(String resourceAddress, Map<String, Object> properties) {
+    protected Mono<DocumentCollection> getByNameAsync(MetaDataDiagnosticContext metaDataDiagnosticContext, String resourceAddress, Map<String, Object> properties) {
         DocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy());
         return ObservableHelper.inlineIfPossible(
-                () -> this.readCollectionAsync(resourceAddress, retryPolicyInstance, properties),
+                () -> this.readCollectionAsync(metaDataDiagnosticContext, resourceAddress, retryPolicyInstance, properties),
                 retryPolicyInstance);
     }
 
-    private Mono<DocumentCollection> readCollectionAsync(String collectionLink, DocumentClientRetryPolicy retryPolicyInstance, Map<String, Object> properties) {
+    private Mono<DocumentCollection> readCollectionAsync(MetaDataDiagnosticContext metaDataDiagnosticContext,
+                                                         String collectionLink,
+                                                         DocumentClientRetryPolicy retryPolicyInstance,
+                                                         Map<String, Object> properties) {
 
         String path = Utils.joinPath(collectionLink, null);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
@@ -94,9 +100,19 @@ public class RxClientCollectionCache extends RxCollectionCache {
         if (retryPolicyInstance != null){
             retryPolicyInstance.onBeforeSendRequest(request);
         }
-
+        ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
         Mono<RxDocumentServiceResponse> responseObs = this.storeModel.processMessage(request);
-        return responseObs.map(response -> BridgeInternal.toResourceResponse(response, DocumentCollection.class)
-                .getResource()).single();
+        return responseObs.map(response -> {
+            if(metaDataDiagnosticContext != null) {
+                ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                MetaDataDiagnosticContext.MetaDataDiagnostic metaDataDiagnostic  = new MetaDataDiagnosticContext.MetaDataDiagnostic(addressCallStartTime,
+                    addressCallEndTime,
+                    MetaDataDiagnosticContext.MetaDataEnum.CollectionLookUp);
+                metaDataDiagnosticContext.addMetaDataDiagnostic(metaDataDiagnostic);
+            }
+
+            return BridgeInternal.toResourceResponse(response, DocumentCollection.class)
+                .getResource();
+        }).single();
     }
 }

@@ -48,7 +48,7 @@ public class DocumentQueryExecutionContextFactory {
                 resourceLink, null
                 // TODO      AuthorizationTokenType.INVALID)
                 ); //this request doesnt actually go to server
-        return collectionCache.resolveCollectionAsync(request);
+        return collectionCache.resolveCollectionAsync(null, request);
     }
 
     public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createDocumentQueryExecutionContextAsync(
@@ -92,7 +92,7 @@ public class DocumentQueryExecutionContextFactory {
                               partitionedQueryExecutionInfo.getQueryInfo();
 
                           Mono<List<PartitionKeyRange>> partitionKeyRanges;
-                          // The partitionKeyRangeIdInternal is no more a public API on 
+                          // The partitionKeyRangeIdInternal is no more a public API on
                           // FeedOptions, but have the below condition
                           // for handling ParallelDocumentQueryTest#partitionKeyRangeId
                           if (feedOptions != null && !StringUtils
@@ -107,7 +107,7 @@ public class DocumentQueryExecutionContextFactory {
                               List<Range<String>> queryRanges =
                                   partitionedQueryExecutionInfo.getQueryRanges();
 
-                              if (feedOptions != null 
+                              if (feedOptions != null
                                       && feedOptions.partitionKey() != null
                                       && feedOptions.partitionKey() != PartitionKey.NONE) {
                                   PartitionKeyInternal internalPartitionKey =
@@ -217,7 +217,7 @@ public class DocumentQueryExecutionContextFactory {
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, FeedOptions feedOptions,
         String resourceId, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
-        
+
         return PipelinedDocumentQueryExecutionContext.createReadManyAsync(queryClient,
                                                                    collectionResourceId, sqlQuery, rangeQueryMap,
                                                                    feedOptions, resourceId, collectionLink,
