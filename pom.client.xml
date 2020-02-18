@@ -1286,6 +1286,7 @@
     </profile>
   </profiles>
 
+<!--
   <modules>
     <module>common/perf-test-core</module>
     <module>sdk/appconfiguration/azure-data-appconfiguration</module>
@@ -1319,4 +1320,5 @@
     <module>sdk/storage/perf-test</module>
     <module>sdk/textanalytics/azure-ai-textanalytics</module>
   </modules>
+-->  
 </project>
