@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.quickquery;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.util.Context;
@@ -41,19 +42,53 @@ import java.util.Random;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
+/**
+ * This class provides a client that contains all operations that apply to Azure Storage Blob quick query.
+ *
+ * <p>This client offers the ability to query contents of a structured blob. </p>
+ *
+ * @see BlobQuickQueryClientBuilder
+ */
+@ServiceClient(builder = BlobQuickQueryClientBuilder.class)
 public class BlobQuickQueryClient {
     private final ClientLogger logger = new ClientLogger(BlobQuickQueryClient.class);
 
     private BlobQuickQueryAsyncClient client;
 
+    /**
+     * Package-private constructor for use by {@link BlobQuickQueryClientBuilder}.
+     * @param client the async blob quick query client
+     */
     BlobQuickQueryClient(BlobQuickQueryAsyncClient client) {
         this.client = client;
     }
 
+    /**
+     * Queries an entire blob into an output stream.
+     *
+     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param expression The query expression.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null.
+     */
     public void query(OutputStream stream, String expression) {
         queryWithResponse(stream, expression, null, null, null, null, Context.NONE);
     }
 
+    /**
+     * Queries an entire blob into an output stream.
+     *
+     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param expression The query expression.
+     * @param input {@link BlobQuickQuerySerialization Serialization input}.
+     * @param output {@link BlobQuickQuerySerialization Serialization output}.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null.
+     */
     public BlobQuickQueryResponse queryWithResponse(OutputStream stream, String expression,
         BlobQuickQuerySerialization input, BlobQuickQuerySerialization output, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
@@ -79,10 +114,6 @@ public class BlobQuickQueryClient {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
             .wiretap(true)
             .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)));
-
-            byte[] key = new byte[32]; // 256 bit key
-            new Random().nextBytes(key);
-
 
         BlobServiceClient sc = new BlobServiceClientBuilder()
             .endpoint("https://" + accountName + ".blob.preprod.core.windows.net")

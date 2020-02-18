@@ -73,6 +73,6 @@ public class BlobQuickQueryClientBuilder {
      * @return a {@link BlobQuickQueryAsyncClient} created from the configurations in this builder.
      */
     public BlobQuickQueryAsyncClient buildAsyncClient() {
-        return new BlobQuickQueryAsyncClient(blobUrl, pipeline, version, customerProvidedKey);
+        return new BlobQuickQueryAsyncClient(pipeline, blobUrl, version, customerProvidedKey);
     }
 }

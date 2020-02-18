@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.quickquery;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,6 +30,14 @@ import java.nio.ByteBuffer;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
+/**
+ * This class provides a client that contains all operations that apply to Azure Storage Blob quick query.
+ *
+ * <p>This client offers the ability to query contents of a structured blob. </p>
+ *
+ * @see BlobQuickQueryClientBuilder
+ */
+@ServiceClient(builder = BlobQuickQueryClientBuilder.class, isAsync = true)
 public class BlobQuickQueryAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(BlobQuickQueryAsyncClient.class);
@@ -36,7 +45,15 @@ public class BlobQuickQueryAsyncClient {
     private final AzureBlobStorageImpl client;
     private final CpkInfo customerProvidedKey;
 
-    BlobQuickQueryAsyncClient(String url, HttpPipeline pipeline, BlobServiceVersion serviceVersion,
+    /**
+     * Package-private constructor for use by {@link BlobQuickQueryClientBuilder}
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     */
+    BlobQuickQueryAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         CpkInfo customerProvidedKey) {
         this.client = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
