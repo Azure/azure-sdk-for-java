@@ -9,8 +9,13 @@ import com.azure.storage.blob.nio.implementation.util.Utility;
 
 import java.io.IOException;
 import java.nio.file.FileStore;
+import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.attribute.FileStoreAttributeView;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -19,9 +24,19 @@ import java.util.Objects;
  * {@inheritDoc}
  */
 public final class AzureFileStore extends FileStore {
+    private static final String AZURE_FILE_STORE_TYPE = "AzureBlobContainer";
+
     private final ClientLogger logger = new ClientLogger(AzureFileStore.class);
     private final AzureFileSystem parentFileSystem;
     private final BlobContainerClient containerClient;
+    private static final Map<Class<? extends FileAttributeView>, String> SUPPORTED_ATTRIBUTE_VIEWS;
+    static {
+        Map<Class<? extends FileAttributeView>, String> map = new HashMap<>();
+        map.put(BasicFileAttributeView.class, "basic");
+        map.put(UserDefinedFileAttributeView.class, "user");
+        map.put(AzureStorageFileAttributeView.class, "azureStorage");
+        SUPPORTED_ATTRIBUTE_VIEWS = Collections.unmodifiableMap(map);
+    }
 
     AzureFileStore(AzureFileSystem parentFileSystem, String containerName) throws IOException {
         // A FileStore should only ever be created by a FileSystem.
@@ -54,14 +69,22 @@ public final class AzureFileStore extends FileStore {
     }
 
     /**
+     * Returns the {@code String "AzureBlobContainer"} to indicate that the file store is backed by a remote blob
+     * container in Azure Storage.
+     *
      * {@inheritDoc}
      */
     @Override
     public String type() {
-        return null;
+        return AZURE_FILE_STORE_TYPE;
     }
 
     /**
+     * Always returns false. It may be the case that the authentication method provided to this file system only
+     * supports read operations and hence the file store is implicitly read only in this view, but that does not
+     * imply the underlying container/file store is inherently read only. Creating/specifying read only file stores
+     * is not currently supported.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -70,27 +93,33 @@ public final class AzureFileStore extends FileStore {
     }
 
     /**
+     * Containers do not limit the amount of data stored. This method will always return max long.
+     *
      * {@inheritDoc}
      */
     @Override
     public long getTotalSpace() throws IOException {
-        return 0;
+        return Long.MAX_VALUE;
     }
 
     /**
+     * Containers do not limit the amount of data stored. This method will always return max long.
+     *
      * {@inheritDoc}
      */
     @Override
     public long getUsableSpace() throws IOException {
-        return 0;
+        return Long.MAX_VALUE;
     }
 
     /**
+     * Containers do not limit the amount of data stored. This method will always return max long.
+     *
      * {@inheritDoc}
      */
     @Override
     public long getUnallocatedSpace() throws IOException {
-        return 0;
+        return Long.MAX_VALUE;
     }
 
     /**
@@ -98,7 +127,7 @@ public final class AzureFileStore extends FileStore {
      */
     @Override
     public boolean supportsFileAttributeView(Class<? extends FileAttributeView> aClass) {
-        return false;
+        return SUPPORTED_ATTRIBUTE_VIEWS.containsKey(aClass);
     }
 
     /**
@@ -106,10 +135,12 @@ public final class AzureFileStore extends FileStore {
      */
     @Override
     public boolean supportsFileAttributeView(String s) {
-        return false;
+        return SUPPORTED_ATTRIBUTE_VIEWS.containsValue(s);
     }
 
     /**
+     * This method always returns null as no {@link FileStoreAttributeView} is currently supported.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -118,10 +149,13 @@ public final class AzureFileStore extends FileStore {
     }
 
     /**
+     * This method always throws an {@code UnsupportedOperationException} as no {@link FileStoreAttributeView} is
+     * currently supported.
+     *
      * {@inheritDoc}
      */
     @Override
     public Object getAttribute(String s) throws IOException {
-        return null;
+        throw new UnsupportedOperationException("FileStoreAttributeViews aren't supported.");
     }
 }

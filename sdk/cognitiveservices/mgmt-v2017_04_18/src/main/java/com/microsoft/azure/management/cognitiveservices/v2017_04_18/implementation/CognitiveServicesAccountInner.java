@@ -8,49 +8,33 @@
 
 package com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementation;
 
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.ProvisioningState;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccountProperties;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
  * Cognitive Services Account is an Azure resource representing the provisioned
  * account, its type, location and SKU.
  */
-@JsonFlatten
 public class CognitiveServicesAccountInner extends Resource {
     /**
      * Entity Tag.
      */
-    @JsonProperty(value = "etag")
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
-     * Type of cognitive service account.
+     * The Kind of the resource.
      */
     @JsonProperty(value = "kind")
     private String kind;
 
     /**
-     * Gets the status of the cognitive services account at the time the
-     * operation was called. Possible values include: 'Creating',
-     * 'ResolvingDNS', 'Moving', 'Deleting', 'Succeeded', 'Failed'.
+     * Properties of Cognitive Services account.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /**
-     * Endpoint of the created account.
-     */
-    @JsonProperty(value = "properties.endpoint")
-    private String endpoint;
-
-    /**
-     * The internal identifier.
-     */
-    @JsonProperty(value = "properties.internalId")
-    private String internalId;
+    @JsonProperty(value = "properties")
+    private CognitiveServicesAccountProperties properties;
 
     /**
      * The SKU of Cognitive Services account.
@@ -59,7 +43,7 @@ public class CognitiveServicesAccountInner extends Resource {
     private Sku sku;
 
     /**
-     * Get the etag value.
+     * Get entity Tag.
      *
      * @return the etag value
      */
@@ -68,18 +52,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Set the etag value.
-     *
-     * @param etag the etag value to set
-     * @return the CognitiveServicesAccountInner object itself.
-     */
-    public CognitiveServicesAccountInner withEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
-     * Get the kind value.
+     * Get the Kind of the resource.
      *
      * @return the kind value
      */
@@ -88,7 +61,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Set the kind value.
+     * Set the Kind of the resource.
      *
      * @param kind the kind value to set
      * @return the CognitiveServicesAccountInner object itself.
@@ -99,56 +72,27 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get properties of Cognitive Services account.
      *
-     * @return the provisioningState value
+     * @return the properties value
      */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
+    public CognitiveServicesAccountProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the endpoint value.
+     * Set properties of Cognitive Services account.
      *
-     * @return the endpoint value
-     */
-    public String endpoint() {
-        return this.endpoint;
-    }
-
-    /**
-     * Set the endpoint value.
-     *
-     * @param endpoint the endpoint value to set
+     * @param properties the properties value to set
      * @return the CognitiveServicesAccountInner object itself.
      */
-    public CognitiveServicesAccountInner withEndpoint(String endpoint) {
-        this.endpoint = endpoint;
+    public CognitiveServicesAccountInner withProperties(CognitiveServicesAccountProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the internalId value.
-     *
-     * @return the internalId value
-     */
-    public String internalId() {
-        return this.internalId;
-    }
-
-    /**
-     * Set the internalId value.
-     *
-     * @param internalId the internalId value to set
-     * @return the CognitiveServicesAccountInner object itself.
-     */
-    public CognitiveServicesAccountInner withInternalId(String internalId) {
-        this.internalId = internalId;
-        return this;
-    }
-
-    /**
-     * Get the sku value.
+     * Get the SKU of Cognitive Services account.
      *
      * @return the sku value
      */
@@ -157,7 +101,7 @@ public class CognitiveServicesAccountInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set the SKU of Cognitive Services account.
      *
      * @param sku the sku value to set
      * @return the CognitiveServicesAccountInner object itself.

@@ -74,7 +74,7 @@ public enum NtfsFileAttributes {
      */
     public static String toString(EnumSet<NtfsFileAttributes> ntfsAttributes) {
         if (ntfsAttributes == null) {
-            return "";
+            return null;
         }
 
         final StringBuilder builder = new StringBuilder();
@@ -124,6 +124,9 @@ public enum NtfsFileAttributes {
      * @throws IllegalArgumentException If {@code ntfsAttributes} contains an attribute that is unknown.
      */
     public static EnumSet<NtfsFileAttributes> toAttributes(String ntfsAttributes) {
+        if (ntfsAttributes == null) {
+            return null;
+        }
         EnumSet<NtfsFileAttributes> attributes = EnumSet.noneOf(NtfsFileAttributes.class);
         String[] splitAttributes = ntfsAttributes.split("\\|");
 

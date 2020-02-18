@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 import java.util.concurrent.TimeUnit;
@@ -20,20 +20,27 @@ public class RecognizeLinkedEntitiesAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analysed.
+        // The text that needs be analyzed.
         String text = "Old Faithful is a geyser at Yellowstone Park.";
 
         client.recognizeLinkedEntities(text).subscribe(
-            result -> {
-                for (LinkedEntity linkedEntity : result.getLinkedEntities()) {
-                    System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
-                        linkedEntity.getName(),
-                        linkedEntity.getUrl(),
-                        linkedEntity.getDataSource());
+            linkedEntity -> {
+                System.out.println("Linked Entities:");
+                System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                    linkedEntity.getName(),
+                    linkedEntity.getId(),
+                    linkedEntity.getUrl(),
+                    linkedEntity.getDataSource());
+                for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
+                    System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
+                        linkedEntityMatch.getText(),
+                        linkedEntityMatch.getOffset(),
+                        linkedEntityMatch.getLength(),
+                        linkedEntityMatch.getScore());
                 }
             },
             error -> System.err.println("There was an error recognizing linked entity of the text." + error),

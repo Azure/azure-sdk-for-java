@@ -27,7 +27,7 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Signal;
+import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.util.ArrayList;
@@ -107,6 +107,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final AmqpRetryPolicy retryPolicy;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
+    private final Scheduler scheduler;
     private final boolean isSharedConnection;
 
     /**
@@ -116,7 +117,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, boolean isSharedConnection) {
+        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
@@ -127,6 +128,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
 
         this.retryPolicy = getRetryPolicy(retryOptions);
+        this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
     }
 
@@ -356,7 +358,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
 
-        return sendInternal(events, options);
+        return sendInternal(events, options).publishOn(scheduler);
     }
 
     /**
@@ -415,31 +417,25 @@ public class EventHubProducerAsyncClient implements Closeable {
             messages.add(message);
         }
 
-        final Context finalSharedContext = sharedContext != null ? sharedContext : Context.NONE;
+        if (isTracingEnabled) {
+            final Context finalSharedContext = sharedContext == null
+                ? Context.NONE
+                : sharedContext.addData(ENTITY_PATH_KEY, eventHubName).addData(HOST_NAME_KEY, fullyQualifiedNamespace);
+            // Start send span and store updated context
+            parentContext.set(tracerProvider.startSpan(finalSharedContext, ProcessKind.SEND));
+        }
 
-        return withRetry(
-            getSendLink(batch.getPartitionId()).flatMap(link -> {
-                if (isTracingEnabled) {
-                    Context entityContext = finalSharedContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
-                    // Start send span and store updated context
-                    parentContext.set(tracerProvider.startSpan(
-                        entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
-                }
-                return messages.size() == 1
+        return withRetry(getSendLink(batch.getPartitionId())
+            .flatMap(link ->
+                messages.size() == 1
                     ? link.send(messages.get(0))
-                    : link.send(messages);
-
-            })
+                    : link.send(messages)), retryOptions.getTryTimeout(), retryPolicy)
+            .publishOn(scheduler)
             .doOnEach(signal -> {
                 if (isTracingEnabled) {
                     tracerProvider.endSpan(parentContext.get(), signal);
                 }
-            })
-            .doOnError(error -> {
-                if (isTracingEnabled) {
-                    tracerProvider.endSpan(parentContext.get(), Signal.error(error));
-                }
-            }), retryOptions.getTryTimeout(), retryPolicy);
+            });
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {

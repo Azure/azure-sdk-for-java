@@ -117,7 +117,7 @@ public class InMemoryCheckpointStore implements CheckpointStore {
         }
 
         String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
-            checkpoint.getEventHubName(), CHECKPOINT);
+            checkpoint.getConsumerGroup(), CHECKPOINT);
         checkpointsMap.put(prefix + SEPARATOR + checkpoint.getPartitionId(), checkpoint);
         logger.info("Updated checkpoint for partition {} with sequence number {}", checkpoint.getPartitionId(),
             checkpoint.getSequenceNumber());

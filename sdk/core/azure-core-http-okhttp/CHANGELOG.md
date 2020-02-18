@@ -1,6 +1,12 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
+
+
+## 1.2.0-beta.1 (2020-02-11)
+- Added support for Digest proxy authentication.
+- Added ability to implicitly read proxy configurations from the environment.
+- Removed setting 'Content-Type' to 'application/octet-stream' when null.
 
 ## 1.1.0 (2020-01-07)
 - Updated version of dependent libraries.

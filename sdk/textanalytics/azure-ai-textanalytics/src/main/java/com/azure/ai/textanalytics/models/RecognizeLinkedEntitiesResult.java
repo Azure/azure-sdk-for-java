@@ -13,28 +13,29 @@ import java.util.List;
  */
 @Immutable
 public final class RecognizeLinkedEntitiesResult extends DocumentResult {
-    private final List<LinkedEntity> linkedEntities;
+    private final List<LinkedEntity> entities;
 
     /**
-     * Creates a {@code RecognizeLinkedEntitiesResult} model that describes recognized linked entities result
+     * Creates a {@code RecognizeLinkedEntitiesResult} model that describes recognized linked entities result.
      *
      * @param id unique, non-empty document identifier
      * @param textDocumentStatistics text document statistics
      * @param error the document error
-     * @param linkedEntities a list of linked entities
+     * @param entities a list of linked entities
      */
     public RecognizeLinkedEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error, List<LinkedEntity> linkedEntities) {
+        TextAnalyticsError error, List<LinkedEntity> entities) {
         super(id, textDocumentStatistics, error);
-        this.linkedEntities = linkedEntities == null ? new ArrayList<>() : linkedEntities;
+        this.entities = entities == null ? new ArrayList<>() : entities;
     }
 
     /**
-     * Get a list of linked entities
+     * Get a list of linked entities.
      *
      * @return a list of linked entities.
      */
-    public List<LinkedEntity> getLinkedEntities() {
-        return linkedEntities;
+    public List<LinkedEntity> getEntities() {
+        throwExceptionIfError();
+        return entities;
     }
 }

@@ -6,9 +6,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * The TextAnalyticsError model.
  */
@@ -18,7 +15,7 @@ public final class TextAnalyticsError {
      * Error code. Possible values include: 'invalidRequest',
      * 'invalidArgument', 'internalServerError', 'serviceUnavailable'
      */
-    private final ErrorCodeValue code;
+    private final TextAnalyticsErrorCode code;
 
     /*
      * Error message.
@@ -30,24 +27,17 @@ public final class TextAnalyticsError {
      */
     private final String target;
 
-    /*
-     * Details about specific errors that led to this reported error.
-     */
-    private final List<TextAnalyticsError> details;
-
     /**
      * Creates a {@code TextAnalyticsError} model that describes text analytics error.
      *
      * @param code error code
      * @param message error message
      * @param target error target
-     * @param details details about specific errors that led to this reported error
      */
-    public TextAnalyticsError(ErrorCodeValue code, String message, String target, List<TextAnalyticsError> details) {
+    public TextAnalyticsError(TextAnalyticsErrorCode code, String message, String target) {
         this.code = code;
         this.message = message;
         this.target = target;
-        this.details = details == null ? new ArrayList<>() : details;
     }
 
     /**
@@ -57,7 +47,7 @@ public final class TextAnalyticsError {
      *
      * @return the code value.
      */
-    public ErrorCodeValue getCode() {
+    public TextAnalyticsErrorCode getCode() {
         return this.code;
     }
 
@@ -77,15 +67,5 @@ public final class TextAnalyticsError {
      */
     public String getTarget() {
         return this.target;
-    }
-
-    /**
-     * Get the details property: Details about specific errors that led to this
-     * reported error.
-     *
-     * @return the details value.
-     */
-    public List<TextAnalyticsError> getDetails() {
-        return this.details;
     }
 }
