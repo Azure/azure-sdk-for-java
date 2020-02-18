@@ -20,7 +20,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -35,8 +34,8 @@ public final class Utility {
     private static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
-    public static final Map<String, String> STORAGE_TRACING_PROPERTIES = Collections.unmodifiableMap(
-        new HashMap<String, String>() {{ put(AZ_TRACING_NAMESPACE_KEY, "Microsoft.Storage"); }});
+    public static final Map<String, String> STORAGE_TRACING_PROPERTIES =
+        Collections.singletonMap(AZ_TRACING_NAMESPACE_KEY, "Microsoft.Storage");
 
     /**
      * Stores a reference to the date/time pattern with the greatest precision Java.util.Date is capable of expressing.

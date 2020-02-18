@@ -79,6 +79,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
 import static java.lang.StrictMath.toIntExact;
 
 /**
@@ -300,7 +301,7 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<Boolean>> existsWithResponse() {
         try {
-            return withContext(this::existsWithResponse);
+            return withContext(context -> existsWithResponse(context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -435,7 +436,7 @@ public class BlobAsyncClientBase {
                 sourceModifiedRequestConditions.getIfNoneMatch(), destinationRequestConditions.getIfModifiedSince(),
                 destinationRequestConditions.getIfUnmodifiedSince(), destinationRequestConditions.getIfMatch(),
                 destinationRequestConditions.getIfNoneMatch(), destinationRequestConditions.getLeaseId(), null,
-                context))
+                context), STORAGE_TRACING_PROPERTIES)
             .map(response -> {
                 final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
 
@@ -529,7 +530,8 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<Void>> abortCopyFromUrlWithResponse(String copyId, String leaseId) {
         try {
-            return withContext(context -> abortCopyFromUrlWithResponse(copyId, leaseId, context));
+            return withContext(context -> abortCopyFromUrlWithResponse(copyId, leaseId, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -587,7 +589,7 @@ public class BlobAsyncClientBase {
         BlobRequestConditions destRequestConditions) {
         try {
             return withContext(context -> copyFromUrlWithResponse(copySource, metadata, tier,
-                sourceModifiedRequestConditions, destRequestConditions, context));
+                sourceModifiedRequestConditions, destRequestConditions, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -659,7 +661,8 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         try {
             return withContext(context ->
-                downloadWithResponse(range, options, requestConditions, getRangeContentMd5, context));
+                downloadWithResponse(range, options, requestConditions, getRangeContentMd5, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -811,7 +814,7 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions) {
         try {
             return withContext(context -> downloadToFileWithResponse(filePath, range, parallelTransferOptions, options,
-                requestConditions, rangeGetContentMd5, openOptions, context));
+                requestConditions, rangeGetContentMd5, openOptions, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1083,7 +1086,8 @@ public class BlobAsyncClientBase {
     public Mono<Response<Void>> deleteWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, context));
+            return withContext(context -> deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1135,7 +1139,8 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<BlobProperties>> getPropertiesWithResponse(BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> getPropertiesWithResponse(requestConditions, context));
+            return withContext(context -> getPropertiesWithResponse(requestConditions, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1204,7 +1209,8 @@ public class BlobAsyncClientBase {
     public Mono<Response<Void>> setHttpHeadersWithResponse(BlobHttpHeaders headers,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> setHttpHeadersWithResponse(headers, requestConditions, context));
+            return withContext(context -> setHttpHeadersWithResponse(headers, requestConditions, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1261,7 +1267,8 @@ public class BlobAsyncClientBase {
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> setMetadataWithResponse(metadata, requestConditions, context));
+            return withContext(context -> setMetadataWithResponse(metadata, requestConditions, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1270,7 +1277,7 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions,
         Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-        
+
         return this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
@@ -1317,7 +1324,8 @@ public class BlobAsyncClientBase {
     public Mono<Response<BlobAsyncClientBase>> createSnapshotWithResponse(Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> createSnapshotWithResponse(metadata, requestConditions, context));
+            return withContext(context -> createSnapshotWithResponse(metadata, requestConditions, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1381,7 +1389,8 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<Void>> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority, String leaseId) {
         try {
-            return withContext(context -> setTierWithResponse(tier, priority, leaseId, context));
+            return withContext(context -> setTierWithResponse(tier, priority, leaseId, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1430,7 +1439,7 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<Void>> undeleteWithResponse() {
         try {
-            return withContext(this::undeleteWithResponse);
+            return withContext(context -> undeleteWithResponse(context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1475,7 +1484,7 @@ public class BlobAsyncClientBase {
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
         try {
-            return withContext(this::getAccountInfoWithResponse);
+            return withContext(context -> getAccountInfoWithResponse(context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

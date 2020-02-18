@@ -42,6 +42,7 @@ import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
 
 /**
  * Client to a page blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -185,7 +186,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         Map<String, String> metadata, BlobRequestConditions requestConditions) {
         try {
             return withContext(context ->
-                createWithResponse(size, sequenceNumber, headers, metadata, requestConditions, context));
+                createWithResponse(size, sequenceNumber, headers, metadata, requestConditions, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -277,7 +279,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions) {
         try {
             return withContext(context -> uploadPagesWithResponse(pageRange, body, contentMd5,
-                pageBlobRequestConditions, context));
+                pageBlobRequestConditions, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -376,7 +378,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(
                 context -> uploadPagesFromUrlWithResponse(range, sourceUrl, sourceOffset, sourceContentMd5,
-                    destRequestConditions, sourceRequestConditions, context));
+                    destRequestConditions, sourceRequestConditions, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -471,7 +473,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<PageBlobItem>> clearPagesWithResponse(PageRange pageRange,
         PageBlobRequestConditions pageBlobRequestConditions) {
         try {
-            return withContext(context -> clearPagesWithResponse(pageRange, pageBlobRequestConditions, context));
+            return withContext(context -> clearPagesWithResponse(pageRange, pageBlobRequestConditions, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -538,7 +541,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<PageList>> getPageRangesWithResponse(BlobRange blobRange,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> getPageRangesWithResponse(blobRange, requestConditions, context));
+            return withContext(context -> getPageRangesWithResponse(blobRange, requestConditions, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -602,7 +606,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         BlobRequestConditions requestConditions) {
         try {
             return withContext(context ->
-                getPageRangesDiffWithResponse(blobRange, prevSnapshot, null, requestConditions, context));
+                getPageRangesDiffWithResponse(blobRange, prevSnapshot, null, requestConditions,
+                    context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -658,7 +663,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         String prevSnapshotUrl, BlobRequestConditions requestConditions) {
         try {
             return withContext(context ->
-                getPageRangesDiffWithResponse(blobRange, null, prevSnapshotUrl, requestConditions, context));
+                getPageRangesDiffWithResponse(blobRange, null, prevSnapshotUrl, requestConditions,
+                    context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -726,7 +732,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageBlobItem>> resizeWithResponse(long size, BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> resizeWithResponse(size, requestConditions, context));
+            return withContext(context -> resizeWithResponse(size, requestConditions, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -797,7 +804,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         Long sequenceNumber, BlobRequestConditions requestConditions) {
         try {
             return withContext(context ->
-                updateSequenceNumberWithResponse(action, sequenceNumber, requestConditions, context));
+                updateSequenceNumberWithResponse(action, sequenceNumber, requestConditions, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -881,7 +889,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         RequestConditions modifiedRequestConditions) {
         try {
             return withContext(
-                context -> copyIncrementalWithResponse(source, snapshot, modifiedRequestConditions, context));
+                context -> copyIncrementalWithResponse(source, snapshot, modifiedRequestConditions, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

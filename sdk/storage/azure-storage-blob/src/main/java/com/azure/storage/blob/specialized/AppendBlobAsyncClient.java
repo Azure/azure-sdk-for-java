@@ -21,7 +21,6 @@ import com.azure.storage.blob.implementation.models.AppendBlobCreateHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.AppendBlobItem;
-import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -154,7 +153,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
         try {
-            return FluxUtil.withContext(context -> createWithResponse(headers, metadata, requestConditions, context),
+            return withContext(context -> createWithResponse(headers, metadata, requestConditions, context),
                 STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -227,7 +226,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         AppendBlobRequestConditions appendBlobRequestConditions) {
         try {
             return withContext(context -> appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions,
-                context));
+                context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -299,7 +298,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         BlobRequestConditions sourceRequestConditions) {
         try {
             return withContext(context -> appendBlockFromUrlWithResponse(sourceUrl, sourceRange, sourceContentMD5,
-                destRequestConditions, sourceRequestConditions, context));
+                destRequestConditions, sourceRequestConditions, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

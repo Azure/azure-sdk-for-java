@@ -36,6 +36,7 @@ import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -191,8 +192,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions) {
         try {
-            return FluxUtil.withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, contentMd5,
-                requestConditions, context));
+            return withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, contentMd5,
+                requestConditions, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -274,7 +275,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         byte[] contentMd5, String leaseId) {
         try {
             return withContext(context -> stageBlockWithResponse(base64BlockId, data, length, contentMd5,
-                leaseId, context));
+                leaseId, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -344,7 +345,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobRange sourceRange, byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions) {
         try {
             return withContext(context -> stageBlockFromUrlWithResponse(base64BlockId, sourceUrl, sourceRange,
-                sourceContentMd5, leaseId, sourceRequestConditions));
+                sourceContentMd5, leaseId, sourceRequestConditions), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -408,7 +409,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<BlockList>> listBlocksWithResponse(BlockListType listType, String leaseId) {
         try {
-            return withContext(context -> listBlocksWithResponse(listType, leaseId, context));
+            return withContext(context -> listBlocksWithResponse(listType, leaseId, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -499,7 +501,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             BlobRequestConditions requestConditions) {
         try {
             return withContext(context -> commitBlockListWithResponse(base64BlockIds, headers, metadata, tier,
-                requestConditions, context));
+                requestConditions, context), STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
