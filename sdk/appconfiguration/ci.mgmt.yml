@@ -38,6 +38,7 @@ variables:
   ServiceDirectory: appconfiguration
   ProfileFlag: ''
 
+  
 jobs:
   - job: 'Build'
 
