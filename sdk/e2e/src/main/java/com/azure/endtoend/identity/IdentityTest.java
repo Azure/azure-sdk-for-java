@@ -5,8 +5,6 @@ package com.azure.endtoend.identity;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.endtoend.identity.WebJobsIdentityTest;
 
 import java.util.Locale;
 

@@ -210,6 +210,7 @@
   
   <!-- The Identity Azure Platform End to tend Test.-->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.endtoend.identity.IdentityTest.java"/>
+    <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.endtoend.identity.WebJobsIdentityTest.java"/>
   
   <!-- Use the logger in a Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.textanalytics.Transforms.java" />
