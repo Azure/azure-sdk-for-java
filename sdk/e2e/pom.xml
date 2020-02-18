@@ -92,7 +92,7 @@
               <archive>
                 <manifest>
                   <mainClass>
-                    com.azure.endtoend.identity.webjobs.WebJobsIdentityTest
+                    com.azure.endtoend.identity.IdentityTest
                   </mainClass>
                 </manifest>
               </archive>

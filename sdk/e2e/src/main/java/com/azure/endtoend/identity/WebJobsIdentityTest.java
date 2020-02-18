@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.endtoend.identity.webjobs;
+package com.azure.endtoend.identity;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
@@ -23,7 +23,7 @@ import java.util.Locale;
 /**
  * Runs Identity MSI and IMDS endpoints test in Azure Web Jobs.
  */
-public class WebJobsIdentityTest {
+class WebJobsIdentityTest {
     private static final String VAULT_SECRET_NAME = "secret";
     private static final String AZURE_WEBJOBS_TEST_MODE = "AZURE_WEBJOBS_TEST_MODE";
     private static final String AZURE_VAULT_URL = "AZURE_VAULT_URL";
@@ -32,13 +32,12 @@ public class WebJobsIdentityTest {
 
     /**
      * Runs the Web jobs identity tests
-     * @param args the command line arguments.
      * @throws IllegalStateException if AZURE_WEBJOBS_TEST_MODE is not set to "user" or "system"
      */
-    public static void main(String[] args) throws IllegalStateException {
+    void run() throws IllegalStateException {
         if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(AZURE_WEBJOBS_TEST_MODE))) {
-            throw new IllegalStateException("Webjobs Test mode is not set. Set environemnt "
-                                                + "variable AZURE_WEBJOBS_TEST_MODE to user or system");
+            throw logger.logExceptionAsError(new IllegalStateException("Webjobs Test mode is not set. Set environemnt "
+                                                + "variable AZURE_WEBJOBS_TEST_MODE to user or system"));
         }
 
         String mode = CONFIGURATION.get(AZURE_WEBJOBS_TEST_MODE).toLowerCase(Locale.ENGLISH);
@@ -53,13 +52,14 @@ public class WebJobsIdentityTest {
                 identityTest.testMSIEndpointWithSystemAssignedAccessKeyVault();
                 break;
             default:
-                throw new IllegalStateException("Invalid Test mode is configured AZURE_WEBJOBS_TEST_MODE. "
-                                                    + "Possible values are user or system.");
+                throw logger.logExceptionAsError(
+                    new IllegalStateException("Invalid Test mode is configured AZURE_WEBJOBS_TEST_MODE. "
+                                                    + "Possible values are user or system."));
         }
 
     }
 
-    void testMSIEndpointWithSystemAssigned() {
+    private void testMSIEndpointWithSystemAssigned() {
         assertConfigPresence(Configuration.PROPERTY_MSI_ENDPOINT,
             "testMSIEndpointWithSystemAssigned - MSIEndpoint not configured in the environment.");
         assertConfigPresence(Configuration.PROPERTY_MSI_SECRET,
@@ -82,7 +82,7 @@ public class WebJobsIdentityTest {
             accessToken.getToken().length(), accessToken.getExpiresAt().format(DateTimeFormatter.ISO_DATE_TIME));
     }
 
-    void testMSIEndpointWithSystemAssignedAccessKeyVault() {
+    private void testMSIEndpointWithSystemAssignedAccessKeyVault() {
         assertConfigPresence(Configuration.PROPERTY_MSI_ENDPOINT,
             "testMSIEndpointWithSystemAssignedKeyVault - MSIEndpoint not configured in the environment.");
         assertConfigNotPresent(Configuration.PROPERTY_AZURE_CLIENT_ID,
@@ -108,7 +108,7 @@ public class WebJobsIdentityTest {
                 + "testMSIEndpointWithSystemAssignedAccessKeyVault failed");
     }
 
-    void testMSIEndpointWithUserAssigned() {
+    private void testMSIEndpointWithUserAssigned() {
         assertConfigPresence(Configuration.PROPERTY_MSI_ENDPOINT,
             "testMSIEndpointWithUserAssigned - MSIEndpoint not configured in the environment.");
         assertConfigPresence(Configuration.PROPERTY_AZURE_CLIENT_ID,
@@ -137,7 +137,7 @@ public class WebJobsIdentityTest {
             accessToken.getToken().length(), accessToken.getExpiresAt().format(DateTimeFormatter.ISO_DATE_TIME));
     }
 
-    void testMSIEndpointWithUserAssignedAccessKeyVault() {
+    private void testMSIEndpointWithUserAssignedAccessKeyVault() {
         assertConfigPresence(Configuration.PROPERTY_MSI_ENDPOINT,
             "testMSIEndpointWithUserAssignedKeyVault - MSIEndpoint not configured in the environment.");
         assertConfigPresence(Configuration.PROPERTY_AZURE_CLIENT_ID,

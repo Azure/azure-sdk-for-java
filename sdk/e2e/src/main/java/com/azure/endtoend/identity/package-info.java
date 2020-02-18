@@ -4,4 +4,4 @@
 /**
  * This package contains the classes to run Identity MSI and IMDS endpoints test in Azure Web Jobs.
  */
-package com.azure.endtoend.identity.webjobs;
+package com.azure.endtoend.identity;

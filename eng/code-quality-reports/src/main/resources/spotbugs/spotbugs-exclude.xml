@@ -463,7 +463,7 @@
   
   <!-- Incorrect flagging, error will be thrown if value is null -->
   <Match>
-      <Class name="com.azure.endtoend.identity.webjobs.WebJobsIdentityTest"/>
+      <Class name="com.azure.endtoend.identity.WebJobsIdentityTest"/>
       <Or>
           <Method name="testMSIEndpointWithSystemAssigned"/>
           <Method name="testMSIEndpointWithUserAssigned"/>
