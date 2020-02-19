@@ -16,8 +16,8 @@ import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.annotation.ReturnType;
@@ -26,8 +26,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-
-import java.util.List;
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Text Analytics.
@@ -60,41 +58,43 @@ public final class TextAnalyticsClient {
      * certainty that the identified language is true.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Detects the language of single input text</p>
+     * <p>Detects the language of single input text.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguage#String}
      *
      * @param text The text to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
-     * @return the {@link DetectedLanguage detected language} of the text.
+     *
+     * @return The {@link DetectedLanguage detected language} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectedLanguage detectLanguage(String text) {
-        return detectLanguageWithResponse(text, client.getDefaultCountryHint(), Context.NONE).getValue();
+        return detectLanguage(text, client.getDefaultCountryHint());
     }
 
     /**
-     * Returns a {@link Response} containing the detected language and a numeric score between zero and one.
+     * Returns the detected language and a numeric score between zero and one.
      * Scores close to one indicate 100% certainty that the identified language is true.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Detects the language with http response in a text with a provided country hint.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageWithResponse#String-String-Context}
+     * <p>Detects the language of single input text with a provided country hint.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguage#String-String}
      *
      * @param text The text to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing the {@link DetectedLanguage detected language} of the text.
+     * @return The {@link DetectedLanguage detected language} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DetectedLanguage> detectLanguageWithResponse(String text, String countryHint, Context context) {
-        return client.detectLanguageAsyncClient.detectLanguageWithResponse(text, countryHint, context).block();
+    public DetectedLanguage detectLanguage(String text, String countryHint) {
+        return client.detectLanguage(text, countryHint).block();
     }
 
     /**
@@ -102,7 +102,7 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Detects the languages in a list of text.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#List}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#Iterable}
      *
      * @param textInputs The list of texts to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -110,20 +110,20 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
      * {@link DetectLanguageResult detected language} with their numeric scores.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<DetectLanguageResult> detectLanguageBatch(List<String> textInputs) {
-        return detectLanguageBatchWithResponse(textInputs, client.getDefaultCountryHint(), null,
-            Context.NONE).getValue();
+    public DocumentResultCollection<DetectLanguageResult> detectLanguageBatch(Iterable<String> textInputs) {
+        return detectLanguageBatch(textInputs, client.getDefaultCountryHint(), null);
     }
 
     /**
      * Detects Language for a batch of input with the provided country hint.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Detects the language with http response in a list of text with a provided country hint.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context}
+     * <p>Detects the language in a list of text with a provided country hint.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs The list of texts to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -132,17 +132,16 @@ public final class TextAnalyticsClient {
      * alpha-2. Defaults to "US" if not specified.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
-     * {@link DetectLanguageResult detected language} with their numeric scores.
+     * @return A {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected language} with their
+     * numeric scores.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<DetectLanguageResult>> detectLanguageBatchWithResponse(
-        List<String> textInputs, String countryHint, TextAnalyticsRequestOptions options, Context context) {
-        return client.detectLanguageAsyncClient.detectLanguageBatchWithResponse(textInputs, countryHint, options,
-            context).block();
+    public DocumentResultCollection<DetectLanguageResult> detectLanguageBatch(
+        Iterable<String> textInputs, String countryHint, TextAnalyticsRequestOptions options) {
+        return client.detectLanguageBatch(textInputs, countryHint, options).block();
     }
 
     /**
@@ -150,7 +149,7 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Detects the languages with http response in a list of {@link DetectLanguageInput}.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatchWithResponse#List-TextAnalyticsRequestOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatchWithResponse#Iterable-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -161,11 +160,12 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
      * {@link DetectLanguageResult detected languages}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<DetectLanguageResult>> detectLanguageBatchWithResponse(
-        List<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         return client.detectLanguageAsyncClient.detectLanguageBatchWithResponse(textInputs, options, context).block();
     }
 
@@ -189,7 +189,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CategorizedEntity> recognizeEntities(String text) {
-        return recognizeEntities(text, client.getDefaultLanguage(), Context.NONE);
+        return recognizeEntities(text, client.getDefaultLanguage());
     }
 
     /**
@@ -198,14 +198,13 @@ public final class TextAnalyticsClient {
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the entities with http response in a text with a provided language representation.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntities#String-String-Context}
+     * <p>Recognizes the entities in a text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntities#String-String}
      *
      * @param text the text to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link PagedIterable} containing the {@link CategorizedEntity categorized entities} of the text.
      *
@@ -213,9 +212,8 @@ public final class TextAnalyticsClient {
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CategorizedEntity> recognizeEntities(String text, String language, Context context) {
-        return new PagedIterable<>(
-            client.recognizeEntityAsyncClient.recognizeEntities(text, language, context));
+    public PagedIterable<CategorizedEntity> recognizeEntities(String text, String language) {
+        return new PagedIterable<>(client.recognizeEntities(text, language));
     }
 
     /**
@@ -223,7 +221,7 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the entities in a list of text.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#List}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#Iterable}
      *
      * @param textInputs A list of texts to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -231,20 +229,20 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
      * {@link RecognizeEntitiesResult categorized entity} of the text.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesBatch(List<String> textInputs) {
-        return recognizeEntitiesBatchWithResponse(textInputs, client.getDefaultLanguage(), null,
-            Context.NONE).getValue();
+    public DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesBatch(Iterable<String> textInputs) {
+        return recognizeEntitiesBatch(textInputs, client.getDefaultLanguage(), null);
     }
 
     /**
      * Returns a list of general categorized entities for the provided list of texts.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the entities with http response in a list of text with a provided language representation.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context}
+     * <p>Recognizes the entities in a list of text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of texts to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -252,17 +250,15 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult categorized entity}.
+     * @return A {@link DocumentResultCollection batch} of the {@link RecognizeEntitiesResult categorized entity}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizeEntitiesResult>> recognizeEntitiesBatchWithResponse(
-        List<String> textInputs, String language, TextAnalyticsRequestOptions options, Context context) {
-        return client.recognizeEntityAsyncClient.recognizeEntitiesWithResponse(textInputs, language, options,
-            context).block();
+    public DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesBatch(
+        Iterable<String> textInputs, String language, TextAnalyticsRequestOptions options) {
+        return client.recognizeEntitiesBatch(textInputs, language, options).block();
     }
 
     /**
@@ -270,7 +266,7 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the entities with http response in a list of {@link TextDocumentInput}.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatchWithResponse#List-TextAnalyticsRequestOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatchWithResponse#Iterable-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -281,13 +277,14 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
      * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult categorized entity}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<RecognizeEntitiesResult>> recognizeEntitiesBatchWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithResponse(textInputs, options,
-            context).block();
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        return client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithResponse(textInputs, options, context)
+            .block();
     }
 
     // PII Entities
@@ -297,7 +294,7 @@ public final class TextAnalyticsClient {
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recognize the PII entities of single input text</p>
+     * <p>Recognize the PII entities in a single input text</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String}
      *
      * @param text the text to recognize PII entities for.
@@ -319,7 +316,7 @@ public final class TextAnalyticsClient {
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the PII entities with http response in a text with a provided language representation.</p>
+     * <p>Recognizes the PII entities in a text with a provided language representation.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-Context}
      *
      * @param text the text to recognize PII entities for.
@@ -346,7 +343,7 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the PII entities in a list of text.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#List}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable}
      *
      * @param textInputs A list of text to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -357,9 +354,8 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(List<String> textInputs) {
-        return recognizePiiEntitiesBatchWithResponse(textInputs, client.getDefaultLanguage(), null,
-            Context.NONE).getValue();
+    public DocumentResultCollection<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(Iterable<String> textInputs) {
+        return recognizePiiEntitiesBatch(textInputs, client.getDefaultLanguage(), null);
     }
 
     /**
@@ -368,8 +364,8 @@ public final class TextAnalyticsClient {
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the PII entities with http response in a list of text with a provided language representation.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context}
+     * <p>Recognizes the PII entities in a list of text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of text to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -378,17 +374,15 @@ public final class TextAnalyticsClient {
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizePiiEntitiesResult PII entity}.
+     * @return A {@link DocumentResultCollection batch} of the {@link RecognizePiiEntitiesResult PII entity}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntitiesBatchWithResponse(
-        List<String> textInputs, String language, TextAnalyticsRequestOptions options, Context context) {
-        return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(textInputs, language,
-            options, context).block();
+    public DocumentResultCollection<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
+        Iterable<String> textInputs, String language, TextAnalyticsRequestOptions options) {
+        return client.recognizePiiEntitiesBatch(textInputs, language, options).block();
     }
 
     /**
@@ -398,7 +392,7 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the PII entities with http response in a list of {@link TextDocumentInput}.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatchWithResponse#List-TextAnalyticsRequestOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatchWithResponse#Iterable-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -413,7 +407,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntitiesBatchWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesBatchWithResponse(textInputs, options,
             context).block();
     }
@@ -446,7 +440,7 @@ public final class TextAnalyticsClient {
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the linked entities with http response in a text with a provided language representation.</p>
+     * <p>Recognizes the linked entities in a text with a provided language representation.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String-String-Context}
      *
      * @param text the text to recognize linked entities for.
@@ -473,21 +467,21 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the linked entities in a list of text.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#List}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable}
      *
      * @param textInputs A list of text to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link DocumentResultCollection batch} of the
-     * {@link RecognizeLinkedEntitiesResult linked entity} of the text.
+     * @return A {@link DocumentResultCollection batch} of the {@link RecognizeLinkedEntitiesResult linked entity}
+     * of the text.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
-        List<String> textInputs) {
-        return recognizeLinkedEntitiesBatchWithResponse(textInputs, client.getDefaultLanguage(), null,
-            Context.NONE).getValue();
+        Iterable<String> textInputs) {
+        return recognizeLinkedEntitiesBatch(textInputs, client.getDefaultLanguage(), null);
     }
 
     /**
@@ -495,9 +489,9 @@ public final class TextAnalyticsClient {
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the linked entities with http response in a list of text with a provided language representation.
+     * <p>Recognizes the linked entities in a list of text with a provided language representation.
      * </p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of text to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -506,17 +500,15 @@ public final class TextAnalyticsClient {
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
      * {@link RecognizeLinkedEntitiesResult linked entity}.
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesBatchWithResponse(
-        List<String> textInputs, String language, TextAnalyticsRequestOptions options, Context context) {
-        return client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(textInputs, language,
-            options, context).block();
+    public DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
+        Iterable<String> textInputs, String language, TextAnalyticsRequestOptions options) {
+        return client.recognizeLinkedEntitiesBatch(textInputs, language, options).block();
     }
 
     /**
@@ -525,7 +517,7 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Recognizes the linked entities with http response in a list of {@link TextDocumentInput}.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatchWithResponse#List-TextAnalyticsRequestOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatchWithResponse#Iterable-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -536,11 +528,12 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
      * {@link DocumentResultCollection batch} of {@link RecognizeLinkedEntitiesResult linked entity}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesBatchWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         return client.recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatchWithResponse(textInputs, options,
             context).block();
     }
@@ -572,7 +565,7 @@ public final class TextAnalyticsClient {
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Extracts key phrases with http response in a text with a provided language representation.</p>
+     * <p>Extracts key phrases in a text with a provided language representation.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String-String-Context}
      *
      * @param text the text to be analyzed.
@@ -597,19 +590,19 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Extracts key phrases in a list of text.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#List}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#Iterable}
      *
      * @param textInputs A list of text to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     *
      * @return A {@link DocumentResultCollection batch} of the {@link ExtractKeyPhraseResult key phrases} of the text.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhrasesBatch(List<String> textInputs) {
-        return extractKeyPhrasesBatchWithResponse(textInputs, client.getDefaultLanguage(), null,
-            Context.NONE).getValue();
+    public DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhrasesBatch(Iterable<String> textInputs) {
+        return extractKeyPhrasesBatch(textInputs, client.getDefaultLanguage(), null);
     }
 
     /**
@@ -617,8 +610,8 @@ public final class TextAnalyticsClient {
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Extracts key phrases with http response in a list of text with a provided language representation.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context}
+     * <p>Extracts key phrases in a list of text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of text to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -627,17 +620,15 @@ public final class TextAnalyticsClient {
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing the {@link DocumentResultCollection batch} of the
-     * {@link ExtractKeyPhraseResult key phrases}.
+     * @return A {@link DocumentResultCollection batch} of the {@link ExtractKeyPhraseResult key phrases}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<ExtractKeyPhraseResult>> extractKeyPhrasesBatchWithResponse(
-        List<String> textInputs, String language, TextAnalyticsRequestOptions options, Context context) {
-        return client.extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(textInputs, language, options,
-            context).block();
+    public DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
+        Iterable<String> textInputs, String language, TextAnalyticsRequestOptions options) {
+        return client.extractKeyPhrasesBatch(textInputs, language, options).block();
     }
 
     /**
@@ -646,7 +637,7 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Extracts key phrases with http response in a list of {@link TextDocumentInput}.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatchWithResponse#List-TextAnalyticsRequestOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatchWithResponse#Iterable-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -657,13 +648,14 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
      * {@link DocumentResultCollection batch} of {@link ExtractKeyPhraseResult key phrases}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<ExtractKeyPhraseResult>> extractKeyPhrasesBatchWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.extractKeyPhraseAsyncClient.extractKeyPhrasesBatchWithResponse(textInputs, options,
-            context).block();
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        return client.extractKeyPhraseAsyncClient.extractKeyPhrasesBatchWithResponse(textInputs, options, context)
+            .block();
     }
 
     // Sentiment
@@ -686,7 +678,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentSentiment analyzeSentiment(String text) {
-        return analyzeSentimentWithResponse(text, client.getDefaultLanguage(), Context.NONE).getValue();
+        return analyzeSentiment(text, client.getDefaultLanguage());
     }
 
     /**
@@ -694,23 +686,23 @@ public final class TextAnalyticsClient {
      * (Positive, Negative, and Neutral) for the document and each sentence within i
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Analyze the sentiments with http response in a text with a provided language representation.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentWithResponse#String-String-Context}
+     * <p>Analyze the sentiments in a text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String}
      *
      * @param text the text to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing the {@link DocumentSentiment document sentiment} of the text.
+     * @return A {@link DocumentSentiment document sentiment} of the text.
+     *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentSentiment> analyzeSentimentWithResponse(String text, String language, Context context) {
-        return client.analyzeSentimentAsyncClient.analyzeSentimentWithResponse(text, language, context).block();
+    public DocumentSentiment analyzeSentiment(String text, String language) {
+        return client.analyzeSentiment(text, language).block();
     }
 
     /**
@@ -719,7 +711,7 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments in a list of text.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#List}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable}
      *
      * @param textInputs A list of text to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -727,12 +719,12 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
      * {@link AnalyzeSentimentResult text sentiments} with their numeric scores.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DocumentResultCollection<AnalyzeSentimentResult> analyzeSentimentBatch(List<String> textInputs) {
-        return analyzeSentimentBatchWithResponse(textInputs, client.getDefaultLanguage(), null,
-            Context.NONE).getValue();
+    public DocumentResultCollection<AnalyzeSentimentResult> analyzeSentimentBatch(Iterable<String> textInputs) {
+        return analyzeSentimentBatch(textInputs, client.getDefaultLanguage(), null);
     }
 
     /**
@@ -740,8 +732,8 @@ public final class TextAnalyticsClient {
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Analyze the sentiments with http response in a list of text with a provided language representation.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatchWithResponse#List-String-TextAnalyticsRequestOptions-Context}
+     * <p>Analyze the sentiments in a list of text with a provided language representation.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of text to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -750,17 +742,16 @@ public final class TextAnalyticsClient {
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
-     * {@link AnalyzeSentimentResult text sentiments} with their numeric scores.
+     * @return A {@link DocumentResultCollection batch} of {@link AnalyzeSentimentResult text sentiments} with their
+     * numeric scores.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DocumentResultCollection<AnalyzeSentimentResult>> analyzeSentimentBatchWithResponse(
-        List<String> textInputs, String language, TextAnalyticsRequestOptions options, Context context) {
-        return client.analyzeSentimentAsyncClient.analyzeSentimentWithResponse(textInputs, language, options,
-            context).block();
+    public DocumentResultCollection<AnalyzeSentimentResult> analyzeSentimentBatch(
+        Iterable<String> textInputs, String language, TextAnalyticsRequestOptions options) {
+        return client.analyzeSentimentBatch(textInputs, language, options).block();
     }
 
     /**
@@ -769,7 +760,7 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments with http response in a list of {@link TextDocumentInput}.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatchWithResponse#List-TextAnalyticsRequestOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatchWithResponse#Iterable-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
@@ -780,12 +771,13 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} containing the {@link DocumentResultCollection batch} of
      * {@link AnalyzeSentimentResult text sentiments}.
+     *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DocumentResultCollection<AnalyzeSentimentResult>> analyzeSentimentBatchWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithResponse(textInputs, options,
-            context).block();
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithResponse(textInputs, options, context)
+            .block();
     }
 }

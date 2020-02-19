@@ -23,13 +23,11 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
@@ -52,29 +50,8 @@ class AnalyzeSentimentAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<com.azure.ai.textanalytics.models.DocumentSentiment>> analyzeSentimentWithResponse(
-        String text, String language, Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
-
-        return analyzeSentimentBatchWithResponse(
-            Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> new SimpleResponse<>(
-                response,
-                Transforms.processSingleResponseErrorResult(response).getValue().getDocumentSentiment()
-            ));
-    }
-
-    Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeSentimentWithResponse(
-        List<String> textInputs, String language, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
-            new TextDocumentInput(index, value, language));
-        return analyzeSentimentBatchWithResponse(documentInputs, options, context);
-    }
-
     Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeSentimentBatchWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
         final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
