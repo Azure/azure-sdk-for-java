@@ -16,7 +16,7 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
 
   <name>Microsoft Azure client library for Text Analytics</name>
-  <description>This package contains the Microsoft Azure Cognitive Services Text Analytics SDK.</description>
+  <description>This package contains the Microsoft Azure Cognitive Services Form Recognizer SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
