@@ -36,14 +36,14 @@ public interface ComputerVisionClient {
     String userAgent();
 
     /**
-     * Gets Supported Cognitive Services endpoints.
+     * Gets Supported Cognitive Services endpoints..
      *
      * @return the endpoint value.
      */
     String endpoint();
 
     /**
-     * Sets Supported Cognitive Services endpoints.
+     * Sets Supported Cognitive Services endpoints..
      *
      * @param endpoint the endpoint value.
      * @return the service client itself
