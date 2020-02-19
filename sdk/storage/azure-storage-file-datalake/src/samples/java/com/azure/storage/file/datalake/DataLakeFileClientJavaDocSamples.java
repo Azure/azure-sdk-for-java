@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
@@ -15,8 +16,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * Code snippets for {@link DataLakeFileClient}
@@ -33,6 +38,7 @@ public class DataLakeFileClientJavaDocSamples {
     private String value2 = "val2";
     private String destinationPath = "destinationPath";
     private String fileSystemName = "fileSystemName";
+    private String filePath = "filePath";
     private InputStream data = new ByteArrayInputStream("data".getBytes(StandardCharsets.UTF_8));
     private long offset = 0L;
     private long length = 4L;
@@ -96,6 +102,53 @@ public class DataLakeFileClientJavaDocSamples {
             client.readWithResponse(new ByteArrayOutputStream(), range, options, null, false,
                 timeout, new Context(key2, value2)).getStatusCode());
         // END: com.azure.storage.file.datalake.DataLakeFileClient.readWithResponse#OutputStream-FileRange-DownloadRetryOptions-DataLakeRequestConditions-boolean-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileClient#uploadFromFile(String)},
+     * {@link DataLakeFileClient#uploadFromFile(String, boolean)} and
+     * {@link DataLakeFileClient#uploadFromFile(String, ParallelTransferOptions, PathHttpHeaders, Map, DataLakeRequestConditions, Duration)}
+     */
+    public void uploadFromFileCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String
+        try {
+            client.uploadFromFile(filePath);
+            System.out.println("Upload from file succeeded");
+        } catch (UncheckedIOException ex) {
+            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
+        }
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-boolean
+        try {
+            boolean overwrite = false;
+            client.uploadFromFile(filePath, overwrite);
+            System.out.println("Upload from file succeeded");
+        } catch (UncheckedIOException ex) {
+            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
+        }
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-boolean
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions-Duration
+        PathHttpHeaders headers = new PathHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Integer blockSize = 100 * 1024 * 1024; // 100 MB;
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, null, null, null);
+
+        try {
+            client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata, requestConditions, timeout);
+            System.out.println("Upload from file succeeded");
+        } catch (UncheckedIOException ex) {
+            System.err.printf("Failed to upload from file %s%n", ex.getMessage());
+        }
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions-Duration
     }
 
     /**

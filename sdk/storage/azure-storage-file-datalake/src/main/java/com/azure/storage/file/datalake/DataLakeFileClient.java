@@ -193,7 +193,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-ParallelTransferOptions-PathHttpHeaders-DataLakeRequestConditions-Duration}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFile#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions-Duration}
      *
      * @param filePath Path of the file to upload
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
@@ -203,7 +203,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws UncheckedIOException If an I/O error occurs
      */
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
-        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions, Duration timeout) {
+        PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions,
+        Duration timeout) {
         Mono<Void> upload = this.dataLakeFileAsyncClient.uploadFromFile(
             filePath, parallelTransferOptions, headers, metadata, requestConditions);
 

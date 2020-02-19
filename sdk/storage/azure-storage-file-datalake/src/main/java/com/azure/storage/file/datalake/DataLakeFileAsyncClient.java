@@ -200,8 +200,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @return A reactive response containing the information of the uploaded file.
      */
-    public Mono<PathInfo> upload(Flux<ByteBuffer> data, long length,
-        ParallelTransferOptions parallelTransferOptions) {
+    public Mono<PathInfo> upload(Flux<ByteBuffer> data, long length, ParallelTransferOptions parallelTransferOptions) {
         return upload(data, length, parallelTransferOptions, false);
     }
 
@@ -250,11 +249,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-long-ParallelTransferOptions-PathHttpHeaders-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-long-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions}
      *
      * <p><strong>Using Progress Reporting</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-long-ParallelTransferOptions-PathHttpHeaders-DataLakeRequestConditions.ProgressReporter}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-long-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions.ProgressReporter}
      *
      * @param data The data to write to the file. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
@@ -274,7 +273,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             DataLakeRequestConditions validatedRequestConditions = requestConditions == null
                 ? new DataLakeRequestConditions() : requestConditions;
             /* Since we are creating a file with the request conditions, everything but lease id becomes invalid
-             after creation, so e remove them for the append/flush calls. */
+             after creation, so remove them for the append/flush calls. */
             DataLakeRequestConditions validatedUploadRequestConditions = new DataLakeRequestConditions()
                 .setLeaseId(validatedRequestConditions.getLeaseId());
             final ParallelTransferOptions validatedParallelTransferOptions =
@@ -291,7 +290,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                     fileOffset, length, headers, validatedUploadRequestConditions);
 
             return createWithResponse(null, null, headers, metadata, requestConditions)
-                .flatMap(resp -> UploadUtils.determineUploadFullOrChunked(data, validatedParallelTransferOptions,
+                .then(UploadUtils.determineUploadFullOrChunked(data, validatedParallelTransferOptions,
                 uploadInChunksFunction, uploadFullMethod));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -316,6 +315,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
          */
         return chunkedSource.concatMap(pool::write)
             .concatWith(Flux.defer(pool::flush))
+            /* Map the data to a tuple, writing in the buffer.remaining temporarily */
             .map(buffer -> Tuples.of(buffer, (long) buffer.remaining()))
             /* The tuple keeps track of the next buffer to write and the fileOffset for the next buffer */
             .scan((result, source) -> {
@@ -428,8 +428,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
         DataLakeRequestConditions validatedRequestConditions = requestConditions == null
             ? new DataLakeRequestConditions() : requestConditions;
-            /* Since we are creating a file with the request conditions, everything but lease id becomes invalid
-             after creation, so e remove them for the append/flush calls. */
+        /* Since we are creating a file with the request conditions, everything but lease id becomes invalid
+           after creation, so e remove them for the append/flush calls. */
         DataLakeRequestConditions validatedUploadRequestConditions = new DataLakeRequestConditions()
             .setLeaseId(validatedRequestConditions.getLeaseId());
 
@@ -447,19 +447,17 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                             throw logger.logExceptionAsError(new IllegalArgumentException("Size of the file must be "
                                 + "greater than 0."));
                         }
-
-                        return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
-                            .flatMap(resp -> {
-                                // If the file is larger than 256MB chunk it and stage it as blocks.
-                                if (uploadInBlocks(filePath, finalParallelTransferOptions.getMaxSingleUploadSize())) {
-                                    return uploadBlocks(fileOffset, fileSize, finalParallelTransferOptions,
-                                        originalBlockSize, headers, validatedUploadRequestConditions, channel);
-                                } else {
-                                    // Otherwise we know it can be sent in a single request reducing network overhead.
-                                    return uploadWithResponse(FluxUtil.readFile(channel), fileOffset, fileSize, headers,
-                                        validatedUploadRequestConditions).then();
-                                }
-                            });
+                        if (uploadInBlocks(filePath, finalParallelTransferOptions.getMaxSingleUploadSize())) {
+                            return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
+                                .then(uploadBlocks(fileOffset, fileSize, finalParallelTransferOptions,
+                                originalBlockSize, headers, validatedUploadRequestConditions, channel));
+                        } else {
+                            // Otherwise we know it can be sent in a single request reducing network overhead.
+                            return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
+                                .then(uploadWithResponse(FluxUtil.readFile(channel), fileOffset, fileSize, headers,
+                                validatedUploadRequestConditions))
+                                .then();
+                        }
 
                     } catch (IOException ex) {
                         return Mono.error(ex);

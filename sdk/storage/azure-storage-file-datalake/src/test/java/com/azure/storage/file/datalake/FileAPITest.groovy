@@ -19,7 +19,9 @@ import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
+import java.nio.file.Files
 import java.security.MessageDigest
+import java.time.Duration
 
 class FileAPITest extends APISpec {
     DataLakeFileClient fc
@@ -1485,22 +1487,6 @@ class FileAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-//    def "Upload"() {
-//        when:
-//        def response = blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null, null, null,
-//            null, null)
-//
-//        then:
-//        response.getStatusCode() == 201
-//        def outStream = new ByteArrayOutputStream()
-//        blockBlobClient.download(outStream)
-//        outStream.toByteArray() == defaultText.getBytes(StandardCharsets.UTF_8)
-//        validateBasicHeaders(response.getHeaders())
-//        response.getHeaders().getValue("Content-MD5") != null
-//        Boolean.parseBoolean(response.getHeaders().getValue("x-ms-request-server-encrypted"))
-//    }
-
-    @Requires({ liveMode() })
     @Unroll
     def "Upload from file"() {
         setup:
@@ -1536,7 +1522,24 @@ class FileAPITest extends APISpec {
         101 * Constants.MB                             | 4 * 1024 * 1024 || 0  // Size is too small to trigger block uploading
     }
 
-    @Requires({ liveMode() })
+    def "Upload from file with metadata"() {
+        given:
+        def metadata = Collections.singletonMap("metadata", "value")
+        def file = getRandomFile(Constants.KB)
+        def outStream = new ByteArrayOutputStream()
+
+        when:
+        fc.uploadFromFile(file.getPath(), null, null, metadata, null, null)
+
+        then:
+        metadata == fc.getProperties().getMetadata()
+        fc.read(outStream)
+        outStream.toByteArray() == Files.readAllBytes(file.toPath())
+
+        cleanup:
+        file.delete()
+    }
+
     def "Upload from file default no overwrite"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -1558,33 +1561,31 @@ class FileAPITest extends APISpec {
         file.delete()
     }
 
-//    @Requires({ liveMode() })
-//    def "Upload from file no overwrite interrupted"() {
-//        setup:
-//        def file = getRandomFile(257 * 1024 * 1024)
-//        def smallFile = getRandomFile(50)
-//        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-//        fac.create().block()
-//
-//        expect:
-//        /*
-//         * When the upload begins trigger an upload to write the blob after waiting 500 milliseconds so that the upload
-//         * fails when it attempts to put the block list.
-//         */
-//        StepVerifier.create(fac.uploadFromFile(file.toPath().toString(), 0)
-//            .doOnSubscribe({
-//                fac.uploadFromFile(smallFile.toPath().toString(), 0).delaySubscription(Duration.ofMillis(500)).subscribe()
-//            }))
-//            .verifyErrorSatisfies({
-//                assert it instanceof DataLakeStorageException
-//            })
-//
-//        cleanup:
-//        file.delete()
-//        smallFile.delete()
-//    }
+    def "Upload from file no overwrite interrupted"() {
+        setup:
+        def file = getRandomFile(257 * 1024 * 1024)
+        def smallFile = getRandomFile(50)
+        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
 
-    @Requires({ liveMode() })
+        expect:
+        /*
+         * When the upload begins trigger an upload to write the blob after waiting 500 milliseconds so that the upload
+         * fails when it attempts to put the block list.
+         */
+        StepVerifier.create(fac.uploadFromFile(file.toPath().toString())
+            .doOnSubscribe({
+                fac.uploadFromFile(smallFile.toPath().toString())
+                    .delaySubscription(Duration.ofMillis(500)).subscribe()
+            }))
+            .verifyErrorSatisfies({
+                assert it instanceof DataLakeStorageException
+            })
+
+        cleanup:
+        file.delete()
+        smallFile.delete()
+    }
+
     def "Upload from file overwrite"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -1626,7 +1627,6 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
     def "Upload from file reporter"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -1658,7 +1658,6 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
     def "Upload from file options"() {
         setup:
         def file = getRandomFile(dataSize)
@@ -1682,12 +1681,19 @@ class FileAPITest extends APISpec {
         100                                            | 50               | 20        || 5 // Test that blockSize is respected
     }
 
+    def "Async buffered upload empty"() {
+        setup:
+        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+
+        expect:
+        StepVerifier.create(fac.upload(Flux.just(ByteBuffer.wrap(new byte[0])), 0, null))
+            .verifyErrorSatisfies({it instanceof DataLakeStorageException})
+    }
+
     @Unroll
-    @Requires({ liveMode() })
     def "Async buffered upload empty buffers"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-        fac.create().block()
 
         expect:
         def len = buffer1.remaining() + buffer2.remaining() + buffer3.remaining()
@@ -1708,7 +1714,6 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
     def "Async buffered upload"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -1775,9 +1780,7 @@ class FileAPITest extends APISpec {
         }
     }
 
-    // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
     def "Buffered upload with reporter"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -1811,11 +1814,9 @@ class FileAPITest extends APISpec {
 
     // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
     def "Buffered upload chunked source"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-        fac.create().block()
         /*
         This test should validate that the upload should work regardless of what format the passed data is in because
         it will be chunked appropriately.
@@ -1828,7 +1829,7 @@ class FileAPITest extends APISpec {
             dataSize += size * Constants.MB
             dataList.add(getRandomData(size * Constants.MB))
         }
-        def uploadOperation = fac.upload(Flux.fromIterable(dataList), 0, dataSize, false, false, parallelTransferOptions, true)
+        def uploadOperation = fac.upload(Flux.fromIterable(dataList), dataSize, parallelTransferOptions, true)
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(fac.read())))
@@ -1846,7 +1847,6 @@ class FileAPITest extends APISpec {
 
     // These two tests are to test optimizations in buffered upload for small files.
     @Unroll
-    @Requires({ liveMode() })
     def "Buffered upload handle pathing"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -1873,7 +1873,6 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
     def "Buffered upload handle pathing hot flux"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -1907,13 +1906,10 @@ class FileAPITest extends APISpec {
             .verifyErrorSatisfies({ assert it instanceof NullPointerException })
     }
 
-    // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
     def "Buffered upload headers"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-        fac.create().block()
 
         when:
         def data = getRandomByteArray(dataSize)
@@ -1945,7 +1941,36 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() })
+    def "Buffered upload metadata"() {
+        setup:
+        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+        def metadata = [:] as Map<String, String>
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, 10, null, null)
+        def uploadOperation = fac.uploadWithResponse(Flux.just(getRandomData(10)), 10,
+            parallelTransferOptions, null, metadata, null)
+
+        then:
+        StepVerifier.create(uploadOperation.then(fac.getPropertiesWithResponse(null)))
+            .assertNext({
+                assert it.getStatusCode() == 200
+                assert it.getValue().getMetadata() == metadata
+            }).verifyComplete()
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
     def "Buffered upload options"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -1966,9 +1991,7 @@ class FileAPITest extends APISpec {
         100                                               | 50               | 20        || _
     }
 
-    // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
     def "Buffered upload AC"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2000,9 +2023,7 @@ class FileAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
-    @Requires({ liveMode() })
     def "Buffered upload AC fail"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2038,7 +2059,6 @@ class FileAPITest extends APISpec {
     // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
     // (discovered when a leaseId was invalid)
     @Unroll
-    @Requires({ liveMode() })
     def "UploadBufferPool lock three or more buffers"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2138,21 +2158,19 @@ class FileAPITest extends APISpec {
 //            })
 //    }
 
-    @Requires({ liveMode() })
     def "Buffered upload default no overwrite"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-        fac.create().block()
+        fac.upload(defaultFlux, defaultDataSize, null).block()
+
         expect:
         StepVerifier.create(fac.upload(defaultFlux, defaultDataSize, null))
             .verifyError(IllegalArgumentException)
     }
 
-//    @Requires({ liveMode() })
 //    def "Buffered upload no overwrite interrupted"() {
 //        setup:
 //        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-//        fac.create().block()
 //
 //        def smallFile = getRandomFile(50)
 //
@@ -2161,10 +2179,10 @@ class FileAPITest extends APISpec {
 //         * has verified whether a blob with the given name already exists, so this will trigger once uploading begins.
 //         */
 //        def data = Flux.just(getRandomData(Constants.MB)).repeat(257)
-//            .doOnSubscribe({ fac.uploadFromFile(smallFile.toPath().toString(), 0).subscribe() })
+//            .doOnSubscribe({ fac.uploadFromFile(smallFile.toPath().toString()).subscribe() })
 //
 //        expect:
-//        StepVerifier.create(fac.upload(data, 0, Constants.MB * 257, false, false, null))
+//        StepVerifier.create(fac.upload(data, Constants.MB * 257, null))
 //            .verifyErrorSatisfies({
 //                assert it instanceof DataLakeStorageException
 //            })
@@ -2175,7 +2193,6 @@ class FileAPITest extends APISpec {
     def "Buffered upload overwrite"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-        fac.create().block()
 
         when:
         def file = getRandomFile(50)
