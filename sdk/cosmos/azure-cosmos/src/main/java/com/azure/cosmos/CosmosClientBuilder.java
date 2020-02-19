@@ -17,7 +17,7 @@ import java.util.List;
  * {@code
  * ConnectionPolicy getConnectionPolicy = new ConnectionPolicy();
  * getConnectionPolicy.getConnectionMode(ConnectionMode.DIRECT);
- * CosmonsClient client = new CosmosAsyncClient.cosmosClientBuilder()
+ * CosmosClient client = new CosmosAsyncClient.cosmosClientBuilder()
  *         .getEndpoint(serviceEndpoint)
  *         .getKey(getKey)
  *         .getConnectionPolicy(getConnectionPolicy)
@@ -36,7 +36,8 @@ public class CosmosClientBuilder {
     private List<Permission> permissions;
     private TokenResolver tokenResolver;
     private CosmosKeyCredential cosmosKeyCredential;
-    private boolean sessionCapturingOverride;
+    private boolean sessionCapturingOverrideEnabled;
+    private boolean transportClientSharingEnabled;
 
     public CosmosClientBuilder() {
     }
@@ -45,12 +46,14 @@ public class CosmosClientBuilder {
      * Session capturing is enabled by default for {@link ConsistencyLevel#SESSION}.
      * For other consistency levels, it is not needed, unless if you need occasionally send requests with Session
      * Consistency while the client is not configured in session.
-     *
+     * <p>
      * enabling Session capturing for Session mode has no effect.
-     * @param sessionCapturingOverride the session capturing override
+     * @param sessionCapturingOverrideEnabled session capturing override
+     * @return current cosmosClientBuilder
      */
-    public void enableSessionCapturing(boolean sessionCapturingOverride) {
-        this.sessionCapturingOverride = sessionCapturingOverride;
+    public CosmosClientBuilder setSessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
+        this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
+        return this;
     }
 
     /**
@@ -59,8 +62,33 @@ public class CosmosClientBuilder {
      *
      * @return the session capturing override
      */
-    public boolean isSessionCapturingOverride() {
-        return this.sessionCapturingOverride;
+    public boolean isSessionCapturingOverrideEnabled() {
+        return this.sessionCapturingOverrideEnabled;
+    }
+
+    /**
+     * Enables transport client sharing allows. The default is false.
+     *
+     * When you have multiple instances of Cosmos Client in the same JVM interacting to multiple Cosmos accounts,
+     * enabling this allows connection sharing in Direct mode if possible between instances of Cosmos Client.
+     * @param transportClientSharingEnabled transport client sharing
+     * @return current cosmosClientBuilder
+     */
+    public CosmosClientBuilder setTransportClientSharingEnabled(boolean transportClientSharingEnabled) {
+        this.transportClientSharingEnabled = true;
+        return this;
+    }
+
+    /**
+     * Indicates whether transport client sharing is enabled. The default is false.
+     *
+     * When you have multiple instances of Cosmos Client in the same JVM interacting to multiple Cosmos accounts,
+     * enabling this allows connection sharing in Direct mode if possible between instances of Cosmos Client.
+     *
+     * @return the transport client sharing
+     */
+    public boolean isTransportClientSharingEnabled() {
+        return this.transportClientSharingEnabled;
     }
 
     /**
