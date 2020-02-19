@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.nio
 
+import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.specialized.AppendBlobClient
 import spock.lang.Unroll
 
@@ -307,11 +308,9 @@ class AzureFileSystemProviderSpec extends APISpec {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
-        def containerClient =
-            primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
 
         expect:
-        !((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(containerClient, fs.getPath(fileName))
+        !((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(fs.getPath(fileName, "bar"))
     }
 
     def "FileSystemProvider parent dir exists virtual"() {
@@ -328,7 +327,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         blobClient.create()
 
         then:
-        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(containerClient, fs.getPath(fileName))
+        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(fs.getPath(fileName, childName))
     }
 
     def "FileSystemProvider parent dir exists concrete"() {
@@ -343,16 +342,15 @@ class AzureFileSystemProviderSpec extends APISpec {
         blobClient.createWithResponse(null, [(AzureFileSystemProvider.DIR_METADATA_MARKER): "true"], null, null, null)
 
         then:
-        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(containerClient, fs.getPath(fileName))
+        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(fs.getPath(fileName, "bar"))
     }
 
     def "FileSystemProvider parent dir exists root"() {
         setup:
         def fs = createFS(config)
-        def containerClient =
-            primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
 
-        expect: "Null directory means the path is targeting the root directory"
-        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(containerClient, null)
+        expect:
+        // No parent means the parent is implicitly the default root, which always exists
+        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(fs.getPath("foo"))
     }
 }

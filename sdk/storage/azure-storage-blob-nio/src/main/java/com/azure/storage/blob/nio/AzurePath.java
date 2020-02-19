@@ -529,7 +529,12 @@ public final class AzurePath implements Path {
         BlobContainerClient containerClient =
             ((AzureFileStore) this.parentFileSystem.getFileStore(fileStoreName)).getContainerClient();
 
-        return containerClient.getBlobClient(this.withoutRoot());
+        String blobName = this.withoutRoot();
+        if (blobName.isEmpty()) {
+            throw new IOException("Cannot get a blob client to a path that only contains the root");
+        }
+
+        return containerClient.getBlobClient(blobName);
     }
 
     private String withoutRoot() {
