@@ -17,17 +17,17 @@ import java.util.concurrent.atomic.AtomicInteger;
  * This class uses a shared RntbdTransportClient for multiple Cosmos Clients.
  * The benefit is the underlying connections can be shared if possible across multiple Cosmos client instances.
  */
-public class SharedRntbdTransportClient extends TransportClient {
-    private static final Logger logger = LoggerFactory.getLogger(SharedRntbdTransportClient.class);
+public class SharedTransportClient extends TransportClient {
+    private static final Logger logger = LoggerFactory.getLogger(SharedTransportClient.class);
     private static final AtomicInteger counter = new AtomicInteger(0);
-    private static SharedRntbdTransportClient sharedTransportClient;
+    private static SharedTransportClient sharedTransportClient;
 
-    public static TransportClient getOrCreateInstance(Configs configs, int requestTimeout, UserAgentContainer userAgent) {
-        synchronized (TransportClient.class) {
+    public static TransportClient getOrCreateInstance(Protocol protocol, Configs configs, int requestTimeout, UserAgentContainer userAgent) {
+        synchronized (SharedTransportClient.class) {
             if (sharedTransportClient == null) {
                 assert counter.get() == 0;
                 logger.info("creating a new shared RntbdTransportClient");
-                sharedTransportClient = new SharedRntbdTransportClient(configs, requestTimeout, userAgent);
+                sharedTransportClient = new SharedTransportClient(protocol, configs, requestTimeout, userAgent);
             } else {
                 logger.info("Reusing an instance of RntbdTransportClient");
             }
@@ -39,8 +39,14 @@ public class SharedRntbdTransportClient extends TransportClient {
 
     private final TransportClient transportClient;
 
-    private SharedRntbdTransportClient(Configs configs, int requestTimeout, UserAgentContainer userAgent) {
-        this.transportClient = new RntbdTransportClient(configs, requestTimeout, userAgent);
+    private SharedTransportClient(Protocol protocol, Configs configs, int requestTimeout, UserAgentContainer userAgent) {
+        if (protocol == Protocol.TCP) {
+            this.transportClient = new RntbdTransportClient(configs, requestTimeout, userAgent);
+        } else if (protocol == Protocol.HTTPS){
+            this.transportClient = new HttpTransportClient(configs, requestTimeout, userAgent);
+        } else {
+            throw new IllegalArgumentException(String.format("protocol: %s", protocol));
+        }
     }
 
     @Override
@@ -54,7 +60,7 @@ public class SharedRntbdTransportClient extends TransportClient {
 
     @Override
     public void close() throws Exception {
-        synchronized (TransportClient.class) {
+        synchronized (SharedTransportClient.class) {
             final int numberOfActiveTransportClients = counter.decrementAndGet();
             logger.info("closing one reference to the shared RntbdTransportClient, the number of remaining references is {}", numberOfActiveTransportClients);
             if (numberOfActiveTransportClients == 0) {

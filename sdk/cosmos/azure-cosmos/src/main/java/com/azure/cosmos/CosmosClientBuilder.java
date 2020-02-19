@@ -37,7 +37,7 @@ public class CosmosClientBuilder {
     private TokenResolver tokenResolver;
     private CosmosKeyCredential cosmosKeyCredential;
     private boolean sessionCapturingOverrideEnabled;
-    private boolean transportClientSharingEnabled;
+    private boolean connectionSharingAcrossClientsEnabled;
 
     public CosmosClientBuilder() {
     }
@@ -71,11 +71,11 @@ public class CosmosClientBuilder {
      *
      * When you have multiple instances of Cosmos Client in the same JVM interacting to multiple Cosmos accounts,
      * enabling this allows connection sharing in Direct mode if possible between instances of Cosmos Client.
-     * @param transportClientSharingEnabled transport client sharing
+     * @param connectionSharingAcrossClientsEnabled transport client sharing
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder setTransportClientSharingEnabled(boolean transportClientSharingEnabled) {
-        this.transportClientSharingEnabled = true;
+    public CosmosClientBuilder setConnectionSharingAcrossClientsEnabled(boolean connectionSharingAcrossClientsEnabled) {
+        this.connectionSharingAcrossClientsEnabled = true;
         return this;
     }
 
@@ -87,8 +87,8 @@ public class CosmosClientBuilder {
      *
      * @return the transport client sharing
      */
-    public boolean isTransportClientSharingEnabled() {
-        return this.transportClientSharingEnabled;
+    public boolean isConnectionSharingAcrossClientsEnabled() {
+        return this.connectionSharingAcrossClientsEnabled;
     }
 
     /**

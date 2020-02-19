@@ -9,9 +9,8 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.LifeCycleUtils;
-import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import com.azure.cosmos.implementation.directconnectivity.SharedRntbdTransportClient;
+import com.azure.cosmos.implementation.directconnectivity.SharedTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.SkipException;
@@ -46,8 +45,8 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container1 = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
 
-        client1 = copyCosmosClientBuilder(clientBuilder()).setTransportClientSharingEnabled(true).buildClient();
-        client2 = copyCosmosClientBuilder(clientBuilder()).setTransportClientSharingEnabled(true).buildClient();
+        client1 = copyCosmosClientBuilder(clientBuilder()).setConnectionSharingAcrossClientsEnabled(true).buildClient();
+        client2 = copyCosmosClientBuilder(clientBuilder()).setConnectionSharingAcrossClientsEnabled(true).buildClient();
 
         container1 = client1.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
         container2 = client1.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
@@ -59,8 +58,8 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         LifeCycleUtils.closeQuietly(client1);
         LifeCycleUtils.closeQuietly(client2);
 
-        if (ifTcpMode()) {
-            SharedRntbdTransportClient transportClient1 = (SharedRntbdTransportClient) ReflectionUtils.getTransportClient(client1.asyncClient());
+        if (ifDirectMode()) {
+            SharedTransportClient transportClient1 = (SharedTransportClient) ReflectionUtils.getTransportClient(client1.asyncClient());
             assertThat(transportClient1.getReferenceCounter()).isEqualTo(2);
         }
     }
@@ -243,23 +242,23 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void transportClientReferenceValidation() {
-        if (!ifTcpMode()) {
-            throw new SkipException("not TCP mode");
+        if (!ifDirectMode()) {
+            throw new SkipException("not direct mode");
         }
 
         TransportClient transportClient = ReflectionUtils.getTransportClient(client.asyncClient());
-        assertThat(transportClient).isNotInstanceOf(SharedRntbdTransportClient.class);
+        assertThat(transportClient).isNotInstanceOf(SharedTransportClient.class);
 
         TransportClient transportClient1 = ReflectionUtils.getTransportClient(client1.asyncClient());
-        assertThat(transportClient1).isInstanceOf(SharedRntbdTransportClient.class);
+        assertThat(transportClient1).isInstanceOf(SharedTransportClient.class);
 
         TransportClient transportClient2 = ReflectionUtils.getTransportClient(client2);
         assertThat(transportClient2).isSameAs(transportClient1);
 
-        assertThat(((SharedRntbdTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
+        assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
     }
 
-    private boolean ifTcpMode() {
-        return (clientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT && clientBuilder().configs().getProtocol() == Protocol.TCP);
+    private boolean ifDirectMode() {
+        return (clientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT);
     }
 }
