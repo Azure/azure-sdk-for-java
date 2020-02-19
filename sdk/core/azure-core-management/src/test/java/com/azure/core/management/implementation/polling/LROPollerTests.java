@@ -153,7 +153,7 @@ public class LROPollerTests {
                 onNextCallCount[0]++;
                 if (onNextCallCount[0] == 1) {
                     Assertions.assertEquals(response.getStatus(),
-                        LongRunningOperationStatus.IN_PROGRESS);
+                        LongRunningOperationStatus.NOT_STARTED);
                     Assertions.assertNull(pollResult.value().getResourceId());
                 } else if (onNextCallCount[0] == 2) {
                     Assertions.assertEquals(response.getStatus(),

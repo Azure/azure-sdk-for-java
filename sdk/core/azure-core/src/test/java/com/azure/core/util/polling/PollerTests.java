@@ -163,6 +163,7 @@ public class PollerTests {
         // Assert
         StepVerifier.create(pollerFlux)
             .expectSubscription()
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.NOT_STARTED)
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response0.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response1.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response2.getStatus())
@@ -239,6 +240,7 @@ public class PollerTests {
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
+            .expectNextMatches(asyncPollResponse -> LongRunningOperationStatus.IN_PROGRESS == response0.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response0.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response1.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response2.getStatus())
@@ -282,6 +284,7 @@ public class PollerTests {
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.NOT_STARTED)
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response0.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response1.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response2.getStatus())
@@ -294,6 +297,7 @@ public class PollerTests {
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
+            .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.NOT_STARTED)
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response0.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response1.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response2.getStatus())
@@ -344,7 +348,7 @@ public class PollerTests {
         secondAsyncResponse[0] = null;
         //
         Response cancelResponse = pollerFlux
-            .take(2)
+            .take(3)
             .last()
             .flatMap((Function<AsyncPollResponse<Response, CertificateOutput>, Mono<Response>>) asyncPollResponse -> {
                 secondAsyncResponse[0] = asyncPollResponse;

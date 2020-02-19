@@ -156,40 +156,31 @@ public final class PollerFactory {
         SerializerAdapter serializerAdapter,
         HttpPipeline pipeline,
         Type pollResultType) {
-        return context -> {
-            PollingState pollingState = PollingState.from(serializerAdapter, context);
-            if (pollingState.getOperationStatus().isComplete()) {
-                if (pollingState.getOperationStatus() == LongRunningOperationStatus.FAILED
-                    || pollingState.getOperationStatus() == LRO_CANCELLED) {
-                    // Failed|Cancelled
-                    Error lroInitError = pollingState.getSynchronouslyFailedLroError();
-                    if (lroInitError != null) {
-                        return errorPollResponseMono(pollingState.getOperationStatus(), lroInitError);
+        return context ->
+            doSinglePoll(pipeline, PollingState.from(serializerAdapter, context))
+                .doOnNext(updatedState -> updatedState.store(context))
+                .flatMap(pollingState -> {
+                    if (pollingState.getOperationStatus().isComplete()) {
+                        if (pollingState.getOperationStatus() == LongRunningOperationStatus.FAILED
+                            || pollingState.getOperationStatus() == LRO_CANCELLED) {
+                            // Failed|Cancelled
+                            Error lroInitError = pollingState.getSynchronouslyFailedLroError();
+                            if (lroInitError != null) {
+                                return errorPollResponseMono(pollingState.getOperationStatus(), lroInitError);
+                            }
+                            Error pollError = pollingState.getPollError();
+                            if (pollError != null) {
+                                return errorPollResponseMono(pollingState.getOperationStatus(), pollError);
+                            }
+                            throw new IllegalStateException("Either LroError or PollError must"
+                                + "be set when OperationStatus is in Failed|Cancelled State.");
+                        }
                     }
-                    Error pollError = pollingState.getPollError();
-                    if (pollError != null) {
-                        return errorPollResponseMono(pollingState.getOperationStatus(), pollError);
-                    }
-                    throw new IllegalStateException("Either LroError or PollError must"
-                        + "be set when OperationStatus is in Failed|Cancelled State.");
-                } else {
-                    // Succeeded
                     return pollResponseMono(serializerAdapter,
                         pollingState.getOperationStatus(),
                         pollingState.getLastResponseBody(),
                         pollResultType);
-                }
-            } else {
-                // InProgress|NonTerminal-Status
-                Mono<PollResponse<PollResult<T>>> pollResponse = pollResponseMono(serializerAdapter,
-                    pollingState.getOperationStatus(),
-                    pollingState.getLastResponseBody(),
-                    pollResultType);
-                return doSinglePoll(pipeline, pollingState)
-                    .doOnNext(updatedState -> updatedState.store(context))
-                    .then(pollResponse);
-            }
-        };
+                });
     }
 
     /**

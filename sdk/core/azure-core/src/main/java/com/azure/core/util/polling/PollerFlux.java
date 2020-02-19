@@ -172,7 +172,9 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                         this.cancelOperation,
                         this.fetchResultOperation));
                 } else {
-                    return this.pollingLoop();
+                    return Flux.just(new AsyncPollResponse<>(this.rootContext,
+                        this.cancelOperation,
+                        this.fetchResultOperation)).concatWith(this.pollingLoop());
                 }
             })
             .subscribe(actual);
