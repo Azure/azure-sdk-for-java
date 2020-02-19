@@ -154,8 +154,8 @@ public class ShareFileClientBuilder {
      */
     public ShareDirectoryAsyncClient buildDirectoryAsyncClient() {
         ShareServiceVersion serviceVersion = getServiceVersion();
-        return new ShareDirectoryAsyncClient(constructImpl(serviceVersion), shareName, resourcePath, shareSnapshot,
-            accountName, serviceVersion);
+        return new ShareDirectoryAsyncClient(constructImpl(serviceVersion), shareName, resourcePath,
+            shareSnapshot, accountName, serviceVersion);
     }
 
     /**

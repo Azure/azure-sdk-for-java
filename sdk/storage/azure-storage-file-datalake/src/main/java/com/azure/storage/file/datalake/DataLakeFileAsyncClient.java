@@ -43,7 +43,9 @@ import static com.azure.core.util.FluxUtil.withContext;
  * {@link DataLakeFileSystemAsyncClient#getFileAsyncClient(String)}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>Azure
+ * Please refer to the
+ *
+ * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">Azure
  * Docs</a> for more information.
  */
 public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {

@@ -131,29 +131,17 @@ public interface Topic extends HasInner<TopicInner>, Resource, GroupableResource
         }
 
         /**
-         * The stage of the topic definition allowing to specify MetricResourceId.
-         */
-        interface WithMetricResourceId {
-            /**
-             * Specifies metricResourceId.
-             * @param metricResourceId Metric resource id for the topic
-             * @return the next definition stage
-             */
-            WithCreate withMetricResourceId(String metricResourceId);
-        }
-
-        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Topic>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAllowTrafficFromAllIPs, DefinitionStages.WithInboundIpRules, DefinitionStages.WithInputSchema, DefinitionStages.WithInputSchemaMapping, DefinitionStages.WithMetricResourceId {
+        interface WithCreate extends Creatable<Topic>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAllowTrafficFromAllIPs, DefinitionStages.WithInboundIpRules, DefinitionStages.WithInputSchema, DefinitionStages.WithInputSchemaMapping {
         }
     }
     /**
      * The template for a Topic update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Topic>, Resource.UpdateWithTags<Update>, UpdateStages.WithAllowTrafficFromAllIPs, UpdateStages.WithInboundIpRules, UpdateStages.WithInputSchema, UpdateStages.WithInputSchemaMapping, UpdateStages.WithMetricResourceId {
+    interface Update extends Appliable<Topic>, Resource.UpdateWithTags<Update>, UpdateStages.WithAllowTrafficFromAllIPs, UpdateStages.WithInboundIpRules {
     }
 
     /**
@@ -178,46 +166,10 @@ public interface Topic extends HasInner<TopicInner>, Resource, GroupableResource
         interface WithInboundIpRules {
             /**
              * Specifies inboundIpRules.
-             * @param inboundIpRules This determines the IP filtering rules that ought to be applied when events are received on this topic
+             * @param inboundIpRules This determines the IP filtering rules that ought be applied when events are received on this domain
              * @return the next update stage
              */
             Update withInboundIpRules(List<InboundIpRule> inboundIpRules);
-        }
-
-        /**
-         * The stage of the topic update allowing to specify InputSchema.
-         */
-        interface WithInputSchema {
-            /**
-             * Specifies inputSchema.
-             * @param inputSchema This determines the format that Event Grid should expect for incoming events published to the topic. Possible values include: 'EventGridSchema', 'CustomEventSchema', 'CloudEventSchemaV1_0'
-             * @return the next update stage
-             */
-            Update withInputSchema(InputSchema inputSchema);
-        }
-
-        /**
-         * The stage of the topic update allowing to specify InputSchemaMapping.
-         */
-        interface WithInputSchemaMapping {
-            /**
-             * Specifies inputSchemaMapping.
-             * @param inputSchemaMapping This enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various properties of a source schema to various required properties of the EventGridEvent schema
-             * @return the next update stage
-             */
-            Update withInputSchemaMapping(InputSchemaMapping inputSchemaMapping);
-        }
-
-        /**
-         * The stage of the topic update allowing to specify MetricResourceId.
-         */
-        interface WithMetricResourceId {
-            /**
-             * Specifies metricResourceId.
-             * @param metricResourceId Metric resource id for the topic
-             * @return the next update stage
-             */
-            Update withMetricResourceId(String metricResourceId);
         }
 
     }

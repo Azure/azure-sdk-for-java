@@ -19,7 +19,7 @@ import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
-
+import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -267,7 +267,6 @@ public class DataLakeServiceClientBuilder {
         return this;
     }
 
-    // TODO (gapra) : Determine how to set the service version of blobs too
     /**
      * Sets the {@link DataLakeServiceVersion} that is used when making API requests.
      * <p>
@@ -281,6 +280,7 @@ public class DataLakeServiceClientBuilder {
      * @return the updated DataLakeServiceClientBuilder object
      */
     public DataLakeServiceClientBuilder serviceVersion(DataLakeServiceVersion version) {
+        blobServiceClientBuilder.serviceVersion(TransformUtils.toBlobServiceVersion(version));
         this.version = version;
         return this;
     }

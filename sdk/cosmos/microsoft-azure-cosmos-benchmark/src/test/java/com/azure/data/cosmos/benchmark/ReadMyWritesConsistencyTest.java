@@ -14,7 +14,6 @@ import com.azure.data.cosmos.internal.Database;
 import com.azure.data.cosmos.internal.DocumentCollection;
 import com.azure.data.cosmos.internal.RequestOptions;
 import com.azure.data.cosmos.internal.TestConfigurations;
-import com.azure.data.cosmos.internal.directconnectivity.Protocol;
 import com.beust.jcommander.JCommander;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
@@ -37,6 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static com.azure.data.cosmos.internal.guava27.Strings.lenientFormat;
 
 public class ReadMyWritesConsistencyTest {
 
@@ -114,7 +114,7 @@ public class ReadMyWritesConsistencyTest {
             " -printingInterval 60" +
             "%s";
 
-        String cmd = Strings.lenientFormat(cmdFormat,
+        String cmd = lenientFormat(cmdFormat,
             TestConfigurations.HOST,
             TestConfigurations.MASTER_KEY,
             database.id(),

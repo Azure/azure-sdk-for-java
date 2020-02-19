@@ -1,54 +1,54 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatedirectorymetadata931039d97f36?restype=share",
+    "Uri" : "https://gaprastg71.file.core.windows.net/shareasyncapitestscreatedirectorymetadata42945c5ab306?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "47fb326a-282d-4f9e-9a4a-15818b3fa931"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "fe3320df-71cc-4e22-923b-12e4a146c35f"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7519F929682E8",
-      "Last-Modified" : "Tue, 15 Oct 2019 18:43:29 GMT",
+      "ETag" : "0x8D77912059074E1",
+      "Last-Modified" : "Wed, 04 Dec 2019 23:31:00 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "83e48d04-a01a-0116-5f88-83b7bd000000",
-      "Date" : "Tue, 15 Oct 2019 18:43:28 GMT",
-      "x-ms-client-request-id" : "47fb326a-282d-4f9e-9a4a-15818b3fa931"
+      "x-ms-request-id" : "9ba99fda-201a-0011-3dfa-aa088f000000",
+      "Date" : "Wed, 04 Dec 2019 23:30:59 GMT",
+      "x-ms-client-request-id" : "fe3320df-71cc-4e22-923b-12e4a146c35f"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/shareasyncapitestscreatedirectorymetadata931039d97f36/testCreateDirectory?restype=directory",
+    "Uri" : "https://gaprastg71.file.core.windows.net/shareasyncapitestscreatedirectorymetadata42945c5ab306/testCreateDirectory?restype=directory",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "800532e5-8020-4e29-93a3-e48a81f5ff9e"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "483b1f52-a83f-46d5-abb6-7f47551443b8"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
-      "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
+      "x-ms-version" : "2019-07-07",
+      "x-ms-file-permission-key" : "1887593946193683302*8280205063999649007",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-10-15T18:43:29.7830217Z",
-      "Last-Modified" : "Tue, 15 Oct 2019 18:43:29 GMT",
+      "x-ms-file-creation-time" : "2019-12-04T23:31:00.6897357Z",
+      "Last-Modified" : "Wed, 04 Dec 2019 23:31:00 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 15 Oct 2019 18:43:28 GMT",
-      "ETag" : "0x8D7519F92A01949",
+      "Date" : "Wed, 04 Dec 2019 23:30:59 GMT",
+      "ETag" : "0x8D77912059F10CD",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-10-15T18:43:29.7830217Z",
+      "x-ms-file-change-time" : "2019-12-04T23:31:00.6897357Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "83e48d06-a01a-0116-6088-83b7bd000000",
-      "x-ms-client-request-id" : "800532e5-8020-4e29-93a3-e48a81f5ff9e",
-      "x-ms-file-last-write-time" : "2019-10-15T18:43:29.7830217Z"
+      "x-ms-request-id" : "9ba99fdc-201a-0011-3efa-aa088f000000",
+      "x-ms-client-request-id" : "483b1f52-a83f-46d5-abb6-7f47551443b8",
+      "x-ms-file-last-write-time" : "2019-12-04T23:31:00.6897357Z"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareasyncapitestscreatedirectorymetadata931039d97f36" ]
+  "variables" : [ "shareasyncapitestscreatedirectorymetadata42945c5ab306" ]
 }

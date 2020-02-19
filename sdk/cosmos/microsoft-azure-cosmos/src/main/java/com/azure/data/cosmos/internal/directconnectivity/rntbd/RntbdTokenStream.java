@@ -3,7 +3,6 @@
 
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Maps;
@@ -14,7 +13,7 @@ import java.util.stream.Collector;
 
 import static com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Strings.lenientFormat;
+import static com.azure.data.cosmos.internal.guava27.Strings.lenientFormat;
 
 @SuppressWarnings("UnstableApiUsage")
 abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {

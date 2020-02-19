@@ -267,6 +267,43 @@ public class PageBlobClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link PageBlobClient#getManagedDiskPageRangesDiff(BlobRange, String)}
+     */
+    public void getPageRangesDiffFromUrlCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiff#BlobRange-String
+        BlobRange blobRange = new BlobRange(offset);
+        final String prevSnapshotUrl = "previous snapshot url";
+        PageList pageList = client.getPageRangesDiff(blobRange, prevSnapshotUrl);
+
+        System.out.println("Valid Page Ranges are:");
+        for (PageRange pageRange : pageList.getPageRange()) {
+            System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+        }
+        // END: com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiff#BlobRange-String
+    }
+
+    /**
+     * Code snippets for {@link PageBlobClient#getManagedDiskPageRangesDiffWithResponse(BlobRange, String, BlobRequestConditions,
+     * Duration, Context)}
+     */
+    public void getPageRangesDiffFromUrlWithResponseCodeSnippet() {
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context
+        BlobRange blobRange = new BlobRange(offset);
+        final String prevSnapshotUrl = "previous snapshot url";
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
+        Context context = new Context(key, value);
+
+        PageList pageList = client
+            .getPageRangesDiffWithResponse(blobRange, prevSnapshotUrl, blobRequestConditions, timeout, context).getValue();
+
+        System.out.println("Valid Page Ranges are:");
+        for (PageRange pageRange : pageList.getPageRange()) {
+            System.out.printf("Start: %s, End: %s%n", pageRange.getStart(), pageRange.getEnd());
+        }
+        // END: com.azure.storage.blob.specialized.PageBlobClient.getManagedDiskPageRangesDiffWithResponse#BlobRange-String-BlobRequestConditions-Duration-Context
+    }
+
+    /**
      * Code snippets for {@link PageBlobClient#resize(long)}
      */
     public void resizeCodeSnippet() {

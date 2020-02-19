@@ -1,6 +1,16 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0-beta.2 (Unreleased)
+
+
+## 1.3.0-beta.1 (2020-02-11)
+- Added default logging implementation for SLF4J.
+- Modified checks to determine if logging is allowed.
+- Improved logging performance.
+- Enhanced and extended PagedFlux implementation to cover additional use cases.
+- Enabled loading proxy configuration from the environment.
+- Added support for Digest proxy authentication.
+- Updated 'BufferedResponse' to deep copy the response to handle scenarios where the underlying stream is reclaimed.
 
 ## 1.2.0 (2020-01-07)
 - Ignore null headers and allow full url paths 

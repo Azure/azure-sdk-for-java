@@ -62,7 +62,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
             toOkHttpRequest(request).subscribe(okHttpRequest -> {
                 Call call = httpClient.newCall(okHttpRequest);
                 call.enqueue(new OkHttpCallback(sink, request));
-                sink.onCancel(() -> call.cancel());
+                sink.onCancel(call::cancel);
             }, sink::error);
         }));
     }
@@ -99,7 +99,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
                             .map(requestBody -> rb.method(request.getHttpMethod().toString(), requestBody));
                 }
             })
-            .map(rb -> rb.build());
+            .map(Request.Builder::build);
     }
 
     /**
@@ -195,8 +195,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
                 //
                 this.responseBodyMono = Mono.empty();
             } else {
-                this.responseBodyMono = Mono.using(() -> innerResponse.body(),
-                    rb -> Mono.just(rb),
+                this.responseBodyMono = Mono.using(innerResponse::body,
+                    Mono::just,
                     // Resource cleanup
                     // square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
                     ResponseBody::close, /* Change in behavior since reactor-core 3.3.0.RELEASE */ false);

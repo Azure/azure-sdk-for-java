@@ -8,6 +8,7 @@ import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.util.Context;
@@ -27,11 +28,11 @@ public class ExtractKeyPhrasesBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("{subscription_key}")
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildClient();
 
-        // The texts that need be analysed.
+        // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
             new TextDocumentInput("1", "My cat might need to see a veterinarian.", "en"),
             new TextDocumentInput("2", "The pitot tube is used to measure airspeed.", "en")
@@ -41,14 +42,14 @@ public class ExtractKeyPhrasesBatchDocuments {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Extracting batch key phrases
-        final DocumentResultCollection<ExtractKeyPhraseResult> extractedBatchResult = client.extractBatchKeyPhrasesWithResponse(inputs, requestOptions, Context.NONE).getValue();
+        final DocumentResultCollection<ExtractKeyPhraseResult> extractedBatchResult = client.extractKeyPhrasesBatchWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", extractedBatchResult.getModelVersion());
 
         // Batch statistics
         final TextDocumentBatchStatistics batchStatistics = extractedBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
-            batchStatistics.getErroneousDocumentCount(),
+            batchStatistics.getInvalidDocumentCount(),
             batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
@@ -61,8 +62,9 @@ public class ExtractKeyPhrasesBatchDocuments {
                 continue;
             }
             // Valid document
+            System.out.println("Extracted phrases:");
             for (String keyPhrases : extractKeyPhraseResult.getKeyPhrases()) {
-                System.out.printf("Extracted phrases: %s.%n", keyPhrases);
+                System.out.printf("%s.%n", keyPhrases);
             }
         }
     }

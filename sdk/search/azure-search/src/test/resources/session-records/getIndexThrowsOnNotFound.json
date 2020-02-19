@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdkb26684714435.search-dogfood.windows-int.net/indexes('thisindexdoesnotexist')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "76ef176e-be04-44e9-91a7-bf7a5ab98646",
+      "StatusCode" : "404",
+      "Date" : "Tue, 24 Dec 2019 07:01:13 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "33",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "128",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'thisindexdoesnotexist' was found in the service 'azs-sdkb26684714435'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
