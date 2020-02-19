@@ -736,4 +736,50 @@ class APISpec extends Specification {
         }
     }
 
+    /*
+    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
+    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
+    with than was worth it.
+     */
+
+    def getStubResponse(int code, HttpRequest request) {
+        return new HttpResponse(request) {
+
+            @Override
+            int getStatusCode() {
+                return code
+            }
+
+            @Override
+            String getHeaderValue(String s) {
+                return null
+            }
+
+            @Override
+            HttpHeaders getHeaders() {
+                return new HttpHeaders()
+            }
+
+            @Override
+            Flux<ByteBuffer> getBody() {
+                return Flux.empty()
+            }
+
+            @Override
+            Mono<byte[]> getBodyAsByteArray() {
+                return Mono.just(new byte[0])
+            }
+
+            @Override
+            Mono<String> getBodyAsString() {
+                return Mono.just("")
+            }
+
+            @Override
+            Mono<String> getBodyAsString(Charset charset) {
+                return Mono.just("")
+            }
+        }
+    }
+
 }

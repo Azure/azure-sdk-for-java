@@ -1,18 +1,25 @@
 package com.azure.storage.file.datalake
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.http.HttpMethod
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpRequest
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobUrlParts
+import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.file.datalake.models.*
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
@@ -21,7 +28,6 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.security.MessageDigest
-import java.time.Duration
 
 class FileAPITest extends APISpec {
     DataLakeFileClient fc
@@ -230,7 +236,7 @@ class FileAPITest extends APISpec {
         def e = thrown(DataLakeStorageException)
         e.getResponse().getStatusCode() == 404
         e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND.toString()
-//        e.getServiceMessage().contains("The specified blob does not exist.")
+        // message not correctly passed through due to conversion of exceptions
     }
 
     @Unroll
@@ -1487,7 +1493,10 @@ class FileAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
+    // no overwrite interrupted tests not ported over for datalake since the access conditions check is done on the
+    // create method, so simple AC checks should suffice.
     @Unroll
+    @Requires({liveMode()}) // Test uploads large amount of data
     def "Upload from file"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -1559,31 +1568,6 @@ class FileAPITest extends APISpec {
 
         cleanup:
         file.delete()
-    }
-
-    def "Upload from file no overwrite interrupted"() {
-        setup:
-        def file = getRandomFile(257 * 1024 * 1024)
-        def smallFile = getRandomFile(50)
-        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-
-        expect:
-        /*
-         * When the upload begins trigger an upload to write the blob after waiting 500 milliseconds so that the upload
-         * fails when it attempts to put the block list.
-         */
-        StepVerifier.create(fac.uploadFromFile(file.toPath().toString())
-            .doOnSubscribe({
-                fac.uploadFromFile(smallFile.toPath().toString())
-                    .delaySubscription(Duration.ofMillis(500)).subscribe()
-            }))
-            .verifyErrorSatisfies({
-                assert it instanceof DataLakeStorageException
-            })
-
-        cleanup:
-        file.delete()
-        smallFile.delete()
     }
 
     def "Upload from file overwrite"() {
@@ -1714,6 +1698,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({liveMode()}) // Test uploads large amount of data
     def "Async buffered upload"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -1812,8 +1797,8 @@ class FileAPITest extends APISpec {
         10 * Constants.MB | 512 * Constants.KB | 20
     }
 
-    // Only run these tests in live mode as they use variables that can't be captured.
     @Unroll
+    @Requires({liveMode()}) // Test uploads large amount of data
     def "Buffered upload chunked source"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2116,44 +2101,48 @@ class FileAPITest extends APISpec {
 //    notThrown(IllegalArgumentException)
 //}*/
 //
-//    @Requires({ liveMode() })
+
 //    def "Buffered upload network error"() {
 //        setup:
+//        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+//
 //        /*
 //         This test uses a Flowable that does not allow multiple subscriptions and therefore ensures that we are
 //         buffering properly to allow for retries even given this source behavior.
 //         */
-//        blockBlobAsyncClient.upload(Flux.just(defaultData), defaultDataSize, true).block()
+//        fac.upload(Flux.just(defaultData), defaultDataSize, null, true).block()
 //
 //        // Mock a response that will always be retried.
 //        def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
 //
 //        // Mock a policy that will always then check that the data is still the same and return a retryable error.
 //        def mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-//            return collectBytesInBuffer(context.getHttpRequest().getBody())
-//                .map({ it == defaultData })
-//                .flatMap({ it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()) })
-//        }
+//            return context.getHttpRequest().getBody() == null ? next.process() :
+//                collectBytesInBuffer(context.getHttpRequest().getBody())
+//                    .map({ it == defaultData })
+//                    .flatMap({ it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()) })
+//            }
 //
 //        // Build the pipeline
-//        blobAsyncClient = new BlobServiceClientBuilder()
+//        def fileAsyncClient = new DataLakeServiceClientBuilder()
 //            .credential(primaryCredential)
 //            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
 //            .httpClient(getHttpClient())
 //            .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
 //            .addPolicy(mockPolicy).buildAsyncClient()
-//            .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName())
+//            .getFileSystemAsyncClient(fac.getFileSystemName())
+//            .getFileAsyncClient(generatePathName())
 //
 //        when:
 //        // Try to upload the flowable, which will hit a retry. A normal upload would throw, but buffering prevents that.
-//        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(1024, 4, null)
+//        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(1024, 4, null, null)
 //        // TODO: It could be that duplicates aren't getting made in the retry policy? Or before the retry policy?
 //
 //        then:
 //        // A second subscription to a download stream will
-//        StepVerifier.create(blobAsyncClient.upload(blockBlobAsyncClient.download(), parallelTransferOptions, true))
+//        StepVerifier.create(fileAsyncClient.upload(fac.read(), defaultDataSize, parallelTransferOptions))
 //            .verifyErrorSatisfies({
-//                assert it instanceof BlobStorageException
+//                assert it instanceof DataLakeStorageException
 //                assert it.getStatusCode() == 500
 //            })
 //    }
@@ -2167,28 +2156,6 @@ class FileAPITest extends APISpec {
         StepVerifier.create(fac.upload(defaultFlux, defaultDataSize, null))
             .verifyError(IllegalArgumentException)
     }
-
-//    def "Buffered upload no overwrite interrupted"() {
-//        setup:
-//        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-//
-//        def smallFile = getRandomFile(50)
-//
-//        /*
-//         * Setup the data stream to trigger a small upload upon subscription. This will happen once the upload method
-//         * has verified whether a blob with the given name already exists, so this will trigger once uploading begins.
-//         */
-//        def data = Flux.just(getRandomData(Constants.MB)).repeat(257)
-//            .doOnSubscribe({ fac.uploadFromFile(smallFile.toPath().toString()).subscribe() })
-//
-//        expect:
-//        StepVerifier.create(fac.upload(data, Constants.MB * 257, null))
-//            .verifyErrorSatisfies({
-//                assert it instanceof DataLakeStorageException
-//            })
-//        cleanup:
-//        smallFile.delete()
-//    }
 
     def "Buffered upload overwrite"() {
         setup:
