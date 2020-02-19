@@ -3,18 +3,9 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.LifeCycleUtils;
-import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.implementation.http.HttpResponse;
-import org.mockito.Mockito;
 import org.testng.annotations.Test;
-
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,11 +15,27 @@ public class SharedRntbdTransportClientTest {
         TransportClient transportClient1 = null;
         TransportClient transportClient2 = null;
         try {
-            transportClient1 = SharedRntbdTransportClient.getOrCreateInstance(new Configs(), 1, new UserAgentContainer());
-            transportClient2 = SharedRntbdTransportClient.getOrCreateInstance(new Configs(), 1, new UserAgentContainer());
+            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
+            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
 
             assertThat(transportClient2).isSameAs(transportClient1);
-            assertThat(((SharedRntbdTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
+            assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
+        } finally {
+            LifeCycleUtils.closeQuietly(transportClient1);
+            LifeCycleUtils.closeQuietly(transportClient2);
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void createTwoHttpsClient_SharedReference() {
+        TransportClient transportClient1 = null;
+        TransportClient transportClient2 = null;
+        try {
+            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.HTTPS, new Configs(), 1, new UserAgentContainer());
+            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.HTTPS, new Configs(), 1, new UserAgentContainer());
+
+            assertThat(transportClient2).isSameAs(transportClient1);
+            assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
         } finally {
             LifeCycleUtils.closeQuietly(transportClient1);
             LifeCycleUtils.closeQuietly(transportClient2);
@@ -42,14 +49,14 @@ public class SharedRntbdTransportClientTest {
         TransportClient transportClient3 = null;
 
         try {
-            transportClient1 = SharedRntbdTransportClient.getOrCreateInstance(new Configs(), 1, new UserAgentContainer());
-            transportClient2 = SharedRntbdTransportClient.getOrCreateInstance(new Configs(), 1, new UserAgentContainer());
+            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
+            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
             transportClient2.close();
-            assertThat(((SharedRntbdTransportClient) transportClient1).getReferenceCounter()).isEqualTo(1);
+            assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(1);
 
-            transportClient3 = SharedRntbdTransportClient.getOrCreateInstance(new Configs(), 1, new UserAgentContainer());
+            transportClient3 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
             assertThat(transportClient3).isSameAs(transportClient1);
-            assertThat(((SharedRntbdTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
+            assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
         } finally {
             LifeCycleUtils.closeQuietly(transportClient1);
             LifeCycleUtils.closeQuietly(transportClient3);
@@ -63,15 +70,15 @@ public class SharedRntbdTransportClientTest {
         TransportClient transportClient3 = null;
 
         try {
-            transportClient1 = SharedRntbdTransportClient.getOrCreateInstance(new Configs(), 1, new UserAgentContainer());
-            transportClient2 = SharedRntbdTransportClient.getOrCreateInstance(new Configs(), 1, new UserAgentContainer());
+            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
+            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
             transportClient1.close();
             transportClient2.close();
-            assertThat(((SharedRntbdTransportClient) transportClient1).getReferenceCounter()).isEqualTo(0);
+            assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(0);
 
-            transportClient3 = SharedRntbdTransportClient.getOrCreateInstance(new Configs(), 1, new UserAgentContainer());
+            transportClient3 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
             assertThat(transportClient3).isNotSameAs(transportClient1);
-            assertThat(((SharedRntbdTransportClient) transportClient3).getReferenceCounter()).isEqualTo(1);
+            assertThat(((SharedTransportClient) transportClient3).getReferenceCounter()).isEqualTo(1);
         } finally {
             LifeCycleUtils.closeQuietly(transportClient3);
         }

@@ -33,18 +33,18 @@ public class StoreClientFactory implements AutoCloseable {
         this.protocol = configs.getProtocol();
         this.requestTimeoutInSeconds = requestTimeoutInSeconds;
         this.maxConcurrentConnectionOpenRequests = maxConcurrentConnectionOpenRequests;
-        this. enableTransportClientSharing = enableTransportClientSharing;
+        this.enableTransportClientSharing = enableTransportClientSharing;
 
-        if (protocol == Protocol.HTTPS) {
-            this.transportClient = new HttpTransportClient(configs, requestTimeoutInSeconds, userAgent);
-        } else if (protocol == Protocol.TCP){
-            if (enableTransportClientSharing) {
-                this.transportClient = SharedRntbdTransportClient.getOrCreateInstance(configs, requestTimeoutInSeconds, userAgent);
-            } else {
-                this.transportClient = new RntbdTransportClient(configs, requestTimeoutInSeconds, userAgent);
-            }
+        if (enableTransportClientSharing) {
+            this.transportClient = SharedTransportClient.getOrCreateInstance(protocol, configs, requestTimeoutInSeconds, userAgent);
         } else {
-            throw new IllegalArgumentException(String.format("protocol: %s", this.protocol));
+            if (protocol == Protocol.HTTPS) {
+                this.transportClient = new HttpTransportClient(configs, requestTimeoutInSeconds, userAgent);
+            } else if (protocol == Protocol.TCP) {
+                this.transportClient = new RntbdTransportClient(configs, requestTimeoutInSeconds, userAgent);
+            } else {
+                throw new IllegalArgumentException(String.format("protocol: %s", this.protocol));
+            }
         }
     }
 
