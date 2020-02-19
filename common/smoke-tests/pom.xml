@@ -90,7 +90,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.2.0-dev.20200107.1</version>
+      <version>1.2.0</version>
     </dependency>
 
     <dependency>
@@ -102,25 +102,25 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.1.0-beta.1</version>
+      <version>1.0.3</version>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.1.0-dev.20200108.1</version>
+      <version>4.1.0</version>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.0.1-dev.20200107.7</version>
+      <version>5.0.1</version>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.3.0-dev.20200117.1</version>
+      <version>12.3.0</version>
     </dependency>
 
     <dependency>
