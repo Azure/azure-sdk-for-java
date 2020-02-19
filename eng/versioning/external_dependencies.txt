@@ -43,7 +43,7 @@ org.apache.logging.log4j:log4j-api;2.11.1
 org.apache.logging.log4j:log4j-core;2.11.1
 org.apache.logging.log4j:log4j-slf4j-impl;2.13.0
 org.apache.qpid:proton-j;0.33.2
-org.asynchttpclient:async-http-client;2.10.4
+org.asynchttpclient:async-http-client;2.10.5
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
 org.powermock:powermock-api-mockito2;2.0.2
