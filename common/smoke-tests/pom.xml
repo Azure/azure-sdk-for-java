@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
   <artifactId>smoke-test</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0-beta.1</version>
   <name>smoke-test</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -83,7 +83,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12-beta-1</version>
+      <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -126,7 +126,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.29</version>
+      <version>1.7.25</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
     </dependency>
 
   </dependencies>
