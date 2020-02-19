@@ -412,7 +412,8 @@ public final class QueueAsyncClient {
      */
     public Mono<Response<Void>> setAccessPolicyWithResponse(Iterable<QueueSignedIdentifier> permissions) {
         try {
-            return withContext(context -> setAccessPolicyWithResponse(permissions, context), STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> setAccessPolicyWithResponse(permissions, context),
+                STORAGE_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
