@@ -115,7 +115,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcdeleteoptions0blobapitestdeleteoptions17b79742756e8b0?include=&restype=container&comp=list",
+    "Uri" : "https://azstoragesdkaccount.blob.core.windows.net/jtcdeleteoptions0blobapitestdeleteoptions17b79742756e8b0?restype=container&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_221; Mac OS X 10.14.6",
