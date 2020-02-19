@@ -63,8 +63,8 @@ public final class PollerFactory {
         Objects.requireNonNull(finalResultType, "'finalResultType' cannot be null.");
         Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
         Objects.requireNonNull(lroInitMono, "'lroInitMono' cannot be null.");
-        Function<PollingContext<PollResult<T>>, Mono<PollResult<T>>> defaultLroInitOperation = context -> lroInitMono
-            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
+        Function<PollingContext<PollResult<T>>, Mono<PollResponse<PollResult<T>>>> defaultLroInitOperation =
+            context -> lroInitMono.flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
                 .map(contentBytes -> {
                     String content = new String(contentBytes, StandardCharsets.UTF_8);
                     PollingState state = PollingState.create(serializerAdapter,
@@ -74,9 +74,9 @@ public final class PollerFactory {
                         content);
                     state.store(context);
                     T result = deserialize(serializerAdapter, content, pollResultType);
-                    return new PollResult<>(result);
+                    return new PollResponse<>(state.getOperationStatus(), new PollResult<>(result));
                 }));
-        return new PollerFlux<>(defaultPollInterval,
+        return PollerFlux.create(defaultPollInterval,
             defaultLroInitOperation,
             pollFunction(serializerAdapter, pipeline, pollResultType),
             cancelFunction(),
