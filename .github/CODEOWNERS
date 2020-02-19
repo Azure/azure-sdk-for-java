@@ -20,6 +20,7 @@
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang
 /sdk/identity/                                      @g2vinay @jianghaolu
 /sdk/keyvault/                                      @g2vinay @samvaity
+/sdk/search/                                        @alzimmermsft @sima-zhu
 /sdk/servicebus/                                    @yvgopal @nemakam
 /sdk/storage/                                       @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
 /sdk/textanalytics/                                 @samvaity @mssfang
