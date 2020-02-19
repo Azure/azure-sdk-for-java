@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SharedRntbdTransportClientTest {
+public class SharedTransportClientTest {
     @Test(groups = { "unit" })
     public void createTwoClient_SharedReference() {
         TransportClient transportClient1 = null;
