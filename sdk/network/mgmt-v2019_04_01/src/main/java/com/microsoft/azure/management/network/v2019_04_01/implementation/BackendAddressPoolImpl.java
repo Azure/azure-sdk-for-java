@@ -81,6 +81,11 @@ class BackendAddressPoolImpl extends IndexableRefreshableWrapperImpl<BackendAddr
     }
 
     @Override
+    public List<SubResource> outboundRules() {
+        return this.inner().outboundRules();
+    }
+
+    @Override
     public String provisioningState() {
         return this.inner().provisioningState();
     }
