@@ -11,14 +11,12 @@ public PollerFlux<OperationResult, SupervisedModel> beginSupervisedModelTraining
 public PollerFlux<OperationResult, SupervisedModel> beginSupervisedModelTraining(String sourceUrl, String filePrefix, boolean includeSubFolders) { }
 
 // Analyze form with custom models
-public PollerFlux<OperationResult, FormResult> beginAnalyzeForm(Flux<ByteBuffer> data, String modelId, FormContentType contentType, boolean includeTextDetails) { }
-public PollerFlux<OperationResult, FormResult> beginAnalyzeForm(String uploadFilePath, String modelId, boolean convertToStream, 
-boolean includeTextDetails) { }
+public PollerFlux<OperationResult, FormResult> beginAnalyzeForm(Flux<ByteBuffer> data, String modelId, boolean includeTextDetails) { }
+public PollerFlux<OperationResult, FormResult> beginAnalyzeForm(String uploadFilePath, String modelId, boolean includeTextDetails) { }
 
 // Analyze with supervised models
-public PollerFlux<OperationResult, PredefinedFormResult> beginSupervisedAnalyzeForm(Flux<ByteBuffer> data, String modelId, FormContentType contentType, boolean includeTextDetails) { }
-public PollerFlux<OperationResult, PredefinedFormResult> beginSupervisedAnalyzeForm(String uploadFilePath, String modelId, 
-boolean convertToStream, boolean includeTextDetails) { }
+public PollerFlux<OperationResult, PredefinedFormResult> beginSupervisedAnalyzeForm(Flux<ByteBuffer> data, String modelId, boolean includeTextDetails) { }
+public PollerFlux<OperationResult, PredefinedFormResult> beginSupervisedAnalyzeForm(String uploadFilePath, String modelId, boolean includeTextDetails) { }
 
 // List custom Models
 public PagedFlux<ModelInfo> listModels() {}
@@ -30,15 +28,12 @@ public Mono<Void> delete(String modelId) { }
 public Mono<Response<Void>> deleteWithResponse(String modelId) { }
 
 // Analyze receipt 
-public PollerFlux<OperationResult, ExtractedReceiptResult> beginAnalyzeReceipt(Flux<ByteBuffer> data, FormContentType contentType, boolean includeTextDetails) { }
-public PollerFlux<OperationResult, ExtractedReceiptResult> beginAnalyzeReceipt(String uploadFilePath,  boolean convertToStream, 
-boolean includeTextDetails) { }
+public PollerFlux<OperationResult, ExtractedReceiptResult> beginAnalyzeReceipt(Flux<ByteBuffer> data, boolean includeTextDetails) { }
+public PollerFlux<OperationResult, ExtractedReceiptResult> beginAnalyzeReceipt(String uploadFilePath, boolean includeTextDetails) { }
 
 // Analyze Layout
-public PollerFlux<OperationResult, ExtractedLayoutResult> beginAnalyzeLayout(String uploadFilePath, boolean convertToStream,
-boolean includeTextDetails) { }
-public PollerFlux<OperationResult, ExtractedLayoutResult> beginAnalyzeLayout(Flux<ByteBuffer> data, FormContentType contentType, 
-boolean includeTextDetails) { }
+public PollerFlux<OperationResult, ExtractedLayoutResult> beginAnalyzeLayout(String uploadFilePath, boolean includeTextDetails) { }
+public PollerFlux<OperationResult, ExtractedLayoutResult> beginAnalyzeLayout(Flux<ByteBuffer> data, boolean includeTextDetails) { }
 
 ### Models
 
@@ -65,7 +60,6 @@ public class FormCluster {
 
 // Unsupervised model analyze form result
 public class FormResult {
-    private OperationStatus status; 
     private List<ExtractedPage> pages ;
     private List<RawPageExtraction> rawPageExtractions ;
 }
@@ -106,16 +100,8 @@ public class ExtractedTableCell extends ExtractedText {
     private List<String> elements; // only included if text details true. Confirm others.
 }
 
-public ExpandableStringEnum<FormContentType> extends ExpandableStringEnum {
-    private static final FormContentType JPEG = fromString("Jpeg");
-    private static final FormContentType PDF = fromString("Pdf");
-    private static final FormContentType PNG = fromString("png");
-    private static final FormContentType Tiff = fromString("TIFF");
-}
-
 // Supervised analyze result
 public class PredefinedFormResult {
-    private OperationStatus status;
     private List<PredefinedFieldForm> forms ;
     private List<RawPageExtraction> rawPageExtractions ;
 }
@@ -294,13 +280,6 @@ public enum TrainingStatus {
     FAILED("failed");
 }
 
-public enum OperationStatus {
-    NOT_STARTED("notStarted"),
-    RUNNING("running"),
-    SUCCEEDED("succeeded"),
-    FAILED("failed");
-}
-
 public enum ModelStatus {
     CREATING("creating"),
     READY("ready"),
@@ -316,7 +295,6 @@ String trainingSetSource = "<storage-sas-url>";
 PollerFlux<OperationResult, Model> trainingPoller = client.beginModelTraining(trainingSetSource);
 
 Model unsupervisedModel = trainingPoller
-    .take(Duration.ofMinutes(2))
     .last()
     .flatMap(trainingOperationResponse -> {
         if (trainingOperationResponse.getStatus().isComplete()) {
@@ -331,7 +309,7 @@ Model unsupervisedModel = trainingPoller
 // Analyze with custom model
 String analyzeFilePath = "https://templates.invoicehome.com/invoice-template-us-neat-750px.png";
 String customModelId = unsupervisedModel.getModelInfo().getModelId().toString();
-PollerFlux<OperationResult, FormResult> analyzePoller = client.beginAnalyzeForm(analyzeFilePath, customModelId, false, false);
+PollerFlux<OperationResult, FormResult> analyzePoller = client.beginAnalyzeForm(analyzeFilePath, customModelId, false);
 
 FormResult analyzeFormResult = analyzePoller
     .last()
@@ -363,7 +341,6 @@ String trainingSetSource = "<storage-sas-url>";
 PollerFlux<OperationResult, SupervisedModel> trainingPoller = client.beginSupervisedModelTraining(trainingSetSource);
 
 SupervisedModel supervisedModel = trainingPoller
-    .take(Duration.ofMinutes(2))
     .last()
     .flatMap(trainingOperationResponse -> {
         if (trainingOperationResponse.getStatus().isComplete()) {
@@ -378,7 +355,7 @@ SupervisedModel supervisedModel = trainingPoller
 // Analyze with custom model
 String analyzeFilePath = "https://templates.invoicehome.com/invoice-template-us-neat-750px.png";
 String customModelId = unsupervisedModel.getModelInfo().getModelId().toString();
-PollerFlux<OperationResult, PredefinedFormResult> analyzePoller = client.beginAnalyzeForm(analyzeFilePath, customModelId, false, false);
+PollerFlux<OperationResult, PredefinedFormResult> analyzePoller = client.beginAnalyzeForm(analyzeFilePath, customModelId, false);
 
 PredefinedFormResult predefinedFormResult = analyzePoller
     .last()
@@ -411,7 +388,6 @@ String trainingSetSource = "<storage-sas-url>";
 PollerFlux<OperationResult, Model> trainingPoller = client.beginModelTraining(trainingSetSource);
 
 Model unsupervisedModel = trainingPoller
-    .take(Duration.ofMinutes(2))
     .last()
     .flatMap(trainingOperationResponse -> {
         if (trainingOperationResponse.getStatus().isComplete()) {
@@ -439,7 +415,6 @@ String trainingSetSource = "<storage-sas-url>";
 PollerFlux<OperationResult, SupervisedModel> trainingPoller = client.beginSupervisedModelTraining(trainingSetSource);
 
 SupervisedModel supervisedModel = trainingPoller
-    .take(Duration.ofMinutes(2))
     .last()
     .flatMap(trainingOperationResponse -> {
         if (trainingOperationResponse.getStatus().isComplete()) {
@@ -462,14 +437,14 @@ for(FieldDetails fieldDetails : supervisedModel.getModelInfo().getFieldAccuracie
 ### Delete model
 ```java
 client.deleteWithResponse("{model Id}").subscribe(response ->
-    System.out.printf("Delete operation 1 completed with status code: %d%n", response.getStatusCode())
+    System.out.printf("Delete operation completed with status code: %d%n", response.getStatusCode())
 );
 ```
 
 ### Analyze Receipt with prebuilt model
 ```java
 String receiptFileUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-invoice.png";
-PollerFlux<OperationResult, ExtractedReceiptResult> analyzePoller = client.beginAnalyzeReceipt(receiptFileUrl, false, false);
+PollerFlux<OperationResult, ExtractedReceiptResult> analyzePoller = client.beginAnalyzeReceipt(receiptFileUrl, false);
 
 ExtractedReceiptResult extractedReceiptResult = analyzePoller
     .last()
@@ -499,7 +474,7 @@ for(ExtractedReceipt receiptResultItem : extractedReceiptResult.getReceiptResult
 ### Analyze Layout with prebuilt model
 ```java
 String layoutFileUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-invoice.png";
-PollerFlux<OperationResult, ExtractedLayoutResult> analyzePoller = client.beginAnalyzeLayout(layoutFileUrl, false, false);
+PollerFlux<OperationResult, ExtractedLayoutResult> analyzePoller = client.beginAnalyzeLayout(layoutFileUrl, false);
 
 ExtractedLayoutResult extractedLayoutResult = analyzePoller
     .last()
