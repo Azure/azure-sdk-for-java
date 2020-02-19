@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -82,13 +83,12 @@ public final class TestConfigurations {
     private static Properties loadProperties() {
         Path path = Paths.get(System.getProperty("user.home"), "cosmos-v4.properties");
         Properties properties = new Properties(System.getProperties());
-        try {
-            if (Files.exists(path)) {
-                properties.load(Files.newInputStream(path));
+        if (Files.exists(path)) {
+            try (InputStream in = Files.newInputStream(path)) {
+                properties.load(in);
+            } catch (Exception e) {
+                logger.error("loading properties {} failed", path, e);
             }
-
-        } catch (Exception e) {
-            logger.error("loading properties {} failed", path, e);
         }
 
         return properties;
