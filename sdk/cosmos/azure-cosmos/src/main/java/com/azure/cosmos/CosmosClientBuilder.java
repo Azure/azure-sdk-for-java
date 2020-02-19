@@ -15,13 +15,13 @@ import java.util.List;
  *
  * <pre>
  * {@code
- * ConnectionPolicy getConnectionPolicy = new ConnectionPolicy();
+ * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
  * getConnectionPolicy.getConnectionMode(ConnectionMode.DIRECT);
- * CosmosClient client = new CosmosAsyncClient.cosmosClientBuilder()
- *         .getEndpoint(serviceEndpoint)
- *         .getKey(getKey)
- *         .getConnectionPolicy(getConnectionPolicy)
- *         .getConsistencyLevel(ConsistencyLevel.SESSION)
+ * CosmosAsyncClient client = new CosmosAsyncClient.cosmosClientBuilder()
+ *         .setEndpoint(serviceEndpoint)
+ *         .setKey(key)
+ *         .setConnectionPolicy(connectionPolicy)
+ *         .setConsistencyLevel(ConsistencyLevel.SESSION)
  *         .buildAsyncClient();
  * }
  * </pre>
@@ -67,11 +67,36 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Enables transport client sharing allows. The default is false.
+     * Enables connections sharing across multiple Cosmos Clients. The default is false.
+     *
+     *
+     * <pre>
+     * {@code
+     * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+     * getConnectionPolicy.getConnectionMode(ConnectionMode.DIRECT);
+     * CosmosAsyncClient client1 = new CosmosAsyncClient.cosmosClientBuilder()
+     *         .setEndpoint(serviceEndpoint1)
+     *         .setKey(key1)
+     *         .setConnectionPolicy(connectionPolicy)
+     *         .setConsistencyLevel(ConsistencyLevel.SESSION)
+     *         .setConnectionSharingAcrossClientsEnabled(true)
+     *         .buildAsyncClient();
+     *
+     * CosmosAsyncClient client2 = new CosmosAsyncClient.cosmosClientBuilder()
+     *         .setEndpoint(serviceEndpoint2)
+     *         .setKey(key2)
+     *         .setConnectionPolicy(connectionPolicy)
+     *         .setConsistencyLevel(ConsistencyLevel.SESSION)
+     *         .setConnectionSharingAcrossClientsEnabled(true)
+     *         .buildAsyncClient();
+     *
+     * // when configured this way client1 and client2 will share connections when possible.
+     * }
+     * </pre>
      *
      * When you have multiple instances of Cosmos Client in the same JVM interacting to multiple Cosmos accounts,
      * enabling this allows connection sharing in Direct mode if possible between instances of Cosmos Client.
-     * @param connectionSharingAcrossClientsEnabled transport client sharing
+     * @param connectionSharingAcrossClientsEnabled connection sharing
      * @return current cosmosClientBuilder
      */
     public CosmosClientBuilder setConnectionSharingAcrossClientsEnabled(boolean connectionSharingAcrossClientsEnabled) {
@@ -80,12 +105,12 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Indicates whether transport client sharing is enabled. The default is false.
+     * Indicates whether connection sharing is enabled. The default is false.
      *
      * When you have multiple instances of Cosmos Client in the same JVM interacting to multiple Cosmos accounts,
      * enabling this allows connection sharing in Direct mode if possible between instances of Cosmos Client.
      *
-     * @return the transport client sharing
+     * @return the connection sharing across multiple clients
      */
     public boolean isConnectionSharingAcrossClientsEnabled() {
         return this.connectionSharingAcrossClientsEnabled;
