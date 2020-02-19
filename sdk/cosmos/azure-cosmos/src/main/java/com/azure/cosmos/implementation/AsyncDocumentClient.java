@@ -79,6 +79,7 @@ public interface AsyncDocumentClient {
         TokenResolver tokenResolver;
         CosmosKeyCredential cosmosKeyCredential;
         boolean sessionCapturingOverride;
+        boolean transportClientSharing;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -147,6 +148,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withTransportClientSharing(boolean transportClientSharing) {
+            this.transportClientSharing = transportClientSharing;
+            return this;
+        }
+
         public Builder withCosmosKeyCredential(CosmosKeyCredential cosmosKeyCredential) {
             if (cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey())) {
                 throw new IllegalArgumentException("Cannot buildAsyncClient client with empty key credential");
@@ -191,7 +197,8 @@ public interface AsyncDocumentClient {
                                                                    configs,
                                                                    tokenResolver,
                                                                    cosmosKeyCredential,
-                                                                   sessionCapturingOverride);
+                                                                   sessionCapturingOverride,
+                                                                   transportClientSharing);
             client.init();
             return client;
         }
