@@ -40,7 +40,7 @@ public class ExpressRouteCircuitInner extends Resource {
     /**
      * The CircuitProvisioningState state of the resource.
      */
-    @JsonProperty(value = "properties.circuitProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.circuitProvisioningState")
     private String circuitProvisioningState;
 
     /**
@@ -48,7 +48,7 @@ public class ExpressRouteCircuitInner extends Resource {
      * values include: 'NotProvisioned', 'Provisioning', 'Provisioned',
      * 'Deprovisioning'.
      */
-    @JsonProperty(value = "properties.serviceProviderProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.serviceProviderProvisioningState")
     private ServiceProviderProvisioningState serviceProviderProvisioningState;
 
     /**
@@ -66,7 +66,7 @@ public class ExpressRouteCircuitInner extends Resource {
     /**
      * The ServiceKey.
      */
-    @JsonProperty(value = "properties.serviceKey", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.serviceKey")
     private String serviceKey;
 
     /**
@@ -117,7 +117,7 @@ public class ExpressRouteCircuitInner extends Resource {
     /**
      * Flag denoting Global reach status.
      */
-    @JsonProperty(value = "properties.globalReachEnabled", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.globalReachEnabled")
     private Boolean globalReachEnabled;
 
     /**
@@ -182,12 +182,34 @@ public class ExpressRouteCircuitInner extends Resource {
     }
 
     /**
+     * Set the CircuitProvisioningState state of the resource.
+     *
+     * @param circuitProvisioningState the circuitProvisioningState value to set
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withCircuitProvisioningState(String circuitProvisioningState) {
+        this.circuitProvisioningState = circuitProvisioningState;
+        return this;
+    }
+
+    /**
      * Get the ServiceProviderProvisioningState state of the resource. Possible values include: 'NotProvisioned', 'Provisioning', 'Provisioned', 'Deprovisioning'.
      *
      * @return the serviceProviderProvisioningState value
      */
     public ServiceProviderProvisioningState serviceProviderProvisioningState() {
         return this.serviceProviderProvisioningState;
+    }
+
+    /**
+     * Set the ServiceProviderProvisioningState state of the resource. Possible values include: 'NotProvisioned', 'Provisioning', 'Provisioned', 'Deprovisioning'.
+     *
+     * @param serviceProviderProvisioningState the serviceProviderProvisioningState value to set
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState) {
+        this.serviceProviderProvisioningState = serviceProviderProvisioningState;
+        return this;
     }
 
     /**
@@ -237,6 +259,17 @@ public class ExpressRouteCircuitInner extends Resource {
      */
     public String serviceKey() {
         return this.serviceKey;
+    }
+
+    /**
+     * Set the ServiceKey.
+     *
+     * @param serviceKey the serviceKey value to set
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withServiceKey(String serviceKey) {
+        this.serviceKey = serviceKey;
+        return this;
     }
 
     /**
@@ -364,6 +397,17 @@ public class ExpressRouteCircuitInner extends Resource {
      */
     public Boolean globalReachEnabled() {
         return this.globalReachEnabled;
+    }
+
+    /**
+     * Set flag denoting Global reach status.
+     *
+     * @param globalReachEnabled the globalReachEnabled value to set
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withGlobalReachEnabled(Boolean globalReachEnabled) {
+        this.globalReachEnabled = globalReachEnabled;
+        return this;
     }
 
     /**
