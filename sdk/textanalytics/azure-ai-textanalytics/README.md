@@ -264,7 +264,7 @@ String text = "Old Faithful is a geyser at Yellowstone Park.";
 for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text)) {
     System.out.println("Linked Entities:");
     System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
-        linkedEntity.getName(), linkedEntity.getId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+        linkedEntity.getName(), linkedEntity.getDataSourceLinkId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
     for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
         System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n", linkedEntityMatch.getText(),
             linkedEntityMatch.getOffset(), linkedEntityMatch.getLength(), linkedEntityMatch.getScore());

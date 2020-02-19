@@ -68,15 +68,15 @@ public class AnalyzeSentimentBatchDocuments {
             final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
             System.out.printf("Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
                 documentSentiment.getSentiment(),
-                documentSentiment.getSentimentScores().getPositive(),
-                documentSentiment.getSentimentScores().getNeutral(),
-                documentSentiment.getSentimentScores().getNegative());
+                documentSentiment.getConfidenceScores().getPositive(),
+                documentSentiment.getConfidenceScores().getNeutral(),
+                documentSentiment.getConfidenceScores().getNegative());
             for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                 System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
                     sentenceSentiment.getSentiment(),
-                    sentenceSentiment.getSentimentScores().getPositive(),
-                    sentenceSentiment.getSentimentScores().getNeutral(),
-                    sentenceSentiment.getSentimentScores().getNegative(),
+                    sentenceSentiment.getConfidenceScores().getPositive(),
+                    sentenceSentiment.getConfidenceScores().getNeutral(),
+                    sentenceSentiment.getConfidenceScores().getNegative(),
                     sentenceSentiment.getLength(),
                     sentenceSentiment.getOffset());
             }

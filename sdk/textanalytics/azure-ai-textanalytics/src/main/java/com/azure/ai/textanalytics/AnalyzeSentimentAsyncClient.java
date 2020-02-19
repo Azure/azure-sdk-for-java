@@ -7,13 +7,12 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentLabel;
-import com.azure.ai.textanalytics.models.SentimentScorePerLabel;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.Response;
@@ -108,7 +107,9 @@ class AnalyzeSentimentAsyncClient {
                 new RuntimeException(String.format(Locale.ROOT, "'%s' is not valid text sentiment.",
                     documentSentiment.getSentiment())));
         }
-        final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getDocumentScores();
+
+        final com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel
+            confidenceScorePerLabel = documentSentiment.getDocumentScores();
 
         // Sentence text sentiment
         final List<SentenceSentiment> sentenceSentiments = documentSentiment.getSentences().stream()
@@ -122,11 +123,12 @@ class AnalyzeSentimentAsyncClient {
                         new RuntimeException(String.format(Locale.ROOT, "'%s' is not valid text sentiment.",
                             sentenceSentiment.getSentiment())));
                 }
-                SentimentConfidenceScorePerLabel confidenceScorePerSentence = sentenceSentiment.getSentenceScores();
+                com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel
+                    confidenceScorePerSentence = sentenceSentiment.getSentenceScores();
 
                 return new SentenceSentiment(
                     sentimentLabel,
-                    new SentimentScorePerLabel(confidenceScorePerSentence.getNegative(),
+                    new SentimentConfidenceScorePerLabel(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
                     sentenceSentiment.getLength(),
                     sentenceSentiment.getOffset());
@@ -139,7 +141,9 @@ class AnalyzeSentimentAsyncClient {
                 : toTextDocumentStatistics(documentSentiment.getStatistics()), null,
             new com.azure.ai.textanalytics.models.DocumentSentiment(
                 documentSentimentLabel,
-                new SentimentScorePerLabel(confidenceScorePerLabel.getNegative(), confidenceScorePerLabel.getNeutral(),
+                new SentimentConfidenceScorePerLabel(
+                    confidenceScorePerLabel.getNegative(),
+                    confidenceScorePerLabel.getNeutral(),
                     confidenceScorePerLabel.getPositive()),
                 sentenceSentiments));
     }

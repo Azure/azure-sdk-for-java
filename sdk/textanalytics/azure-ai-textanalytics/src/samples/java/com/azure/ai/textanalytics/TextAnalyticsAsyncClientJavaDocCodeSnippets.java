@@ -431,7 +431,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             System.out.println("Linked Entities:");
             System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(),
-                linkedEntity.getId(),
+                linkedEntity.getDataSourceLinkId(),
                 linkedEntity.getUrl(),
                 linkedEntity.getDataSource());
             for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
@@ -457,7 +457,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 System.out.println("Linked Entities:");
                 System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(),
-                    linkedEntity.getId(),
+                    linkedEntity.getDataSourceLinkId(),
                     linkedEntity.getUrl(),
                     linkedEntity.getDataSource());
                 for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
@@ -495,7 +495,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     System.out.println("Linked Entities:");
                     System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
                         linkedEntity.getName(),
-                        linkedEntity.getId(),
+                        linkedEntity.getDataSourceLinkId(),
                         linkedEntity.getUrl(),
                         linkedEntity.getDataSource());
                     for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
@@ -536,7 +536,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         System.out.println("Linked Entities:");
                         System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
                             linkedEntity.getName(),
-                            linkedEntity.getId(),
+                            linkedEntity.getDataSourceLinkId(),
                             linkedEntity.getUrl(),
                             linkedEntity.getDataSource());
                         for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
@@ -581,7 +581,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         System.out.println("Linked Entities:");
                         System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
                             linkedEntity.getName(),
-                            linkedEntity.getId(),
+                            linkedEntity.getDataSourceLinkId(),
                             linkedEntity.getUrl(),
                             linkedEntity.getDataSource());
                         for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
@@ -724,9 +724,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 System.out.printf(
                     "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
                     sentenceSentiment.getSentiment(),
-                    sentenceSentiment.getSentimentScores().getPositive(),
-                    sentenceSentiment.getSentimentScores().getNeutral(),
-                    sentenceSentiment.getSentimentScores().getNegative());
+                    sentenceSentiment.getConfidenceScores().getPositive(),
+                    sentenceSentiment.getConfidenceScores().getNeutral(),
+                    sentenceSentiment.getConfidenceScores().getNegative());
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string
@@ -746,9 +746,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, "
                             + "negative score: %.2f.%n",
                         sentenceSentiment.getSentiment(),
-                        sentenceSentiment.getSentimentScores().getPositive(),
-                        sentenceSentiment.getSentimentScores().getNeutral(),
-                        sentenceSentiment.getSentimentScores().getNegative());
+                        sentenceSentiment.getConfidenceScores().getPositive(),
+                        sentenceSentiment.getConfidenceScores().getNeutral(),
+                        sentenceSentiment.getConfidenceScores().getNegative());
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string-string
@@ -778,9 +778,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, "
                             + "negative score: %.2f.%n",
                         sentenceSentiment.getSentiment(),
-                        sentenceSentiment.getSentimentScores().getPositive(),
-                        sentenceSentiment.getSentimentScores().getNeutral(),
-                        sentenceSentiment.getSentimentScores().getNegative());
+                        sentenceSentiment.getConfidenceScores().getPositive(),
+                        sentenceSentiment.getConfidenceScores().getNeutral(),
+                        sentenceSentiment.getConfidenceScores().getNegative());
                 }
             }
         });
@@ -813,9 +813,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, "
                                 + "neutral score: %.2f, negative score: %.2f.%n",
                             sentenceSentiment.getSentiment(),
-                            sentenceSentiment.getSentimentScores().getPositive(),
-                            sentenceSentiment.getSentimentScores().getNeutral(),
-                            sentenceSentiment.getSentimentScores().getNegative());
+                            sentenceSentiment.getConfidenceScores().getPositive(),
+                            sentenceSentiment.getConfidenceScores().getNeutral(),
+                            sentenceSentiment.getConfidenceScores().getNegative());
                     }
                 }
             });
@@ -853,9 +853,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, "
                                 + "negative score: %.2f.%n",
                             sentenceSentiment.getSentiment(),
-                            sentenceSentiment.getSentimentScores().getPositive(),
-                            sentenceSentiment.getSentimentScores().getNeutral(),
-                            sentenceSentiment.getSentimentScores().getNegative());
+                            sentenceSentiment.getConfidenceScores().getPositive(),
+                            sentenceSentiment.getConfidenceScores().getNeutral(),
+                            sentenceSentiment.getConfidenceScores().getNegative());
                     }
                 }
             });

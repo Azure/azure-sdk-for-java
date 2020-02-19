@@ -30,7 +30,7 @@ public class RecognizeLinkedEntities {
             System.out.println("Linked Entities:");
             System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(),
-                linkedEntity.getId(),
+                linkedEntity.getDataSourceLinkId(),
                 linkedEntity.getUrl(),
                 linkedEntity.getDataSource());
             for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {

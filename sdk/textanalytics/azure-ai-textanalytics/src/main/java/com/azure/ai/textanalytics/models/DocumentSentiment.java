@@ -13,20 +13,20 @@ import java.util.List;
 @Immutable
 public final class DocumentSentiment {
     private final SentimentLabel sentiment;
-    private final SentimentScorePerLabel sentimentScores;
+    private final SentimentConfidenceScorePerLabel confidenceScores;
     private final List<SentenceSentiment> sentences;
 
     /**
      * Creates a {@code DocumentSentiment} model that describes the sentiment of the document.
      *
      * @param sentiment the sentiment label of the document
-     * @param sentimentScores the score of sentiment label of the document
+     * @param confidenceScores the score of sentiment label of the document
      * @param sentences a list of sentence sentiments
      */
-    public DocumentSentiment(SentimentLabel sentiment, SentimentScorePerLabel sentimentScores,
+    public DocumentSentiment(SentimentLabel sentiment, SentimentConfidenceScorePerLabel confidenceScores,
         List<SentenceSentiment> sentences) {
         this.sentiment = sentiment;
-        this.sentimentScores = sentimentScores;
+        this.confidenceScores = confidenceScores;
         this.sentences = sentences;
     }
 
@@ -42,10 +42,10 @@ public final class DocumentSentiment {
     /**
      * Get the confidence scores of the sentiment label.
      *
-     * @return the SentimentScorePerLabel
+     * @return the SentimentConfidenceScorePerLabel
      */
-    public SentimentScorePerLabel getSentimentScores() {
-        return sentimentScores;
+    public SentimentConfidenceScorePerLabel getConfidenceScores() {
+        return confidenceScores;
     }
 
     /**
