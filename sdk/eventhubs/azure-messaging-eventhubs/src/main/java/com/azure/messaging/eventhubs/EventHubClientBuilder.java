@@ -476,7 +476,7 @@ public class EventHubClientBuilder {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, isSharedConnection);
+        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler, isSharedConnection);
     }
 
     /**

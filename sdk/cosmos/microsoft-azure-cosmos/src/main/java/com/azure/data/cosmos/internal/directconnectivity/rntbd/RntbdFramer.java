@@ -3,7 +3,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity.rntbd;
 
-import com.google.common.base.Strings;
+import com.azure.data.cosmos.internal.guava27.Strings;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.CorruptedFrameException;
 

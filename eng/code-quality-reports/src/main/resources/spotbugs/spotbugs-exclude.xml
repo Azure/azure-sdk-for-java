@@ -460,6 +460,16 @@
     <Method name="endTracingSpan"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
+  
+  <!-- Incorrect flagging, error will be thrown if value is null -->
+  <Match>
+      <Class name="com.azure.endtoend.identity.WebJobsIdentityTest"/>
+      <Or>
+          <Method name="testMSIEndpointWithSystemAssigned"/>
+          <Method name="testMSIEndpointWithUserAssigned"/>
+      </Or>
+      <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
 
   <!-- Incorrect flagging, if the response is null a StorageException would have been thrown -->
   <Match>
@@ -564,6 +574,7 @@
     <Or>
       <Class name="~.*JavaDoc(CodeSnippets|CodeSamples|Samples)"/>
       <Class name="~.*ReadmeSamples"/>
+      <Class name="com.azure.storage.blob.batch.ReadmeCodeSamples"/>
       <Class name="com.azure.storage.file.datalake.GetSetAccessControlExample"/>
     </Or>
     <Bug pattern="DLS_DEAD_LOCAL_STORE,
@@ -656,7 +667,28 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
-  <!-- Initial implementation of JacksonDeserializer is using an inline class in registerCustomDeserializer-->
+
+  <!-- Azure search has generated code mixed with hand-written in these packages -->
+  <Match>
+    <And>
+      <Package name="~com\.azure\.search\.(implementation|models)(.*)"/>
+      <Not>
+        <Or>
+          <!-- Hand-written classes should be specified here to be checked  -->
+          <Class name="com.azure.search.implementation.GeoPointDeserializer"/>
+          <Class name="com.azure.search.implementation.Iso8601DateDeserializer"/>
+          <Class name="com.azure.search.implementation.SerializationUtil"/>
+          <Class name="com.azure.search.models.CoordinateSystem"/>
+          <Class name="com.azure.search.models.GeoPoint"/>
+          <Class name="com.azure.search.models.IndexBatch"/>
+          <Class name="com.azure.search.models.ValueFacetResult"/>
+          <Class name="com.azure.search.models.RangeFacetResult"/>
+        </Or>
+      </Not>
+    </And>
+  </Match>
+
+  <!-- Initial implementation of JacksonDeserializer is using an inline class-->
   <Match>
     <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>

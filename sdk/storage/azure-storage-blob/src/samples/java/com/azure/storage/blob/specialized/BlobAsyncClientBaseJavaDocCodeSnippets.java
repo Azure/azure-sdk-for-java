@@ -40,7 +40,7 @@ import java.util.Set;
 @SuppressWarnings("unused")
 public class BlobAsyncClientBaseJavaDocCodeSnippets {
     private BlobAsyncClientBase client = new BlobAsyncClientBase(null, null, BlobServiceVersion.getLatest(),
-        null, null, null, null, null);
+        null, null, null, null, null, null);
     private String leaseId = "leaseId";
     private String copyId = "copyId";
     private String url = "https://sample.com";

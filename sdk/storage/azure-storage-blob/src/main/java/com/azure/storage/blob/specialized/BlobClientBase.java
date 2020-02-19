@@ -144,6 +144,15 @@ public class BlobClientBase {
     }
 
     /**
+     * Gets the {@code encryption scope} used to encrypt this blob's content on the server.
+     *
+     * @return the encryption scope used for encryption.
+     */
+    String getEncryptionScope() {
+        return client.getEncryptionScope();
+    }
+
+    /**
      * Gets the service version the client is using.
      *
      * @return the service version the client is using.

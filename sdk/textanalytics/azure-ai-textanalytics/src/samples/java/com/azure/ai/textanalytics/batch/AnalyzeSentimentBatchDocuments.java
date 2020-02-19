@@ -6,10 +6,12 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.core.util.Context;
 
@@ -28,11 +30,11 @@ public class AnalyzeSentimentBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("{subscription_key}")
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildClient();
 
-        // The texts that need be analysed.
+        // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
             new TextDocumentInput("1", "The hotel was dark and unclean. The restaurant had amazing gnocchi.", "en"),
             new TextDocumentInput("2", "The restaurant had amazing gnocchi. The hotel was dark and unclean.", "en")
@@ -42,20 +44,20 @@ public class AnalyzeSentimentBatchDocuments {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Analyzing batch sentiments
-        DocumentResultCollection<AnalyzeSentimentResult> analyzedBatchResult = client.analyzeBatchSentimentWithResponse(
+        DocumentResultCollection<AnalyzeSentimentResult> sentimentBatchResult = client.analyzeSentimentBatchWithResponse(
             inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s%n", analyzedBatchResult.getModelVersion());
+        System.out.printf("Model version: %s%n", sentimentBatchResult.getModelVersion());
 
         // Batch statistics
-        final TextDocumentBatchStatistics batchStatistics = analyzedBatchResult.getStatistics();
+        final TextDocumentBatchStatistics batchStatistics = sentimentBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
-            batchStatistics.getErroneousDocumentCount(),
+            batchStatistics.getInvalidDocumentCount(),
             batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
         // Analyzed sentiment for each of document from a batch of documents
-        for (AnalyzeSentimentResult analyzeSentimentResult : analyzedBatchResult) {
+        for (AnalyzeSentimentResult analyzeSentimentResult : sentimentBatchResult) {
             System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
             // Erroneous document
             if (analyzeSentimentResult.isError()) {
@@ -63,20 +65,18 @@ public class AnalyzeSentimentBatchDocuments {
                 continue;
             }
             // Valid document
-            final TextSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-            System.out.printf("Recognized document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
-                documentSentiment.getTextSentimentClass(),
-                documentSentiment.getPositiveScore(),
-                documentSentiment.getNeutralScore(),
-                documentSentiment.getNegativeScore(),
-                documentSentiment.getLength(),
-                documentSentiment.getOffset());
-            for (TextSentiment sentenceSentiment : analyzeSentimentResult.getSentenceSentiments()) {
-                System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
-                    sentenceSentiment.getTextSentimentClass(),
-                    sentenceSentiment.getPositiveScore(),
-                    sentenceSentiment.getNeutralScore(),
-                    sentenceSentiment.getNegativeScore(),
+            final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+            System.out.printf("Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
+                documentSentiment.getSentiment(),
+                documentSentiment.getSentimentScores().getPositive(),
+                documentSentiment.getSentimentScores().getNeutral(),
+                documentSentiment.getSentimentScores().getNegative());
+            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
+                System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
+                    sentenceSentiment.getSentiment(),
+                    sentenceSentiment.getSentimentScores().getPositive(),
+                    sentenceSentiment.getSentimentScores().getNeutral(),
+                    sentenceSentiment.getSentimentScores().getNegative(),
                     sentenceSentiment.getLength(),
                     sentenceSentiment.getOffset());
             }

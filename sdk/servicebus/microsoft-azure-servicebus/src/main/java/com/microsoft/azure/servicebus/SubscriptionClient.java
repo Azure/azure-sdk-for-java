@@ -58,7 +58,7 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
     
     public SubscriptionClient(URI namespaceEndpointURI, String subscriptionPath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         this(receiveMode, subscriptionPath);
-        CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromNamespaceEndpointURIAsyc(namespaceEndpointURI, clientSettings);
+        CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromNamespaceEndpointURIAsync(namespaceEndpointURI, clientSettings);
         Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createPumpAndBrowserAsync(f), MessagingFactory.INTERNAL_THREAD_POOL));
         if (TRACE_LOGGER.isInfoEnabled()) {
             TRACE_LOGGER.info("Created subscription client to subscription '{}/{}'", namespaceEndpointURI.toString(), subscriptionPath);

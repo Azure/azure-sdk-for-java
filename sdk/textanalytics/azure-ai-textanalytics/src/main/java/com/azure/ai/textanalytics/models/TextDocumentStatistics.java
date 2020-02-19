@@ -33,8 +33,7 @@ public final class TextDocumentStatistics {
     }
 
     /**
-     * Get the charactersCount property: Number of text elements recognized in
-     * the document.
+     * Get the charactersCount property: Number of text elements recognized in the document.
      *
      * @return the charactersCount value.
      */
@@ -43,8 +42,7 @@ public final class TextDocumentStatistics {
     }
 
     /**
-     * Get the transactionsCount property: Number of transactions for the
-     * document.
+     * Get the transactionsCount property: Number of transactions for the document.
      *
      * @return the transactionsCount value.
      */

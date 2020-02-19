@@ -182,18 +182,29 @@ public class RequestResponseChannel implements Disposable {
         }
 
         if (!hasOpened.getAndSet(true)) {
-            sendLink.open();
-            receiveLink.open();
+            // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
+            // encounter a race condition. So, we are forced to use the dispatcher.
+            try {
+                provider.getReactorDispatcher().invoke(() -> {
+                    sendLink.open();
+                    receiveLink.open();
+                });
+            } catch (IOException e) {
+                return Mono.error(new RuntimeException("Unable to open send and receive link.", e));
+            }
         }
 
         if (message == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("message cannot be null"));
+            return Mono.error(logger.logExceptionAsError(
+                new IllegalArgumentException("message cannot be null")));
         }
         if (message.getMessageId() != null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("message.getMessageId() should be null"));
+            return Mono.error(logger.logExceptionAsError(
+                new IllegalArgumentException("message.getMessageId() should be null")));
         }
         if (message.getReplyTo() != null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("message.getReplyTo() should be null"));
+            return Mono.error(logger.logExceptionAsError(
+                new IllegalArgumentException("message.getReplyTo() should be null")));
         }
 
         final UnsignedLong messageId = UnsignedLong.valueOf(requestId.incrementAndGet());
@@ -210,28 +221,24 @@ public class RequestResponseChannel implements Disposable {
                         logger.verbose("Scheduling on dispatcher. Message Id {}", messageId);
                         unconfirmedSends.putIfAbsent(messageId, sink);
 
+                        // If we try to do proton-j API calls such as sending on AMQP links, it may encounter a race
+                        // condition. So, we are forced to use the dispatcher.
                         provider.getReactorDispatcher().invoke(() -> {
-                            send(message);
+                            sendLink.delivery(UUID.randomUUID().toString().replace("-", "").getBytes(UTF_8));
+
+                            final int payloadSize = messageSerializer.getSize(message)
+                                + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
+                            final byte[] bytes = new byte[payloadSize];
+                            final int encodedSize = message.encode(bytes, 0, payloadSize);
+
+                            receiveLink.flow(1);
+                            sendLink.send(bytes, 0, encodedSize);
+                            sendLink.advance();
                         });
                     } catch (IOException e) {
                         sink.error(e);
                     }
                 }));
-    }
-
-    // Not thread-safe This must be invoked from reactor/dispatcher thread. And assumes that this is run on a link
-    // that is open.
-    private void send(final Message message) {
-        sendLink.delivery(UUID.randomUUID().toString().replace("-", "").getBytes(UTF_8));
-
-        final int payloadSize = messageSerializer.getSize(message)
-            + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
-        final byte[] bytes = new byte[payloadSize];
-        final int encodedSize = message.encode(bytes, 0, payloadSize);
-
-        receiveLink.flow(1);
-        sendLink.send(bytes, 0, encodedSize);
-        sendLink.advance();
     }
 
     private Message decodeDelivery(Delivery delivery) {

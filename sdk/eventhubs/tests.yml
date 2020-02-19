@@ -7,4 +7,4 @@ jobs:
       TimeoutInMinutes: 120
       EnvVars:
         AZURE_TEST_MODE: RECORD
-        AZURE_LOG_LEVEL: 4
+        AZURE_LOG_LEVEL: 2

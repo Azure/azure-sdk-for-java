@@ -82,6 +82,14 @@
     "source": "specification/deploymentmanager/resource-manager/readme.md",
     "args": "--multiapi=true --fluent=true"
   },
+  "databox/resource-manager": {
+    "source": "specification/databox/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "datafactory/resource-manager": {
+    "source": "specification/datafactory/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "datalakeanalytics/resource-manager": {
     "source": "specification/datalake-analytics/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -221,6 +229,10 @@
     "fconfig": {
       "\"moduleName\"": "\"PostgreSQL\""
     }
+  },
+  "powerbidedicated/resource-manager": {
+    "source": "specification/powerbidedicated/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "recoveryservices/resource-manager": {
     "source": "specification/recoveryservices/resource-manager/readme.md",

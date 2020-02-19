@@ -9,10 +9,13 @@ import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -32,15 +35,15 @@ import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
- * Helper class for managing recognize pii entity endpoint.
+ * Helper class for managing recognize PII entity endpoint.
  */
 class RecognizePiiEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(RecognizePiiEntityAsyncClient.class);
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code RecognizePiiEntityAsyncClient} that sends requests to the Text Analytics services's recognize pii
-     * entity endpoint.
+     * Create a {@code RecognizePiiEntityAsyncClient} that sends requests to the Text Analytics services's
+     * recognize PII entity endpoint.
      *
      * @param service The proxy service used to perform REST calls.
      */
@@ -48,25 +51,35 @@ class RecognizePiiEntityAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<RecognizePiiEntitiesResult>> recognizePiiEntitiesWithResponse(String text, String language,
-        Context context) {
+    Mono<PagedResponse<PiiEntity>> recognizePiiEntitiesWithResponse(String text, String language, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
-        return recognizeBatchPiiEntitiesWithResponse(
+        return recognizePiiEntitiesBatchWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
+            .map(response -> new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                Transforms.processSingleResponseErrorResult(response).getValue().getEntities(),
+                null,
+                null
+            ));
+    }
+
+    PagedFlux<PiiEntity> recognizePiiEntities(String text, String language, Context context) {
+        return new PagedFlux<>(() -> recognizePiiEntitiesWithResponse(text, language, context));
     }
 
     Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesWithResponse(
-        List<String> textInputs, String language, Context context) {
+        List<String> textInputs, String language, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
-        return recognizeBatchPiiEntitiesWithResponse(documentInputs, null, context);
+        return recognizePiiEntitiesBatchWithResponse(documentInputs, options, context);
     }
 
-    Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizeBatchPiiEntitiesWithResponse(
+    Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesBatchWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
@@ -96,7 +109,7 @@ class RecognizePiiEntityAsyncClient {
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null, documentEntities.getEntities().stream().map(entity ->
-                new NamedEntity(entity.getText(), entity.getType(), entity.getSubtype(), entity.getOffset(),
+                new PiiEntity(entity.getText(), entity.getType(), entity.getSubtype(), entity.getOffset(),
                     entity.getLength(), entity.getScore())).collect(Collectors.toList())));
         }
 

@@ -3,6 +3,7 @@
 
 module com.azure.security.keyvault.keys {
     requires transitive com.azure.core;
+
     requires java.xml.crypto;
 
     exports com.azure.security.keyvault.keys.cryptography;

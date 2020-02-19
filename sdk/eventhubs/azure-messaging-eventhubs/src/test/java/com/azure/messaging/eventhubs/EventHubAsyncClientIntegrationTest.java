@@ -15,6 +15,7 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -117,13 +118,14 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
         final EventHubProducerAsyncClient producer = clients[0].createProducer();
         final List<EventHubConsumerAsyncClient> consumers = new ArrayList<>();
+        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
 
         try {
             for (final EventHubAsyncClient hubClient : clients) {
                 final EventHubConsumerAsyncClient consumer = hubClient.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
                 consumers.add(consumer);
 
-                consumer.receiveFromPartition(PARTITION_ID, EventPosition.latest())
+                consumer.receiveFromPartition(PARTITION_ID, position)
                     .filter(partitionEvent -> TestUtils.isMatchingEvent(partitionEvent.getData(), messageTrackingValue))
                     .take(numberOfEvents).subscribe(partitionEvent -> {
                         EventData event = partitionEvent.getData();
@@ -167,7 +169,7 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(client.getProperties())
             .assertNext(properties -> {
                 Assertions.assertEquals(getEventHubName(), properties.getName());
-                Assertions.assertEquals(2, properties.getPartitionIds().stream().count());
+                Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
             })
             .expectComplete()
             .verify(TIMEOUT);
@@ -187,7 +189,7 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             StepVerifier.create(theClient.getProperties())
                 .assertNext(properties -> {
                     Assertions.assertEquals(getEventHubName(), properties.getName());
-                    Assertions.assertEquals(2, properties.getPartitionIds().stream().count());
+                    Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
                 })
                 .verifyComplete();
         }

@@ -3,9 +3,9 @@
 
 resources:
   repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
+    # - repository: azure-sdk-build-tools
+    #   type: git
+    #   name: internal/azure-sdk-build-tools
     - repository: azure-sdk-tools
       type: github
       name: Azure/azure-sdk-tools
@@ -40,7 +40,6 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml  
     parameters:
       ServiceDirectory: search
-      SDKType: client
       Artifacts:
         - name: azure-search
           groupId: com.azure

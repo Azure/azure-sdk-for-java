@@ -35,7 +35,7 @@ pr:
 
 variables:
   BuildOptions: '--batch-mode -Dgpg.skip -Dmaven.wagon.http.pool=false'
-  ServiceDirectory: cosmosdb
+  ServiceDirectory: cosmos
   ProfileFlag: ''
 
 jobs:

@@ -1,0 +1,14 @@
+{"Registrations":[
+  {
+    "Component": {
+      "Type": "Maven",
+      "Maven": {
+        "ArtifactId": "guava",
+        "GroupId": "com.google.guava",
+        "Version": "27.0.1-jre"
+      }
+    }
+  }
+],
+  "Version": 1
+}

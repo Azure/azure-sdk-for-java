@@ -5,6 +5,8 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Locale;
+
 /**
  * The DetectLanguageInput model.
  */
@@ -26,7 +28,7 @@ public final class DetectLanguageInput {
     private final String countryHint;
 
     /**
-     * Creates an input for detect language that will takes {@code id} and {@code text} as required inputs
+     * Creates an input for detect language that will takes {@code id} and {@code text} as required inputs.
      *
      * @param id unique, non-empty document identifier
      * @param text the text property
@@ -36,7 +38,7 @@ public final class DetectLanguageInput {
     }
 
     /**
-     * Creates an input for detect language that will takes {@code id}, {@code text} and {@code countryHint}
+     * Creates an input for detect language that will takes {@code id}, {@code text} and {@code countryHint}.
      *
      * @param id unique, non-empty document identifier
      * @param text the text property
@@ -77,7 +79,7 @@ public final class DetectLanguageInput {
 
     @Override
     public String toString() {
-        return String.format("Text = %s, Id = %s, Country Hint = %s",
+        return String.format(Locale.ROOT, "Text = %s, Id = %s, Country Hint = %s",
             this.getText(), this.getId(), this.getCountryHint());
     }
 }

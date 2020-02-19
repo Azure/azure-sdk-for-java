@@ -23,6 +23,8 @@ public final class BlobContainerProperties {
     private final PublicAccessType blobPublicAccess;
     private final boolean hasImmutabilityPolicy;
     private final boolean hasLegalHold;
+    private final String defaultEncryptionScope;
+    private final Boolean encryptionScopeOverridePrevented;
 
     /**
      * Constructs a {@link BlobContainerProperties}.
@@ -41,6 +43,30 @@ public final class BlobContainerProperties {
         final OffsetDateTime lastModified, final LeaseDurationType leaseDuration, final LeaseStateType leaseState,
         final LeaseStatusType leaseStatus, final PublicAccessType blobPublicAccess, final boolean hasImmutabilityPolicy,
         final boolean hasLegalHold) {
+        this(metadata, eTag, lastModified, leaseDuration, leaseState, leaseStatus, blobPublicAccess,
+            hasImmutabilityPolicy, hasLegalHold, null, false);
+    }
+
+    /**
+     * Constructs a {@link BlobContainerProperties}.
+     *
+     * @param metadata Metadata associated with the container.
+     * @param eTag ETag of the container.
+     * @param lastModified Datetime when the container was last modified.
+     * @param leaseDuration Type of the lease on the container.
+     * @param leaseState State of the lease on the container.
+     * @param leaseStatus Status of the lease on the container.
+     * @param blobPublicAccess Public access status for the container.
+     * @param hasImmutabilityPolicy Flag indicating if the container has an immutability policy set on it.
+     * @param hasLegalHold Flag indicating if the container has a legal hold.
+     * @param defaultEncryptionScope The container's default encryption scope to encrypt blobs with.
+     * @param encryptionScopeOverridePrevented Whether or not a container's default encryption scope can be overriden
+     */
+    public BlobContainerProperties(final Map<String, String> metadata, final String eTag,
+        final OffsetDateTime lastModified, final LeaseDurationType leaseDuration, final LeaseStateType leaseState,
+        final LeaseStatusType leaseStatus, final PublicAccessType blobPublicAccess, final boolean hasImmutabilityPolicy,
+        final boolean hasLegalHold, final String defaultEncryptionScope,
+        final Boolean encryptionScopeOverridePrevented) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;
@@ -50,6 +76,8 @@ public final class BlobContainerProperties {
         this.blobPublicAccess = blobPublicAccess;
         this.hasImmutabilityPolicy = hasImmutabilityPolicy;
         this.hasLegalHold = hasLegalHold;
+        this.defaultEncryptionScope = defaultEncryptionScope;
+        this.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
     }
 
     /**
@@ -113,5 +141,19 @@ public final class BlobContainerProperties {
      */
     public boolean hasLegalHold() {
         return hasLegalHold;
+    }
+
+    /**
+     * @return the container's default encryption scope
+     */
+    public String getDefaultEncryptionScope() {
+        return defaultEncryptionScope;
+    }
+
+    /**
+     * @return the container's deny encryption scope override property.
+     */
+    public Boolean isEncryptionScopeOverridePrevented() {
+        return encryptionScopeOverridePrevented;
     }
 }

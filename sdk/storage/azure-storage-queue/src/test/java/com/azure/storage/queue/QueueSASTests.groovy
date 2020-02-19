@@ -18,6 +18,7 @@ import com.azure.storage.queue.models.SendMessageResult
 import com.azure.storage.queue.sas.QueueSasPermission
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues
 import org.junit.Test
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -263,6 +264,7 @@ class QueueSASTests extends APISpec {
             .setResourceTypes(resourceType.toString())
             .setPermissions(permissions)
             .setExpiryTime(expiryTime)
+            .setVersion(QueueServiceVersion.V2019_02_02.version)
             .generateSasQueryParameters(credential)
             .encode()
 

@@ -117,7 +117,7 @@ jobs:
 
       - script: |
           git clone https://github.com/JonathanGiles/DependencyChecker.git
-          mkdir input && cp dependencies.json input/
+          mkdir input && cp eng/DependencyChecker/client_dependencies.json input/dependencies.json
         displayName: 'Download dependency checker'
 
       - task: Maven@3
@@ -135,7 +135,7 @@ jobs:
       - task: Maven@3
         displayName: 'Analyze dependencies'
         inputs:
-          mavenPomFile: 'DependencyChecker/pom.xml'
+          mavenPomFile: 'DependencyChecker/core/pom.xml'
           options: '-Dexec.args="-showall -dependencymanagement"'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'

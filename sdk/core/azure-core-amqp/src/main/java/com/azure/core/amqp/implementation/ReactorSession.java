@@ -135,6 +135,7 @@ public class ReactorSession implements AmqpSession {
             return;
         }
 
+        session.close();
         subscriptions.dispose();
 
         openReceiveLinks.forEach((key, link) -> link.dispose());
@@ -264,6 +265,8 @@ public class ReactorSession implements AmqpSession {
             getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE), timeout, retry)
             .then(tokenManager.authorize().then(Mono.create(sink -> {
                 try {
+                    // This has to be executed using reactor dispatcher because it's possible to run into race
+                    // conditions with proton-j.
                     provider.getReactorDispatcher().invoke(() -> {
                         final LinkSubscription<AmqpReceiveLink> computed = openReceiveLinks.compute(linkName,
                             (linkNameKey, existing) -> {
@@ -287,6 +290,9 @@ public class ReactorSession implements AmqpSession {
             })));
     }
 
+    /**
+     * NOTE: Ensure this is invoked using the reactor dispatcher because proton-j is not thread-safe.
+     */
     private LinkSubscription<AmqpSendLink> getSubscription(String linkName, String entityPath, Duration timeout,
         AmqpRetryPolicy retry, TokenManager tokenManager) {
         final Sender sender = session.sender(linkName);
@@ -321,6 +327,9 @@ public class ReactorSession implements AmqpSession {
         return new LinkSubscription<>(reactorSender, subscription);
     }
 
+    /**
+     * NOTE: Ensure this is invoked using the reactor dispatcher because proton-j is not thread-safe.
+     */
     private LinkSubscription<AmqpReceiveLink> getSubscription(String linkName, String entityPath,
         Map<Symbol, UnknownDescribedType> sourceFilters, Map<Symbol, Object> receiverProperties,
         Symbol[] receiverDesiredCapabilities, TokenManager tokenManager) {
@@ -356,8 +365,9 @@ public class ReactorSession implements AmqpSession {
 
         receiver.open();
 
-        final ReactorReceiver reactorReceiver =
-            new ReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager);
+        final ReactorReceiver reactorReceiver = new ReactorReceiver(entityPath, receiver, receiveLinkHandler,
+            tokenManager, provider.getReactorDispatcher());
+
         final Disposable subscription = reactorReceiver.getEndpointStates().subscribe(state -> {
         }, error -> {
                 logger.info(

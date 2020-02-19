@@ -9,10 +9,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -21,7 +23,6 @@ import com.azure.storage.common.implementation.connectionstring.StorageConnectio
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -51,6 +52,8 @@ public final class BlobServiceClientBuilder {
     private String accountName;
 
     private CpkInfo customerProvidedKey;
+    private EncryptionScope encryptionScope;
+    private BlobContainerEncryptionScope blobContainerEncryptionScope;
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private SasTokenCredential sasTokenCredential;
@@ -93,13 +96,18 @@ public final class BlobServiceClientBuilder {
             anonymousAccess = true;
         }
 
+        if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
+                + "scope cannot both be set"));
+        }
+
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
             httpClient, additionalPolicies, configuration, logger);
 
         return new BlobServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName, customerProvidedKey,
-            anonymousAccess);
+            encryptionScope, blobContainerEncryptionScope, anonymousAccess);
     }
 
     /**
@@ -148,9 +156,38 @@ public final class BlobServiceClientBuilder {
     }
 
     /**
+     * Sets the {@code encryption scope} that is used to encrypt blob contents on the server.
+     *
+     * @param encryptionScope Encryption scope containing the encryption key information.
+     * @return the updated BlobServiceClientBuilder object
+     */
+    public BlobServiceClientBuilder encryptionScope(String encryptionScope) {
+        if (encryptionScope == null) {
+            this.encryptionScope = null;
+        } else {
+            this.encryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
+        }
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link BlobContainerEncryptionScope encryption scope} that is used to determine how blob contents are
+     * encrypted on the server.
+     *
+     * @param blobContainerEncryptionScope Encryption scope containing the encryption key information.
+     * @return the updated BlobServiceClientBuilder object
+     */
+    public BlobServiceClientBuilder blobContainerEncryptionScope(
+        BlobContainerEncryptionScope blobContainerEncryptionScope) {
+        this.blobContainerEncryptionScope = blobContainerEncryptionScope;
+        return this;
+    }
+
+    /**
      * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link StorageSharedKeyCredential}.
      * @return the updated BlobServiceClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
@@ -164,7 +201,7 @@ public final class BlobServiceClientBuilder {
     /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link TokenCredential}.
      * @return the updated BlobServiceClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
@@ -284,7 +321,7 @@ public final class BlobServiceClientBuilder {
     /**
      * Sets the request retry options for all the requests made through the client.
      *
-     * @param retryOptions The options used to configure retry behavior.
+     * @param retryOptions {@link RequestRetryOptions}.
      * @return the updated BlobServiceClientBuilder object
      * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
@@ -315,7 +352,9 @@ public final class BlobServiceClientBuilder {
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
+     * newer version of the client library will have the result of potentially moving to a newer service version.
+     * <p>
+     * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
      * @param version {@link BlobServiceVersion} of the service to be used when making requests.
      * @return the updated BlobServiceClientBuilder object

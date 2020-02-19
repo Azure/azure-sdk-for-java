@@ -3,6 +3,8 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -17,19 +19,16 @@ public class ExtractKeyPhrasesAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("{subscription_key}")
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analysed.
+        // The text that needs be analyzed.
         String text = "My cat might need to see a veterinarian.";
 
+        System.out.println("Extracted phrases:");
         client.extractKeyPhrases(text).subscribe(
-            result -> {
-                for (String keyPhrase : result.getKeyPhrases()) {
-                    System.out.printf("Recognized phrases: %s.%n", keyPhrase);
-                }
-            },
+            keyPhrase -> System.out.printf("%s.%n", keyPhrase),
             error -> System.err.println("There was an error extracting key phrases of the text." + error),
             () -> System.out.println("Key phrases extracted."));
 

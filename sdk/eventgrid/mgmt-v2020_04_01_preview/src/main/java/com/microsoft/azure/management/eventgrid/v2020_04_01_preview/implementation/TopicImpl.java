@@ -11,28 +11,46 @@ package com.microsoft.azure.management.eventgrid.v2020_04_01_preview.implementat
 import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.Topic;
 import rx.Observable;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.TopicUpdateParameters;
+import java.util.List;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.TopicProvisioningState;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.InputSchema;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.InputSchemaMapping;
-import java.util.List;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.InboundIpRule;
+import rx.functions.Func1;
 
 class TopicImpl extends GroupableResourceCoreImpl<Topic, TopicInner, TopicImpl, EventGridManager> implements Topic, Topic.Definition, Topic.Update {
+    private TopicUpdateParameters updateParameter;
     TopicImpl(String name, TopicInner inner, EventGridManager manager) {
         super(name, inner, manager);
+        this.updateParameter = new TopicUpdateParameters();
     }
 
     @Override
     public Observable<Topic> createResourceAsync() {
         TopicsInner client = this.manager().inner().topics();
         return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(new Func1<TopicInner, TopicInner>() {
+               @Override
+               public TopicInner call(TopicInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<Topic> updateResourceAsync() {
         TopicsInner client = this.manager().inner().topics();
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.updateAsync(this.resourceGroupName(), this.name(), this.updateParameter)
+            .map(new Func1<TopicInner, TopicInner>() {
+               @Override
+               public TopicInner call(TopicInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
             .map(innerToFluentMap(this));
     }
 
@@ -47,6 +65,9 @@ class TopicImpl extends GroupableResourceCoreImpl<Topic, TopicInner, TopicImpl, 
         return this.inner().id() == null;
     }
 
+    private void resetCreateUpdateParameters() {
+        this.updateParameter = new TopicUpdateParameters();
+    }
 
     @Override
     public Boolean allowTrafficFromAllIPs() {
@@ -84,18 +105,6 @@ class TopicImpl extends GroupableResourceCoreImpl<Topic, TopicInner, TopicImpl, 
     }
 
     @Override
-    public TopicImpl withAllowTrafficFromAllIPs(Boolean allowTrafficFromAllIPs) {
-        this.inner().withAllowTrafficFromAllIPs(allowTrafficFromAllIPs);
-        return this;
-    }
-
-    @Override
-    public TopicImpl withInboundIpRules(List<InboundIpRule> inboundIpRules) {
-        this.inner().withInboundIpRules(inboundIpRules);
-        return this;
-    }
-
-    @Override
     public TopicImpl withInputSchema(InputSchema inputSchema) {
         this.inner().withInputSchema(inputSchema);
         return this;
@@ -108,8 +117,22 @@ class TopicImpl extends GroupableResourceCoreImpl<Topic, TopicInner, TopicImpl, 
     }
 
     @Override
-    public TopicImpl withMetricResourceId(String metricResourceId) {
-        this.inner().withMetricResourceId(metricResourceId);
+    public TopicImpl withAllowTrafficFromAllIPs(Boolean allowTrafficFromAllIPs) {
+        if (isInCreateMode()) {
+            this.inner().withAllowTrafficFromAllIPs(allowTrafficFromAllIPs);
+        } else {
+            this.updateParameter.withAllowTrafficFromAllIPs(allowTrafficFromAllIPs);
+        }
+        return this;
+    }
+
+    @Override
+    public TopicImpl withInboundIpRules(List<InboundIpRule> inboundIpRules) {
+        if (isInCreateMode()) {
+            this.inner().withInboundIpRules(inboundIpRules);
+        } else {
+            this.updateParameter.withInboundIpRules(inboundIpRules);
+        }
         return this;
     }
 

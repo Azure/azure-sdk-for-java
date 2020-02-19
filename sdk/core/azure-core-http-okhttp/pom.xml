@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
   <packaging>jar</packaging>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+  <version>1.2.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
 
   <name>Microsoft Azure OkHttp HTTP Client Library</name>
   <description>This package contains the OkHttp HTTP client plugin for azure-core.</description>
@@ -59,7 +59,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.3.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -72,7 +72,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.3.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -101,11 +101,23 @@
       <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>com.github.tomakehurst</groupId>
       <artifactId>wiremock-standalone</artifactId>
       <version>2.24.1</version> <!-- {x-version-update;com.github.tomakehurst:wiremock-standalone;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.0.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
