@@ -162,7 +162,8 @@ public class AzureADGraphClient {
     /**
      * Converts UserGroup list to Set of GrantedAuthorities
      *
-     * @param groups
+     * @param groups user groups
+     * @return granted authority
      */
     public Set<GrantedAuthority> convertGroupsToGrantedAuthorities(final List<UserGroup> groups) {
         // Map the authority information to one or more GrantedAuthority's and add it to mappedAuthorities

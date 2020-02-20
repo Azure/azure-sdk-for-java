@@ -64,6 +64,7 @@ public class UserPrincipalManager {
      * @param serviceEndpointsProps -  used to retrieve the JWKS URL
      * @param aadAuthProps          - used to retrieve the environment.
      * @param resourceRetriever     - configures the {@link RemoteJWKSet} call.
+     * @param explicitAudienceCheck -
      */
     public UserPrincipalManager(ServiceEndpointsProperties serviceEndpointsProps,
                                 AADAuthenticationProperties aadAuthProps,
