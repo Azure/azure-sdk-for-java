@@ -428,7 +428,7 @@
               *.implementation*:
               com.azure.tools.checkstyle*
             </excludePackageNames>
-            <!-- Cosmos - This is temporary, BridgeInternal gets converted to implementation -->
+            <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
               <sourceFileExclude>com.azure.cosmos.*BridgeInternal.java</sourceFileExclude>
             </sourceFileExcludes>
@@ -1240,8 +1240,8 @@
     <module>sdk/core/azure-core-test</module>
     <module>sdk/core/azure-core-tracing-opentelemetry</module>
     <module>sdk/cosmos/azure-cosmos</module>
-    <module>sdk/cosmos/azure-cosmos-benchmark</module> <!-- Cosmos - Benchmark will go away, this is temporary -->
-    <module>sdk/cosmos/azure-cosmos-examples</module> <!-- Cosmos - Examples will go away, this is temporary -->
+    <module>sdk/cosmos/azure-cosmos-benchmark</module> <!-- CosmosSkip - Benchmark will go away, this is temporary -->
+    <module>sdk/cosmos/azure-cosmos-examples</module> <!-- CosmosSkip - Examples will go away, this is temporary -->
     <module>sdk/e2e</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
