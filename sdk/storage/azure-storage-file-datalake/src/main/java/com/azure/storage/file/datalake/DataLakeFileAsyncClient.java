@@ -280,7 +280,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                         .addProgressReporting(stream, validatedParallelTransferOptions.getProgressReceiver()),
                     fileOffset, length, headers, validatedUploadRequestConditions);
 
-            return createWithResponse(null, null, headers, metadata, requestConditions)
+            return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
                 .then(UploadUtils.determineUploadFullOrChunked(data, validatedParallelTransferOptions,
                 uploadInChunksFunction, uploadFullMethod));
         } catch (RuntimeException ex) {
