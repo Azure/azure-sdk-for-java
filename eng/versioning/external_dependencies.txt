@@ -61,12 +61,15 @@ org.springframework.boot:spring-boot-actuator-autoconfigure;2.2.0.RELEASE
 org.springframework.boot:spring-boot-autoconfigure-processor;2.2.0.RELEASE
 org.springframework.boot:spring-boot-configuration-processor;2.2.0.RELEASE
 org.springframework.boot:spring-boot-dependencies;2.2.0.RELEASE
+org.springframework.boot:spring-boot-starter;2.2.0.RELEASE
 org.springframework.boot:spring-boot-starter-test;2.2.0.RELEASE
+org.springframework.boot:spring-boot-starter-validation;2.2.0.RELEASE
 org.springframework.boot:spring-boot-starter-web;2.2.0.RELEASE
 org.springframework.security:spring-security-core;5.2.0.RELEASE
 org.springframework.security:spring-security-config;5.2.0.RELEASE
 org.springframework.security:spring-security-web;5.2.0.RELEASE
 org.springframework.security:spring-security-oauth2-client;5.2.0.RELEASE
+org.springframework.security:spring-security-oauth2-core;5.2.0.RELEASE
 org.springframework.security:spring-security-oauth2-jose;5.2.0.RELEASE
 com.microsoft.azure:spring-data-cosmosdb;2.2.2
 com.microsoft.spring.data.gremlin:spring-data-gremlin;2.2.2
