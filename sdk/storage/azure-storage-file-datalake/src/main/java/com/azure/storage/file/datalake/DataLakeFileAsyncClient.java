@@ -379,7 +379,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     /**
-     * Downloads the entire file into a file specified by the path.
+     * Reads the entire file into a file specified by the path.
      *
      * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
      * will be thrown.</p>
@@ -399,7 +399,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     /**
-     * Downloads the entire file into a file specified by the path.
+     * Reads the entire file into a file specified by the path.
      *
      * <p>If overwrite is set to false, the file will be created and must not exist, if the file already exists a
      * {@link FileAlreadyExistsException} will be thrown.</p>
@@ -430,7 +430,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     /**
-     * Downloads the entire file into a file specified by the path.
+     * Reads the entire file into a file specified by the path.
      *
      * <p>By default the file will be created and must not exist, if the file already exists a
      * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
