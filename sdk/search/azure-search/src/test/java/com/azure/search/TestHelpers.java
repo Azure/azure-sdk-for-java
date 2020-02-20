@@ -105,7 +105,7 @@ public final class TestHelpers {
     public static String getETag(Object obj) {
         Class<?> clazz = obj.getClass();
         try {
-            clazz.getDeclaredField("eTag").trySetAccessible();
+            clazz.getDeclaredField("eTag").setAccessible(true);
             return (String) clazz.getDeclaredField("eTag").get(obj);
         } catch (IllegalAccessException | NoSuchFieldException ex) {
             return "";
