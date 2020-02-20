@@ -42,7 +42,7 @@ public class RangeFacetResult<T> {
      * no lower bound (i.e. -- for the first bucket).
      * @return from
      */
-    public Object getFrom() {
+    public T getFrom() {
         return from;
     }
 
@@ -52,7 +52,7 @@ public class RangeFacetResult<T> {
      *
      * @return to
      */
-    public Object getTo() {
+    public T getTo() {
         return to;
     }
 }

@@ -40,7 +40,7 @@ public class ValueFacetResult<T> {
      *
      * @return value
      */
-    public Object getValue() {
+    public T getValue() {
         return value;
     }
 }
