@@ -43,11 +43,6 @@ jobs:
         inputs:
           mavenPomFile: $(PomFile)
           goals: 'versions:use-latest-versions'
-
-          # Explicitly exclude "upgrade" of `azure-cosmos` because mvn resolves
-          # the `preview` release as a later release than `beta`.
-          # TODO: Remove this when we ship a version of `azure-cosmos`
-          # supersedes the `preview` version on Maven Central
           options: '$(DefaultOptions) $(ProfileFlag) -DskipTests "-Dincludes=com.azure:*"'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
