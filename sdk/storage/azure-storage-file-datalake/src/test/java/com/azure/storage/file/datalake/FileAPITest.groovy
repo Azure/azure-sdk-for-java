@@ -1611,6 +1611,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ liveMode() })
     def "Upload from file reporter"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -1627,7 +1628,7 @@ class FileAPITest extends APISpec {
             null, null, null))
             .verifyComplete()
 
-        // Check if the reported size is equal to or grater than the file size in case there are retries.
+        // Check if the reported size is equal to or greater than the file size in case there are retries.
         uploadReporter.getReportedByteCount() >= size
 
         cleanup:
@@ -1698,7 +1699,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
-    @Requires({liveMode()}) // Test uploads large amount of data
+    @Requires({ liveMode() }) // Test uploads large amount of data
     def "Async buffered upload"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -1766,6 +1767,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ liveMode() })
     def "Buffered upload with reporter"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
