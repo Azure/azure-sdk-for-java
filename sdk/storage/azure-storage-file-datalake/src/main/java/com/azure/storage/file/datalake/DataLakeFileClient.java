@@ -14,6 +14,7 @@ import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -178,7 +179,7 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         if (!overwrite) {
             // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
-            if (dataLakeFileAsyncClient.uploadInBlocks(filePath, DataLakeFileClient.MAX_APPEND_FILE_BYTES)
+            if (UploadUtils.uploadInBlocks(filePath, DataLakeFileClient.MAX_APPEND_FILE_BYTES, logger)
                 && exists()) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }

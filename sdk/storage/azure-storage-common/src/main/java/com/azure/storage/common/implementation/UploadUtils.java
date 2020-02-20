@@ -4,11 +4,17 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.function.BiFunction;
@@ -123,5 +129,45 @@ public class UploadUtils {
                         return duplicate;
                     });
             });
+    }
+
+
+    public static boolean uploadInBlocks(String filePath, Integer maxSingleUploadSize, ClientLogger logger) {
+        AsynchronousFileChannel channel = uploadFileResourceSupplier(filePath, logger);
+        boolean retVal;
+        try {
+            retVal = channel.size() > maxSingleUploadSize;
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
+        } finally {
+            uploadFileCleanup(channel, logger);
+        }
+
+        return retVal;
+    }
+
+    /**
+     * RESERVED FOR INTERNAL USE.
+     *
+     * Resource Supplier for UploadFile.
+     *
+     * @param filePath The path for the file
+     * @return {@code AsynchronousFileChannel}
+     * @throws UncheckedIOException an input output exception.
+     */
+    public static AsynchronousFileChannel uploadFileResourceSupplier(String filePath, ClientLogger logger) {
+        try {
+            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
+        }
+    }
+
+    public static void uploadFileCleanup(AsynchronousFileChannel channel, ClientLogger logger) {
+        try {
+            channel.close();
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
+        }
     }
 }

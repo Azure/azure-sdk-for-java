@@ -23,6 +23,7 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -527,7 +528,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
             // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
             if (!overwrite) {
-                if (uploadInBlocks(filePath, BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES)) {
+                if (UploadUtils.uploadInBlocks(filePath, BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES, logger)) {
                     overwriteCheck = exists().flatMap(exists -> exists
                         ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
                         : Mono.empty());
@@ -571,14 +572,15 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         final ParallelTransferOptions finalParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
         try {
-            return Mono.using(() -> uploadFileResourceSupplier(filePath),
+            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(filePath, logger),
                 channel -> {
                     try {
                         BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
                         long fileSize = channel.size();
 
                         // If the file is larger than 256MB chunk it and stage it as blocks.
-                        if (uploadInBlocks(filePath, finalParallelTransferOptions.getMaxSingleUploadSize())) {
+                        if (UploadUtils.uploadInBlocks(filePath, finalParallelTransferOptions.getMaxSingleUploadSize(),
+                            logger)) {
                             return uploadBlocks(fileSize, finalParallelTransferOptions, originalBlockSize, headers,
                                 metadata, tier, requestConditions, channel, blockBlobAsyncClient);
                         } else {
@@ -590,24 +592,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     } catch (IOException ex) {
                         return Mono.error(ex);
                     }
-                }, this::uploadFileCleanup);
+                }, channel ->
+                UploadUtils.uploadFileCleanup(channel, logger));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    boolean uploadInBlocks(String filePath, Integer maxSingleUploadSize) {
-        AsynchronousFileChannel channel = uploadFileResourceSupplier(filePath);
-        boolean retVal;
-        try {
-            retVal = channel.size() > maxSingleUploadSize;
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
-        } finally {
-            uploadFileCleanup(channel);
-        }
-
-        return retVal;
     }
 
     private Mono<Void> uploadBlocks(long fileSize, ParallelTransferOptions parallelTransferOptions,
@@ -637,31 +626,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .then(Mono.defer(() -> client.commitBlockListWithResponse(
                 new ArrayList<>(blockIds.values()), headers, metadata, tier, finalRequestConditions)))
             .then();
-    }
-
-    /**
-     * RESERVED FOR INTERNAL USE.
-     *
-     * Resource Supplier for UploadFile.
-     *
-     * @param filePath The path for the file
-     * @return {@code AsynchronousFileChannel}
-     * @throws UncheckedIOException an input output exception.
-     */
-    protected AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
-        try {
-            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
-        }
-    }
-
-    private void uploadFileCleanup(AsynchronousFileChannel channel) {
-        try {
-            channel.close();
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
-        }
     }
 
     private String getBlockID() {

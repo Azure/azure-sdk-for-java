@@ -36,8 +36,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -388,7 +386,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
             // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
             if (!overwrite) {
-                if (uploadInBlocks(filePath, DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES)) {
+                if (UploadUtils.uploadInBlocks(filePath, DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES, logger)) {
                     overwriteCheck = exists().flatMap(exists -> exists
                         ? monoError(logger, new IllegalArgumentException(Constants.FILE_ALREADY_EXISTS))
                         : Mono.empty());
@@ -440,7 +438,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         long fileOffset = 0;
 
         try {
-            return Mono.using(() -> uploadFileResourceSupplier(filePath),
+            return Mono.using(() ->
+                    UploadUtils.uploadFileResourceSupplier(filePath, logger),
                 channel -> {
                     try {
                         long fileSize = channel.size();
@@ -449,40 +448,28 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                             throw logger.logExceptionAsError(new IllegalArgumentException("Size of the file must be "
                                 + "greater than 0."));
                         }
-                        if (uploadInBlocks(filePath, finalParallelTransferOptions.getMaxSingleUploadSize())) {
+                        if (UploadUtils.uploadInBlocks(filePath,
+                            finalParallelTransferOptions.getMaxSingleUploadSize(), logger)) {
                             return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
                                 .then(uploadBlocks(fileOffset, fileSize, finalParallelTransferOptions,
-                                originalBlockSize, headers, validatedUploadRequestConditions, channel));
+                                    originalBlockSize, headers, validatedUploadRequestConditions, channel));
                         } else {
                             // Otherwise we know it can be sent in a single request reducing network overhead.
                             return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
                                 .then(uploadWithResponse(FluxUtil.readFile(channel), fileOffset, fileSize, headers,
-                                validatedUploadRequestConditions))
+                                    validatedUploadRequestConditions))
                                 .then();
                         }
-
                     } catch (IOException ex) {
                         return Mono.error(ex);
                     }
-                }, this::uploadFileCleanup);
+                }, channel ->
+                    UploadUtils.uploadFileCleanup(channel, logger));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    boolean uploadInBlocks(String filePath, Integer maxSingleUploadSize) {
-        AsynchronousFileChannel channel = uploadFileResourceSupplier(filePath);
-        boolean retVal;
-        try {
-            retVal = channel.size() > maxSingleUploadSize;
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
-        } finally {
-            uploadFileCleanup(channel);
-        }
-
-        return retVal;
-    }
 
     private Mono<Void> uploadBlocks(long fileOffset, long fileSize, ParallelTransferOptions parallelTransferOptions,
         Integer originalBlockSize, PathHttpHeaders headers, DataLakeRequestConditions requestConditions,
@@ -505,31 +492,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             .then(Mono.defer(() ->
                 flushWithResponse(fileSize, false, false, headers, requestConditions)))
             .then();
-    }
-
-    /**
-     * RESERVED FOR INTERNAL USE.
-     *
-     * Resource Supplier for UploadFile.
-     *
-     * @param filePath The path for the file
-     * @return {@code AsynchronousFileChannel}
-     * @throws UncheckedIOException an input output exception.
-     */
-    protected AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
-        try {
-            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ);
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
-        }
-    }
-
-    private void uploadFileCleanup(AsynchronousFileChannel channel) {
-        try {
-            channel.close();
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
-        }
     }
 
     private List<FileRange> sliceFile(long fileSize, Integer originalBlockSize, int blockSize) {
