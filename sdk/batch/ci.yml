@@ -40,4 +40,3 @@ stages:
         - name: azure-batch
           groupId: com.microsoft.azure
           safeName: azurebatch
-          stagingProfileId: 534d15ee3800f4

@@ -44,4 +44,3 @@ stages:
         - name: azure-eventgrid
           groupId: com.microsoft.azure
           safeName: azureeventgrid
-          stagingProfileId: 534d15ee3800f4
