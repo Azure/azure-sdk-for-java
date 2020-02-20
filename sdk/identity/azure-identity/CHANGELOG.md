@@ -1,6 +1,17 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
+
+
+## 1.1.0-beta.1 (2020-02-12)
+- All credential builders support setting a pipeline via `httpPipeline` method.
+- SharedTokenCacheCredentialBuilder supports setting the tenant id via `tenantId` method.
+
+## 1.0.3 (2020-01-13)
+- Support datetime format `M/d/yyyy K:mm:ss a XXX` for token `expires_on` property on Windows App Services.
+
+## 1.0.2 (2020-01-07)
+- Fix MSI_ENDPOINT and MSI_SECRET environment variable lookup issue in `ManagedIdentityCredential` when running on App Service
 
 ## 1.0.0 (2019-10-25) - November 2019 SDK Release
 **Breaking changes**

@@ -35,7 +35,7 @@ public final class TextAnalyticsRequestOptions {
     }
 
     /**
-     * Get the value of {@code showStatistics}
+     * Get the value of {@code showStatistics}.
      *
      * @return the value of {@code showStatistics}
      */
@@ -44,7 +44,7 @@ public final class TextAnalyticsRequestOptions {
     }
 
     /**
-     * Set the value of {@code showStatistics}
+     * Set the value of {@code showStatistics}.
      *
      * @param showStatistics if a boolean value was specified in the request this field will contain
      * information about the document payload

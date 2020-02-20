@@ -11,10 +11,11 @@ import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScore
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SentimentLabel;
+import com.azure.ai.textanalytics.models.SentimentScorePerLabel;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.models.TextSentimentClass;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -24,6 +25,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -50,24 +52,28 @@ class AnalyzeSentimentAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<AnalyzeSentimentResult>> analyzeSentimentWithResponse(String text, String language, Context context) {
+    Mono<Response<com.azure.ai.textanalytics.models.DocumentSentiment>> analyzeSentimentWithResponse(
+        String text, String language, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
-        return analyzeBatchSentimentWithResponse(
+        return analyzeSentimentBatchWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
+            .map(response -> new SimpleResponse<>(
+                response,
+                Transforms.processSingleResponseErrorResult(response).getValue().getDocumentSentiment()
+            ));
     }
 
     Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeSentimentWithResponse(
-        List<String> textInputs, String language, Context context) {
+        List<String> textInputs, String language, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
-        return analyzeBatchSentimentWithResponse(documentInputs, null, context);
+        return analyzeSentimentBatchWithResponse(documentInputs, options, context);
     }
 
-    Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeBatchSentimentWithResponse(
+    Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeSentimentBatchWithResponse(
         List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
@@ -94,13 +100,13 @@ class AnalyzeSentimentAsyncClient {
         final SentimentResponse sentimentResponse) {
         List<AnalyzeSentimentResult> analyzeSentimentResults = new ArrayList<>();
         for (DocumentSentiment documentSentiment : sentimentResponse.getDocuments()) {
-            analyzeSentimentResults.add(convertToTextSentimentResult(documentSentiment));
+            analyzeSentimentResults.add(convertToAnalyzeSentimentResult(documentSentiment));
         }
         for (DocumentError documentError : sentimentResponse.getErrors()) {
             final com.azure.ai.textanalytics.models.TextAnalyticsError error =
                 toTextAnalyticsError(documentError.getError());
             analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
-                error, null, null));
+                error, null));
         }
         return new DocumentResultCollection<>(analyzeSentimentResults,
             sentimentResponse.getModelVersion(), sentimentResponse.getStatistics() == null ? null
@@ -114,46 +120,50 @@ class AnalyzeSentimentAsyncClient {
      *
      * @return the {@link AnalyzeSentimentResult} to be returned by the SDK.
      */
-    private AnalyzeSentimentResult convertToTextSentimentResult(final DocumentSentiment documentSentiment) {
+    private AnalyzeSentimentResult convertToAnalyzeSentimentResult(final DocumentSentiment documentSentiment) {
         // Document text sentiment
-        final TextSentimentClass documentSentimentClass = TextSentimentClass.fromString(documentSentiment.
+        final SentimentLabel documentSentimentLabel = SentimentLabel.fromString(documentSentiment.
             getSentiment().toString());
-        if (documentSentimentClass == null) {
+        if (documentSentimentLabel == null) {
             // Not throw exception for an invalid Sentiment type because we should not skip processing the
             // other response. It is a service issue.
             logger.logExceptionAsWarning(
-                new RuntimeException(String.format("'%s' is not valid text sentiment.",
+                new RuntimeException(String.format(Locale.ROOT, "'%s' is not valid text sentiment.",
                     documentSentiment.getSentiment())));
         }
         final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getDocumentScores();
 
         // Sentence text sentiment
-        final List<TextSentiment> sentenceSentimentTexts = documentSentiment.getSentences().stream()
+        final List<SentenceSentiment> sentenceSentiments = documentSentiment.getSentences().stream()
             .map(sentenceSentiment -> {
-                TextSentimentClass sentimentClass = TextSentimentClass.fromString(sentenceSentiment
+                SentimentLabel sentimentLabel = SentimentLabel.fromString(sentenceSentiment
                     .getSentiment().toString());
-                if (sentimentClass == null) {
+                if (sentimentLabel == null) {
                     // Not throw exception for an invalid Sentiment type because we should not skip processing the
                     // other response. It is a service issue.
                     logger.logExceptionAsWarning(
-                        new RuntimeException(String.format("'%s' is not valid text sentiment.",
+                        new RuntimeException(String.format(Locale.ROOT, "'%s' is not valid text sentiment.",
                             sentenceSentiment.getSentiment())));
                 }
                 SentimentConfidenceScorePerLabel confidenceScorePerSentence = sentenceSentiment.getSentenceScores();
 
-                return new TextSentiment(sentimentClass, confidenceScorePerSentence.getNegative(),
-                    confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive(),
-                    sentenceSentiment.getLength(), sentenceSentiment.getOffset());
+                return new SentenceSentiment(
+                    sentimentLabel,
+                    new SentimentScorePerLabel(confidenceScorePerSentence.getNegative(),
+                        confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
+                    sentenceSentiment.getLength(),
+                    sentenceSentiment.getOffset());
 
             }).collect(Collectors.toList());
 
-        return new AnalyzeSentimentResult(documentSentiment.getId(),
+        return new AnalyzeSentimentResult(
+            documentSentiment.getId(),
             documentSentiment.getStatistics() == null ? null
                 : toTextDocumentStatistics(documentSentiment.getStatistics()), null,
-            new TextSentiment(documentSentimentClass, confidenceScorePerLabel.getNegative(),
-                confidenceScorePerLabel.getNeutral(), confidenceScorePerLabel.getPositive(),
-                sentenceSentimentTexts.stream().mapToInt(TextSentiment::getLength).sum(), 0),
-            sentenceSentimentTexts);
+            new com.azure.ai.textanalytics.models.DocumentSentiment(
+                documentSentimentLabel,
+                new SentimentScorePerLabel(confidenceScorePerLabel.getNegative(), confidenceScorePerLabel.getNeutral(),
+                    confidenceScorePerLabel.getPositive()),
+                sentenceSentiments));
     }
-
 }

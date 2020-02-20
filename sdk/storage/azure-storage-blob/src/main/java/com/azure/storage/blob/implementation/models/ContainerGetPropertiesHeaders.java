@@ -114,6 +114,19 @@ public final class ContainerGetPropertiesHeaders {
     private Boolean hasLegalHold;
 
     /*
+     * The default encryption scope for the container.
+     */
+    @JsonProperty(value = "x-ms-default-encryption-scope")
+    private String defaultEncryptionScope;
+
+    /*
+     * Indicates whether the container's default encryption scope can be
+     * overriden.
+     */
+    @JsonProperty(value = "x-ms-deny-encryption-scope-override")
+    private Boolean denyEncryptionScopeOverride;
+
+    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")
@@ -428,6 +441,51 @@ public final class ContainerGetPropertiesHeaders {
      */
     public ContainerGetPropertiesHeaders setHasLegalHold(Boolean hasLegalHold) {
         this.hasLegalHold = hasLegalHold;
+        return this;
+    }
+
+    /**
+     * Get the defaultEncryptionScope property: The default encryption scope
+     * for the container.
+     *
+     * @return the defaultEncryptionScope value.
+     */
+    public String getDefaultEncryptionScope() {
+        return this.defaultEncryptionScope;
+    }
+
+    /**
+     * Set the defaultEncryptionScope property: The default encryption scope
+     * for the container.
+     *
+     * @param defaultEncryptionScope the defaultEncryptionScope value to set.
+     * @return the ContainerGetPropertiesHeaders object itself.
+     */
+    public ContainerGetPropertiesHeaders setDefaultEncryptionScope(String defaultEncryptionScope) {
+        this.defaultEncryptionScope = defaultEncryptionScope;
+        return this;
+    }
+
+    /**
+     * Get the denyEncryptionScopeOverride property: Indicates whether the
+     * container's default encryption scope can be overriden.
+     *
+     * @return the denyEncryptionScopeOverride value.
+     */
+    public Boolean isDenyEncryptionScopeOverride() {
+        return this.denyEncryptionScopeOverride;
+    }
+
+    /**
+     * Set the denyEncryptionScopeOverride property: Indicates whether the
+     * container's default encryption scope can be overriden.
+     *
+     * @param denyEncryptionScopeOverride the denyEncryptionScopeOverride value
+     * to set.
+     * @return the ContainerGetPropertiesHeaders object itself.
+     */
+    public ContainerGetPropertiesHeaders setDenyEncryptionScopeOverride(Boolean denyEncryptionScopeOverride) {
+        this.denyEncryptionScopeOverride = denyEncryptionScopeOverride;
         return this;
     }
 

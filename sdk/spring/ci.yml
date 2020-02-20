@@ -2,15 +2,15 @@
 # This file is generated automatically and any changes will be lost.
 
 resources:
-    repositories:
-      - repository: azure-sdk-build-tools
-        type: git
-        name: internal/azure-sdk-build-tools
-      - repository: azure-sdk-tools
-        type: github
-        name: Azure/azure-sdk-tools
-        endpoint: azure
-  
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+    - repository: azure-sdk-tools
+      type: github
+      name: Azure/azure-sdk-tools
+      endpoint: azure
+
 trigger:
   branches:
     include:
@@ -32,7 +32,7 @@ pr:
   paths:
     include:
       - sdk/spring/
-  
+
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:

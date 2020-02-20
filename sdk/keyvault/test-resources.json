@@ -1,0 +1,102 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "baseName": {
+            "type": "String"
+        },
+        "tenantId": {
+            "type": "String"
+        },
+        "testApplicationOid": {
+            "type": "String"
+        },
+        "endpointSuffix": {
+            "defaultValue": "vault.azure.net",
+            "type": "String"
+        }
+    },
+    "variables": {
+        "location": "[resourceGroup().location]",
+        "azureKeyVaultUrl": "[format('https://{0}.{1}/', parameters('baseName'), parameters('endpointSuffix'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2016-10-01",
+            "name": "[parameters('baseName')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "standard"
+                },
+                "tenantId": "[parameters('tenantId')]",
+                "accessPolicies": [
+                    {
+                        "tenantId": "[parameters('tenantId')]",
+                        "objectId": "[parameters('testApplicationOid')]",
+                        "permissions": {
+                            "keys": [
+                                "backup",
+                                "create",
+                                "decrypt",
+                                "delete",
+                                "encrypt",
+                                "get",
+                                "import",
+                                "list",
+                                "purge",
+                                "recover",
+                                "restore",
+                                "sign",
+                                "unwrapKey",
+                                "update",
+                                "verify",
+                                "wrapKey"
+                            ],
+                            "secrets": [
+                                "backup",
+                                "delete",
+                                "get",
+                                "list",
+                                "purge",
+                                "recover",
+                                "restore",
+                                "set"
+                            ],
+                            "certificates": [
+                                "backup",
+                                "create",
+                                "delete",
+                                "deleteissuers",
+                                "get",
+                                "getissuers",
+                                "import",
+                                "list",
+                                "listissuers",
+                                "managecontacts",
+                                "manageissuers",
+                                "purge",
+                                "recover",
+                                "restore",
+                                "setissuers",
+                                "update"
+                            ]
+                        }
+                    }
+                ],
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": false,
+                "enableSoftDelete": true
+            }
+        }
+    ],
+    "outputs": {
+        "AZURE_KEYVAULT_ENDPOINT": {
+            "type": "string",
+            "value": "[variables('azureKeyVaultUrl')]"
+        }
+    }
+}

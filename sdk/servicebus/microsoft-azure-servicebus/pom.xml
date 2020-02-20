@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-servicebus</artifactId>
-  <version>3.1.4</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;current} -->
+  <version>3.1.5</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus;current} -->
 
   <name>Microsoft Azure SDK for Service Bus</name>
   <description>Java library for Azure Service Bus</description>
@@ -73,7 +73,7 @@
     <dependency>
       <groupId>org.asynchttpclient</groupId>
       <artifactId>async-http-client</artifactId>
-      <version>2.10.4</version> <!-- {x-version-update;org.asynchttpclient:async-http-client;external_dependency} -->
+      <version>2.10.5</version> <!-- {x-version-update;org.asynchttpclient:async-http-client;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>

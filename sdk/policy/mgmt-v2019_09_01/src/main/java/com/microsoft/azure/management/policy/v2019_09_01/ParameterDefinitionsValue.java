@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ParameterDefinitionsValue model.
+ * The definition of a parameter that can be provided to the policy.
  */
 public class ParameterDefinitionsValue {
     /**

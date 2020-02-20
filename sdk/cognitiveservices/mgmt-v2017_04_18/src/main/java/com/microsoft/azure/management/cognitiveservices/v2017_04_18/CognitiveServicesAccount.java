@@ -10,12 +10,12 @@ package com.microsoft.azure.management.cognitiveservices.v2017_04_18;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementation.CognitiveServicesManager;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementation.CognitiveServicesAccountInner;
@@ -25,19 +25,9 @@ import com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementati
  */
 public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAccountInner>, Resource, GroupableResourceCore<CognitiveServicesManager, CognitiveServicesAccountInner>, HasResourceGroup, Refreshable<CognitiveServicesAccount>, Updatable<CognitiveServicesAccount.Update>, HasManager<CognitiveServicesManager> {
     /**
-     * @return the endpoint value.
-     */
-    String endpoint();
-
-    /**
      * @return the etag value.
      */
     String etag();
-
-    /**
-     * @return the internalId value.
-     */
-    String internalId();
 
     /**
      * @return the kind value.
@@ -45,9 +35,9 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
     String kind();
 
     /**
-     * @return the provisioningState value.
+     * @return the properties value.
      */
-    ProvisioningState provisioningState();
+    CognitiveServicesAccountProperties properties();
 
     /**
      * @return the sku value.
@@ -57,7 +47,7 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
     /**
      * The entirety of the CognitiveServicesAccount definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithKind, DefinitionStages.WithProperties, DefinitionStages.WithSku, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
     }
 
     /**
@@ -73,36 +63,42 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
         /**
          * The stage of the CognitiveServicesAccount definition allowing to specify the resource group.
          */
-        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithKind> {
+        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCreate> {
         }
 
         /**
          * The stage of the cognitiveservicesaccount definition allowing to specify Kind.
          */
         interface WithKind {
-           /**
-            * Specifies kind.
-            */
-            WithProperties withKind(Kind kind);
+            /**
+             * Specifies kind.
+             * @param kind The Kind of the resource
+             * @return the next definition stage
+             */
+            WithCreate withKind(String kind);
         }
 
         /**
          * The stage of the cognitiveservicesaccount definition allowing to specify Properties.
          */
         interface WithProperties {
-           /**
-            * Specifies properties.
-            */
-            WithSku withProperties(Object properties);
+            /**
+             * Specifies properties.
+             * @param properties Properties of Cognitive Services account
+             * @return the next definition stage
+             */
+            WithCreate withProperties(CognitiveServicesAccountProperties properties);
         }
 
         /**
          * The stage of the cognitiveservicesaccount definition allowing to specify Sku.
          */
         interface WithSku {
-           /**
-            * Specifies sku.
-            */
+            /**
+             * Specifies sku.
+             * @param sku The SKU of Cognitive Services account
+             * @return the next definition stage
+             */
             WithCreate withSku(Sku sku);
         }
 
@@ -111,18 +107,54 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<CognitiveServicesAccount>, Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<CognitiveServicesAccount>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithKind, DefinitionStages.WithProperties, DefinitionStages.WithSku {
         }
     }
     /**
      * The template for a CognitiveServicesAccount update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<CognitiveServicesAccount>, Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<CognitiveServicesAccount>, Resource.UpdateWithTags<Update>, UpdateStages.WithKind, UpdateStages.WithProperties, UpdateStages.WithSku {
     }
 
     /**
      * Grouping of CognitiveServicesAccount update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the cognitiveservicesaccount update allowing to specify Kind.
+         */
+        interface WithKind {
+            /**
+             * Specifies kind.
+             * @param kind The Kind of the resource
+             * @return the next update stage
+             */
+            Update withKind(String kind);
+        }
+
+        /**
+         * The stage of the cognitiveservicesaccount update allowing to specify Properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies properties.
+             * @param properties Properties of Cognitive Services account
+             * @return the next update stage
+             */
+            Update withProperties(CognitiveServicesAccountProperties properties);
+        }
+
+        /**
+         * The stage of the cognitiveservicesaccount update allowing to specify Sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies sku.
+             * @param sku The SKU of Cognitive Services account
+             * @return the next update stage
+             */
+            Update withSku(Sku sku);
+        }
+
     }
 }

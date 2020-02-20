@@ -22,7 +22,7 @@ class ResponseUtils {
             // for delete we don't expect any body
             contentObservable = Mono.just(StringUtils.EMPTY);
         } else {
-            contentObservable = httpClientResponse.bodyAsString();
+            contentObservable = httpClientResponse.bodyAsString().switchIfEmpty(Mono.just(StringUtils.EMPTY));
         }
 
         return contentObservable.flatMap(content -> {

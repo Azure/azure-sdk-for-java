@@ -1,6 +1,20 @@
 # Release History
 
-## 12.2.0-beta.2 (Unreleased)
+## 12.4.0-beta.1 (Unreleased)
+
+
+## 12.3.0 (2020-02-12)
+- Added support for the 2019-07-07 service version.
+
+## 12.2.1 (2020-02-10)
+- Updated `azure-core-http-netty` to version 1.3.0
+- Update `azure-storage-common` to version 12.3.1
+
+## 12.2.0 (2020-01-08)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.2.0/sdk/storage/azure-storage-file-queue/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-queue_12.2.0/sdk/storage/azure-storage-file-queue/src/samples/java/com/azure/storage/queue)
 
 ## 12.2.0-beta.1 (2019-12-18)
 - Added SAS generation methods on clients to improve discoverability and convenience of sas. Deprecated setQueueName, generateSasQueryParameters methods on QueueServiceSasSignatureValues to direct users to using the methods added on clients.

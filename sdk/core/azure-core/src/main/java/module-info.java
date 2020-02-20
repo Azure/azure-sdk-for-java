@@ -2,18 +2,16 @@
 // Licensed under the MIT License.
 
 module com.azure.core {
-    requires java.xml;
-
-    requires transitive com.fasterxml.jackson.core;
-    requires transitive com.fasterxml.jackson.annotation;
-    requires transitive com.fasterxml.jackson.databind;
-    requires com.fasterxml.jackson.dataformat.xml;
-    requires com.fasterxml.jackson.datatype.jsr310;
-
     requires transitive reactor.core;
     requires transitive org.reactivestreams;
-
     requires transitive org.slf4j;
+
+    requires transitive com.fasterxml.jackson.annotation;
+    requires transitive com.fasterxml.jackson.core;
+    requires transitive com.fasterxml.jackson.databind;
+
+    requires com.fasterxml.jackson.dataformat.xml;
+    requires com.fasterxml.jackson.datatype.jsr310;
 
     // public API surface area
     exports com.azure.core.annotation;
@@ -35,6 +33,7 @@ module com.azure.core {
     opens com.azure.core.util.logging to com.fasterxml.jackson.databind;
     opens com.azure.core.util.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation to com.fasterxml.jackson.databind;
+    opens com.azure.core.implementation.logging to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer.jsonwrapper to com.fasterxml.jackson.databind;
 

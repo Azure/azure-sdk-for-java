@@ -1,19 +1,23 @@
+---
+page_type: sample
+languages:
+  - java
+products:
+  - azure
+  - azure-blob-storage
+  - azure-storage
+urlFragment: storage-blob-samples
+---
 
-## Azure Azure Storage Blob Batch Samples client library for Java
+# Azure Storage Blob Batch Samples client library for Java
 This document explains samples and how to use them.
 
 ## Key concepts
 
 Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
 
-# Samples Azure Storage Blob Batch APIs
-This document describes how to use samples and what is done in each sample.
-
 ## Getting started
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].
-
-## How to run
-These sample can be run in your IDE with default JDK.
 
 ## Examples
    Following section document various examples.
@@ -25,7 +29,6 @@ These sample can be run in your IDE with default JDK.
 5. [Advanced Batching Setting Tier Examples][samples_basic]
 
 ## Troubleshooting
-### General
 When interacting with blobs using this Java client library, errors returned by the service correspond to the same HTTP
 status codes returned for [REST API][error_codes] requests. For example, if you try to retrieve a container or blob that
 doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`
@@ -40,7 +43,7 @@ For more extensive documentation on Azure Storage blob, see the [API reference d
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
-[SDK_README_GETTING_STARTDED]: ../../README.md#getting-started
+[SDK_README_GETTING_STARTED]: ../../README.md#getting-started
 [SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
 [BATCH_SDK_README]: ../../README.md
 [SDK_README_CONTRIBUTING]: ../../README.md#contributing

@@ -44,13 +44,14 @@ public class CertificateClientTest extends CertificateClientTestBase {
     @Test
     public void createCertificate() {
         createCertificateRunner((policy) -> {
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = client.beginCreateCertificate("testCer",
+            String certName = generateResourceId("testCer");
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = client.beginCreateCertificate(certName,
                 policy);
             certPoller.waitForCompletion();
             KeyVaultCertificateWithPolicy expected = certPoller.getFinalResult();
-            assertEquals("testCer", expected.getName());
+            assertEquals(certName, expected.getName());
             assertNotNull(expected.getProperties().getCreatedOn());
-            deleteAndPurgeCertificate("testCer");
+            deleteAndPurgeCertificate(certName);
         });
     }
 
@@ -70,7 +71,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @Test
     public void createCertificateNullPolicy() {
-        assertRunnableThrowsException(() -> client.beginCreateCertificate("tempCert", null),
+        assertRunnableThrowsException(() -> client.beginCreateCertificate(generateResourceId("tempCert"), null),
             NullPointerException.class);
     }
 
@@ -83,14 +84,15 @@ public class CertificateClientTest extends CertificateClientTestBase {
     @Test
     public void updateCertificate() {
         updateCertificateRunner((tags, updatedTags) -> {
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = client.beginCreateCertificate("testCertificate2",
+            String certName = generateResourceId("testCertificate2");
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = client.beginCreateCertificate(certName,
                     CertificatePolicy.getDefault(), true, tags);
             certPoller.waitForCompletion();
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
             KeyVaultCertificate keyVaultCertificate = client.updateCertificateProperties(certificate.getProperties().setTags(updatedTags));
             Map<String, String> returnedTags = keyVaultCertificate.getProperties().getTags();
             validateMapResponse(updatedTags, returnedTags);
-            deleteAndPurgeCertificate("testCertificate2");
+            deleteAndPurgeCertificate(certName);
         });
     }
 
@@ -105,7 +107,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
     @Test
     public void updateDisabledCertificate() {
         updateDisabledCertificateRunner((tags, updatedTags) -> {
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = client.beginCreateCertificate("testCertificate3",
+            String certName = generateResourceId("testCertificate3");
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = client.beginCreateCertificate(certName,
                 CertificatePolicy.getDefault(), false, tags);
             certPoller.waitForCompletion();
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
@@ -113,7 +116,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             Map<String, String> returnedTags = keyVaultCertificate.getProperties().getTags();
             validateMapResponse(updatedTags, returnedTags);
             assertFalse(keyVaultCertificate.getProperties().isEnabled());
-            deleteAndPurgeCertificate("testCertificate3");
+            deleteAndPurgeCertificate(certName);
         });
     }
 
@@ -361,6 +364,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
                 certPoller.waitForCompletion();
             }
 
+            sleepInRecordMode(90000);
             for (CertificateProperties actualKey : client.listPropertiesOfCertificates()) {
                 if (certificatesToList.contains(actualKey.getName())) {
                     certificatesToList.remove(actualKey.getName());
@@ -482,7 +486,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @Test
     public void listCertificateVersions() {
-        String certName = "testListCertVersion";
+        String certName = generateResourceId("testListCertVersion");
         int counter = 5;
         for (int i = 0; i < counter; i++) {
             SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = client.beginCreateCertificate(certName,
@@ -505,30 +509,32 @@ public class CertificateClientTest extends CertificateClientTestBase {
             for (String certName :  certificatesToDelete) {
                 SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = client.beginCreateCertificate(certName,
                     CertificatePolicy.getDefault());
-                certPoller.waitForCompletion();
+                PollResponse<CertificateOperation> pollResponse = certPoller.poll();
+                while (!pollResponse.getStatus().isComplete()) {
+                    sleepInRecordMode(1000);
+                    pollResponse = certPoller.poll();
+                }
             }
 
             for (String certName : certificates) {
                 SyncPoller<DeletedCertificate, Void> poller = client.beginDeleteCertificate(certName);
                 PollResponse<DeletedCertificate> pollResponse = poller.poll();
-                poller.waitForCompletion();
-            }
-            Iterable<DeletedCertificate> deletedCertificates =  client.listDeletedCertificates();
-            for (DeletedCertificate deletedCertificate : deletedCertificates) {
-                if (certificatesToDelete.contains(deletedCertificate.getName())) {
-                    assertNotNull(deletedCertificate.getDeletedOn());
-                    assertNotNull(deletedCertificate.getRecoveryId());
-                    certificatesToDelete.remove(deletedCertificate.getName());
+                while (!pollResponse.getStatus().isComplete()) {
+                    sleepInRecordMode(1000);
+                    pollResponse = poller.poll();
                 }
+                assertNotNull(pollResponse.getValue());
             }
 
-            assertEquals(0, certificatesToDelete.size());
+            sleepInRecordMode(90000);
 
+            Iterable<DeletedCertificate> deletedCertificates = client.listDeletedCertificates();
+            assertTrue(deletedCertificates.iterator().hasNext());
             for (DeletedCertificate deletedCertificate : deletedCertificates) {
-                client.purgeDeletedCertificate(deletedCertificate.getName());
-                pollOnCertificatePurge(deletedCertificate.getName());
+                assertNotNull(deletedCertificate.getDeletedOn());
+                assertNotNull(deletedCertificate.getRecoveryId());
+                certificatesToDelete.remove(deletedCertificate.getName());
             }
-            sleepInRecordMode(10000);
         });
     }
 
@@ -559,7 +565,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @Test
     public void mergeCertificateNotFound() {
-        assertRestException(() -> client.mergeCertificate(new MergeCertificateOptions("testCert16", Arrays.asList("test".getBytes()))),
+        assertRestException(() -> client.mergeCertificate(new MergeCertificateOptions(generateResourceId("testCert16"), Arrays.asList("test".getBytes()))),
             HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -583,6 +589,4 @@ public class CertificateClientTest extends CertificateClientTestBase {
         System.err.printf("Deleted Key %s was not purged \n", certificateName);
         return null;
     }
-
-
 }

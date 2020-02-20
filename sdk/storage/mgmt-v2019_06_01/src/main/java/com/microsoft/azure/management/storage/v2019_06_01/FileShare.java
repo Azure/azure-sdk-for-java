@@ -105,7 +105,7 @@ public interface FileShare extends HasInner<FileShareInner>, Indexable, Updatabl
         interface WithShareQuota {
            /**
             * Specifies shareQuota.
-            * @param shareQuota The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 100000
+            * @param shareQuota The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400
             * @return the next definition stage
             */
             WithCreate withShareQuota(Integer shareQuota);
@@ -147,7 +147,7 @@ public interface FileShare extends HasInner<FileShareInner>, Indexable, Updatabl
         interface WithShareQuota {
             /**
              * Specifies shareQuota.
-             * @param shareQuota The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 100000
+             * @param shareQuota The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400
              * @return the next update stage
              */
             Update withShareQuota(Integer shareQuota);

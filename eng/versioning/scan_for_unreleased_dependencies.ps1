@@ -1,0 +1,80 @@
+param(
+    [Parameter(Mandatory=$true, Position=0)]
+    [System.String] $inputGroupId,
+    [Parameter(Mandatory=$true, Position=1)]
+    [System.String] $inputArtifactId,
+    [Parameter(Mandatory=$true, Position=2)]
+    [System.String] $serviceDirectory
+)
+
+# Given an input groupId, artifactId and root service directory, scan the service directory for the
+# POM file that matches the group/artifact. If the POM file is found, scan for any unreleased_ dependency
+# tags otherwise report an error. If there are unreleased dependency tags then report them and return an 
+# error, otherwise report success and allow the release to continue.
+
+$script:FoundPomFile = $false
+$script:FoundError = $false
+function Write-Error-With-Color([string]$msg)
+{
+    Write-Host "$($msg)" -ForegroundColor Red
+}
+
+Write-Host "inputGroupId=$($inputGroupId)"
+Write-Host "inputArtifactId=$($inputArtifactId)"
+Write-Host "serviceDirectory=$($serviceDirectory)"
+
+# Scan each pom file under the service directory until we find the pom file for the input groupId/artifactId. If
+# found then scan that pomfile for any unreleased dependency tags.
+Get-ChildItem -Path $serviceDirectory -Filter pom*.xml -Recurse -File | ForEach-Object {
+    $pomFile = $_.FullName
+    $xmlPomFile = New-Object xml
+    $xmlPomFile.Load($pomFile)
+    if (($xmlPomFile.project.groupId -eq $inputGroupId) -and ($xmlPomFile.project.artifactId -eq $inputArtifactId)) {
+        $script:FoundPomFile = $true
+        Write-Host "Found pom file with matching groupId($($inputGroupId))/artifactId($($inputArtifactId)), pomFile=$($pomFile)"
+
+        # Verify there are no unreleased dependencies
+        foreach($dependencyNode in $xmlPomFile.GetElementsByTagName("dependency"))
+        {
+            $artifactId = $dependencyNode.artifactId
+            $groupId = $dependencyNode.groupId
+            $versionNode = $dependencyNode.GetElementsByTagName("version")[0]
+            if (!$versionNode)
+            {
+                $script:FoundError = $true
+                Write-Error-With-Color "Error: dependency is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                continue
+            }
+            # if there is no version update tag for the dependency then fail
+            if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
+            {
+                $versionUpdateTag = $versionNode.NextSibling.Value.Trim()
+                if ($versionUpdateTag -match "{x-version-update;unreleased_$($groupId)")
+                {
+                    $script:FoundError = $true
+                    Write-Error-With-Color "Error: Cannot release libraries with unreleased dependencies. dependency=$($versionUpdateTag)"
+                    continue
+                }
+            }
+            else
+            {
+                $script:FoundError = $true
+                Write-Error-With-Color "Error: Missing dependency version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+                continue
+            }
+        }
+    } else {
+        return
+    }
+}
+
+if (-Not $script:FoundPomFile) {
+    Write-Error-With-Color "Did not find pom file with matching groupId=$($groupId) and artifactId=$($artifactId) under serviceDirectory=$($serviceDirectory)"
+    exit(1)
+}
+if ($script:FoundError) {
+    Write-Error-With-Color "Libaries with unreleased dependencies cannot be released."
+    exit(1)
+}
+
+Write-Host "$($inputGroupId):$($inputArtifactId) looks goood to release" -ForegroundColor Green

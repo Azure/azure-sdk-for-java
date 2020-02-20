@@ -16,7 +16,7 @@ public final class ExtractKeyPhraseResult extends DocumentResult {
     private final List<String> keyPhrases;
 
     /**
-     * Create a {@code KeyPhraseResult} model that describes extracted key phrases result
+     * Create a {@code KeyPhraseResult} model that describes extracted key phrases result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics text document statistics
@@ -30,11 +30,12 @@ public final class ExtractKeyPhraseResult extends DocumentResult {
     }
 
     /**
-     * Get a list of key phrase string
+     * Get a list of key phrase string.
      *
      * @return a list of key phrase string
      */
     public List<String> getKeyPhrases() {
+        throwExceptionIfError();
         return keyPhrases;
     }
 }

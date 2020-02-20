@@ -230,6 +230,13 @@ public abstract class SendReceiveTests extends Tests {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
         TestCommons.testSendReceiveMessageWithVariousPropertyTypes(this.sender, this.sessionId, this.receiver);
     }
+    
+    @Test
+    public void testLongPollReceiveOnLinkAbort() throws InterruptedException, ServiceBusException, ExecutionException
+    {
+    	this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
+    	TestCommons.testLongPollReceiveOnLinkAbort(this.sender, this.receiver, this.managementClient, this.isEntityQueue());
+    }
 
     private void drainAllMessages() throws InterruptedException, ServiceBusException {
         if (this.receiver != null) {

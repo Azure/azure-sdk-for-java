@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
@@ -24,10 +25,13 @@ import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
+import reactor.core.Disposables;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
+import reactor.core.publisher.ReplayProcessor;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.UUID;
@@ -41,13 +45,17 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Represents a bidirectional link between the message broker and the client. Allows client to send a request to the
  * broker and receive the associated response.
  */
-public class RequestResponseChannel implements Closeable {
+public class RequestResponseChannel implements Disposable {
     private static final String STATUS_CODE = "status-code";
     private static final String STATUS_DESCRIPTION = "status-description";
 
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
         new ConcurrentSkipListMap<>();
     private final ClientLogger logger = new ClientLogger(RequestResponseChannel.class);
+    private final ReplayProcessor<AmqpEndpointState> endpointStates =
+        ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
+    private final FluxSink<AmqpEndpointState> endpointStatesSink =
+        endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
 
     private final Sender sendLink;
     private final Receiver receiveLink;
@@ -55,11 +63,12 @@ public class RequestResponseChannel implements Closeable {
     private final MessageSerializer messageSerializer;
     private final ReactorProvider provider;
     private final Duration operationTimeout;
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicBoolean hasOpened = new AtomicBoolean();
     private final AtomicLong requestId = new AtomicLong(0);
     private final SendLinkHandler sendLinkHandler;
     private final ReceiveLinkHandler receiveLinkHandler;
-    private final Disposable subscription;
+    private final Disposable.Composite subscriptions;
     private final AmqpRetryPolicy retryPolicy;
 
     /**
@@ -75,7 +84,7 @@ public class RequestResponseChannel implements Closeable {
      * @param handlerProvider Provides handlers that interact with proton-j's reactor.
      * @param provider The reactor provider that the request will be sent with.
      */
-    public RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
+    RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
             String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
             ReactorProvider provider, MessageSerializer messageSerializer) {
         this.provider = provider;
@@ -107,20 +116,56 @@ public class RequestResponseChannel implements Closeable {
             linkName, entityPath);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
-        this.subscription = receiveLinkHandler.getDeliveredMessages().map(this::decodeDelivery).subscribe(message -> {
-            logger.verbose("Settling message: {}", message.getCorrelationId());
-            settleMessage(message);
-        }, this::handleException);
+        this.subscriptions = Disposables.composite(
+            receiveLinkHandler.getDeliveredMessages()
+                .map(this::decodeDelivery)
+                .subscribe(message -> {
+                    logger.verbose("Settling message: {}", message.getCorrelationId());
+                    settleMessage(message);
+                }, this::handleException),
+
+            receiveLinkHandler.getEndpointStates().subscribe(state -> {
+                endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state));
+            }, error -> {
+                    endpointStatesSink.error(error);
+                    dispose();
+                }, () -> dispose()),
+            receiveLinkHandler.getErrors().subscribe(error -> {
+                endpointStatesSink.error(error);
+                dispose();
+            }),
+
+            sendLinkHandler.getEndpointStates().subscribe(state -> {
+                endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state));
+            }, error -> {
+                    endpointStatesSink.error(error);
+                    dispose();
+                }, () -> dispose()),
+            sendLinkHandler.getErrors().subscribe(error -> {
+                endpointStatesSink.error(error);
+                dispose();
+            })
+        );
+    }
+
+    public Flux<AmqpEndpointState> getEndpointStates() {
+        return endpointStates.distinct();
     }
 
     @Override
-    public void close() {
-        this.subscription.dispose();
-
-        if (hasOpened.getAndSet(false)) {
-            sendLink.close();
-            receiveLink.close();
+    public void dispose() {
+        if (isDisposed.getAndSet(true)) {
+            return;
         }
+
+        subscriptions.dispose();
+        sendLink.close();
+        receiveLink.close();
+    }
+
+    @Override
+    public boolean isDisposed() {
+        return isDisposed.get();
     }
 
     /**
@@ -131,19 +176,35 @@ public class RequestResponseChannel implements Closeable {
      * @return An AMQP message representing the service's response to the message.
      */
     public Mono<Message> sendWithAck(final Message message) {
+        if (isDisposed()) {
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(
+                "Cannot send a message when request response channel is disposed.")));
+        }
+
         if (!hasOpened.getAndSet(true)) {
-            sendLink.open();
-            receiveLink.open();
+            // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
+            // encounter a race condition. So, we are forced to use the dispatcher.
+            try {
+                provider.getReactorDispatcher().invoke(() -> {
+                    sendLink.open();
+                    receiveLink.open();
+                });
+            } catch (IOException e) {
+                return Mono.error(new RuntimeException("Unable to open send and receive link.", e));
+            }
         }
 
         if (message == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("message cannot be null"));
+            return Mono.error(logger.logExceptionAsError(
+                new IllegalArgumentException("message cannot be null")));
         }
         if (message.getMessageId() != null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("message.getMessageId() should be null"));
+            return Mono.error(logger.logExceptionAsError(
+                new IllegalArgumentException("message.getMessageId() should be null")));
         }
         if (message.getReplyTo() != null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("message.getReplyTo() should be null"));
+            return Mono.error(logger.logExceptionAsError(
+                new IllegalArgumentException("message.getReplyTo() should be null")));
         }
 
         final UnsignedLong messageId = UnsignedLong.valueOf(requestId.incrementAndGet());
@@ -160,28 +221,24 @@ public class RequestResponseChannel implements Closeable {
                         logger.verbose("Scheduling on dispatcher. Message Id {}", messageId);
                         unconfirmedSends.putIfAbsent(messageId, sink);
 
+                        // If we try to do proton-j API calls such as sending on AMQP links, it may encounter a race
+                        // condition. So, we are forced to use the dispatcher.
                         provider.getReactorDispatcher().invoke(() -> {
-                            send(message);
+                            sendLink.delivery(UUID.randomUUID().toString().replace("-", "").getBytes(UTF_8));
+
+                            final int payloadSize = messageSerializer.getSize(message)
+                                + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
+                            final byte[] bytes = new byte[payloadSize];
+                            final int encodedSize = message.encode(bytes, 0, payloadSize);
+
+                            receiveLink.flow(1);
+                            sendLink.send(bytes, 0, encodedSize);
+                            sendLink.advance();
                         });
                     } catch (IOException e) {
                         sink.error(e);
                     }
                 }));
-    }
-
-    // Not thread-safe This must be invoked from reactor/dispatcher thread. And assumes that this is run on a link
-    // that is open.
-    private void send(final Message message) {
-        sendLink.delivery(UUID.randomUUID().toString().replace("-", "").getBytes(UTF_8));
-
-        final int payloadSize = messageSerializer.getSize(message)
-            + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
-        final byte[] bytes = new byte[payloadSize];
-        final int encodedSize = message.encode(bytes, 0, payloadSize);
-
-        receiveLink.flow(1);
-        sendLink.send(bytes, 0, encodedSize);
-        sendLink.advance();
     }
 
     private Message decodeDelivery(Delivery delivery) {
@@ -227,7 +284,7 @@ public class RequestResponseChannel implements Closeable {
 
             if (!exception.isTransient()) {
                 logger.error("Exception encountered. Closing channel and clearing unconfirmed sends.", exception);
-                close();
+                dispose();
 
                 unconfirmedSends.forEach((key, value) -> {
                     value.error(error);

@@ -1,6 +1,16 @@
 # Release History
 
-## 12.2.0-beta.2 (Unreleased)
+## 12.5.0-beta.1 (Unreleased)
+
+
+## 12.4.0 (2020-02-12)
+
+## 12.3.1 (2020-02-10)
+- Updated `azure-core-http-netty` to version 1.3.0
+
+## 12.3.0 (2020-01-15)
+
+## 12.2.0 (2020-01-08)
 
 ## 12.2.0-beta.1 (2019-12-18)
 - Added generateSas methods on service clients to improve discoverability and convenience of sas. Deprecated setters of required parameters, generateSasQueryParameters methods on AccountSasSignatureValues to direct users to using the methods added on clients.

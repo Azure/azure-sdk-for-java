@@ -44,7 +44,9 @@ import java.util.Objects;
  * respectively, and operations on the service are available on {@link DataLakeServiceClient}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>
+ * Please refer to the
+ *
+ * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">
  *     Azure Docs</a> for more information on file systems.
  */
 @ServiceClient(builder = DataLakeFileSystemClientBuilder.class)
@@ -55,6 +57,8 @@ public class DataLakeFileSystemClient {
     private final BlobContainerClient blobContainerClient;
 
     public static final String ROOT_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
+
+    private static final String ROOT_DIRECTORY_NAME = "";
 
 //    public static final String STATIC_WEBSITE_FILESYSTEM_NAME =
 //    DataLakeFileSystemAsyncClient.STATIC_WEBSITE_FILESYSTEM_NAME;
@@ -112,6 +116,21 @@ public class DataLakeFileSystemClient {
 
         return new DataLakeDirectoryClient(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(directoryName),
             blobContainerClient.getBlobClient(directoryName).getBlockBlobClient());
+    }
+
+    /**
+     * Initializes a new DataLakeDirectoryClient object by concatenating {@code ""} to the end of
+     * DataLakeFileSystemClient's URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the
+     * DataLakeFileSystemClient.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient}
+     *
+     * @return A new {@link DataLakeDirectoryClient} object which references the root directory in this file system.
+     */
+    public DataLakeDirectoryClient getRootDirectoryClient() {
+        return getDirectoryClient(DataLakeFileSystemClient.ROOT_DIRECTORY_NAME);
     }
 
     /**

@@ -3,13 +3,23 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.NamedEntity;
-import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.models.LinkedEntityMatch;
+import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
@@ -19,138 +29,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
  * Class containing code snippets that will be injected to README.md.
  */
 public class ReadmeSamples {
-    private static final String SUBSCRIPTION_KEY = null;
-    private static final String ENDPOINT = null;
-
-    /**
-     * Code snippet for  getting sync client using subscription key authentication.
-     */
-    public void useSubscriptionKeySyncClient() {
-        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
-            .buildClient();
-    }
-
-    /**
-     * Code snippet for getting async client using subscription key authentication.
-     */
-    public void useSubscriptionKeyAsyncClient() {
-        TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
-            .buildAsyncClient();
-    }
-
-    /**
-     * Code snippet for getting async client using AAD authentication.
-     */
-    public void useAadAsyncClient() {
-        TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .endpoint(ENDPOINT)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildAsyncClient();
-    }
-
-    /**
-     * Code snippet for detecting language in a text.
-     */
-    public void detectLanguages() {
-        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
-            .buildClient();
-
-        String inputText = "Bonjour tout le monde";
-
-        for (DetectedLanguage detectedLanguage : textAnalyticsClient.detectLanguage(inputText).getDetectedLanguages()) {
-            System.out.printf("Detected languages name: %s, ISO 6391 Name: %s, Score: %s.%n",
-                detectedLanguage.getName(),
-                detectedLanguage.getIso6391Name(),
-                detectedLanguage.getScore());
-        }
-    }
-
-    /**
-     * Code snippet for recognizing named entity in a text.
-     */
-    public void recognizeNamedEntity() {
-        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
-            .buildClient();
-
-        String text = "Satya Nadella is the CEO of Microsoft";
-
-        for (NamedEntity entity : textAnalyticsClient.recognizeEntities(text).getNamedEntities()) {
-            System.out.printf(
-                "Recognized Named Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
-                entity.getText(),
-                entity.getType(),
-                entity.getSubtype(),
-                entity.getScore());
-        }
-    }
-
-    /**
-     * Code snippet for recognizing pii entity in a text.
-     */
-    public void recognizePiiEntity() {
-        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
-            .buildClient();
-
-        // The text that need be analysed.
-        String text = "My SSN is 555-55-5555";
-
-        for (NamedEntity entity : textAnalyticsClient.recognizePiiEntities(text).getNamedEntities()) {
-            System.out.printf(
-                "Recognized PII Entity: %s, Type: %s, Subtype: %s, Score: %s.%n",
-                entity.getText(),
-                entity.getType(),
-                entity.getSubtype(),
-                entity.getScore());
-        }
-    }
-
-    /**
-     * Code snippet for recognizing linked entity in a text.
-     */
-    public void recognizeLinkedEntity() {
-        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
-            .buildClient();
-
-        // The text that need be analysed.
-        String text = "Old Faithful is a geyser at Yellowstone Park.";
-
-        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text).getLinkedEntities()) {
-            System.out.printf("Recognized Linked Entity: %s, Url: %s, Data Source: %s.%n",
-                linkedEntity.getName(),
-                linkedEntity.getUrl(),
-                linkedEntity.getDataSource());
-        }
-    }
-
-    /**
-     * Code snippet for analyzing sentiment of a text.
-     */
-    public void analyzeSentiment() {
-        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .subscriptionKey(SUBSCRIPTION_KEY)
-            .endpoint(ENDPOINT)
-            .buildClient();
-
-        String text = "The hotel was dark and unclean.";
-
-        for (TextSentiment textSentiment : textAnalyticsClient.analyzeSentiment(text).getSentenceSentiments()) {
-            System.out.printf(
-                "Analyzed Sentence Sentiment class: %s.%n",
-                textSentiment.getTextSentimentClass());
-        }
-    }
+    private TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder().buildClient();
 
     /**
      * Code snippet for configuring http client.
@@ -160,5 +39,135 @@ public class ReadmeSamples {
             .port(8080)
             .wiretap(true)
             .build();
+    }
+
+    /**
+     * Code snippet for getting sync client using the API key authentication.
+     */
+    public void useApiKeySyncClient() {
+        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
+            .buildClient();
+    }
+
+    /**
+     * Code snippet for getting async client using API key authentication.
+     */
+    public void useApiKeyAsyncClient() {
+        TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
+            .buildAsyncClient();
+    }
+
+    /**
+     * Code snippet for getting async client using AAD authentication.
+     */
+    public void useAadAsyncClient() {
+        TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+    }
+
+    /**
+     * Code snippet for detecting language in a text.
+     */
+    public void detectLanguages() {
+        String inputText = "Bonjour tout le monde";
+        DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(inputText);
+        System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %.2f.%n",
+            detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
+    }
+
+    /**
+     * Code snippet for recognizing category entity in a text.
+     */
+    public void recognizeCategorizedEntity() {
+        String text = "Satya Nadella is the CEO of Microsoft";
+        for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text)) {
+            System.out.printf("Recognized categorized entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
+                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
+        }
+    }
+
+    /**
+     * Code snippet for recognizing PII entity in a text.
+     */
+    public void recognizePiiEntity() {
+        String text = "My SSN is 555-55-5555";
+        for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text)) {
+            System.out.printf("Recognized PII entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
+                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
+        }
+    }
+
+    /**
+     * Code snippet for recognizing linked entity in a text.
+     */
+    public void recognizeLinkedEntity() {
+        String text = "Old Faithful is a geyser at Yellowstone Park.";
+        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text)) {
+            System.out.println("Linked Entities:");
+            System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                linkedEntity.getName(), linkedEntity.getId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+            for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
+                System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n", linkedEntityMatch.getText(),
+                    linkedEntityMatch.getOffset(), linkedEntityMatch.getLength(), linkedEntityMatch.getScore());
+            }
+        }
+    }
+
+    /**
+     * Code snippet for extracting key phrases in a text.
+     */
+    public void extractKeyPhrases() {
+        String text = "My cat might need to see a veterinarian.";
+        System.out.println("Extracted phrases:");
+        for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text)) {
+            System.out.printf("%s.%n", keyPhrase);
+        }
+    }
+
+    /**
+     * Code snippet for analyzing sentiment of a text.
+     */
+    public void analyzeSentiment() {
+        String text = "The hotel was dark and unclean. I like microsoft.";
+        DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(text);
+        System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentiment());
+        for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
+            System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment());
+        }
+    }
+
+    /**
+     * Code snippet for handling exception
+     */
+    public void handlingException() {
+        List<DetectLanguageInput> inputs = Arrays.asList(
+            new DetectLanguageInput("1", "This is written in English.", "us"),
+            new DetectLanguageInput("1", "Este es un document escrito en Español.", "es")
+        );
+
+        try {
+            textAnalyticsClient.detectLanguageBatchWithResponse(inputs, null, Context.NONE);
+        } catch (HttpResponseException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Code snippet for rotating API key of the client
+     */
+    public void rotatingApiKey() {
+        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
+        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+            .apiKey(credential)
+            .endpoint("{endpoint}")
+            .buildClient();
+
+        credential.updateCredential("{new_api_key}");
     }
 }

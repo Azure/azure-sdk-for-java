@@ -6,6 +6,7 @@ package com.azure.core.util;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Objects;
@@ -37,6 +38,7 @@ public class IterableStream<T> implements Iterable<T> {
      * to Reactor how many elements should be prefetched before another batch is requested.
      */
     private static final int DEFAULT_BATCH_SIZE = 1;
+    private static final IterableStream<Object> EMPTY = new IterableStream<>(new ArrayList<>());
 
     private final ClientLogger logger = new ClientLogger(IterableStream.class);
     private final Flux<T> flux;
@@ -96,6 +98,25 @@ public class IterableStream<T> implements Iterable<T> {
         } else {
             logger.warning("IterableStream was not initialized with Iterable or Flux, returning empty iterator.");
             return Collections.emptyIterator();
+        }
+    }
+
+    /**
+     * Create an {@link IterableStream} from an {@link Iterable}.
+     *
+     * An empty {@link IterableStream} will be returned if the input iterable
+     * is {@code null}.
+     *
+     * @param iterable the source iterable
+     * @param <T> the type of the value
+     * @return an {@link IterableStream}
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> IterableStream<T> of(Iterable<T> iterable) {
+        if (iterable == null) {
+            return (IterableStream<T>) EMPTY;
+        } else {
+            return new IterableStream<T>(iterable);
         }
     }
 }

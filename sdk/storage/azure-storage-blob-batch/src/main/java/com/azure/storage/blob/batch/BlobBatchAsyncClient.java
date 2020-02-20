@@ -13,6 +13,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -213,8 +214,8 @@ public final class BlobBatchAsyncClient {
     private <T> PagedResponse<Response<T>> initPagedResponse(List<Response<T>> values, Response<?> response) {
         return new PagedResponse<Response<T>>() {
             @Override
-            public List<Response<T>> getItems() {
-                return values;
+            public IterableStream<Response<T>> getElements() {
+                return new IterableStream<>(values);
             }
 
             @Override

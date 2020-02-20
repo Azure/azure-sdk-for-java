@@ -3,6 +3,7 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 
 import java.time.Duration;
@@ -19,6 +20,7 @@ public final class IdentityClientOptions {
     private int maxRetry;
     private Function<Duration, Duration> retryTimeout;
     private ProxyOptions proxyOptions;
+    private HttpPipeline httpPipeline;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -88,12 +90,29 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * Specifies he options for proxy configuration.
+     * Specifies the options for proxy configuration.
      * @param proxyOptions the options for proxy configuration
      * @return IdentityClientOptions
      */
     public IdentityClientOptions setProxyOptions(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
+        return this;
+    }
+
+    /**
+     * @return the HttpPipeline to send all requests
+     */
+    public HttpPipeline getHttpPipeline() {
+        return httpPipeline;
+    }
+
+    /**
+     * Specifies the HttpPipeline to send all requests. This setting overrides the others.
+     * @param httpPipeline the HttpPipeline to send all requests
+     * @return IdentityClientOptions
+     */
+    public IdentityClientOptions setHttpPipeline(HttpPipeline httpPipeline) {
+        this.httpPipeline = httpPipeline;
         return this;
     }
 }

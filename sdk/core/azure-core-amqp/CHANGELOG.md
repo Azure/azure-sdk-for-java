@@ -1,9 +1,14 @@
 # Release History
 
-## 1.0.1 (2020-01-07)
+## 1.1.0-beta.1 (Unreleased)
+
+
+## 1.0.1 (2020-02-11)
 - Client library name and version are no longer hard coded in connection properties.
 - Update qpid-proton-j-extensions dependency
 - Shorten tracing span names
+- Fixes AMQP link handlers not to close associated sessions when they are closed.
+- Move to use Schedulers.single() because pushing to Qpid's reactor is not thread-safe.
 
 ## 1.0.0-beta.8 (12-03-2019)
 - Changed preview to beta.

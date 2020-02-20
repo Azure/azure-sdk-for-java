@@ -62,6 +62,7 @@ class ReactorSender implements AmqpSendLink {
     private final Disposable.Composite subscriptions;
 
     private final AtomicBoolean hasConnected = new AtomicBoolean();
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicBoolean hasAuthorized = new AtomicBoolean(true);
     private final AtomicInteger retryAttempts = new AtomicInteger();
 
@@ -93,8 +94,8 @@ class ReactorSender implements AmqpSendLink {
     private volatile int maxMessageSize;
 
     ReactorSender(String entityPath, Sender sender, SendLinkHandler handler, ReactorProvider reactorProvider,
-            TokenManager tokenManager, MessageSerializer messageSerializer, Duration timeout, AmqpRetryPolicy retry,
-            int maxMessageSize) {
+        TokenManager tokenManager, MessageSerializer messageSerializer, Duration timeout, AmqpRetryPolicy retry,
+        int maxMessageSize) {
         this.entityPath = entityPath;
         this.sender = sender;
         this.handler = handler;
@@ -115,11 +116,11 @@ class ReactorSender implements AmqpSendLink {
 
             this.handler.getEndpointStates().subscribe(
                 state -> {
-                    logger.verbose("Connection state: {}", state);
+                    logger.verbose("[{}] Connection state: {}", entityPath, state);
                     this.hasConnected.set(state == EndpointState.ACTIVE);
                     endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
                 }, error -> {
-                    logger.error("Error occurred in connection.", error);
+                    logger.error("[{}] Error occurred in sender endpoint handler.", entityPath, error);
                     endpointStateSink.error(error);
                 }, () -> {
                     endpointStateSink.next(AmqpEndpointState.CLOSED);
@@ -128,7 +129,7 @@ class ReactorSender implements AmqpSendLink {
                 }),
 
             this.handler.getErrors().subscribe(error -> {
-                logger.error("Error occurred in connection.", error);
+                logger.error("[{}] Error occurred in sender error handler.", entityPath, error);
                 endpointStateSink.error(error);
             }),
 
@@ -251,38 +252,46 @@ class ReactorSender implements AmqpSendLink {
         }
 
         return RetryUtil.withRetry(
-            handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE),
-            timeout, retry)
-            .then(Mono.fromCallable(() -> {
-                final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
+            getEndpointStates()
+                .takeUntil(state -> state == AmqpEndpointState.ACTIVE)
+                .then(Mono.fromCallable(() -> {
+                    final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
 
-                if (remoteMaxMessageSize != null) {
-                    this.maxMessageSize = remoteMaxMessageSize.intValue();
-                }
+                    if (remoteMaxMessageSize != null) {
+                        this.maxMessageSize = remoteMaxMessageSize.intValue();
+                    }
 
-                return this.maxMessageSize;
-            }));
+                    return this.maxMessageSize;
+                })),
+            timeout, retry);
     }
 
     @Override
-    public void close() {
+    public boolean isDisposed() {
+        return isDisposed.get();
+    }
+
+    @Override
+    public void dispose() {
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
+
         subscriptions.dispose();
         endpointStateSink.complete();
         tokenManager.close();
     }
 
     private Mono<Void> send(byte[] bytes, int arrayOffset, int messageFormat) {
-        Mono<Void> sendWorkItem = Mono.create(sink -> {
-            send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout));
-        });
-
         if (hasConnected.get()) {
-            return sendWorkItem;
+            return Mono.create(sink -> send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout)));
         } else {
             return RetryUtil.withRetry(
                 handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE),
                 timeout, retry)
-                .then(sendWorkItem);
+                .then(Mono.create(sink -> {
+                    send(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, timeout));
+                }));
         }
     }
 
@@ -373,8 +382,8 @@ class ReactorSender implements AmqpSendLink {
                     "Entity(%s): send operation failed. Please see cause for more details", entityPath),
                     sendException, context)
                     : new OperationCancelledException(String.format(Locale.US,
-                    "Entity(%s): send operation failed while advancing delivery(tag: %s).",
-                    entityPath, deliveryTag), context);
+                        "Entity(%s): send operation failed while advancing delivery(tag: %s).",
+                        entityPath, deliveryTag), context);
 
                 workItem.getSink().error(exception);
             }

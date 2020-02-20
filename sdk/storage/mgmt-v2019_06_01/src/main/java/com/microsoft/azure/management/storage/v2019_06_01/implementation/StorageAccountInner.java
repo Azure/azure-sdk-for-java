@@ -200,6 +200,12 @@ public class StorageAccountInner extends Resource {
     private RoutingPreference routingPreference;
 
     /**
+     * Blob restore status.
+     */
+    @JsonProperty(value = "properties.blobRestoreStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private BlobRestoreStatusInner blobRestoreStatus;
+
+    /**
      * Get gets the SKU.
      *
      * @return the sku value
@@ -479,6 +485,15 @@ public class StorageAccountInner extends Resource {
     public StorageAccountInner withRoutingPreference(RoutingPreference routingPreference) {
         this.routingPreference = routingPreference;
         return this;
+    }
+
+    /**
+     * Get blob restore status.
+     *
+     * @return the blobRestoreStatus value
+     */
+    public BlobRestoreStatusInner blobRestoreStatus() {
+        return this.blobRestoreStatus;
     }
 
 }

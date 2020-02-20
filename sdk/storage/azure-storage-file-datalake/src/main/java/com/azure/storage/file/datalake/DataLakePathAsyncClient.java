@@ -11,7 +11,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
@@ -27,6 +26,7 @@ import com.azure.storage.file.datalake.implementation.models.PathRenameMode;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathAccessControl;
 import com.azure.storage.file.datalake.models.PathAccessControlEntry;
@@ -676,6 +676,8 @@ public class DataLakePathAsyncClient {
     /**
      * Package-private rename method for use by {@link DataLakeFileAsyncClient} and {@link DataLakeDirectoryAsyncClient}
      *
+     * @param destinationFileSystem The file system of the destination within the account.
+     * {@code null} for the current file system.
      * @param destinationPath The path of the destination relative to the file system name
      * @param sourceRequestConditions {@link DataLakeRequestConditions} against the source.
      * @param destinationRequestConditions {@link DataLakeRequestConditions} against the destination.
@@ -683,7 +685,7 @@ public class DataLakePathAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakePathAsyncClient} used to interact with the path created.
      */
-    Mono<Response<DataLakePathAsyncClient>> renameWithResponse(String destinationPath,
+    Mono<Response<DataLakePathAsyncClient>> renameWithResponse(String destinationFileSystem, String destinationPath,
         DataLakeRequestConditions sourceRequestConditions, DataLakeRequestConditions destinationRequestConditions,
         Context context) {
 
@@ -707,9 +709,9 @@ public class DataLakePathAsyncClient {
             .setIfModifiedSince(destinationRequestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(destinationRequestConditions.getIfUnmodifiedSince());
 
-        DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationPath);
+        DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationFileSystem, destinationPath);
 
-        String renameSource = "/" + fileSystemName + "/" + pathName;
+        String renameSource = "/" + this.fileSystemName + "/" + pathName;
 
         return dataLakePathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(null /* pathResourceType */,
             null /* continuation */, PathRenameMode.LEGACY, renameSource, sourceRequestConditions.getLeaseId(),
@@ -719,38 +721,45 @@ public class DataLakePathAsyncClient {
     }
 
     /**
-     * Takes in a destination path and creates a DataLakePathAsyncClient with a new path name
+     * Takes in a destination and creates a DataLakePathAsyncClient with a new path
+     * @param destinationFileSystem The destination file system
      * @param destinationPath The destination path
      * @return A DataLakePathAsyncClient
      */
-    DataLakePathAsyncClient getPathAsyncClient(String destinationPath) {
+    DataLakePathAsyncClient getPathAsyncClient(String destinationFileSystem, String destinationPath) {
+        if (destinationFileSystem == null) {
+            destinationFileSystem = getFileSystemName();
+        }
         if (CoreUtils.isNullOrEmpty(destinationPath)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
         }
         // Get current Datalake URL and replace current path with user provided path
         String newDfsEndpoint = BlobUrlParts.parse(getPathUrl())
-            .setBlobName(destinationPath).toUrl().toString();
+            .setBlobName(destinationPath).setContainerName(destinationFileSystem).toUrl().toString();
 
         return new DataLakePathAsyncClient(getHttpPipeline(), newDfsEndpoint, serviceVersion, accountName,
-            fileSystemName, destinationPath, pathResourceType,
-            prepareBuilderReplacePath(destinationPath).buildBlockBlobAsyncClient());
+            destinationFileSystem, destinationPath, pathResourceType,
+            prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient());
     }
 
     /**
      * Takes in a destination path and creates a SpecializedBlobClientBuilder with a new path name
+     * @param destinationFileSystem The destination file system
      * @param destinationPath The destination path
      * @return An updated SpecializedBlobClientBuilder
      */
-    SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationPath) {
+    SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationFileSystem, String destinationPath) {
+        if (destinationFileSystem == null) {
+            destinationFileSystem = getFileSystemName();
+        }
         // Get current Blob URL and replace current path with user provided path
         String newBlobEndpoint = BlobUrlParts.parse(DataLakeImplUtils.endpointToDesiredEndpoint(getPathUrl(),
-            "blob", "dfs")).setBlobName(destinationPath).toUrl().toString();
+            "blob", "dfs")).setBlobName(destinationPath).setContainerName(destinationFileSystem).toUrl().toString();
 
-        // TODO (gapra) : Investigate how to convert from datalake service version to blob service version
         return new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
             .endpoint(newBlobEndpoint)
-            .serviceVersion(BlobServiceVersion.getLatest());
+            .serviceVersion(TransformUtils.toBlobServiceVersion(getServiceVersion()));
     }
 
     BlockBlobAsyncClient getBlockBlobAsyncClient() {

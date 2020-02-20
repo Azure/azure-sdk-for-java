@@ -103,7 +103,7 @@ public class ReactorSessionTest {
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> handler.close())
             .expectNext(AmqpEndpointState.CLOSED)
-            .then(() -> reactorSession.close())
+            .then(() -> reactorSession.dispose())
             .expectComplete()
             .verify(Duration.ofSeconds(10));
     }

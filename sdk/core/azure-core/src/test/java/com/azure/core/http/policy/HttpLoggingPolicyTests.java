@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
  */
 public class HttpLoggingPolicyTests {
     private static final String REDACTED = "REDACTED";
-    private static final Context CONTEXT = new Context("caller-method", "HttpLoggingPolicyTests");
+    private static final Context CONTEXT = new Context("caller-method", HttpLoggingPolicyTests.class.getName());
 
     private String originalLogLevel;
     private PrintStream originalErr;
@@ -64,9 +64,9 @@ public class HttpLoggingPolicyTests {
         System.setProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.HttpLoggingPolicyTests", "trace");
 
         // Override System.err as that is where SLF4J will log by default.
-        originalErr = System.err;
+        originalErr = System.out;
         logCaptureStream = new ByteArrayOutputStream();
-        System.setErr(new PrintStream(logCaptureStream));
+        System.setOut(new PrintStream(logCaptureStream));
     }
 
     @AfterEach
@@ -81,7 +81,7 @@ public class HttpLoggingPolicyTests {
         System.clearProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.HttpLoggingPolicyTests");
 
         // Reset System.err to the original PrintStream.
-        System.setErr(originalErr);
+        System.setOut(originalErr);
     }
 
     /**

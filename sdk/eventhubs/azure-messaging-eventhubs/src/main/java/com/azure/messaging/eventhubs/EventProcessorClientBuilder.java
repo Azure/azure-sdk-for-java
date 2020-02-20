@@ -32,24 +32,26 @@ import java.util.function.Supplier;
  * EventProcessorClient}.
  *
  * <p>
- * To create an instance of {@link EventProcessorClient} that processes events with user-provided callback, configure
- * the following fields:
+ * To create an instance of {@link EventProcessorClient}, the <b>following fields are required</b>:
  *
  * <ul>
  * <li>{@link #consumerGroup(String) Consumer group name}.</li>
  * <li>{@link CheckpointStore} - An implementation of CheckpointStore that stores checkpoint and
- * partition ownership information to enable load balancing.</li>
- * <li>{@link #processEvent(Consumer)} - A callback that processes events received from the Event Hub.</li>
+ * partition ownership information to enable load balancing and checkpointing processed events.</li>
+ * <li>{@link #processEvent(Consumer) processEvent} - A callback that processes events received from the Event Hub
+ * .</li>
+ * <li>{@link #processError(Consumer) processError} - A callback that handles errors that may occur while running the
+ * EventProcessorClient.</li>
  * <li>Credentials -
  *  <strong>Credentials are required</strong> to perform operations against Azure Event Hubs. They can be set by using
  *  one of the following methods:
  *  <ul>
- *  <li>{@link #connectionString(String) connectionString(String)} with a connection string to a specific Event Hub.
+ *  <li>{@link #connectionString(String)} with a connection string to a specific Event Hub.
  *  </li>
- *  <li>{@link #connectionString(String, String) connectionString(String, String)} with an Event Hub <i>namespace</i>
- *  connection string and the Event Hub name.</li>
- *  <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with the
- *  fully qualified namespace, Event Hub name, and a set of credentials authorized to use the Event Hub.
+ *  <li>{@link #connectionString(String, String)} with an Event Hub <i>namespace</i> connection string and the Event Hub
+ *  name.</li>
+ *  <li>{@link #credential(String, String, TokenCredential)} with the fully qualified namespace, Event Hub name, and a
+ *  set of credentials authorized to use the Event Hub.
  *  </li>
  *  </ul>
  *  </li>

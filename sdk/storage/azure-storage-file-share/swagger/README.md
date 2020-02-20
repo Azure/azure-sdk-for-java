@@ -24,7 +24,7 @@ autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2019-02-02/file.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2019-07-07/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
@@ -35,7 +35,7 @@ license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders
+custom-types: HandleItem,ShareFileHttpHeaders,ShareItem,ShareServiceProperties,ShareCorsRule,ShareProperties,Range,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType
 ```
 
 ### Query Parameters
@@ -460,6 +460,66 @@ directive:
     }
 ```
 
+### /{shareName}/{filePath}?comp=lease&acquire
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    if (!$["/{shareName}/{filePath}?comp=lease&acquire"]) {
+        const op = $["/{shareName}/{filePath}?comp=lease&acquire"] = $["/{shareName}/{directory}/{fileName}?comp=lease&acquire"];
+        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
+        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
+        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
+        delete $["/{shareName}/{directory}/{fileName}?comp=lease&acquire"];
+    }
+```
+
+### /{shareName}/{filePath}?comp=lease&release
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    if (!$["/{shareName}/{filePath}?comp=lease&release"]) {
+        const op = $["/{shareName}/{filePath}?comp=lease&release"] = $["/{shareName}/{directory}/{fileName}?comp=lease&release"];
+        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
+        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
+        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
+        delete $["/{shareName}/{directory}/{fileName}?comp=lease&release"];
+    }
+```
+
+### /{shareName}/{filePath}?comp=lease&change
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    if (!$["/{shareName}/{filePath}?comp=lease&change"]) {
+        const op = $["/{shareName}/{filePath}?comp=lease&change"] = $["/{shareName}/{directory}/{fileName}?comp=lease&change"];
+        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
+        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
+        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
+        delete $["/{shareName}/{directory}/{fileName}?comp=lease&change"];
+    }
+```
+
+### /{shareName}/{filePath}?comp=lease&break
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    if (!$["/{shareName}/{filePath}?comp=lease&break"]) {
+        const op = $["/{shareName}/{filePath}?comp=lease&break"] = $["/{shareName}/{directory}/{fileName}?comp=lease&break"];
+        const path = op.put.parameters[0].$ref.replace(/[#].*$/, "#/parameters/");
+        op.put.parameters.splice(0, 0, { "$ref": path + "ShareName" });
+        op.put.parameters.splice(1, 0, { "$ref": path + "FilePath" });
+        delete $["/{shareName}/{directory}/{fileName}?comp=lease&break"];
+    }
+```
+
 ### ShareProperties
 ``` yaml
 directive:
@@ -489,7 +549,7 @@ directive:
 - from: swagger-document
   where: $.parameters.ApiVersionParameter
   transform: >
-    $.enum = [ "2019-02-02" ];
+    $.enum = [ "2019-07-07" ];
 ```
 
 ### Convert FileCreationTime and FileLastWriteTime to String to Support 'now'
@@ -720,6 +780,14 @@ directive:
     transform: $.name.raw = 'Share-File-Download-Headers'
 ```
 
+### FileRangeWriteFromUrl Constant
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters.LeaseIdOptional
+  transform: >
+    delete $["x-ms-parameter-grouping"];
+```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2Fswagger%2FREADME.png)
 

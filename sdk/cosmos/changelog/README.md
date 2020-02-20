@@ -1,4 +1,15 @@
 ## Changelog
+### 3.7.0
+- Downgrade guava dependency to 25.0-jre from 27.0.1-jre
+- Fix FeedOptions bug (see https://github.com/Azure/azure-sdk-for-java/pull/8085)
+
+### 3.6.0
+- GA release for fixes in 3.6.0-beta.1 and 3.6.0-beta.2
+
+### 3.6.0-beta.2
+- Takes advantage of Reactive Stream Concurrency for Query (Improves latency and fixes earlier issues): (https://github.com/Azure/azure-sdk-for-java/pull/7322)
+- API to retrieve min throughput for a CosmosContainer: (https://github.com/Azure/azure-sdk-for-java/pull/7259)
+
 ### 3.6.0-beta.1
 - Added the ability to select default Direct TCP options
 

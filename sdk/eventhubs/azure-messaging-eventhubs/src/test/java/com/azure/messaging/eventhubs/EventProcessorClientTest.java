@@ -143,15 +143,14 @@ public class EventProcessorClientTest {
             () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>());
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
-        eventProcessorClient.stop();
 
         // Assert
         assertNotNull(eventProcessorClient.getIdentifier());
 
-        StepVerifier.create(checkpointStore.listOwnership("ns", "test-eh", "test-consumer"))
+        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
             .expectNextCount(1).verifyComplete();
 
-        StepVerifier.create(checkpointStore.listOwnership("ns", "test-eh", "test-consumer"))
+        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
             .assertNext(partitionOwnership -> {
                 assertEquals("1", partitionOwnership.getPartitionId(), "Partition");
                 assertEquals("test-consumer", partitionOwnership.getConsumerGroup(), "Consumer");
@@ -168,6 +167,18 @@ public class EventProcessorClientTest {
         verify(consumer1, atLeastOnce()).receiveFromPartition(anyString(), any(EventPosition.class),
             any(ReceiveOptions.class));
         verify(consumer1, atLeastOnce()).close();
+        eventProcessorClient.stop();
+        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
+            .assertNext(partitionOwnership -> {
+                assertEquals("1", partitionOwnership.getPartitionId(), "Partition");
+                assertEquals("test-consumer", partitionOwnership.getConsumerGroup(), "Consumer");
+                assertEquals("test-eh", partitionOwnership.getEventHubName(), "EventHub name");
+                assertEquals("", partitionOwnership.getOwnerId(), "Owner Id");
+                assertTrue(partitionOwnership.getLastModifiedTime() >= beforeTest, "LastModifiedTime");
+                assertTrue(partitionOwnership.getLastModifiedTime() <= System.currentTimeMillis(), "LastModifiedTime");
+                assertNotNull(partitionOwnership.getETag());
+            }).verifyComplete();
+
     }
 
     /**
@@ -287,7 +298,7 @@ public class EventProcessorClientTest {
 
         // Assert
         Assertions.assertTrue(completed);
-        StepVerifier.create(checkpointStore.listOwnership("ns", "test-eh", "test-consumer"))
+        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
             .expectNextCount(1).verifyComplete();
 
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
@@ -297,7 +308,7 @@ public class EventProcessorClientTest {
         // We expected one to be removed.
         Assertions.assertEquals(2, identifiers.size());
 
-        StepVerifier.create(checkpointStore.listOwnership("ns", "test-eh", "test-consumer"))
+        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
             .assertNext(po -> {
                 String partitionId = po.getPartitionId();
                 verify(consumer1, atLeastOnce()).receiveFromPartition(eq(partitionId), any(EventPosition.class), any());
@@ -305,7 +316,7 @@ public class EventProcessorClientTest {
     }
 
     private PartitionEvent getEvent(EventData event) {
-        PartitionContext context = new PartitionContext("ns", "foo", "bar", "baz");
+        PartitionContext context = new PartitionContext("test-ns", "foo", "bar", "baz");
         return new PartitionEvent(context, event, null);
     }
 
