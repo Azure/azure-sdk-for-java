@@ -1,5 +1,5 @@
 # Azure Key Vault Secrets Spring Boot Starter Sample
-This sample illustrates how to use [Azure Key Vault Secrets Spring Boot Starter](../../azure-spring-boot-starters/azure-keyvault-secrets-spring-boot-starter/README.md).
+This sample illustrates how to use [Azure Key Vault Secrets Spring Boot Starter](../../azure-keyvault-secrets-spring-boot-starter/README.md).
 
 In this sample, a secret named `spring-datasource-url` is stored into an Azure Key Vault, and a sample Spring application will use its value as a configuration property value.
 
