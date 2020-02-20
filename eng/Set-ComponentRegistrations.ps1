@@ -3,6 +3,9 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+#Requires -Version 6.0
+#Requires -PSEdition Core
+
 <#
     .Synopsis
     Updates or adds a cgmanifest.json for all pom.xmls in a directory based on its maven dependency tree.
