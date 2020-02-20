@@ -296,7 +296,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntitiesBatchWithResponse#Iterable-TextAnalyticsRequestOptions
     }
 
-    // Pii Entity
+    // Personally Identifiable Information Entity
 
     /**
      * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntities(String)}
@@ -320,7 +320,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string
         String inputText1 = "My SSN is 555-55-5555";
         textAnalyticsAsyncClient.recognizePiiEntities(inputText1, "en")
-            .subscribe(entity -> System.out.printf("Recognized PII entity: %s, category: %s, score: %.2f.%n",
+            .subscribe(entity -> System.out.printf(
+                "Recognized Personally Identifiable Information entity: %s, category: %s, score: %.2f.%n",
                 entity.getText(),
                 entity.getCategory(),
                 entity.getScore()));
@@ -340,15 +341,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getTransactionCount(),
-                batchStatistics.getValidDocumentCount());
+                batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
             for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                 for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
-                    System.out.printf("Recognized PII entity: %s, category: %s, score: %.2f.%n",
-                        entity.getText(),
-                        entity.getCategory(),
-                        entity.getScore());
+                    System.out.printf(
+                        "Recognized Personally Identifiable Information entity: %s, category: %s, score: %.2f.%n",
+                        entity.getText(), entity.getCategory(), entity.getScore());
                 }
             }
         });
@@ -375,7 +374,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 for (RecognizePiiEntitiesResult recognizeEntitiesResult : batchResult) {
                     for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
-                        System.out.printf("Recognized PII entity: %s, category: %s, score: %.2f.%n",
+                        System.out.printf(
+                            "Recognized Personally Identifiable Information entity: %s, category: %s, score: %.2f.%n",
                             entity.getText(), entity.getCategory(), entity.getScore());
                     }
                 }
@@ -408,7 +408,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 for (RecognizePiiEntitiesResult recognizeEntitiesResult : recognizeEntitiesResults) {
                     for (PiiEntity entity : recognizeEntitiesResult.getEntities()) {
-                        System.out.printf("Recognized PII entity: %s, category: %s, score: %.2f.%n",
+                        System.out.printf(
+                            "Recognized Personally Identifiable Information entity: %s, category: %s, score: %.2f.%n",
                             entity.getText(),
                             entity.getCategory(),
                             entity.getScore());
@@ -429,7 +430,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         String inputText = "Old Faithful is a geyser at Yellowstone Park.";
         textAnalyticsAsyncClient.recognizeLinkedEntities(inputText).subscribe(linkedEntity -> {
             System.out.println("Linked Entities:");
-            System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+            System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(),
                 linkedEntity.getDataSourceEntityId(),
                 linkedEntity.getUrl(),
@@ -455,7 +456,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         textAnalyticsAsyncClient.recognizeLinkedEntities(inputText, "en")
             .subscribe(linkedEntity -> {
                 System.out.println("Linked Entities:");
-                System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(),
                     linkedEntity.getDataSourceEntityId(),
                     linkedEntity.getUrl(),
@@ -493,7 +494,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
                 for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                     System.out.println("Linked Entities:");
-                    System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                    System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                         linkedEntity.getName(),
                         linkedEntity.getDataSourceEntityId(),
                         linkedEntity.getUrl(),
@@ -534,7 +535,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : batchResult) {
                     for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                         System.out.println("Linked Entities:");
-                        System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                        System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                             linkedEntity.getName(),
                             linkedEntity.getDataSourceEntityId(),
                             linkedEntity.getUrl(),
@@ -579,7 +580,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
                     for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                         System.out.println("Linked Entities:");
-                        System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                        System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                             linkedEntity.getName(),
                             linkedEntity.getDataSourceEntityId(),
                             linkedEntity.getUrl(),

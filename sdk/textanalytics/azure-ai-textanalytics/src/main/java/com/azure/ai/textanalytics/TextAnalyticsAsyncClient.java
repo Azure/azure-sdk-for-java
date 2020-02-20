@@ -118,6 +118,10 @@ public final class TextAnalyticsAsyncClient {
      * Returns the detected language and a confidence score between zero and one. Scores close to one indicate 100%
      * certainty that the identified language is true.
      *
+     * This method will use the default country hint that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultCountryHint(String)}. If none is specified, service will use 'US' as
+     * the country hint.
+     *
      * <p><strong>Code sample</strong></p>
      * <p>Detects language in a text. Subscribes to the call asynchronously and prints out the detected language
      * details when a response is received.</p>
@@ -182,6 +186,10 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns the detected language for a batch of input.
+     *
+     * This method will use the default country hint that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultCountryHint(String)}. If none is specified, service will use 'US' as
+     * the country hint.
      *
      * <p><strong>Code sample</strong></p>
      * <p>Detects language in a list of string inputs. Subscribes to the call asynchronously and prints out the
@@ -271,6 +279,10 @@ public final class TextAnalyticsAsyncClient {
      * check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>
      *
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
      * <p><strong>Code sample</strong></p>
      * <p>Recognize entities in a text. Subscribes to the call asynchronously and prints out the recognized entity
      * details when a response is received.</p>
@@ -325,6 +337,10 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of general categorized entities for the provided list of texts.
+     *
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
      *
      * <p><strong>Code sample</strong></p>
      * <p>Recognize entities in a text. Subscribes to the call asynchronously and prints out the entity details
@@ -407,12 +423,16 @@ public final class TextAnalyticsAsyncClient {
         }
     }
 
-    // PII Entity
+    // Personally Identifiable Information Entity
 
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text. For the list of
      * supported entity types, check <a href="https://aka.ms/tanerpii"></a>. See <a href="https://aka.ms/talangs"></a>
      * for the list of enabled languages.
+     *
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
      *
      * <p>Recognize Personally Identifiable Information entities in a text. Subscribes to the call asynchronously and
      * prints out the entity details when a response is received.</p>
@@ -471,17 +491,21 @@ public final class TextAnalyticsAsyncClient {
      * of supported entity types, check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
-     * <p>Recognize PII entities in a list of string inputs. Subscribes to the call asynchronously and prints out the
-     * entity details when a response is received.</p>
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p>Recognize Personally Identifiable Information entities in a list of string inputs. Subscribes to the call
+     * asynchronously and prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable}
      *
-     * @param textInputs A list of text to recognize PII entities for.
+     * @param textInputs A list of text to recognize Personally Identifiable Information entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizePiiEntitiesResult PII entity} of the text.
+     * {@link RecognizePiiEntitiesResult Personally Identifiable Information entity} of the text.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -496,12 +520,12 @@ public final class TextAnalyticsAsyncClient {
      * of supported entity types, check <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>.
      *
-     * <p>Recognize PII entities in a list of string inputs with provided language hint. Subscribes to the call
-     * asynchronously and prints out the entity details when a response is received.</p>
+     * <p>Recognize Personally Identifiable Information entities in a list of string inputs with provided language hint.
+     * Subscribes to the call asynchronously and prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
-     * @param textInputs A list of text to recognize PII entities for.
+     * @param textInputs A list of text to recognize Personally Identifiable Information entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -510,7 +534,7 @@ public final class TextAnalyticsAsyncClient {
      * and show statistics.
      *
      * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizePiiEntitiesResult PII entity}.
+     * {@link RecognizePiiEntitiesResult Personally Identifiable Information entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -527,19 +551,22 @@ public final class TextAnalyticsAsyncClient {
      * the list of supported entity types,check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
      * check: <a href="https://aka.ms/talangs"></a>.
      *
-     * <p>Recognize PII entities in a list of TextDocumentInput with provided statistics options. Subscribes to the
-     * call asynchronously and prints out the entity details when a response is received.</p>
+     * <p>Recognize Personally Identifiable Information entities in a list of TextDocumentInput with provided
+     * statistics options. Subscribes to the call asynchronously and prints out the entity details when a response is
+     * received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatchWithResponse#Iterable-TextAnalyticsRequestOptions}
      *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize
+     * Personally Identifiable Information entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizePiiEntitiesResult PII entity}.
+     * {@link DocumentResultCollection batch} of
+     * {@link RecognizePiiEntitiesResult Personally Identifiable Information entity}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -559,6 +586,10 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided text. See
      * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     *
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
      *
      * <p>Recognize linked entities in a text. Subscribes to the call asynchronously and prints out the
      * entity details when a response is received.</p>
@@ -612,6 +643,10 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts. See
      * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     *
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
      *
      * <p>Recognize linked entities in a list of string inputs. Subscribes to the call asynchronously and prints out the
      * entity details when a response is received.</p>
@@ -700,6 +735,10 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of strings denoting the key phrases in the input text.
      *
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
      * <p>Extract key phrases in a text. Subscribes to the call asynchronously and prints out the
      * key phrases when a response is received.</p>
      *
@@ -751,6 +790,10 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of strings denoting the key phrases in the input text.
+     *
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
      *
      * <p>Extract key phrases in a list of string inputs. Subscribes to the call asynchronously and prints out the
      * key phrases when a response is received.</p>
@@ -838,6 +881,10 @@ public final class TextAnalyticsAsyncClient {
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
      * <p>Analyze sentiment in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
      * sentiment details when a response is received.</p>
      *
@@ -904,6 +951,10 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
+     *
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
      *
      * <p>Analyze sentiment in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
      * sentiment details when a response is received.</p>

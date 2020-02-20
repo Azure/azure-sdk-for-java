@@ -283,7 +283,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatchWithResponse#Iterable-TextAnalyticsRequestOptions-Context
     }
 
-    // PII Entity
+    // Personally Identifiable Information Entity
 
     /**
      * Code snippet for {@link TextAnalyticsClient#recognizePiiEntities(String)}
@@ -291,7 +291,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void recognizePiiEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String
         for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555")) {
-            System.out.printf("Recognized PII entity: %s, entity category: %s, score: %.2f.%n",
+            System.out.printf(
+                "Recognized Personally Identifiable Information entity: %s, entity category: %s, score: %.2f.%n",
                 entity.getText(), entity.getCategory(), entity.getScore());
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String
@@ -304,7 +305,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-Context
         for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities("My SSN is 555-55-5555", "en",
             Context.NONE)) {
-            System.out.printf("Recognized PII entity: %s, entity category: %s, score: %.2f.%n",
+            System.out.printf(
+                "Recognized Personally Identifiable Information entity: %s, entity category: %s, score: %.2f.%n",
                 entity.getText(), entity.getCategory(), entity.getScore());
         }
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-Context
@@ -327,7 +329,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
             for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
-                System.out.printf("Recognized PII entity: %s, entity category: %s, score: %.2f.%n",
+                System.out.printf(
+                    "Recognized Personally Identifiable Information entity: %s, entity category: %s, score: %.2f.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
         }
@@ -354,7 +357,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
             for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
-                System.out.printf("Recognized PII entity: %s, entity category: %s, score: %.2f.%n",
+                System.out.printf(
+                    "Recognized Personally Identifiable Information entity: %s, entity category: %s, score: %.2f.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
         }
@@ -383,7 +387,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         for (RecognizePiiEntitiesResult recognizePiiEntitiesResult : recognizePiiEntitiesResults) {
             for (PiiEntity entity : recognizePiiEntitiesResult.getEntities()) {
-                System.out.printf("Recognized PII entity: %s, entity category: %s, score: %.2f.%n",
+                System.out.printf(
+                    "Recognized Personally Identifiable Information entity: %s, entity category: %s, score: %.2f.%n",
                     entity.getText(), entity.getCategory(), entity.getScore());
             }
         }
@@ -400,7 +405,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         final String inputText = "Old Faithful is a geyser at Yellowstone Park.";
         System.out.println("Linked Entities:");
         for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(inputText)) {
-            System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+            System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(),
                 linkedEntity.getDataSourceEntityId(),
                 linkedEntity.getUrl(),
@@ -424,7 +429,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         String inputText = "Old Faithful is a geyser at Yellowstone Park.";
         for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(inputText, "en", Context.NONE)) {
             System.out.println("Linked Entities:");
-            System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+            System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(),
                 linkedEntity.getDataSourceEntityId(),
                 linkedEntity.getUrl(),
@@ -460,7 +465,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
             for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                 System.out.println("Linked Entities:");
-                System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(),
                     linkedEntity.getDataSourceEntityId(),
                     linkedEntity.getUrl(),
@@ -498,7 +503,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
             for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                 System.out.println("Linked Entities:");
-                System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(),
                     linkedEntity.getDataSourceEntityId(),
                     linkedEntity.getUrl(),
@@ -538,7 +543,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         for (RecognizeLinkedEntitiesResult recognizeLinkedEntitiesResult : recognizeLinkedEntitiesResults) {
             for (LinkedEntity linkedEntity : recognizeLinkedEntitiesResult.getEntities()) {
                 System.out.println("Linked Entities:");
-                System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(),
                     linkedEntity.getDataSourceEntityId(),
                     linkedEntity.getUrl(),

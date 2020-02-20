@@ -66,7 +66,7 @@ public class RecognizeLinkedEntitiesBatchDocuments {
             // Valid document
             for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getEntities()) {
                 System.out.println("Linked Entities:");
-                System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
+                System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(),
                     linkedEntity.getDataSourceEntityId(),
                     linkedEntity.getUrl(),

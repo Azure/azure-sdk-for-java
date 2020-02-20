@@ -34,7 +34,7 @@ import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
- * Helper class for managing recognize PII entity endpoint.
+ * Helper class for managing recognize Personally Identifiable Information entity endpoint.
  */
 class RecognizePiiEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(RecognizePiiEntityAsyncClient.class);
@@ -42,7 +42,7 @@ class RecognizePiiEntityAsyncClient {
 
     /**
      * Create a {@code RecognizePiiEntityAsyncClient} that sends requests to the Text Analytics services's
-     * recognize PII entity endpoint.
+     * recognize Personally Identifiable Information entity endpoint.
      *
      * @param service The proxy service used to perform REST calls.
      */
@@ -76,9 +76,12 @@ class RecognizePiiEntityAsyncClient {
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(textInputs)),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("Processing a batch of PII entities input"))
-            .doOnSuccess(response -> logger.info("A batch of PII entities output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to recognize PII entities - {}", error))
+            .doOnSubscribe(ignoredValue ->
+                logger.info("Processing a batch of Personally Identifiable Information entities input"))
+            .doOnSuccess(response -> logger.info("A batch of Personally Identifiable Information entities output - {}",
+                response.getValue()))
+            .doOnError(error -> logger.warning("Failed to recognize Personally Identifiable Information entities - {}",
+                error))
             .map(response -> new SimpleResponse<>(response, toPiiDocumentResultCollection(response.getValue())));
     }
 

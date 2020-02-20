@@ -131,7 +131,7 @@ final class TestUtils {
     }
 
     /**
-     * Helper method to get the expected Batch PII Entities
+     * Helper method to get the expected batch of Personally Identifiable Information entities
      */
     static DocumentResultCollection<RecognizePiiEntitiesResult> getExpectedBatchPiiEntities() {
         PiiEntity piiEntity1 = new PiiEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
