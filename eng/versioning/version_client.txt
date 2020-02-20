@@ -34,6 +34,15 @@ com.azure:azure-storage-queue;12.3.0;12.4.0-beta.1
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-spring-boot;2.2.3-beta.0;2.2.3-beta.1
 com.azure:azure-active-directory-b2c-spring-boot-starter;2.2.3-beta.0;2.2.3-beta.1
+com.azure:azure-active-directory-spring-boot-starter;2.2.3-beta.0;2.2.3-beta.1
+com.azure:azure-cosmosdb-spring-boot-starter;2.2.3-beta.0;2.2.3-beta.1
+com.azure:azure-keyvault-secrets-spring-boot-starter;2.2.3-beta.0;2.2.3-beta.1
+com.azure:azure-mediaservices-spring-boot-starter;2.2.3-beta.0;2.2.3-beta.1
+com.azure:azure-servicebus-jms-spring-boot-starter;2.2.3-beta.0;2.2.3-beta.1
+com.azure:azure-servicebus-spring-boot-starter;2.2.3-beta.0;2.2.3-beta.1
+com.azure:azure-spring-boot-metrics-starter;2.2.3-beta.0;2.2.3-beta.1
+com.azure:azure-spring-boot-starter;2.2.3-beta.0;2.2.3-beta.1
+com.azure:azure-storage-spring-boot-starter;2.2.3-beta.0;2.2.3-beta.1
 
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current

@@ -37,7 +37,7 @@ Refer to different samples for different authentication ways.
 
 ##### Authenticate in backend
 
-Please refer to [azure-active-directory-spring-boot-backend-sample](../../azure-spring-boot-samples/azure-active-directory-spring-boot-backend-sample/README.md) for authenticate in backend.
+Please refer to [azure-active-directory-spring-boot-backend-sample](../azure-spring-boot-samples/azure-active-directory-spring-boot-backend-sample/README.md) for authenticate in backend.
 
 Configure application.properties:
 ```properties
@@ -67,7 +67,7 @@ Autowire `OAuth2UserService` bean in `WebSecurityConfigurerAdapter`:
 
 ##### Authenticate in frontend
 
-Please refer to [azure-active-directory-spring-boot-sample](../../azure-spring-boot-samples/azure-active-directory-spring-boot-sample/README.md) for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
+Please refer to [azure-active-directory-spring-boot-sample](../azure-spring-boot-samples/azure-active-directory-spring-boot-sample/README.md) for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
 
 Configure application.properties:
 ```properties

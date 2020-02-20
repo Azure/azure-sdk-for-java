@@ -5,38 +5,39 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-spring-boot-parent</artifactId>
-        <version>2.2.3-SNAPSHOT</version>
-        <relativePath>../../azure-spring-boot-parent/pom.xml</relativePath>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-client-sdk-parent</artifactId>
+      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+      <relativePath>../../../pom.client.xml</relativePath>
     </parent>
 
+    <groupId>com.azure</groupId>
     <artifactId>azure-servicebus-jms-spring-boot-starter</artifactId>
+    <version>2.2.3-beta.1</version> <!-- {x-version-update;azure-servicebus-jms-spring-boot-starter;current} -->
 
     <name>Azure Service Bus JMS Spring Boot Starter</name>
     <description>Spring Boot Starter for Azure Service Bus JMS</description>
     <url>https://github.com/Microsoft/azure-spring-boot</url>
 
-    <properties>
-        <project.rootdir>${project.basedir}/../..</project.rootdir>
-    </properties>
-
     <dependencies>
         <dependency>
-            <groupId>com.microsoft.azure</groupId>
+            <groupId>com.azure</groupId>
             <artifactId>azure-spring-boot</artifactId>
+            <version>2.2.3-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot;current} -->
         </dependency>
 
         <!--Spring JMS-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jms</artifactId>
+            <version>5.2.0.RELEASE</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
         </dependency>
 
         <!--Qpid-->
         <dependency>
             <groupId>org.apache.qpid</groupId>
             <artifactId>qpid-jms-client</artifactId>
+            <version>0.43.0</version> <!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
         </dependency>
 
     </dependencies>

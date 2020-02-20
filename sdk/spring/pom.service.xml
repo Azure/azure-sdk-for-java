@@ -13,6 +13,17 @@
 <!--    <module>azure-spring-boot-bom</module>-->
     <module>azure-spring-boot</module>
     <module>azure-active-directory-b2c-spring-boot-starter</module>
+    <module>azure-active-directory-spring-boot-starter</module>
+    <module>azure-cosmosdb-spring-boot-starter</module>
+    <module>azure-keyvault-secrets-spring-boot-starter</module>
+    <module>azure-mediaservices-spring-boot-starter</module>
+    <module>azure-servicebus-jms-spring-boot-starter</module>
+    <module>azure-servicebus-spring-boot-starter</module>
+    <module>azure-spring-boot-metrics-starter</module>
+    <module>azure-spring-boot-starter</module>
+    <module>azure-storage-spring-boot-starter</module>
+    <module>spring-data-gremlin-boot-starter</module>
+
 <!--    <module>azure-spring-boot-starters</module>-->
 <!--    <module>azure-spring-boot-samples</module>-->
 <!--    <module>azure-spring-boot-tests</module>-->

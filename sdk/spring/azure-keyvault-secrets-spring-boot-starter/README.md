@@ -2,7 +2,7 @@
 Azure Key Vault Secrets Spring boot starter is Spring starter for [Azure Key Vault Secrets](https://docs.microsoft.com/en-us/rest/api/keyvault/about-keys--secrets-and-certificates#BKMK_WorkingWithSecrets). With this starter, Azure Key Vault is added as one of Spring PropertySource, so secrets stored in Azure Key Vault could be easily used and conveniently accessed like other externalized configuration property, e.g. properties in files.
 
 ## Sample Code
-Please refer to [sample project here](../../azure-spring-boot-samples/azure-keyvault-secrets-spring-boot-sample).
+Please refer to [sample project here](../azure-spring-boot-samples/azure-keyvault-secrets-spring-boot-sample).
 
 ## Quick Start
 
@@ -62,7 +62,7 @@ You can use the following Azure CLI command to save secrets, if Key Vault is alr
 az keyvault secret set --name <your-property-name> --value <your-secret-property-value> --vault-name <your-keyvault-name>
 ```
 > NOTE
-> To get detail steps on how setup Azure Key Vault, please refer to sample code readme section ["Setup Azure Key Vault"](../../azure-spring-boot-samples/azure-keyvault-secrets-spring-boot-sample/README.md)
+> To get detail steps on how setup Azure Key Vault, please refer to sample code readme section ["Setup Azure Key Vault"](../azure-spring-boot-samples/azure-keyvault-secrets-spring-boot-sample/README.md)
 
 > **IMPORTANT** 
 > Allowed secret name pattern in Azure Key Vault is ^[0-9a-zA-Z-]+$, for some Spring system properties contains `.` like spring.datasource.url, do below workaround when you save it into Azure Key Vault: simply replace `.` to `-`. `spring.datasource.url` will be saved with name `spring-datasource-url` in Azure Key Vault. While in client application, use original `spring.datasource.url` to retrieve property value, this starter will take care of transformation for you. Purpose of using this way is to integrate with Spring existing property setting.
