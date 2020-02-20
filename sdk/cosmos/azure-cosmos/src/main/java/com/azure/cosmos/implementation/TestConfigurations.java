@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -80,17 +81,41 @@ public final class TestConfigurations {
                                        System.getenv().get("PROTOCOLS")),
                                                          null));
 
+    /**
+     * If ${ProjectPath}/cosmos-v4.properties is present, it will be used
+     * otherwise, if ~/cosmos-v4.props is present, it will be used
+     * otherwise, system properties will be used as default.
+     * @return loaded properties
+     */
     private static Properties loadProperties() {
-        Path path = Paths.get(System.getProperty("user.home"), "cosmos-v4.properties");
-        Properties properties = new Properties(System.getProperties());
-        if (Files.exists(path)) {
-            try (InputStream in = Files.newInputStream(path)) {
-                properties.load(in);
-            } catch (Exception e) {
-                logger.error("loading properties {} failed", path, e);
-            }
+        Path root = FileSystems.getDefault().getPath("").toAbsolutePath();
+        Path propertiesInProject = Paths.get(root.toString(),"../cosmos-v4.properties");
+
+        Properties props = loadFromPathIfExists(propertiesInProject);
+        if (props != null) {
+            return props;
         }
 
-        return properties;
+        Path propertiesInUserHome = Paths.get(System.getProperty("user.home"), "cosmos-v4.properties");
+        props = loadFromPathIfExists(propertiesInUserHome);
+        if (props != null) {
+            return props;
+        }
+
+        return System.getProperties();
+    }
+
+    private static Properties loadFromPathIfExists(Path propertiesFilePath) {
+        if (Files.exists(propertiesFilePath)) {
+            try (InputStream in = Files.newInputStream(propertiesFilePath)) {
+                Properties props = new Properties();
+                props.load(in);
+                logger.info("properties loaded from {}", propertiesFilePath);
+                return props;
+            } catch (Exception e) {
+                logger.error("Loading properties {} failed", propertiesFilePath, e);
+            }
+        }
+        return null;
     }
 }
