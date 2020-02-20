@@ -141,7 +141,7 @@ jobs:
           DisplayName: Strong TCP Fast
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 08m 53s, expect passed
@@ -149,7 +149,7 @@ jobs:
           DisplayName: Strong TCP Direct
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pdirect'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 07m 36s, expect passed
@@ -157,7 +157,7 @@ jobs:
           DisplayName: Strong TCP Examples
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pexamples'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 06m 59s, expect passed
@@ -165,7 +165,7 @@ jobs:
           DisplayName: Strong TCP NonEmulator
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pnon-emulator'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
@@ -209,7 +209,7 @@ jobs:
           DisplayName: Strong HTTP Fast
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 08m 50s, expect passed
@@ -217,7 +217,7 @@ jobs:
           DisplayName: Strong HTTP Direct
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pdirect'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 07m 36s, expect passed
@@ -225,7 +225,7 @@ jobs:
           DisplayName: Strong HTTP Examples
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pexamples'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 06m 59s, expect passed
@@ -233,7 +233,7 @@ jobs:
           DisplayName: Strong HTTP NonEmulator
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pnon-emulator'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
@@ -331,6 +331,7 @@ jobs:
           DisplayName: Multimaster Single Region Direct
           OSVmImage: 'macOS-10.13'
           ProfileFlag: '-Pdirect'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session"'
         # 07m 52s, expect passed
         Examples:
           DisplayName: Multimaster Single Region Examples
