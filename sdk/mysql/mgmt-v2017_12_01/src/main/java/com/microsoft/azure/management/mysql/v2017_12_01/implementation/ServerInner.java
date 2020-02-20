@@ -37,7 +37,7 @@ public class ServerInner extends Resource {
     private String administratorLogin;
 
     /**
-     * Server version. Possible values include: '5.6', '5.7'.
+     * Server version. Possible values include: '5.6', '5.7', '8.0'.
      */
     @JsonProperty(value = "properties.version")
     private ServerVersion version;
@@ -133,7 +133,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Get server version. Possible values include: '5.6', '5.7'.
+     * Get server version. Possible values include: '5.6', '5.7', '8.0'.
      *
      * @return the version value
      */
@@ -142,7 +142,7 @@ public class ServerInner extends Resource {
     }
 
     /**
-     * Set server version. Possible values include: '5.6', '5.7'.
+     * Set server version. Possible values include: '5.6', '5.7', '8.0'.
      *
      * @param version the version value to set
      * @return the ServerInner object itself.
