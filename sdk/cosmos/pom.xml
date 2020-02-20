@@ -6,41 +6,15 @@ Licensed under the MIT License.
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>azure-data-sdk-parent</artifactId>
-    <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
-    <relativePath>../../pom.data.xml</relativePath>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../pom.client.xml</relativePath>
   </parent>
 
-  <groupId>com.microsoft.azure</groupId>
+  <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-parent</artifactId>
-  <version>3.5.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-parent;current} -->
+  <version>4.0.1-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-parent;current} -->
   <packaging>pom</packaging>
-
-  <name>Microsoft Azure Cosmos DB SQL API</name>
-  <description>This package contains Microsoft Azure SDK for Azure Cosmos DB SQL API (with Reactive Extension RX support)</description>
-  <url>https://github.com/Azure/azure-sdk-for-java</url>
-
-  <distributionManagement>
-    <site>
-      <id>azure-java-build-docs</id>
-      <url>${site.url}/site/${project.artifactId}</url>
-    </site>
-  </distributionManagement>
-
-  <scm>
-    <url>https://github.com/Azure/azure-sdk-for-java</url>
-  </scm>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <cosmosdb-sdk-direct-impl.version>${project.version}</cosmosdb-sdk-direct-impl.version>
-    <direct-connectivity-version>${project.version}</direct-connectivity-version>
-    <sdk-version>${project.version}</sdk-version>
-    <test.groups>unit</test.groups>
-    <collectedArtifactsForReleaseLocation>${project.basedir}/target/collectedArtifactsForRelease</collectedArtifactsForReleaseLocation>
-    <javadoc.opts/>
-  </properties>
 
   <profiles>
   <profile>
@@ -253,42 +227,7 @@ Licensed under the MIT License.
       </plugins>
     </pluginManagement>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
-        <inherited>true</inherited>
-        <configuration>
-          <quiet>true</quiet>
-          <verbose>false</verbose>
-          <additionalOptions>${javadoc.opts}</additionalOptions>
-          <sourceFileExcludes>
-            <sourceFileExclude>**/internal/**/*.java</sourceFileExclude>
-            <sourceFileExclude>**/*BridgeInternal.java</sourceFileExclude>
-          </sourceFileExcludes>
-        </configuration>
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <goals>
-              <goal>jar-no-fork</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+      <!--  Cosmos - Needed temporary to not fail on warning on compilation -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -299,61 +238,14 @@ Licensed under the MIT License.
           <failOnWarning>false</failOnWarning>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <version>2.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-eclipse-plugin;external_dependency} -->
-        <configuration>
-          <classpathContainers>
-            <classpathContainer>
-              org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8
-            </classpathContainer>
-          </classpathContainers>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <phase></phase>
-            <id>default-cli</id>
-            <configuration>
-              <target>
-                <copy file="sdk/pom.xml"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}.pom"/>
-                <copy file="pom.xml"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-parent-${sdk-version}.pom"/>
-
-                 <copy file="sdk/target/azure-cosmos-${sdk-version}-sources.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}-sources.jar"/>
-                <copy file="sdk/target/azure-cosmos-${sdk-version}-javadoc.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}-javadoc.jar"/>
-                <copy file="sdk/target/azure-cosmos-${sdk-version}.jar"
-                      tofile="${collectedArtifactsForReleaseLocation}/azure-cosmos-${sdk-version}.jar"/>
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
-  <developers>
-    <developer>
-      <id>microsoft</id>
-      <name>Microsoft Corporation</name>
-    </developer>
-  </developers>
-
   <modules>
-    <module>microsoft-azure-cosmos</module>
-    <module>microsoft-azure-cosmos-benchmark</module>
-    <module>microsoft-azure-cosmos-examples</module>
+    <module>../core/azure-core</module>
+    <module>azure-cosmos</module>
+    <module>azure-cosmos-benchmark</module>
+    <module>azure-cosmos-examples</module>
   </modules>
 
 </project>
