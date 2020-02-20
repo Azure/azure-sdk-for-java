@@ -55,6 +55,9 @@ public class StorageAutoConfiguration {
 
     /**
      * @param options PipelineOptions bean, not required.
+     * @return service URL
+     * @throws InvalidKeyException invalid key
+     * @throws MalformedURLException URL is malformed
      */
     @Bean
     public ServiceURL createServiceUrl(@Autowired(required = false) PipelineOptions options) throws InvalidKeyException,
@@ -64,9 +67,8 @@ public class StorageAutoConfiguration {
                 properties.getAccountKey());
         final URL blobUrl = getURL();
         final PipelineOptions pipelineOptions = buildOptions(options);
-        final ServiceURL serviceURL = new ServiceURL(blobUrl, StorageURL.createPipeline(credentials, pipelineOptions));
 
-        return serviceURL;
+        return new ServiceURL(blobUrl, StorageURL.createPipeline(credentials, pipelineOptions));
     }
 
     private URL getURL() throws MalformedURLException {

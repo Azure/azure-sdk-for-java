@@ -11,6 +11,7 @@
       <relativePath>../../../pom.client.xml</relativePath>
     </parent>
 
+    <groupId>com.azure</groupId>
     <artifactId>azure-active-directory-b2c-spring-boot-starter</artifactId>
     <version>2.2.3-beta.1</version> <!-- {x-version-update;azure-active-directory-b2c-spring-boot-starter;current} -->
 
@@ -31,7 +32,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.microsoft.azure</groupId>
+            <groupId>com.azure</groupId>
             <artifactId>azure-spring-boot</artifactId>
             <version>2.2.3-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-boot;current} -->
         </dependency>

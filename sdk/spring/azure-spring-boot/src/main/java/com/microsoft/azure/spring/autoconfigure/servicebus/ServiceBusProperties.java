@@ -7,11 +7,10 @@
 package com.microsoft.azure.spring.autoconfigure.servicebus;
 
 import com.microsoft.azure.servicebus.ReceiveMode;
-
-import javax.validation.constraints.NotEmpty;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotEmpty;
 
 @Validated
 @ConfigurationProperties("azure.servicebus")
@@ -47,20 +46,16 @@ public class ServiceBusProperties {
      */
     private ReceiveMode subscriptionReceiveMode;
 
+    /**
+     * Allow telemetry or not
+     *
+     */
     private boolean allowTelemetry = true;
 
-    /**
-     * return allow telemery or not
-     */
     public boolean isAllowTelemetry() {
         return allowTelemetry;
     }
 
-    /**
-     * Set allowTelemetry
-     *
-     * @param allowTelemetry
-     */
     public void setAllowTelemetry(boolean allowTelemetry) {
         this.allowTelemetry = allowTelemetry;
     }
