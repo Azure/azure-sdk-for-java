@@ -94,7 +94,7 @@ public final class LinkedEntity {
      *
      * @return the id value.
      */
-    public String getDataSourceLinkId() {
+    public String getDataSourceEntityId() {
         return this.dataSourceEntityId;
     }
 

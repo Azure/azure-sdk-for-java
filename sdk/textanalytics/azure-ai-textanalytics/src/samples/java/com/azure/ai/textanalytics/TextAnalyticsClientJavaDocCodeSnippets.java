@@ -402,7 +402,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(inputText)) {
             System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(),
-                linkedEntity.getDataSourceLinkId(),
+                linkedEntity.getDataSourceEntityId(),
                 linkedEntity.getUrl(),
                 linkedEntity.getDataSource());
             for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
@@ -426,7 +426,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             System.out.println("Linked Entities:");
             System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(),
-                linkedEntity.getDataSourceLinkId(),
+                linkedEntity.getDataSourceEntityId(),
                 linkedEntity.getUrl(),
                 linkedEntity.getDataSource());
             for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
@@ -462,7 +462,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 System.out.println("Linked Entities:");
                 System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(),
-                    linkedEntity.getDataSourceLinkId(),
+                    linkedEntity.getDataSourceEntityId(),
                     linkedEntity.getUrl(),
                     linkedEntity.getDataSource());
                 for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
@@ -500,7 +500,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 System.out.println("Linked Entities:");
                 System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(),
-                    linkedEntity.getDataSourceLinkId(),
+                    linkedEntity.getDataSourceEntityId(),
                     linkedEntity.getUrl(),
                     linkedEntity.getDataSource());
                 for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
@@ -540,7 +540,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 System.out.println("Linked Entities:");
                 System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(),
-                    linkedEntity.getDataSourceLinkId(),
+                    linkedEntity.getDataSourceEntityId(),
                     linkedEntity.getUrl(),
                     linkedEntity.getDataSource());
                 for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
