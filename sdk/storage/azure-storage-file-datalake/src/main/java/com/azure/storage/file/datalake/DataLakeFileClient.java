@@ -178,7 +178,8 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         if (!overwrite) {
             // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
-            if (dataLakeFileAsyncClient.uploadInBlocks(filePath, DataLakeFileClient.MAX_APPEND_FILE_BYTES) && exists()) {
+            if (dataLakeFileAsyncClient.uploadInBlocks(filePath, DataLakeFileClient.MAX_APPEND_FILE_BYTES)
+                && exists()) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
@@ -198,6 +199,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param filePath Path of the file to upload
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the resource.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs

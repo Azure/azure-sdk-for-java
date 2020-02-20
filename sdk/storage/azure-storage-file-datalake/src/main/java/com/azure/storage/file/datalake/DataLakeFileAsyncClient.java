@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.datalake;
 
-
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -31,7 +30,6 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 import java.io.IOException;
@@ -262,6 +260,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * data emitted by the {@code Flux}.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the resource.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the information of the uploaded file.
      */
@@ -416,6 +415,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      * transfers parameter is ignored.
      * @param headers {@link PathHttpHeaders}
+     * @param metadata Metadata to associate with the resource.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return An empty response
      * @throws UncheckedIOException If an I/O error occurs
