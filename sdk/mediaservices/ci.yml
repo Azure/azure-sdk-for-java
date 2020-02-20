@@ -44,4 +44,3 @@ stages:
         - name: azure-media
           groupId: com.microsoft.azure
           safeName: azuremedia
-          stagingProfileId: 534d15ee3800f4
