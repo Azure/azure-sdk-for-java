@@ -1,4 +1,4 @@
-# Benchmark tool
+# Azure CosmosDB Client Library for Java SDK for SQL API - Benchmarking Tool
 
 ## Build the benchmarking tool
 
