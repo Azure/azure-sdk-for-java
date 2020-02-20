@@ -60,8 +60,8 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the confidence score of the sentiment label. All score values sum up to 1, higher the score value means higher
-     * confidence the sentiment label represents.
+     * Get the confidence score of the sentiment label. All score values sum up to 1, higher the score value means
+     * higher confidence the sentiment label represents.
      *
      * @return the SentimentConfidenceScorePerLabel.
      */
