@@ -1,0 +1,475 @@
+{
+  "Registrations": [
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.fasterxml.jackson.core",
+          "ArtifactId": "jackson-annotations",
+          "Version": "2.10.0"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.fasterxml.jackson.core",
+          "ArtifactId": "jackson-core",
+          "Version": "2.10.0"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.fasterxml.jackson.core",
+          "ArtifactId": "jackson-databind",
+          "Version": "2.9.4"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.fasterxml.jackson.datatype",
+          "ArtifactId": "jackson-datatype-joda",
+          "Version": "2.10.0"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.github.stephenc.jcip",
+          "ArtifactId": "jcip-annotations",
+          "Version": "1.0-1"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.google.code.gson",
+          "ArtifactId": "gson",
+          "Version": "2.8.0"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.google.guava",
+          "ArtifactId": "guava",
+          "Version": "20.0"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.microsoft.azure",
+          "ArtifactId": "adal4j",
+          "Version": "1.6.4"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.microsoft.azure",
+          "ArtifactId": "azure-annotations",
+          "Version": "1.10.0"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.microsoft.azure",
+          "ArtifactId": "azure-client-runtime",
+          "Version": "1.7.0"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.microsoft.rest",
+          "ArtifactId": "client-runtime",
+          "Version": "1.7.0"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.nimbusds",
+          "ArtifactId": "lang-tag",
+          "Version": "1.4.4"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.nimbusds",
+          "ArtifactId": "nimbus-jose-jwt",
+          "Version": "8.6"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.nimbusds",
+          "ArtifactId": "oauth2-oidc-sdk",
+          "Version": "6.5"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.squareup.okhttp3",
+          "ArtifactId": "logging-interceptor",
+          "Version": "3.12.2"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.squareup.okhttp3",
+          "ArtifactId": "okhttp",
+          "Version": "3.12.6"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.squareup.okhttp3",
+          "ArtifactId": "okhttp-urlconnection",
+          "Version": "3.12.2"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.squareup.okio",
+          "ArtifactId": "okio",
+          "Version": "1.15.0"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.squareup.retrofit2",
+          "ArtifactId": "adapter-rxjava",
+          "Version": "2.6.2"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.squareup.retrofit2",
+          "ArtifactId": "converter-jackson",
+          "Version": "2.5.0"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.squareup.retrofit2",
+          "ArtifactId": "retrofit",
+          "Version": "2.5.0"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.sun.activation",
+          "ArtifactId": "javax.activation",
+          "Version": "1.2.0"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.sun.mail",
+          "ArtifactId": "javax.mail",
+          "Version": "1.6.1"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "com.typesafe.netty",
+          "ArtifactId": "netty-reactive-streams",
+          "Version": "2.0.3"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "commons-codec",
+          "ArtifactId": "commons-codec",
+          "Version": "1.11"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "io.netty",
+          "ArtifactId": "netty-buffer",
+          "Version": "4.1.45.Final"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "io.netty",
+          "ArtifactId": "netty-codec",
+          "Version": "4.1.45.Final"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "io.netty",
+          "ArtifactId": "netty-codec-http",
+          "Version": "4.1.45.Final"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "io.netty",
+          "ArtifactId": "netty-codec-socks",
+          "Version": "4.1.45.Final"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "io.netty",
+          "ArtifactId": "netty-common",
+          "Version": "4.1.45.Final"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "io.netty",
+          "ArtifactId": "netty-handler",
+          "Version": "4.1.45.Final"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "io.netty",
+          "ArtifactId": "netty-handler-proxy",
+          "Version": "4.1.45.Final"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "io.netty",
+          "ArtifactId": "netty-resolver",
+          "Version": "4.1.45.Final"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "io.netty",
+          "ArtifactId": "netty-transport",
+          "Version": "4.1.45.Final"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "io.netty",
+          "ArtifactId": "netty-transport-native-epoll",
+          "Version": "linux-x86_64"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "io.netty",
+          "ArtifactId": "netty-transport-native-kqueue",
+          "Version": "osx-x86_64"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "io.netty",
+          "ArtifactId": "netty-transport-native-unix-common",
+          "Version": "4.1.45.Final"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "io.reactivex",
+          "ArtifactId": "rxjava",
+          "Version": "1.3.8"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "javax.activation",
+          "ArtifactId": "activation",
+          "Version": "1.1"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "joda-time",
+          "ArtifactId": "joda-time",
+          "Version": "2.9.9"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "net.minidev",
+          "ArtifactId": "accessors-smart",
+          "Version": "1.2"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "net.minidev",
+          "ArtifactId": "json-smart",
+          "Version": "2.3"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "org.apache.commons",
+          "ArtifactId": "commons-lang3",
+          "Version": "3.5"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "org.asynchttpclient",
+          "ArtifactId": "async-http-client-netty-utils",
+          "Version": "2.10.5"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "org.hamcrest",
+          "ArtifactId": "hamcrest-core",
+          "Version": "1.3"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "org.ow2.asm",
+          "ArtifactId": "asm",
+          "Version": "5.0.4"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
+          "GroupId": "org.reactivestreams",
+          "ArtifactId": "reactive-streams",
+          "Version": "1.0.2"
+        }
+      }
+    }
+  ],
+  "Version": 1
+}
