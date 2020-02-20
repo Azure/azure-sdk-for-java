@@ -14,6 +14,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,26 +93,19 @@ public class DocumentConverterTests {
 
     @Test
     public void canReadPrimitiveTypes() {
-        Map<String, Object> values = new HashMap<>() {
-            {
-                put("123", 123);
-                put("9999999999999", 9_999_999_999_999L);
-                put("3.14", 3.14);
-                put("\"hello\"", "hello");
-                put("true", true);
-                put("false", false);
-            }
-        };
+        Map<String, Object> values = new HashMap<>();
+        values.put("123", 123);
+        values.put("9999999999999", 9_999_999_999_999L);
+        values.put("3.14", 3.14);
+        values.put("\"hello\"", "hello");
+        values.put("true", true);
+        values.put("false", false);
 
         for (Map.Entry<String, Object> entry : values.entrySet()) {
             String jsonValue = entry.getKey();
             Object expectedObject = entry.getValue();
             String json = "{\"field\" :".concat(jsonValue).concat("}");
-            Document expectedDoc = new Document() {
-                {
-                    put("field", expectedObject);
-                }
-            };
+            Document expectedDoc = new Document(Collections.singletonMap("field", expectedObject));
 
             Document actualDoc = deserialize(json);
             assertEquals(expectedDoc, actualDoc);
@@ -120,25 +114,18 @@ public class DocumentConverterTests {
 
     @Test
     public void canReadArraysOfPrimitiveTypes() {
-        Map<String, Object> values = new HashMap<>() {
-            {
-                put("[\"hello\", \"goodbye\"]", Arrays.asList("hello", "goodbye"));
-                put("[123, 456]", Arrays.asList(123, 456));
-                put("[9999999999999, -12]", Arrays.asList(9_999_999_999_999L, -12));
-                put("[3.14, 2.78]", Arrays.asList(3.14, 2.78));
-                put("[true, false]", Arrays.asList(true, false));
-            }
-        };
+        Map<String, Object> values = new HashMap<>();
+        values.put("[\"hello\", \"goodbye\"]", Arrays.asList("hello", "goodbye"));
+        values.put("[123, 456]", Arrays.asList(123, 456));
+        values.put("[9999999999999, -12]", Arrays.asList(9_999_999_999_999L, -12));
+        values.put("[3.14, 2.78]", Arrays.asList(3.14, 2.78));
+        values.put("[true, false]", Arrays.asList(true, false));
 
         for (Map.Entry<String, Object> entry : values.entrySet()) {
             String jsonArray = entry.getKey();
             Object expectedArray = entry.getValue();
             String json = "{\"field\" :".concat(jsonArray).concat("}");
-            Document expectedDoc = new Document() {
-                {
-                    put("field", expectedArray);
-                }
-            };
+            Document expectedDoc = new Document(Collections.singletonMap("field", expectedArray));
 
             Document actualDoc = deserialize(json);
             assertEquals(expectedDoc, actualDoc);

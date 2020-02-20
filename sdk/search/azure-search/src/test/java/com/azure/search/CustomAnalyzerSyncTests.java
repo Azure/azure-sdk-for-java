@@ -69,7 +69,6 @@ import com.azure.search.models.TruncateTokenFilter;
 import com.azure.search.models.UaxUrlEmailTokenizer;
 import com.azure.search.models.UniqueTokenFilter;
 import com.azure.search.models.WordDelimiterTokenFilter;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 import org.unitils.reflectionassert.ReflectionAssert;
@@ -404,7 +403,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     }
 
     String generateName() {
-        return SdkContext.randomResourceName(NAME_PREFIX, 24);
+        return testResourceNamer.randomName(NAME_PREFIX, 24);
     }
 
     List<Index> prepareIndexesWithAllAnalysisComponentOptions() {

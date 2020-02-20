@@ -54,21 +54,17 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         waitForIndexing();
     }
 
-    List<Map<String, Object>> uploadDocumentsJson(
-        SearchIndexAsyncClient client, String dataJson) {
+    List<Map<String, Object>> uploadDocumentsJson(SearchIndexAsyncClient client, String dataJson) {
         List<Map<String, Object>> documents =
-            readJsonFileToList(dataJson, new TypeReference<>() {
-            });
+            readJsonFileToList(dataJson, new TypeReference<List<Map<String, Object>>>() { });
 
         uploadDocuments(client, documents);
         return documents;
     }
 
-    List<Map<String, Object>> uploadDocumentsJson(
-        SearchIndexClient client, String dataJson) {
+    List<Map<String, Object>> uploadDocumentsJson(SearchIndexClient client, String dataJson) {
         List<Map<String, Object>> documents =
-            readJsonFileToList(dataJson, new TypeReference<>() {
-            });
+            readJsonFileToList(dataJson, new TypeReference<List<Map<String, Object>>>() { });
 
         uploadDocuments(client, documents);
 

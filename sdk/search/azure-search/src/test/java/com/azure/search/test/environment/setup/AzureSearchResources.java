@@ -3,6 +3,7 @@
 
 package com.azure.search.test.environment.setup;
 
+import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -10,7 +11,6 @@ import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.search.SearchService;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
@@ -57,9 +57,7 @@ public class AzureSearchResources {
      * @param subscriptionId Azure subscription id.
      * @param location location of the resources to be created in.
      */
-    public AzureSearchResources(
-        AzureTokenCredentials azureTokenCredentials, String subscriptionId,
-        Region location) {
+    public AzureSearchResources(AzureTokenCredentials azureTokenCredentials, String subscriptionId, Region location) {
         this.azureTokenCredentials = azureTokenCredentials;
         this.subscriptionId = subscriptionId;
         this.location = location;
@@ -89,8 +87,8 @@ public class AzureSearchResources {
     /**
      * Creates an Azure Service in an existing resource group
      */
-    public void createService() {
-        searchServiceName = SdkContext.randomResourceName(SEARCH_SERVICE_NAME_PREFIX, 24);
+    public void createService(TestResourceNamer testResourceNamer) {
+        searchServiceName = testResourceNamer.randomName(SEARCH_SERVICE_NAME_PREFIX, 24);
         System.out.println("Creating Azure Cognitive Search service: " + searchServiceName);
         searchService = azure.searchServices()
             .define(searchServiceName)
@@ -115,9 +113,9 @@ public class AzureSearchResources {
     /**
      * Creates the Resource Group in Azure. This should be run at @BeforeAll
      */
-    public void createResourceGroup() {
+    public void createResourceGroup(TestResourceNamer testResourceNamer) {
         if (resourceGroup == null) {
-            String resourceGroupName = SdkContext.randomResourceName(RESOURCE_GROUP_NAME_PREFIX, 24);
+            String resourceGroupName = testResourceNamer.randomName(RESOURCE_GROUP_NAME_PREFIX, 24);
             System.out.println("Creating Resource Group: " + resourceGroupName);
             resourceGroup = azure.resourceGroups()
                 .define(resourceGroupName)
@@ -142,8 +140,8 @@ public class AzureSearchResources {
      *
      * @return the storage connection string
      */
-    public String createStorageAccount() {
-        String storageName = SdkContext.randomResourceName(STORAGE_NAME_PREFIX, 15);
+    public String createStorageAccount(TestResourceNamer testResourceNamer) {
+        String storageName = testResourceNamer.randomName(STORAGE_NAME_PREFIX, 15);
 
         StorageAccount storageAccount = azure.storageAccounts().define(storageName)
             .withRegion(location)
@@ -168,10 +166,10 @@ public class AzureSearchResources {
      * @param storageConnString a given connection string
      * @return the created container name
      */
-    public String createBlobContainer(String storageConnString) {
+    public String createBlobContainer(String storageConnString, TestResourceNamer testResourceNamer) {
 
         // now we create a blob container, no need for an actual blob to be uploaded
-        String blobContainerDatasourceName = SdkContext.randomResourceName(BLOB_DATASOURCE_NAME_PREFIX, 15);
+        String blobContainerDatasourceName = testResourceNamer.randomName(BLOB_DATASOURCE_NAME_PREFIX, 15);
 
         BlobServiceClient blobServiceClient =
             new BlobServiceClientBuilder()

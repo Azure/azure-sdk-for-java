@@ -116,14 +116,15 @@ public abstract class SearchServiceTestBase extends TestBase {
     @Override
     protected void beforeTest() {
         searchDnsSuffix = testEnvironment.equals("DOGFOOD") ? DOGFOOD_DNS_SUFFIX : DEFAULT_DNS_SUFFIX;
+        searchServiceName = azureSearchResources.getSearchServiceName();
+
         if (!interceptorManager.isPlaybackMode()) {
             azureSearchResources.initialize();
-            azureSearchResources.createResourceGroup();
-            azureSearchResources.createService();
-
-            searchServiceName = azureSearchResources.getSearchServiceName();
+            azureSearchResources.createResourceGroup(testResourceNamer);
+            azureSearchResources.createService(testResourceNamer);
             searchApiKeyCredential = new SearchApiKeyCredential(azureSearchResources.getSearchAdminKey());
         }
+
         endpoint = String.format("https://%s.%s", searchServiceName, searchDnsSuffix);
 
         objectMapper = new ObjectMapper();
@@ -485,10 +486,10 @@ public abstract class SearchServiceTestBase extends TestBase {
         if (!interceptorManager.isPlaybackMode()) {
 
             // First, we create a storage account
-            storageConnString = azureSearchResources.createStorageAccount();
+            storageConnString = azureSearchResources.createStorageAccount(testResourceNamer);
             // Next, we create the blobs container
             blobContainerDatasourceName =
-                azureSearchResources.createBlobContainer(storageConnString);
+                azureSearchResources.createBlobContainer(storageConnString, testResourceNamer);
         }
 
         // create the new data source object for this storage account and container
@@ -511,19 +512,12 @@ public abstract class SearchServiceTestBase extends TestBase {
         String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
 
         testEnvironment = Configuration.getGlobalConfiguration().get("AZURE_TEST_ENVIRONMENT");
-        if (testEnvironment == null) {
-            testEnvironment = "AZURE";
-        } else {
-            testEnvironment = testEnvironment.toUpperCase(Locale.US);
-        }
+        testEnvironment = (testEnvironment == null) ? "AZURE" : testEnvironment.toUpperCase(Locale.US);
 
         AzureEnvironment environment = testEnvironment.equals("DOGFOOD") ? getDogfoodEnvironment() : AzureEnvironment.AZURE;
 
-        ApplicationTokenCredentials applicationTokenCredentials = new ApplicationTokenCredentials(
-            appId,
-            azureDomainId,
-            secret,
-            environment);
+        ApplicationTokenCredentials applicationTokenCredentials =
+            new ApplicationTokenCredentials(appId, azureDomainId, secret, environment);
 
         azureSearchResources = new AzureSearchResources(applicationTokenCredentials, subscriptionId, Region.US_EAST);
     }
@@ -593,12 +587,11 @@ public abstract class SearchServiceTestBase extends TestBase {
      * @return a RequestOptions object with ClientRequestId.
      */
     protected RequestOptions generateRequestOptions() {
-        return new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
+        return new RequestOptions().setClientRequestId(UUID.randomUUID());
     }
 
-    void assertHttpResponseException(
-        Runnable exceptionThrower, HttpResponseStatus expectedResponseStatus, String expectedMessage) {
+    void assertHttpResponseException(Runnable exceptionThrower, HttpResponseStatus expectedResponseStatus,
+        String expectedMessage) {
         try {
             exceptionThrower.run();
             fail();
@@ -608,13 +601,10 @@ public abstract class SearchServiceTestBase extends TestBase {
         }
     }
 
-    void assertHttpResponseExceptionAsync(
-        Publisher<?> exceptionThrower, HttpResponseStatus expectedResponseStatus, String expectedMessage) {
-
-        StepVerifier
-            .create(exceptionThrower)
-            .verifyErrorSatisfies(error -> verifyHttpResponseError(
-                error, expectedResponseStatus, expectedMessage));
+    void assertHttpResponseExceptionAsync(Publisher<?> exceptionThrower, HttpResponseStatus expectedResponseStatus,
+        String expectedMessage) {
+        StepVerifier.create(exceptionThrower)
+            .verifyErrorSatisfies(error -> verifyHttpResponseError(error, expectedResponseStatus, expectedMessage));
     }
 
     private void verifyHttpResponseError(

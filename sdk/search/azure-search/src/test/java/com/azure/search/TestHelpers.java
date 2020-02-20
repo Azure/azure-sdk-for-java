@@ -14,7 +14,6 @@ import com.azure.search.test.environment.models.LoudHotel;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
 import com.azure.search.test.environment.models.NonNullableModel;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertLenientEquals;
@@ -98,36 +97,17 @@ public final class TestHelpers {
     }
 
     /**
-     * Gets the {@code "eTag"} field from the passed object.
-     *
-     * @param obj The object that will have its eTag field retrieved.
-     * @return The eTag field.
-     * @throws NoSuchFieldException If the object doesn't contain an {@code "eTag"} field.
-     */
-    public static Field getETagField(Object obj) throws NoSuchFieldException {
-        Class<?> cls = obj.getClass();
-        Field field = cls.getDeclaredField("eTag");
-        field.setAccessible(true);
-        return field;
-    }
-
-    /**
      * Gets the {@code "eTag"} value from the passed object.
      *
      * @param obj The object that will have its eTag value retrieved.
      * @return The eTag value if the object has an {@code "eTag"} field, otherwise {@code ""}.
      */
     public static String getETag(Object obj) {
-        Field eTagField;
+        Class<?> clazz = obj.getClass();
         try {
-            eTagField = getETagField(obj);
-        } catch (NoSuchFieldException e) {
-            return "";
-        }
-
-        try {
-            return (String) eTagField.get(obj);
-        } catch (IllegalAccessException e) {
+            clazz.getDeclaredField("eTag").trySetAccessible();
+            return (String) clazz.getDeclaredField("eTag").get(obj);
+        } catch (IllegalAccessException | NoSuchFieldException ex) {
             return "";
         }
     }
