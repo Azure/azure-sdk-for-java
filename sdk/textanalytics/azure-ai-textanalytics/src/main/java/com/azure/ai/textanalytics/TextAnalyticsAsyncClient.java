@@ -40,8 +40,8 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Text Analytics.
- * Operations allowed by the client are language detection, sentiment analysis, and recognition entities, PII entities,
- * and linked entities of a text input or list of test inputs.
+ * Operations allowed by the client are language detection, sentiment analysis, and recognition entities,
+ * Personally Identifiable Information entities, and linked entities of a text input or list of test inputs.
  *
  * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>
  * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation}
@@ -115,7 +115,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns the detected language and a numeric score between zero and one. Scores close to one indicate 100%
+     * Returns the detected language and a confidence score between zero and one. Scores close to one indicate 100%
      * certainty that the identified language is true.
      *
      * <p><strong>Code sample</strong></p>
@@ -139,7 +139,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a {@link Response} containing the detected language and a numeric score between zero and one. Scores
+     * Returns a {@link Response} containing the detected language and a confidence score between zero and one. Scores
      * close to one indicate 100% certainty that the identified language is true.
      *
      * <p><strong>Code sample</strong></p>
@@ -165,7 +165,7 @@ public final class TextAnalyticsAsyncClient {
         return detectLanguageBatch(Collections.singletonList(text), countryHint, null)
             .map(documentCollection -> {
                 final Iterator<DetectLanguageResult> iterator = documentCollection.iterator();
-                // Collection will never empty
+                // Collection will never be empty
                 if (!iterator.hasNext()) {
                     throw logger.logExceptionAsError(
                         new IllegalStateException("An empty collection returned which is an unexpected error."));
@@ -414,16 +414,17 @@ public final class TextAnalyticsAsyncClient {
      * supported entity types, check <a href="https://aka.ms/tanerpii"></a>. See <a href="https://aka.ms/talangs"></a>
      * for the list of enabled languages.
      *
-     * <p>Recognize PII entities in a text. Subscribes to the call asynchronously and prints out the
-     * entity details when a response is received.</p>
+     * <p>Recognize Personally Identifiable Information entities in a text. Subscribes to the call asynchronously and
+     * prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string}
      *
-     * @param text the text to recognize PII entities for.
+     * @param text the text to recognize Personally Identifiable Information entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link PagedFlux} containing the {@link PiiEntity PII entities} of the text.
+     * @return A {@link PagedFlux} containing the {@link PiiEntity Personally Identifiable Information entities} of
+     * the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -438,18 +439,19 @@ public final class TextAnalyticsAsyncClient {
      * supported entity types, check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages, check: <a
      * href="https://aka.ms/talangs"></a>.
      *
-     * <p>Recognize PII entities in a text with provided language hint. Subscribes to the call asynchronously and
-     * prints out the entity details when a response is received.</p>
+     * <p>Recognize Personally Identifiable Information entities in a text with provided language hint. Subscribes to
+     * the call asynchronously and prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string}
      *
-     * @param text the text to recognize PII entities for.
+     * @param text the text to recognize Personally Identifiable Information entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link PagedFlux} containing the {@link PiiEntity PII entities} of the text.
+     * @return A {@link PagedFlux} containing the {@link PiiEntity Personally Identifiable Information entities} of
+     * the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -833,7 +835,7 @@ public final class TextAnalyticsAsyncClient {
     // Sentiment
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
      * <p>Analyze sentiment in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
@@ -860,7 +862,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
      * <p>Analyze sentiment in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
@@ -884,7 +886,7 @@ public final class TextAnalyticsAsyncClient {
         return analyzeSentimentBatch(Collections.singletonList(text), language, null)
             .map(documentCollection -> {
                 final Iterator<AnalyzeSentimentResult> iterator = documentCollection.iterator();
-                // Collection will never empty
+                // Collection will never be empty
                 if (!iterator.hasNext()) {
                     throw logger.logExceptionAsError(
                         new IllegalStateException("An empty collection returned which is an unexpected error."));
@@ -900,7 +902,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
      * <p>Analyze sentiment in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
@@ -923,7 +925,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
      * <p>Analyze sentiment in a list of TextDocumentInput. Subscribes to the call asynchronously and prints out the
@@ -953,7 +955,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
      * <p>Analyze sentiment in a list of TextDocumentInput with provided request options. Subscribes to the call

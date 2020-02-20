@@ -54,7 +54,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns the detected language and a numeric score between zero and one. Scores close to one indicate 100%
+     * Returns the detected language and a confidence score between zero and one. Scores close to one indicate 100%
      * certainty that the identified language is true.
      *
      * <p><strong>Code Sample</strong></p>
@@ -75,7 +75,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns the detected language and a numeric score between zero and one.
+     * Returns the detected language and a confidence score between zero and one.
      * Scores close to one indicate 100% certainty that the identified language is true.
      *
      * <p><strong>Code Sample</strong></p>
@@ -109,7 +109,7 @@ public final class TextAnalyticsClient {
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
-     * {@link DetectLanguageResult detected language} with their numeric scores.
+     * {@link DetectLanguageResult detected language} with their confidence scores.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -134,7 +134,7 @@ public final class TextAnalyticsClient {
      * and show statistics.
      *
      * @return A {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected language} with their
-     * numeric scores.
+     * confidence scores.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -660,7 +660,7 @@ public final class TextAnalyticsClient {
 
     // Sentiment
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label
      * (Positive, Negative, and Neutral) for the document and each sentence within i
      *
      * <p><strong>Code Sample</strong></p>
@@ -682,7 +682,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label
      * (Positive, Negative, and Neutral) for the document and each sentence within i
      *
      * <p><strong>Code Sample</strong></p>
@@ -706,7 +706,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
      * <p><strong>Code Sample</strong></p>
@@ -718,7 +718,7 @@ public final class TextAnalyticsClient {
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
      * @return A {@link DocumentResultCollection batch} containing the list of
-     * {@link AnalyzeSentimentResult text sentiments} with their numeric scores.
+     * {@link AnalyzeSentimentResult text sentiments} with their confidence scores.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -728,7 +728,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
      * <p><strong>Code Sample</strong></p>
@@ -744,7 +744,7 @@ public final class TextAnalyticsClient {
      * and show statistics.
      *
      * @return A {@link DocumentResultCollection batch} of {@link AnalyzeSentimentResult text sentiments} with their
-     * numeric scores.
+     * confidence scores.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
@@ -755,7 +755,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
      * <p><strong>Code Sample</strong></p>

@@ -50,7 +50,7 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the text sentiment labels: POSITIVE, NEGATIVE, NEUTRAL, MIXED.
+     * Get the text sentiment labels: POSITIVE, NEGATIVE, NEUTRAL.
      *
      * @return the SentimentLabel
      */

@@ -6,22 +6,22 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The PiiEntity model.
+ * The Personally Identifiable Information entity model.
  */
 @Immutable
 public final class PiiEntity {
     /*
-     * PiiEntity text as appears in the request.
+     * Personally Identifiable Information entity text as appears in the request.
      */
     private final String text;
 
     /*
-     * PiiEntity category, such as Person/Location/Org/SSN etc
+     * Personally Identifiable Information entity category, such as Person/Location/Org/SSN etc
      */
     private final String category;
 
     /*
-     * PiiEntity sub category, such as Age/Year/TimeRange etc
+     * Personally Identifiable Information entity sub category, such as Age/Year/TimeRange etc
      */
     private final String subCategory;
 
@@ -41,11 +41,11 @@ public final class PiiEntity {
     private final double score;
 
     /**
-     * Creates a {@code PiiEntity} model that describes entity.
+     * Creates a Personally Identifiable Information entity model that describes entity.
      *
-     * @param text PiiEntity text as appears in the request
-     * @param category PiiEntity category, such as Person/Location/Org/SSN etc
-     * @param subCategory PiiEntity sub category, such as Age/Year/TimeRange etc
+     * @param text Personally Identifiable Information entity text as appears in the request
+     * @param category Personally Identifiable Information entity category, such as Person/Location/Org/SSN etc
+     * @param subCategory Personally Identifiable Information entity sub category, such as Age/Year/TimeRange etc
      * @param offset start position (in Unicode characters) for the entity text
      * @param length length (in Unicode characters) for the entity text
      * @param score confidence score between 0 and 1 of the extracted entity
@@ -60,7 +60,7 @@ public final class PiiEntity {
     }
 
     /**
-     * Get the text property: PiiEntity text as appears in the request.
+     * Get the text property: Personally Identifiable Information entity text as appears in the request.
      *
      * @return the text value.
      */
@@ -69,7 +69,8 @@ public final class PiiEntity {
     }
 
     /**
-     * Get the category property: PiiEntity category, such as Person/Location/Org/SSN etc.
+     * Get the category property: Personally Identifiable Information entity category, such as
+     * Person/Location/Org/SSN etc.
      *
      * @return the category value.
      */
@@ -78,7 +79,8 @@ public final class PiiEntity {
     }
 
     /**
-     * Get the subcategory property: PiiEntity sub category, such as Age/Year/TimeRange etc.
+     * Get the subcategory property: Personally Identifiable Information entity sub category, such as
+     * Age/Year/TimeRange etc.
      *
      * @return the subcategory value.
      */

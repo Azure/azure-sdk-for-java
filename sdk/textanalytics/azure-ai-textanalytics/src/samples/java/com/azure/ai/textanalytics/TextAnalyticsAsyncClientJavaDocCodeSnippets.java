@@ -740,7 +740,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         String inputText1 = "The hotel was dark and unclean.";
         textAnalyticsAsyncClient.analyzeSentiment(inputText1, "en")
             .subscribe(documentSentiment -> {
-                System.out.printf("Recognized sentiment class: %s.%n", documentSentiment.getSentiment());
+                System.out.printf("Recognized sentiment label: %s.%n", documentSentiment.getSentiment());
 
                 for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                     System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, "
