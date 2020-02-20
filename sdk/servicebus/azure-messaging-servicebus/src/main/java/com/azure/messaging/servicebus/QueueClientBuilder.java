@@ -25,7 +25,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.servicebus.implementation.ClientConstants;
+import com.azure.messaging.servicebus.implementation.ServiceBusClientConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
@@ -49,7 +49,7 @@ public final class QueueClientBuilder {
 
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final AmqpRetryOptions DEFAULT_RETRY =
-        new AmqpRetryOptions().setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
+        new AmqpRetryOptions().setTryTimeout(ServiceBusClientConstants.OPERATION_TIMEOUT);
 
     private static final String SERVICEBUS_PROPERTIES_FILE = "azure-messaging-servicebus.properties";
     private static final String NAME_KEY = "name";
@@ -86,7 +86,7 @@ public final class QueueClientBuilder {
         final TokenCredential tokenCredential;
         try {
             tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
-                properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+                properties.getSharedAccessKey(), ServiceBusClientConstants.TOKEN_VALIDITY);
         } catch (Exception e) {
             throw logger.logExceptionAsError(
                 new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
@@ -244,7 +244,7 @@ public final class QueueClientBuilder {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
             connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-            ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
+            ServiceBusClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 

@@ -15,8 +15,7 @@ import java.util.Properties;
 public class Messages {
     private static final ClientLogger LOGGER = new ClientLogger(Messages.class);
     private static Properties properties;
-    public static final String MESSAGES_PROPERTIES_PATH = "com/azure/messaging/servicebus/messages.properties";
-    public static final String CLASS_NOT_A_SUPPORTED_TYPE = getMessage("CLASS_NOT_A_SUPPORTED_TYPE");
+    public static final String MESSAGES_PROPERTIES_PATH = "servicebus-messages.properties";
     public static final String ENCODING_TYPE_NOT_SUPPORTED = getMessage("ENCODING_TYPE_NOT_SUPPORTED");
     public static final String MESSAGE_NOT_OF_TYPE = getMessage("MESSAGE_NOT_OF_TYPE");
     public static final String REQUEST_VALUE_NOT_VALID = getMessage("REQUEST_VALUE_NOT_VALID");
@@ -41,8 +40,9 @@ public class Messages {
     }
 
     /**
-     * @param key the key of the message to retrieve
-     * @return the message matching the given key
+     * Retrieve the message given a key.
+     * @param key the key of the message to retrieve.
+     * @return the message matching the given key.
      */
     public static String getMessage(String key) {
         return String.valueOf(getProperties().getOrDefault(key, key));

@@ -6,10 +6,10 @@ package com.azure.messaging.servicebus.implementation;
 import java.time.Duration;
 
 /**
- *  Constants defined for service bus.
+ *  Constants used by Service Bus SDK.
  */
-public class ClientConstants {
-    public static final String AZURE_ACTIVE_DIRECTORY_SCOPE = "https://servicebus.azure.net/.default"; // ??
+public class ServiceBusClientConstants {
+    public static final String AZURE_ACTIVE_DIRECTORY_SCOPE = "https://servicebus.azure.net/.default";
     public static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(60);
     public static final Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
 }

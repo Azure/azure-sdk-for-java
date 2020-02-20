@@ -50,7 +50,7 @@ import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
- * The thent to send messages to Queue.
+ * The client to send messages to Queue.
  */
 @ServiceClient(builder = QueueClientBuilder.class, isAsync = true)
 public final class QueueSenderAsyncClient implements Closeable {
@@ -88,19 +88,18 @@ public final class QueueSenderAsyncClient implements Closeable {
 
     /**
      *
-     * @param message to be sent.
-     * @param sessionId the session id to associate. {@code null} is not a valid  value.
+     * @param message to be sent to Service Bus Queue.
+     * @param sessionId the session id to associate with the message.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Void> send(Message message, String sessionId) {
-        Objects.requireNonNull(message, "'message' cannot be null.");
         //TODO(sessionid) Implement session id feature
         return send(Flux.just(message));
     }
 
     /**
      *
-     * @param message to be sent.
+     * @param message to be sent Service Bus Queue.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Void> send(Message message) {
@@ -110,7 +109,7 @@ public final class QueueSenderAsyncClient implements Closeable {
 
     /**
      *
-     * @param messages to be sent
+     * @param messages to be sent Service Bus Queue.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Void> send(Iterable<Message> messages) {
@@ -119,11 +118,11 @@ public final class QueueSenderAsyncClient implements Closeable {
     }
 
     /**
-     * Sends a set of messages to the associated Event Hub using a batched approach. If the size of messages exceed the
-     * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
-     * size is the max amount allowed on the link.
-     * @param messages Events to send to the service.
-     *
+     * Sends a set of messages to the associated Service Bus using a batched approach. If the size of messages exceed
+     * the maximum size of a single batch, an exception will be triggered and the send will fail.
+     * By default, the message size is the max amount allowed on the link.
+
+     * @param messages to send to the Service Bus Queue..
      * @return A {@link Mono} that completes when all messages are pushed to the service.
      */
     public Mono<Void> send(Flux<Message> messages) {
@@ -156,10 +155,12 @@ public final class QueueSenderAsyncClient implements Closeable {
 
 
     /**
+     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time.
      *
-     * @param message to be scheduled
-     * @param scheduledEnqueueTimeUt Time of the enqueue.
-     * @return The {@link Mono} the finishes this operation on service bus resource.
+     * @param message to be sent to the Service Bus Queue.
+     * @param scheduledEnqueueTimeUt Declares at which time the message should appear on the Service Bus Queue.
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
      */
     public Mono<Long> schedule(Message message, Instant scheduledEnqueueTimeUt) {
         //TODO(feature-to-implement)
@@ -168,8 +169,8 @@ public final class QueueSenderAsyncClient implements Closeable {
 
     /**
      *
-     * @param sequenceNumber for the message to cancel.
-     * @return The {@link Mono} the finishes this operation on service bus resource.
+     * @param sequenceNumber of the scheduled message to cancel.
+     * @return The {@link Mono} that finishes this operation on service bus resource.
      */
     public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
         //TODO(feature-to-implement)
@@ -347,28 +348,5 @@ public final class QueueSenderAsyncClient implements Closeable {
         }
         connectionProcessor.dispose();
 
-    }
-
-    /**
-     *
-     * @param message to be scheduled.
-     * @param scheduledEnqueueTimeUt Time of the enqueue.
-     * @param context The {@link TransactionContext} to be used.
-     * @return The {@link Mono} the finishes schedule operation.
-     */
-    public Mono<Long> schedule(Message message, Instant scheduledEnqueueTimeUt, TransactionContext context) {
-        //TODO(feature-to-implement)
-        return null;
-    }
-
-    /**
-     *
-     * @param message to be scheduled.
-     * @param context The {@link TransactionContext} to be used.
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> send(Message message, TransactionContext context) {
-        //TODO(feature-to-implement)
-        return null;
     }
 }

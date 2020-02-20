@@ -29,12 +29,9 @@ import java.util.Objects;
 class ServiceBusMessageSerializer implements MessageSerializer {
     // Well-known keys from the management service responses and requests.
     public static final String MANAGEMENT_ENTITY_NAME_KEY = "name";
-    public static final String MANAGEMENT_PARTITION_NAME_KEY = "partition";
-    public static final String MANAGEMENT_RESULT_PARTITION_IDS = "partition_ids";
     public static final String MANAGEMENT_RESULT_CREATED_AT = "created_at";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
-
 
     /**
      * Gets the serialized size of the AMQP message.
@@ -47,7 +44,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
         int payloadSize = getPayloadSize(amqpMessage);
 
-        // EventData - accepts only PartitionKey - which is a String & stuffed into MessageAnnotation
         final MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
         final ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
 
@@ -76,8 +72,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     }
 
     /**
-     * Creates the AMQP message represented by this {@code object}. Currently, only supports serializing {@link
-     * Message}.
+     * Creates the AMQP message represented by this {@code object}. Currently, only supports serializing
+     * {@link Message}.
      *
      * @param object Concrete object to deserialize.
      *
@@ -94,18 +90,18 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                 "Cannot serialize object that is not EventData. Clazz: " + object.getClass()));
         }
 
-        final Message eventData = (Message) object;
-        final org.apache.qpid.proton.message.Message message = Proton.message();
+        final Message serviceBusMessage = (Message) object;
+        final org.apache.qpid.proton.message.Message amqpMessage = Proton.message();
 
-        if (eventData.getProperties() != null && !eventData.getProperties().isEmpty()) {
-            message.setApplicationProperties(new ApplicationProperties(eventData.getProperties()));
+        if (serviceBusMessage.getProperties() != null && !serviceBusMessage.getProperties().isEmpty()) {
+            amqpMessage.setApplicationProperties(new ApplicationProperties(serviceBusMessage.getProperties()));
         }
 
-        setSystemProperties(eventData, message);
+        setSystemProperties(serviceBusMessage, amqpMessage);
 
-        message.setBody(new Data(new Binary(eventData.getBody())));
+        amqpMessage.setBody(new Data(new Binary(serviceBusMessage.getBody())));
 
-        return message;
+        return amqpMessage;
     }
 
     @SuppressWarnings("unchecked")

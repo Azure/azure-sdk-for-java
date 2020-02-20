@@ -33,29 +33,11 @@
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-    <project.automatic.module.name>com.azure.messaging.servicebus</project.automatic.module.name>
-    <spotbugs.version>4.0.0-beta3</spotbugs.version>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
       <version>1.1.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-amqp;dependency} -->
-    </dependency>
-
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>qpid-proton-j-extensions</artifactId>
-      <version>1.2.2</version> <!-- {x-version-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
-    </dependency>
-
-    <!-- Test dependencies -->
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-test</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

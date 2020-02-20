@@ -4,8 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
+
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
@@ -16,9 +15,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class QueueSenderAsyncClientTest {
 
     private final String baseConnectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
-    @Captor
-    ArgumentCaptor<com.azure.core.amqp.EventData> singleMessageCaptor;
-
     /**
      * Main method to invoke this demo on how to send a message to an Azure Event Hub.
      */
@@ -75,7 +71,7 @@ public class QueueSenderAsyncClientTest {
         List<Message> list = new ArrayList<Message>();
 
         list.add(message1);
-        list.add(message1);
+        list.add(message2);
         StepVerifier.create(asyncSender.send(list))
             .verifyComplete();
         Thread.sleep(5000);

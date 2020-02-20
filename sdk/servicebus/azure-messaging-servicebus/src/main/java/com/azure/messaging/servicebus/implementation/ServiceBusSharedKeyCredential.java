@@ -65,7 +65,7 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
      *     the shared access signatures.
      */
     public ServiceBusSharedKeyCredential(String policyName, String sharedAccessKey) {
-        this(policyName, sharedAccessKey, ClientConstants.TOKEN_VALIDITY);
+        this(policyName, sharedAccessKey, ServiceBusClientConstants.TOKEN_VALIDITY);
     }
 
     /**

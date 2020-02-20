@@ -4,7 +4,7 @@
 package com.azure.messaging.servicebus;
 
 /**
- *  Receive mode.
+ *  Defines the Receive modes.
  */
 public enum ReceiveMode {
     /**

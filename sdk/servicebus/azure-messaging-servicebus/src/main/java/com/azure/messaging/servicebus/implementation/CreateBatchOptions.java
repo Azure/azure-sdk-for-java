@@ -9,16 +9,15 @@ import com.azure.core.annotation.Fluent;
  * The set of options that can be specified when creating an batch of messages. This wrapper will help to limit
  * the messages with maximum allowed size.
  *
-
  */
 @Fluent
 public class CreateBatchOptions {
     private int maximumSizeInBytes;
 
     /**
-     * Sets the maximum size for the TODO, in bytes.
+     * Sets the maximum size for the batch of messages.
      *
-     * @param maximumSizeInBytes The maximum size to allow for the TODO.
+     * @param maximumSizeInBytes The maximum size to allow for the batch of messages.
      *
      * @return The updated {@link CreateBatchOptions} object.
      */
@@ -28,9 +27,9 @@ public class CreateBatchOptions {
     }
 
     /**
-     * Gets the maximum size to allow for the batch of events, in bytes.
+     * Gets the maximum size to allow for the batch of messages, in bytes.
      *
-     * @return The maximum size to allow for a single batch of events, in bytes.
+     * @return The maximum size to allow for a single batch of messages, in bytes.
      */
     public int getMaximumSizeInBytes() {
         return maximumSizeInBytes;

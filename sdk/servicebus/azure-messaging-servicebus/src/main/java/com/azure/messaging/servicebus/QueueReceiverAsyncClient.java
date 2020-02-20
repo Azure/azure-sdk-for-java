@@ -235,48 +235,4 @@ public final class QueueReceiverAsyncClient implements Closeable {
         return null;
     }
 
-    /**
-     *
-     * @param lockToken to be used.
-     * @param context The {@link TransactionContext} to be used.
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> complete(UUID lockToken, TransactionContext context) {
-        //TODO(feature-to-implement)
-        return null;
-    }
-
-    /**
-     *
-     * @param lockToken to be used.
-     * @param context The {@link TransactionContext} to be used.
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> deadLetter(UUID lockToken, TransactionContext context) {
-        //TODO(feature-to-implement)
-        return null;
-    }
-
-    /**
-     *
-     * @param lockToken to be used.
-     * @param context The {@link TransactionContext} to be used.
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> abandon(UUID lockToken, TransactionContext context) {
-        //TODO(feature-to-implement)
-        return null;
-    }
-
-    /**
-     *
-     * @param lockToken to be used.
-     * @param context The {@link TransactionContext} to be used.
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> defer(UUID lockToken, TransactionContext context) {
-        //TODO(feature-to-implement)
-        return null;
-    }
-
 }

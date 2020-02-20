@@ -69,13 +69,13 @@ public class Message {
     }
 
     /**
-     * Creates an event containing the {@code body}.
+     * Creates a {@link Message} containing the {@code body}.
      *
-     * @param content The data to set for this event.
+     * @param body The data to set for this {@link Message}.
      * @throws NullPointerException if {@code body} is {@code null}.
      */
-    public Message(byte[] content) {
-        this.body = Objects.requireNonNull(content, "'content' cannot be null.");
+    public Message(byte[] body) {
+        this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
         this.properties = new HashMap<>();
         this.systemProperties = new SystemProperties();
@@ -83,72 +83,73 @@ public class Message {
     }
 
     /**
-     * Creates an event containing the {@code body}.
+     * Creates a {@link Message} containing the {@code body}.
      *
-     * @param content The data to set for this event.
+     * @param body The data to set for this {@link Message}.
      * @throws NullPointerException if {@code body} is {@code null}.
      */
-    public Message(ByteBuffer content) {
-        this(Objects.requireNonNull(content, "'content' cannot be null.").array());
+    public Message(ByteBuffer body) {
+        this(Objects.requireNonNull(body, "'body' cannot be null.").array());
     }
 
     /**
-     * Creates an event by encoding the {@code content} using UTF-8 charset.
+     * Creates a {@link Message} by encoding the {@code body} using UTF-8 charset.
      *
-     * @param content The string that will be UTF-8 encoded to create an event.
+     * @param body The string that will be UTF-8 encoded to create a {@link Message}.
      * @throws NullPointerException if {@code body} is {@code null}.
      */
-    public Message(String content) {
-        this(Objects.requireNonNull(content, "'content' cannot be null.").getBytes(UTF_8));
+    public Message(String body) {
+        this(Objects.requireNonNull(body, "'body' cannot be null.").getBytes(UTF_8));
     }
 
     /**
      * Creates a message from a string. For backward compatibility reasons, the string is converted to a byte array
      * and message body type is set to binary.
-     * @param content content of the message
-     * @param contentType content type of the message
+     * @param body body of the message
+     * @param contentType body type of the message
      */
-    public Message(String content, String contentType) {
-        this(content.getBytes(DEFAULT_CHAR_SET), contentType);
+    public Message(String body, String contentType) {
+        this(body.getBytes(DEFAULT_CHAR_SET), contentType);
     }
 
     /**
      * Creates a message from a byte array. Message body type is set to binary.
-     * @param content content of the message
+     * @param body body of the message
      * @param contentType content type of the message
      */
-    public Message(byte[] content, String contentType) {
-        this(content);
+    public Message(byte[] body, String contentType) {
+        this(body);
         this.contentType = contentType;
     }
 
     /**
-     * Creates a message from a string. For backward compatibility reasons, the string is converted to a byte array
-     * and message body type is set to binary.
-     * @param messageId id of the message
-     * @param content content of the message
-     * @param contentType content type of the message
+     * Creates a message from a string. For backward compatibility reasons, the string is converted to a byte array.
+     *
+     * @param messageId id of the {@link Message}.
+     * @param body body of the {@link Message}.
+     * @param contentType content type of the {@link Message}.
      */
-    public Message(String messageId, String content, String contentType) {
-        this(messageId, content.getBytes(DEFAULT_CHAR_SET), contentType);
+    public Message(String messageId, String body, String contentType) {
+        this(messageId, body.getBytes(DEFAULT_CHAR_SET), contentType);
     }
 
     /**
-     * Creates a message from a byte array. Message body type is set to binary.
-     * @param messageId id of the message
-     * @param content content of the message
-     * @param contentType content type of the message
+     * Creates a {@link Message} from a byte array.
+     *
+     * @param messageId id of the {@link Message}.
+     * @param body body of the {@link Message}.
+     * @param contentType content type of the {@link Message}.
      */
-    public Message(String messageId, byte[] content, String contentType) {
-        this(content, contentType);
+    public Message(String messageId, byte[] body, String contentType) {
+        this(body, contentType);
         this.messageId = messageId;
     }
 
     /**
-     * Creates an event with the given {@code body}, system properties and context.
+     * Creates a {@link Message} with the given {@code body}, system properties and context.
      *
-     * @param body The data to set for this event.
-     * @param systemProperties System properties set by message broker for this event.
+     * @param body The data to set for this {@link Message}.
+     * @param systemProperties System properties set by message broker for this {@link Message}.
      * @param context A specified key-value pair of type {@link Context}.
      * @throws NullPointerException if {@code body}, {@code systemProperties}, or {@code context} is {@code null}.
      */
@@ -161,12 +162,12 @@ public class Message {
     }
 
     /**
-     * Gets the set of free-form event properties which may be used for passing metadata associated with the event with
-     * the event body during Event Hubs operations. A common use-case for {@code properties()} is to associate
+     * Gets the set of free-form {@link Message} properties which may be used for passing metadata associated with
+     * the {@link Message}  during Service Bus operations. A common use-case for {@code properties()} is to associate
      * serialization hints for the {@link #getBody()} as an aid to consumers who wish to deserialize the binary data.
      *
      * <p><strong>Adding serialization hint using {@code getProperties()}</strong></p>
-     * <p>In the sample, the type of telemetry is indicated by adding an application property with key "eventType".</p>
+     * <p>In the sample, the type of telemetry is indicated by adding an application property with key "messageType".</p>
      *
      * @return Application properties associated with this {@link Message}.
      */
@@ -175,11 +176,11 @@ public class Message {
     }
 
     /**
-     * Properties that are populated by Service Bus. As these are populated by the Event Hubs service, they are
+     * Properties that are populated by Service Bus. As these are populated by the Service Bus, they are
      * only present on a <b>received</b> {@link Message}.
      *
-     * @return An encapsulation of all system properties appended by EventHubs service into {@link Message}.
-     *     {@code null} if the {@link Message} is not received from the Event Hubs service.
+     * @return An encapsulation of all system properties appended by Service Bus into {@link Message}. {@code null} if
+     * the {@link Message} is not received from the Service Bus service.
      */
     public Map<String, Object> getSystemProperties() {
         return systemProperties;
@@ -187,15 +188,15 @@ public class Message {
 
     /**
      *
-     * @return of the message.
+     * @return Id of the {@link Message}.
      */
     public String getMessageId() {
         return messageId;
     }
 
     /**
-     *
-     * @param messageId of the message.
+     * Sets the message id.
+     * @param messageId of the {@link Message}.
      */
     public void setMessageId(String messageId) {
         this.messageId = messageId;
@@ -203,14 +204,14 @@ public class Message {
 
     /**
      *
-     * @return the contentType.
+     * @return the contentType of the {@link Message}.
      */
     public String getContentType() {
         return contentType;
     }
 
     /**
-     *
+     * Sets the content type of the {@link Message}.
      * @param contentType of the message.
      */
     public void setContentType(String contentType) {
@@ -233,22 +234,13 @@ public class Message {
     }
 
     /**
-     * Returns event data as UTF-8 decoded string.
+     * Returns message body as UTF-8 decoded string.
      *
      * @return UTF-8 decoded string representation of the event data.
      */
     public String getBodyAsString() {
         return new String(body, UTF_8);
     }
-
-    /**
-     * Gets the partition hashing key if it was set when originally publishing the event. If it exists, this value was
-     * used to compute a hash to select a partition to send the message to. This is only present on a <b>received</b>
-     * {@link Message}.
-     *
-     * @return A partition key for this Event Data. {@code null} if the {@link Message} was not received from Event
-     *     Hubs service or there was no partition key set when the event was sent to the Event Hub.
-     */
 
     /**
      * {@inheritDoc}
@@ -275,9 +267,9 @@ public class Message {
     }
 
     /**
-     * A specified key-value pair of type {@link Context} to set additional information on the event.
+     * A specified key-value pair of type {@link Context} to set additional information on the {@link Message}.
      *
-     * @return the {@link Context} object set on the event
+     * @return the {@link Context} object set on the {@link Message}.
      */
     Context getContext() {
         return context;
@@ -308,7 +300,7 @@ public class Message {
     }
 
     /**
-     * A collection of properties populated by Azure Event Hubs service.
+     * A collection of properties populated by Azure Service Bus service.
      */
     static class SystemProperties extends HashMap<String, Object> {
         private static final long serialVersionUID = -2827050124966993723L;
