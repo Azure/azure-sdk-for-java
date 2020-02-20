@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure;
 
-import com.azure.identity.credential.DefaultAzureCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
-import com.azure.security.keyvault.secrets.models.Secret;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.core.util.polling.SyncPoller;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,20 +23,22 @@ public class KeyVaultSecrets {
 
     private static void setSecret() {
         LOGGER.info("Setting a secret...");
-        Secret response = secretClient.setSecret(SECRET_NAME, SECRET_VALUE);
-        LOGGER.info("\tDONE: ({},{}).", response.name(), response.value());
+        KeyVaultSecret response = secretClient.setSecret(SECRET_NAME, SECRET_VALUE);
+        LOGGER.info("\tDONE: ({},{}).", response.getName(), response.getValue());
     }
 
     private static void getSecret() {
         LOGGER.info("Getting the secret... ");
-        Secret response = secretClient.getSecret(SECRET_NAME);
-        LOGGER.info("\tDONE: secret ({},{}) retrieved.", response.name(), response.value());
+        KeyVaultSecret response = secretClient.getSecret(SECRET_NAME);
+        LOGGER.info("\tDONE: secret ({},{}) retrieved.", response.getName(), response.getValue());
     }
 
     private static void deleteSecret() {
         LOGGER.info("Deleting the secret... ");
-        DeletedSecret response = secretClient.deleteSecret(SECRET_NAME);
-        LOGGER.info("\tDONE: '{}' deleted.", response.name());
+        SyncPoller<DeletedSecret, Void> poller = secretClient.beginDeleteSecret(SECRET_NAME);
+        DeletedSecret response = poller.poll().getValue();
+
+        LOGGER.info("\tDONE: deleted.");
     }
 
     public static void main(String[] args) {
@@ -49,7 +53,7 @@ public class KeyVaultSecrets {
          * AZURE_TENANT_ID
          */
         secretClient = new SecretClientBuilder()
-            .endpoint(System.getenv("AZURE_PROJECT_URL"))
+            .vaultUrl(System.getenv("AZURE_PROJECT_URL"))
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
