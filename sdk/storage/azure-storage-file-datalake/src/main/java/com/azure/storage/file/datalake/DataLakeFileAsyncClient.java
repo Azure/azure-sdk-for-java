@@ -386,7 +386,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFile#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFile#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -394,8 +394,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @return A reactive response containing the file properties and metadata.
      */
-    public Mono<PathProperties> downloadToFile(String filePath) {
-        return downloadToFile(filePath, false);
+    public Mono<PathProperties> readToFile(String filePath) {
+        return readToFile(filePath, false);
     }
 
     /**
@@ -406,7 +406,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFile#String-boolean}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFile#String-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -415,7 +415,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param overwrite Whether or not to overwrite the file, should the file exist.
      * @return A reactive response containing the file properties and metadata.
      */
-    public Mono<PathProperties> downloadToFile(String filePath, boolean overwrite) {
+    public Mono<PathProperties> readToFile(String filePath, boolean overwrite) {
         Set<OpenOption> openOptions = null;
         if (overwrite) {
             openOptions = new HashSet<>();
@@ -425,7 +425,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             openOptions.add(StandardOpenOption.READ);
             openOptions.add(StandardOpenOption.WRITE);
         }
-        return downloadToFileWithResponse(filePath, null, null, null, null, false, openOptions)
+        return readToFileWithResponse(filePath, null, null, null, null, false, openOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -438,7 +438,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.downloadToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.readToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -455,7 +455,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
      * @throws UncheckedIOException If an I/O error occurs.
      */
-    public Mono<Response<PathProperties>> downloadToFileWithResponse(String filePath, FileRange range,
+    public Mono<Response<PathProperties>> readToFileWithResponse(String filePath, FileRange range,
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
         DataLakeRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions) {
         return blockBlobAsyncClient.downloadToFileWithResponse(filePath, Transforms.toBlobRange(range),

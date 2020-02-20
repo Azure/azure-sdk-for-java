@@ -330,7 +330,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.downloadToFile#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.readToFile#String}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -339,8 +339,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return The file properties and metadata.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public PathProperties downloadToFile(String filePath) {
-        return downloadToFile(filePath, false);
+    public PathProperties readToFile(String filePath) {
+        return readToFile(filePath, false);
     }
 
     /**
@@ -351,7 +351,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.downloadToFile#String-boolean}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.readToFile#String-boolean}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -361,7 +361,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return The file properties and metadata.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public PathProperties downloadToFile(String filePath, boolean overwrite) {
+    public PathProperties readToFile(String filePath, boolean overwrite) {
         Set<OpenOption> openOptions = null;
         if (overwrite) {
             openOptions = new HashSet<>();
@@ -371,7 +371,7 @@ public class DataLakeFileClient extends DataLakePathClient {
             openOptions.add(StandardOpenOption.READ);
             openOptions.add(StandardOpenOption.WRITE);
         }
-        return downloadToFileWithResponse(filePath, null, null, null, null, false, openOptions, null, Context.NONE)
+        return readToFileWithResponse(filePath, null, null, null, null, false, openOptions, null, Context.NONE)
             .getValue();
     }
 
@@ -384,7 +384,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.downloadToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
@@ -402,7 +402,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return A response containing the file properties and metadata.
      * @throws UncheckedIOException If an I/O error occurs.
      */
-    public Response<PathProperties> downloadToFileWithResponse(String filePath, FileRange range,
+    public Response<PathProperties> readToFileWithResponse(String filePath, FileRange range,
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         DataLakeRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
         Duration timeout, Context context) {

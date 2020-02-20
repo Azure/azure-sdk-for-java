@@ -1037,7 +1037,7 @@ class FileAPITest extends APISpec {
 
         when:
         // Default overwrite is false so this should fail
-        fc.downloadToFile(testFile.getPath())
+        fc.readToFile(testFile.getPath())
 
         then:
         def ex = thrown(UncheckedIOException)
@@ -1057,7 +1057,7 @@ class FileAPITest extends APISpec {
         fc.flush(defaultDataSize)
 
         when:
-        fc.downloadToFile(testFile.getPath(), true)
+        fc.readToFile(testFile.getPath(), true)
 
         then:
         new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
@@ -1076,7 +1076,7 @@ class FileAPITest extends APISpec {
         fc.flush(defaultDataSize)
 
         when:
-        fc.downloadToFile(testFile.getPath())
+        fc.readToFile(testFile.getPath())
 
         then:
         new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
@@ -1099,7 +1099,7 @@ class FileAPITest extends APISpec {
         openOptions.add(StandardOpenOption.CREATE_NEW)
         openOptions.add(StandardOpenOption.READ)
         openOptions.add(StandardOpenOption.WRITE)
-        fc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
+        fc.readToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
         new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
@@ -1123,7 +1123,7 @@ class FileAPITest extends APISpec {
         openOptions.add(StandardOpenOption.TRUNCATE_EXISTING)
         openOptions.add(StandardOpenOption.READ)
         openOptions.add(StandardOpenOption.WRITE)
-        fc.downloadToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
+        fc.readToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
 
         then:
         new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
