@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class IndexManagementSyncTests extends IndexManagementTestBase {
+public class IndexManagementSyncTests extends SearchServiceTestBase {
     private SearchServiceClient client;
 
     // commonly used lambda definitions
@@ -525,5 +525,17 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             generateRequestOptions(), Context.NONE);
         assertEquals(0, indexStatisticsResponse.getValue().getDocumentCount());
         assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());
+    }
+
+    Index mutateCorsOptionsInIndex(Index index) {
+        index.getCorsOptions().setAllowedOrigins("*");
+        return index;
+    }
+
+    Field getFieldByName(Index index, String name) {
+        return index.getFields()
+            .stream()
+            .filter(f -> f.getName().equals(name))
+            .findFirst().get();
     }
 }

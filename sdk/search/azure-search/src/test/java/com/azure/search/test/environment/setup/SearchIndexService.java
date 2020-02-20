@@ -19,7 +19,6 @@ public class SearchIndexService {
     private String endpoint;
     private String apiAdminKey;
     private String indexName;
-    private String indexDataFileName;
 
     private SearchServiceClient searchServiceClient;
 

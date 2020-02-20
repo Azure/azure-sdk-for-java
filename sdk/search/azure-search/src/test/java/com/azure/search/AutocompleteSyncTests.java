@@ -3,7 +3,6 @@
 package com.azure.search;
 
 import com.azure.core.http.rest.PagedIterableBase;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
 import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteMode;
@@ -11,22 +10,24 @@ import com.azure.search.models.AutocompleteOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.azure.search.SearchTestBase.HOTELS_INDEX_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class AutocompleteSyncTests extends AutocompleteTestBase {
+public class AutocompleteSyncTests extends SearchIndexClientTestBase {
+    private static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
 
     private SearchIndexClient client;
 
     @Override
-    protected void initializeClient() {
+    protected void beforeTest() {
+        super.beforeTest();
+
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
@@ -73,14 +74,14 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
         params.setSearchFields("HotelName");
 
-        List<PagedResponse<AutocompleteItem>> results = client
+        Iterator<AutocompletePagedResponse> results = client
             .autocomplete("luxu", "sg", params, generateRequestOptions(), Context.NONE)
-            .streamByPage()
-            .collect(Collectors.toList());
+            .iterableByPage()
+            .iterator();
 
         // One page, with 0 items
-        assertEquals(1, results.size());
-        assertEquals(0, results.get(0).getItems().size());
+        assertEquals(0, results.next().getValue().size());
+        assertFalse(results.hasNext());
     }
 
     @Test
@@ -88,14 +89,14 @@ public class AutocompleteSyncTests extends AutocompleteTestBase {
         AutocompleteOptions params = new AutocompleteOptions();
         params.setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
-        List<PagedResponse<AutocompleteItem>> results = client
+        Iterator<AutocompletePagedResponse> results = client
             .autocomplete("pi", "sg", params, generateRequestOptions(), Context.NONE)
-            .streamByPage()
-            .collect(Collectors.toList());
+            .iterableByPage()
+            .iterator();
 
         // One page, with 0 items
-        assertEquals(1, results.size());
-        assertEquals(0, results.get(0).getItems().size());
+        assertEquals(0, results.next().getValue().size());
+        assertFalse(results.hasNext());
     }
 
     @Test

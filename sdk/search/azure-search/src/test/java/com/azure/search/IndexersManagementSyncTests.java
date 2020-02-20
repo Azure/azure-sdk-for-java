@@ -3,27 +3,42 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataSource;
+import com.azure.search.models.DataType;
+import com.azure.search.models.Field;
+import com.azure.search.models.FieldMapping;
 import com.azure.search.models.Index;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexerExecutionInfo;
+import com.azure.search.models.IndexerExecutionResult;
 import com.azure.search.models.IndexerExecutionStatus;
+import com.azure.search.models.IndexerLimits;
 import com.azure.search.models.IndexerStatus;
 import com.azure.search.models.IndexingParameters;
+import com.azure.search.models.IndexingSchedule;
+import com.azure.search.models.InputFieldMappingEntry;
+import com.azure.search.models.OcrSkill;
+import com.azure.search.models.OutputFieldMappingEntry;
 import com.azure.search.models.RequestOptions;
+import com.azure.search.models.Skill;
 import com.azure.search.models.Skillset;
 import com.azure.search.test.AccessConditionTests;
 import com.azure.search.test.AccessOptions;
+import com.azure.search.test.CustomQueryPipelinePolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -33,9 +48,16 @@ import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class IndexersManagementSyncTests extends IndexersManagementTestBase {
+public class IndexersManagementSyncTests extends SearchServiceTestBase {
+    private static final String TARGET_INDEX_NAME = "indexforindexers";
+    private static final HttpPipelinePolicy MOCK_STATUS_PIPELINE_POLICY =
+        new CustomQueryPipelinePolicy("mock_status", "inProgress");
+
     private SearchServiceClient client;
 
     // commonly used lambda definitions
@@ -44,7 +66,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             createOrUpdateIndexer(indexer, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Indexer> newIndexerFunc =
-        () -> createBaseTestIndexerObject("name", TARGET_INDEX_NAME).setDataSourceName(SQL_DATASOURCE_NAME);
+        () -> createBaseTestIndexerObject("name").setDataSourceName(SQL_DATASOURCE_NAME);
 
     private Function<Indexer, Indexer> mutateIndexerFunc =
         (Indexer indexer) -> indexer.setDescription("ABrandNewDescription");
@@ -54,24 +76,24 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             client.deleteIndexerWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
 
 
-    private void createDataSourceAndIndex(String dataSourceName, String indexName) {
+    private void createDataSourceAndIndex() {
         // Create DataSource
-        DataSource dataSource = createTestSqlDataSourceObject(dataSourceName);
+        DataSource dataSource = createTestSqlDataSourceObject(SearchServiceTestBase.SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
 
         // Create an index
-        Index index = createTestIndexForLiveDatasource(indexName);
+        Index index = createTestIndexForLiveDatasource();
         client.createIndex(index);
     }
 
     private List<Indexer> prepareIndexersForCreateAndListIndexers() {
         // Create DataSource and Index
-        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+        createDataSourceAndIndex();
 
         // Create two indexers
-        Indexer indexer1 = createBaseTestIndexerObject("indexer1", TARGET_INDEX_NAME)
+        Indexer indexer1 = createBaseTestIndexerObject("indexer1")
             .setDataSourceName(SQL_DATASOURCE_NAME);
-        Indexer indexer2 = createBaseTestIndexerObject("indexer2", TARGET_INDEX_NAME)
+        Indexer indexer2 = createBaseTestIndexerObject("indexer2")
             .setDataSourceName(SQL_DATASOURCE_NAME);
         client.createIndexer(indexer1);
         client.createIndexer(indexer2);
@@ -81,10 +103,10 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     private Indexer createTestDataSourceAndIndexer() {
         // Create DataSource and Index
-        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+        createDataSourceAndIndex();
 
         // Create the indexer object
-        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
+        Indexer indexer = createBaseTestIndexerObject("indexer")
             .setDataSourceName(SQL_DATASOURCE_NAME);
         client.createIndexer(indexer);
 
@@ -101,10 +123,10 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         updatedIndexer.setDataSourceName(dataSourceName);
 
         // Create an index
-        Index index = createTestIndexForLiveDatasource(TARGET_INDEX_NAME);
+        Index index = createTestIndexForLiveDatasource();
         client.createIndex(index);
 
-        Indexer initial = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
+        Indexer initial = createBaseTestIndexerObject("indexer")
             .setDataSourceName(dataSourceName)
             .setIsDisabled(true);
 
@@ -126,7 +148,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
      */
     private void createAndValidateIndexer(Indexer indexer) {
         // Create an index
-        Index index = createTestIndexForLiveDatasource(TARGET_INDEX_NAME);
+        Index index = createTestIndexForLiveDatasource();
         client.createIndex(index);
 
         // create this indexer in the service
@@ -153,7 +175,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     @Test
     public void createIndexerReturnsCorrectDefinition() {
         Indexer expectedIndexer =
-            createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
+            createBaseTestIndexerObject("indexer")
                 .setIsDisabled(true)
                 .setDataSourceName(SQL_DATASOURCE_NAME)
                 .setParameters(
@@ -180,13 +202,13 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         client.createOrUpdateDataSource(dataSource);
 
         // Create an index
-        Index index = createTestIndexForLiveDatasource(TARGET_INDEX_NAME);
+        Index index = createTestIndexForLiveDatasource();
         client.createIndex(index);
 
         // Create two indexers
-        Indexer indexer1 = createBaseTestIndexerObject("indexer1", TARGET_INDEX_NAME)
+        Indexer indexer1 = createBaseTestIndexerObject("indexer1")
             .setDataSourceName(dataSource.getName());
-        Indexer indexer2 = createBaseTestIndexerObject("indexer2", TARGET_INDEX_NAME)
+        Indexer indexer2 = createBaseTestIndexerObject("indexer2")
             .setDataSourceName(dataSource.getName());
         client.createIndexer(indexer1);
         client.createIndexer(indexer2);
@@ -216,7 +238,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Test
     public void createIndexerFailsWithUsefulMessageOnUserError() {
-        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
+        Indexer indexer = createBaseTestIndexerObject("indexer")
             .setDataSourceName("thisdatasourcedoesnotexist");
 
         assertHttpResponseException(
@@ -274,9 +296,9 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             Collections.singletonList(MOCK_STATUS_PIPELINE_POLICY))
             .buildClient();
 
-        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+        createDataSourceAndIndex();
 
-        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME)
+        Indexer indexer = createBaseTestIndexerObject("indexer")
             .setDataSourceName(SQL_DATASOURCE_NAME);
 
         client.createIndexer(indexer);
@@ -298,7 +320,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         // Prepare data source and index
         AccessConditionTests act = new AccessConditionTests();
 
-        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+        createDataSourceAndIndex();
 
         act.createOrUpdateIfNotExistsFailsOnExistingResource(
             createOrUpdateIndexerFunc,
@@ -373,7 +395,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
 
-        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
+        Indexer indexer = createBaseTestIndexerObject("indexer");
 
         Indexer updatedExpected = createIndexerWithDifferentIndexingParameters(indexer);
 
@@ -385,7 +407,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
 
-        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
+        Indexer indexer = createBaseTestIndexerObject("indexer");
         Indexer updatedExpected = createIndexerWithDifferentIndexingParameters(indexer)
             .setDataSourceName(SQL_DATASOURCE_NAME);
 
@@ -427,8 +449,8 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Test
     public void canCreateAndDeleteIndexer() {
-        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
-        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
+        createDataSourceAndIndex();
+        Indexer indexer = createBaseTestIndexerObject("indexer");
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
         client.createIndexer(indexer);
 
@@ -438,8 +460,8 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
 
     @Test
     public void canCreateAndDeleteIndexerWithResponse() {
-        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
-        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
+        createDataSourceAndIndex();
+        Indexer indexer = createBaseTestIndexerObject("indexer");
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
         client.createIndexerWithResponse(indexer, new RequestOptions(), Context.NONE);
 
@@ -450,10 +472,10 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     @Test
     public void deleteIndexerIsIdempotent() {
         // Create Datasource
-        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+        createDataSourceAndIndex();
 
         // Create the indexer object
-        Indexer indexer = createBaseTestIndexerObject("indexer", TARGET_INDEX_NAME);
+        Indexer indexer = createBaseTestIndexerObject("indexer");
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
 
         // Try delete before the indexer even exists.
@@ -480,10 +502,10 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
 
-        Index index = createTestIndexForLiveDatasource(TARGET_INDEX_NAME);
+        Index index = createTestIndexForLiveDatasource();
         client.createIndex(index);
 
-        Indexer indexer = createBaseTestIndexerObject(indexerName, TARGET_INDEX_NAME)
+        Indexer indexer = createBaseTestIndexerObject(indexerName)
             .setDataSourceName(dataSource.getName());
 
         client.createIndexer(indexer);
@@ -507,7 +529,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         AccessConditionTests act = new AccessConditionTests();
 
         // Prepare data source and index
-        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+        createDataSourceAndIndex();
 
         Indexer indexerResult = act.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateIndexerFunc,
             newIndexerFunc);
@@ -520,7 +542,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         AccessConditionTests act = new AccessConditionTests();
 
         // Prepare data source and index
-        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+        createDataSourceAndIndex();
 
         String indexerName = "name";
         act.deleteIfExistsWorksOnlyWhenResourceExists(deleteIndexerFunc, createOrUpdateIndexerFunc, newIndexerFunc,
@@ -532,7 +554,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         AccessConditionTests act = new AccessConditionTests();
 
         // Prepare data source and index
-        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+        createDataSourceAndIndex();
 
         String indexerName = "name";
         act.deleteIfNotChangedWorksOnlyOnCurrentResource(deleteIndexerFunc, newIndexerFunc, createOrUpdateIndexerFunc,
@@ -548,7 +570,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     @Test
     public void updateIndexerIfExistsSucceedsOnExistingResource() {
         // Prepare datasource and index
-        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+        createDataSourceAndIndex();
 
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfExistsSucceedsOnExistingResource(newIndexerFunc, createOrUpdateIndexerFunc, mutateIndexerFunc);
@@ -557,7 +579,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     @Test
     public void updateIndexerIfNotChangedFailsWhenResourceChanged() {
         // Prepare datasource and index
-        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+        createDataSourceAndIndex();
 
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedFailsWhenResourceChanged(newIndexerFunc, createOrUpdateIndexerFunc, mutateIndexerFunc);
@@ -566,7 +588,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     @Test
     public void updateIndexerIfNotChangedSucceedsWhenResourceUnchanged() {
         // Prepare datasource and index
-        createDataSourceAndIndex(SQL_DATASOURCE_NAME, TARGET_INDEX_NAME);
+        createDataSourceAndIndex();
 
         AccessConditionTests act = new AccessConditionTests();
         act.updateIfNotChangedSucceedsWhenResourceUnchanged(newIndexerFunc, createOrUpdateIndexerFunc,
@@ -606,5 +628,274 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
             .setDataSourceName(dataSource.getName());
 
         createAndValidateIndexer(indexer);
+    }
+
+    /**
+     * Create a new valid skillset object
+     * @return the newly created skillset object
+     */
+    Skillset createSkillsetObject() {
+        List<InputFieldMappingEntry> inputs = Arrays.asList(
+            new InputFieldMappingEntry()
+                .setName("url")
+                .setSource("/document/url"),
+            new InputFieldMappingEntry()
+                .setName("queryString")
+                .setSource("/document/queryString")
+        );
+
+        List<OutputFieldMappingEntry> outputs = Collections.singletonList(
+            new OutputFieldMappingEntry()
+                .setName("text")
+                .setTargetName("mytext")
+        );
+
+        List<Skill> skills = Collections.singletonList(
+            new OcrSkill()
+                .setShouldDetectOrientation(true)
+                .setName("myocr")
+                .setDescription("Tested OCR skill")
+                .setContext("/document")
+                .setInputs(inputs)
+                .setOutputs(outputs)
+        );
+        return new Skillset()
+            .setName("ocr-skillset")
+            .setDescription("Skillset for testing default configuration")
+            .setSkills(skills);
+    }
+
+    Indexer createBaseTestIndexerObject(String indexerName) {
+        return new Indexer()
+            .setName(indexerName)
+            .setTargetIndexName(IndexersManagementSyncTests.TARGET_INDEX_NAME)
+            .setSchedule(new IndexingSchedule().setInterval(Duration.ofDays(1)));
+    }
+
+    /**
+     * This index contains fields that are declared on the live data source
+     * we use to test the indexers
+     *
+     * @return the newly created Index object
+     */
+    Index createTestIndexForLiveDatasource() {
+        return new Index()
+            .setName(IndexersManagementSyncTests.TARGET_INDEX_NAME)
+            .setFields(Arrays.asList(
+                new Field()
+                    .setName("county_name")
+                    .setType(DataType.EDM_STRING)
+                    .setSearchable(Boolean.FALSE)
+                    .setFilterable(Boolean.TRUE),
+                new Field()
+                    .setName("state")
+                    .setType(DataType.EDM_STRING)
+                    .setSearchable(Boolean.TRUE)
+                    .setFilterable(Boolean.TRUE),
+                new Field()
+                    .setName("feature_id")
+                    .setType(DataType.EDM_STRING)
+                    .setKey(Boolean.TRUE)
+                    .setSearchable(Boolean.TRUE)
+                    .setFilterable(Boolean.FALSE)));
+    }
+
+
+    /**
+     * Create a new indexer and change its description property
+     *
+     * @return the created indexer
+     */
+    Indexer createIndexerWithDifferentDescription() {
+        // create a new indexer object with a modified description
+        return createBaseTestIndexerObject("indexer")
+            .setDescription("somethingdifferent");
+    }
+
+    /**
+     * Create a new indexer and change its field mappings property
+     *
+     * @return the created indexer
+     */
+    Indexer createIndexerWithDifferentFieldMapping() {
+        // create a new indexer object
+        Indexer indexer = createBaseTestIndexerObject("indexer");
+
+        // Create field mappings
+        List<FieldMapping> fieldMappings = Collections.singletonList(new FieldMapping()
+            .setSourceFieldName("state_alpha")
+            .setTargetFieldName("state"));
+
+        // modify the indexer
+        indexer.setFieldMappings(fieldMappings);
+
+        return indexer;
+    }
+
+    /**
+     * Create a new indexer and set the Disabled property to true
+     *
+     * @return the created indexer
+     */
+    Indexer createDisabledIndexer() {
+        // create a new indexer object
+        Indexer indexer = createBaseTestIndexerObject("indexer");
+
+        // modify it
+        indexer.setIsDisabled(false);
+
+        return indexer;
+    }
+
+    /**
+     * Create a new indexer and change its schedule property
+     *
+     * @return the created indexer
+     */
+    Indexer createIndexerWithDifferentSchedule() {
+        // create a new indexer object
+        Indexer indexer = createBaseTestIndexerObject("indexer");
+
+        IndexingSchedule is = new IndexingSchedule()
+            .setInterval(Duration.ofMinutes(10));
+
+        // modify the indexer
+        indexer.setSchedule(is);
+
+        return indexer;
+    }
+
+    /**
+     * Create a new indexer and change its skillset
+     *
+     * @return the created indexer
+     */
+    Indexer createIndexerWithDifferentSkillset(String skillsetName) {
+        // create a new indexer object
+        return createBaseTestIndexerObject("indexer")
+            .setSkillsetName(skillsetName);
+    }
+
+    /**
+     * Create a new indexer and change its indexing parameters
+     *
+     * @return the created indexer
+     */
+    Indexer createIndexerWithDifferentIndexingParameters(Indexer indexer) {
+        // create a new indexer object
+        IndexingParameters ip = new IndexingParameters()
+            .setMaxFailedItems(121)
+            .setMaxFailedItemsPerBatch(11)
+            .setBatchSize(20);
+
+        // modify the indexer
+        indexer.setParameters(ip);
+
+        return indexer;
+    }
+
+    Indexer createIndexerWithStorageConfig() {
+        // create an indexer object
+        Indexer updatedExpected =
+            createBaseTestIndexerObject("indexer");
+
+        // just adding some(valid) config values for blobs
+        HashMap<String, Object> config = new HashMap<>();
+        config.put("indexedFileNameExtensions", ".pdf,.docx");
+        config.put("excludedFileNameExtensions", ".xlsx");
+        config.put("dataToExtract", "storageMetadata");
+        config.put("failOnUnsupportedContentType", false);
+
+        IndexingParameters ip = new IndexingParameters()
+            .setConfiguration(config);
+
+        // modify it
+        updatedExpected.setParameters(ip);
+
+        return updatedExpected;
+    }
+
+    void setSameStartTime(Indexer expected, Indexer actual) {
+        // There ought to be a start time in the response; We just can't know what it is because it would
+        // make the test timing-dependent.
+        expected.getSchedule().setStartTime(actual.getSchedule().getStartTime());
+    }
+
+    void assertAllIndexerFieldsNullExceptName(Indexer indexer) {
+        assertNull(indexer.getParameters());
+        assertNull(indexer.getDataSourceName());
+        assertNull(indexer.getDescription());
+        assertNull(indexer.getETag());
+        assertNull(indexer.getFieldMappings());
+        assertNull(indexer.getOutputFieldMappings());
+        assertNull(indexer.getSchedule());
+        assertNull(indexer.getSkillsetName());
+        assertNull(indexer.getTargetIndexName());
+    }
+
+    void assertStartAndEndTimeValid(IndexerExecutionResult result) {
+        assertNotNull(result.getStartTime());
+        assertNotEquals(OffsetDateTime.now(), result.getStartTime());
+        assertNotNull(result.getEndTime());
+        assertNotEquals(OffsetDateTime.now(), result.getEndTime());
+    }
+
+    void assertValidIndexerExecutionInfo(IndexerExecutionInfo indexerExecutionInfo) {
+        assertEquals(IndexerExecutionStatus.IN_PROGRESS, indexerExecutionInfo.getLastResult().getStatus());
+        assertEquals(3, indexerExecutionInfo.getExecutionHistory().size());
+
+        IndexerLimits limits = indexerExecutionInfo.getLimits();
+        assertNotNull(limits);
+        assertEquals(100000, limits.getMaxDocumentContentCharactersToExtract(), 0);
+        assertEquals(1000, limits.getMaxDocumentExtractionSize(), 0);
+
+        IndexerExecutionResult newestResult = indexerExecutionInfo.getExecutionHistory().get(0);
+        IndexerExecutionResult middleResult = indexerExecutionInfo.getExecutionHistory().get(1);
+        IndexerExecutionResult oldestResult = indexerExecutionInfo.getExecutionHistory().get(2);
+
+        assertEquals(IndexerExecutionStatus.TRANSIENT_FAILURE, newestResult.getStatus());
+        assertEquals("The indexer could not connect to the data source",
+            newestResult.getErrorMessage());
+        assertStartAndEndTimeValid(newestResult);
+
+        assertEquals(IndexerExecutionStatus.RESET, middleResult.getStatus());
+        assertStartAndEndTimeValid(middleResult);
+
+        assertEquals(IndexerExecutionStatus.SUCCESS, oldestResult.getStatus());
+        assertEquals(124876, oldestResult.getItemCount());
+        assertEquals(2, oldestResult.getFailedItemCount());
+        assertEquals("100", oldestResult.getInitialTrackingState());
+        assertEquals("200", oldestResult.getFinalTrackingState());
+        assertStartAndEndTimeValid(oldestResult);
+
+        assertEquals(2, oldestResult.getErrors().size());
+        assertEquals("1", oldestResult.getErrors().get(0).getKey());
+        assertEquals("Key field contains unsafe characters",
+            oldestResult.getErrors().get(0).getErrorMessage());
+        assertEquals("DocumentExtraction.AzureBlob.MyDataSource",
+            oldestResult.getErrors().get(0).getName());
+        assertEquals("The file could not be parsed.", oldestResult.getErrors().get(0).getDetails());
+        assertEquals("https://go.microsoft.com/fwlink/?linkid=2049388",
+            oldestResult.getErrors().get(0).getDocumentationLink());
+
+        assertEquals("121713", oldestResult.getErrors().get(1).getKey());
+        assertEquals("Item is too large", oldestResult.getErrors().get(1).getErrorMessage());
+        assertEquals("DocumentExtraction.AzureBlob.DataReader",
+            oldestResult.getErrors().get(1).getName());
+        assertEquals("Blob size cannot exceed 256 MB.", oldestResult.getErrors().get(1).getDetails());
+        assertEquals("https://go.microsoft.com/fwlink/?linkid=2049388",
+            oldestResult.getErrors().get(1).getDocumentationLink());
+
+
+        assertEquals(1, oldestResult.getWarnings().size());
+        assertEquals("2", oldestResult.getWarnings().get(0).getKey());
+        assertEquals("Document was truncated to 50000 characters.",
+            oldestResult.getWarnings().get(0).getMessage());
+        assertEquals("Enrichment.LanguageDetectionSkill.#4",
+            oldestResult.getWarnings().get(0).getName());
+        assertEquals("Try to split the input into smaller chunks using Split skill.",
+            oldestResult.getWarnings().get(0).getDetails());
+        assertEquals("https://go.microsoft.com/fwlink/?linkid=2099692",
+            oldestResult.getWarnings().get(0).getDocumentationLink());
     }
 }

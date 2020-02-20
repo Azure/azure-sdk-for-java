@@ -4,7 +4,6 @@
 package com.azure.search.test.environment.setup;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.search.models.DataSource;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
@@ -25,11 +24,8 @@ public class AzureSearchResources {
     private static final String STORAGE_NAME_PREFIX = "azsstor";
 
 
-    private String resourceGroupName;
     private String searchServiceName;
     private String searchAdminKey;
-    private String blobContainerDatasourceName;
-    private String storageName;
 
     private AzureTokenCredentials azureTokenCredentials;
     private String subscriptionId;
@@ -38,7 +34,6 @@ public class AzureSearchResources {
     private Azure azure = null;
     private ResourceGroup resourceGroup = null;
     private SearchService searchService = null;
-    private DataSource blobDatasource = null;
 
     /**
      * @return The created Azure Cognitive Search service name
@@ -122,7 +117,7 @@ public class AzureSearchResources {
      */
     public void createResourceGroup() {
         if (resourceGroup == null) {
-            resourceGroupName = SdkContext.randomResourceName(RESOURCE_GROUP_NAME_PREFIX, 24);
+            String resourceGroupName = SdkContext.randomResourceName(RESOURCE_GROUP_NAME_PREFIX, 24);
             System.out.println("Creating Resource Group: " + resourceGroupName);
             resourceGroup = azure.resourceGroups()
                 .define(resourceGroupName)
@@ -148,7 +143,7 @@ public class AzureSearchResources {
      * @return the storage connection string
      */
     public String createStorageAccount() {
-        storageName = SdkContext.randomResourceName(STORAGE_NAME_PREFIX, 15);
+        String storageName = SdkContext.randomResourceName(STORAGE_NAME_PREFIX, 15);
 
         StorageAccount storageAccount = azure.storageAccounts().define(storageName)
             .withRegion(location)
@@ -176,8 +171,7 @@ public class AzureSearchResources {
     public String createBlobContainer(String storageConnString) {
 
         // now we create a blob container, no need for an actual blob to be uploaded
-        blobContainerDatasourceName =
-            SdkContext.randomResourceName(BLOB_DATASOURCE_NAME_PREFIX, 15);
+        String blobContainerDatasourceName = SdkContext.randomResourceName(BLOB_DATASOURCE_NAME_PREFIX, 15);
 
         BlobServiceClient blobServiceClient =
             new BlobServiceClientBuilder()

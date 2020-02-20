@@ -4,6 +4,7 @@
 package com.azure.search;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.Index;
 import com.azure.search.models.Indexer;
@@ -13,6 +14,7 @@ import com.azure.search.test.environment.models.LoudHotel;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
 import com.azure.search.test.environment.models.NonNullableModel;
 
+import java.lang.reflect.Field;
 import java.util.Map;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertLenientEquals;
@@ -80,11 +82,84 @@ public final class TestHelpers {
         assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
     }
 
+    /**
+     * Checks if the passed {@link CharSequence} is {@code null}, empty, or only contains spaces.
+     *
+     * @param charSequence {@link CharSequence} to check for being blank.
+     * @return {@code true} if the {@link CharSequence} is {@code null}, empty, or only contains spaces, otherwise
+     * {@code false}.
+     */
     public static boolean isBlank(CharSequence charSequence) {
         if (CoreUtils.isNullOrEmpty(charSequence)) {
             return true;
         }
 
         return charSequence.chars().allMatch(Character::isWhitespace);
+    }
+
+    /**
+     * Gets the {@code "eTag"} field from the passed object.
+     *
+     * @param obj The object that will have its eTag field retrieved.
+     * @return The eTag field.
+     * @throws NoSuchFieldException If the object doesn't contain an {@code "eTag"} field.
+     */
+    public static Field getETagField(Object obj) throws NoSuchFieldException {
+        Class<?> cls = obj.getClass();
+        Field field = cls.getDeclaredField("eTag");
+        field.setAccessible(true);
+        return field;
+    }
+
+    /**
+     * Gets the {@code "eTag"} value from the passed object.
+     *
+     * @param obj The object that will have its eTag value retrieved.
+     * @return The eTag value if the object has an {@code "eTag"} field, otherwise {@code ""}.
+     */
+    public static String getETag(Object obj) {
+        Field eTagField;
+        try {
+            eTagField = getETagField(obj);
+        } catch (NoSuchFieldException e) {
+            return "";
+        }
+
+        try {
+            return (String) eTagField.get(obj);
+        } catch (IllegalAccessException e) {
+            return "";
+        }
+    }
+
+    /**
+     * Constructs an access condition such that an operation will be performed only if the resource does not exist.
+     *
+     * @return an AccessCondition object that represents a condition where a resource does not exist
+     */
+    public static AccessCondition generateIfNotExistsAccessCondition() {
+        // Setting this access condition modifies the request to include the HTTP If-None-Match conditional header set to "*"
+        return new AccessCondition().setIfNoneMatch("*");
+    }
+
+    /**
+     * Constructs an access condition such that an operation will be performed only if the resource exists.
+     *
+     * @return an AccessCondition object that represents a condition where a resource exists
+     */
+    public static AccessCondition generateIfExistsAccessCondition() {
+
+        return new AccessCondition().setIfMatch("*");
+    }
+
+    /**
+     * Constructs an access condition such that an operation will be performed only if the resource's current ETag value
+     * matches the specified ETag value.
+     *
+     * @param eTag the ETag value to check against the resource's ETag
+     * @return An AccessCondition object that represents the If-Match condition
+     */
+    public static AccessCondition generateIfNotChangedAccessCondition(String eTag) {
+        return new AccessCondition().setIfMatch(eTag);
     }
 }

@@ -7,7 +7,6 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.implementation.SerializationUtil;
 import com.azure.search.models.GeoPoint;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -19,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Functional tests that ensure expected behavior of deserializing a document.
@@ -66,7 +67,7 @@ public class DocumentConverterTests {
         };
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -86,7 +87,7 @@ public class DocumentConverterTests {
         };
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -113,7 +114,7 @@ public class DocumentConverterTests {
             };
 
             Document actualDoc = deserialize(json);
-            Assert.assertEquals(expectedDoc, actualDoc);
+            assertEquals(expectedDoc, actualDoc);
         }
     }
 
@@ -140,7 +141,7 @@ public class DocumentConverterTests {
             };
 
             Document actualDoc = deserialize(json);
-            Assert.assertEquals(expectedDoc, actualDoc);
+            assertEquals(expectedDoc, actualDoc);
         }
     }
 
@@ -155,7 +156,7 @@ public class DocumentConverterTests {
         };
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -171,7 +172,7 @@ public class DocumentConverterTests {
         };
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -190,7 +191,7 @@ public class DocumentConverterTests {
         };
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -240,7 +241,7 @@ public class DocumentConverterTests {
         };
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -258,7 +259,7 @@ public class DocumentConverterTests {
         expectedDoc.put("field", value);
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -269,7 +270,7 @@ public class DocumentConverterTests {
         expectedDoc.put("field2", Arrays.asList(testDate, testDate));
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -281,7 +282,7 @@ public class DocumentConverterTests {
         expectedDoc.put("field", new ArrayList<>());
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -294,7 +295,7 @@ public class DocumentConverterTests {
         expectedDoc.put("field", Arrays.asList(null, null));
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -315,7 +316,7 @@ public class DocumentConverterTests {
         };
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -328,6 +329,6 @@ public class DocumentConverterTests {
         };
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 }

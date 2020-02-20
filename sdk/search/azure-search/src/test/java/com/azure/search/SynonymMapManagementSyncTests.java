@@ -26,23 +26,19 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase {
+public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
     private SearchServiceClient client;
 
     // commonly used lambda definitions
-    private BiFunction<SynonymMap,
-        AccessOptions,
-        SynonymMap> createOrUpdateSynonymMapFunc =
-            (SynonymMap synonymMap, AccessOptions accessOptions) ->
-                createOrUpdateSynonymMap(
-                    synonymMap, accessOptions.getAccessCondition(), accessOptions.getRequestOptions());
+    private BiFunction<SynonymMap, AccessOptions, SynonymMap> createOrUpdateSynonymMapFunc =
+        (SynonymMap synonymMap, AccessOptions accessOptions) ->
+            createOrUpdateSynonymMap(synonymMap, accessOptions.getAccessCondition(), accessOptions.getRequestOptions());
 
     private Supplier<SynonymMap> newSynonymMapFunc = this::createTestSynonymMap;
 
     private Function<SynonymMap, SynonymMap> mutateSynonymMapFunc = this::mutateSynonymsInSynonymMap;
 
-    private BiConsumer<String, AccessOptions> deleteSynonymMapFunc =
-        (String name, AccessOptions ac) ->
+    private BiConsumer<String, AccessOptions> deleteSynonymMapFunc = (String name, AccessOptions ac) ->
             client.deleteSynonymMapWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
 
     private SynonymMap createOrUpdateSynonymMap(
@@ -320,5 +316,21 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
             createOrUpdateSynonymMapFunc,
             newSynonymMapFunc,
             "test-synonym");
+    }
+
+    void assertSynonymMapsEqual(SynonymMap actual, SynonymMap expected) {
+        assertEquals(actual.getName(), expected.getName());
+        assertEquals(actual.getSynonyms(), expected.getSynonyms());
+    }
+
+    SynonymMap createTestSynonymMap() {
+        return new SynonymMap()
+            .setName("test-synonym")
+            .setSynonyms("word1,word2");
+    }
+
+    SynonymMap mutateSynonymsInSynonymMap(SynonymMap synonymMap) {
+        synonymMap.setSynonyms("mutated1, mutated2");
+        return synonymMap;
     }
 }

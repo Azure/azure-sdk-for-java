@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataContainer;
+import com.azure.search.models.DataDeletionDetectionPolicy;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.DataSourceCredentials;
 import com.azure.search.models.DataSourceType;
@@ -32,7 +33,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class DataSourceSyncTests extends DataSourceTestBase {
+public class DataSourceSyncTests extends SearchServiceTestBase {
+    private static final String FAKE_DESCRIPTION = "Some data source";
+    private static final String FAKE_STORAGE_CONNECTION_STRING =
+        "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;";
+    private static final String FAKE_COSMOS_CONNECTION_STRING =
+        "AccountEndpoint=https://NotaRealAccount.documents.azure.com;AccountKey=fake;Database=someFakeDatabase";
+
     private SearchServiceClient client;
 
     // commonly used lambda definitions
@@ -236,7 +243,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         createAndValidateDataSource(createTestBlobDataSource(deletionDetectionPolicy));
 
         // Azure Table Storage
-        createAndValidateDataSource(createTestTableStorageDataSource(null));
+        createAndValidateDataSource(createTestTableStorageDataSource());
         createAndValidateDataSource(createTestBlobDataSource(deletionDetectionPolicy));
     }
 
@@ -255,7 +262,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         client = getSearchServiceClientBuilder().buildClient();
 
         createGetAndValidateDataSource(createTestBlobDataSource(null));
-        createGetAndValidateDataSource(createTestTableStorageDataSource(null));
+        createGetAndValidateDataSource(createTestTableStorageDataSource());
         createGetAndValidateDataSource(createTestSqlDataSourceObject(SQL_DATASOURCE_NAME));
         createGetAndValidateDataSource(createTestCosmosDataSource(null, false));
     }
@@ -306,5 +313,42 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         assertNotNull(response.getValue());
         assertEquals(expectedDataSource.getName(), response.getValue().getName());
         assertEquals(HttpURLConnection.HTTP_CREATED, response.getStatusCode());
+    }
+
+    @Test
+    public void canUpdateConnectionData() {
+        // Note: since connection string is not returned when queried from the service, actually saving the
+        // datasource, retrieving it and verifying the change, won't work.
+        // Hence, we only validate that the properties on the local items can change.
+
+        // Create an initial dataSource
+        DataSource initial = createTestBlobDataSource(null);
+        assertEquals(initial.getCredentials().getConnectionString(),
+            FAKE_STORAGE_CONNECTION_STRING);
+
+        // tweak the connection string and verify it was changed
+        String newConnString =
+            "DefaultEndpointsProtocol=https;AccountName=NotaRealYetDifferentAccount;AccountKey=AnotherFakeKey;";
+        initial.setCredentials(new DataSourceCredentials().setConnectionString(newConnString));
+
+        assertEquals(initial.getCredentials().getConnectionString(), newConnString);
+    }
+
+    DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
+        return DataSources.azureBlobStorage(BLOB_DATASOURCE_TEST_NAME, FAKE_STORAGE_CONNECTION_STRING, "fakecontainer",
+            "/fakefolder/", FAKE_DESCRIPTION, deletionDetectionPolicy);
+    }
+
+    DataSource createTestTableStorageDataSource() {
+        return DataSources.azureTableStorage("azs-java-test-tablestorage", FAKE_STORAGE_CONNECTION_STRING, "faketable",
+            "fake query", FAKE_DESCRIPTION, null);
+    }
+
+    DataSource createTestCosmosDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy,
+        boolean useChangeDetection) {
+
+        return DataSources.cosmos("azs-java-test-cosmos", FAKE_COSMOS_CONNECTION_STRING, "faketable",
+            "SELECT ... FROM x where x._ts > @HighWaterMark", useChangeDetection, FAKE_DESCRIPTION,
+            deletionDetectionPolicy);
     }
 }

@@ -13,20 +13,24 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.azure.search.TestHelpers.generateIfExistsAccessCondition;
+import static com.azure.search.TestHelpers.generateIfNotChangedAccessCondition;
+import static com.azure.search.TestHelpers.generateIfNotExistsAccessCondition;
+import static com.azure.search.TestHelpers.getETag;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class AccessConditionTests extends AccessConditionBase {
+public class AccessConditionTests {
 
     /**
      * Checks that create or update fails when a resource exists
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
     public <T> void createOrUpdateIfNotExistsFailsOnExistingResource(
         BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Supplier<T> newResourceDefinition,
@@ -59,7 +63,7 @@ public class AccessConditionTests extends AccessConditionBase {
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
     public <T> T createOrUpdateIfNotExistsSucceedsOnNoResource(BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
         Supplier<T> newResourceDefinition) {
@@ -72,7 +76,7 @@ public class AccessConditionTests extends AccessConditionBase {
         // Create the resource on the service
         T createdResource = createOrUpdateDefinition.apply(newResource, accessOptions);
 
-        assertFalse(TestHelpers.isBlank(getEtag(createdResource)));
+        assertFalse(TestHelpers.isBlank(getETag(createdResource)));
 
         return createdResource;
     }
@@ -84,7 +88,7 @@ public class AccessConditionTests extends AccessConditionBase {
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
      * @param resourceName the name of the resource
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
     public <T> void deleteIfExistsWorksOnlyWhenResourceExists(
         BiConsumer<String, AccessOptions> deleteFunc,
@@ -119,7 +123,7 @@ public class AccessConditionTests extends AccessConditionBase {
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
     public <T> void deleteIfNotChangedWorksOnlyOnCurrentResource(BiConsumer<String, AccessOptions> deleteFunc,
         Supplier<T> newResourceDefinition, BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
@@ -135,9 +139,9 @@ public class AccessConditionTests extends AccessConditionBase {
             createOrUpdateDefinition.apply(staleResource, accessOptions);
 
         // Get the eTag for the newly created resource
-        String eTagStale = getEtag(staleResource);
+        String eTagStale = getETag(staleResource);
 
-        // Update the resource, the etag will be changed
+        // Update the resource, the eTag will be changed
         T currentResource = createOrUpdateDefinition.apply(staleResource, accessOptions);
 
         try {
@@ -151,7 +155,7 @@ public class AccessConditionTests extends AccessConditionBase {
         }
 
         // Get the new eTag
-        String eTagCurrent = getEtag(currentResource);
+        String eTagCurrent = getETag(currentResource);
         accessOptions =
             new AccessOptions(generateIfNotChangedAccessCondition(eTagCurrent));
 
@@ -164,7 +168,7 @@ public class AccessConditionTests extends AccessConditionBase {
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
     public <T> void updateIfExistsFailsOnNoResource(
         Supplier<T> newResourceDefinition,
@@ -181,7 +185,7 @@ public class AccessConditionTests extends AccessConditionBase {
         }
 
         // The resource should never have been created on the server, and thus it should not have an ETag
-        assertNull(getEtag(newResource));
+        assertNull(getETag(newResource));
     }
 
     /**
@@ -189,7 +193,7 @@ public class AccessConditionTests extends AccessConditionBase {
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
     public <T> void updateIfExistsSucceedsOnExistingResource(
         Supplier<T> newResourceDefinition,
@@ -205,7 +209,7 @@ public class AccessConditionTests extends AccessConditionBase {
         newResource = createOrUpdateDefinition.apply(newResource, accessOptions);
 
         // get the original eTag
-        String originalETag = getEtag(newResource);
+        String originalETag = getETag(newResource);
 
         // Change the resource
         T mutateResource = mutateResourceDefinition.apply(newResource);
@@ -215,7 +219,7 @@ public class AccessConditionTests extends AccessConditionBase {
         mutateResource = createOrUpdateDefinition.apply(mutateResource, accessOptions);
 
         // Get the updated ETag
-        String updatedETag = getEtag(mutateResource);
+        String updatedETag = getETag(mutateResource);
 
         // Verify the eTag is not empty and was changed
         assertFalse(CoreUtils.isNullOrEmpty(updatedETag));
@@ -227,12 +231,10 @@ public class AccessConditionTests extends AccessConditionBase {
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void updateIfNotChangedFailsWhenResourceChanged(
-        Supplier<T> newResourceDefinition,
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Function<T, T> mutateResourceDefinition) {
+    public <T> void updateIfNotChangedFailsWhenResourceChanged(Supplier<T> newResourceDefinition,
+        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
@@ -241,7 +243,7 @@ public class AccessConditionTests extends AccessConditionBase {
         AccessOptions accessOptions =
             new AccessOptions(null);
         newResource = createOrUpdateDefinition.apply(newResource, accessOptions);
-        String originalETag = getEtag(newResource);
+        String originalETag = getETag(newResource);
 
         // Change the resource
         T mutateResource = mutateResourceDefinition.apply(newResource);
@@ -251,7 +253,7 @@ public class AccessConditionTests extends AccessConditionBase {
         mutateResource = createOrUpdateDefinition.apply(mutateResource, accessOptions);
 
         // Get the updated eTag
-        String updatedETag = getEtag(mutateResource);
+        String updatedETag = getETag(mutateResource);
 
         // Update and check the eTags were changed
         try {
@@ -273,34 +275,31 @@ public class AccessConditionTests extends AccessConditionBase {
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void updateIfNotChangedSucceedsWhenResourceUnchanged(
-        Supplier<T> newResourceDefinition,
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Function<T, T> mutateResourceDefinition) {
+    public <T> void updateIfNotChangedSucceedsWhenResourceUnchanged(Supplier<T> newResourceDefinition,
+        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
 
         // Create the resource on the search service
-        AccessOptions accessOptions =
-            new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(null);
         newResource = createOrUpdateDefinition.apply(newResource, accessOptions);
-        String originalEtag = getEtag(newResource);
+        String originalETag = getETag(newResource);
 
         // Change the resource
         T mutateResource = mutateResourceDefinition.apply(newResource);
 
         // Update the resource on the service
-        accessOptions.setAccessCondition(generateIfNotChangedAccessCondition(originalEtag));
+        accessOptions.setAccessCondition(generateIfNotChangedAccessCondition(originalETag));
         mutateResource = createOrUpdateDefinition.apply(mutateResource, accessOptions);
 
-        String updatedETag = getEtag(mutateResource);
+        String updatedETag = getETag(mutateResource);
 
         // Check eTags as expected
-        assertFalse(CoreUtils.isNullOrEmpty(originalEtag));
+        assertFalse(CoreUtils.isNullOrEmpty(originalETag));
         assertFalse(CoreUtils.isNullOrEmpty(updatedETag));
-        assertNotEquals(originalEtag, updatedETag);
+        assertNotEquals(originalETag, updatedETag);
     }
 }

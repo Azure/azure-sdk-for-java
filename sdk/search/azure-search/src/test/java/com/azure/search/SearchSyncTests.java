@@ -78,9 +78,9 @@ public class SearchSyncTests extends SearchTestBase {
             assertNull(result.getCount());
             assertNull(result.getCoverage());
             assertNull(result.getFacets());
-            assertNotNull(result.getItems());
+            assertNotNull(result.getValue());
 
-            result.getItems().forEach(item -> {
+            result.getElements().forEach(item -> {
                 assertEquals(1, item.getScore(), 0);
                 assertNull(item.getHighlights());
                 actualResults.add(item.getDocument());
@@ -177,9 +177,9 @@ public class SearchSyncTests extends SearchTestBase {
             assertNull(result.getCount());
             assertNull(result.getCoverage());
             assertNull(result.getFacets());
-            assertNotNull(result.getItems());
+            assertNotNull(result.getValue());
 
-            result.getItems().forEach(item -> {
+            result.getElements().forEach(item -> {
                 assertEquals(1, item.getScore(), 0);
                 assertNull(item.getHighlights());
                 actualResults.add(convertToType(item.getDocument(), Hotel.class));
@@ -234,9 +234,9 @@ public class SearchSyncTests extends SearchTestBase {
         assertTrue(iterator.hasNext());
 
         PagedResponse<SearchResult> result = iterator.next();
-        assertEquals(2, result.getItems().size());
-        TestHelpers.assetNonNullableModelsEqual(doc1, convertToType(result.getItems().get(0).getDocument(), NonNullableModel.class));
-        TestHelpers.assetNonNullableModelsEqual(doc2, convertToType(result.getItems().get(1).getDocument(), NonNullableModel.class));
+        assertEquals(2, result.getValue().size());
+        TestHelpers.assetNonNullableModelsEqual(doc1, convertToType(result.getValue().get(0).getDocument(), NonNullableModel.class));
+        TestHelpers.assetNonNullableModelsEqual(doc2, convertToType(result.getValue().get(1).getDocument(), NonNullableModel.class));
     }
 
     @Test
@@ -255,8 +255,8 @@ public class SearchSyncTests extends SearchTestBase {
         assertTrue(iterator.hasNext());
 
         PagedResponse<SearchResult> result = iterator.next();
-        assertEquals(1, result.getItems().size());
-        Date actual = convertToType(result.getItems().get(0).getDocument(), Hotel.class).lastRenovationDate();
+        assertEquals(1, result.getValue().size());
+        Date actual = convertToType(result.getValue().get(0).getDocument(), Hotel.class).lastRenovationDate();
         assertEquals(expected, actual);
     }
 
@@ -296,12 +296,12 @@ public class SearchSyncTests extends SearchTestBase {
 
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
         PagedResponse<SearchResult> result = iterator.next();
-        assertEquals(2, result.getItems().size());
+        assertEquals(2, result.getValue().size());
 
         // From the result object, extract the two hotels, clean up (irrelevant fields) and change data structure
         // as a preparation to check equality
-        Map<String, Object> hotel1 = extractAndTransformSingleResult(result.getItems().get(0));
-        Map<String, Object> hotel2 = extractAndTransformSingleResult(result.getItems().get(1));
+        Map<String, Object> hotel1 = extractAndTransformSingleResult(result.getValue().get(0));
+        Map<String, Object> hotel2 = extractAndTransformSingleResult(result.getValue().get(1));
 
         assertEquals(expectedHotel1, hotel1);
         assertEquals(expectedHotel2, hotel2);
@@ -384,12 +384,9 @@ public class SearchSyncTests extends SearchTestBase {
 
         PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("*",
             getSearchOptionsForRangeFacets(), generateRequestOptions(), Context.NONE);
-        assertNotNull(results);
 
-        Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
-
-        for (SearchPagedResponse result : pagesIterable) {
-            assertContainHotelIds(hotels, result.getItems());
+        for (SearchPagedResponse result : results.iterableByPage()) {
+            assertContainHotelIds(hotels, result.getValue());
             assertNotNull(result.getFacets());
             List<RangeFacetResult> baseRateFacets = getRangeFacetsForField(result.getFacets(), "Rooms/BaseRate", 4);
             List<RangeFacetResult> lastRenovationDateFacets = getRangeFacetsForField(
@@ -407,12 +404,9 @@ public class SearchSyncTests extends SearchTestBase {
 
         PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("*",
             getSearchOptionsForValueFacets(), generateRequestOptions(), Context.NONE);
-        assertNotNull(results);
 
-        Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
-
-        for (SearchPagedResponse result : pagesIterable) {
-            assertContainHotelIds(hotels, result.getItems());
+        for (SearchPagedResponse result : results.iterableByPage()) {
+            assertContainHotelIds(hotels, result.getValue());
             Map<String, List<FacetResult>> facets = result.getFacets();
             assertNotNull(facets);
 
@@ -663,7 +657,7 @@ public class SearchSyncTests extends SearchTestBase {
         assertNotNull(results);
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
         PagedResponse<SearchResult> result = iterator.next();
-        List<SearchResult> documents = result.getItems();
+        List<SearchResult> documents = result.getValue();
 
         // sanity
         assertEquals(1, documents.size());
@@ -719,8 +713,8 @@ public class SearchSyncTests extends SearchTestBase {
         List<Map<String, Object>> searchResults = new ArrayList<>();
         while (resultsIterator.hasNext()) {
             SearchPagedResponse result = resultsIterator.next();
-            assertNotNull(result.getItems());
-            result.getItems().forEach(item -> searchResults.add(dropUnnecessaryFields(item.getDocument())));
+            assertNotNull(result.getValue());
+            result.getElements().forEach(item -> searchResults.add(dropUnnecessaryFields(item.getDocument())));
         }
 
         return searchResults;
