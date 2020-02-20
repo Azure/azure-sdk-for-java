@@ -23,10 +23,11 @@ public final class ParallelTransferOptions {
      *
      * @param blockSize The block size.
      * For upload, The block size is the size of each block that will be staged. This value also determines the number
-     * of requests that need to be made. If block size is large, upload will make fewer network calls, but each
-     * individual call will send more data and will therefore take longer. This parameter also determines the size
-     * that each buffer uses when buffering is required and consequently amount of memory consumed by such methods may
-     * be up to blockSize * numBuffers.
+     * of requests that need to be made. This parameter also determines the size that each buffer uses when buffering
+     * is required and consequently amount of memory consumed by such methods may be up to blockSize * numBuffers.
+     * For download to file, the block size is the size of each data chunk returned from the service.
+     * For both applications, If block size is large, upload will make fewer network calls, but each
+     * individual call will send more data and will therefore take longer.
      * @param numBuffers For buffered upload only, the number of buffers is the maximum number of buffers this method
      * should allocate. Memory will be allocated lazily as needed. Must be at least two. Typically, the larger the
      * number of buffers, the more parallel, and thus faster, the upload portion  of this operation will be.

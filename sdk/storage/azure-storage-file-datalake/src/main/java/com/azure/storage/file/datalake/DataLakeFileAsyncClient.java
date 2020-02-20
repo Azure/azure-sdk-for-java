@@ -188,18 +188,16 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-long-ParallelTransferOptions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-ParallelTransferOptions}
      *
      * @param data The data to write to the file. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data emitted by the {@code Flux}.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @return A reactive response containing the information of the uploaded file.
      */
-    public Mono<PathInfo> upload(Flux<ByteBuffer> data, long length, ParallelTransferOptions parallelTransferOptions) {
-        return upload(data, length, parallelTransferOptions, false);
+    public Mono<PathInfo> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
+        return upload(data, parallelTransferOptions, false);
     }
 
     /**
@@ -207,18 +205,16 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-long-ParallelTransferOptions-boolean}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-ParallelTransferOptions-boolean}
      *
      * @param data The data to write to the file. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data emitted by the {@code Flux}.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param overwrite Whether or not to overwrite, should the file already exist.
      * @return A reactive response containing the information of the uploaded file.
      */
-    public Mono<PathInfo> upload(Flux<ByteBuffer> data, long length, ParallelTransferOptions parallelTransferOptions,
+    public Mono<PathInfo> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
 
         Mono<Void> overwriteCheck;
@@ -236,7 +232,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         }
 
         return overwriteCheck
-            .then(uploadWithResponse(data, length, parallelTransferOptions, null, null, requestConditions))
+            .then(uploadWithResponse(data, parallelTransferOptions, null, null, requestConditions))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -247,24 +243,22 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-long-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions}
      *
      * <p><strong>Using Progress Reporting</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-long-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions.ProgressReporter}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions.ProgressReporter}
      *
      * @param data The data to write to the file. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data emitted by the {@code Flux}.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link PathHttpHeaders}
      * @param metadata Metadata to associate with the resource.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the information of the uploaded file.
      */
-    public Mono<Response<PathInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length,
+    public Mono<Response<PathInfo>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, PathHttpHeaders headers, Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
         try {
@@ -280,11 +274,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             long fileOffset = 0;
 
             Function<Flux<ByteBuffer>, Mono<Response<PathInfo>>> uploadInChunksFunction = (stream) ->
-                uploadInChunks(stream, fileOffset, length, validatedParallelTransferOptions, headers,
+                uploadInChunks(stream, fileOffset, validatedParallelTransferOptions, headers,
                     validatedUploadRequestConditions);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<PathInfo>>> uploadFullMethod =
-                (stream, lengthUploaded) -> uploadWithResponse(ProgressReporter
+                (stream, length) -> uploadWithResponse(ProgressReporter
                         .addProgressReporting(stream, validatedParallelTransferOptions.getProgressReceiver()),
                     fileOffset, length, headers, validatedUploadRequestConditions);
 
@@ -296,7 +290,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         }
     }
 
-    private Mono<Response<PathInfo>> uploadInChunks(Flux<ByteBuffer> data, long fileOffset, long length,
+    private Mono<Response<PathInfo>> uploadInChunks(Flux<ByteBuffer> data, long fileOffset,
         ParallelTransferOptions parallelTransferOptions, PathHttpHeaders httpHeaders,
         DataLakeRequestConditions requestConditions) {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
@@ -314,30 +308,38 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
          */
         return chunkedSource.concatMap(pool::write)
             .concatWith(Flux.defer(pool::flush))
-            /* Map the data to a tuple, writing in the buffer.remaining temporarily */
-            .map(buffer -> Tuples.of(buffer, (long) buffer.remaining()))
-            /* The tuple keeps track of the next buffer to write and the fileOffset for the next buffer */
+            /* Map the data to a tuple 3, of buffer, buffer length, buffer offset */
+            .map(buffer -> Tuples.of(buffer, (long) buffer.remaining(), (long) 0))
+            /* Scan reduces a flux with an accumulator while emitting the intermediate results. */
+            /* As an example, data consists of ByteBuffers of length 10-10-5.
+               In the map above we transform the initial ByteBuffer to a tuple3 of buff, 10, 0.
+               Scan will emit that as is, then accumulate the tuple for the next emission.
+               On the second iteration, the middle ByteBuffer gets transformed to buff, 10, 10+0
+               (from previous emission). Scan emits that, and on the last iteration, the last ByteBuffer gets
+               transformed to buff, 5, 10+10 (from previous emission). */
             .scan((result, source) -> {
                 ByteBuffer buffer = source.getT1();
                 long currentBufferLength = buffer.remaining();
                 long lastBytesWritten = result.getT2();
+                long lastOffset = result.getT3();
 
-                return Tuples.of(buffer, currentBufferLength + lastBytesWritten);
+                return Tuples.of(buffer, currentBufferLength, lastBytesWritten + lastOffset);
             })
-            .flatMapSequential(tuple2 -> {
-                ByteBuffer buffer = tuple2.getT1();
+            .flatMapSequential(tuple3 -> {
+                ByteBuffer buffer = tuple3.getT1();
                 long currentBufferLength = buffer.remaining();
-                long currentOffset = tuple2.getT2() - currentBufferLength + fileOffset;
+                long currentOffset = tuple3.getT3() + fileOffset;
                 // Report progress as necessary.
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
                     Flux.just(buffer), parallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
                 return appendWithResponse(progressData, currentOffset, currentBufferLength, null,
                     requestConditions.getLeaseId())
                     .doFinally(x -> pool.returnBuffer(buffer))
+                    .map(resp -> currentBufferLength + currentOffset) /* End of file after append to pass to flush. */
                     .flux();
             })
             .last()
-            .flatMap(resp -> flushWithResponse(length, false, false, httpHeaders, requestConditions));
+            .flatMap(length -> flushWithResponse(length, false, false, httpHeaders, requestConditions));
     }
 
     private Mono<Response<PathInfo>> uploadWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,

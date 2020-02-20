@@ -111,25 +111,25 @@ public class DataLakeFileAsyncClientJavaDocSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeFileAsyncClient#upload(Flux, long, ParallelTransferOptions)},
-     * {@link DataLakeFileAsyncClient#upload(Flux, long, ParallelTransferOptions, boolean)} and
-     * {@link DataLakeFileAsyncClient#uploadWithResponse(Flux, long, ParallelTransferOptions, PathHttpHeaders, Map, DataLakeRequestConditions)}
+     * Code snippets for {@link DataLakeFileAsyncClient#upload(Flux, ParallelTransferOptions)},
+     * {@link DataLakeFileAsyncClient#upload(Flux, ParallelTransferOptions, boolean)} and
+     * {@link DataLakeFileAsyncClient#uploadWithResponse(Flux, ParallelTransferOptions, PathHttpHeaders, Map, DataLakeRequestConditions)}
      */
     public void uploadCodeSnippets() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-long-ParallelTransferOptions
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-ParallelTransferOptions
         client.uploadFromFile(filePath)
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-long-ParallelTransferOptions
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-ParallelTransferOptions
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-long-ParallelTransferOptions-boolean
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-ParallelTransferOptions-boolean
         boolean overwrite = false; // Default behavior
         client.uploadFromFile(filePath, overwrite)
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-long-ParallelTransferOptions-boolean
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.upload#Flux-ParallelTransferOptions-boolean
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-long-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions
         PathHttpHeaders headers = new PathHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
@@ -142,11 +142,11 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         Integer blockSize = 100 * 1024 * 1024; // 100 MB;
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, null, null, null);
 
-        client.uploadWithResponse(data, length, parallelTransferOptions, headers, metadata, requestConditions)
+        client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, requestConditions)
             .subscribe(response -> System.out.println("Uploaded file %n"));
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-long-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions
 
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-long-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions.ProgressReporter
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions.ProgressReporter
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
@@ -159,9 +159,9 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         ParallelTransferOptions pto = new ParallelTransferOptions(blockSize, null,
             bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred), null);
 
-        client.uploadWithResponse(data, length, pto, httpHeaders, metadataMap, conditions)
+        client.uploadWithResponse(data, pto, httpHeaders, metadataMap, conditions)
             .subscribe(response -> System.out.println("Uploaded file %n"));
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-long-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions.ProgressReporter
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions.ProgressReporter
     }
 
     /**
