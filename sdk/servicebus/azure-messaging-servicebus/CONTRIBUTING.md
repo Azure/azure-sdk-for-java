@@ -39,9 +39,9 @@ fewer changes requested. In particular, it is recommended to review:
 
 Open a command prompt/terminal:
 1. Execute `git clone https://github.com/Azure/azure-sdk-for-java.git`
-1. Traverse to the repository root.
-1. Execute `mvn compile -f pom.client.xml`
-1. Install the tooling and build the product by executing:
+2. Traverse to the repository root.
+3. Execute `mvn compile -f pom.client.xml`
+4. Install the tooling and build the product by executing:
     * `mvn install -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip -f pom.client.xml`
 
 ## Building only the Azure SDK client library for Service Bus
