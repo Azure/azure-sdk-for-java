@@ -168,7 +168,8 @@ public class Message {
      * serialization hints for the {@link #getBody()} as an aid to consumers who wish to deserialize the binary data.
      *
      * <p><strong>Adding serialization hint using {@code getProperties()}</strong></p>
-     * <p>In the sample, the type of telemetry is indicated by adding an application property with key "messageType".</p>
+     * <p>In the sample, the type of telemetry is indicated by adding an application property
+     * with key "messageType".</p>
      *
      * @return Application properties associated with this {@link Message}.
      */
@@ -336,7 +337,6 @@ public class Message {
 
 
         }
-
 
         @SuppressWarnings("unchecked")
         private <T> T removeSystemProperty(final String key) {

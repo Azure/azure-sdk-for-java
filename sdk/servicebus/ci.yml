@@ -46,4 +46,3 @@ stages:
         - name: azure-messaging-servicebus
           groupId: com.azure
           safeName: azuremessagingservicebus
-          stagingProfileId: 534d15ee3800f4

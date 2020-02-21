@@ -66,7 +66,7 @@ public final class QueueClientBuilder {
     private AmqpTransportType transport = AmqpTransportType.AMQP;
     private String fullyQualifiedNamespace;
     private String queueName;
-    private ServiceBusConnectionProcessor servicerBusConnectionProcessor;
+    private ServiceBusConnectionProcessor serviceBusConnectionProcessor;
     private final String connectionId;
 
     /**
@@ -133,8 +133,8 @@ public final class QueueClientBuilder {
         }
         final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
 
-        if (servicerBusConnectionProcessor == null) {
-            servicerBusConnectionProcessor = createConnectionProcessor(messageSerializer);
+        if (serviceBusConnectionProcessor == null) {
+            serviceBusConnectionProcessor = createConnectionProcessor(messageSerializer);
         }
 
         final ServiceBusConnectionProcessor connectionProcessor = createConnectionProcessor(messageSerializer);
@@ -160,8 +160,8 @@ public final class QueueClientBuilder {
         }
         final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
 
-        if (servicerBusConnectionProcessor == null) {
-            servicerBusConnectionProcessor = createConnectionProcessor(messageSerializer);
+        if (serviceBusConnectionProcessor == null) {
+            serviceBusConnectionProcessor = createConnectionProcessor(messageSerializer);
         }
 
         final ServiceBusConnectionProcessor connectionProcessor = createConnectionProcessor(messageSerializer);

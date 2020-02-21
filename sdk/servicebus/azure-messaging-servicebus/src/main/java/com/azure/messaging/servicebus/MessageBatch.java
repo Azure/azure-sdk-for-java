@@ -94,13 +94,13 @@ final class MessageBatch {
      */
     boolean tryAdd(final Message message) {
         if (message == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("eventData cannot be null"));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("message cannot be null"));
         }
-        Message event = tracerProvider.isEnabled() ? traceMessageSpan(message) : message;
+        Message messageUpdated = tracerProvider.isEnabled() ? traceMessageSpan(message) : message;
 
         final int size;
         try {
-            size = getSize(event, messageList.isEmpty());
+            size = getSize(messageUpdated, messageList.isEmpty());
         } catch (BufferOverflowException exception) {
             throw logger.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
                 String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
@@ -116,15 +116,15 @@ final class MessageBatch {
             this.sizeInBytes += size;
         }
 
-        this.messageList.add(event);
+        this.messageList.add(messageUpdated);
         return true;
     }
 
     /**
      * Method to start and end a "Azure.EventHubs.message" span and add the "DiagnosticId" as a property of the message.
      *
-     * @param message The Event to add tracing span for.
-     * @return the updated event data object.
+     * @param message The Message to add tracing span for.
+     * @return the updated Message data object.
      */
     private Message traceMessageSpan(Message message) {
         Optional<Object> eventContextData = message.getContext().getData(SPAN_CONTEXT_KEY);
