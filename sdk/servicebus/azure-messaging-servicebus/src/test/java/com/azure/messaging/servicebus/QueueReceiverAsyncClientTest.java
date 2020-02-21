@@ -137,7 +137,6 @@ public class QueueReceiverAsyncClientTest {
             .then(() -> sendMessages(numberOfEvents))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
-        Thread.sleep(5000);
     }
 
     private void sendMessages(int numberOfEvents) {
@@ -189,4 +188,3 @@ public class QueueReceiverAsyncClientTest {
         return message;
     }
 }
-

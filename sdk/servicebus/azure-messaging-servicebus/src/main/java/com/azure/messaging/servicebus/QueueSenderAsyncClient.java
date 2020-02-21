@@ -159,10 +159,10 @@ public final class QueueSenderAsyncClient implements Closeable {
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
      * @param message to be sent to the Service Bus Queue.
-     * @param scheduledEnqueueTimeUt Declares at which time the message should appear on the Service Bus Queue.
+     * @param scheduledEnqueueTimeUtc Declares at which time the message should appear on the Service Bus Queue.
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
      */
-    public Mono<Long> schedule(Message message, Instant scheduledEnqueueTimeUt) {
+    public Mono<Long> schedule(Message message, Instant scheduledEnqueueTimeUtc) {
         //TODO(feature-to-implement)
         return null;
     }

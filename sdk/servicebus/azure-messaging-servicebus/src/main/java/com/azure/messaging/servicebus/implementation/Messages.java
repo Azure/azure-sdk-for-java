@@ -15,7 +15,7 @@ import java.util.Properties;
 public class Messages {
     private static final ClientLogger LOGGER = new ClientLogger(Messages.class);
     private static Properties properties;
-    public static final String MESSAGES_PROPERTIES_PATH = "servicebus-messages.properties";
+    public static final String MESSAGES_PROPERTIES_PATH = "azure-messaging-servicebus.properties";
     public static final String ENCODING_TYPE_NOT_SUPPORTED = getMessage("ENCODING_TYPE_NOT_SUPPORTED");
     public static final String MESSAGE_NOT_OF_TYPE = getMessage("MESSAGE_NOT_OF_TYPE");
     public static final String REQUEST_VALUE_NOT_VALID = getMessage("REQUEST_VALUE_NOT_VALID");
