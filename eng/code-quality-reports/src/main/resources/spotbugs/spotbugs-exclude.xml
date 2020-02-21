@@ -460,6 +460,16 @@
     <Method name="endTracingSpan"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
+  
+  <!-- Incorrect flagging, error will be thrown if value is null -->
+  <Match>
+      <Class name="com.azure.endtoend.identity.WebJobsIdentityTest"/>
+      <Or>
+          <Method name="testMSIEndpointWithSystemAssigned"/>
+          <Method name="testMSIEndpointWithUserAssigned"/>
+      </Or>
+      <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
 
   <!-- Incorrect flagging, if the response is null a StorageException would have been thrown -->
   <Match>

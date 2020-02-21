@@ -22,9 +22,9 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Helper class to convert service level models to SDK exposes models.
@@ -43,10 +43,14 @@ final class Transforms {
      * @param <T> the type of items being returned in the list.
      * @return The list holding all the generic items combined.
      */
-    static <T> List<T> mapByIndex(List<String> textInputs, BiFunction<String, String, T> mappingFunction) {
-        return IntStream.range(0, textInputs.size())
-            .mapToObj(index -> mappingFunction.apply(String.valueOf(index), textInputs.get(index)))
-            .collect(Collectors.toList());
+    static <T> List<T> mapByIndex(Iterable<String> textInputs, BiFunction<String, String, T> mappingFunction) {
+        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+        AtomicInteger i = new AtomicInteger(0);
+        List<T> result = new ArrayList<>();
+        textInputs.forEach(textInput ->
+            result.add(mappingFunction.apply(String.valueOf(i.getAndIncrement()), textInput))
+        );
+        return result;
     }
 
     /**
@@ -98,7 +102,7 @@ final class Transforms {
      * @param textInputs the user provided input in {@link TextDocumentInput}
      * @return the service required input {@link MultiLanguageInput}
      */
-    static List<MultiLanguageInput> toMultiLanguageInput(List<TextDocumentInput> textInputs) {
+    static List<MultiLanguageInput> toMultiLanguageInput(Iterable<TextDocumentInput> textInputs) {
         List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
         for (TextDocumentInput textDocumentInput : textInputs) {
             multiLanguageInputs.add(new MultiLanguageInput().setId(textDocumentInput.getId())
@@ -137,10 +141,8 @@ final class Transforms {
      * @param error the {@link com.azure.ai.textanalytics.models.TextAnalyticsError}.
      * @return the {@link TextAnalyticsException} to be thrown.
      */
-    private static TextAnalyticsException toTextAnalyticsException(
+    static TextAnalyticsException toTextAnalyticsException(
         com.azure.ai.textanalytics.models.TextAnalyticsError error) {
         return new TextAnalyticsException(error.getMessage(), error.getCode().toString(), error.getTarget());
     }
-
-
 }

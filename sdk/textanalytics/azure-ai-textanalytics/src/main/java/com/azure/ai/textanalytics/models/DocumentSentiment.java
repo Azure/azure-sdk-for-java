@@ -13,45 +13,47 @@ import java.util.List;
 @Immutable
 public final class DocumentSentiment {
     private final SentimentLabel sentiment;
-    private final SentimentScorePerLabel sentimentScores;
+    private final SentimentConfidenceScorePerLabel confidenceScores;
     private final List<SentenceSentiment> sentences;
 
     /**
      * Creates a {@code DocumentSentiment} model that describes the sentiment of the document.
      *
-     * @param sentiment the sentiment label of the document
-     * @param sentimentScores the score of sentiment label of the document
-     * @param sentences a list of sentence sentiments
+     * @param sentiment the sentiment label of the document.
+     * @param confidenceScores the sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
+     *   Higher values signify higher confidence.
+     * @param sentences a list of sentence sentiments.
      */
-    public DocumentSentiment(SentimentLabel sentiment, SentimentScorePerLabel sentimentScores,
+    public DocumentSentiment(SentimentLabel sentiment, SentimentConfidenceScorePerLabel confidenceScores,
         List<SentenceSentiment> sentences) {
         this.sentiment = sentiment;
-        this.sentimentScores = sentimentScores;
+        this.confidenceScores = confidenceScores;
         this.sentences = sentences;
     }
 
     /**
      * Get the sentiment label.
      *
-     * @return the SentimentLabel
+     * @return the SentimentLabel.
      */
     public SentimentLabel getSentiment() {
         return sentiment;
     }
 
     /**
-     * Get the confidence scores of the sentiment label.
+     * Get the sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
+     * Higher values signify higher confidence.
      *
-     * @return the SentimentScorePerLabel
+     * @return the SentimentConfidenceScorePerLabel.
      */
-    public SentimentScorePerLabel getSentimentScores() {
-        return sentimentScores;
+    public SentimentConfidenceScorePerLabel getConfidenceScores() {
+        return confidenceScores;
     }
 
     /**
      * Get a list of sentence sentiments.
      *
-     * @return a list of sentence sentiments
+     * @return a list of sentence sentiments.
      */
     public List<SentenceSentiment> getSentences() {
         return sentences;

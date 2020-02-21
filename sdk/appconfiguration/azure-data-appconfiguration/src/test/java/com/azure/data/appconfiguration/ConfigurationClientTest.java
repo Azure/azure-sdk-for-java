@@ -18,6 +18,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -411,6 +412,38 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     /**
+     * Verifies that throws exception when using SettingSelector with not supported *a key filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter() {
+        filterValueTest("*" + getKey(), getLabel());
+    }
+
+    /**
+     * Verifies that throws exception when using SettingSelector with not supported *a* key filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter() {
+        filterValueTest("*" + getKey() + "*", getLabel());
+    }
+
+    /**
+     * Verifies that throws exception when using SettingSelector with not supported *a label filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter() {
+        filterValueTest(getKey(), "*" + getLabel());
+    }
+
+    /**
+     * Verifies that throws exception when using SettingSelector with not supported *a* label filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter() {
+        filterValueTest(getKey(), "*" + getLabel() + "*");
+    }
+
+    /**
      * Verifies that we can get a ConfigurationSetting at the provided accept datetime
      */
     @Test
@@ -657,5 +690,22 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 assertContainsHeaders(headers, response.getRequest().getHeaders());
             }
         );
+    }
+
+    /**
+     * Test helper that calling list configuration setting with given key and label input
+     *
+     * @param keyFilter key filter expression
+     * @param labelFilter label filter expression
+     */
+    private void filterValueTest(String keyFilter, String labelFilter) {
+        listConfigurationSettingsSelectFieldsWithNotSupportedFilterRunner(keyFilter, labelFilter, selector -> {
+            try {
+                client.listConfigurationSettings(selector).iterator().forEachRemaining(setting -> setting.getLabel());
+                Assertions.fail("Expected to fail");
+            } catch (Exception ex) {
+                assertRestException(ex, HttpResponseException.class, 400);
+            }
+        });
     }
 }

@@ -7,7 +7,6 @@ import com.azure.ai.textanalytics.implementation.ApiKeyCredentialPolicy;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
-import com.azure.ai.textanalytics.models.TextAnalyticsClientOptions;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -86,15 +85,16 @@ public final class TextAnalyticsClientBuilder {
     private final String clientName;
     private final String clientVersion;
 
-    private String endpoint;
+    private String defaultCountryHint;
+    private String defaultLanguage;
+    private Configuration configuration;
     private TextAnalyticsApiKeyCredential credential;
-    private TokenCredential tokenCredential;
+    private String endpoint;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline httpPipeline;
-    private Configuration configuration;
     private RetryPolicy retryPolicy;
-    private TextAnalyticsClientOptions clientOptions;
+    private TokenCredential tokenCredential;
     private TextAnalyticsServiceVersion version;
 
     /**
@@ -201,20 +201,30 @@ public final class TextAnalyticsClientBuilder {
             .pipeline(pipeline)
             .build();
 
-        return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, clientOptions);
+        return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
     }
 
     /**
-     * Set the default client option for one client.
+     * Set the default language option for one client.
      *
-     * @param clientOptions TextAnalyticsClientOptions model that includes
-     * {@link TextAnalyticsClientOptions#getDefaultLanguage() default language} and
-     * {@link TextAnalyticsClientOptions#getDefaultCountryHint() default country hint}
+     * @param language default language
      *
      * @return The updated TextAnalyticsClientBuilder object.
      */
-    public TextAnalyticsClientBuilder clientOptions(TextAnalyticsClientOptions clientOptions) {
-        this.clientOptions = clientOptions;
+    public TextAnalyticsClientBuilder defaultLanguage(String language) {
+        this.defaultLanguage = language;
+        return this;
+    }
+
+    /**
+     * Set the default country hint option for one client.
+     *
+     * @param countryHint default country hint
+     *
+     * @return The updated TextAnalyticsClientBuilder object.
+     */
+    public TextAnalyticsClientBuilder defaultCountryHint(String countryHint) {
+        this.defaultCountryHint = countryHint;
         return this;
     }
 

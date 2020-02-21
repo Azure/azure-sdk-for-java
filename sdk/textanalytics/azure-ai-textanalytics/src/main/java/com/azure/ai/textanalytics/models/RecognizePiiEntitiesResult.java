@@ -30,7 +30,7 @@ public final class RecognizePiiEntitiesResult extends DocumentResult {
     }
 
     /**
-     * Get a list of PII entities.
+     * Get a list of Personally Identifiable Information entities.
      *
      * @return a list of {@link PiiEntity}
      */
