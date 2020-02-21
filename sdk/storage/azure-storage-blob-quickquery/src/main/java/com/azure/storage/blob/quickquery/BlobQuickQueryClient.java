@@ -66,6 +66,10 @@ public class BlobQuickQueryClient {
     /**
      * Queries an entire blob into an output stream.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.quickquery.BlobQuickQueryClient.query#OutputStream-String}
+     *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param expression The query expression.
      * @throws UncheckedIOException If an I/O error occurs.
@@ -77,6 +81,10 @@ public class BlobQuickQueryClient {
 
     /**
      * Queries an entire blob into an output stream.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.quickquery.BlobQuickQueryClient.queryWithResponse#OutputStream-String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-Duration-Context}
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param expression The query expression.

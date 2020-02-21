@@ -55,7 +55,7 @@ public class BlobQuickQueryClientBuilder {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobQuickQueryClientBuilder#buildClient}
+     * {@codesnippet com.azure.storage.blob.quickquery.BlobQuickQueryClientBuilder#buildClient}
      *
      * @return a {@link BlobQuickQueryClient} created from the configurations in this builder.
      */
@@ -68,7 +68,7 @@ public class BlobQuickQueryClientBuilder {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobQuickQueryClientBuilder#buildAsyncClient}
+     * {@codesnippet com.azure.storage.blob.quickquery.BlobQuickQueryClientBuilder#buildAsyncClient}
      *
      * @return a {@link BlobQuickQueryAsyncClient} created from the configurations in this builder.
      */
