@@ -50,7 +50,7 @@ public class CosmosAsyncClient implements AutoCloseable {
         this.tokenResolver = builder.getTokenResolver();
         this.cosmosKeyCredential = builder.getCosmosKeyCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
-        this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
+        this.enableTransportClientSharing = builder.isConnectionReuseAcrossClientsEnabled();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)
                                        .withMasterKeyOrResourceToken(this.keyOrResourceToken)

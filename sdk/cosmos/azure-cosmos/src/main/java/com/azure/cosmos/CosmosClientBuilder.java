@@ -37,7 +37,7 @@ public class CosmosClientBuilder {
     private TokenResolver tokenResolver;
     private CosmosKeyCredential cosmosKeyCredential;
     private boolean sessionCapturingOverrideEnabled;
-    private boolean connectionSharingAcrossClientsEnabled;
+    private boolean connectionReuseAcrossClientsEnabled;
 
     public CosmosClientBuilder() {
     }
@@ -100,11 +100,11 @@ public class CosmosClientBuilder {
      * Please note, when setting this option, the connection configuration (e.g., socket timeout config, idle timeout config)
      * of the first instantiated client will be used for all other client instances.
      *
-     * @param connectionSharingAcrossClientsEnabled connection sharing
+     * @param connectionReuseAcrossClientsEnabled connection sharing
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder setConnectionSharingAcrossClientsEnabled(boolean connectionSharingAcrossClientsEnabled) {
-        this.connectionSharingAcrossClientsEnabled = true;
+    public CosmosClientBuilder setConnectionReuseAcrossClientsEnabled(boolean connectionReuseAcrossClientsEnabled) {
+        this.connectionReuseAcrossClientsEnabled = true;
         return this;
     }
 
@@ -116,8 +116,8 @@ public class CosmosClientBuilder {
      *
      * @return the connection sharing across multiple clients
      */
-    public boolean isConnectionSharingAcrossClientsEnabled() {
-        return this.connectionSharingAcrossClientsEnabled;
+    public boolean isConnectionReuseAcrossClientsEnabled() {
+        return this.connectionReuseAcrossClientsEnabled;
     }
 
     /**
