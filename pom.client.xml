@@ -464,6 +464,10 @@
                 <packages>com.azure.messaging.eventhubs*</packages>
               </group>
               <group>
+                <title>Azure Service Bus</title>
+                <packages>com.azure.messaging.servicebus*</packages>
+              </group>
+              <group>
                 <title>Azure Identity</title>
                 <packages>com.azure.identity*</packages>
               </group>
