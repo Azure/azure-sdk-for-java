@@ -169,7 +169,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void recognizeEntitiesForListLanguageHint();
 
-    // Pii Entities
+    // Personally Identifiable Information Entities
     @Test
     abstract void recognizePiiEntitiesForTextInput();
 
@@ -300,7 +300,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(textDocumentInputs, options);
     }
 
-    // PII Entity runner
+    // Personally Identifiable Information Entity runner
     void recognizePiiLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS, "en");
     }
@@ -456,7 +456,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to validate a single PII entity.
+     * Helper method to validate a single Personally Identifiable Information entity.
      *
      * @param expectedPiiEntity PiiEntity returned by the service.
      * @param actualPiiEntity PiiEntity returned by the API.
@@ -482,7 +482,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedLinkedEntity.getDataSource(), actualLinkedEntity.getDataSource());
         assertEquals(expectedLinkedEntity.getLanguage(), actualLinkedEntity.getLanguage());
         assertEquals(expectedLinkedEntity.getUrl(), actualLinkedEntity.getUrl());
-        assertEquals(expectedLinkedEntity.getId(), actualLinkedEntity.getId());
+        assertEquals(expectedLinkedEntity.getDataSourceEntityId(), actualLinkedEntity.getDataSourceEntityId());
         validateLinkedEntityMatches(expectedLinkedEntity.getLinkedEntityMatches(), actualLinkedEntity.getLinkedEntityMatches());
     }
 
@@ -521,7 +521,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to validate the list of PII entities.
+     * Helper method to validate the list of Personally Identifiable Information entities.
      *
      * @param expectedPiiEntityList piiEntities returned by the service.
      * @param actualPiiEntityList piiEntities returned by the API.

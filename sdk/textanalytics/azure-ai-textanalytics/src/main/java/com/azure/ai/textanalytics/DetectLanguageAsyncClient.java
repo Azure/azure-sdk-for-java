@@ -21,13 +21,9 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-
-import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 
 /**
  * Helper class for managing detect language endpoint.
@@ -46,35 +42,19 @@ class DetectLanguageAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<DetectedLanguage>> detectLanguageWithResponse(String text, String countryHint, Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
-        List<DetectLanguageInput> languageInputs = Collections.singletonList(new DetectLanguageInput("0",
-            text, countryHint));
-        return detectLanguageBatchWithResponse(languageInputs, null, context)
-            .map(response -> new SimpleResponse<>(response,
-                Transforms.processSingleResponseErrorResult(response).getValue().getPrimaryLanguage()));
-    }
-
     Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguageBatchWithResponse(
-        List<String> textInputs, String countryHint, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-        List<DetectLanguageInput> detectLanguageInputs = mapByIndex(textInputs, (index, value) ->
-            new DetectLanguageInput(index, value, countryHint));
+        final List<LanguageInput> multiLanguageInputs = new ArrayList<>();
+        for (DetectLanguageInput textDocumentInput : textInputs) {
+            multiLanguageInputs.add(new LanguageInput()
+                .setId(textDocumentInput.getId())
+                .setText(textDocumentInput.getText())
+                .setCountryHint(textDocumentInput.getCountryHint()));
+        }
 
-        return detectLanguageBatchWithResponse(detectLanguageInputs, options, context);
-    }
-
-    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguageBatchWithResponse(
-        List<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        final LanguageBatchInput languageBatchInput = new LanguageBatchInput()
-            .setDocuments(textInputs.stream().map(detectLanguageInput -> new LanguageInput()
-                .setId(detectLanguageInput.getId()).setText(detectLanguageInput.getText())
-                .setCountryHint(detectLanguageInput.getCountryHint())).collect(Collectors.toList()));
-
-        return service.languagesWithRestResponseAsync(
-            languageBatchInput, options == null ? null : options.getModelVersion(),
+        return service.languagesWithRestResponseAsync(new LanguageBatchInput().setDocuments(multiLanguageInputs),
+            options == null ? null : options.getModelVersion(),
             options == null ? null : options.showStatistics(), context)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", textInputs.toString()))
             .doOnSuccess(response -> logger.info("A batch of detected language output - {}", response.getValue()))
@@ -123,5 +103,4 @@ class DetectLanguageAsyncClient {
             languageResult.getStatistics() == null ? null
                 : Transforms.toBatchStatistics(languageResult.getStatistics()));
     }
-
 }

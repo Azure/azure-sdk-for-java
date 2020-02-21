@@ -8,6 +8,7 @@ omitted_paths:
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"
   - eng/*
+  - common/smoke-tests/*
   - samples/*
 language: java
 root_check_enabled: True
