@@ -719,12 +719,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string
         String inputText = "The hotel was dark and unclean.";
         textAnalyticsAsyncClient.analyzeSentiment(inputText).subscribe(documentSentiment -> {
-            System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
+            System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentimentLabel());
 
             for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                 System.out.printf(
                     "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                    sentenceSentiment.getSentiment(),
+                    sentenceSentiment.getSentimentLabel(),
                     sentenceSentiment.getConfidenceScores().getPositive(),
                     sentenceSentiment.getConfidenceScores().getNeutral(),
                     sentenceSentiment.getConfidenceScores().getNegative());
@@ -741,12 +741,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         String inputText1 = "The hotel was dark and unclean.";
         textAnalyticsAsyncClient.analyzeSentiment(inputText1, "en")
             .subscribe(documentSentiment -> {
-                System.out.printf("Recognized sentiment label: %s.%n", documentSentiment.getSentiment());
+                System.out.printf("Recognized sentiment label: %s.%n", documentSentiment.getSentimentLabel());
 
                 for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                     System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, "
                             + "negative score: %.2f.%n",
-                        sentenceSentiment.getSentiment(),
+                        sentenceSentiment.getSentimentLabel(),
                         sentenceSentiment.getConfidenceScores().getPositive(),
                         sentenceSentiment.getConfidenceScores().getNeutral(),
                         sentenceSentiment.getConfidenceScores().getNegative());
@@ -774,11 +774,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
                 DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                 System.out.printf("Recognized document sentiment: %s.%n",
-                    documentSentiment.getSentiment());
+                    documentSentiment.getSentimentLabel());
                 for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                     System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, "
                             + "negative score: %.2f.%n",
-                        sentenceSentiment.getSentiment(),
+                        sentenceSentiment.getSentimentLabel(),
                         sentenceSentiment.getConfidenceScores().getPositive(),
                         sentenceSentiment.getConfidenceScores().getNeutral(),
                         sentenceSentiment.getConfidenceScores().getNegative());
@@ -809,11 +809,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (AnalyzeSentimentResult analyzeSentimentResult : analyzeSentimentResults) {
                     System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
                     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-                    System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
+                    System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentimentLabel());
                     for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                         System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, "
                                 + "neutral score: %.2f, negative score: %.2f.%n",
-                            sentenceSentiment.getSentiment(),
+                            sentenceSentiment.getSentimentLabel(),
                             sentenceSentiment.getConfidenceScores().getPositive(),
                             sentenceSentiment.getConfidenceScores().getNeutral(),
                             sentenceSentiment.getConfidenceScores().getNegative());
@@ -849,11 +849,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (AnalyzeSentimentResult analyzeSentimentResult : analyzeSentimentResults) {
                     System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
                     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-                    System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
+                    System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentimentLabel());
                     for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                         System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, "
                                 + "negative score: %.2f.%n",
-                            sentenceSentiment.getSentiment(),
+                            sentenceSentiment.getSentimentLabel(),
                             sentenceSentiment.getConfidenceScores().getPositive(),
                             sentenceSentiment.getConfidenceScores().getNeutral(),
                             sentenceSentiment.getConfidenceScores().getNegative());

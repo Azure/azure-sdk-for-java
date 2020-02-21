@@ -68,13 +68,13 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                     // Valid document
                     final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                     System.out.printf("Analyzed document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                        documentSentiment.getSentiment(),
+                        documentSentiment.getSentimentLabel(),
                         documentSentiment.getConfidenceScores().getPositive(),
                         documentSentiment.getConfidenceScores().getNeutral(),
                         documentSentiment.getConfidenceScores().getNegative());
                     for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                         System.out.printf("Analyzed sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
-                            sentenceSentiment.getSentiment(),
+                            sentenceSentiment.getSentimentLabel(),
                             sentenceSentiment.getConfidenceScores().getPositive(),
                             sentenceSentiment.getConfidenceScores().getNeutral(),
                             sentenceSentiment.getConfidenceScores().getNegative(),

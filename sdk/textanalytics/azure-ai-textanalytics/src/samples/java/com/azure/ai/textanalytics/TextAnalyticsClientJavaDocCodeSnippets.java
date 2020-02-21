@@ -695,7 +695,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             textAnalyticsClient.analyzeSentiment("The hotel was dark and unclean.");
 
         System.out.printf("Recognized sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-            documentSentiment.getSentiment(),
+            documentSentiment.getSentimentLabel(),
             documentSentiment.getConfidenceScores().getPositive(),
             documentSentiment.getConfidenceScores().getNeutral(),
             documentSentiment.getConfidenceScores().getNegative());
@@ -703,7 +703,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
             System.out.printf(
                 "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                sentenceSentiment.getSentiment(),
+                sentenceSentiment.getSentimentLabel(),
                 sentenceSentiment.getConfidenceScores().getPositive(),
                 sentenceSentiment.getConfidenceScores().getNeutral(),
                 sentenceSentiment.getConfidenceScores().getNegative());
@@ -720,7 +720,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "The hotel was dark and unclean.", "en");
 
         System.out.printf("Recognized sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-            documentSentiment.getSentiment(),
+            documentSentiment.getSentimentLabel(),
             documentSentiment.getConfidenceScores().getPositive(),
             documentSentiment.getConfidenceScores().getNeutral(),
             documentSentiment.getConfidenceScores().getNegative());
@@ -728,7 +728,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
             System.out.printf(
                 "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                sentenceSentiment.getSentiment(),
+                sentenceSentiment.getSentimentLabel(),
                 sentenceSentiment.getConfidenceScores().getPositive(),
                 sentenceSentiment.getConfidenceScores().getNeutral(),
                 sentenceSentiment.getConfidenceScores().getNegative());
@@ -763,14 +763,14 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
             System.out.printf(
                 "Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                documentSentiment.getSentiment(),
+                documentSentiment.getSentimentLabel(),
                 documentSentiment.getConfidenceScores().getPositive(),
                 documentSentiment.getConfidenceScores().getNeutral(),
                 documentSentiment.getConfidenceScores().getNegative());
             for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                 System.out.printf(
                     "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                    sentenceSentiment.getSentiment(),
+                    sentenceSentiment.getSentimentLabel(),
                     sentenceSentiment.getConfidenceScores().getPositive(),
                     sentenceSentiment.getConfidenceScores().getNeutral(),
                     sentenceSentiment.getConfidenceScores().getNegative());
@@ -806,14 +806,14 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
             System.out.printf(
                 "Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                documentSentiment.getSentiment(),
+                documentSentiment.getSentimentLabel(),
                 documentSentiment.getConfidenceScores().getPositive(),
                 documentSentiment.getConfidenceScores().getNeutral(),
                 documentSentiment.getConfidenceScores().getNegative());
             for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                 System.out.printf(
                     "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                    sentenceSentiment.getSentiment(),
+                    sentenceSentiment.getSentimentLabel(),
                     sentenceSentiment.getConfidenceScores().getPositive(),
                     sentenceSentiment.getConfidenceScores().getNeutral(),
                     sentenceSentiment.getConfidenceScores().getNegative());
@@ -849,14 +849,14 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
             System.out.printf(
                 "Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                documentSentiment.getSentiment(),
+                documentSentiment.getSentimentLabel(),
                 documentSentiment.getConfidenceScores().getPositive(),
                 documentSentiment.getConfidenceScores().getNeutral(),
                 documentSentiment.getConfidenceScores().getNegative());
             for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                 System.out.printf(
                     "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                    sentenceSentiment.getSentiment(),
+                    sentenceSentiment.getSentimentLabel(),
                     sentenceSentiment.getConfidenceScores().getPositive(),
                     sentenceSentiment.getConfidenceScores().getNeutral(),
                     sentenceSentiment.getConfidenceScores().getNegative());

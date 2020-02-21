@@ -6,27 +6,28 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The SentenceSentiment model.
+ * The {@link SentenceSentiment} model that contains a sentiment label of a sentence, confidence score of the sentiment
+ * label, length of the sentence and offset of the sentence within a document.
  */
 @Immutable
 public final class SentenceSentiment {
     private final int length;
     private final int offset;
     private final SentimentConfidenceScorePerLabel confidenceScores;
-    private final SentimentLabel sentiment;
+    private final SentenceSentimentLabel sentimentLabel;
 
     /**
-     * Creates a {@code SentenceSentiment} model that describes the sentiment analysis of sentence.
+     * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
      *
-     * @param sentiment sentiment label of the sentence.
+     * @param sentimentLabel sentiment label of the sentence.
      * @param confidenceScores the sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      *   Higher values signify higher confidence.
      * @param length length of the sentence.
      * @param offset the offset from the start of the sentence.
      */
-    public SentenceSentiment(SentimentLabel sentiment, SentimentConfidenceScorePerLabel confidenceScores, int length,
-        int offset) {
-        this.sentiment = sentiment;
+    public SentenceSentiment(SentenceSentimentLabel sentimentLabel, SentimentConfidenceScorePerLabel confidenceScores,
+        int length, int offset) {
+        this.sentimentLabel = sentimentLabel;
         this.confidenceScores = confidenceScores;
         this.length = length;
         this.offset = offset;
@@ -51,19 +52,19 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the text sentiment labels: POSITIVE, NEGATIVE, NEUTRAL.
+     * Get the text sentiment label: POSITIVE, NEGATIVE, or NEUTRAL. Sentence sentiment label could not be MIXED.
      *
-     * @return the SentimentLabel.
+     * @return the {@link SentenceSentimentLabel}.
      */
-    public SentimentLabel getSentiment() {
-        return sentiment;
+    public SentenceSentimentLabel getSentimentLabel() {
+        return sentimentLabel;
     }
 
     /**
      * Get the confidence score of the sentiment label. All score values sum up to 1, higher the score value means
      * higher confidence the sentiment label represents.
      *
-     * @return the SentimentConfidenceScorePerLabel.
+     * @return the {@link SentimentConfidenceScorePerLabel}.
      */
     public SentimentConfidenceScorePerLabel getConfidenceScores() {
         return confidenceScores;
