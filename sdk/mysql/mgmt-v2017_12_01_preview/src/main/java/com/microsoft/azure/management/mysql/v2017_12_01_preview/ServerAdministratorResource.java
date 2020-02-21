@@ -9,19 +9,19 @@
 package com.microsoft.azure.management.mysql.v2017_12_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.LogFileInner;
+import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.ServerAdministratorResourceInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.mysql.v2017_12_01_preview.implementation.DBforMySQLManager;
-import org.joda.time.DateTime;
+import java.util.UUID;
 
 /**
- * Type representing LogFile.
+ * Type representing ServerAdministratorResource.
  */
-public interface LogFile extends HasInner<LogFileInner>, HasManager<DBforMySQLManager> {
+public interface ServerAdministratorResource extends HasInner<ServerAdministratorResourceInner>, HasManager<DBforMySQLManager> {
     /**
-     * @return the createdTime value.
+     * @return the administratorType value.
      */
-    DateTime createdTime();
+    String administratorType();
 
     /**
      * @return the id value.
@@ -29,14 +29,9 @@ public interface LogFile extends HasInner<LogFileInner>, HasManager<DBforMySQLMa
     String id();
 
     /**
-     * @return the lastModifiedTime value.
+     * @return the login value.
      */
-    DateTime lastModifiedTime();
-
-    /**
-     * @return the logFileType value.
-     */
-    String logFileType();
+    String login();
 
     /**
      * @return the name value.
@@ -44,18 +39,18 @@ public interface LogFile extends HasInner<LogFileInner>, HasManager<DBforMySQLMa
     String name();
 
     /**
-     * @return the sizeInKB value.
+     * @return the sid value.
      */
-    Long sizeInKB();
+    UUID sid();
+
+    /**
+     * @return the tenantId value.
+     */
+    UUID tenantId();
 
     /**
      * @return the type value.
      */
     String type();
-
-    /**
-     * @return the url value.
-     */
-    String url();
 
 }
