@@ -35,7 +35,7 @@ public class UploadUtils {
      * @param uploadFull {@link BiFunction} to upload in full.
      * @return A reactive response containing the information of the uploaded data.
      */
-    public static <T> Mono<Response<T>> determineUploadFullOrChunked(final Flux<ByteBuffer> data,
+    public static <T> Mono<Response<T>> uploadFullOrChunked(final Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions,
         final Function<Flux<ByteBuffer>, Mono<Response<T>>> uploadInChunks,
         final BiFunction<Flux<ByteBuffer>, Long, Mono<Response<T>>> uploadFull) {
@@ -132,7 +132,7 @@ public class UploadUtils {
     }
 
 
-    public static boolean uploadInBlocks(String filePath, Integer maxSingleUploadSize, ClientLogger logger) {
+    public static boolean shouldUploadInChunks(String filePath, Integer maxSingleUploadSize, ClientLogger logger) {
         AsynchronousFileChannel channel = uploadFileResourceSupplier(filePath, logger);
         boolean retVal;
         try {

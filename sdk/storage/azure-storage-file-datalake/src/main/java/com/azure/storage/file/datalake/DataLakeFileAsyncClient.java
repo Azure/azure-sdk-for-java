@@ -281,7 +281,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                     fileOffset, length, headers, validatedUploadRequestConditions);
 
             return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
-                .then(UploadUtils.determineUploadFullOrChunked(data, validatedParallelTransferOptions,
+                .then(UploadUtils.uploadFullOrChunked(data, validatedParallelTransferOptions,
                 uploadInChunksFunction, uploadFullMethod));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -386,7 +386,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
             // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
             if (!overwrite) {
-                if (UploadUtils.uploadInBlocks(filePath, DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES, logger)) {
+                if (UploadUtils.shouldUploadInChunks(filePath, DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES, logger)) {
                     overwriteCheck = exists().flatMap(exists -> exists
                         ? monoError(logger, new IllegalArgumentException(Constants.FILE_ALREADY_EXISTS))
                         : Mono.empty());
@@ -448,10 +448,10 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                             throw logger.logExceptionAsError(new IllegalArgumentException("Size of the file must be "
                                 + "greater than 0."));
                         }
-                        if (UploadUtils.uploadInBlocks(filePath,
+                        if (UploadUtils.shouldUploadInChunks(filePath,
                             finalParallelTransferOptions.getMaxSingleUploadSize(), logger)) {
                             return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
-                                .then(uploadBlocks(fileOffset, fileSize, finalParallelTransferOptions,
+                                .then(uploadFileChunks(fileOffset, fileSize, finalParallelTransferOptions,
                                     originalBlockSize, headers, validatedUploadRequestConditions, channel));
                         } else {
                             // Otherwise we know it can be sent in a single request reducing network overhead.
@@ -463,15 +463,15 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                     } catch (IOException ex) {
                         return Mono.error(ex);
                     }
-                }, channel ->
+                },
+                channel ->
                     UploadUtils.uploadFileCleanup(channel, logger));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-
-    private Mono<Void> uploadBlocks(long fileOffset, long fileSize, ParallelTransferOptions parallelTransferOptions,
+    private Mono<Void> uploadFileChunks(long fileOffset, long fileSize, ParallelTransferOptions parallelTransferOptions,
         Integer originalBlockSize, PathHttpHeaders headers, DataLakeRequestConditions requestConditions,
         AsynchronousFileChannel channel) {
         // parallelTransferOptions are finalized in the calling method.

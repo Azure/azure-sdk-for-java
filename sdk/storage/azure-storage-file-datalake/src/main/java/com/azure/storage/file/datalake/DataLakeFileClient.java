@@ -179,7 +179,7 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         if (!overwrite) {
             // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
-            if (UploadUtils.uploadInBlocks(filePath, DataLakeFileClient.MAX_APPEND_FILE_BYTES, logger)
+            if (UploadUtils.shouldUploadInChunks(filePath, DataLakeFileClient.MAX_APPEND_FILE_BYTES, logger)
                 && exists()) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }

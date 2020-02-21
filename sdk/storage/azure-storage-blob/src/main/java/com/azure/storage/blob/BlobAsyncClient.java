@@ -526,7 +526,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
             // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
             if (!overwrite) {
-                if (UploadUtils.uploadInBlocks(filePath, BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES, logger)) {
+                if (UploadUtils.shouldUploadInChunks(filePath, BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES, logger)) {
                     overwriteCheck = exists().flatMap(exists -> exists
                         ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
                         : Mono.empty());
@@ -577,9 +577,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         long fileSize = channel.size();
 
                         // If the file is larger than 256MB chunk it and stage it as blocks.
-                        if (UploadUtils.uploadInBlocks(filePath, finalParallelTransferOptions.getMaxSingleUploadSize(),
-                            logger)) {
-                            return uploadBlocks(fileSize, finalParallelTransferOptions, originalBlockSize, headers,
+                        if (UploadUtils.shouldUploadInChunks(filePath,
+                            finalParallelTransferOptions.getMaxSingleUploadSize(), logger)) {
+                            return uploadFileChunks(fileSize, finalParallelTransferOptions, originalBlockSize, headers,
                                 metadata, tier, requestConditions, channel, blockBlobAsyncClient);
                         } else {
                             // Otherwise we know it can be sent in a single request reducing network overhead.
@@ -590,14 +590,15 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     } catch (IOException ex) {
                         return Mono.error(ex);
                     }
-                }, channel ->
+                },
+                channel ->
                 UploadUtils.uploadFileCleanup(channel, logger));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    private Mono<Void> uploadBlocks(long fileSize, ParallelTransferOptions parallelTransferOptions,
+    private Mono<Void> uploadFileChunks(long fileSize, ParallelTransferOptions parallelTransferOptions,
         Integer originalBlockSize, BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions, AsynchronousFileChannel channel, BlockBlobAsyncClient client) {
         final BlobRequestConditions finalRequestConditions = (requestConditions == null)
