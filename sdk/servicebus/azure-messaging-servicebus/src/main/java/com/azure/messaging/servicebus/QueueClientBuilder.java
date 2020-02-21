@@ -148,7 +148,7 @@ public final class QueueClientBuilder {
      * Creates an Service Bus Queue receiver responsible for reading {@link Message} from a specific Queue.
      *
      * @param prefetchCount The set of options to apply when creating the consumer.
-     * @return An new {@link QueueReceiverAsyncClient} that receives events from the Queue.
+     * @return An new {@link QueueReceiverAsyncClient} that receives messages from the Queue.
      */
     QueueReceiverAsyncClient createAsyncReceiverClient(int prefetchCount) {
         if (retryOptions == null) {

@@ -168,7 +168,7 @@ public final class QueueSenderAsyncClient implements Closeable {
     }
 
     /**
-     *
+     * Cancels the enqueuing of an already sent scheduled message, if it was not already enqueued.
      * @param sequenceNumber of the scheduled message to cancel.
      * @return The {@link Mono} that finishes this operation on service bus resource.
      */
@@ -186,6 +186,7 @@ public final class QueueSenderAsyncClient implements Closeable {
     }
 
     /**
+     * Sends a message batch to the Azure Service Bus entity this sender is connected to.
      *
      * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
      * @return The {@link Mono} the finishes this operation on service bus resource.

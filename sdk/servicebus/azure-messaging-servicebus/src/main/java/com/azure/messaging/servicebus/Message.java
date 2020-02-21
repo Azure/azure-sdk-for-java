@@ -56,6 +56,7 @@ public class Message {
     private String messageId;
     private String contentType;
     private String sessionId;
+    private long sequenceNumber;
 
 
     static {
@@ -289,6 +290,21 @@ public class Message {
         this.context = context.addData(key, value);
 
         return this;
+    }
+
+    /**
+     * Gets the unique number assigned to a message by Service Bus.
+     *
+     * The sequence number is a unique 64-bit integer assigned to a message as it is accepted and stored by the broker
+     * and functions as its true identifier. For partitioned entities, the topmost 16 bits reflect the
+     * partition identifier. Sequence numbers monotonically increase and are gapless. They roll over to 0 when
+     * the 48-64 bit range is exhausted. This property is read-only.
+     *
+     * @return sequence number of this message
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and Timestamps</a>
+     */
+    public long getSequenceNumber() {
+        return this.sequenceNumber;
     }
 
     /**
