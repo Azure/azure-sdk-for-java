@@ -148,6 +148,19 @@ jobs:
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
 
+      - pwsh: |
+          if ("$(parameters.SDKType)" -ieq "client") {
+            $excludes = "^(microsoft|mgmt)"
+          } else {
+            $excludes = "^(azure|mgmt)"
+          }
+
+          $directory = $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
+
+          Write-Host "Directory: '$directory'. Excludes: '$excludes'"
+          $(Build.SourcesDirectory)/eng/Set-ComponentRegistrations.ps1 $directory -ExcludeRegex $excludes -Verbose
+        displayName: 'Generate cgmanifest.json'
+
       - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
         # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
         # builds should be sufficient.
