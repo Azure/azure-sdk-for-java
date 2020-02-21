@@ -28,11 +28,23 @@ public class PostgreSQLManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** The subscription ID that identifies an Azure subscription. */
+    /** The API version to use for this operation. */
+    private String apiVersion;
+
+    /**
+     * Gets The API version to use for this operation.
+     *
+     * @return the apiVersion value.
+     */
+    public String apiVersion() {
+        return this.apiVersion;
+    }
+
+    /** The ID of the target subscription. */
     private String subscriptionId;
 
     /**
-     * Gets The subscription ID that identifies an Azure subscription.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -41,7 +53,7 @@ public class PostgreSQLManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets The subscription ID that identifies an Azure subscription.
+     * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -49,18 +61,6 @@ public class PostgreSQLManagementClientImpl extends AzureServiceClient {
     public PostgreSQLManagementClientImpl withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
-    }
-
-    /** The API version to use for the request. */
-    private String apiVersion;
-
-    /**
-     * Gets The API version to use for the request.
-     *
-     * @return the apiVersion value.
-     */
-    public String apiVersion() {
-        return this.apiVersion;
     }
 
     /** The preferred language for the response. */

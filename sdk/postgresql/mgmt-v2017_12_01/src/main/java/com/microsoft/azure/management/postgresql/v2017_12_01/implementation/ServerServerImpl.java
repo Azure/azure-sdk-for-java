@@ -20,15 +20,15 @@ import com.microsoft.azure.management.postgresql.v2017_12_01.ServerState;
 import com.microsoft.azure.management.postgresql.v2017_12_01.ServerVersion;
 
 class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer {
-    private final PostgreSQLManager manager;
+    private final DBforPostgreSQLManager manager;
 
-    ServerServerImpl(ServerInner inner,  PostgreSQLManager manager) {
+    ServerServerImpl(ServerInner inner,  DBforPostgreSQLManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public PostgreSQLManager manager() {
+    public DBforPostgreSQLManager manager() {
         return this.manager;
     }
 
