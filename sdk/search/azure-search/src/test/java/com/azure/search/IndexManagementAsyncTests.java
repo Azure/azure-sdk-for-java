@@ -173,7 +173,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier
             .create(client.createIndex(index)
-                .then(client.indexExists(index.getName())))
+                .then(client.doesIndexExist(index.getName())))
             .assertNext(Assert::assertTrue)
             .verifyComplete();
     }
@@ -184,7 +184,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
 
         StepVerifier
             .create(client.createIndex(index)
-                .then(client.indexExistsWithResponse(index.getName(), generateRequestOptions())))
+                .then(client.doesIndexExistWithResponse(index.getName(), generateRequestOptions())))
             .assertNext(res -> Assert.assertTrue(res.getValue()))
             .verifyComplete();
     }
@@ -192,7 +192,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
     @Test
     public void existsReturnsFalseForNonExistingIndex() {
         StepVerifier
-            .create(client.indexExists("invalidindex"))
+            .create(client.doesIndexExist("invalidindex"))
             .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
@@ -268,7 +268,7 @@ public class IndexManagementAsyncTests extends IndexManagementTestBase {
             .create(
                 client.createIndex(index)
                 .then(client.deleteIndex(index.getName()))
-                .then(client.indexExists(index.getName())))
+                .then(client.doesIndexExist(index.getName())))
             .assertNext(Assert::assertFalse)
             .verifyComplete();
     }

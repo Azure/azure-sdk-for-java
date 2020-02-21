@@ -41,7 +41,7 @@ import java.util.Objects;
  *         the API key through {@code .credential()}
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
-public class SearchIndexClientBuilder {
+public final class SearchIndexClientBuilder {
 
     // This header tells the server to return the request id in the HTTP response. Useful for correlation with what
     // request was sent.
@@ -52,7 +52,7 @@ public class SearchIndexClientBuilder {
     private static final String VERSION = "version";
 
     SearchApiKeyCredential searchApiKeyCredential;
-    SearchServiceVersion apiVersion;
+    SearchServiceVersion searchServiceVersion;
     String endpoint;
     HttpClient httpClient;
     HttpLogOptions httpLogOptions;
@@ -70,7 +70,7 @@ public class SearchIndexClientBuilder {
      * Default Constructor
      */
     public SearchIndexClientBuilder() {
-        apiVersion = SearchServiceVersion.getLatest();
+        searchServiceVersion = SearchServiceVersion.getLatest();
         policies = new ArrayList<>();
         httpClient = HttpClient.createDefault();
         httpLogOptions = new HttpLogOptions();
@@ -85,14 +85,14 @@ public class SearchIndexClientBuilder {
     /**
      * Sets the api version to work against
      *
-     * @param apiVersion api version
+     * @param searchServiceVersion api version
      * @return the updated SearchIndexClientBuilder object
      */
-    public SearchIndexClientBuilder apiVersion(SearchServiceVersion apiVersion) {
-        if (apiVersion == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid apiVersion"));
+    public SearchIndexClientBuilder searchServiceVersion(SearchServiceVersion searchServiceVersion) {
+        if (searchServiceVersion == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid searchServiceVersion"));
         }
-        this.apiVersion = apiVersion;
+        this.searchServiceVersion = searchServiceVersion;
         return this;
     }
 
@@ -238,7 +238,7 @@ public class SearchIndexClientBuilder {
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        return new SearchIndexAsyncClient(endpoint, indexName, apiVersion, prepareForBuildClient());
+        return new SearchIndexAsyncClient(endpoint, indexName, searchServiceVersion, prepareForBuildClient());
     }
 
     HttpPipeline prepareForBuildClient() {

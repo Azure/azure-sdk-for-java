@@ -292,7 +292,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
         StepVerifier
             .create(client.createSynonymMap(synonymMap)
                 .then(client.deleteSynonymMap(synonymMap.getName()))
-                .then(client.synonymMapExists(synonymMap.getName())))
+                .then(client.doesSynonymMapExist(synonymMap.getName())))
             .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
@@ -342,7 +342,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
         StepVerifier
             .create(client.createSynonymMap(synonymMap)
-                .then(client.synonymMapExists(synonymMap.getName())))
+                .then(client.doesSynonymMapExist(synonymMap.getName())))
             .assertNext(Assert::assertTrue)
             .verifyComplete();
     }
@@ -353,7 +353,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
 
         StepVerifier
             .create(client.createSynonymMap(synonymMap)
-                .then(client.synonymMapExistsWithResponse(synonymMap.getName(), generateRequestOptions())))
+                .then(client.doesSynonymMapExistWithResponse(synonymMap.getName(), generateRequestOptions())))
             .assertNext(res -> Assert.assertTrue(res.getValue()))
             .verifyComplete();
     }
@@ -361,7 +361,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
     @Test
     public void existsReturnsFalseForNonExistingSynonymMap() {
         StepVerifier
-            .create(client.synonymMapExists("thisSynonymMapDoesNotExist"))
+            .create(client.doesSynonymMapExist("thisSynonymMapDoesNotExist"))
             .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
@@ -369,7 +369,7 @@ public class SynonymMapManagementAsyncTests extends SynonymMapManagementTestBase
     @Test
     public void existsReturnsFalseForNonExistingSynonymMapWithResponse() {
         StepVerifier
-            .create(client.synonymMapExistsWithResponse("thisSynonymMapDoesNotExist", generateRequestOptions()))
+            .create(client.doesSynonymMapExistWithResponse("thisSynonymMapDoesNotExist", generateRequestOptions()))
             .assertNext(res -> Assert.assertFalse(res.getValue()))
             .verifyComplete();
     }

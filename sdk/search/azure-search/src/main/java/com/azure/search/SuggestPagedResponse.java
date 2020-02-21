@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * the additional information is:
  * coverage - coverage value.
  */
-public class SuggestPagedResponse extends PagedResponseBase<String, SuggestResult> {
+public final class SuggestPagedResponse extends PagedResponseBase<String, SuggestResult> {
 
     /**
      * Get coverage

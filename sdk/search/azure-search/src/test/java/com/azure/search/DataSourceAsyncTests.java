@@ -167,7 +167,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         StepVerifier
             .create(client.deleteDataSource(dataSource.getName())
-                .then(client.dataSourceExists(dataSource.getName())))
+                .then(client.doesDataSourceExist(dataSource.getName())))
             .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
@@ -237,7 +237,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
     @Test
     public void existsReturnsFalseForNonExistingDatasource() {
         StepVerifier
-            .create(client.dataSourceExists("inExistentDataSourceName"))
+            .create(client.doesDataSourceExist("inExistentDataSourceName"))
             .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
@@ -248,7 +248,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         StepVerifier
             .create(client.createOrUpdateDataSource(dataSource)
-                .then(client.dataSourceExists(dataSource.getName())))
+                .then(client.doesDataSourceExist(dataSource.getName())))
             .assertNext(Assert::assertTrue)
             .verifyComplete();
     }
@@ -259,7 +259,7 @@ public class DataSourceAsyncTests extends DataSourceTestBase {
 
         StepVerifier
             .create(client.createOrUpdateDataSource(dataSource)
-                .then(client.dataSourceExistsWithResponse(dataSource.getName(), generateRequestOptions())))
+                .then(client.doesDataSourceExistWithResponse(dataSource.getName(), generateRequestOptions())))
             .assertNext(res -> Assert.assertTrue(res.getValue()))
             .verifyComplete();
     }

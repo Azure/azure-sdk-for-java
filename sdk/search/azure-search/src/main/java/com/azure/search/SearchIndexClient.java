@@ -26,7 +26,7 @@ import java.util.List;
  * Cognitive Search Synchronous Client to query an index and upload, merge, or delete documents
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class)
-public class SearchIndexClient {
+public final class SearchIndexClient {
 
     private final SearchIndexAsyncClient asyncClient;
 
@@ -246,12 +246,12 @@ public class SearchIndexClient {
     }
 
     /**
-     * Gets Client Api Version.
+     * Gets search service version.
      *
-     * @return the apiVersion value.
+     * @return the search service version value.
      */
-    public SearchServiceVersion getApiVersion() {
-        return asyncClient.getApiVersion();
+    public SearchServiceVersion getServiceVersion() {
+        return asyncClient.getServiceVersion();
     }
 
     /**
@@ -348,39 +348,12 @@ public class SearchIndexClient {
      * corresponding property value in the returned object.
      * @param requestOptions additional parameters for the operation.
      * Contains the tracking ID sent with the request to help with debugging
-     * @return document object
-     */
-    public Document getDocument(String key,
-                                List<String> selectedFields,
-                                RequestOptions requestOptions) {
-        return this.getDocumentWithResponse(key,
-            selectedFields,
-            requestOptions,
-            Context.NONE).getValue();
-    }
-
-    /**
-     * Retrieves a document from the Azure Cognitive Search index.
-     * See https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
-     *
-     * @param key The key of the document to retrieve;
-     * See https://docs.microsoft.com/rest/api/searchservice/Naming-rules
-     * for the rules for constructing valid document keys.
-     * @param selectedFields List of field names to retrieve for the document;
-     * Any field not retrieved will have null or default as its
-     * corresponding property value in the returned object.
-     * @param requestOptions additional parameters for the operation.
-     * Contains the tracking ID sent with the request to help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return response containing a document object
      */
-    public Response<Document> getDocumentWithResponse(String key,
-                                                      List<String> selectedFields,
-                                                      RequestOptions requestOptions,
-                                                      Context context) {
-        Mono<Response<Document>> results = asyncClient.getDocumentWithResponse(key,
-            selectedFields,
-            requestOptions,
+    public Response<Document> getDocumentWithResponse(String key, List<String> selectedFields,
+        RequestOptions requestOptions, Context context) {
+        Mono<Response<Document>> results = asyncClient.getDocumentWithResponse(key, selectedFields, requestOptions,
             context);
         return results.block();
     }

@@ -110,7 +110,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
     }
 
     DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
-        return DataSources.azureBlobStorage(
+        return DataSources.createFromAzureBlobStorage(
             BLOB_DATASOURCE_TEST_NAME,
             FAKE_STORAGE_CONNECTION_STRING,
             "fakecontainer",
@@ -121,7 +121,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
     }
 
     DataSource createTestTableStorageDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
-        return DataSources.azureTableStorage(
+        return DataSources.createFromAzureTableStorage(
             "azs-java-test-tablestorage",
             FAKE_STORAGE_CONNECTION_STRING,
             "faketable",
@@ -135,7 +135,7 @@ public abstract class DataSourceTestBase extends SearchServiceTestBase {
         DataDeletionDetectionPolicy deletionDetectionPolicy,
         boolean useChangeDetection) {
 
-        return DataSources.cosmos(
+        return DataSources.createFromCosmos(
             "azs-java-test-cosmos",
             FAKE_COSMOS_CONNECTION_STRING,
             "faketable",

@@ -44,12 +44,12 @@ import static com.azure.core.util.FluxUtil.withContext;
  * as well as manage other resources, on a Cognitive Search service
  */
 @ServiceClient(builder = SearchServiceClientBuilder.class, isAsync = true)
-public class SearchServiceAsyncClient {
+public final class SearchServiceAsyncClient {
 
     /**
      * Search REST API Version
      */
-    private final SearchServiceVersion apiVersion;
+    private final SearchServiceVersion searchServiceVersion;
 
     /**
      * The endpoint for the Azure Cognitive Search service.
@@ -71,11 +71,11 @@ public class SearchServiceAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    SearchServiceAsyncClient(String endpoint, SearchServiceVersion apiVersion, HttpPipeline httpPipeline) {
+    SearchServiceAsyncClient(String endpoint, SearchServiceVersion searchServiceVersion, HttpPipeline httpPipeline) {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
 
-        if (apiVersion == null) {
+        if (searchServiceVersion == null) {
             throw logger.logExceptionAsError(new NullPointerException("Invalid apiVersion"));
         }
         if (httpPipeline == null) {
@@ -83,13 +83,13 @@ public class SearchServiceAsyncClient {
         }
 
         this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
+        this.searchServiceVersion = searchServiceVersion;
         this.httpPipeline = httpPipeline;
 
         this.restClient = new SearchServiceRestClientBuilder()
             .searchServiceName(parts.serviceName)
             .searchDnsSuffix(parts.dnsSuffix)
-            .apiVersion(apiVersion.getVersion())
+            .apiVersion(searchServiceVersion.getVersion())
             .pipeline(httpPipeline)
             .build();
     }
@@ -114,17 +114,17 @@ public class SearchServiceAsyncClient {
         return new SearchIndexAsyncClient(
             endpoint,
             indexName,
-            apiVersion,
+            searchServiceVersion,
             httpPipeline);
     }
 
     /**
-     * Gets Client Api Version.
+     * Gets search service version.
      *
-     * @return the apiVersion value.
+     * @return the search service version value.
      */
-    public SearchServiceVersion getApiVersion() {
-        return this.apiVersion;
+    public SearchServiceVersion getServiceVersion() {
+        return this.searchServiceVersion;
     }
 
     /**
@@ -377,9 +377,9 @@ public class SearchServiceAsyncClient {
      * @param dataSourceName the name of the data source
      * @return true if the data source exists; false otherwise.
      */
-    public Mono<Boolean> dataSourceExists(String dataSourceName) {
+    public Mono<Boolean> doesDataSourceExist(String dataSourceName) {
         try {
-            return this.dataSourceExistsWithResponse(dataSourceName, null).map(Response::getValue);
+            return this.doesDataSourceExistWithResponse(dataSourceName, null).map(Response::getValue);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -393,17 +393,18 @@ public class SearchServiceAsyncClient {
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the data source exists; false otherwise.
      */
-    public Mono<Response<Boolean>> dataSourceExistsWithResponse(String dataSourceName, RequestOptions requestOptions) {
+    public Mono<Response<Boolean>> doesDataSourceExistWithResponse(String dataSourceName,
+        RequestOptions requestOptions) {
         try {
-            return withContext(context -> this.dataSourceExistsWithResponse(dataSourceName, requestOptions, context));
+            return withContext(context -> this.doesDataSourceExistWithResponse(dataSourceName, requestOptions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Boolean>> dataSourceExistsWithResponse(String dataSourceName,
-                                                         RequestOptions requestOptions,
-                                                         Context context) {
+    Mono<Response<Boolean>> doesDataSourceExistWithResponse(String dataSourceName, RequestOptions requestOptions,
+        Context context) {
         return resourceExistsWithResponse(() ->
             this.getDataSourceWithResponse(dataSourceName, requestOptions, context));
     }
@@ -760,9 +761,9 @@ public class SearchServiceAsyncClient {
      * @param indexerName the name of the indexer
      * @return true if the indexer exists; false otherwise.
      */
-    public Mono<Boolean> indexerExists(String indexerName) {
+    public Mono<Boolean> doesIndexerExist(String indexerName) {
         try {
-            return this.indexerExistsWithResponse(indexerName, null).map(Response::getValue);
+            return this.doesIndexerExistWithResponse(indexerName, null).map(Response::getValue);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -776,15 +777,15 @@ public class SearchServiceAsyncClient {
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the indexer exists; false otherwise.
      */
-    public Mono<Response<Boolean>> indexerExistsWithResponse(String indexerName, RequestOptions requestOptions) {
+    public Mono<Response<Boolean>> doesIndexerExistWithResponse(String indexerName, RequestOptions requestOptions) {
         try {
-            return withContext(context -> this.indexerExistsWithResponse(indexerName, requestOptions, context));
+            return withContext(context -> this.doesIndexerExistWithResponse(indexerName, requestOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Boolean>> indexerExistsWithResponse(String indexerName,
+    Mono<Response<Boolean>> doesIndexerExistWithResponse(String indexerName,
                                                       RequestOptions requestOptions,
                                                       Context context) {
         return resourceExistsWithResponse(() -> this.getIndexerWithResponse(indexerName, requestOptions, context));
@@ -872,9 +873,9 @@ public class SearchServiceAsyncClient {
      * @param indexName the name of the index
      * @return true if the index exists; false otherwise.
      */
-    public Mono<Boolean> indexExists(String indexName) {
+    public Mono<Boolean> doesIndexExist(String indexName) {
         try {
-            return this.indexExistsWithResponse(indexName, null).map(Response::getValue);
+            return this.doesIndexExistWithResponse(indexName, null).map(Response::getValue);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -888,15 +889,15 @@ public class SearchServiceAsyncClient {
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the index exists; false otherwise.
      */
-    public Mono<Response<Boolean>> indexExistsWithResponse(String indexName, RequestOptions requestOptions) {
+    public Mono<Response<Boolean>> doesIndexExistWithResponse(String indexName, RequestOptions requestOptions) {
         try {
-            return withContext(context -> this.indexExistsWithResponse(indexName, requestOptions, context));
+            return withContext(context -> this.doesIndexExistWithResponse(indexName, requestOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Boolean>> indexExistsWithResponse(String indexName,
+    Mono<Response<Boolean>> doesIndexExistWithResponse(String indexName,
                                                     RequestOptions requestOptions,
                                                     Context context) {
         return resourceExistsWithResponse(() -> this.getIndexWithResponse(indexName, requestOptions, context));
@@ -1394,9 +1395,9 @@ public class SearchServiceAsyncClient {
      * @param skillsetName the name of the skillset
      * @return true if the skillset exists; false otherwise.
      */
-    public Mono<Boolean> skillsetExists(String skillsetName) {
+    public Mono<Boolean> doesSkillsetExist(String skillsetName) {
         try {
-            return this.skillsetExistsWithResponse(skillsetName, null).map(Response::getValue);
+            return this.doesSkillsetExistWithResponse(skillsetName, null).map(Response::getValue);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1410,15 +1411,15 @@ public class SearchServiceAsyncClient {
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the skillset exists; false otherwise.
      */
-    public Mono<Response<Boolean>> skillsetExistsWithResponse(String skillsetName, RequestOptions requestOptions) {
+    public Mono<Response<Boolean>> doesSkillsetExistWithResponse(String skillsetName, RequestOptions requestOptions) {
         try {
-            return withContext(context -> this.skillsetExistsWithResponse(skillsetName, requestOptions, context));
+            return withContext(context -> this.doesSkillsetExistWithResponse(skillsetName, requestOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Boolean>> skillsetExistsWithResponse(String skillsetName,
+    Mono<Response<Boolean>> doesSkillsetExistWithResponse(String skillsetName,
                                                        RequestOptions requestOptions,
                                                        Context context) {
         return resourceExistsWithResponse(() ->
@@ -1663,9 +1664,9 @@ public class SearchServiceAsyncClient {
      * @param synonymMapName the name of the synonym map
      * @return true if the synonym map exists; false otherwise.
      */
-    public Mono<Boolean> synonymMapExists(String synonymMapName) {
+    public Mono<Boolean> doesSynonymMapExist(String synonymMapName) {
         try {
-            return this.synonymMapExistsWithResponse(synonymMapName, null).map(Response::getValue);
+            return this.doesSynonymMapExistWithResponse(synonymMapName, null).map(Response::getValue);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1679,15 +1680,17 @@ public class SearchServiceAsyncClient {
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return true if the synonym map exists; false otherwise.
      */
-    public Mono<Response<Boolean>> synonymMapExistsWithResponse(String synonymMapName, RequestOptions requestOptions) {
+    public Mono<Response<Boolean>> doesSynonymMapExistWithResponse(String synonymMapName,
+        RequestOptions requestOptions) {
         try {
-            return withContext(context -> this.synonymMapExistsWithResponse(synonymMapName, requestOptions, context));
+            return withContext(context -> this.doesSynonymMapExistWithResponse(synonymMapName, requestOptions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Boolean>> synonymMapExistsWithResponse(String synonymMapName,
+    Mono<Response<Boolean>> doesSynonymMapExistWithResponse(String synonymMapName,
                                                          RequestOptions requestOptions,
                                                          Context context) {
         return resourceExistsWithResponse(() ->

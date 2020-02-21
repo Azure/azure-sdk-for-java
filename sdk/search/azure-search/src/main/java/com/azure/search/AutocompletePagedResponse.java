@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * Represents an HTTP response from the autocomplete API request
  * that contains a list of items deserialized into a {@link Page}.
  */
-public class AutocompletePagedResponse extends PagedResponseBase<String, AutocompleteItem> {
+public final class AutocompletePagedResponse extends PagedResponseBase<String, AutocompleteItem> {
 
     /**
      * Constructor

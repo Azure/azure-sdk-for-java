@@ -26,7 +26,7 @@ public class DataSourcesTest {
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString("connectionString"))
             .setContainer(new DataContainer().setName("table"));
-        DataSource actual = DataSources.azureSql(
+        DataSource actual = DataSources.createFromAzureSql(
             "sql", "connectionString", "table");
 
         Assert.assertTrue(assertDataSourceEqual(actual, expected));
@@ -42,7 +42,7 @@ public class DataSourcesTest {
             .setConnectionString("connectionString"))
             .setContainer(new DataContainer()
                 .setName("container"));
-        DataSource actual = DataSources.azureBlobStorage(
+        DataSource actual = DataSources.createFromAzureBlobStorage(
             "storageBlob", "connectionString", "container");
 
         Assert.assertTrue(assertDataSourceEqual(actual, expected));
@@ -58,7 +58,7 @@ public class DataSourcesTest {
                 .setConnectionString("connectionString"))
             .setContainer(new DataContainer()
             .setName("table"));
-        DataSource actual = DataSources.azureTableStorage(
+        DataSource actual = DataSources.createFromAzureTableStorage(
             "storageTable", "connectionString", "table");
 
         Assert.assertTrue(assertDataSourceEqual(actual, expected));
@@ -74,7 +74,7 @@ public class DataSourcesTest {
                 .setConnectionString("connectionString"))
             .setContainer(new DataContainer()
                 .setName("collection"));
-        DataSource actual = DataSources.cosmos(
+        DataSource actual = DataSources.createFromCosmos(
             "cosmos", "connectionString", "collection", false);
 
         Assert.assertTrue(assertDataSourceEqual(actual, expected));
@@ -91,7 +91,7 @@ public class DataSourcesTest {
             .setContainer(new DataContainer()
                 .setName("collection"))
             .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts"));
-        DataSource actual = DataSources.cosmos(
+        DataSource actual = DataSources.createFromCosmos(
             "cosmos", "connectionString", "collection");
 
         Assert.assertTrue(assertDataSourceEqual(actual, expected));

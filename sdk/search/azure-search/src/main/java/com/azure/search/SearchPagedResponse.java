@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * count - number of total documents returned. Will be returned only if isIncludeTotalResultCount is set to true
  * coverage - coverage value.
  */
-public class SearchPagedResponse extends PagedResponseBase<String, SearchResult> {
+public final class SearchPagedResponse extends PagedResponseBase<String, SearchResult> {
 
     private final Map<String, List<FacetResult>> facets;
     private final Long count;

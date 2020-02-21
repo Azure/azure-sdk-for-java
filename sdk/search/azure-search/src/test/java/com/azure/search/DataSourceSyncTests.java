@@ -101,7 +101,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         DataSource dataSource = createTestBlobDataSource(null);
         client.deleteDataSource(dataSource.getName());
 
-        Assert.assertFalse(client.dataSourceExists(dataSource.getName()));
+        Assert.assertFalse(client.doesDataSourceExist(dataSource.getName()));
     }
 
     @Test
@@ -242,7 +242,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
 
     @Test
     public void existsReturnsFalseForNonExistingDatasource() {
-        Assert.assertFalse(client.dataSourceExists("inExistentDataSourceName"));
+        Assert.assertFalse(client.doesDataSourceExist("inExistentDataSourceName"));
     }
 
     @Test
@@ -250,7 +250,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
 
-        Assert.assertTrue(client.dataSourceExists(dataSource.getName()));
+        Assert.assertTrue(client.doesDataSourceExist(dataSource.getName()));
     }
 
     @Test
@@ -258,7 +258,7 @@ public class DataSourceSyncTests extends DataSourceTestBase {
         DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
         client.createOrUpdateDataSource(dataSource);
 
-        Assert.assertTrue(client.dataSourceExistsWithResponse(dataSource.getName(), generateRequestOptions(),
+        Assert.assertTrue(client.doesDataSourceExistWithResponse(dataSource.getName(), generateRequestOptions(),
             Context.NONE).getValue());
     }
 

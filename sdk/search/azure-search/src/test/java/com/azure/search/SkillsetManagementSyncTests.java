@@ -355,7 +355,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         client.createSkillset(expected);
         client.deleteSkillset(expected.getName());
 
-        Assert.assertFalse(client.skillsetExists(expected.getName()));
+        Assert.assertFalse(client.doesSkillsetExist(expected.getName()));
     }
 
     @Test
@@ -391,7 +391,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
 
     @Test
     public void existsReturnsFalseForNonExistingSkillset() {
-        Assert.assertFalse(client.skillsetExists("nonexistent"));
+        Assert.assertFalse(client.doesSkillsetExist("nonexistent"));
     }
 
     @Test
@@ -399,7 +399,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
         client.createSkillset(skillset);
 
-        Assert.assertTrue(client.skillsetExists(skillset.getName()));
+        Assert.assertTrue(client.doesSkillsetExist(skillset.getName()));
     }
 
     @Test
@@ -407,7 +407,7 @@ public class SkillsetManagementSyncTests extends SkillsetManagementTestBase {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(OCR_SKILLSET_NAME, false);
         client.createSkillset(skillset);
 
-        Assert.assertTrue(client.skillsetExistsWithResponse(skillset.getName(), generateRequestOptions(), Context.NONE).getValue());
+        Assert.assertTrue(client.doesSkillsetExistWithResponse(skillset.getName(), generateRequestOptions(), Context.NONE).getValue());
     }
 
     @Test

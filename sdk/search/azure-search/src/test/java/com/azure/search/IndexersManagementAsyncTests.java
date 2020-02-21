@@ -450,7 +450,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
         client.deleteIndexer(indexer.getName()).block();
         StepVerifier
-            .create(client.indexerExists(indexer.getName()))
+            .create(client.doesIndexerExist(indexer.getName()))
             .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
@@ -464,7 +464,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
 
         client.deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), new RequestOptions()).block();
         StepVerifier
-            .create(client.indexerExistsWithResponse(indexer.getName(), new RequestOptions()))
+            .create(client.doesIndexerExistWithResponse(indexer.getName(), new RequestOptions()))
             .assertNext(res -> Assert.assertFalse(res.getValue()))
             .verifyComplete();
     }
@@ -651,7 +651,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     public void existsReturnsTrueForExistingIndexer() {
         Indexer indexer = createTestDataSourceAndIndexer();
 
-        StepVerifier.create(client.indexerExists(indexer.getName()))
+        StepVerifier.create(client.doesIndexerExist(indexer.getName()))
             .expectNext(true)
             .verifyComplete();
     }
@@ -661,7 +661,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
         Indexer indexer = createTestDataSourceAndIndexer();
 
         StepVerifier
-            .create(client.indexerExistsWithResponse(indexer.getName(), generateRequestOptions()))
+            .create(client.doesIndexerExistWithResponse(indexer.getName(), generateRequestOptions()))
             .assertNext(res -> Assert.assertTrue(res.getValue()))
             .verifyComplete();
     }
@@ -669,7 +669,7 @@ public class IndexersManagementAsyncTests extends IndexersManagementTestBase {
     @Test
     public void existsReturnsFalseForNonExistingIndexer() {
 
-        StepVerifier.create(client.indexerExists("invalidindex"))
+        StepVerifier.create(client.doesIndexerExist("invalidindex"))
             .expectNext(false)
             .verifyComplete();
     }

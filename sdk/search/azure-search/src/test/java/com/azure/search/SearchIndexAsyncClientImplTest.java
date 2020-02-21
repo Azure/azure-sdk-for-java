@@ -135,7 +135,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
         uploadDocument(asyncClient, hotelDoc);
         assertHttpResponseExceptionAsync(
-            asyncClient.getDocument("2", selectedFields, null),
+            asyncClient.getDocumentWithResponse("2", selectedFields, null),
             HttpResponseStatus.BAD_REQUEST,
             "Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' "
                 + "on type 'search.document'."

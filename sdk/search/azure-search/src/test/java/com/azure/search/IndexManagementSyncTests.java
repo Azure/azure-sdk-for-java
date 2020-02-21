@@ -169,7 +169,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         client.createIndex(index);
 
-        Assert.assertTrue(client.indexExists(index.getName()));
+        Assert.assertTrue(client.doesIndexExist(index.getName()));
     }
 
     @Test
@@ -177,12 +177,12 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         client.createIndex(index);
 
-        Assert.assertTrue(client.indexExistsWithResponse(index.getName(), generateRequestOptions(), Context.NONE).getValue());
+        Assert.assertTrue(client.doesIndexExistWithResponse(index.getName(), generateRequestOptions(), Context.NONE).getValue());
     }
 
     @Test
     public void existsReturnsFalseForNonExistingIndex() {
-        Assert.assertFalse(client.indexExists("invalidindex"));
+        Assert.assertFalse(client.doesIndexExist("invalidindex"));
     }
 
     @Test
@@ -236,7 +236,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         client.createIndex(index);
         client.deleteIndex(index.getName());
-        Assert.assertFalse(client.indexExists(index.getName()));
+        Assert.assertFalse(client.doesIndexExist(index.getName()));
     }
 
     @Test

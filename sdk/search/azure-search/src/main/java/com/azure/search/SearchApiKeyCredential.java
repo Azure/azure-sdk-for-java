@@ -10,7 +10,7 @@ package com.azure.search;
  * @see SearchIndexClientBuilder
  * @see SearchServiceClientBuilder
  */
-public class SearchApiKeyCredential {
+public final class SearchApiKeyCredential {
     private final String apiKey;
 
     /**

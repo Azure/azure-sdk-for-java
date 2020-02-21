@@ -253,7 +253,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         SynonymMap synonymMap = createTestSynonymMap();
         client.createSynonymMap(synonymMap);
         client.deleteSynonymMap(synonymMap.getName());
-        Assert.assertFalse(client.synonymMapExists(synonymMap.getName()));
+        Assert.assertFalse(client.doesSynonymMapExist(synonymMap.getName()));
     }
 
     @Test
@@ -299,7 +299,7 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         SynonymMap synonymMap = createTestSynonymMap();
         client.createSynonymMap(synonymMap);
 
-        Assert.assertTrue(client.synonymMapExists(synonymMap.getName()));
+        Assert.assertTrue(client.doesSynonymMapExist(synonymMap.getName()));
     }
 
     @Test
@@ -307,18 +307,18 @@ public class SynonymMapManagementSyncTests extends SynonymMapManagementTestBase 
         SynonymMap synonymMap = createTestSynonymMap();
         client.createSynonymMap(synonymMap);
 
-        Assert.assertTrue(client.synonymMapExistsWithResponse(synonymMap.getName(), generateRequestOptions(),
+        Assert.assertTrue(client.doesSynonymMapExistWithResponse(synonymMap.getName(), generateRequestOptions(),
             Context.NONE).getValue());
     }
 
     @Test
     public void existsReturnsFalseForNonExistingSynonymMap() {
-        Assert.assertFalse(client.synonymMapExists("thisSynonymMapDoesNotExist"));
+        Assert.assertFalse(client.doesSynonymMapExist("thisSynonymMapDoesNotExist"));
     }
 
     @Test
     public void existsReturnsFalseForNonExistingSynonymMapWithResponse() {
-        Assert.assertFalse(client.synonymMapExistsWithResponse("thisSynonymMapDoesNotExist",
+        Assert.assertFalse(client.doesSynonymMapExistWithResponse("thisSynonymMapDoesNotExist",
             generateRequestOptions(), Context.NONE).getValue());
     }
 

@@ -46,7 +46,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Cognitive Search Asynchronous Client to query an index and upload, merge, or delete documents
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
-public class SearchIndexAsyncClient {
+public final class SearchIndexAsyncClient {
 
     /*
      * Representation of the Multi-Status HTTP response code.
@@ -61,7 +61,7 @@ public class SearchIndexAsyncClient {
     /**
      * Search REST API Version
      */
-    private final SearchServiceVersion apiVersion;
+    private final SearchServiceVersion searchServiceVersion;
 
     /**
      * The endpoint for the Azure Cognitive Search service.
@@ -91,7 +91,7 @@ public class SearchIndexAsyncClient {
     /**
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
      */
-    SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion apiVersion,
+    SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion searchServiceVersion,
                            HttpPipeline httpPipeline) {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
@@ -99,8 +99,8 @@ public class SearchIndexAsyncClient {
         if (CoreUtils.isNullOrEmpty(indexName)) {
             throw logger.logExceptionAsError(new NullPointerException("Invalid indexName"));
         }
-        if (apiVersion == null) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid apiVersion"));
+        if (searchServiceVersion == null) {
+            throw logger.logExceptionAsError(new NullPointerException("Invalid search service version"));
         }
         if (httpPipeline == null) {
             throw logger.logExceptionAsError(new NullPointerException("Invalid httpPipeline"));
@@ -108,14 +108,14 @@ public class SearchIndexAsyncClient {
 
         this.endpoint = endpoint;
         this.indexName = indexName;
-        this.apiVersion = apiVersion;
+        this.searchServiceVersion = searchServiceVersion;
         this.httpPipeline = httpPipeline;
 
         restClient = new SearchIndexRestClientBuilder()
             .searchServiceName(parts.serviceName)
             .indexName(indexName)
             .searchDnsSuffix(parts.dnsSuffix)
-            .apiVersion(apiVersion.getVersion())
+            .apiVersion(searchServiceVersion.getVersion())
             .pipeline(httpPipeline)
             .serializer(SERIALIZER)
             .build();
@@ -396,12 +396,12 @@ public class SearchIndexAsyncClient {
     }
 
     /**
-     * Gets Client Api Version.
+     * Gets search service version.
      *
-     * @return the apiVersion value.
+     * @return the search service version value.
      */
-    public SearchServiceVersion getApiVersion() {
-        return this.apiVersion;
+    public SearchServiceVersion getServiceVersion() {
+        return this.searchServiceVersion;
     }
 
     /**
@@ -537,37 +537,9 @@ public class SearchIndexAsyncClient {
      * corresponding property value in the returned object.
      * @param requestOptions additional parameters for the operation.
      *                       Contains the tracking ID sent with the request to help with debugging
-     * @return the document object
-     */
-    public Mono<Document> getDocument(
-        String key,
-        List<String> selectedFields,
-        RequestOptions requestOptions) {
-        try {
-            return this.getDocumentWithResponse(key, selectedFields, requestOptions)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Retrieves a document from the Azure Cognitive Search index.
-     * See https://docs.microsoft.com/rest/api/searchservice/Lookup-Document
-     *
-     * @param key The key of the document to retrieve;
-     * See https://docs.microsoft.com/rest/api/searchservice/Naming-rules
-     * for the rules for constructing valid document keys.
-     * @param selectedFields List of field names to retrieve for the document;
-     * Any field not retrieved will have null or default as its
-     * corresponding property value in the returned object.
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
      * @return a response containing the document object
      */
-    public Mono<Response<Document>> getDocumentWithResponse(
-        String key,
-        List<String> selectedFields,
+    public Mono<Response<Document>> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions) {
         try {
             return withContext(context -> getDocumentWithResponse(key, selectedFields, requestOptions, context));
@@ -576,11 +548,8 @@ public class SearchIndexAsyncClient {
         }
     }
 
-    Mono<Response<Document>> getDocumentWithResponse(
-        String key,
-        List<String> selectedFields,
-        RequestOptions requestOptions,
-        Context context) {
+    Mono<Response<Document>> getDocumentWithResponse(String key, List<String> selectedFields,
+        RequestOptions requestOptions, Context context) {
         try {
             return restClient
                 .documents()

@@ -437,7 +437,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         client.createIndexer(indexer);
 
         client.deleteIndexer(indexer.getName());
-        Assert.assertFalse(client.indexerExists(indexer.getName()));
+        Assert.assertFalse(client.doesIndexerExist(indexer.getName()));
     }
 
     @Test
@@ -448,7 +448,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         client.createIndexerWithResponse(indexer, new RequestOptions(), Context.NONE);
 
         client.deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), new RequestOptions(), Context.NONE);
-        Assert.assertFalse(client.indexerExistsWithResponse(indexer.getName(), new RequestOptions(), Context.NONE)
+        Assert.assertFalse(client.doesIndexerExistWithResponse(indexer.getName(), new RequestOptions(), Context.NONE)
             .getValue());
     }
 
@@ -634,7 +634,7 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
     public void existsReturnsTrueForExistingIndexer() {
         Indexer indexer = createTestDataSourceAndIndexer();
 
-        Assert.assertTrue(client.indexerExists(indexer.getName()));
+        Assert.assertTrue(client.doesIndexerExist(indexer.getName()));
     }
 
     @Test
@@ -642,11 +642,11 @@ public class IndexersManagementSyncTests extends IndexersManagementTestBase {
         Indexer indexer = createTestDataSourceAndIndexer();
 
         Assert.assertTrue(
-            client.indexerExistsWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE).getValue());
+            client.doesIndexerExistWithResponse(indexer.getName(), generateRequestOptions(), Context.NONE).getValue());
     }
 
     @Test
     public void existsReturnsFalseForNonExistingIndexer() {
-        Assert.assertFalse(client.indexerExists("invalidindex"));
+        Assert.assertFalse(client.doesIndexerExist("invalidindex"));
     }
 }

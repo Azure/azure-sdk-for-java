@@ -427,7 +427,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
             .create(
                 client.createSkillset(expected)
                 .then(client.deleteSkillset(expected.getName()))
-                .then(client.skillsetExists(expected.getName())))
+                .then(client.doesSkillsetExist(expected.getName())))
             .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
@@ -473,7 +473,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
     @Test
     public void existsReturnsFalseForNonExistingSkillset() {
         StepVerifier
-            .create(client.skillsetExists("nonexistent"))
+            .create(client.doesSkillsetExist("nonexistent"))
             .assertNext(Assert::assertFalse)
             .verifyComplete();
     }
@@ -484,7 +484,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(skillset)
-                .then(client.skillsetExists(skillset.getName())))
+                .then(client.doesSkillsetExist(skillset.getName())))
             .assertNext(Assert::assertTrue)
             .verifyComplete();
     }
@@ -495,7 +495,7 @@ public class SkillsetManagementAsyncTests extends SkillsetManagementTestBase {
 
         StepVerifier
             .create(client.createSkillset(skillset)
-                .then(client.skillsetExistsWithResponse(skillset.getName(), generateRequestOptions())))
+                .then(client.doesSkillsetExistWithResponse(skillset.getName(), generateRequestOptions())))
             .assertNext(res -> Assert.assertTrue(res.getValue()))
             .verifyComplete();
     }
