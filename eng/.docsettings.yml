@@ -8,6 +8,7 @@ omitted_paths:
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"
   - eng/*
+  - common/smoke-tests/*
   - samples/*
 language: java
 root_check_enabled: True
@@ -116,6 +117,7 @@ known_content_issues:
   - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/README.md', '#3113']
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/README.md', '#3113']
   - ['sdk/batch/microsoft-azure-batch/README.md', '#3113']
+  - ['sdk/boms/azure-sdk-bom/README.md', '#3113']
   - ['sdk/core/README.md', '#3113']
   - ['sdk/cosmos/changelog/README.md', '#3113']
   - ['sdk/cosmos/faq/README.md', '#3113']
@@ -140,6 +142,8 @@ known_content_issues:
   - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
   - ['sdk/storage/azure-storage-file-share/swagger/README.md','has other required sections']
+  - ['sdk/search/azure-search/src/test/README.md', '#3113']
+  - ['sdk/search/open-api/readme.md', '#3113']
 
 package_indexing_exclusion_list:
   - azure-loganalytics-sample

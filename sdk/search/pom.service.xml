@@ -11,7 +11,10 @@
   <modules>
     <module>../core/azure-core</module>
     <module>../core/azure-core-test</module>
-    <module>azure-search-data</module>
-    <module>azure-search-service</module>
+    <module>../core/azure-core-http-netty</module>
+    <module>../identity/azure-identity</module>
+    <module>../storage/azure-storage-common</module>
+    <module>../storage/azure-storage-blob</module>
+    <module>azure-search</module>
   </modules>
 </project>

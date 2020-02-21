@@ -14,6 +14,9 @@ import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -49,26 +52,38 @@ class RecognizeLinkedEntityAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesWithResponse(String text, String language,
-        Context context) {
+    Mono<PagedResponse<com.azure.ai.textanalytics.models.LinkedEntity>> recognizeLinkedEntitiesWithResponse(
+        String text, String language, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
-        return recognizeBatchLinkedEntitiesWithResponse(
+        return recognizeLinkedEntitiesBatchWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
+            .map(response -> new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                Transforms.processSingleResponseErrorResult(response).getValue().getEntities(),
+                null,
+                null
+            ));
+    }
+
+    PagedFlux<com.azure.ai.textanalytics.models.LinkedEntity> recognizeLinkedEntities(
+        String text, String language, Context context) {
+        return new PagedFlux<>(() -> recognizeLinkedEntitiesWithResponse(text, language, context));
     }
 
     Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(
-        List<String> textInputs, String language, Context context) {
+        List<String> textInputs, String language, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
         List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
             new TextDocumentInput(index, value, language));
-        return recognizeBatchLinkedEntitiesWithResponse(documentInputs, null, context);
+        return recognizeLinkedEntitiesBatchWithResponse(documentInputs, options, context);
     }
 
-    Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeBatchLinkedEntitiesWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+    Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesBatchWithResponse(
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
         final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
@@ -122,6 +137,4 @@ class RecognizeLinkedEntityAsyncClient {
             entityLinkingResult.getModelVersion(), entityLinkingResult.getStatistics() == null ? null
             : toBatchStatistics(entityLinkingResult.getStatistics()));
     }
-
-
 }

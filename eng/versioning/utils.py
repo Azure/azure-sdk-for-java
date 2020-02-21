@@ -6,6 +6,7 @@
 
 from enum import Enum
 import re
+from subprocess import check_call, CalledProcessError
 
 version_update_start_marker = re.compile(r'\{x-version-update-start;([^;]+);([^}]+)\}')	
 version_update_end_marker = re.compile(r'\{x-version-update-end\}')
@@ -97,3 +98,33 @@ class CodeModule:
             return self.name + ';' + self.dependency + ';' + self.current + '\n'
         except AttributeError:
             return self.name + ';' + self.dependency + '\n'
+
+def run_check_call(
+    command_array,
+    working_directory,
+    acceptable_return_codes=[],
+    run_as_shell=False,
+    always_exit=True,
+):
+    try:
+        if run_as_shell:
+            print(
+                "Command Array: {0}, Target Working Directory: {1}".format(
+                    " ".join(command_array), working_directory
+                )
+            )
+            check_call(" ".join(command_array), cwd=working_directory, shell=True)
+        else:
+            print(
+                "Command Array: {0}, Target Working Directory: {1}".format(
+                    command_array, working_directory
+                )
+            )
+            check_call(command_array, cwd=working_directory)
+    except CalledProcessError as err:
+        if err.returncode not in acceptable_return_codes:
+            print(err)
+            if always_exit:
+                exit(1)
+            else:
+                return err

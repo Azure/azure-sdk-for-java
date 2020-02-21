@@ -152,10 +152,8 @@ class ShareAPITests extends APISpec {
     }
 
     def "Create snapshot metadata error"() {
-        given:
-        primaryShareClient.create()
-
         when:
+        primaryShareClient.create()
         primaryShareClient.createSnapshotWithResponse(Collections.singletonMap("", "value"), null, null)
 
         then:
@@ -200,6 +198,24 @@ class ShareAPITests extends APISpec {
         then:
         def e = thrown(ShareStorageException)
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
+    }
+
+    def "Get properties premium"() {
+        given:
+        def premiumShareClient = premiumFileServiceClient.createShareWithResponse(generateShareName(), testMetadata, null, null, null).getValue()
+
+        when:
+        def getPropertiesResponse = premiumShareClient.getPropertiesWithResponse(null, null)
+        def shareProperties = getPropertiesResponse.getValue()
+
+        then:
+        FileTestHelper.assertResponseStatusCode(getPropertiesResponse, 200)
+        testMetadata == shareProperties.getMetadata()
+        shareProperties.getQuota()
+        shareProperties.getNextAllowedQuotaDowngradeTime()
+        shareProperties.getProvisionedEgressMBps()
+        shareProperties.getProvisionedIngressMBps()
+        shareProperties.getProvisionedIops()
     }
 
     def "Set quota"() {

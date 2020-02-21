@@ -1,6 +1,15 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.2 (Unreleased)
+
+
+## 1.4.0-beta.1 (2020-02-11)
+- Added support for Digest proxy authentication.
+- Added ability to implicitly read proxy configurations from the environment.
+
+## 1.3.0 (2020-02-10)
+- Updated `NettyAsyncHttpClient` to deep copy ByteBuffer in `getBody()` response.
+- Added option in `NettyAsyncHttpClientBuilder` to disable deep copy.
 
 ## 1.2.0 (2020-01-07)
 - Upgrade netty dependencies to latest version 

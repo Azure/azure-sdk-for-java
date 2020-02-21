@@ -72,7 +72,12 @@ public class BackCompatTest extends IntegrationTestBase {
     @Test
     public void backCompatWithJavaSDKOlderThan0110() {
         // Arrange
+        final Duration timeout = Duration.ofSeconds(30);
         final String messageTrackingValue = UUID.randomUUID().toString();
+        final PartitionProperties properties = consumer.getPartitionProperties(PARTITION_ID).block(timeout);
+
+        Assertions.assertNotNull(properties);
+        final EventPosition position = EventPosition.fromSequenceNumber(properties.getLastEnqueuedSequenceNumber(), true);
 
         // until version 0.10.0 - we used to have Properties as HashMap<String,String>
         // This specific combination is intended to test the back compat - with the new Properties type as HashMap<String, Object>
@@ -96,12 +101,13 @@ public class BackCompatTest extends IntegrationTestBase {
         final EventData eventData = serializer.deserialize(message, EventData.class);
 
         // Act & Assert
-        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.latest())
+        producer.send(eventData, sendOptions).block(TIMEOUT);
+
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
             .filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
-            .then(() -> producer.send(eventData, sendOptions).block(TIMEOUT))
             .assertNext(event -> validateAmqpProperties(applicationProperties, event.getData()))
             .expectComplete()
-            .verify(Duration.ofSeconds(45));
+            .verify(timeout);
     }
 
     private void validateAmqpProperties(Map<String, Object> expected, EventData event) {

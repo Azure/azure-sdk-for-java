@@ -7,21 +7,33 @@ import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.models.ErrorCodeValue;
+import com.azure.ai.textanalytics.models.DocumentResult;
+import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
+import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.logging.ClientLogger;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Helper class to convert service level models to SDK exposes models.
  */
-class Transforms {
+final class Transforms {
+    private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
+
+    private Transforms() {
+    }
 
     /**
      * Given a list of inputs will apply the indexing function to it and return the updated list.
@@ -31,10 +43,14 @@ class Transforms {
      * @param <T> the type of items being returned in the list.
      * @return The list holding all the generic items combined.
      */
-    static <T> List<T> mapByIndex(List<String> textInputs, BiFunction<String, String, T> mappingFunction) {
-        return IntStream.range(0, textInputs.size())
-            .mapToObj(index -> mappingFunction.apply(String.valueOf(index), textInputs.get(index)))
-            .collect(Collectors.toList());
+    static <T> List<T> mapByIndex(Iterable<String> textInputs, BiFunction<String, String, T> mappingFunction) {
+        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+        AtomicInteger i = new AtomicInteger(0);
+        List<T> result = new ArrayList<>();
+        textInputs.forEach(textInput ->
+            result.add(mappingFunction.apply(String.valueOf(i.getAndIncrement()), textInput))
+        );
+        return result;
     }
 
     /**
@@ -60,16 +76,24 @@ class Transforms {
 
     /**
      * Convert {@link TextAnalyticsError} to {@link com.azure.ai.textanalytics.models.TextAnalyticsError}
+     * This function maps the service returned {@link TextAnalyticsError inner error} to the top level
+     * {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}, if inner error present.
      *
      * @param textAnalyticsError the {@link TextAnalyticsError} returned by the service.
      * @return the {@link com.azure.ai.textanalytics.models.TextAnalyticsError} returned by the SDK.
      */
     static com.azure.ai.textanalytics.models.TextAnalyticsError toTextAnalyticsError(
         TextAnalyticsError textAnalyticsError) {
+        if (textAnalyticsError.getInnerError() == null) {
+            return new com.azure.ai.textanalytics.models.TextAnalyticsError(
+                TextAnalyticsErrorCode.fromString(textAnalyticsError.getCode().toString()),
+                textAnalyticsError.getMessage(),
+                textAnalyticsError.getTarget());
+        }
         return new com.azure.ai.textanalytics.models.TextAnalyticsError(
-            ErrorCodeValue.fromString(textAnalyticsError.getCode().toString()), textAnalyticsError.getMessage(),
-            textAnalyticsError.getTarget(), textAnalyticsError.getDetails() == null ? null
-            : setErrors(textAnalyticsError.getDetails()));
+            TextAnalyticsErrorCode.fromString(textAnalyticsError.getInnerError().getCode().toString()),
+            textAnalyticsError.getInnerError().getMessage(),
+            textAnalyticsError.getInnerError().getTarget());
     }
 
     /**
@@ -78,7 +102,7 @@ class Transforms {
      * @param textInputs the user provided input in {@link TextDocumentInput}
      * @return the service required input {@link MultiLanguageInput}
      */
-    static List<MultiLanguageInput> toMultiLanguageInput(List<TextDocumentInput> textInputs) {
+    static List<MultiLanguageInput> toMultiLanguageInput(Iterable<TextDocumentInput> textInputs) {
         List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
         for (TextDocumentInput textDocumentInput : textInputs) {
             multiLanguageInputs.add(new MultiLanguageInput().setId(textDocumentInput.getId())
@@ -88,20 +112,37 @@ class Transforms {
     }
 
     /**
-     * Helper method to set error details on {@link TextAnalyticsError}.
+     * Convert the service returned model response {@link DocumentResultCollection} to a {@link SimpleResponse}.
+     * If the response returned with an error, a {@link TextAnalyticsException} is thrown.
      *
-     * @param details about specific errors that led to this reported error.
-     * @return the {@link TextAnalyticsError} returned by the SDK.
+     * @param response the {@link com.azure.ai.textanalytics.models.TextAnalyticsError}.
+     * @return the {@link SimpleResponse}.
+     *
+     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
+     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
      */
-    private static List<com.azure.ai.textanalytics.models.TextAnalyticsError> setErrors(
-        List<TextAnalyticsError> details) {
-        List<com.azure.ai.textanalytics.models.TextAnalyticsError> detailsList = new ArrayList<>();
-        for (TextAnalyticsError error : details) {
-            detailsList.add(new com.azure.ai.textanalytics.models.TextAnalyticsError(
-                ErrorCodeValue.fromString(error.getCode().toString()),
-                error.getMessage(),
-                error.getTarget(), error.getDetails() == null ? null : setErrors(error.getDetails())));
+    static <T extends DocumentResult> Response<T> processSingleResponseErrorResult(
+        Response<DocumentResultCollection<T>> response) {
+        Iterator<T> responseIterator = response.getValue().iterator();
+        T result = null;
+        if (response.getStatusCode() == HttpURLConnection.HTTP_OK && responseIterator.hasNext()) {
+            result = responseIterator.next();
+            if (result.isError()) {
+                throw LOGGER.logExceptionAsError(toTextAnalyticsException(result.getError()));
+            }
         }
-        return detailsList;
+        return new SimpleResponse<>(response, result);
+    }
+
+    /**
+     * Convert the incoming input {@link com.azure.ai.textanalytics.models.TextAnalyticsError}
+     * to a {@link TextAnalyticsException}.
+     *
+     * @param error the {@link com.azure.ai.textanalytics.models.TextAnalyticsError}.
+     * @return the {@link TextAnalyticsException} to be thrown.
+     */
+    static TextAnalyticsException toTextAnalyticsException(
+        com.azure.ai.textanalytics.models.TextAnalyticsError error) {
+        return new TextAnalyticsException(error.getMessage(), error.getCode().toString(), error.getTarget());
     }
 }

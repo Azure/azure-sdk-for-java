@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareInfo;
@@ -32,6 +33,8 @@ public class ShareJavaDocCodeSamples {
 
     private String key1 = "key1";
     private String value1 = "val1";
+
+    private String leaseId = "leaseId";
 
     /**
      * Generates code sample for {@link ShareClient} instantiation.
@@ -228,6 +231,35 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link ShareClient#createFileWithResponse(String, long, ShareFileHttpHeaders, FileSmbProperties, String, Map, ShareRequestConditions, Duration, Context)}
+     */
+    public void createFileWithLease() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-Duration-Context
+        ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+
+        Response<ShareFileClient> response = shareClient.createFileWithResponse("myfile", 1024,
+            httpHeaders, smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
+            requestConditions, Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.printf("Creating the file completed with status code %d", response.getStatusCode());
+        // END: com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-Duration-Context
+    }
+
+    /**
      * Generates a code sample for using {@link ShareClient#deleteDirectory(String)}
      */
     public void deleteDirectory() {
@@ -271,6 +303,19 @@ public class ShareJavaDocCodeSamples {
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the file with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-duration-context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#deleteFileWithResponse(String, ShareRequestConditions, Duration, Context)}
+     */
+    public void deleteFileWithLease() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        Response<Void> response = shareClient.deleteFileWithResponse("myfile", requestConditions,
+            Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.println("Complete deleting the file with status code: " + response.getStatusCode());
+        // END: com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context
     }
 
     /**

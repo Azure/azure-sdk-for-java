@@ -3,9 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
-import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 
 /**
  * Sample demonstrates how to analyze the sentiment of an input text.
@@ -19,30 +19,28 @@ public class AnalyzeSentiment {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that need be analysed.
-        String text = "The hotel was dark and unclean.";
+        // The text that needs be analyzed.
+        String text = "The hotel was dark and unclean. I like Microsoft.";
 
-        final AnalyzeSentimentResult sentimentResult = client.analyzeSentiment(text);
-
-        final TextSentiment documentSentiment = sentimentResult.getDocumentSentiment();
+        final DocumentSentiment documentSentiment = client.analyzeSentiment(text);
         System.out.printf(
-            "Recognized sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-            documentSentiment.getTextSentimentClass(),
-            documentSentiment.getPositiveScore(),
-            documentSentiment.getNeutralScore(),
-            documentSentiment.getNegativeScore());
+            "Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
+            documentSentiment.getSentiment(),
+            documentSentiment.getConfidenceScores().getPositive(),
+            documentSentiment.getConfidenceScores().getNeutral(),
+            documentSentiment.getConfidenceScores().getNegative());
 
-        for (TextSentiment textSentiment : sentimentResult.getSentenceSentiments()) {
+        for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
             System.out.printf(
-                "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                textSentiment.getTextSentimentClass(),
-                textSentiment.getPositiveScore(),
-                textSentiment.getNeutralScore(),
-                textSentiment.getNegativeScore());
+                "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
+                sentenceSentiment.getSentiment(),
+                sentenceSentiment.getConfidenceScores().getPositive(),
+                sentenceSentiment.getConfidenceScores().getNeutral(),
+                sentenceSentiment.getConfidenceScores().getNegative());
         }
     }
 }

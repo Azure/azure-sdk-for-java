@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.UploadUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -31,7 +32,6 @@ import javax.crypto.ShortBufferException;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -98,7 +98,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      */
     EncryptedBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, String blobName, String snapshot, AsyncKeyEncryptionKey key, String keyWrapAlgorithm) {
-        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, null);
+        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, null /*cpk*/,
+            null /*encryption scope*/);
 
         this.keyWrapper = key;
         this.keyWrapAlgorithm = keyWrapAlgorithm;
@@ -317,7 +318,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         try {
             final Map<String, String> metadataFinal = metadata == null ? new HashMap<>() : metadata;
 
-            return Mono.using(() -> super.uploadFileResourceSupplier(filePath),
+            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(filePath, logger),
                 channel -> this.uploadWithResponse(FluxUtil.readFile(channel), parallelTransferOptions, headers,
                     metadataFinal, tier, requestConditions)
                     .then()
@@ -327,17 +328,9 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                         } catch (IOException e) {
                             throw logger.logExceptionAsError(new UncheckedIOException(e));
                         }
-                    }), this::uploadFileCleanup);
+                    }), channel -> UploadUtils.uploadFileCleanup(channel, logger));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        }
-    }
-
-    private void uploadFileCleanup(AsynchronousFileChannel channel) {
-        try {
-            channel.close();
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 

@@ -3,11 +3,10 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.SubscriptionKeyCredentialPolicy;
+import com.azure.ai.textanalytics.implementation.ApiKeyCredentialPolicy;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
-import com.azure.ai.textanalytics.models.TextAnalyticsClientOptions;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -28,7 +27,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.temporal.ChronoUnit;
@@ -44,8 +42,7 @@ import java.util.Objects;
  *
  * <p>
  * The client needs the service endpoint of the Azure Text Analytics to access the resource service.
- * {@link #subscriptionKey(TextAnalyticsApiKeyCredential)
- * subscriptionKey(TextAnalyticsApiKeyCredential)} or
+ * {@link #apiKey(TextAnalyticsApiKeyCredential) apiKey(TextAnalyticsApiKeyCredential)} or
  * {@link #credential(TokenCredential) credential(TokenCredential)} give the builder access credential.
  * </p>
  *
@@ -88,15 +85,16 @@ public final class TextAnalyticsClientBuilder {
     private final String clientName;
     private final String clientVersion;
 
-    private String endpoint;
+    private String defaultCountryHint;
+    private String defaultLanguage;
+    private Configuration configuration;
     private TextAnalyticsApiKeyCredential credential;
-    private TokenCredential tokenCredential;
+    private String endpoint;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline httpPipeline;
-    private Configuration configuration;
     private RetryPolicy retryPolicy;
-    private TextAnalyticsClientOptions clientOptions;
+    private TokenCredential tokenCredential;
     private TextAnalyticsServiceVersion version;
 
     /**
@@ -128,13 +126,12 @@ public final class TextAnalyticsClientBuilder {
      *
      * @return A TextAnalyticsClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #subscriptionKey(TextAnalyticsApiKeyCredential) subscriptionKey} has not been set.
+     * {@link #apiKey(TextAnalyticsApiKeyCredential) apiKey} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsClient buildClient() {
         return new TextAnalyticsClient(buildAsyncClient());
     }
-
 
     /**
      * Creates a {@link TextAnalyticsAsyncClient} based on options set in the builder. Every time
@@ -148,7 +145,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @return A TextAnalyticsAsyncClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #subscriptionKey(TextAnalyticsApiKeyCredential) subscriptionKey} has not been set.
+     * {@link #apiKey(TextAnalyticsApiKeyCredential) apiKey} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsAsyncClient buildAsyncClient() {
@@ -173,7 +170,7 @@ public final class TextAnalyticsClientBuilder {
                 // User token based policy
                 policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
             } else if (credential != null) {
-                policies.add(new SubscriptionKeyCredentialPolicy(credential));
+                policies.add(new ApiKeyCredentialPolicy(credential));
             } else {
                 // Throw exception that credential and tokenCredential cannot be null
                 throw logger.logExceptionAsError(
@@ -204,20 +201,30 @@ public final class TextAnalyticsClientBuilder {
             .pipeline(pipeline)
             .build();
 
-        return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, clientOptions);
+        return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
     }
 
     /**
-     * Set the default client option for one client.
+     * Set the default language option for one client.
      *
-     * @param clientOptions TextAnalyticsClientOptions model that includes
-     * {@link TextAnalyticsClientOptions#getDefaultLanguage() default language} and
-     * {@link TextAnalyticsClientOptions#getDefaultCountryHint() default country hint}
+     * @param language default language
      *
      * @return The updated TextAnalyticsClientBuilder object.
      */
-    public TextAnalyticsClientBuilder clientOptions(TextAnalyticsClientOptions clientOptions) {
-        this.clientOptions = clientOptions;
+    public TextAnalyticsClientBuilder defaultLanguage(String language) {
+        this.defaultLanguage = language;
+        return this;
+    }
+
+    /**
+     * Set the default country hint option for one client.
+     *
+     * @param countryHint default country hint
+     *
+     * @return The updated TextAnalyticsClientBuilder object.
+     */
+    public TextAnalyticsClientBuilder defaultCountryHint(String countryHint) {
+        this.defaultCountryHint = countryHint;
         return this;
     }
 
@@ -235,7 +242,7 @@ public final class TextAnalyticsClientBuilder {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL.", ex));
         }
 
         if (endpoint.endsWith("/")) {
@@ -250,15 +257,13 @@ public final class TextAnalyticsClientBuilder {
     /**
      * Sets the credential to use when authenticating HTTP requests for this TextAnalyticsClientBuilder.
      *
-     * @param subscriptionKeyCredential subscription key credential
+     * @param apiKeyCredential API key credential
      *
      * @return The updated TextAnalyticsClientBuilder object.
-     * @throws NullPointerException If {@code subscriptionKeyCredential} is {@code null}
+     * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
      */
-    public TextAnalyticsClientBuilder subscriptionKey(
-        TextAnalyticsApiKeyCredential subscriptionKeyCredential) {
-        Objects.requireNonNull(subscriptionKeyCredential, "'subscriptionKeyCredential' cannot be null.");
-        this.credential = subscriptionKeyCredential;
+    public TextAnalyticsClientBuilder apiKey(TextAnalyticsApiKeyCredential apiKeyCredential) {
+        this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
         return this;
     }
 
@@ -298,8 +303,7 @@ public final class TextAnalyticsClientBuilder {
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public TextAnalyticsClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        Objects.requireNonNull(policy, "'policy' cannot be null.");
-        policies.add(policy);
+        policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
         return this;
     }
 

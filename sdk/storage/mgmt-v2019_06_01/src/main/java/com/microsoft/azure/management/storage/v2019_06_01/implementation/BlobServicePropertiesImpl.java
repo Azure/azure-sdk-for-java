@@ -14,6 +14,7 @@ import rx.Observable;
 import com.microsoft.azure.management.storage.v2019_06_01.CorsRules;
 import com.microsoft.azure.management.storage.v2019_06_01.DeleteRetentionPolicy;
 import com.microsoft.azure.management.storage.v2019_06_01.ChangeFeed;
+import com.microsoft.azure.management.storage.v2019_06_01.RestorePolicyProperties;
 
 class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProperties, BlobServicePropertiesInner, BlobServicePropertiesImpl> implements BlobServiceProperties, BlobServiceProperties.Definition, BlobServiceProperties.Update {
     private final StorageManager manager;
@@ -106,6 +107,11 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
     }
 
     @Override
+    public RestorePolicyProperties restorePolicy() {
+        return this.inner().restorePolicy();
+    }
+
+    @Override
     public SkuInner sku() {
         return this.inner().sku();
     }
@@ -149,6 +155,12 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
     @Override
     public BlobServicePropertiesImpl withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
         this.inner().withDeleteRetentionPolicy(deleteRetentionPolicy);
+        return this;
+    }
+
+    @Override
+    public BlobServicePropertiesImpl withRestorePolicy(RestorePolicyProperties restorePolicy) {
+        this.inner().withRestorePolicy(restorePolicy);
         return this;
     }
 

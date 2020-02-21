@@ -13,7 +13,7 @@ Licensed under the MIT License.
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmos-benchmark</artifactId>
-  <version>3.7.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-benchmark;current} -->
+  <version>3.7.0</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos-benchmark;current} -->
   <name>Microsoft Azure SDK for SQL API of Azure Cosmos DB Service - Benchmarking tool</name>
   <description>This package contains Benchmarking tool for Microsoft Azure SDK for SQL API of Azure Cosmos DB Service</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -33,7 +33,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>3.7.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos;current} -->
+      <version>3.8.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
@@ -88,9 +88,15 @@ Licensed under the MIT License.
     -->
 
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version> <!-- {x-version-update;log4j:log4j;external_dependency} -->
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.11.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-api;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.11.1</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-core;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -106,9 +112,9 @@ Licensed under the MIT License.
     </dependency>
 
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.0</version> <!-- {x-version-update;org.slf4j:slf4j-log4j12;external_dependency} -->
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>2.13.0</version> <!-- {x-version-update;org.apache.logging.log4j:log4j-slf4j-impl;external_dependency} -->
     </dependency>
 
     <dependency>

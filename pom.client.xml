@@ -134,7 +134,7 @@
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>8.24</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+            <version>8.29</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
           </dependency>
         </dependencies>
         <configuration>
@@ -1222,6 +1222,7 @@
   </profiles>
 
   <modules>
+    <module>common/perf-test-core</module>
     <module>sdk/appconfiguration/azure-data-appconfiguration</module>
     <module>sdk/core/azure-core</module>
     <module>sdk/core/azure-core-amqp</module>
@@ -1237,6 +1238,7 @@
     <module>sdk/keyvault/azure-security-keyvault-certificates</module>
     <module>sdk/keyvault/azure-security-keyvault-keys</module>
     <module>sdk/keyvault/azure-security-keyvault-secrets</module>
+	  <module>sdk/search/azure-search</module>
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
@@ -1245,6 +1247,7 @@
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
+    <module>sdk/storage/perf-test</module>
     <module>sdk/textanalytics/azure-ai-textanalytics</module>
   </modules>
 </project>

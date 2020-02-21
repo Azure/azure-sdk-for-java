@@ -26,7 +26,7 @@ public final class TextDocumentBatchStatistics {
      * Number of invalid documents. This includes empty, over-size limit or
      * non-supported languages documents.
      */
-    private final int erroneousDocumentCount;
+    private final int invalidDocumentCount;
 
     /*
      * Number of transactions for the request.
@@ -34,26 +34,25 @@ public final class TextDocumentBatchStatistics {
     private final long transactionCount;
 
     /**
-     * Creates a {@code TextDocumentBatchStatistics} model that describes the statistics of batch text
+     * Creates a {@code TextDocumentBatchStatistics} model that describes the statistics of batch text.
      *
      * @param documentCount number of documents submitted in the request
      * @param validDocumentCount number of valid documents. This excludes empty, over-size limit or
      * non-supported languages documents
-     * @param erroneousDocumentCount Number of invalid documents. This includes empty, over-size limit or
+     * @param invalidDocumentCount Number of invalid documents. This includes empty, over-size limit or
      * non-supported languages documents
      * @param transactionCount number of transactions for the request
      */
-    public TextDocumentBatchStatistics(int documentCount, int validDocumentCount, int erroneousDocumentCount,
+    public TextDocumentBatchStatistics(int documentCount, int validDocumentCount, int invalidDocumentCount,
         long transactionCount) {
         this.documentCount = documentCount;
         this.validDocumentCount = validDocumentCount;
-        this.erroneousDocumentCount = erroneousDocumentCount;
+        this.invalidDocumentCount = invalidDocumentCount;
         this.transactionCount = transactionCount;
     }
 
     /**
-     * Get the documentCount property: Number of documents submitted in the
-     * request.
+     * Get the documentCount property: Number of documents submitted in the request.
      *
      * @return the documentCount value.
      */
@@ -62,8 +61,8 @@ public final class TextDocumentBatchStatistics {
     }
 
     /**
-     * Get the validDocumentCount property: Number of valid documents. This
-     * excludes empty, over-size limit or non-supported languages documents.
+     * Get the validDocumentCount property: Number of valid documents.
+     * This excludes empty, over-size limit or non-supported languages documents.
      *
      * @return the validDocumentCount value.
      */
@@ -72,19 +71,17 @@ public final class TextDocumentBatchStatistics {
     }
 
     /**
-     * Get the erroneousDocumentCount property: Number of invalid documents.
-     * This includes empty, over-size limit or non-supported languages
-     * documents.
+     * Get the invalidDocumentCount property: Number of invalid documents.
+     * This includes empty, over-size limit or non-supported languages documents.
      *
-     * @return the erroneousDocumentCount value.
+     * @return the invalidDocumentCount value.
      */
-    public int getErroneousDocumentCount() {
-        return this.erroneousDocumentCount;
+    public int getInvalidDocumentCount() {
+        return this.invalidDocumentCount;
     }
 
     /**
-     * Get the transactionCount property: Number of transactions for the
-     * request.
+     * Get the transactionCount property: Number of transactions for the request.
      *
      * @return the transactionCount value.
      */

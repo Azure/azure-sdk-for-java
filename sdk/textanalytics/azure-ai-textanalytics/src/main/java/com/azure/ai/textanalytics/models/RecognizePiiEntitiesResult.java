@@ -13,28 +13,29 @@ import java.util.List;
  */
 @Immutable
 public final class RecognizePiiEntitiesResult extends DocumentResult {
-    private final List<NamedEntity> namedEntities;
+    private final List<PiiEntity> entities;
 
     /**
-     * Creates a {@code RecognizePiiEntitiesResult} model that describes recognized entities result
+     * Creates a {@code RecognizePiiEntitiesResult} model that describes recognized entities result.
      *
      * @param id unique, non-empty document identifier
      * @param textDocumentStatistics text document statistics
      * @param error the document error
-     * @param namedEntities a list of {@link NamedEntity}
+     * @param entities a list of {@link PiiEntity}
      */
     public RecognizePiiEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error, List<NamedEntity> namedEntities) {
+        TextAnalyticsError error, List<PiiEntity> entities) {
         super(id, textDocumentStatistics, error);
-        this.namedEntities = namedEntities == null ? new ArrayList<>() : namedEntities;
+        this.entities = entities == null ? new ArrayList<>() : entities;
     }
 
     /**
-     * Get a list of named entities string
+     * Get a list of Personally Identifiable Information entities.
      *
-     * @return a list of {@link NamedEntity}
+     * @return a list of {@link PiiEntity}
      */
-    public List<NamedEntity> getNamedEntities() {
-        return namedEntities;
+    public List<PiiEntity> getEntities() {
+        throwExceptionIfError();
+        return entities;
     }
 }
