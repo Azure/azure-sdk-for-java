@@ -1,4 +1,8 @@
 ## Changelog
+### 3.7.0
+- Downgrade guava dependency to 25.0-jre from 27.0.1-jre
+- Fix FeedOptions bug (see https://github.com/Azure/azure-sdk-for-java/pull/8085)
+
 ### 3.6.0
 - GA release for fixes in 3.6.0-beta.1 and 3.6.0-beta.2
 

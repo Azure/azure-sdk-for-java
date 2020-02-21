@@ -15,10 +15,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for ResourceIdentityType.
  */
 public enum ResourceIdentityType {
-    /** Enum value SystemAssigned. */
+    /** Indicates that a system assigned identity is associated with the resource. */
     SYSTEM_ASSIGNED("SystemAssigned"),
 
-    /** Enum value None. */
+    /** Indicates that no identity is associated with the resource or that the existing identity should be removed. */
     NONE("None");
 
     /** The actual serialized value for a ResourceIdentityType instance. */

@@ -44,7 +44,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprastg71.blob.core.windows.net/jtcservicesassignaturevaluesnetworktestcontaineruserd06973165?include=&restype=container&comp=list&sv=2019-02-02&se=2019-12-27T23%3A25%3A56Z&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2019-12-26T23%3A25%3A56Z&ske=2019-12-27T23%3A25%3A56Z&sks=b&skv=2019-07-07&sr=c&sp=racwdl&sig=REDACTED",
+    "Uri" : "https://gaprastg71.blob.core.windows.net/jtcservicesassignaturevaluesnetworktestcontaineruserd06973165?restype=container&comp=list&sv=2019-02-02&se=2019-12-27T23%3A25%3A56Z&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2019-12-26T23%3A25%3A56Z&ske=2019-12-27T23%3A25%3A56Z&sks=b&skv=2019-07-07&sr=c&sp=racwdl&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.2 (11.0.4; Windows 10 10.0)",
