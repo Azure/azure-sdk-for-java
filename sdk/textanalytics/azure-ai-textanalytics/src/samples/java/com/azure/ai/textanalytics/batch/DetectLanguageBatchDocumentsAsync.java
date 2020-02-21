@@ -8,7 +8,6 @@ import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -43,13 +42,12 @@ public class DetectLanguageBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Detecting batch languages
-        client.detectLanguageBatchWithResponse(inputs, requestOptions).subscribe(
-            result -> {
-                final DocumentResultCollection<DetectLanguageResult> detectedBatchResult = result.getValue();
-                System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
+        client.detectLanguageBatch(inputs, requestOptions).byPage().subscribe(
+            pagedResponse -> {
+                System.out.printf("Model version: %s%n", pagedResponse.getModelVersion());
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
+                final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
                 System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(),
                     batchStatistics.getInvalidDocumentCount(),
@@ -57,7 +55,7 @@ public class DetectLanguageBatchDocumentsAsync {
                     batchStatistics.getValidDocumentCount());
 
                 // Detected languages for a document from a batch of documents
-                for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
+                for (DetectLanguageResult detectLanguageResult : pagedResponse.getElements()) {
                     System.out.printf("Document ID: %s%n", detectLanguageResult.getId());
                     // Erroneous document
                     if (detectLanguageResult.isError()) {

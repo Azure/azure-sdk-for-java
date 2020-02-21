@@ -6,10 +6,9 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 
@@ -43,13 +42,12 @@ public class RecognizeEntitiesBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Recognizing batch entities
-        client.recognizeEntitiesBatchWithResponse(inputs, requestOptions).subscribe(
-            result -> {
-                final DocumentResultCollection<RecognizeEntitiesResult> recognizedBatchResult = result.getValue();
-                System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
+        client.recognizeEntitiesBatch(inputs, requestOptions).byPage().subscribe(
+            pagedResponse -> {
+                System.out.printf("Model version: %s%n", pagedResponse.getModelVersion());
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = recognizedBatchResult.getStatistics();
+                final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
                 System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(),
                     batchStatistics.getInvalidDocumentCount(),
@@ -57,7 +55,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
                     batchStatistics.getValidDocumentCount());
 
                 // Recognized entities for each of document from a batch of documents
-                for (RecognizeEntitiesResult recognizeEntitiesResult : recognizedBatchResult) {
+                for (RecognizeEntitiesResult recognizeEntitiesResult : pagedResponse.getElements()) {
                     System.out.printf("Document ID: %s%n", recognizeEntitiesResult.getId());
                     // Erroneous document
                     if (recognizeEntitiesResult.isError()) {

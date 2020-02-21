@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
@@ -42,13 +41,12 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Extracting batch key phrases
-        client.extractKeyPhrasesBatchWithResponse(inputs, requestOptions).subscribe(
-            result -> {
-                final DocumentResultCollection<ExtractKeyPhraseResult> extractedBatchResult = result.getValue();
-                System.out.printf("Model version: %s%n", extractedBatchResult.getModelVersion());
+        client.extractKeyPhrasesBatch(inputs, requestOptions).byPage().subscribe(
+            pagedResponse -> {
+                System.out.printf("Model version: %s%n", pagedResponse.getModelVersion());
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = extractedBatchResult.getStatistics();
+                final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
                 System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(),
                     batchStatistics.getInvalidDocumentCount(),
@@ -56,7 +54,7 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
                     batchStatistics.getValidDocumentCount());
 
                 // Extracted key phrase for each of document from a batch of documents
-                for (ExtractKeyPhraseResult extractKeyPhraseResult : extractedBatchResult) {
+                for (ExtractKeyPhraseResult extractKeyPhraseResult : pagedResponse.getElements()) {
                     System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
                     // Erroneous document
                     if (extractKeyPhraseResult.isError()) {

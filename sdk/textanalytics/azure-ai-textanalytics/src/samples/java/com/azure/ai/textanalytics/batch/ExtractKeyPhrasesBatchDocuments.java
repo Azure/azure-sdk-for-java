@@ -5,8 +5,8 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -42,29 +42,33 @@ public class ExtractKeyPhrasesBatchDocuments {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Extracting batch key phrases
-        final DocumentResultCollection<ExtractKeyPhraseResult> extractedBatchResult = client.extractKeyPhrasesBatchWithResponse(inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s%n", extractedBatchResult.getModelVersion());
+        final Iterable<TextAnalyticsPagedResponse<ExtractKeyPhraseResult>> extractedBatchResult =
+            client.extractKeyPhrasesBatch(inputs, requestOptions, Context.NONE).iterableByPage();
 
-        // Batch statistics
-        final TextDocumentBatchStatistics batchStatistics = extractedBatchResult.getStatistics();
-        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
-            batchStatistics.getDocumentCount(),
-            batchStatistics.getInvalidDocumentCount(),
-            batchStatistics.getTransactionCount(),
-            batchStatistics.getValidDocumentCount());
+        for (TextAnalyticsPagedResponse<ExtractKeyPhraseResult> textAnalyticsPagedResponse : extractedBatchResult) {
+            System.out.printf("Model version: %s%n", textAnalyticsPagedResponse.getModelVersion());
 
-        // Extracted key phrase for each of document from a batch of documents
-        for (ExtractKeyPhraseResult extractKeyPhraseResult : extractedBatchResult) {
-            System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
-            // Erroneous document
-            if (extractKeyPhraseResult.isError()) {
-                System.out.printf("Cannot extract key phrases. Error: %s%n", extractKeyPhraseResult.getError().getMessage());
-                continue;
-            }
-            // Valid document
-            System.out.println("Extracted phrases:");
-            for (String keyPhrases : extractKeyPhraseResult.getKeyPhrases()) {
-                System.out.printf("%s.%n", keyPhrases);
+            // Batch statistics
+            final TextDocumentBatchStatistics batchStatistics = textAnalyticsPagedResponse.getStatistics();
+            System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
+                batchStatistics.getDocumentCount(),
+                batchStatistics.getInvalidDocumentCount(),
+                batchStatistics.getTransactionCount(),
+                batchStatistics.getValidDocumentCount());
+
+            // Extracted key phrase for each of document from a batch of documents
+            for (ExtractKeyPhraseResult extractKeyPhraseResult : textAnalyticsPagedResponse.getElements()) {
+                System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
+                // Erroneous document
+                if (extractKeyPhraseResult.isError()) {
+                    System.out.printf("Cannot extract key phrases. Error: %s%n", extractKeyPhraseResult.getError().getMessage());
+                    continue;
+                }
+                // Valid document
+                System.out.println("Extracted phrases:");
+                for (String keyPhrases : extractKeyPhraseResult.getKeyPhrases()) {
+                    System.out.printf("%s.%n", keyPhrases);
+                }
             }
         }
     }

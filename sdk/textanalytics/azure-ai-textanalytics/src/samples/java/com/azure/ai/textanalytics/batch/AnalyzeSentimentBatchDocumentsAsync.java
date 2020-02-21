@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
@@ -44,13 +43,12 @@ public class AnalyzeSentimentBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Analyzing batch sentiments
-        client.analyzeSentimentBatchWithResponse(inputs, requestOptions).subscribe(
-            result -> {
-                DocumentResultCollection<AnalyzeSentimentResult> sentimentBatchResult = result.getValue();
-                System.out.printf("Model version: %s%n", sentimentBatchResult.getModelVersion());
+        client.analyzeSentimentBatch(inputs, requestOptions).byPage().subscribe(
+            pagedResponse -> {
+                System.out.printf("Model version: %s%n", pagedResponse.getModelVersion());
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = sentimentBatchResult.getStatistics();
+                final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
                 System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(),
                     batchStatistics.getInvalidDocumentCount(),
@@ -58,7 +56,7 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                     batchStatistics.getValidDocumentCount());
 
                 // Analyzed sentiment for each of document from a batch of documents
-                for (AnalyzeSentimentResult analyzeSentimentResult : sentimentBatchResult) {
+                for (AnalyzeSentimentResult analyzeSentimentResult : pagedResponse.getElements()) {
                     System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
                     // Erroneous document
                     if (analyzeSentimentResult.isError()) {

@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -45,13 +44,12 @@ public class RecognizePiiBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Recognizing batch entities
-        client.recognizePiiEntitiesBatchWithResponse(inputs, requestOptions).subscribe(
-            result -> {
-                final DocumentResultCollection<RecognizePiiEntitiesResult> recognizedBatchResult = result.getValue();
-                System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
+        client.recognizePiiEntitiesBatch(inputs, requestOptions).byPage().subscribe(
+            pagedResponse -> {
+                System.out.printf("Model version: %s%n", pagedResponse.getModelVersion());
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = recognizedBatchResult.getStatistics();
+                final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
                 System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(),
                     batchStatistics.getInvalidDocumentCount(),
@@ -59,7 +57,7 @@ public class RecognizePiiBatchDocumentsAsync {
                     batchStatistics.getValidDocumentCount());
 
                 // Recognized Personally Identifiable Information entities for each of document from a batch of documents
-                for (RecognizePiiEntitiesResult piiEntityDocumentResult : recognizedBatchResult) {
+                for (RecognizePiiEntitiesResult piiEntityDocumentResult : pagedResponse.getElements()) {
                     System.out.printf("Document ID: %s%n", piiEntityDocumentResult.getId());
                     // Erroneous document
                     if (piiEntityDocumentResult.isError()) {

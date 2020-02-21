@@ -152,7 +152,7 @@ public class ReadmeSamples {
         );
 
         try {
-            textAnalyticsClient.detectLanguageBatchWithResponse(inputs, null, Context.NONE);
+            textAnalyticsClient.detectLanguageBatch(inputs, null, Context.NONE);
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }

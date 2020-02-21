@@ -8,8 +8,8 @@ import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.util.Context;
@@ -43,32 +43,34 @@ public class DetectLanguageBatchDocuments {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Detecting batch languages
-        final DocumentResultCollection<DetectLanguageResult> detectedBatchResult =
-            client.detectLanguageBatchWithResponse(inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
+        final Iterable<TextAnalyticsPagedResponse<DetectLanguageResult>> detectedBatchResult =
+            client.detectLanguageBatch(inputs, requestOptions, Context.NONE).iterableByPage();
 
-        // Batch statistics
-        final TextDocumentBatchStatistics batchStatistics = detectedBatchResult.getStatistics();
-        System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
-            batchStatistics.getDocumentCount(),
-            batchStatistics.getInvalidDocumentCount(),
-            batchStatistics.getTransactionCount(),
-            batchStatistics.getValidDocumentCount());
+        detectedBatchResult.forEach(textAnalyticsPagedResponse -> {
+            System.out.printf("Model version: %s%n", textAnalyticsPagedResponse.getModelVersion());
+            // Batch statistics
+            final TextDocumentBatchStatistics batchStatistics = textAnalyticsPagedResponse.getStatistics();
+            System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
+                batchStatistics.getDocumentCount(),
+                batchStatistics.getInvalidDocumentCount(),
+                batchStatistics.getTransactionCount(),
+                batchStatistics.getValidDocumentCount());
 
-        // Detected languages for a document from a batch of documents
-        for (DetectLanguageResult detectLanguageResult : detectedBatchResult) {
-            System.out.printf("Document ID: %s%n", detectLanguageResult.getId());
-            // Erroneous document
-            if (detectLanguageResult.isError()) {
-                System.out.printf("Cannot detect language. Error: %s%n", detectLanguageResult.getError().getMessage());
-                continue;
+            // Detected languages for a document from a batch of documents
+            for (DetectLanguageResult detectLanguageResult : textAnalyticsPagedResponse.getElements()) {
+                System.out.printf("Document ID: %s%n", detectLanguageResult.getId());
+                // Erroneous document
+                if (detectLanguageResult.isError()) {
+                    System.out.printf("Cannot detect language. Error: %s%n", detectLanguageResult.getError().getMessage());
+                    continue;
+                }
+                // Valid document
+                final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
+                System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %.2f.%n",
+                    detectedPrimaryLanguage.getName(),
+                    detectedPrimaryLanguage.getIso6391Name(),
+                    detectedPrimaryLanguage.getScore());
             }
-            // Valid document
-            final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
-            System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %.2f.%n",
-                detectedPrimaryLanguage.getName(),
-                detectedPrimaryLanguage.getIso6391Name(),
-                detectedPrimaryLanguage.getScore());
-        }
+        });
     }
 }

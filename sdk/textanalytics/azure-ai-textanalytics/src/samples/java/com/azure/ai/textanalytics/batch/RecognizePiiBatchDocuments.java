@@ -5,10 +5,10 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -44,36 +44,40 @@ public class RecognizePiiBatchDocuments {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Recognizing batch entities
-        final DocumentResultCollection<RecognizePiiEntitiesResult> recognizedBatchResult =
-            client.recognizePiiEntitiesBatchWithResponse(inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
+        final Iterable<TextAnalyticsPagedResponse<RecognizePiiEntitiesResult>> recognizedBatchResult =
+            client.recognizePiiEntitiesBatch(inputs, requestOptions, Context.NONE).iterableByPage();
 
-        // Batch statistics
-        final TextDocumentBatchStatistics batchStatistics = recognizedBatchResult.getStatistics();
-        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
-            batchStatistics.getDocumentCount(),
-            batchStatistics.getInvalidDocumentCount(),
-            batchStatistics.getTransactionCount(),
-            batchStatistics.getValidDocumentCount());
+        for (TextAnalyticsPagedResponse<RecognizePiiEntitiesResult> textAnalyticsPagedResponse : recognizedBatchResult) {
 
-        // Recognized Personally Identifiable Information entities for each of document from a batch of documents
-        for (RecognizePiiEntitiesResult piiEntityDocumentResult : recognizedBatchResult) {
-            System.out.printf("Document ID: %s%n", piiEntityDocumentResult.getId());
-            // Erroneous document
-            if (piiEntityDocumentResult.isError()) {
-                System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n",
-                    piiEntityDocumentResult.getError().getMessage());
-                continue;
-            }
-            // Valid document
-            for (PiiEntity entity : piiEntityDocumentResult.getEntities()) {
-                System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                    entity.getText(),
-                    entity.getCategory(),
-                    entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                    entity.getOffset(),
-                    entity.getLength(),
-                    entity.getScore());
+            System.out.printf("Model version: %s%n", textAnalyticsPagedResponse.getModelVersion());
+
+            // Batch statistics
+            final TextDocumentBatchStatistics batchStatistics = textAnalyticsPagedResponse.getStatistics();
+            System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
+                batchStatistics.getDocumentCount(),
+                batchStatistics.getInvalidDocumentCount(),
+                batchStatistics.getTransactionCount(),
+                batchStatistics.getValidDocumentCount());
+
+            // Recognized Personally Identifiable Information entities for each of document from a batch of documents
+            for (RecognizePiiEntitiesResult piiEntityDocumentResult : textAnalyticsPagedResponse.getElements()) {
+                System.out.printf("Document ID: %s%n", piiEntityDocumentResult.getId());
+                // Erroneous document
+                if (piiEntityDocumentResult.isError()) {
+                    System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n",
+                        piiEntityDocumentResult.getError().getMessage());
+                    continue;
+                }
+                // Valid document
+                for (PiiEntity entity : piiEntityDocumentResult.getEntities()) {
+                    System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
+                        entity.getText(),
+                        entity.getCategory(),
+                        entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
+                        entity.getOffset(),
+                        entity.getLength(),
+                        entity.getScore());
+                }
             }
         }
     }
