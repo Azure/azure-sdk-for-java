@@ -189,11 +189,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         return (T) value;
     }
 
-    private Instant getDate(Map<?, ?> amqpBody, String key) {
-        final Date value = getValue(amqpBody, key, Date.class);
-        return value.toInstant();
-    }
-
     /*
      * Sets AMQP protocol header values on the AMQP message.
      */
