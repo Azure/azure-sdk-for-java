@@ -149,7 +149,7 @@ jobs:
         displayName: 'Verify Readmes'
 
       - pwsh: |
-          if ("$(parameters.SDKType)" -ieq "client") {
+          if ("${{parameters.SDKType}}" -ieq "client") {
             $excludes = "^(microsoft|mgmt)"
           } else {
             $excludes = "^(azure|mgmt)"
