@@ -3,12 +3,13 @@ parameters:
   SDKType: management
   ServiceDirectory: not-specified
 
-variables:
-  BuildOptions: '--batch-mode -Dgpg.skip -Dmaven.wagon.http.pool=false'
-  ProfileFlag: ''
-
 stages:
 - stage: 'Build'
+
+  variables:
+    BuildOptions: '--batch-mode -Dgpg.skip -Dmaven.wagon.http.pool=false'
+    ProfileFlag: ''
+
   jobs:
   - job:
 
