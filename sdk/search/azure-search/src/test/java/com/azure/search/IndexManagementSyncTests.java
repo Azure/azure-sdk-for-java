@@ -50,8 +50,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     private BiFunction<Index,
         AccessOptions,
         Index> createOrUpdateIndexFunc =
-            (Index index, AccessOptions ac) ->
-                createOrUpdateIndex(index, ac.getAccessCondition(), ac.getRequestOptions());
+        (Index index, AccessOptions ac) ->
+            createOrUpdateIndex(index, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Index> newIndexFunc = this::createTestIndex;
 
@@ -61,15 +61,9 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         (String name, AccessOptions ac) ->
             client.deleteIndexWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
 
-    private Index createOrUpdateIndex(Index index,
-        AccessCondition accessCondition,
-        RequestOptions requestOptions) {
-        return client.createOrUpdateIndexWithResponse(
-            index,
-            false,
-            accessCondition,
-            requestOptions,
-            Context.NONE).getValue();
+    private Index createOrUpdateIndex(Index index, AccessCondition accessCondition, RequestOptions requestOptions) {
+        return client.createOrUpdateIndexWithResponse(index, false, accessCondition, requestOptions, Context.NONE)
+            .getValue();
     }
 
     @Override
@@ -174,10 +168,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
         AccessConditionTests act = new AccessConditionTests();
 
-        act.deleteIfNotChangedWorksOnlyOnCurrentResource(
-            deleteIndexFunc,
-            newIndexFunc,
-            createOrUpdateIndexFunc,
+        act.deleteIfNotChangedWorksOnlyOnCurrentResource(deleteIndexFunc, newIndexFunc, createOrUpdateIndexFunc,
             HOTEL_INDEX_NAME);
     }
 
@@ -416,7 +407,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
             () -> client.createOrUpdateIndex(existingIndex),
             HttpResponseStatus.BAD_REQUEST,
             String.format("Fields that were already present in an index (%s) cannot be "
-                + "referenced by a new suggester. Only new fields added in the same index update operation are allowed.",
+                    + "referenced by a new suggester. Only new fields added in the same index update operation are allowed.",
                 existingFieldName)
         );
     }

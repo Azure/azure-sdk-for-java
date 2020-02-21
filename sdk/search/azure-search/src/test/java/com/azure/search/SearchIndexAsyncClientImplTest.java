@@ -7,7 +7,6 @@ import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.search.models.GeoPoint;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -132,10 +131,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
         uploadDocument(asyncClient, hotelDoc);
         assertHttpResponseExceptionAsync(
-            asyncClient.getDocumentWithResponse("2", selectedFields, null),
-            HttpResponseStatus.BAD_REQUEST,
-            "Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' "
-                + "on type 'search.document'."
+            asyncClient.getDocumentWithResponse("2", selectedFields, null)
         );
     }
 

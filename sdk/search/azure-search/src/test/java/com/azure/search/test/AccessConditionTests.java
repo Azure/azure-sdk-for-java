@@ -131,12 +131,10 @@ public class AccessConditionTests {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T staleResource = newResourceDefinition.get();
-        AccessOptions accessOptions =
-            new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(null);
 
         // Create the resource in the search service
-        staleResource =
-            createOrUpdateDefinition.apply(staleResource, accessOptions);
+        staleResource = createOrUpdateDefinition.apply(staleResource, accessOptions);
 
         // Get the eTag for the newly created resource
         String eTagStale = getETag(staleResource);
@@ -145,8 +143,7 @@ public class AccessConditionTests {
         T currentResource = createOrUpdateDefinition.apply(staleResource, accessOptions);
 
         try {
-            accessOptions =
-                new AccessOptions(generateIfNotChangedAccessCondition(eTagStale));
+            accessOptions = new AccessOptions(generateIfNotChangedAccessCondition(eTagStale));
             deleteFunc.accept(resourceName, accessOptions);
             fail("deleteFunc should have failed due to selected AccessCondition");
         } catch (Exception exc) {
@@ -156,8 +153,7 @@ public class AccessConditionTests {
 
         // Get the new eTag
         String eTagCurrent = getETag(currentResource);
-        accessOptions =
-            new AccessOptions(generateIfNotChangedAccessCondition(eTagCurrent));
+        accessOptions = new AccessOptions(generateIfNotChangedAccessCondition(eTagCurrent));
 
         // Delete should succeed
         deleteFunc.accept(resourceName, accessOptions);

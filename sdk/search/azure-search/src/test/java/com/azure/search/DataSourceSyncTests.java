@@ -71,7 +71,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
     @Test
     public void canCreateAndListDataSources() {
         DataSource dataSource1 = createTestBlobDataSource(null);
-        DataSource dataSource2 = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
+        DataSource dataSource2 = createTestSqlDataSourceObject();
 
         client.createOrUpdateDataSource(dataSource1);
         client.createOrUpdateDataSource(dataSource2);
@@ -86,7 +86,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
     @Test
     public void canCreateAndListDataSourcesWithResponse() {
         DataSource dataSource1 = createTestBlobDataSource(null);
-        DataSource dataSource2 = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
+        DataSource dataSource2 = createTestSqlDataSourceObject();
 
         client.createOrUpdateDataSourceWithResponse(
             dataSource1, new AccessCondition(), new RequestOptions(), Context.NONE);
@@ -134,7 +134,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
     public void createDataSourceFailsWithUsefulMessageOnUserError() {
         client = getSearchServiceClientBuilder().buildClient();
 
-        DataSource dataSource = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
+        DataSource dataSource = createTestSqlDataSourceObject();
         dataSource.setType(DataSourceType.fromString("thistypedoesnotexist"));
 
         assertHttpResponseException(
@@ -146,12 +146,12 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
 
     @Test
     public void canUpdateDataSource() {
-        DataSource initial = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME);
+        DataSource initial = createTestSqlDataSourceObject();
 
         // Create the data source
         client.createOrUpdateDataSource(initial);
 
-        DataSource updatedExpected = createTestSqlDataSourceObject(SQL_DATASOURCE_NAME)
+        DataSource updatedExpected = createTestSqlDataSourceObject()
             .setName(initial.getName())
             .setContainer(new DataContainer().setName("somethingdifferent"))
             .setDescription("somethingdifferent")
@@ -225,11 +225,11 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
                 .setHighWaterMarkColumnName("fakecolumn");
 
         // AzureSql
-        createAndValidateDataSource(createTestSqlDataSourceObject(SQL_DATASOURCE_NAME, null, null));
-        createAndValidateDataSource(createTestSqlDataSourceObject(SQL_DATASOURCE_NAME, deletionDetectionPolicy, null));
-        createAndValidateDataSource(createTestSqlDataSourceObject(SQL_DATASOURCE_NAME, null, new
+        createAndValidateDataSource(createTestSqlDataSourceObject(null, null));
+        createAndValidateDataSource(createTestSqlDataSourceObject(deletionDetectionPolicy, null));
+        createAndValidateDataSource(createTestSqlDataSourceObject(null, new
             SqlIntegratedChangeTrackingPolicy()));
-        createAndValidateDataSource(createTestSqlDataSourceObject(SQL_DATASOURCE_NAME, deletionDetectionPolicy,
+        createAndValidateDataSource(createTestSqlDataSourceObject(deletionDetectionPolicy,
             changeDetectionPolicy));
 
         // Cosmos
@@ -263,7 +263,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
 
         createGetAndValidateDataSource(createTestBlobDataSource(null));
         createGetAndValidateDataSource(createTestTableStorageDataSource());
-        createGetAndValidateDataSource(createTestSqlDataSourceObject(SQL_DATASOURCE_NAME));
+        createGetAndValidateDataSource(createTestSqlDataSourceObject());
         createGetAndValidateDataSource(createTestCosmosDataSource(null, false));
     }
 

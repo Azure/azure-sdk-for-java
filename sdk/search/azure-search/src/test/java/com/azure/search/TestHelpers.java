@@ -14,6 +14,8 @@ import com.azure.search.test.environment.models.LoudHotel;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
 import com.azure.search.test.environment.models.NonNullableModel;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import static org.unitils.reflectionassert.ReflectionAssert.assertLenientEquals;
@@ -105,10 +107,18 @@ public final class TestHelpers {
     public static String getETag(Object obj) {
         Class<?> clazz = obj.getClass();
         try {
-            clazz.getDeclaredField("eTag").setAccessible(true);
-            return (String) clazz.getDeclaredField("eTag").get(obj);
-        } catch (IllegalAccessException | NoSuchFieldException ex) {
-            return "";
+            // Try using the getter method first.
+            return (String) clazz.getMethod("getETag").invoke(obj);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+            try {
+                // Next attempt to get the value from the field directly.
+                Field eTagField = clazz.getField("eTag");
+                eTagField.setAccessible(true);
+                return (String) eTagField.get(obj);
+            } catch (IllegalAccessException | NoSuchFieldException ignored) {
+                // Finally just return empty string since we couldn't access the method or field.
+                return "";
+            }
         }
     }
 

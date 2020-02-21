@@ -15,11 +15,10 @@ import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
 import org.junit.jupiter.api.Test;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -286,25 +285,23 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        List<Document> rooms = new ArrayList<>();
-        rooms.add(new Document(Collections.singletonMap("baseRate", NaN)));
-
         Document indexedDoc = new Document();
         indexedDoc.put("HotelId", "1");
         indexedDoc.put("HotelName", "2015-02-11T12:58:00Z");
         indexedDoc.put("Location", GeoPoint.create(40.760586, -73.975403)); // Test that we don't confuse Geo-JSON & complex types.
-        indexedDoc.put("Rooms", rooms);
+        indexedDoc.put("Rooms", Collections.singletonList(new Document(Collections.singletonMap("BaseRate", NaN))));
 
         Document expectedDoc = new Document();
         expectedDoc.put("HotelId", "1");
-        expectedDoc.put("HotelName", OffsetDateTime.of(2015, 2, 11, 12, 58, 0, 9, ZoneOffset.UTC));
+        expectedDoc.put("HotelName", OffsetDateTime.of(2015, 2, 11, 12, 58, 0, 0, ZoneOffset.UTC));
         expectedDoc.put("Location", GeoPoint.create(40.760586, -73.975403));
-        expectedDoc.put("Rooms", Collections.singleton(new Document(Collections.singletonMap("BaseRate", "NaN"))));
+        expectedDoc.put("Rooms", Collections.singletonList(new Document(Collections.singletonMap("BaseRate", "NaN"))));
 
-        client.index(new IndexBatch<>().addUploadAction(expectedDoc));
+        client.index(new IndexBatch<>().addUploadAction(indexedDoc));
 
         // Select only the fields set in the test case so we don't get superfluous data back.
-        assertEquals(client.getDocumentWithResponse("1", new ArrayList<>(indexedDoc.keySet()), null, Context.NONE).getValue(), expectedDoc);
+        List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Location", "Rooms/BaseRate");
+        assertEquals(expectedDoc, client.getDocumentWithResponse("1", selectedFields, null, Context.NONE).getValue());
     }
 
     @Test
@@ -322,22 +319,20 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
     }
 
     @Test
-    public void roundTrippingDateTimeOffsetNormalizesToUtc() throws ParseException {
+    public void roundTrippingDateTimeOffsetNormalizesToUtc() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
         Document indexedDoc = new Document();
         indexedDoc.put("HotelId", "1");
-        indexedDoc.put("LastRenovationDate", dateFormat.parse("2010-06-27T00:00:00-08:00"));
+        indexedDoc.put("LastRenovationDate", OffsetDateTime.parse("2010-06-27T00:00:00-08:00", DateTimeFormatter.ISO_DATE_TIME));
 
         Document expectedDoc = new Document();
         expectedDoc.put("HotelId", "1");
-        expectedDoc.put("LastRenovationDate", dateFormat.parse("2010-06-27T08:00:00Z"));
+        expectedDoc.put("LastRenovationDate", OffsetDateTime.parse("2010-06-27T08:00:00Z", DateTimeFormatter.ISO_DATE_TIME));
 
         client.index(new IndexBatch<>().addUploadAction(indexedDoc));
-        assertEquals(client.getDocument("1"), expectedDoc);
+        assertEquals(client.getDocumentWithResponse("1", new ArrayList<>(expectedDoc.keySet()), null, Context.NONE).getValue(), expectedDoc);
     }
 
     @Test

@@ -183,9 +183,9 @@ public class DocumentConverterTests {
         storeLocation2.put("coordinates", Arrays.asList(-122.5, 47.6));
 
         Document store2 = new Document();
-        store1.put("name", "South");
-        store1.put("address", storeAddress2);
-        store1.put("location", storeLocation2);
+        store2.put("name", "South");
+        store2.put("address", storeAddress2);
+        store2.put("location", storeLocation2);
 
         Document expectedDoc = new Document(Collections.singletonMap("stores", Arrays.asList(store1, store2)));
 

@@ -260,10 +260,19 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
                         new Field()
                             .setName("Count")
                             .setType(DataType.EDM_INT32)
-                            .setFilterable(true)
-                    ))
-                )
-            );
+                            .setFilterable(true))),
+                new Field()
+                    .setName("Buckets")
+                    .setType(DataType.Collection(DataType.EDM_COMPLEX_TYPE))
+                    .setFields(Arrays.asList(
+                        new Field()
+                            .setName("BucketName")
+                            .setType(DataType.EDM_STRING)
+                            .setFilterable(true),
+                        new Field()
+                            .setName("Count")
+                            .setType(DataType.EDM_INT32)
+                            .setFilterable(true)))));
 
         setupIndex(index);
 
