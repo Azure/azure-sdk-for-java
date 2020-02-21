@@ -617,7 +617,10 @@
 
   <!-- Retry thus does not throw -->
   <Match>
-    <Class name="com.azure.identity.implementation.msalextensions.CacheLock"/>
+    <Or>
+      <Class name="com.azure.identity.SharedTokenCacheCredential"/>
+      <Class name="com.azure.identity.implementation.msalextensions.CacheLock"/>
+    </Or>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
   <!-- Return value not needed -->
