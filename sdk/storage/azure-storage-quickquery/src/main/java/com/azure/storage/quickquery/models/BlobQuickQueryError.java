@@ -1,4 +1,4 @@
-package com.azure.storage.blob.quickquery.models;
+package com.azure.storage.quickquery.models;
 
 public class BlobQuickQueryError {
 

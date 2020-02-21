@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.quickquery.models;
+package com.azure.storage.quickquery.models;
 
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.blob.models.BlobQuickQueryHeaders;

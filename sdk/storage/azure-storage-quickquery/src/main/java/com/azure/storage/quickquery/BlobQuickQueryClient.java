@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.quickquery;
+package com.azure.storage.quickquery;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.ProxyOptions;
@@ -14,11 +14,10 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.quickquery.models.BlobQuickQueryDelimitedSerialization;
-import com.azure.storage.blob.quickquery.models.BlobQuickQueryError;
-import com.azure.storage.blob.quickquery.models.BlobQuickQueryResponse;
-import com.azure.storage.blob.quickquery.models.BlobQuickQuerySerialization;
+import com.azure.storage.quickquery.models.BlobQuickQueryDelimitedSerialization;
+import com.azure.storage.quickquery.models.BlobQuickQueryError;
+import com.azure.storage.quickquery.models.BlobQuickQueryResponse;
+import com.azure.storage.quickquery.models.BlobQuickQuerySerialization;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -38,7 +37,6 @@ import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.Random;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
@@ -68,7 +66,7 @@ public class BlobQuickQueryClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.quickquery.BlobQuickQueryClient.query#OutputStream-String}
+     * {@codesnippet com.azure.storage.quickquery.BlobQuickQueryClient.query#OutputStream-String}
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param expression The query expression.
@@ -84,7 +82,7 @@ public class BlobQuickQueryClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.quickquery.BlobQuickQueryClient.queryWithResponse#OutputStream-String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-Duration-Context}
+     * {@codesnippet com.azure.storage.quickquery.BlobQuickQueryClient.queryWithResponse#OutputStream-String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-Duration-Context}
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param expression The query expression.

@@ -1,11 +1,12 @@
-package com.azure.storage.blob.quickquery;
+package com.azure.storage.quickquery;
 
-import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.quickquery.models.BlobQuickQueryDelimitedSerialization;
-import com.azure.storage.blob.quickquery.models.BlobQuickQueryJsonSerialization;
-import com.azure.storage.blob.quickquery.models.BlobQuickQuerySerialization;
+import com.azure.storage.quickquery.BlobQuickQueryAsyncClient;
+import com.azure.storage.quickquery.BlobQuickQueryClientBuilder;
+import com.azure.storage.quickquery.models.BlobQuickQueryDelimitedSerialization;
+import com.azure.storage.quickquery.models.BlobQuickQueryJsonSerialization;
+import com.azure.storage.quickquery.models.BlobQuickQuerySerialization;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class BlobQuickQueryAsyncClientJavaDocCodeSnippets {
      * Code snippet for {@link BlobQuickQueryAsyncClient#query(String)}
      */
     public void query() {
-        // BEGIN: com.azure.storage.blob.quickquery.BlobQuickQueryAsyncClient.query#String
+        // BEGIN: com.azure.storage.quickquery.BlobQuickQueryAsyncClient.query#String
         ByteArrayOutputStream queryData = new ByteArrayOutputStream();
         String expression = "SELECT c1,c2 from blob1 WHERE c1 > 20 LIMIT 100;";
         client.query(expression).subscribe(piece -> {
@@ -35,14 +36,14 @@ public class BlobQuickQueryAsyncClientJavaDocCodeSnippets {
                 throw new UncheckedIOException(ex);
             }
         });
-        // END: com.azure.storage.blob.quickquery.BlobQuickQueryAsyncClient.query#String
+        // END: com.azure.storage.quickquery.BlobQuickQueryAsyncClient.query#String
     }
 
     /**
      * Code snippet for {@link BlobQuickQueryAsyncClient#queryWithResponse(String, BlobQuickQuerySerialization, BlobQuickQuerySerialization, BlobRequestConditions)}
      */
     public void queryWithResponse() {
-        // BEGIN: com.azure.storage.blob.quickquery.BlobQuickQueryAsyncClient.queryWithResponse#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions
+        // BEGIN: com.azure.storage.quickquery.BlobQuickQueryAsyncClient.queryWithResponse#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions
         String expression = "SELECT c1,c2 from blob1 WHERE c1 > 20 LIMIT 100;";
         BlobQuickQueryJsonSerialization input = new BlobQuickQueryJsonSerialization()
             .setRecordSeparator('\n');
@@ -63,6 +64,6 @@ public class BlobQuickQueryAsyncClientJavaDocCodeSnippets {
                 }
             });
         });
-        // END: com.azure.storage.blob.quickquery.BlobQuickQueryAsyncClient.queryWithResponse#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions
+        // END: com.azure.storage.quickquery.BlobQuickQueryAsyncClient.queryWithResponse#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions
     }
 }

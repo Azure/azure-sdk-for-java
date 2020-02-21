@@ -492,10 +492,6 @@
                 <packages>com.azure.storage.blob.nio*</packages>
               </group>
               <group>
-                <title>Azure Storage Blobs - Quick Query</title>
-                <packages>com.azure.storage.blob.quickquery*</packages>
-              </group>
-              <group>
                 <title>Azure Storage - Files</title>
                 <packages>com.azure.storage.file*</packages>
               </group>
@@ -506,6 +502,10 @@
               <group>
                 <title>Azure Storage - Queues</title>
                 <packages>com.azure.storage.queue*</packages>
+              </group>
+              <group>
+                <title>Azure Storage Quick Query</title>
+                <packages>com.azure.storage.quickquery*</packages>
               </group>
               <group>
                 <title>Azure Telemetry</title>

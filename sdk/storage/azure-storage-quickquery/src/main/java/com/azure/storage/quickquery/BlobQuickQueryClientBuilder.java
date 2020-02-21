@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.quickquery;
+package com.azure.storage.quickquery;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
@@ -55,7 +55,7 @@ public class BlobQuickQueryClientBuilder {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.quickquery.BlobQuickQueryClientBuilder#buildClient}
+     * {@codesnippet com.azure.storage.quickquery.BlobQuickQueryClientBuilder#buildClient}
      *
      * @return a {@link BlobQuickQueryClient} created from the configurations in this builder.
      */
@@ -68,7 +68,7 @@ public class BlobQuickQueryClientBuilder {
      *
      * <p><strong>Code sample</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.quickquery.BlobQuickQueryClientBuilder#buildAsyncClient}
+     * {@codesnippet com.azure.storage.quickquery.BlobQuickQueryClientBuilder#buildAsyncClient}
      *
      * @return a {@link BlobQuickQueryAsyncClient} created from the configurations in this builder.
      */

@@ -1,4 +1,4 @@
-# Azure Storage Blobs Quick Query client library for Java
+# Azure Storage Quick Query client library for Java
 
 Azure Blob storage is Microsoft's object storage solution for the cloud. Blob
 storage is optimized for storing massive amounts of unstructured data.
@@ -20,7 +20,7 @@ This package supports quick query for blob storage.
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-storage-blob-quickquery</artifactId>
+  <artifactId>azure-storage-quickquery</artifactId>
   <version>12.0.0-beta.1</version>
 </dependency>
 ```

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.quickquery;
+package com.azure.storage.quickquery;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
@@ -18,10 +18,10 @@ import com.azure.storage.blob.implementation.models.QuickQuerySerialization;
 import com.azure.storage.blob.implementation.models.QuickQueryType;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.quickquery.models.BlobQuickQueryAsyncResponse;
-import com.azure.storage.blob.quickquery.models.BlobQuickQueryDelimitedSerialization;
-import com.azure.storage.blob.quickquery.models.BlobQuickQueryJsonSerialization;
-import com.azure.storage.blob.quickquery.models.BlobQuickQuerySerialization;
+import com.azure.storage.quickquery.models.BlobQuickQueryAsyncResponse;
+import com.azure.storage.quickquery.models.BlobQuickQueryDelimitedSerialization;
+import com.azure.storage.quickquery.models.BlobQuickQueryJsonSerialization;
+import com.azure.storage.quickquery.models.BlobQuickQuerySerialization;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -69,7 +69,7 @@ public class BlobQuickQueryAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.quickquery.BlobQuickQueryAsyncClient.query#String}
+     * {@codesnippet com.azure.storage.quickquery.BlobQuickQueryAsyncClient.query#String}
      *
      * @param expression The query expression.
      * @return A reactive response containing the queried data.
@@ -84,7 +84,7 @@ public class BlobQuickQueryAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.quickquery.BlobQuickQueryAsyncClient.queryWithResponse#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions}
+     * {@codesnippet com.azure.storage.quickquery.BlobQuickQueryAsyncClient.queryWithResponse#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions}
      *
      * @param expression The query expression.
      * @param input {@link BlobQuickQuerySerialization Serialization input}
