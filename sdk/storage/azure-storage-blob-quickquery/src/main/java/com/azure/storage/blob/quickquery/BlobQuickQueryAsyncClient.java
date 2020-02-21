@@ -58,7 +58,7 @@ public class BlobQuickQueryAsyncClient {
         this.client = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
-            .version("2019-12-12")
+            .version(serviceVersion.getVersion())
             .build();
         this.customerProvidedKey = customerProvidedKey;
     }

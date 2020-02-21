@@ -6,7 +6,7 @@ package com.azure.storage.blob.quickquery.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.storage.blob.implementation.models.BlobQuickQueryHeaders;
+import com.azure.storage.blob.models.BlobQuickQueryHeaders;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
