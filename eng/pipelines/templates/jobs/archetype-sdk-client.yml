@@ -148,16 +148,23 @@ jobs:
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
 
+      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
+      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
+      - template: ../steps/install-reporting-tools.yml
+        parameters:
+          Options: --batch-mode
+          MavenOptions: $(MemoryOptions) $(LoggingOptions)
+
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
         displayName: 'Build'
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           goals: 'install'
-          options: '$(DefaultOptions) -DskipTests -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
+          options: '$(DefaultOptions) --batch-mode -Dmaven.test.skip=true -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
+          jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -180,15 +187,8 @@ jobs:
         condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
         displayName: 'Component Detection'
 
-      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-      - template: ../steps/install-reporting-tools.yml
-        parameters:
-          Options: --batch-mode
-          MavenOptions: $(MemoryOptions) $(LoggingOptions)
-
       - task: Maven@3
-        displayName: 'Install Module and Run SpotBugs, Checkstyle, RevApi, and Javadoc'
+        displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme'
@@ -197,7 +197,7 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'install'
+          goals: 'verify'
 
   - job: 'Test'
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
