@@ -45,8 +45,8 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container1 = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
 
-        client1 = copyCosmosClientBuilder(clientBuilder()).setConnectionSharingAcrossClientsEnabled(true).buildClient();
-        client2 = copyCosmosClientBuilder(clientBuilder()).setConnectionSharingAcrossClientsEnabled(true).buildClient();
+        client1 = copyCosmosClientBuilder(clientBuilder()).setConnectionReuseAcrossClientsEnabled(true).buildClient();
+        client2 = copyCosmosClientBuilder(clientBuilder()).setConnectionReuseAcrossClientsEnabled(true).buildClient();
 
         container1 = client1.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
         container2 = client1.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
@@ -57,11 +57,6 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         LifeCycleUtils.closeQuietly(client);
         LifeCycleUtils.closeQuietly(client1);
         LifeCycleUtils.closeQuietly(client2);
-
-        if (ifDirectMode()) {
-            SharedTransportClient transportClient1 = (SharedTransportClient) ReflectionUtils.getTransportClient(client1.asyncClient());
-            assertThat(transportClient1.getReferenceCounter()).isEqualTo(2);
-        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
