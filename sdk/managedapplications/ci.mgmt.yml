@@ -13,7 +13,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/network/mgmt-
+      - sdk/managedapplications/mgmt-
 
 pr:
   branches:
@@ -24,9 +24,9 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/network/mgmt-
+      - sdk/managedapplications/mgmt-
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
     parameters:
-      ServiceDirectory: network
+      ServiceDirectory: managedapplications
