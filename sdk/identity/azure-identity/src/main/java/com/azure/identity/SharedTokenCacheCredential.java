@@ -9,14 +9,12 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.msalextensions.PersistentTokenCacheAccessAspect;
-import com.azure.identity.implementation.msalextensions.cachepersister.PlatformNotSupportedException;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.ZoneOffset;
 import java.util.HashMap;
