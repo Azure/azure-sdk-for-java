@@ -27,12 +27,10 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -48,8 +46,8 @@ class ClientSideRequestStatistics {
 
     private List<URI> contactedReplicas;
     private Set<URI> failedReplicas;
-    private ZonedDateTime requestStartTime;
-    private ZonedDateTime requestEndTime;
+    private ZonedDateTime requestStartTimeUTC;
+    private ZonedDateTime requestEndTimeUTC;
     private Set<URI> regionsContacted;
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
@@ -57,8 +55,8 @@ class ClientSideRequestStatistics {
     private MetaDataDiagnosticContext metaDataDiagnosticContext;
 
     ClientSideRequestStatistics() {
-        this.requestStartTime = ZonedDateTime.now(ZoneOffset.UTC);
-        this.requestEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+        this.requestStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+        this.requestEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
         this.responseStatisticsList = new ArrayList<>();
         this.supplementalResponseStatisticsList = new ArrayList<>();
         this.addressResolutionStatistics = new HashMap<>();
@@ -71,7 +69,7 @@ class ClientSideRequestStatistics {
     }
 
     Duration getRequestLatency() {
-        return Duration.between(requestStartTime, requestEndTime);
+        return Duration.between(requestStartTimeUTC, requestEndTimeUTC);
     }
 
     void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
@@ -93,8 +91,8 @@ class ClientSideRequestStatistics {
         }
 
         synchronized (this) {
-            if (responseTime.isAfter(this.requestEndTime)) {
-                this.requestEndTime = responseTime;
+            if (responseTime.isAfter(this.requestEndTimeUTC)) {
+                this.requestEndTimeUTC = responseTime;
             }
 
             if (locationEndPoint != null) {
@@ -114,8 +112,8 @@ class ClientSideRequestStatistics {
         ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
         connectionMode = ConnectionMode.GATEWAY;
         synchronized (this) {
-            if (responseTime.isAfter(this.requestEndTime)) {
-                this.requestEndTime = responseTime;
+            if (responseTime.isAfter(this.requestEndTimeUTC)) {
+                this.requestEndTimeUTC = responseTime;
             }
 
             if(rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null && rxDocumentServiceRequest.requestContext.retryContext != null) {
@@ -170,8 +168,8 @@ class ClientSideRequestStatistics {
                 throw new IllegalArgumentException("Identifier " + identifier + " does not exist. Please call start before calling end");
             }
 
-            if (responseTime.isAfter(this.requestEndTime)) {
-                this.requestEndTime = responseTime;
+            if (responseTime.isAfter(this.requestEndTimeUTC)) {
+                this.requestEndTimeUTC = responseTime;
             }
 
             AddressResolutionStatistics resolutionStatistics = this.addressResolutionStatistics.get(identifier);
@@ -258,8 +256,8 @@ class ClientSideRequestStatistics {
             generator.writeStartObject();
             long requestLatency = statistics.getRequestLatency().toMillis();;
             generator.writeNumberField("requestLatency", requestLatency);
-            generator.writeStringField("requestStartTime", ZonedDateTimeSerializer.formatDateTime(statistics.requestStartTime));
-            generator.writeStringField("requestEndTime", ZonedDateTimeSerializer.formatDateTime(statistics.requestEndTime));
+            generator.writeStringField("requestStartTimeUTC", ZonedDateTimeSerializer.formatDateTime(statistics.requestStartTimeUTC));
+            generator.writeStringField("requestEndTimeUTC", ZonedDateTimeSerializer.formatDateTime(statistics.requestEndTimeUTC));
             generator.writeObjectField("connectionMode", statistics.connectionMode);
             generator.writeObjectField("responseStatisticsList", statistics.responseStatisticsList);
             int supplementalResponseStatisticsListCount = statistics.supplementalResponseStatisticsList.size();
