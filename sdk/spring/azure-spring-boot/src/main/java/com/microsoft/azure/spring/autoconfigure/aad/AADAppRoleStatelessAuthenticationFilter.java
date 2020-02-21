@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import static org.springframework.util.StringUtils.hasText;
@@ -32,9 +29,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final Logger log = LoggerFactory.getLogger(AADAppRoleStatelessAuthenticationFilter.class);
-
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADAppRoleStatelessAuthenticationFilter.class);
     private static final String TOKEN_TYPE = "Bearer ";
     private static final JSONArray DEFAULT_ROLE_CLAIM = new JSONArray().appendElement("USER");
     private static final String ROLE_PREFIX = "ROLE_";
@@ -62,15 +57,15 @@ public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
                 final Authentication authentication = new PreAuthenticatedAuthenticationToken(
                     principal, null, rolesToGrantedAuthorities(roles));
                 authentication.setAuthenticated(true);
-                log.info("Request token verification success. {}", authentication);
+                LOGGER.info("Request token verification success. {}", authentication);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 cleanupRequired = true;
             } catch (BadJWTException ex) {
                 final String errorMessage = "Invalid JWT. Either expired or not yet valid. " + ex.getMessage();
-                log.warn(errorMessage);
+                LOGGER.warn(errorMessage);
                 throw new ServletException(errorMessage, ex);
             } catch (ParseException | BadJOSEException | JOSEException ex) {
-                log.error("Failed to initialize UserPrincipal.", ex);
+                LOGGER.error("Failed to initialize UserPrincipal.", ex);
                 throw new ServletException(ex);
             }
         }

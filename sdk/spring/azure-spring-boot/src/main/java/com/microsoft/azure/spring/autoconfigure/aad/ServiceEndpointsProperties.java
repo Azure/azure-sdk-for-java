@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -31,8 +28,8 @@ public class ServiceEndpointsProperties {
         Assert.notEmpty(endpoints, "No service endpoints found");
 
         if (!endpoints.containsKey(environment)) {
-            throw new IllegalArgumentException(environment + " is not found in the configuration," +
-                    " only following environments are supported: " + endpoints.keySet());
+            throw new IllegalArgumentException(environment + " is not found in the configuration,"
+                + " only following environments are supported: " + endpoints.keySet());
         }
 
         return endpoints.get(environment);

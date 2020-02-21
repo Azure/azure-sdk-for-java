@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.spring;
 
@@ -120,9 +117,9 @@ public class KeyVaultEnvironmentPostProcessorTest {
                 .withPropertyValues("azure.keyvault.uri=fakeuri", "azure.keyvault.enabled=true");
 
         contextRunner.run(context -> {
-            assertThat("Configured order for KeyVaultEnvironmentPostProcessor is different with default order " +
-                            "value.",
-                    KeyVaultEnvironmentPostProcessor.DEFAULT_ORDER != OrderedProcessConfig.TEST_ORDER);
+            assertThat("Configured order for KeyVaultEnvironmentPostProcessor is different with default order "
+                    + "value.",
+                KeyVaultEnvironmentPostProcessor.DEFAULT_ORDER != OrderedProcessConfig.TEST_ORDER);
             assertEquals("KeyVaultEnvironmentPostProcessor order should be changed.",
                     OrderedProcessConfig.TEST_ORDER,
                     context.getBean(KeyVaultEnvironmentPostProcessor.class).getOrder());

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -36,6 +33,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -43,7 +41,7 @@ import java.util.stream.StreamSupport;
 
 public class AzureADGraphClient {
 
-    private static final Logger log = LoggerFactory.getLogger(AzureADGraphClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureADGraphClient.class);
 
     private static final SimpleGrantedAuthority DEFAULT_AUTHORITY = new SimpleGrantedAuthority("ROLE_USER");
     private static final String DEFAULT_ROLE_PREFIX = "ROLE_";
@@ -94,8 +92,8 @@ public class AzureADGraphClient {
         if (responseCode == HTTPResponse.SC_OK) {
             return responseInJson;
         } else {
-            throw new IllegalStateException("Response is not " + HTTPResponse.SC_OK +
-                    ", response json: " + responseInJson);
+            throw new IllegalStateException("Response is not "
+                + HTTPResponse.SC_OK + ", response json: " + responseInJson);
         }
     }
 
@@ -193,7 +191,7 @@ public class AzureADGraphClient {
     }
 
     public IAuthenticationResult acquireTokenForGraphApi(String idToken, String tenantId)
-            throws ServiceUnavailableException {
+        throws ServiceUnavailableException, ExecutionException, InterruptedException {
         final IClientCredential clientCredential = ClientCredentialFactory.create(clientSecret);
         final UserAssertion assertion = new UserAssertion(idToken);
 
@@ -214,7 +212,7 @@ public class AzureADGraphClient {
 
             final CompletableFuture<IAuthenticationResult> future = application.acquireToken(onBehalfOfParameters);
             result = future.get();
-        } catch (Exception e) {
+        } catch (ExecutionException | InterruptedException e) {
             // handle conditional access policy
             final Throwable cause = e.getCause();
             if (cause instanceof MsalServiceException) {
@@ -223,7 +221,8 @@ public class AzureADGraphClient {
                     throw exception;
                 }
             }
-            log.error("acquire on behalf of token for graph api error", e);
+            LOGGER.error("acquire on behalf of token for graph api error", e);
+            throw e;
         } finally {
             if (service != null) {
                 service.shutdown();

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.autoconfigure.servicebus;
 
@@ -39,7 +36,7 @@ import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 @ConditionalOnProperty(prefix = "azure.servicebus", value = "connection-string")
 public class ServiceBusAutoConfiguration {
 
-    private static final Logger log = LoggerFactory.getLogger(ServiceBusAutoConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusAutoConfiguration.class);
 
     private final ServiceBusProperties properties;
 
@@ -81,7 +78,7 @@ public class ServiceBusAutoConfiguration {
         // Namespace can only be letter, number and hyphen, start with letter, end with letter or number,
         // with length of 6-50.
         if (!namespace.matches("[a-zA-Z][a-zA-Z-0-9]{4,48}[a-zA-Z0-9]")) {
-            log.warn("Unexpected name {}, please check if it's valid name or portal name rule changes.", namespace);
+            LOGGER.warn("Unexpected name {}, please check if it's valid name or portal name rule changes.", namespace);
         }
 
         return sha256Hex(namespace);

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.telemetry;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -45,7 +42,7 @@ public class TelemetryEventData {
         @JsonProperty("ai.internal.sdkVersion")
         private final String aiInternalSdkVersion;
 
-        public Tags(String instance, String sdkVersion) {
+        Tags(String instance, String sdkVersion) {
             aiCloudRoleInstance = instance;
             aiInternalSdkVersion = sdkVersion;
         }
@@ -65,7 +62,7 @@ public class TelemetryEventData {
 
         private final CustomData baseData = new CustomData();
 
-        public EventData(String baseType) {
+        EventData(String baseType) {
             this.baseType = baseType;
         }
 

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
@@ -72,7 +69,7 @@ public class UserPrincipalTest {
         aadAuthProps.getUserGroup().setAllowedGroups(Collections.singletonList("group1"));
         this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthProps, endpointsProps);
 
-        stubFor(get(urlEqualTo("/memberOf")).withHeader(HttpHeaders.ACCEPT, 
+        stubFor(get(urlEqualTo("/memberOf")).withHeader(HttpHeaders.ACCEPT,
                 equalTo("application/json;odata=minimalmetadata"))
                 .willReturn(aResponse().withStatus(200)
                         .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -82,7 +79,7 @@ public class UserPrincipalTest {
                 .extracting(GrantedAuthority::getAuthority).containsExactly("ROLE_group1");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
-                .withHeader(HttpHeaders.AUTHORIZATION, 
+                .withHeader(HttpHeaders.AUTHORIZATION,
                         equalTo(String.format("%s", accessToken)))
                 .withHeader(HttpHeaders.ACCEPT, equalTo("application/json;odata=minimalmetadata"))
                 .withHeader("api-version", equalTo("1.6")));
@@ -94,7 +91,7 @@ public class UserPrincipalTest {
         aadAuthProps.setActiveDirectoryGroups(Arrays.asList("group1", "group2", "group3"));
         this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthProps, endpointsProps);
 
-        stubFor(get(urlEqualTo("/memberOf")).withHeader(HttpHeaders.ACCEPT, 
+        stubFor(get(urlEqualTo("/memberOf")).withHeader(HttpHeaders.ACCEPT,
                 equalTo("application/json;odata=minimalmetadata"))
                 .willReturn(aResponse().withStatus(200)
                         .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -106,7 +103,7 @@ public class UserPrincipalTest {
                 .containsExactly("ROLE_group1", "ROLE_group2", "ROLE_group3");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
-                .withHeader(HttpHeaders.AUTHORIZATION, 
+                .withHeader(HttpHeaders.AUTHORIZATION,
                         equalTo(String.format("%s", accessToken)))
                 .withHeader(HttpHeaders.ACCEPT, equalTo("application/json;odata=minimalmetadata"))
                 .withHeader("api-version", equalTo("1.6")));
@@ -116,10 +113,10 @@ public class UserPrincipalTest {
     public void userPrinciplaIsSerializable() throws ParseException, IOException, ClassNotFoundException {
         final File tmpOutputFile = File.createTempFile("test-user-principal", "txt");
 
-        try (final FileOutputStream fileOutputStream = new FileOutputStream(tmpOutputFile);
-             final ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-             final FileInputStream fileInputStream = new FileInputStream(tmpOutputFile);
-                final ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(tmpOutputFile);
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+             FileInputStream fileInputStream = new FileInputStream(tmpOutputFile);
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
 
             final JWSObject jwsObject = JWSObject.parse(Constants.JWT_TOKEN);
             final JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder().subject("fake-subject").build();

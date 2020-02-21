@@ -1,11 +1,9 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.telemetry;
 
-public class TelemetryData {
+public final class TelemetryData {
+
     public static final String INSTALLATION_ID = "installationId";
     public static final String PROJECT_VERSION = "version";
     public static final String SERVICE_NAME = "serviceName";
@@ -13,7 +11,9 @@ public class TelemetryData {
     public static final String HASHED_NAMESPACE = "hashedNamespace";
     public static final String TENANT_NAME = "tenantName";
 
-    private TelemetryData() {}
+    private TelemetryData() {
+
+    }
 
     public static String getClassPackageSimpleName(Class<?> clazz) {
         if (clazz == null) {

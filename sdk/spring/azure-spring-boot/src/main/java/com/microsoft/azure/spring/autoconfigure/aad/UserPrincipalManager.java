@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.nimbusds.jose.JOSEException;
@@ -33,7 +30,7 @@ import java.util.Set;
 
 public class UserPrincipalManager {
 
-    private static final Logger log = LoggerFactory.getLogger(UserPrincipalManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserPrincipalManager.class);
 
     private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
     private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
@@ -82,7 +79,7 @@ public class UserPrincipalManager {
             keySource = new RemoteJWKSet<>(new URL(serviceEndpointsProps
                     .getServiceEndpoints(aadAuthProps.getEnvironment()).getAadKeyDiscoveryUri()), resourceRetriever);
         } catch (MalformedURLException e) {
-            log.error("Failed to parse active directory key discovery uri.", e);
+            LOGGER.error("Failed to parse active directory key discovery uri.", e);
             throw new IllegalStateException("Failed to parse active directory key discovery uri.", e);
         }
     }
@@ -120,10 +117,10 @@ public class UserPrincipalManager {
                     final Optional<String> matchedAudience = claimsSet.getAudience().stream()
                         .filter(UserPrincipalManager.this.validAudiences::contains).findFirst();
                     if (matchedAudience.isPresent()) {
-                        log.debug("Matched audience [{}]", matchedAudience.get());
+                        LOGGER.debug("Matched audience [{}]", matchedAudience.get());
                     } else {
-                        throw new BadJWTException("Invalid token audience. Provided value " + claimsSet.getAudience() +
-                            "does not match neither client-id nor AppIdUri.");
+                        throw new BadJWTException("Invalid token audience. Provided value " + claimsSet.getAudience()
+                            + "does not match neither client-id nor AppIdUri.");
                     }
                 }
             }

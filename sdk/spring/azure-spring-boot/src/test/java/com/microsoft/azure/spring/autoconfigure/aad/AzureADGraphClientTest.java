@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import org.junit.Before;
@@ -39,25 +36,25 @@ public class AzureADGraphClientTest {
         adGraphClient = new AzureADGraphClient("client", "pass", aadAuthProps, endpointsProps);
     }
 
-     @Test
-     public void testConvertGroupToGrantedAuthorities() {
+    @Test
+    public void testConvertGroupToGrantedAuthorities() {
 
-         final List<UserGroup> userGroups = Collections.singletonList(
-                 new UserGroup("testId", "Test_Group"));
+        final List<UserGroup> userGroups = Collections.singletonList(
+            new UserGroup("testId", "Test_Group"));
 
-         final Set<GrantedAuthority> authorities = adGraphClient.convertGroupsToGrantedAuthorities(userGroups);
-         assertThat(authorities).hasSize(1).extracting(GrantedAuthority::getAuthority)
-                 .containsExactly("ROLE_Test_Group");
-     }
+        final Set<GrantedAuthority> authorities = adGraphClient.convertGroupsToGrantedAuthorities(userGroups);
+        assertThat(authorities).hasSize(1).extracting(GrantedAuthority::getAuthority)
+            .containsExactly("ROLE_Test_Group");
+    }
 
     @Test
     public void testConvertGroupToGrantedAuthoritiesUsingAllowedGroups() {
         final List<UserGroup> userGroups = Arrays
-                .asList(new UserGroup("testId", "Test_Group"),
-                        new UserGroup("testId", "Another_Group"));
+            .asList(new UserGroup("testId", "Test_Group"),
+                new UserGroup("testId", "Another_Group"));
         aadAuthProps.getUserGroup().getAllowedGroups().add("Another_Group");
         final Set<GrantedAuthority> authorities = adGraphClient.convertGroupsToGrantedAuthorities(userGroups);
         assertThat(authorities).hasSize(2).extracting(GrantedAuthority::getAuthority)
-                .containsExactly("ROLE_Test_Group", "ROLE_Another_Group");
+            .containsExactly("ROLE_Test_Group", "ROLE_Another_Group");
     }
 }

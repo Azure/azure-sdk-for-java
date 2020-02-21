@@ -161,7 +161,7 @@ respectively. Specify your user flow **Name** and **User attributes and claims**
     ```java
     package sample.aad.security;
     
-    import com.microsoft.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
+    import com.microsoft.azure.spring.autoconfigure.btoc.AADB2COidcLoginConfigurer;
     import org.springframework.security.config.annotation.web.builders.HttpSecurity;
     import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
     import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;

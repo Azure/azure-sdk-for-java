@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.nimbusds.jose.jwk.JWK;
@@ -33,7 +30,7 @@ public class UserPrincipalManagerTest {
     @BeforeClass
     public static void setupClass() throws Exception {
         final X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509")
-                .generateCertificate(Files.newInputStream(Paths.get("src/test/resources/test-public-key.txt")));
+            .generateCertificate(Files.newInputStream(Paths.get("src/test/resources/test-public-key.txt")));
         immutableJWKSet = new ImmutableJWKSet<>(new JWKSet(JWK.parse(cert)));
     }
 

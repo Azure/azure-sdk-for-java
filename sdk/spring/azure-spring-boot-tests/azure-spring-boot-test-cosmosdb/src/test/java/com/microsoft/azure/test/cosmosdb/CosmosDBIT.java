@@ -12,7 +12,7 @@ import com.microsoft.azure.mgmt.ClientSecretAccess;
 import com.microsoft.azure.mgmt.ConstantsHelper;
 import com.microsoft.azure.mgmt.CosmosdbTool;
 import com.microsoft.azure.mgmt.ResourceGroupTool;
-import com.microsoft.azure.spring.autoconfigure.b2c.AADB2CAutoConfiguration;
+import com.microsoft.azure.spring.autoconfigure.btoc.AADB2CAutoConfiguration;
 import com.microsoft.azure.test.AppRunner;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.AfterClass;

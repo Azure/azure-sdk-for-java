@@ -1,9 +1,6 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
-package com.microsoft.azure.spring.autoconfigure.b2c;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.microsoft.azure.spring.autoconfigure.btoc;
 
 import com.microsoft.azure.telemetry.TelemetrySender;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -29,8 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.microsoft.azure.spring.autoconfigure.b2c.AADB2CProperties.PREFIX;
-import static com.microsoft.azure.spring.autoconfigure.b2c.AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN;
+import static com.microsoft.azure.spring.autoconfigure.btoc.AADB2CProperties.PREFIX;
+import static com.microsoft.azure.spring.autoconfigure.btoc.AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN;
 import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
 import static com.microsoft.azure.telemetry.TelemetryData.TENANT_NAME;
 import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
