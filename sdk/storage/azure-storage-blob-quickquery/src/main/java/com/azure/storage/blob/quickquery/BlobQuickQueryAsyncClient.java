@@ -47,6 +47,7 @@ public class BlobQuickQueryAsyncClient {
 
     /**
      * Package-private constructor for use by {@link BlobQuickQueryClientBuilder}
+     *
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
      * @param serviceVersion The version of the service to receive requests.
@@ -63,11 +64,34 @@ public class BlobQuickQueryAsyncClient {
         this.customerProvidedKey = customerProvidedKey;
     }
 
+    /**
+     * Queries the entire blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.quickquery.BlobQuickQueryAsyncClient.query#String}
+     *
+     * @param expression The query expression.
+     * @return A reactive response containing the queried data.
+     */
     public Flux<ByteBuffer> query(String expression) {
         return queryWithResponse(expression, null, null, null)
             .flatMapMany(BlobQuickQueryAsyncResponse::getValue);
     }
 
+    /**
+     * Queries the entire blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.quickquery.BlobQuickQueryAsyncClient.queryWithResponse#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions}
+     *
+     * @param expression The query expression.
+     * @param input {@link BlobQuickQuerySerialization Serialization input}
+     * @param output {@link BlobQuickQuerySerialization Serialization output}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @return A reactive response containing the queried data.
+     */
     public Mono<BlobQuickQueryAsyncResponse> queryWithResponse(String expression, BlobQuickQuerySerialization input,
         BlobQuickQuerySerialization output, BlobRequestConditions requestConditions) {
         try {
@@ -99,6 +123,12 @@ public class BlobQuickQueryAsyncClient {
                 response.getHeaders(), response.getValue(), response.getDeserializedHeaders()));
     }
 
+    /**
+     * Transforms a generic BlobQuickQuerySerialization into a QuickQuerySerialization.
+     * @param userSerialization {@link BlobQuickQuerySerialization}
+     * @param logger {@link ClientLogger}
+     * @return {@link QuickQuerySerialization}
+     */
     private static QuickQuerySerialization transformSerialization(BlobQuickQuerySerialization userSerialization,
         ClientLogger logger) {
         if (userSerialization == null) {
@@ -126,6 +156,12 @@ public class BlobQuickQueryAsyncClient {
         return new QuickQuerySerialization().setFormat(generatedFormat);
     }
 
+    /**
+     * Transforms a BlobQuickQueryDelimitedSerialization into a DelimitedTextConfiguration.
+     *
+     * @param delimitedSerialization {@link BlobQuickQueryDelimitedSerialization}
+     * @return {@link DelimitedTextConfiguration}
+     */
     private static DelimitedTextConfiguration transformDelimited(
         BlobQuickQueryDelimitedSerialization delimitedSerialization) {
         if (delimitedSerialization == null) {
@@ -139,6 +175,12 @@ public class BlobQuickQueryAsyncClient {
             .setRecordSeparator(charToString(delimitedSerialization.getRecordSeparator()));
     }
 
+    /**
+     * Transforms a BlobQuickQueryJsonSerialization into a JsonTextConfiguration.
+     *
+     * @param jsonSerialization {@link BlobQuickQueryJsonSerialization}
+     * @return {@link JsonTextConfiguration}
+     */
     private static JsonTextConfiguration transformJson(BlobQuickQueryJsonSerialization jsonSerialization) {
         if (jsonSerialization == null) {
             return null;
