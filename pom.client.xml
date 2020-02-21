@@ -385,7 +385,7 @@
             </configurationFile>
           </analysisConfigurationFiles>
           <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
-          <checkDependencies>false</checkDependencies>
+          <checkDependencies>true</checkDependencies>
           <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
         </configuration>
         <dependencies>
