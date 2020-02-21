@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation;
 
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ResourceIdentity;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.Sku;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ServerVersion;
 import com.microsoft.azure.management.postgresql.v2017_12_01_preview.SslEnforcementEnum;
@@ -23,6 +24,12 @@ import com.microsoft.azure.Resource;
  */
 @JsonFlatten
 public class ServerInner extends Resource {
+    /**
+     * The Azure Active Directory identity of the server.
+     */
+    @JsonProperty(value = "identity")
+    private ResourceIdentity identity;
+
     /**
      * The SKU (pricing tier) of the server.
      */
@@ -92,6 +99,26 @@ public class ServerInner extends Resource {
      */
     @JsonProperty(value = "properties.replicaCapacity")
     private Integer replicaCapacity;
+
+    /**
+     * Get the Azure Active Directory identity of the server.
+     *
+     * @return the identity value
+     */
+    public ResourceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the Azure Active Directory identity of the server.
+     *
+     * @param identity the identity value to set
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withIdentity(ResourceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
 
     /**
      * Get the SKU (pricing tier) of the server.
