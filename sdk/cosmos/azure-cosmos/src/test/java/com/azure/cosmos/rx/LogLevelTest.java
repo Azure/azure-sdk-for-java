@@ -170,10 +170,10 @@ public class LogLevelTest extends TestSuiteBase {
     public void createDocumentWithTraceLevelAtRoot() throws Exception {
         final StringWriter consoleWriter = new StringWriter();
 
-        addAppenderAndLogger(COSMOS_DB_LOGGING_CATEGORY, Level.INFO, APPENDER_NAME, consoleWriter);
+        addAppenderAndLogger(COSMOS_DB_LOGGING_CATEGORY, Level.TRACE, APPENDER_NAME, consoleWriter);
 
         Logger logger = LoggerFactory.getLogger(COSMOS_DB_LOGGING_CATEGORY);
-        assertThat(logger.isInfoEnabled()).isTrue();
+        assertThat(logger.isTraceEnabled()).isTrue();
 
         CosmosAsyncClient client = clientBuilder().buildAsyncClient();
         try {
