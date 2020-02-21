@@ -148,6 +148,19 @@ jobs:
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
 
+      # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
+      - task: Maven@3
+        displayName: 'Build'
+        inputs:
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          goals: 'install'
+          options: '$(DefaultOptions) -DskipTests -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
       - pwsh: |
           if ("${{parameters.SDKType}}" -ieq "client") {
             $excludes = "^(microsoft|mgmt)"
