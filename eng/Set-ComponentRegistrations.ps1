@@ -212,5 +212,11 @@ foreach ($file in $pomFiles) {
         Write-Host "Overwriting existing cgmanifest.json."
     }
 
-    ConvertTo-Json -InputObject $json -Depth 15 | Set-Content $manifestFile
+    $jsonOutput = ConvertTo-Json -InputObject $json -Depth 15
+
+    if ($IsVerbose) {
+        Write-Host $jsonOutput
+    }
+
+    $jsonOutput | Set-Content $manifestFile
 }
