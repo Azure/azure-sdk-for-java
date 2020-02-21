@@ -582,7 +582,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actualSentiment analyzed sentence sentiment returned by the API.
      */
     static void validateSentenceSentiment(SentenceSentiment expectedSentiment, SentenceSentiment actualSentiment) {
-        assertEquals(expectedSentiment.getSentimentLabel(), actualSentiment.getSentimentLabel());
+        assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
         // score per label doesn't need to verify since service can return it with different values
         assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
         assertTrue(actualSentiment.getLength() > 0);
@@ -596,7 +596,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actualSentiment analyzed document sentiment returned by the API.
      */
     static void validateAnalyzedSentiment(DocumentSentiment expectedSentiment, DocumentSentiment actualSentiment) {
-        assertEquals(expectedSentiment.getSentimentLabel(), actualSentiment.getSentimentLabel());
+        assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
         validateAnalyzedSentenceSentiment(expectedSentiment.getSentences(), expectedSentiment.getSentences());
     }
 

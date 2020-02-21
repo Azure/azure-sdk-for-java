@@ -221,9 +221,9 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```java
 String text = "The hotel was dark and unclean. I like microsoft.";
 DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(text);
-System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentimentLabel());
+System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentiment());
 for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-    System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentimentLabel());
+    System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment());
 }
 ```
 

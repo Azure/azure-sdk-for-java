@@ -31,7 +31,7 @@ public class AnalyzeSentimentAsync {
             documentSentiment -> {
                 System.out.printf(
                     "Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                    documentSentiment.getSentimentLabel(),
+                    documentSentiment.getSentiment(),
                     documentSentiment.getConfidenceScores().getPositive(),
                     documentSentiment.getConfidenceScores().getNeutral(),
                     documentSentiment.getConfidenceScores().getNegative());
@@ -39,7 +39,7 @@ public class AnalyzeSentimentAsync {
                 for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                     System.out.printf(
                         "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                        sentenceSentiment.getSentimentLabel(),
+                        sentenceSentiment.getSentiment(),
                         sentenceSentiment.getConfidenceScores().getPositive(),
                         sentenceSentiment.getConfidenceScores().getNeutral(),
                         sentenceSentiment.getConfidenceScores().getNegative());

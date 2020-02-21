@@ -14,20 +14,20 @@ public final class SentenceSentiment {
     private final int length;
     private final int offset;
     private final SentimentConfidenceScorePerLabel confidenceScores;
-    private final SentenceSentimentLabel sentimentLabel;
+    private final SentenceSentimentLabel sentiment;
 
     /**
      * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
      *
-     * @param sentimentLabel sentiment label of the sentence.
+     * @param sentiment sentiment label of the sentence.
      * @param confidenceScores the sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      *   Higher values signify higher confidence.
      * @param length length of the sentence.
      * @param offset the offset from the start of the sentence.
      */
-    public SentenceSentiment(SentenceSentimentLabel sentimentLabel, SentimentConfidenceScorePerLabel confidenceScores,
+    public SentenceSentiment(SentenceSentimentLabel sentiment, SentimentConfidenceScorePerLabel confidenceScores,
         int length, int offset) {
-        this.sentimentLabel = sentimentLabel;
+        this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
         this.length = length;
         this.offset = offset;
@@ -52,12 +52,12 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the text sentiment label: POSITIVE, NEGATIVE, or NEUTRAL. Sentence sentiment label could not be MIXED.
+     * Get the text sentiment label: POSITIVE, NEGATIVE, or NEUTRAL.
      *
      * @return the {@link SentenceSentimentLabel}.
      */
-    public SentenceSentimentLabel getSentimentLabel() {
-        return sentimentLabel;
+    public SentenceSentimentLabel getSentiment() {
+        return sentiment;
     }
 
     /**

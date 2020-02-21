@@ -13,21 +13,21 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentSentiment {
-    private final DocumentSentimentLabel sentimentLabel;
+    private final DocumentSentimentLabel sentiment;
     private final SentimentConfidenceScorePerLabel confidenceScores;
     private final List<SentenceSentiment> sentences;
 
     /**
      * Creates a {@link DocumentSentiment} model that describes the sentiment of the document.
      *
-     * @param sentimentLabel the sentiment label of the document.
+     * @param sentiment the sentiment label of the document.
      * @param confidenceScores the sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      *   Higher values signify higher confidence.
      * @param sentences a list of sentence sentiments.
      */
-    public DocumentSentiment(DocumentSentimentLabel sentimentLabel, SentimentConfidenceScorePerLabel confidenceScores,
+    public DocumentSentiment(DocumentSentimentLabel sentiment, SentimentConfidenceScorePerLabel confidenceScores,
         List<SentenceSentiment> sentences) {
-        this.sentimentLabel = sentimentLabel;
+        this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
         this.sentences = sentences;
     }
@@ -37,8 +37,8 @@ public final class DocumentSentiment {
      *
      * @return the {@link DocumentSentimentLabel}.
      */
-    public DocumentSentimentLabel getSentimentLabel() {
-        return sentimentLabel;
+    public DocumentSentimentLabel getSentiment() {
+        return sentiment;
     }
 
     /**
