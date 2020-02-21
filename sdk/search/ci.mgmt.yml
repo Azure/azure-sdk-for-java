@@ -15,7 +15,7 @@ trigger:
     include:
       - sdk/search/
     exclude:
-      - sdk/search/microsoft-azure
+      - sdk/search/azure-
 
 pr:
   branches:
@@ -28,7 +28,7 @@ pr:
     include:
       - sdk/search/
     exclude:
-      - sdk/search/microsoft-azure
+      - sdk/search/azure-
 
 
 variables:
