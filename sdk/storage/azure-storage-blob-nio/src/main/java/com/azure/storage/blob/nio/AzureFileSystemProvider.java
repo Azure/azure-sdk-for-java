@@ -11,15 +11,16 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.models.BlobCopyInfo;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -44,6 +45,7 @@ import java.nio.file.spi.FileSystemProvider;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -51,7 +53,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.TimeoutException;
 
 /**
  * The {@code AzureFileSystemProvider} is Azure Storage's implementation of the nio interface on top of Azure Blob
@@ -312,7 +313,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     private void putDirectoryBlob(BlobClient destinationClient, BlobHttpHeaders headers, Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
         metadata = prepareMetadataForDirectory(metadata);
-        destinationClient.getAppendBlobClient().createWithResponse(headers, metadata, requestConditions, null, null);
+        destinationClient.getBlockBlobClient().commitBlockListWithResponse(Collections.emptyList(), headers,
+            metadata, null, requestConditions, null, null);
     }
 
     /**
@@ -321,15 +323,13 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     boolean checkParentDirectoryExists(Path path) throws IOException {
         /*
-        Determine the path for the parent directory blob. This is the parent path without the root. Some of this work is
-        deeper in, but we can possibly short circuit a network call, so the computation is worth it.
-
-        If the prefix is null, that means we are in the root dir for the container, which always exists. Otherwise,
-        perform normal existence check.
+        If the parent is just the root (or null, which means the parent is implicitly the default directory which is a
+        root), that means we are checking a container, which is always considered to exist. Otherwise, perform normal
+        existence check.
          */
-        Path root = path.getRoot();
-        Path parent = root == null ? path.getParent() : root.relativize(path).getParent();
-        return parent == null || checkDirectoryExists(((AzurePath) parent).toBlobClient());
+        Path parent = path.getParent();
+        return (parent == null || parent.equals(path.getRoot()))
+            || checkDirectoryExists(((AzurePath) path.getParent()).toBlobClient());
     }
 
     /**
@@ -396,13 +396,18 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 + "Path other than AzurePath"));
         }
 
+        // If paths point to the same file, operation is a no-op.
+        if (source.equals(destination)) {
+            return;
+        }
+
         // Read and validate options.
         // Remove accepted options as we find them. Anything left we don't support.
         boolean replaceExisting = false;
-        List<CopyOption> optionsList = Arrays.asList(copyOptions);
+        List<CopyOption> optionsList = new ArrayList<>(Arrays.asList(copyOptions));
         if(!optionsList.contains(StandardCopyOption.COPY_ATTRIBUTES)) {
-            throw Utility.logError(logger, new UnsupportedOperationException("StandardCopyOption.COPY_ATTRIBUTES " +
-                "must be specified as the service will always copy file attributes."));
+            throw Utility.logError(logger, new UnsupportedOperationException("StandardCopyOption.COPY_ATTRIBUTES "
+                + "must be specified as the service will always copy file attributes."));
         }
         optionsList.remove(StandardCopyOption.COPY_ATTRIBUTES);
         if (optionsList.contains(StandardCopyOption.REPLACE_EXISTING)) {
@@ -410,15 +415,16 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             optionsList.remove(StandardCopyOption.REPLACE_EXISTING);
         }
         if (!optionsList.isEmpty()) {
-            throw Utility.logError(logger, new UnsupportedOperationException("Unsupported copy option found. Only " +
-                "StandardCopyOption.COPY_ATTRIBUTES and StandareCopyOption.REPLACE_EXISTING are supported."));
+            throw Utility.logError(logger, new UnsupportedOperationException("Unsupported copy option found. Only "
+                + "StandardCopyOption.COPY_ATTRIBUTES and StandareCopyOption.REPLACE_EXISTING are supported."));
         }
 
         // Validate paths.
         // Copying a root directory or attempting to create/overwrite a root directory is illegal.
         if (source.equals(source.getRoot()) || destination.equals(destination.getRoot())) {
-            throw Utility.logError(logger, new IOException(String.format("Neither source nor destination can be just" +
-                " a root directory. Source: %s. Destination: %s.", source.toString(), destination.toString())));
+            throw Utility.logError(logger, new IllegalArgumentException(String.format("Neither source nor destination "
+                + "can be just a root directory. Source: %s. Destination: %s.", source.toString(),
+                destination.toString())));
         }
 
         // Build clients.
@@ -448,7 +454,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         /*
         More path validation
 
-        Check that the parent for the destination exists. If the dest exists, its parent at least weakly exists and we
+        Check that the parent for the destination exists. We only need to perform this check if there is nothing
+        currently at the destination, for if the destination exists, its parent at least weakly exists and we
         can skip a service call.
          */
         if (destinationStatus.equals(DirectoryStatus.DOES_NOT_EXIST) && !checkParentDirectoryExists(destination)) {
@@ -463,15 +470,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             pollResponse.waitForCompletion(Duration.ofSeconds(30));
         } catch (BlobStorageException e) {
             // If the source was not found, it could be because it's a virtual directory. Check the status.
-            if (e.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                // If a non-dir resource existed, it would have been copied above. This check is therefore sufficient.
-                if (!checkDirStatus(sourceBlob).equals(DirectoryStatus.DOES_NOT_EXIST)) {
-                    /*
-                    We already checked that the parent exists and validated the paths above, so we can put the blob
-                    directly.
-                     */
-                    putDirectoryBlob(destinationBlob, null, null, requestConditions);
-                }
+            // If a non-dir resource existed, it would have been copied above. This check is therefore sufficient.
+            if (e.getErrorCode().equals(BlobErrorCode.BLOB_NOT_FOUND) &&
+                !checkDirStatus(sourceBlob).equals(DirectoryStatus.DOES_NOT_EXIST)) {
+                /*
+                We already checked that the parent exists and validated the paths above, so we can put the blob
+                directly.
+                 */
+                putDirectoryBlob(destinationBlob, null, null, requestConditions);
             } else {
                 throw Utility.logError(logger, new IOException(e));
             }
@@ -491,8 +497,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         BlobContainerClient containerClient = getContainerClient(dirBlobClient);
 
         // Two blobs will give us all the info we need (see below).
-        ListBlobsOptions listOptions = new ListBlobsOptions().setMaxResultsPerPage(2).
-            setPrefix(dirBlobClient.getBlobName());
+        ListBlobsOptions listOptions = new ListBlobsOptions().setMaxResultsPerPage(2)
+            .setPrefix(dirBlobClient.getBlobName())
+            .setDetails(new BlobListDetails().setRetrieveMetadata(true));
 
         /*
         Do a list on prefix.
@@ -512,7 +519,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             if (blobIterator.hasNext()) { // More than one item with dir path as prefix. Must be a dir.
                 return DirectoryStatus.NOT_EMPTY;
             }
-            if (!item.getName().equals(dirBlobClient.getBlobName())) { // TODO: Double check format of toString and getName to see if they are compatible or need a conversion.
+            if (!item.getName().equals(dirBlobClient.getBlobName())) {
                 /*
                 Names do not match. Must be a virtual dir with one item. e.g. blob with name "foo/bar" means dir "foo"
                 exists.

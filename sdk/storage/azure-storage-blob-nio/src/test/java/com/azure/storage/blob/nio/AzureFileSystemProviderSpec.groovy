@@ -7,9 +7,12 @@ import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.specialized.AppendBlobClient
 import spock.lang.Unroll
 
+import java.nio.ByteBuffer
+import java.nio.file.DirectoryNotEmptyException
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.FileSystemAlreadyExistsException
 import java.nio.file.FileSystemNotFoundException
+import java.nio.file.StandardCopyOption
 import java.nio.file.attribute.FileAttribute
 
 class AzureFileSystemProviderSpec extends APISpec {
@@ -126,7 +129,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         def rootName = fs.getRootDirectories().last().toString()
         def containerName = rootName.substring(0, rootName.length() - 1)
         def parent = ""
-        for (int i=0; i < depth; i++) {
+        for (int i = 0; i < depth; i++) {
             parent += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
         }
         def dirName = generateBlobName()
@@ -190,7 +193,6 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         then:
         thrown(FileAlreadyExistsException)
-
     }
 
     def "FileSystemProvider createDir concrete dir already exists"() {
@@ -303,6 +305,507 @@ class AzureFileSystemProviderSpec extends APISpec {
         props.getContentMd5() == contentMd5
         props.getCacheControl() == "myControl"
     }
+    
+    @Unroll
+    def "FileSystemProvider copy source"() {
+        setup:
+        def fs = createFS(config)
+
+        // Generate resource names.
+        // Don't use default directory to ensure we honor the root.
+        def rootName = fs.getRootDirectories().last().toString()
+        def containerName = rootName.substring(0, rootName.length() - 1)
+        def sourceName = generateBlobName()
+        def sourcePath = fs.getPath(rootName, sourceName)
+        def destName = generateBlobName()
+        def destPath = fs.getPath(rootName, destName)
+
+        // Generate clients to resources.
+        def containerClient = primaryBlobServiceClient
+            .getBlobContainerClient(containerName)
+        def sourceClient = containerClient.getBlobClient(sourceName)
+        def destinationClient = containerClient.getBlobClient(destName)
+        def sourceChildClient = null
+        def destChildClient = null
+
+        // Create resources as necessary
+        if (sourceIsDir) {
+            if (!sourceIsVirtual) {
+                fs.provider().createDirectory(sourcePath)
+            }
+            if (!sourceEmpty) {
+                def sourceChildName = generateBlobName()
+                def sourceChildPath = fs.getPath(rootName, sourceName, sourceChildName)
+                sourceChildClient = ((AzurePath) sourceChildPath).toBlobClient().getAppendBlobClient()
+                sourceChildClient.create()
+                destChildClient = ((AzurePath) fs.getPath(rootName, destName, sourceChildName)).toBlobClient()
+                    .getAppendBlobClient()
+            }
+        } else { // source is file
+            sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+        }
+
+        when:
+        fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
+
+        then:
+        // Check the source still exists.
+        if (!sourceIsVirtual) {
+            assert sourceClient.exists()
+        } else {
+            assert ((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(sourceClient)
+        }
+
+        // If the source was a file, check that the destination data matches the source.
+        if (!sourceIsDir) {
+            def outStream = new ByteArrayOutputStream()
+            destinationClient.download(outStream)
+            assert ByteBuffer.wrap(outStream.toByteArray()) == defaultData
+        } else {
+            // Check that the destination directory is concrete.
+            assert destinationClient.exists()
+            assert destinationClient.getProperties().getMetadata()
+                .containsKey(AzureFileSystemProvider.DIR_METADATA_MARKER)
+            if (!sourceEmpty) {
+                // Check that source child still exists and was not copied to the destination.
+                assert sourceChildClient.exists()
+                assert !destChildClient.exists()
+            }
+        }
+
+        where:
+        sourceIsDir | sourceIsVirtual | sourceEmpty
+        false       | false           | false
+        true        | true            | false
+        true        | false           | true
+        true        | false           | false
+        // Can't have an empty virtual dir
+    }
+
+    @Unroll
+    def "FileSystemProvider copy destination"() {
+        setup:
+        def fs = createFS(config)
+
+        // Generate resource names.
+        // Don't use default directory to ensure we honor the root.
+        def rootName = fs.getRootDirectories().last().toString()
+        def containerName = rootName.substring(0, rootName.length() - 1)
+        def sourceName = generateBlobName()
+        def sourcePath = fs.getPath(rootName, sourceName)
+        def destName = generateBlobName()
+        def destPath = fs.getPath(rootName, destName)
+
+        // Generate clients to resources.
+        def containerClient = primaryBlobServiceClient
+            .getBlobContainerClient(containerName)
+        def sourceClient = containerClient.getBlobClient(sourceName)
+        def destinationClient = containerClient.getBlobClient(destName)
+
+        // Create resources as necessary
+        sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+        if (destinationExists) {
+            if (destinationIsDir) {
+                fs.provider().createDirectory(destPath)
+            } else { // source is file
+                destinationClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20)
+            }
+        }
+
+        when:
+        fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES,
+            StandardCopyOption.REPLACE_EXISTING)
+
+        then:
+        sourceClient.exists()
+        def outStream = new ByteArrayOutputStream()
+        destinationClient.download(outStream)
+        assert ByteBuffer.wrap(outStream.toByteArray()) == defaultData
+
+        where:
+        destinationExists | destinationIsDir
+        false             | false
+        true              | false
+        true              | true
+        // Can't have an empty virtual directory. Copying to a nonempty directory will fail.
+    }
+
+    @Unroll
+    def "FileSystemProvider non empty dest"() {
+        setup:
+        def fs = createFS(config)
+
+        // Generate resource names.
+        // Don't use default directory to ensure we honor the root.
+        def rootName = fs.getRootDirectories().last().toString()
+        def containerName = rootName.substring(0, rootName.length() - 1)
+        def sourceName = generateBlobName()
+        def sourcePath = fs.getPath(rootName, sourceName)
+        def destName = generateBlobName()
+        def destPath = fs.getPath(rootName, destName)
+
+        // Generate clients to resources.
+        def containerClient = primaryBlobServiceClient
+            .getBlobContainerClient(containerName)
+        def sourceClient = containerClient.getBlobClient(sourceName)
+        def destinationClient = containerClient.getBlobClient(destName)
+        def destChildClient
+
+        // Create resources as necessary
+        sourceClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20)
+        if (!destinationIsVirtual) {
+            fs.provider().createDirectory(destPath)
+        }
+        def childName = generateBlobName()
+        destChildClient = ((AzurePath) fs.getPath(rootName, destName, childName)).toBlobClient()
+        destChildClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES,
+            StandardCopyOption.REPLACE_EXISTING) // Ensure that even when trying to replace_existing, we still fail.
+
+        then:
+        thrown(DirectoryNotEmptyException)
+        ((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(destinationClient)
+
+        where:
+        destinationIsVirtual | _
+        true                 | _
+        false                | _
+    }
+
+    @Unroll
+    def "FileSystemProvider replace existing fail"() {
+        // The success case is tested by the "copy destination" test.
+        // Testing replacing a virtual directory is in the "non empty dest" test as there can be no empty virtual dir.
+        setup:
+        def fs = createFS(config)
+
+        // Generate resource names.
+        // Don't use default directory to ensure we honor the root.
+        def rootName = fs.getRootDirectories().last().toString()
+        def containerName = rootName.substring(0, rootName.length() - 1)
+        def sourceName = generateBlobName()
+        def sourcePath = fs.getPath(rootName, sourceName)
+        def destName = generateBlobName()
+        def destPath = fs.getPath(rootName, destName)
+
+        // Generate clients to resources.
+        def containerClient = primaryBlobServiceClient
+            .getBlobContainerClient(containerName)
+        def sourceClient = containerClient.getBlobClient(sourceName)
+        def destinationClient = containerClient.getBlobClient(destName)
+
+        // Create resources as necessary
+        sourceClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20)
+        if (destinationIsDir) {
+            fs.provider().createDirectory(destPath)
+        } else {
+            destinationClient.upload(defaultInputStream.get(), defaultDataSize)
+        }
+
+        when:
+        fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
+
+        then:
+        thrown(FileAlreadyExistsException)
+        if (destinationIsDir) {
+            assert ((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(destinationClient)
+        } else {
+            def outStream = new ByteArrayOutputStream()
+            destinationClient.download(outStream)
+            assert ByteBuffer.wrap(outStream.toByteArray()) == defaultData
+        }
+
+        where:
+        destinationIsDir | _
+        true             | _
+        false            | _
+        // No need to test virtual directories. If they exist, they aren't empty and can't be overwritten anyway.
+        // See above.
+    }
+
+    def "FileSystemProvider copy options fail"() {
+        setup:
+        def fs = createFS(config)
+
+        // Generate resource names.
+        // Don't use default directory to ensure we honor the root.
+        def rootName = fs.getRootDirectories().last().toString()
+        def sourceName = generateBlobName()
+        def sourcePath = fs.getPath(rootName, sourceName)
+        def destName = generateBlobName()
+        def destPath = fs.getPath(rootName, destName)
+
+        when: "Missing COPY_ATTRIBUTES"
+        fs.provider().copy(sourcePath, destPath)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        when:
+        fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.ATOMIC_MOVE)
+
+        then:
+        thrown(UnsupportedOperationException)
+    }
+
+    @Unroll
+    def "FileSystemProvider copy depth"() {
+        setup:
+        def fs = createFS(config)
+
+        // Generate resource names.
+        // Don't use default directory to ensure we honor the root.
+        def rootName = fs.getRootDirectories().last().toString()
+        def containerName = rootName.substring(0, rootName.length() - 1)
+        def sourceParent = ""
+        for (int i = 0; i < sourceDepth; i++) {
+            sourceParent += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
+        }
+        def sourceFileName = generateBlobName()
+        def sourceFilePathStr = sourceParent + sourceFileName
+        def sourcePath = fs.getPath(rootName, sourceFilePathStr)
+
+        def destParent = ""
+        for (int i = 0; i < destDepth; i++) {
+            destParent += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
+        }
+        def destFileName = generateBlobName()
+        def destFilePathStr = destParent + destFileName
+        def destPath = fs.getPath(rootName, destFilePathStr)
+
+        // Generate clients to resources.
+        def containerClient = primaryBlobServiceClient
+            .getBlobContainerClient(containerName)
+        def sourceClient = containerClient.getBlobClient(sourceFilePathStr)
+        def destinationClient = containerClient.getBlobClient(destFilePathStr)
+        def destParentClient = containerClient.getBlobClient(destParent)
+
+        // Create resources as necessary
+        sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+        destParentClient.getBlockBlobClient().commitBlockListWithResponse(Collections.emptyList(), null,
+            [(AzureFileSystemProvider.DIR_METADATA_MARKER): "true"], null, null, null, null)
+
+        when:
+        fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
+
+        then:
+        def outStream = new ByteArrayOutputStream()
+        destinationClient.download(outStream)
+        ByteBuffer.wrap(outStream.toByteArray()) == defaultData
+
+        where:
+        sourceDepth | destDepth
+        1           | 1
+        1           | 2
+        1           | 3
+        2           | 1
+        2           | 2
+        2           | 3
+        3           | 1
+        3           | 2
+        3           | 3
+    }
+
+    def "FileSystemProvider copy no parent for dest"() {
+        setup:
+        def fs = createFS(config)
+
+        // Generate resource names.
+        // Don't use default directory to ensure we honor the root.
+        def rootName = fs.getRootDirectories().last().toString()
+        def containerName = rootName.substring(0, rootName.length() - 1)
+        def sourceName = generateBlobName()
+        def sourcePath = fs.getPath(rootName, sourceName)
+        def destName = generateBlobName() + fs.getSeparator() + generateBlobName()
+        def destPath = fs.getPath(rootName, destName)
+
+        // Generate clients to resources.
+        def containerClient = primaryBlobServiceClient
+            .getBlobContainerClient(containerName)
+        def sourceClient = containerClient.getBlobClient(sourceName)
+        def destinationClient = containerClient.getBlobClient(destName)
+
+        // Create resources as necessary
+        sourceClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20)
+
+        when:
+        fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
+
+        then:
+        thrown(IOException)
+        !destinationClient.exists()
+    }
+
+    def "AzureFileSystemProvider copy source does not exist"() {
+        setup:
+        def fs = createFS(config)
+
+        // Generate resource names.
+        // Don't use default directory to ensure we honor the root.
+        def rootName = fs.getRootDirectories().last().toString()
+        def sourceName = generateBlobName()
+        def sourcePath = fs.getPath(rootName, sourceName)
+        def destName = generateBlobName()
+        def destPath = fs.getPath(rootName, destName)
+
+        when:
+        fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "AzureFileSystemProvider copy no root dir"() {
+        setup:
+        def fs = createFS(config)
+
+        // Generate resource names.
+        // Don't use default directory to ensure we honor the root.
+        def rootName = fs.getRootDirectories().last().toString()
+        def sourceName = generateBlobName()
+        def sourcePath = fs.getPath(rootName, sourceName)
+        def destName = generateBlobName()
+        def destPath = fs.getPath(rootName, destName)
+
+        when: "Source root"
+        fs.provider().copy(fs.getPath(rootName), destPath, StandardCopyOption.COPY_ATTRIBUTES)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when: "Dest root"
+        fs.provider().copy(sourcePath, fs.getPath(rootName), StandardCopyOption.COPY_ATTRIBUTES)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "FileSystemProvider copy same file no op"() {
+        setup:
+        def fs = createFS(config)
+
+        // Generate resource names.
+        // Don't use default directory to ensure we honor the root.
+        def rootName = fs.getRootDirectories().last().toString()
+        def sourceName = generateBlobName()
+        def sourcePath = fs.getPath(rootName, sourceName)
+
+        when:
+        // Even when the source does not exist or COPY_ATTRIBUTES is not specified, this will succeed as no-op
+        fs.provider().copy(sourcePath, sourcePath)
+
+        then:
+        notThrown(Exception)
+    }
+
+    def "FileSystemProvider copy across containers"() {
+        setup:
+        def fs = createFS(config)
+
+        // Generate resource names.
+        def sourceRootName = fs.getRootDirectories().last().toString()
+        def destRootName = fs.getRootDirectories().first().toString()
+        def sourceContainerName = sourceRootName.substring(0, sourceRootName.length() - 1)
+        def destContainerName = destRootName.substring(0, sourceRootName.length() - 1)
+        def sourceName = generateBlobName()
+        def sourcePath = fs.getPath(sourceRootName, sourceName)
+        def destName = generateBlobName()
+        def destPath = fs.getPath(destRootName, destName)
+
+        // Generate clients to resources.
+        def sourceContainerClient = primaryBlobServiceClient.getBlobContainerClient(sourceContainerName)
+        def sourceClient = sourceContainerClient.getBlobClient(sourceName)
+        def destContainerClient = primaryBlobServiceClient.getBlobContainerClient(destContainerName)
+        def destinationClient = destContainerClient.getBlobClient(destName)
+
+        // Create resources as necessary
+        sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
+
+        then:
+        sourceClient.exists()
+        destinationClient.exists()
+    }
+
+    // -file, dir (virtual and concrete, empty and non-empty) source,
+    // -file, dir (virtual and concrete, empty and non-empty), dest. Nothing at dest.
+    // -varying levels of depth
+    // -No parent exists at destination
+    // -No file exists at source (file, conrete dir, virtual dir)
+    // -No root directories
+    // -Equal paths is a no op (check exists and not exists)
+    // -Copy across containers
+    // -Default dir (relative path) (not necessary because we test toBlobClient)
+
+    // Directory status (different depths), directory exists, parentDirExists on non-default
+
+    @Unroll
+    def "FileSystemProvider directory status"() {
+        setup:
+        def fs = createFS(config)
+
+        // Generate resource names.
+        // In root1, the resource will be in the root. In root2, the resource will be several levels deep. Also
+        // root1 will be non-default directory and root2 is default directory.
+        def root1 = fs.getRootDirectories().last().toString()
+        def root2 = fs.getRootDirectories().first().toString()
+        def container1 = root1.substring(0, root1.length() - 1)
+        def container2 = root2.substring(0, root1.length() - 1)
+        def name1 = generateBlobName()
+        def parent2 = ""
+        for (int i = 0; i < 3; i++) {
+            parent2 += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
+        }
+        def name2 = generateBlobName()
+
+        // Generate clients to resources.
+        def containerClient1 = primaryBlobServiceClient.getBlobContainerClient(container1)
+        def blobClient1 = containerClient1.getBlobClient(name1)
+        def containerClient2 = primaryBlobServiceClient.getBlobContainerClient(container2)
+        def blobClient2 = containerClient2.getBlobClient(parent2 + name2)
+        def childClient1 = containerClient1.getBlobClient(
+            blobClient1.getBlobName() + AzureFileSystem.PATH_SEPARATOR + generateBlobName())
+        def childClient2 = containerClient2.getBlobClient(
+            blobClient2.getBlobName() + AzureFileSystem.PATH_SEPARATOR + generateBlobName())
+
+        // Create resources as necessary
+        def dirMetadata = [(AzureFileSystemProvider.DIR_METADATA_MARKER):"true"]
+        if (status == DirectoryStatus.NOT_A_DIRECTORY) {
+            blobClient1.upload(defaultInputStream.get(), defaultDataSize)
+            blobClient2.upload(defaultInputStream.get(), defaultDataSize)
+        } else if (status == DirectoryStatus.EMPTY) {
+            blobClient1.getBlockBlobClient().commitBlockListWithResponse(Collections.emptyList(), null,
+                dirMetadata, null, null, null, null)
+            blobClient2.getBlockBlobClient().commitBlockListWithResponse(Collections.emptyList(), null,
+                dirMetadata, null, null, null, null)
+        } else if (status == DirectoryStatus.NOT_EMPTY) {
+            if (!isVirtual) {
+                blobClient1.getBlockBlobClient().commitBlockListWithResponse(Collections.emptyList(), null,
+                    dirMetadata, null, null, null, null)
+                blobClient2.getBlockBlobClient().commitBlockListWithResponse(Collections.emptyList(), null,
+                    dirMetadata, null, null, null, null)
+            }
+            childClient1.upload(defaultInputStream.get(), defaultDataSize)
+            childClient2.upload(defaultInputStream.get(), defaultDataSize)
+        }
+
+        expect:
+        ((AzureFileSystemProvider) fs.provider()).checkDirStatus(blobClient1) == status
+        ((AzureFileSystemProvider) fs.provider()).checkDirStatus(blobClient2) == status
+
+        where:
+        status                          | isVirtual
+        /*DirectoryStatus.DOES_NOT_EXIST  | false
+        DirectoryStatus.NOT_A_DIRECTORY | false
+        DirectoryStatus.EMPTY           | false*/
+        DirectoryStatus.NOT_EMPTY       | true
+        //DirectoryStatus.NOT_EMPTY       | false
+    }
+
 
     def "FileSystemProvider parent dir exists false"() {
         setup:
