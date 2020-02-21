@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.autoconfigure.jms;
 
@@ -50,8 +47,7 @@ public class AzureServiceBusJMSProperties {
     public void validate() {
 
         if (!StringUtils.hasText(connectionString)) {
-            throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' " +
-                    "should be provided");
+            throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided");
         }
 
     }

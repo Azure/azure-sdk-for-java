@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.keyvault.spring;
 
 import com.azure.core.http.rest.PagedFlux;
@@ -25,13 +22,14 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class KeyVaultOperationUnitTest {
-    private static final List<String> secretKeysConfig = Arrays.asList("key1", "key2", "key3");
 
-    private static final String testPropertyName1 = "testPropertyName1";
+    private static final List<String> SECRET_KEYS_CONFIG = Arrays.asList("key1", "key2", "key3");
 
-    private static final String secretKey1 = "key1";
+    private static final String TEST_PROPERTY_NAME_1 = "testPropertyName1";
 
-    private static final String fakeVaultUri = "https:fake.vault.com";
+    private static final String SECRET_KEY_1 = "key1";
+
+    private static final String FAKE_VAULT_URI = "https:fake.vault.com";
 
     private static final String TEST_SPRING_RELAXED_BINDING_NAME_0 = "acme.my-project.person.first-name";
 
@@ -44,10 +42,10 @@ public class KeyVaultOperationUnitTest {
     private static final String TEST_AZURE_KEYVAULT_NAME = "acme-myproject-person-firstname";
 
     private static final List<String> TEST_SPRING_RELAXED_BINDING_NAMES = Arrays.asList(
-            TEST_SPRING_RELAXED_BINDING_NAME_0,
-            TEST_SPRING_RELAXED_BINDING_NAME_1,
-            TEST_SPRING_RELAXED_BINDING_NAME_2,
-            TEST_SPRING_RELAXED_BINDING_NAME_3
+        TEST_SPRING_RELAXED_BINDING_NAME_0,
+        TEST_SPRING_RELAXED_BINDING_NAME_1,
+        TEST_SPRING_RELAXED_BINDING_NAME_2,
+        TEST_SPRING_RELAXED_BINDING_NAME_3
     );
 
     @Mock
@@ -61,44 +59,44 @@ public class KeyVaultOperationUnitTest {
         final KeyVaultSecret secretBundle = new KeyVaultSecret(id, value);
         when(keyVaultClient.getSecret(anyString())).thenReturn(secretBundle);
         keyVaultOperation = new KeyVaultOperation(keyVaultClient,
-                fakeVaultUri,
-                Constants.TOKEN_ACQUIRE_TIMEOUT_SECS,
-                secretKeysConfig);
+            FAKE_VAULT_URI,
+            Constants.TOKEN_ACQUIRE_TIMEOUT_SECS,
+            secretKeysConfig);
     }
 
     @Test
     public void testGet() {
         //test get with no specific secret keys
-        setupSecretBundle(testPropertyName1, testPropertyName1, null);
-        assertThat(keyVaultOperation.get(testPropertyName1)).isEqualToIgnoringCase(testPropertyName1);
+        setupSecretBundle(TEST_PROPERTY_NAME_1, TEST_PROPERTY_NAME_1, null);
+        assertThat(keyVaultOperation.get(TEST_PROPERTY_NAME_1)).isEqualToIgnoringCase(TEST_PROPERTY_NAME_1);
     }
 
     @Test
     public void testGetAndMissWhenSecretsProvided() {
         //test get with specific secret key configs
-        setupSecretBundle(testPropertyName1, testPropertyName1, secretKeysConfig);
-        assertThat(keyVaultOperation.get(testPropertyName1)).isEqualToIgnoringCase(null);
+        setupSecretBundle(TEST_PROPERTY_NAME_1, TEST_PROPERTY_NAME_1, SECRET_KEYS_CONFIG);
+        assertThat(keyVaultOperation.get(TEST_PROPERTY_NAME_1)).isEqualToIgnoringCase(null);
     }
 
     @Test
     public void testGetAndHitWhenSecretsProvided() {
-        setupSecretBundle(secretKey1, secretKey1, secretKeysConfig);
-        assertThat(keyVaultOperation.get(secretKey1)).isEqualToIgnoringCase(secretKey1);
+        setupSecretBundle(SECRET_KEY_1, SECRET_KEY_1, SECRET_KEYS_CONFIG);
+        assertThat(keyVaultOperation.get(SECRET_KEY_1)).isEqualToIgnoringCase(SECRET_KEY_1);
     }
 
     @Test
     public void testList() {
         //test list with no specific secret keys
-        setupSecretBundle(testPropertyName1, testPropertyName1, null);
+        setupSecretBundle(TEST_PROPERTY_NAME_1, TEST_PROPERTY_NAME_1, null);
         final String[] result = keyVaultOperation.list();
         assertThat(result.length).isEqualTo(1);
-        assertThat(result[0]).isEqualToIgnoringCase(testPropertyName1);
+        assertThat(result[0]).isEqualToIgnoringCase(TEST_PROPERTY_NAME_1);
 
         //test list with specific secret key configs
-        setupSecretBundle(testPropertyName1, testPropertyName1, secretKeysConfig);
+        setupSecretBundle(TEST_PROPERTY_NAME_1, TEST_PROPERTY_NAME_1, SECRET_KEYS_CONFIG);
         final String[] specificResult = keyVaultOperation.list();
         assertThat(specificResult.length).isEqualTo(3);
-        assertThat(specificResult[0]).isEqualTo(secretKeysConfig.get(0));
+        assertThat(specificResult[0]).isEqualTo(SECRET_KEYS_CONFIG.get(0));
     }
 
     @Test
@@ -107,25 +105,25 @@ public class KeyVaultOperationUnitTest {
         setupSecretBundle(TEST_AZURE_KEYVAULT_NAME, TEST_AZURE_KEYVAULT_NAME, null);
 
         TEST_SPRING_RELAXED_BINDING_NAMES.forEach(
-                n -> assertThat(keyVaultOperation.get(n)).isEqualTo(TEST_AZURE_KEYVAULT_NAME)
+            n -> assertThat(keyVaultOperation.get(n)).isEqualTo(TEST_AZURE_KEYVAULT_NAME)
         );
 
         //test list with specific secret key configs
         setupSecretBundle(TEST_AZURE_KEYVAULT_NAME, TEST_AZURE_KEYVAULT_NAME, Arrays.asList(TEST_AZURE_KEYVAULT_NAME));
         TEST_SPRING_RELAXED_BINDING_NAMES.forEach(
-                n -> assertThat(keyVaultOperation.get(n)).isEqualTo(TEST_AZURE_KEYVAULT_NAME)
+            n -> assertThat(keyVaultOperation.get(n)).isEqualTo(TEST_AZURE_KEYVAULT_NAME)
         );
 
-        setupSecretBundle(TEST_AZURE_KEYVAULT_NAME, TEST_AZURE_KEYVAULT_NAME, secretKeysConfig);
+        setupSecretBundle(TEST_AZURE_KEYVAULT_NAME, TEST_AZURE_KEYVAULT_NAME, SECRET_KEYS_CONFIG);
         TEST_SPRING_RELAXED_BINDING_NAMES.forEach(
-                n -> assertThat(keyVaultOperation.get(n)).isEqualTo(null)
+            n -> assertThat(keyVaultOperation.get(n)).isEqualTo(null)
         );
     }
 
     class MockPage extends PagedIterable<SecretProperties> {
         private String name;
 
-        public MockPage(PagedFlux<SecretProperties> pagedFlux, String name) {
+        MockPage(PagedFlux<SecretProperties> pagedFlux, String name) {
             super(pagedFlux);
             this.name = name;
         }
@@ -135,7 +133,7 @@ public class KeyVaultOperationUnitTest {
          *
          * @param pagedFlux to use as iterable
          */
-        public MockPage(PagedFlux<SecretProperties> pagedFlux) {
+        MockPage(PagedFlux<SecretProperties> pagedFlux) {
             super(pagedFlux);
         }
 
@@ -148,7 +146,7 @@ public class KeyVaultOperationUnitTest {
     class MockSecretProperties extends SecretProperties {
         private String name;
 
-        public MockSecretProperties(String name) {
+        MockSecretProperties(String name) {
             this.name = name;
         }
 

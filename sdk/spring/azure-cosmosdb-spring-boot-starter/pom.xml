@@ -13,7 +13,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
-    <version>2.2.3-beta.1</version> <!-- {x-version-update;azure-cosmosdb-spring-boot-starter;current} -->
+    <version>2.2.3-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmosdb-spring-boot-starter;current} -->
 
     <name>Azure Cosmos DB Spring Boot Starter</name>
     <description>Spring Boot Starter for Azure Document DB service</description>

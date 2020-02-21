@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.autoconfigure.jms;
 
@@ -11,7 +8,7 @@ import org.junit.Test;
 
 public class ConnectionStringResolverTest {
     @Test
-    public void testConnectionStringResolver(){
+    public void testConnectionStringResolver() {
         final String connectionString = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;SharedAccessKey=sasKey";
 
         final ServiceBusKey serviceBusKey = ConnectionStringResolver.getServiceBusKey(connectionString);

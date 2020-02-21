@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.autoconfigure.mediaservices;
 
@@ -37,7 +34,11 @@ import java.util.concurrent.Executors;
 
 import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
 import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
-import static com.microsoft.windowsazure.Configuration.*;
+import static com.microsoft.windowsazure.Configuration.PROPERTY_CONNECT_TIMEOUT;
+import static com.microsoft.windowsazure.Configuration.PROPERTY_HTTP_PROXY_HOST;
+import static com.microsoft.windowsazure.Configuration.PROPERTY_HTTP_PROXY_PORT;
+import static com.microsoft.windowsazure.Configuration.PROPERTY_HTTP_PROXY_SCHEME;
+import static com.microsoft.windowsazure.Configuration.PROPERTY_READ_TIMEOUT;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 

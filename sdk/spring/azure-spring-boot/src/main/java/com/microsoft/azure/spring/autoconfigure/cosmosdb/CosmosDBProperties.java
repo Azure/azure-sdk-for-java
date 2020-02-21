@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.spring.autoconfigure.cosmosdb;
 
@@ -20,7 +17,7 @@ import javax.validation.constraints.NotEmpty;
 @ConfigurationProperties("azure.cosmosdb")
 public class CosmosDBProperties {
 
-    private static final Logger log = LoggerFactory.getLogger(CosmosDBProperties.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDBProperties.class);
     /**
      * Document DB URI.
      */
@@ -60,10 +57,10 @@ public class CosmosDBProperties {
      */
     private ResponseDiagnosticsProcessor responseDiagnosticsProcessor =
         responseDiagnostics -> {
-        if (populateQueryMetrics) {
-            log.info("Response Diagnostics {}", responseDiagnostics);
-        }
-    };
+            if (populateQueryMetrics) {
+                LOGGER.info("Response Diagnostics {}", responseDiagnostics);
+            }
+        };
 
     private ConnectionPolicy connectionPolicy = ConnectionPolicy.defaultPolicy();
 

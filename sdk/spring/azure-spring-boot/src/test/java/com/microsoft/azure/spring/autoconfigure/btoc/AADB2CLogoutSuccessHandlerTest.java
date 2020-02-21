@@ -1,9 +1,6 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
-package com.microsoft.azure.spring.autoconfigure.b2c;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.microsoft.azure.spring.autoconfigure.btoc;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +38,7 @@ public class AADB2CLogoutSuccessHandlerTest {
 
     private static class MyLogoutSuccessHandler extends AADB2CLogoutSuccessHandler {
 
-        public MyLogoutSuccessHandler(AADB2CProperties properties) {
+        MyLogoutSuccessHandler(AADB2CProperties properties) {
             super(properties);
         }
 

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
@@ -22,7 +19,7 @@ import java.util.Objects;
 @ConfigurationProperties("azure.activedirectory")
 public class AADAuthenticationProperties {
 
-    private static final Logger log = LoggerFactory.getLogger(AADAuthenticationProperties.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
     private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
 
@@ -159,23 +156,27 @@ public class AADAuthenticationProperties {
 
         @Override
         public String toString() {
-            return "UserGroupProperties{" +
-                "allowedGroups=" + allowedGroups +
-                ", key='" + key + '\'' +
-                ", value='" + value + '\'' +
-                ", objectIDKey='" + objectIDKey + '\'' +
-                '}';
+            return "UserGroupProperties{"
+                +  "allowedGroups=" + allowedGroups
+                +  ", key='" + key + '\''
+                +  ", value='" + value + '\''
+                +  ", objectIDKey='" + objectIDKey + '\''
+                +  '}';
         }
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             UserGroupProperties that = (UserGroupProperties) o;
-            return Objects.equals(allowedGroups, that.allowedGroups) &&
-                Objects.equals(key, that.key) &&
-                Objects.equals(value, that.value) &&
-                Objects.equals(objectIDKey, that.objectIDKey);
+            return Objects.equals(allowedGroups, that.allowedGroups)
+                && Objects.equals(key, that.key)
+                && Objects.equals(value, that.value)
+                && Objects.equals(objectIDKey, that.objectIDKey);
         }
 
         @Override
@@ -192,20 +193,12 @@ public class AADAuthenticationProperties {
     public void validateUserGroupProperties() {
         if (this.sessionStateless) {
             if (!this.activeDirectoryGroups.isEmpty()) {
-              log.warn("Group names are not supported if you set 'sessionSateless' to 'true'.");
+                LOGGER.warn("Group names are not supported if you set 'sessionSateless' to 'true'.");
             }
         } else if (this.activeDirectoryGroups.isEmpty() && this.getUserGroup().getAllowedGroups().isEmpty()) {
             throw new IllegalStateException("One of the User Group Properties must be populated. "
                 + "Please populate azure.activedirectory.user-group.allowed-groups");
         }
-    }
-
-    public static Logger getLog() {
-        return log;
-    }
-
-    public static String getDefaultServiceEnvironment() {
-        return DEFAULT_SERVICE_ENVIRONMENT;
     }
 
     public UserGroupProperties getUserGroup() {
@@ -302,39 +295,43 @@ public class AADAuthenticationProperties {
 
     @Override
     public String toString() {
-        return "AADAuthenticationProperties{" +
-            "userGroup=" + userGroup +
-            ", environment='" + environment + '\'' +
-            ", clientId='" + clientId + '\'' +
-            ", clientSecret='" + clientSecret + '\'' +
-            ", activeDirectoryGroups=" + activeDirectoryGroups +
-            ", appIdUri='" + appIdUri + '\'' +
-            ", jwtConnectTimeout=" + jwtConnectTimeout +
-            ", jwtReadTimeout=" + jwtReadTimeout +
-            ", jwtSizeLimit=" + jwtSizeLimit +
-            ", tenantId='" + tenantId + '\'' +
-            ", allowTelemetry=" + allowTelemetry +
-            ", sessionStateless=" + sessionStateless +
-            '}';
+        return "AADAuthenticationProperties{"
+            +  "userGroup=" + userGroup
+            +  ", environment='" + environment + '\''
+            +  ", clientId='" + clientId + '\''
+            +  ", clientSecret='" + clientSecret + '\''
+            +  ", activeDirectoryGroups=" + activeDirectoryGroups
+            +  ", appIdUri='" + appIdUri + '\''
+            +  ", jwtConnectTimeout=" + jwtConnectTimeout
+            +  ", jwtReadTimeout=" + jwtReadTimeout
+            +  ", jwtSizeLimit=" + jwtSizeLimit
+            +  ", tenantId='" + tenantId + '\''
+            +  ", allowTelemetry=" + allowTelemetry
+            +  ", sessionStateless=" + sessionStateless
+            +  '}';
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         AADAuthenticationProperties that = (AADAuthenticationProperties) o;
-        return jwtConnectTimeout == that.jwtConnectTimeout &&
-            jwtReadTimeout == that.jwtReadTimeout &&
-            jwtSizeLimit == that.jwtSizeLimit &&
-            allowTelemetry == that.allowTelemetry &&
-            Objects.equals(userGroup, that.userGroup) &&
-            Objects.equals(environment, that.environment) &&
-            Objects.equals(clientId, that.clientId) &&
-            Objects.equals(clientSecret, that.clientSecret) &&
-            Objects.equals(activeDirectoryGroups, that.activeDirectoryGroups) &&
-            Objects.equals(appIdUri, that.appIdUri) &&
-            Objects.equals(tenantId, that.tenantId) &&
-            Objects.equals(sessionStateless, that.sessionStateless);
+        return jwtConnectTimeout == that.jwtConnectTimeout
+            && jwtReadTimeout == that.jwtReadTimeout
+            && jwtSizeLimit == that.jwtSizeLimit
+            && allowTelemetry == that.allowTelemetry
+            && Objects.equals(userGroup, that.userGroup)
+            && Objects.equals(environment, that.environment)
+            && Objects.equals(clientId, that.clientId)
+            && Objects.equals(clientSecret, that.clientSecret)
+            && Objects.equals(activeDirectoryGroups, that.activeDirectoryGroups)
+            && Objects.equals(appIdUri, that.appIdUri)
+            && Objects.equals(tenantId, that.tenantId)
+            && Objects.equals(sessionStateless, that.sessionStateless);
     }
 
     @Override

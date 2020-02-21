@@ -1,9 +1,6 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
-package com.microsoft.azure.spring.autoconfigure.b2c;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.microsoft.azure.spring.autoconfigure.btoc;
 
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -34,7 +31,7 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private static final String MATCHER_PATTERN = String.format("%s/{%s}", REQUEST_BASE_URI, REGISTRATION_ID_NAME);
 
-    private static final AntPathRequestMatcher requestMatcher = new AntPathRequestMatcher(MATCHER_PATTERN);
+    private static final AntPathRequestMatcher REQUEST_MATCHER = new AntPathRequestMatcher(MATCHER_PATTERN);
 
     private final OAuth2AuthorizationRequestResolver defaultResolver;
 
@@ -63,7 +60,7 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
             return getB2CAuthorizationRequest(authRequest, passwordResetUserFlow);
         }
 
-        if (StringUtils.hasText(registrationId) && requestMatcher.matches(request)) {
+        if (StringUtils.hasText(registrationId) && REQUEST_MATCHER.matches(request)) {
             return getB2CAuthorizationRequest(defaultResolver.resolve(request), registrationId);
         }
 
@@ -95,8 +92,8 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
     }
 
     private String getRegistrationId(HttpServletRequest request) {
-        if (requestMatcher.matches(request)) {
-            return requestMatcher.extractUriTemplateVariables(request).get(REGISTRATION_ID_NAME);
+        if (REQUEST_MATCHER.matches(request)) {
+            return REQUEST_MATCHER.extractUriTemplateVariables(request).get(REGISTRATION_ID_NAME);
         }
 
         return null;

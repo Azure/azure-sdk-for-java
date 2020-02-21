@@ -42,7 +42,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.10.0</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+            <version>2.10.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
         </dependency>
 
         <dependency>
@@ -180,12 +180,12 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-secrets</artifactId>
-            <version>4.0.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+            <version>4.1.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+            <version>1.0.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
             <exclusions>
               <exclusion>
                 <groupId>org.projectlombok</groupId>

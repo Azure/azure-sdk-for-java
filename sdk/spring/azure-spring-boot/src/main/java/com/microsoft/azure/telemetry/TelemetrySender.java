@@ -1,10 +1,8 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.telemetry;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.spring.support.GetHashMac;
 import com.microsoft.azure.utils.PropertyLoader;
@@ -17,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
@@ -25,7 +24,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 
 public class TelemetrySender {
 
-    private static final Logger log = LoggerFactory.getLogger(TelemetrySender.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TelemetrySender.class);
 
     private static final String TELEMETRY_TARGET_URL = "https://dc.services.visualstudio.com/v2/track";
 
@@ -48,8 +47,8 @@ public class TelemetrySender {
             final HttpEntity<String> body = new HttpEntity<>(MAPPER.writeValueAsString(eventData), HEADERS);
 
             return REST_TEMPLATE.exchange(TELEMETRY_TARGET_URL, HttpMethod.POST, body, String.class);
-        } catch (Exception ignore) {
-            log.warn("Failed to exchange telemetry request, {}.", ignore.getMessage());
+        } catch (RestClientException | JsonProcessingException e) {
+            LOGGER.warn("Failed to exchange telemetry request, {}.", e.getMessage());
         }
 
         return null;
@@ -67,7 +66,7 @@ public class TelemetrySender {
         }
 
         if (response != null && response.getStatusCode() != HttpStatus.OK) {
-            log.warn("Failed to send telemetry data, response status code {}.", response.getStatusCode().toString());
+            LOGGER.warn("Failed to send telemetry data, response status code {}.", response.getStatusCode().toString());
         }
     }
 

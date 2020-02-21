@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.spring;
 
@@ -36,11 +33,11 @@ import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleN
 
 class KeyVaultEnvironmentPostProcessorHelper {
 
-    private static final Logger log = LoggerFactory.getLogger(KeyVaultEnvironmentPostProcessorHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultEnvironmentPostProcessorHelper.class);
 
     private final ConfigurableEnvironment environment;
 
-    public KeyVaultEnvironmentPostProcessorHelper(final ConfigurableEnvironment environment) {
+    KeyVaultEnvironmentPostProcessorHelper(final ConfigurableEnvironment environment) {
         this.environment = environment;
         // As @PostConstructor not available when post processor, call it explicitly.
         sendTelemetry();
@@ -84,7 +81,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
         if (this.environment.containsProperty(Constants.AZURE_KEYVAULT_CLIENT_ID)
                 && this.environment.containsProperty(Constants.AZURE_KEYVAULT_CLIENT_KEY)
                 && this.environment.containsProperty(Constants.AZURE_KEYVAULT_TENANT_ID)) {
-            log.debug("Will use custom credentials");
+            LOGGER.debug("Will use custom credentials");
             final String clientId = getProperty(this.environment, Constants.AZURE_KEYVAULT_CLIENT_ID);
             final String clientKey = getProperty(this.environment, Constants.AZURE_KEYVAULT_CLIENT_KEY);
             final String tenantId = getProperty(this.environment, Constants.AZURE_KEYVAULT_TENANT_ID);
@@ -119,11 +116,11 @@ class KeyVaultEnvironmentPostProcessorHelper {
         }
         //use MSI to authenticate
         if (this.environment.containsProperty(Constants.AZURE_KEYVAULT_CLIENT_ID)) {
-            log.debug("Will use MSI credentials with specified clientId");
+            LOGGER.debug("Will use MSI credentials with specified clientId");
             final String clientId = getProperty(this.environment, Constants.AZURE_KEYVAULT_CLIENT_ID);
             return new ManagedIdentityCredentialBuilder().clientId(clientId).build();
         }
-        log.debug("Will use MSI credentials");
+        LOGGER.debug("Will use MSI credentials");
         return new ManagedIdentityCredentialBuilder().build();
     }
 

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 /*
  * Disclaimer:
  *      This class is copied from https://github.com/Microsoft/azure-tools-for-java/ with minor modification (fixing
@@ -12,13 +9,20 @@
 
 package com.microsoft.azure.spring.support;
 
-import java.io.*;
+import org.apache.commons.io.IOUtils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GetHashMac {
+public final class GetHashMac {
     public static final String MAC_REGEX = "([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}";
     public static final String MAC_REGEX_ZERO = "([0]{2}[:-]){5}[0]{2}";
     public static final String HASHED_MAC_REGEX = "[0-9a-f]{64}";
@@ -62,22 +66,28 @@ public class GetHashMac {
 
         final String os = System.getProperty("os.name");
         String[] command = {"ifconfig", "-a"};
-        if (os != null && !os.isEmpty() && os.toLowerCase().startsWith("win")) {
+        if (os != null && !os.isEmpty() && os.toLowerCase(Locale.US).startsWith("win")) {
             command = new String[]{"getmac"};
         }
 
         try {
             final ProcessBuilder builder = new ProcessBuilder(command);
             final Process process = builder.start();
-            try (final InputStream inputStream = process.getInputStream();
-                 final InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                 final BufferedReader br = new BufferedReader(inputStreamReader)) {
+
+            InputStream inputStream = process.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+            BufferedReader br = new BufferedReader(inputStreamReader);
+            try {
                 String tmp;
                 while ((tmp = br.readLine()) != null) {
                     ret.append(tmp);
                 }
-
+            } catch (IOException e) {
+                IOUtils.closeQuietly(br);
+            } finally {
+                IOUtils.closeQuietly(br);
             }
+
         } catch (IOException e) {
             return null;
         }
@@ -93,7 +103,7 @@ public class GetHashMac {
         final String ret;
         try {
             final MessageDigest md = MessageDigest.getInstance("SHA-256");
-            final byte[] bytes = mac.getBytes("UTF-8");
+            final byte[] bytes = mac.getBytes(StandardCharsets.UTF_8);
             md.update(bytes);
             final byte[] bytesAfterDigest = md.digest();
             final StringBuilder sb = new StringBuilder();
@@ -102,7 +112,7 @@ public class GetHashMac {
             }
 
             ret = sb.toString();
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+        } catch (NoSuchAlgorithmException ex) {
             return null;
         }
 

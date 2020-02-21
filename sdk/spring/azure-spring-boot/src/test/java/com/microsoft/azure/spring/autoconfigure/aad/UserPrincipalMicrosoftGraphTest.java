@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
@@ -73,7 +70,7 @@ public class UserPrincipalMicrosoftGraphTest {
 
     @Test
     public void getAuthoritiesByUserGroups() throws Exception {
-        
+
         aadAuthProps.getUserGroup().setAllowedGroups(Collections.singletonList("group1"));
         this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthProps, endpointsProps);
 
@@ -86,7 +83,7 @@ public class UserPrincipalMicrosoftGraphTest {
                 .extracting(GrantedAuthority::getAuthority).containsExactly("ROLE_group1");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
-                .withHeader(HttpHeaders.AUTHORIZATION, 
+                .withHeader(HttpHeaders.AUTHORIZATION,
                         equalTo(String.format("%s %s", OAuth2AccessToken.TokenType.BEARER.getValue(), accessToken)))
                 .withHeader(HttpHeaders.ACCEPT, equalTo(MediaType.APPLICATION_JSON_VALUE)));
     }
@@ -108,7 +105,7 @@ public class UserPrincipalMicrosoftGraphTest {
                 .containsExactly("ROLE_group1", "ROLE_group2", "ROLE_group3");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
-                .withHeader(HttpHeaders.AUTHORIZATION, 
+                .withHeader(HttpHeaders.AUTHORIZATION,
                         equalTo(String.format("%s %s", OAuth2AccessToken.TokenType.BEARER.getValue(), accessToken)))
                 .withHeader(HttpHeaders.ACCEPT, equalTo(MediaType.APPLICATION_JSON_VALUE)));
     }
@@ -117,10 +114,10 @@ public class UserPrincipalMicrosoftGraphTest {
     public void userPrinciplaIsSerializable() throws ParseException, IOException, ClassNotFoundException {
         final File tmpOutputFile = File.createTempFile("test-user-principal", "txt");
 
-        try (final FileOutputStream fileOutputStream = new FileOutputStream(tmpOutputFile);
-             final ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-             final FileInputStream fileInputStream = new FileInputStream(tmpOutputFile);
-                final ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(tmpOutputFile);
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+             FileInputStream fileInputStream = new FileInputStream(tmpOutputFile);
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
 
             final JWSObject jwsObject = JWSObject.parse(MicrosoftGraphConstants.JWT_TOKEN);
             final JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder().subject("fake-subject").build();

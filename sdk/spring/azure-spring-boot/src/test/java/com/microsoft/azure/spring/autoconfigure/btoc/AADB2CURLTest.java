@@ -1,9 +1,6 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
-package com.microsoft.azure.spring.autoconfigure.b2c;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.microsoft.azure.spring.autoconfigure.btoc;
 
 import org.junit.Test;
 
@@ -61,10 +58,11 @@ public class AADB2CURLTest {
      */
     @Test
     public void testGetEndSessionUrl() {
-        final String expect = "https://my-tenant.b2clogin.com/my-tenant.onmicrosoft.com/oauth2/v2.0/logout?" +
-                "post_logout_redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fhome&p=my-p";
+        final String expect = "https://my-tenant.b2clogin.com/my-tenant.onmicrosoft.com/oauth2/v2.0/logout?"
+            + "post_logout_redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fhome&p=my-p";
 
-        assertThat(AADB2CURL.getEndSessionUrl("my-tenant", "http://localhost:8080/home", "my-p")).isEqualTo(expect);
+        assertThat(AADB2CURL.getEndSessionUrl("my-tenant", "http://localhost:8080/home",
+            "my-p")).isEqualTo(expect);
     }
 
     @Test(expected = IllegalArgumentException.class)

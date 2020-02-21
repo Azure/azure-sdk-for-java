@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
 import com.microsoft.aad.msal4j.MsalServiceException;
@@ -24,9 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.ParseException;
+import java.util.concurrent.ExecutionException;
 
 public class AADAuthenticationFilter extends OncePerRequestFilter {
-    private static final Logger log = LoggerFactory.getLogger(AADAuthenticationFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationFilter.class);
 
     private static final String CURRENT_USER_PRINCIPAL = "CURRENT_USER_PRINCIPAL";
     private static final String CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN = "CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN";
@@ -57,20 +55,19 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
             try {
                 final String idToken = authHeader.replace(TOKEN_TYPE, "");
                 UserPrincipal principal = (UserPrincipal) request
-                        .getSession().getAttribute(CURRENT_USER_PRINCIPAL);
+                    .getSession().getAttribute(CURRENT_USER_PRINCIPAL);
                 String graphApiToken = (String) request
-                        .getSession().getAttribute(CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN);
+                    .getSession().getAttribute(CURRENT_USER_PRINCIPAL_GRAPHAPI_TOKEN);
                 final String currentToken = (String) request
-                        .getSession().getAttribute(CURRENT_USER_PRINCIPAL_JWT_TOKEN);
+                    .getSession().getAttribute(CURRENT_USER_PRINCIPAL_JWT_TOKEN);
 
                 final AzureADGraphClient client = new AzureADGraphClient(aadAuthProps.getClientId(),
-                        aadAuthProps.getClientSecret(), aadAuthProps, serviceEndpointsProps);
+                    aadAuthProps.getClientSecret(), aadAuthProps, serviceEndpointsProps);
 
-                if (principal == null ||
-                    graphApiToken == null ||
-                    graphApiToken.isEmpty() ||
-                    !idToken.equals(currentToken)
-                ) {
+                if (principal == null
+                    || graphApiToken == null
+                    || graphApiToken.isEmpty()
+                    || !idToken.equals(currentToken)) {
                     principal = principalManager.buildUserPrincipal(idToken);
 
                     final String tenantId = principal.getClaim().toString();
@@ -87,13 +84,14 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                         principal, null, client.convertGroupsToGrantedAuthorities(principal.getUserGroups()));
 
                 authentication.setAuthenticated(true);
-                log.info("Request token verification success. {}", authentication);
+                LOGGER.info("Request token verification success. {}", authentication);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (MalformedURLException | ParseException | BadJOSEException | JOSEException ex) {
-                log.error("Failed to initialize UserPrincipal.", ex);
+            } catch (MalformedURLException | ParseException | BadJOSEException | JOSEException | ExecutionException
+                | InterruptedException ex) {
+                LOGGER.error("Failed to initialize UserPrincipal.", ex);
                 throw new ServletException(ex);
             } catch (ServiceUnavailableException ex) {
-                log.error("Failed to acquire graph api token.", ex);
+                LOGGER.error("Failed to acquire graph api token.", ex);
                 throw new ServletException(ex);
             } catch (MsalServiceException ex) {
                 if (ex.claims() != null && !ex.claims().isEmpty()) {

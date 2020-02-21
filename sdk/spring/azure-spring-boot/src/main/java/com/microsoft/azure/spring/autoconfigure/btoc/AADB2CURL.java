@@ -1,16 +1,13 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
-package com.microsoft.azure.spring.autoconfigure.b2c;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.microsoft.azure.spring.autoconfigure.btoc;
 
 import org.springframework.util.Assert;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-public class AADB2CURL {
+public final class AADB2CURL {
 
     private AADB2CURL() {
 
