@@ -157,6 +157,10 @@ $pomFiles | ForEach-Object {
     Write-Host "pom: [$($_.FullName)]"
 }
 
+if (@($pomFiles).Count -eq 0) {
+    Write-Warning "No pom.xml files were found."
+}
+
 foreach ($file in $pomFiles) {
     $manifestFile = Join-Path $file.DirectoryName "cgmanifest.json"
     $existingComponents = @{}
