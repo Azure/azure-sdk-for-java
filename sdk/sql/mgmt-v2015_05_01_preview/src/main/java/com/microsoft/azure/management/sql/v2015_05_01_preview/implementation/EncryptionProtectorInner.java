@@ -22,7 +22,7 @@ public class EncryptionProtectorInner extends ProxyResource {
      * Kind of encryption protector. This is metadata used for the Azure portal
      * experience.
      */
-    @JsonProperty(value = "kind")
+    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /**
@@ -69,17 +69,6 @@ public class EncryptionProtectorInner extends ProxyResource {
      */
     public String kind() {
         return this.kind;
-    }
-
-    /**
-     * Set kind of encryption protector. This is metadata used for the Azure portal experience.
-     *
-     * @param kind the kind value to set
-     * @return the EncryptionProtectorInner object itself.
-     */
-    public EncryptionProtectorInner withKind(String kind) {
-        this.kind = kind;
-        return this;
     }
 
     /**
