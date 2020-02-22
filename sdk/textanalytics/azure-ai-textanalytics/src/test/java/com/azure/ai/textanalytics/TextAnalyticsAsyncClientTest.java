@@ -6,11 +6,12 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.DocumentSentimentLabel;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.SentimentLabel;
+import com.azure.ai.textanalytics.models.SentenceSentimentLabel;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -394,11 +395,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForTextInput() {
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(SentimentLabel.MIXED,
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(DocumentSentimentLabel.MIXED,
             new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
             Arrays.asList(
-                new SentenceSentiment(SentimentLabel.NEGATIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(SentimentLabel.POSITIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentiment(SentenceSentimentLabel.NEGATIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentiment(SentenceSentimentLabel.POSITIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 35, 32)
             ));
 
         StepVerifier
@@ -422,11 +423,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void analyseSentimentForFaultyText() {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
-            SentimentLabel.NEUTRAL,
+            DocumentSentimentLabel.NEUTRAL,
             new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
             Arrays.asList(
-                new SentenceSentiment(SentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentiment(SentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 4, 1)
+                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 1, 0),
+                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 4, 1)
             ));
 
         StepVerifier.create(client.analyzeSentiment("!@#%%"))

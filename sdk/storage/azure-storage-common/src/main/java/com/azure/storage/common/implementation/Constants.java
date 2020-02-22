@@ -57,6 +57,9 @@ public final class Constants {
     public static final String BLOB_ALREADY_EXISTS =
         "Blob already exists. Specify overwrite to true to force update the blob.";
 
+    public static final String FILE_ALREADY_EXISTS =
+        "File already exists. Specify overwrite to true to force update the file.";
+
     /**
      * Buffer width used to copy data to output streams.
      */
