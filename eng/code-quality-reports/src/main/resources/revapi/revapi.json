@@ -5,7 +5,11 @@
       "filter": {
         "packages": {
           "regex": true,
-          "exclude": [ "com\\.azure\\..+\\.implementation(\\..+)?", "com\\.fasterxml\\.jackson\\..+" ]
+          "exclude": [
+            "com\\.azure\\..+\\.implementation(\\..+)?",
+            "com\\.fasterxml\\.jackson\\..+",
+            "reactor\\.netty\\..+",
+            "io\\.netty\\..+" ]
         }
       }
     }
