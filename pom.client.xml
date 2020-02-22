@@ -428,6 +428,10 @@
               *.implementation*:
               com.azure.tools.checkstyle*
             </excludePackageNames>
+            <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
+            <sourceFileExcludes>
+              <sourceFileExclude>com.azure.cosmos.*BridgeInternal.java</sourceFileExclude>
+            </sourceFileExcludes>
             <groups>
               <group>
                 <title>Azure Core</title>
@@ -511,6 +515,10 @@
               <group>
                 <title>Azure Text Analytics</title>
                 <packages>com.azure.ai.textanalytics*</packages>
+              </group>
+              <group>
+                <title>Azure Cosmos</title>
+                <packages>com.azure.cosmos*</packages>
               </group>
             </groups>
             <links>
@@ -1222,6 +1230,7 @@
   </profiles>
 
   <modules>
+    <module>common/perf-test-core</module>
     <module>sdk/appconfiguration/azure-data-appconfiguration</module>
     <module>sdk/core/azure-core</module>
     <module>sdk/core/azure-core-amqp</module>
@@ -1230,6 +1239,9 @@
     <module>sdk/core/azure-core-http-okhttp</module>
     <module>sdk/core/azure-core-test</module>
     <module>sdk/core/azure-core-tracing-opentelemetry</module>
+    <module>sdk/cosmos/azure-cosmos</module>
+    <module>sdk/cosmos/azure-cosmos-benchmark</module> <!-- CosmosSkip - Benchmark will go away, this is temporary -->
+    <module>sdk/cosmos/azure-cosmos-examples</module> <!-- CosmosSkip - Examples will go away, this is temporary -->
     <module>sdk/e2e</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
@@ -1237,6 +1249,7 @@
     <module>sdk/keyvault/azure-security-keyvault-certificates</module>
     <module>sdk/keyvault/azure-security-keyvault-keys</module>
     <module>sdk/keyvault/azure-security-keyvault-secrets</module>
+	  <module>sdk/search/azure-search</module>
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
@@ -1245,6 +1258,7 @@
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
+    <module>sdk/storage/perf-test</module>
     <module>sdk/textanalytics/azure-ai-textanalytics</module>
   </modules>
 </project>

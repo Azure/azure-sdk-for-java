@@ -74,15 +74,17 @@ class ServiceAPITest extends APISpec {
 
         then:
         for (BlobContainerItem c : response) {
-            assert c.getName().startsWith(containerPrefix)
-            assert c.getProperties().getLastModified() != null
-            assert c.getProperties().getETag() != null
-            assert c.getProperties().getLeaseStatus() != null
-            assert c.getProperties().getLeaseState() != null
-            assert c.getProperties().getLeaseDuration() == null
-            assert c.getProperties().getPublicAccess() == null
-            assert !c.getProperties().isHasLegalHold()
-            assert !c.getProperties().isHasImmutabilityPolicy()
+            c.getName().startsWith(containerPrefix)
+            c.getProperties().getLastModified() != null
+            c.getProperties().getETag() != null
+            c.getProperties().getLeaseStatus() != null
+            c.getProperties().getLeaseState() != null
+            c.getProperties().getLeaseDuration() == null
+            c.getProperties().getPublicAccess() == null
+            !c.getProperties().isHasLegalHold()
+            !c.getProperties().isHasImmutabilityPolicy()
+            !c.getProperties().isEncryptionScopeOverridePrevented()
+            c.getProperties().getDefaultEncryptionScope()
         }
     }
 

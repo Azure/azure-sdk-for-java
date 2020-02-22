@@ -30,7 +30,7 @@ public final class LinkedEntity {
     /*
      * Unique identifier of the recognized entity from the data source.
      */
-    private final String id;
+    private final String dataSourceEntityId;
 
     /*
      * URL for the entity's page from the data source.
@@ -48,16 +48,16 @@ public final class LinkedEntity {
      * @param name entity Linking formal name
      * @param linkedEntityMatches list of instances this entity appears in the text
      * @param language language used in the data source
-     * @param id unique identifier of the recognized entity from the data source
+     * @param dataSourceEntityId unique identifier of the recognized entity from the data source
      * @param url URL for the entity's page from the data source
      * @param dataSource data source used to extract entity linking, such as Wiki/Bing etc
      */
-    public LinkedEntity(String name, List<LinkedEntityMatch> linkedEntityMatches, String language, String id,
-        String url, String dataSource) {
+    public LinkedEntity(String name, List<LinkedEntityMatch> linkedEntityMatches, String language,
+        String dataSourceEntityId, String url, String dataSource) {
         this.name = name;
         this.linkedEntityMatches = linkedEntityMatches;
         this.language = language;
-        this.id = id;
+        this.dataSourceEntityId = dataSourceEntityId;
         this.url = url;
         this.dataSource = dataSource;
     }
@@ -72,8 +72,7 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the linkedEntityMatches property: List of instances this entity appears in the
-     * text.
+     * Get the linkedEntityMatches property: List of instances this entity appears in the text.
      *
      * @return the linkedEntityMatches value.
      */
@@ -91,13 +90,12 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the id property: Unique identifier of the recognized entity from the
-     * data source.
+     * Get the id property: Unique identifier of the recognized entity from the data source.
      *
      * @return the id value.
      */
-    public String getId() {
-        return this.id;
+    public String getDataSourceEntityId() {
+        return this.dataSourceEntityId;
     }
 
     /**
@@ -110,8 +108,7 @@ public final class LinkedEntity {
     }
 
     /**
-     * Get the dataSource property: Data source used to extract entity linking,
-     * such as Wiki/Bing etc.
+     * Get the dataSource property: Data source used to extract entity linking, such as Wiki/Bing etc.
      *
      * @return the dataSource value.
      */

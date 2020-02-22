@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
@@ -11,26 +11,27 @@ import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
  */
 public class RecognizePii {
     /**
-     * Main method to invoke this demo about how to recognize the PII entities of an input text.
+     * Main method to invoke this demo about how to recognize the Personally Identifiable Information entities of
+     * an input text.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey(new TextAnalyticsApiKeyCredential("{subscription_key}"))
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that need be analysed.
+        // The text that needs be analyzed.
         String text = "My SSN is 555-55-5555";
 
-        for (NamedEntity entity : client.recognizePiiEntities(text).getNamedEntities()) {
+        for (PiiEntity entity : client.recognizePiiEntities(text)) {
             System.out.printf(
-                "Recognized personal identifiable information entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
+                "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
                 entity.getText(),
-                entity.getType(),
-                entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),
+                entity.getCategory(),
+                entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
                 entity.getOffset(),
                 entity.getLength(),
                 entity.getScore());

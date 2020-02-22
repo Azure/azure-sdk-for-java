@@ -24,9 +24,9 @@ public class HardwareProfile {
     /**
      * Specifies the HANA instance SKU. Possible values include: 'S72m',
      * 'S144m', 'S72', 'S144', 'S192', 'S192m', 'S192xm', 'S96', 'S112',
-     * 'S224m', 'S224o', 'S224om', 'S224oo', 'S224oom', 'S224ooo', 'S224oxm',
-     * 'S224oxxm', 'S384', 'S384m', 'S384xm', 'S384xxm', 'S576m', 'S576xm',
-     * 'S768', 'S768m', 'S768xm', 'S960m'.
+     * 'S224', 'S224m', 'S224om', 'S224oo', 'S224oom', 'S224ooo', 'S384',
+     * 'S384m', 'S384xm', 'S384xxm', 'S576m', 'S576xm', 'S768', 'S768m',
+     * 'S768xm', 'S960m'.
      */
     @JsonProperty(value = "hanaInstanceSize", access = JsonProperty.Access.WRITE_ONLY)
     private HanaInstanceSizeNamesEnum hanaInstanceSize;
@@ -41,7 +41,7 @@ public class HardwareProfile {
     }
 
     /**
-     * Get specifies the HANA instance SKU. Possible values include: 'S72m', 'S144m', 'S72', 'S144', 'S192', 'S192m', 'S192xm', 'S96', 'S112', 'S224m', 'S224o', 'S224om', 'S224oo', 'S224oom', 'S224ooo', 'S224oxm', 'S224oxxm', 'S384', 'S384m', 'S384xm', 'S384xxm', 'S576m', 'S576xm', 'S768', 'S768m', 'S768xm', 'S960m'.
+     * Get specifies the HANA instance SKU. Possible values include: 'S72m', 'S144m', 'S72', 'S144', 'S192', 'S192m', 'S192xm', 'S96', 'S112', 'S224', 'S224m', 'S224om', 'S224oo', 'S224oom', 'S224ooo', 'S384', 'S384m', 'S384xm', 'S384xxm', 'S576m', 'S576xm', 'S768', 'S768m', 'S768xm', 'S960m'.
      *
      * @return the hanaInstanceSize value
      */

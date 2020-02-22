@@ -20,14 +20,17 @@ import com.azure.storage.blob.implementation.models.ContainerGetAccountInfoHeade
 import com.azure.storage.blob.implementation.models.ContainerGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
+import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
@@ -88,6 +91,8 @@ public final class BlobContainerAsyncClient {
     private final String containerName;
     private final BlobServiceVersion serviceVersion;
     private final CpkInfo customerProvidedKey; // only used to pass down to blob clients
+    private final EncryptionScope encryptionScope; // only used to pass down to blob clients
+    private final BlobContainerEncryptionScope blobContainerEncryptionScope;
 
     /**
      * Package-private constructor for use by {@link BlobContainerClientBuilder}.
@@ -99,9 +104,12 @@ public final class BlobContainerAsyncClient {
      * @param containerName The container name.
      * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      */
     BlobContainerAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
-        String accountName, String containerName, CpkInfo customerProvidedKey) {
+        String accountName, String containerName, CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
+        BlobContainerEncryptionScope blobContainerEncryptionScope) {
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -112,6 +120,8 @@ public final class BlobContainerAsyncClient {
         this.accountName = accountName;
         this.containerName = containerName;
         this.customerProvidedKey = customerProvidedKey;
+        this.encryptionScope = encryptionScope;
+        this.blobContainerEncryptionScope = blobContainerEncryptionScope;
     }
 
     /**
@@ -148,7 +158,7 @@ public final class BlobContainerAsyncClient {
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
         return new BlobAsyncClient(getHttpPipeline(), StorageImplUtils.appendToUrlPath(getBlobContainerUrl(),
             Utility.urlEncode(Utility.urlDecode(blobName))).toString(), getServiceVersion(), getAccountName(),
-            getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey());
+            getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey(), encryptionScope);
     }
 
     /**
@@ -208,6 +218,18 @@ public final class BlobContainerAsyncClient {
      */
     public CpkInfo getCustomerProvidedKey() {
         return customerProvidedKey;
+    }
+
+    /**
+     * Gets the {@link EncryptionScope} used to encrypt this blob's content on the server.
+     *
+     * @return the encryption scope used for encryption.
+     */
+    public String getEncryptionScope() {
+        if (encryptionScope == null) {
+            return null;
+        }
+        return encryptionScope.getEncryptionScope();
     }
 
     /**
@@ -304,7 +326,7 @@ public final class BlobContainerAsyncClient {
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Context context) {
         return this.azureBlobStorage.containers().createWithRestResponseAsync(
-            null, null, metadata, accessType, null, context)
+            null, null, metadata, accessType, null, blobContainerEncryptionScope, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -410,7 +432,8 @@ public final class BlobContainerAsyncClient {
                 ContainerGetPropertiesHeaders hd = rb.getDeserializedHeaders();
                 BlobContainerProperties properties = new BlobContainerProperties(hd.getMetadata(), hd.getETag(),
                     hd.getLastModified(), hd.getLeaseDuration(), hd.getLeaseState(), hd.getLeaseStatus(),
-                    hd.getBlobPublicAccess(), hd.isHasImmutabilityPolicy(), hd.isHasLegalHold());
+                    hd.getBlobPublicAccess(), hd.isHasImmutabilityPolicy(), hd.isHasLegalHold(),
+                    hd.getDefaultEncryptionScope(), hd.isDenyEncryptionScopeOverride());
                 return new SimpleResponse<>(rb, properties);
             });
     }
@@ -762,9 +785,12 @@ public final class BlobContainerAsyncClient {
         Duration timeout) {
         options = options == null ? new ListBlobsOptions() : options;
 
+        ArrayList<ListBlobsIncludeItem> include =
+            options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
+
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.containers().listBlobFlatSegmentWithRestResponseAsync(null, options.getPrefix(),
-                marker, options.getMaxResultsPerPage(), options.getDetails().toList(),
+                marker, options.getMaxResultsPerPage(), include,
                 null, null, Context.NONE), timeout);
     }
 
@@ -890,9 +916,12 @@ public final class BlobContainerAsyncClient {
                 new UnsupportedOperationException("Including snapshots in a hierarchical listing is not supported."));
         }
 
+        ArrayList<ListBlobsIncludeItem> include =
+            options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
+
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.containers().listBlobHierarchySegmentWithRestResponseAsync(null, delimiter,
-                options.getPrefix(), marker, options.getMaxResultsPerPage(), options.getDetails().toList(), null, null,
+                options.getPrefix(), marker, options.getMaxResultsPerPage(), include, null, null,
                 Context.NONE),
             timeout);
     }

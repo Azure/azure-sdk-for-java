@@ -188,6 +188,10 @@ public class AuthorizationChallengeHandler {
             Map<String, String> challenge = new HashMap<>(lastChallenge.get());
             String algorithm = challenge.get(ALGORITHM);
 
+            if (algorithm == null) {
+                algorithm = MD5;
+            }
+
             return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entityBodySupplier,
                 getDigestFunction(algorithm));
         } else if (BASIC.equals(pipeliningType)) {
@@ -446,12 +450,7 @@ public class AuthorizationChallengeHandler {
             String algorithmHeader = headers.get(ALGORITHM);
 
             // RFC7616 specifies that is the "algorithm" header is null it defaults to MD5.
-            if (algorithmHeader == null) {
-                headers.put(ALGORITHM, MD5);
-                return MD5;
-            } else {
-                return algorithmHeader.toUpperCase(Locale.ROOT);
-            }
+            return (algorithmHeader == null) ? MD5 : algorithmHeader.toUpperCase(Locale.ROOT);
         }));
     }
 

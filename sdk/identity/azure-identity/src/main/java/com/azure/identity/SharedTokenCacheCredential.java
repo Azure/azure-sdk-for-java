@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 public class SharedTokenCacheCredential implements TokenCredential {
     private final String username;
     private final String clientId;
+    private final String tenantId;
+    private final IdentityClientOptions options;
 
     private PublicClientApplication pubClient = null;
 
@@ -41,7 +43,8 @@ public class SharedTokenCacheCredential implements TokenCredential {
      * @param clientId the client ID of the application
      * @param identityClientOptions the options for configuring the identity client
      */
-    SharedTokenCacheCredential(String username, String clientId, IdentityClientOptions identityClientOptions) {
+    SharedTokenCacheCredential(String username, String clientId, String tenantId,
+                               IdentityClientOptions identityClientOptions) {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
         if (username == null) {
@@ -49,8 +52,18 @@ public class SharedTokenCacheCredential implements TokenCredential {
         } else {
             this.username = username;
         }
-
-        this.clientId = clientId;
+        if (clientId == null) {
+            this.clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        } else {
+            this.clientId = clientId;
+        }
+        if (tenantId == null) {
+            this.tenantId = configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
+                    ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : "common";
+        } else {
+            this.tenantId = tenantId;
+        }
+        this.options = identityClientOptions;
     }
 
     /**
@@ -58,11 +71,13 @@ public class SharedTokenCacheCredential implements TokenCredential {
      * */
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
+        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId + "/";
         // Initialize here so that the constructor doesn't throw
         if (pubClient == null) {
             try {
                 PersistentTokenCacheAccessAspect accessAspect = new PersistentTokenCacheAccessAspect();
                 pubClient = PublicClientApplication.builder(this.clientId)
+                    .authority(authorityUrl)
                     .setTokenCacheAccessAspect(accessAspect)
                     .build();
             } catch (Exception e) {
@@ -90,14 +105,14 @@ public class SharedTokenCacheCredential implements TokenCredential {
                             + " To fix, authenticate through tooling supporting azure developer sign on."));
                     } else {
                         return Mono.error(new RuntimeException(String.format("User account '%s' was not found in the "
-                            + "shared token cache. Discovered Accounts: [ '%s' ]", username, accounts.values().stream()
-                            .map(IAccount::username).collect(Collectors.joining(", ")))));
+                            + "shared token cache. Discovered Accounts: [ '%s' ]", username, set.stream()
+                            .map(IAccount::username).distinct().collect(Collectors.joining(", ")))));
                     }
                 } else if (accounts.size() > 1) {
                     if (username == null) {
                         return Mono.error(new RuntimeException("Multiple accounts were discovered in the shared token "
-                            + "cache. To fix, set the AZURE_USERNAME environment variable to the preferred username, "
-                            + "or specify it when constructing SharedTokenCacheCredential."));
+                            + "cache. To fix, set the AZURE_USERNAME and AZURE_TENANT_ID environment variable to the "
+                            + "preferred username, or specify it when constructing SharedTokenCacheCredential."));
                     } else {
                         return Mono.error(new RuntimeException("Multiple entries for the user account " + username
                             + " were found in the shared token cache. This is not currently supported by the"
@@ -109,7 +124,9 @@ public class SharedTokenCacheCredential implements TokenCredential {
 
                 // if it does, then request the token
                 SilentParameters params = SilentParameters.builder(
-                    new HashSet<>(request.getScopes()), requestedAccount).build();
+                        new HashSet<>(request.getScopes()), requestedAccount)
+                    .authorityUrl(authorityUrl)
+                    .build();
 
                 CompletableFuture<IAuthenticationResult> future;
                 try {

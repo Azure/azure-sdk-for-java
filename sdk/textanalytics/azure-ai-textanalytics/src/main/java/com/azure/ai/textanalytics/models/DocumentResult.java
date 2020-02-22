@@ -21,7 +21,7 @@ public class DocumentResult {
 
     /**
      * Create a {@code DocumentResult} model that maintains document id, information about the document payload,
-     * and document error
+     * and document error.
      *
      * @param id unique, non-empty document identifier
      * @param textDocumentStatistics text document statistics
@@ -35,7 +35,7 @@ public class DocumentResult {
     }
 
     /**
-     * Get the document id
+     * Get the document id.
      *
      * @return the document id
      */
@@ -44,7 +44,7 @@ public class DocumentResult {
     }
 
     /**
-     * Get the statistics of the text document
+     * Get the statistics of the text document.
      *
      * @return the {@link TextDocumentStatistics} statistics of the text document
      */
@@ -54,7 +54,7 @@ public class DocumentResult {
     }
 
     /**
-     * Get the error of text document
+     * Get the error of text document.
      *
      * @return the error of text document
      */
@@ -63,7 +63,7 @@ public class DocumentResult {
     }
 
     /**
-     * Get the boolean value indicates if the document result is error or not
+     * Get the boolean value indicates if the document result is error or not.
      *
      * @return A boolean indicates if the document result is error or not
      */

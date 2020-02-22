@@ -8,6 +8,7 @@ omitted_paths:
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"
   - eng/*
+  - common/smoke-tests/*
   - samples/*
 language: java
 root_check_enabled: True
@@ -48,7 +49,6 @@ known_presence_issues:
   - ['sdk/core/azure-core', '#2847']
   - ['sdk/core/azure-core-auth', '#2847']
   - ['sdk/core/azure-core-management', '#2847']
-  - ['sdk/cosmos/microsoft-azure-cosmos', '#2847']
   - ['sdk/e2e', '#2847']
   - ['sdk/eventhubs/microsoft-azure-eventhubs-extensions', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault', '#2847']
@@ -87,7 +87,8 @@ known_presence_issues:
   - ['sdk/core/azure-core-http-okhttp/CHANGELOG.md', '#2847']
   - ['sdk/core/azure-core-management/CHANGELOG.md', '#2847']
   - ['sdk/core/azure-core-test/CHANGELOG.md', '#2847']
-  - ['sdk/cosmos/microsoft-azure-cosmos/CHANGELOG.md', '#2847']
+  - ['sdk/cosmos/azure-cosmos-examples/CHANGELOG.md', '#2847']
+  - ['sdk/cosmos/azure-cosmos-benchmark/CHANGELOG.md', '#2847']
   - ['sdk/cosmos/CHANGELOG.md', '#2847']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/CHANGELOG.md', '#2847']
   - ['sdk/eventhubs/microsoft-azure-eventhubs/CHANGELOG.md', '#2847']
@@ -116,11 +117,13 @@ known_content_issues:
   - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/README.md', '#3113']
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/README.md', '#3113']
   - ['sdk/batch/microsoft-azure-batch/README.md', '#3113']
+  - ['sdk/boms/azure-sdk-bom/README.md', '#3113']
   - ['sdk/core/README.md', '#3113']
   - ['sdk/cosmos/changelog/README.md', '#3113']
   - ['sdk/cosmos/faq/README.md', '#3113']
-  - ['sdk/cosmos/microsoft-azure-cosmos-benchmark/README.md', '#3113']
-  - ['sdk/cosmos/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-benchmark/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-examples/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos/README.md', '#3113']
   - ['sdk/e2e/README.md', '#3113']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/README.md', '#3113']
   - ['sdk/eventhubs/microsoft-azure-eventhubs-eph/README.md', '#3113']
@@ -140,6 +143,8 @@ known_content_issues:
   - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
   - ['sdk/storage/azure-storage-file-share/swagger/README.md','has other required sections']
+  - ['sdk/search/azure-search/src/test/README.md', '#3113']
+  - ['sdk/search/open-api/readme.md', '#3113']
 
 package_indexing_exclusion_list:
   - azure-loganalytics-sample
