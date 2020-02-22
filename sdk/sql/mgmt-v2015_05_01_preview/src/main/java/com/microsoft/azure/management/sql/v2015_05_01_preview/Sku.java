@@ -11,25 +11,23 @@ package com.microsoft.azure.management.sql.v2015_05_01_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The resource model definition representing SKU.
+ * An ARM Resource SKU.
  */
 public class Sku {
     /**
-     * The name of the SKU. Ex - P3. It is typically a letter+number code.
+     * The name of the SKU, typically, a letter + Number code, e.g. P3.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
-     * This field is required to be implemented by the Resource Provider if the
-     * service has more than one tier, but is not required on a PUT.
+     * The tier or edition of the particular SKU, e.g. Basic, Premium.
      */
     @JsonProperty(value = "tier")
     private String tier;
 
     /**
-     * The SKU size. When the name field is the combination of tier and some
-     * other value, this would be the standalone code.
+     * Size of the particular SKU.
      */
     @JsonProperty(value = "size")
     private String size;
@@ -42,15 +40,13 @@ public class Sku {
     private String family;
 
     /**
-     * If the SKU supports scale out/in then the capacity integer should be
-     * included. If scale out/in is not possible for the resource this may be
-     * omitted.
+     * Capacity of the particular SKU.
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /**
-     * Get the name of the SKU. Ex - P3. It is typically a letter+number code.
+     * Get the name of the SKU, typically, a letter + Number code, e.g. P3.
      *
      * @return the name value
      */
@@ -59,7 +55,7 @@ public class Sku {
     }
 
     /**
-     * Set the name of the SKU. Ex - P3. It is typically a letter+number code.
+     * Set the name of the SKU, typically, a letter + Number code, e.g. P3.
      *
      * @param name the name value to set
      * @return the Sku object itself.
@@ -70,7 +66,7 @@ public class Sku {
     }
 
     /**
-     * Get this field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
+     * Get the tier or edition of the particular SKU, e.g. Basic, Premium.
      *
      * @return the tier value
      */
@@ -79,7 +75,7 @@ public class Sku {
     }
 
     /**
-     * Set this field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required on a PUT.
+     * Set the tier or edition of the particular SKU, e.g. Basic, Premium.
      *
      * @param tier the tier value to set
      * @return the Sku object itself.
@@ -90,7 +86,7 @@ public class Sku {
     }
 
     /**
-     * Get the SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+     * Get size of the particular SKU.
      *
      * @return the size value
      */
@@ -99,7 +95,7 @@ public class Sku {
     }
 
     /**
-     * Set the SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+     * Set size of the particular SKU.
      *
      * @param size the size value to set
      * @return the Sku object itself.
@@ -130,7 +126,7 @@ public class Sku {
     }
 
     /**
-     * Get if the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
+     * Get capacity of the particular SKU.
      *
      * @return the capacity value
      */
@@ -139,7 +135,7 @@ public class Sku {
     }
 
     /**
-     * Set if the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the resource this may be omitted.
+     * Set capacity of the particular SKU.
      *
      * @param capacity the capacity value to set
      * @return the Sku object itself.
