@@ -127,7 +127,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
         def rootName = fs.getRootDirectories().last().toString()
-        def containerName = rootName.substring(0, rootName.length() - 1)
+        def containerName = rootToContainer(rootName)
         def parent = ""
         for (int i = 0; i < depth; i++) {
             parent += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
@@ -314,7 +314,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
         def rootName = fs.getRootDirectories().last().toString()
-        def containerName = rootName.substring(0, rootName.length() - 1)
+        def containerName = rootToContainer(rootName)
         def sourceName = generateBlobName()
         def sourcePath = fs.getPath(rootName, sourceName)
         def destName = generateBlobName()
@@ -390,7 +390,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
         def rootName = fs.getRootDirectories().last().toString()
-        def containerName = rootName.substring(0, rootName.length() - 1)
+        def containerName = rootToContainer(rootName)
         def sourceName = generateBlobName()
         def sourcePath = fs.getPath(rootName, sourceName)
         def destName = generateBlobName()
@@ -431,14 +431,14 @@ class AzureFileSystemProviderSpec extends APISpec {
     }
 
     @Unroll
-    def "FileSystemProvider non empty dest"() {
+    def "FileSystemProvider copy non empty dest"() {
         setup:
         def fs = createFS(config)
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
         def rootName = fs.getRootDirectories().last().toString()
-        def containerName = rootName.substring(0, rootName.length() - 1)
+        def containerName = rootToContainer(rootName)
         def sourceName = generateBlobName()
         def sourcePath = fs.getPath(rootName, sourceName)
         def destName = generateBlobName()
@@ -475,7 +475,7 @@ class AzureFileSystemProviderSpec extends APISpec {
     }
 
     @Unroll
-    def "FileSystemProvider replace existing fail"() {
+    def "FileSystemProvider copy replace existing fail"() {
         // The success case is tested by the "copy destination" test.
         // Testing replacing a virtual directory is in the "non empty dest" test as there can be no empty virtual dir.
         setup:
@@ -484,7 +484,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
         def rootName = fs.getRootDirectories().last().toString()
-        def containerName = rootName.substring(0, rootName.length() - 1)
+        def containerName = rootToContainer(rootName)
         def sourceName = generateBlobName()
         def sourcePath = fs.getPath(rootName, sourceName)
         def destName = generateBlobName()
@@ -558,7 +558,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
         def rootName = fs.getRootDirectories().last().toString()
-        def containerName = rootName.substring(0, rootName.length() - 1)
+        def containerName = rootToContainer(rootName)
         def sourceParent = ""
         for (int i = 0; i < sourceDepth; i++) {
             sourceParent += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
@@ -615,7 +615,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
         def rootName = fs.getRootDirectories().last().toString()
-        def containerName = rootName.substring(0, rootName.length() - 1)
+        def containerName = rootToContainer(rootName)
         def sourceName = generateBlobName()
         def sourcePath = fs.getPath(rootName, sourceName)
         def destName = generateBlobName() + fs.getSeparator() + generateBlobName()
@@ -638,7 +638,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         !destinationClient.exists()
     }
 
-    def "AzureFileSystemProvider copy source does not exist"() {
+    def "FileSystemProvider copy source does not exist"() {
         setup:
         def fs = createFS(config)
 
@@ -657,7 +657,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         thrown(IOException)
     }
 
-    def "AzureFileSystemProvider copy no root dir"() {
+    def "FileSystemProvider copy no root dir"() {
         setup:
         def fs = createFS(config)
 
@@ -707,8 +707,8 @@ class AzureFileSystemProviderSpec extends APISpec {
         // Generate resource names.
         def sourceRootName = fs.getRootDirectories().last().toString()
         def destRootName = fs.getRootDirectories().first().toString()
-        def sourceContainerName = sourceRootName.substring(0, sourceRootName.length() - 1)
-        def destContainerName = destRootName.substring(0, sourceRootName.length() - 1)
+        def sourceContainerName = rootToContainer(sourceRootName)
+        def destContainerName = rootToContainer(destRootName)
         def sourceName = generateBlobName()
         def sourcePath = fs.getPath(sourceRootName, sourceName)
         def destName = generateBlobName()
@@ -731,18 +731,6 @@ class AzureFileSystemProviderSpec extends APISpec {
         destinationClient.exists()
     }
 
-    // -file, dir (virtual and concrete, empty and non-empty) source,
-    // -file, dir (virtual and concrete, empty and non-empty), dest. Nothing at dest.
-    // -varying levels of depth
-    // -No parent exists at destination
-    // -No file exists at source (file, conrete dir, virtual dir)
-    // -No root directories
-    // -Equal paths is a no op (check exists and not exists)
-    // -Copy across containers
-    // -Default dir (relative path) (not necessary because we test toBlobClient)
-
-    // Directory status (different depths), directory exists, parentDirExists on non-default
-
     @Unroll
     def "FileSystemProvider directory status"() {
         setup:
@@ -753,8 +741,8 @@ class AzureFileSystemProviderSpec extends APISpec {
         // root1 will be non-default directory and root2 is default directory.
         def root1 = fs.getRootDirectories().last().toString()
         def root2 = fs.getRootDirectories().first().toString()
-        def container1 = root1.substring(0, root1.length() - 1)
-        def container2 = root2.substring(0, root1.length() - 1)
+        def container1 = rootToContainer(root1)
+        def container2 = rootToContainer(root2)
         def name1 = generateBlobName()
         def parent2 = ""
         for (int i = 0; i < 3; i++) {
@@ -796,14 +784,21 @@ class AzureFileSystemProviderSpec extends APISpec {
         expect:
         ((AzureFileSystemProvider) fs.provider()).checkDirStatus(blobClient1) == status
         ((AzureFileSystemProvider) fs.provider()).checkDirStatus(blobClient2) == status
+        if (status == DirectoryStatus.EMPTY || status == DirectoryStatus.NOT_EMPTY) {
+            assert ((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(blobClient1)
+            assert ((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(blobClient2)
+        } else {
+            assert !((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(blobClient1)
+            assert !((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(blobClient2)
+        }
 
         where:
         status                          | isVirtual
-        /*DirectoryStatus.DOES_NOT_EXIST  | false
+        DirectoryStatus.DOES_NOT_EXIST  | false
         DirectoryStatus.NOT_A_DIRECTORY | false
-        DirectoryStatus.EMPTY           | false*/
+        DirectoryStatus.EMPTY           | false
         DirectoryStatus.NOT_EMPTY       | true
-        //DirectoryStatus.NOT_EMPTY       | false
+        DirectoryStatus.NOT_EMPTY       | false
     }
 
 
@@ -855,5 +850,17 @@ class AzureFileSystemProviderSpec extends APISpec {
         expect:
         // No parent means the parent is implicitly the default root, which always exists
         ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(fs.getPath("foo"))
+
+        when: "Non-default root"
+        // Checks for a bug where we would check the wrong root container for existence on a path with depth > 1
+        blobClient.delete()
+        def rootName = fs.getRootDirectories().last().toString()
+        containerClient = primaryBlobServiceClient.getBlobContainerClient(rootToContainer(rootName))
+
+        blobClient = containerClient.getBlobClient("fizz/buzz/bazz")
+        blobClient.getAppendBlobClient().create()
+
+        then:
+        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(fs.getPath(rootName, "fizz/buzz"))
     }
 }

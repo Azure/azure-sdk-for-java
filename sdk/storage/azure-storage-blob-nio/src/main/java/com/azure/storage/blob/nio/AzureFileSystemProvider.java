@@ -320,6 +320,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     /**
      * Checks for the existence of the parent of the given path. We do not check for the actual marker blob as parents
      * need only weakly exist.
+     *
+     * If the parent is a root (container), it will be assumed to exist, so it must be validated elsewhere that the
+     * container is a legitimate root within this file system.
      */
     boolean checkParentDirectoryExists(Path path) throws IOException {
         /*
@@ -463,7 +466,15 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 + "The destination path is therefore invalid. Destination: " + destination.toString()));
         }
 
-        // Try to copy the resource at the source path.
+        /*
+        Try to copy the resource at the source path.
+
+        There is an optimization here where we try to do the copy first and only check for a virtual directory if
+        there's a 404. In the cases of files and concrete directories, this only requires one request. For virtual
+        directories, however, this requires three requests: failed copy, check status, create directory. Depending on
+        customer scenarios and how many virtual directories they copy, it could be better to check the directory status
+        first and then do a copy or createDir, which would always be two requests for all resource types.
+         */
         try {
             SyncPoller<BlobCopyInfo, Void> pollResponse =
                 destinationBlob.beginCopy(sourceBlob.getBlobUrl(), null, null, null, null, requestConditions, null);
