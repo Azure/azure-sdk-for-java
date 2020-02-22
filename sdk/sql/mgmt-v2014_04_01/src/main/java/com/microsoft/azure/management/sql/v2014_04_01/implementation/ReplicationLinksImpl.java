@@ -67,10 +67,14 @@ class ReplicationLinksImpl extends WrapperImpl<ReplicationLinksInner> implements
     public Observable<ReplicationLink> getAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
         ReplicationLinksInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName, linkId)
-        .map(new Func1<ReplicationLinkInner, ReplicationLink>() {
+        .flatMap(new Func1<ReplicationLinkInner, Observable<ReplicationLink>>() {
             @Override
-            public ReplicationLink call(ReplicationLinkInner inner) {
-                return wrapModel(inner);
+            public Observable<ReplicationLink> call(ReplicationLinkInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ReplicationLink)wrapModel(inner));
+                }
             }
        });
     }
