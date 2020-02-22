@@ -43,6 +43,12 @@
         "code": "java\\.class\\.(noLongerInheritsFromClass|nonFinalClassInheritsFromNewClass)",
         "class": "com.azure.identity.SharedTokenCacheCredentialBuilder",
         "justification": "SharedTokenCacheCredentialBuilder now inherites AadCredentialBuilderBase instead of CredentialBuilderBase thus being reported. However, AadCredentialBuilderBase also extends CredentialBuilderBase so it's not a breaking change."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(interface|enum|class) reactor\\.*",
+        "justification": "We allow reactor classes in our external APIs. This also occurs because we check transitive dependencies, so it checks reactor jars."
       }
     ]
   }
