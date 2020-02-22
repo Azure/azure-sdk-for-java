@@ -28,4 +28,15 @@ public interface DatabaseBlobAuditingPolicies extends SupportsCreating<DatabaseB
      */
     Observable<DatabaseBlobAuditingPolicy> getAsync(String resourceGroupName, String serverName, String databaseName);
 
+    /**
+     * Lists auditing settings of a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<DatabaseBlobAuditingPolicy> listByDatabaseAsync(final String resourceGroupName, final String serverName, final String databaseName);
+
 }
