@@ -9,7 +9,8 @@
             "com\\.azure\\..+\\.implementation(\\..+)?",
             "com\\.fasterxml\\.jackson\\..+",
             "reactor\\.netty\\..+",
-            "io\\.netty\\..+" ]
+            "io\\.netty\\..+"
+          ]
         }
       }
     }
