@@ -21,10 +21,16 @@ public class ImportSource {
     private String resourceId;
 
     /**
-     * The address of the source registry.
+     * The address of the source registry (e.g. 'mcr.microsoft.com').
      */
     @JsonProperty(value = "registryUri")
     private String registryUri;
+
+    /**
+     * Credentials used when importing from a registry uri.
+     */
+    @JsonProperty(value = "credentials")
+    private ImportSourceCredentials credentials;
 
     /**
      * Repository name of the source image.
@@ -58,7 +64,7 @@ public class ImportSource {
     }
 
     /**
-     * Get the address of the source registry.
+     * Get the address of the source registry (e.g. 'mcr.microsoft.com').
      *
      * @return the registryUri value
      */
@@ -67,13 +73,33 @@ public class ImportSource {
     }
 
     /**
-     * Set the address of the source registry.
+     * Set the address of the source registry (e.g. 'mcr.microsoft.com').
      *
      * @param registryUri the registryUri value to set
      * @return the ImportSource object itself.
      */
     public ImportSource withRegistryUri(String registryUri) {
         this.registryUri = registryUri;
+        return this;
+    }
+
+    /**
+     * Get credentials used when importing from a registry uri.
+     *
+     * @return the credentials value
+     */
+    public ImportSourceCredentials credentials() {
+        return this.credentials;
+    }
+
+    /**
+     * Set credentials used when importing from a registry uri.
+     *
+     * @param credentials the credentials value to set
+     * @return the ImportSource object itself.
+     */
+    public ImportSource withCredentials(ImportSourceCredentials credentials) {
+        this.credentials = credentials;
         return this;
     }
 
