@@ -163,17 +163,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         message.clear();
         return eventData;
     }
-
-    private <T> T getValue(Map<?, ?> amqpBody, String key, Class<T> clazz) {
-        if (!amqpBody.containsKey(key)) {
-            throw logger.logExceptionAsError(new AzureException(
-                String.format("AMQP body did not contain expected field '%s'.", key)));
-        }
-
-        return getValue(amqpBody.get(key), key, clazz);
-    }
-
-
+    
     @SuppressWarnings("unchecked")
     private <T> T getValue(Object value, Object key, Class<T> clazz) {
         if (value == null) {
