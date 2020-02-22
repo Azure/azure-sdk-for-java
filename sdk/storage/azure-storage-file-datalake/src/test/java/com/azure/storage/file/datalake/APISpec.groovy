@@ -62,7 +62,8 @@ class APISpec extends Specification {
 
     static int defaultDataSize = defaultData.remaining()
 
-    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
+    @Shared
+    public static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
 
     // Prefixes for blobs and containers
     String fileSystemPrefix = "jtfs" // java test file system
@@ -111,7 +112,7 @@ class APISpec extends Specification {
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
-    private TestResourceNamer resourceNamer
+    public TestResourceNamer resourceNamer
     protected String testName
     def fileSystemName
 

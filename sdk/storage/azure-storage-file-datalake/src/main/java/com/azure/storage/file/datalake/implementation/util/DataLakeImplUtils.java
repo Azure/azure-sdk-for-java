@@ -3,10 +3,12 @@
 
 package com.azure.storage.file.datalake.implementation.util;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 
+import java.util.LinkedHashMap;
 import java.util.function.Supplier;
 
 public class DataLakeImplUtils {
@@ -26,7 +28,8 @@ public class DataLakeImplUtils {
             return ex;
         } else {
             BlobStorageException exception = (BlobStorageException) ex;
-            return new DataLakeStorageException(exception.getServiceMessage(), exception.getResponse(),
+            HttpHeaders headers = exception.getResponse().getHeaders();
+            return new DataLakeStorageException(headers.getValue("x-ms-error-code"), exception.getResponse(),
                 exception.getValue());
         }
     }

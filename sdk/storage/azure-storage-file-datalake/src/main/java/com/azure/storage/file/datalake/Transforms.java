@@ -442,6 +442,6 @@ class Transforms {
         if (pr == null) {
             return null;
         }
-        return bytesTransferred -> pr.reportProgress(bytesTransferred);
+        return pr::reportProgress;
     }
 }
