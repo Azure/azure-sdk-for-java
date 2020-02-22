@@ -237,7 +237,6 @@ class FileAPITest extends APISpec {
         def e = thrown(DataLakeStorageException)
         e.getResponse().getStatusCode() == 404
         e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND.toString()
-        // message not correctly passed through - need to investigate
     }
 
     @Unroll

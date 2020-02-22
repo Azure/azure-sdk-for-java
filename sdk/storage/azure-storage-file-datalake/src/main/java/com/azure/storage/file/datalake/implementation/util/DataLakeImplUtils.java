@@ -27,8 +27,7 @@ public class DataLakeImplUtils {
             return ex;
         } else {
             BlobStorageException exception = (BlobStorageException) ex;
-            HttpHeaders headers = exception.getResponse().getHeaders();
-            return new DataLakeStorageException(headers.getValue("x-ms-error-code"), exception.getResponse(),
+            return new DataLakeStorageException(exception.getServiceMessage(), exception.getResponse(),
                 exception.getValue());
         }
     }
