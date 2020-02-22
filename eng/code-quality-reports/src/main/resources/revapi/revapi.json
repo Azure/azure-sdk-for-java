@@ -47,8 +47,20 @@
       {
         "regex": true,
         "code": "java\\.class\\.externalClassExposedInAPI",
-        "new": "(interface|enum|class) reactor\\.*",
+        "new": "(interface|enum|class) reactor\\..*",
         "justification": "We allow reactor classes in our external APIs. This also occurs because we check transitive dependencies, so it checks reactor jars."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(interface|class|enum) com\\.azure\\.core.*",
+        "justification": "azure-core classes are allowed to be exposed by dependencies using them."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "interface org\\.reactivestreams\\.(Publisher|Subscriber|Subscription).*",
+        "justification": "These classes exposed are publisher, subscriber, and Subscription."
       }
     ]
   }
