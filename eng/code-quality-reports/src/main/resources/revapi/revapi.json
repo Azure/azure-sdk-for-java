@@ -5,7 +5,7 @@
       "filter": {
         "packages": {
           "regex": true,
-          "exclude": [ "com\\.azure\\..+\\.implementation(\\..+)?" ]
+          "exclude": [ "com\\.azure\\..+\\.implementation(\\..+)?", "com\\.fasterxml\\.jackson\\..+" ]
         }
       }
     }
