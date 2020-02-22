@@ -8,7 +8,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 
-import java.util.LinkedHashMap;
 import java.util.function.Supplier;
 
 public class DataLakeImplUtils {
