@@ -36,6 +36,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.search.TestHelpers.generateIfNotChangedAccessCondition;
+import static com.azure.search.TestHelpers.getETag;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -47,11 +49,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     private SearchServiceClient client;
 
     // commonly used lambda definitions
-    private BiFunction<Index,
-        AccessOptions,
-        Index> createOrUpdateIndexFunc =
-        (Index index, AccessOptions ac) ->
-            createOrUpdateIndex(index, ac.getAccessCondition(), ac.getRequestOptions());
+    private BiFunction<Index, AccessOptions, Index> createOrUpdateIndexFunc = (Index index, AccessOptions ac) ->
+        createOrUpdateIndex(index, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Index> newIndexFunc = this::createTestIndex;
 
@@ -166,21 +165,40 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
 
     @Test
     public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
-        AccessConditionTests act = new AccessConditionTests();
+        Index indexToCreate = createTestIndex();
+        AccessOptions accessOptions = new AccessOptions(null);
 
-        act.deleteIfNotChangedWorksOnlyOnCurrentResource(deleteIndexFunc, newIndexFunc, createOrUpdateIndexFunc,
-            HOTEL_INDEX_NAME);
+        // Create the resource in the search service
+        Index originalIndex = createOrUpdateIndexFunc.apply(indexToCreate, accessOptions);
+
+        // Get the eTag for the newly created resource
+        String eTagStale = getETag(originalIndex);
+
+        // Update the resource, the eTag will be changed
+        Index updatedIndex = createOrUpdateIndexFunc.apply(originalIndex
+            .setCorsOptions(new CorsOptions().setAllowedOrigins("https://test.com/")), accessOptions);
+
+        try {
+            accessOptions = new AccessOptions(generateIfNotChangedAccessCondition(eTagStale));
+            deleteIndexFunc.accept(HOTEL_INDEX_NAME, accessOptions);
+            fail("deleteFunc should have failed due to selected AccessCondition");
+        } catch (Exception exc) {
+            assertEquals(HttpResponseException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+        }
+
+        // Get the new eTag
+        String eTagCurrent = getETag(updatedIndex);
+        accessOptions = new AccessOptions(generateIfNotChangedAccessCondition(eTagCurrent));
+
+        // Delete should succeed
+        deleteIndexFunc.accept(HOTEL_INDEX_NAME, accessOptions);
     }
 
     @Test
     public void deleteIndexIfExistsWorksOnlyWhenResourceExists() {
-        AccessConditionTests act = new AccessConditionTests();
-
-        act.deleteIfExistsWorksOnlyWhenResourceExists(
-            deleteIndexFunc,
-            createOrUpdateIndexFunc,
-            newIndexFunc,
-            HOTEL_INDEX_NAME);
+        AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteIndexFunc, createOrUpdateIndexFunc,
+            newIndexFunc, HOTEL_INDEX_NAME);
     }
 
     @Test
@@ -445,56 +463,36 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
 
     @Test
     public void createOrUpdateIndexIfNotExistsFailsOnExistingResource() {
-        AccessConditionTests act = new AccessConditionTests();
-
-        act.createOrUpdateIfNotExistsFailsOnExistingResource(
-            createOrUpdateIndexFunc,
-            newIndexFunc,
+        AccessConditionTests.createOrUpdateIfNotExistsFailsOnExistingResource(createOrUpdateIndexFunc, newIndexFunc,
             mutateIndexFunc);
     }
 
     @Test
     public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
-        AccessConditionTests act = new AccessConditionTests();
-
-        act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateIndexFunc,
-            newIndexFunc);
+        AccessConditionTests.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateIndexFunc, newIndexFunc);
     }
 
 
     @Test
     public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfExistsSucceedsOnExistingResource(
-            newIndexFunc,
-            createOrUpdateIndexFunc,
+        AccessConditionTests.updateIfExistsSucceedsOnExistingResource(newIndexFunc, createOrUpdateIndexFunc,
             mutateIndexFunc);
     }
 
     @Test
     public void createOrUpdateIndexIfExistsFailsOnNoResource() {
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfExistsFailsOnNoResource(
-            newIndexFunc,
-            createOrUpdateIndexFunc);
+        AccessConditionTests.updateIfExistsFailsOnNoResource(newIndexFunc, createOrUpdateIndexFunc);
     }
 
     @Test
     public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfNotChangedSucceedsWhenResourceUnchanged(
-            newIndexFunc,
-            createOrUpdateIndexFunc,
+        AccessConditionTests.updateIfNotChangedSucceedsWhenResourceUnchanged(newIndexFunc, createOrUpdateIndexFunc,
             mutateIndexFunc);
     }
 
     @Test
     public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfNotChangedFailsWhenResourceChanged(
-            newIndexFunc,
-            createOrUpdateIndexFunc,
+        AccessConditionTests.updateIfNotChangedFailsWhenResourceChanged(newIndexFunc, createOrUpdateIndexFunc,
             mutateIndexFunc);
     }
 

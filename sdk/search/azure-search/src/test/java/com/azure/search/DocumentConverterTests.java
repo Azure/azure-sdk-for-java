@@ -241,7 +241,8 @@ public class DocumentConverterTests {
         // With only null elements, we can't tell what type of collection it is. For backward compatibility, we assume type string.
         // This shouldn't happen in practice anyway since Azure Cognitive Search generally doesn't allow nulls in collections.
         Document expectedDoc = new Document();
-        expectedDoc.put("field", Arrays.asList(null, null));
+        List<String> emptyStringList = Arrays.asList(null, null);
+        expectedDoc.put("field", emptyStringList);
 
         Document actualDoc = deserialize(json);
         assertEquals(expectedDoc, actualDoc);

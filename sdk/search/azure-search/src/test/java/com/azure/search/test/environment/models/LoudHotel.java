@@ -12,166 +12,166 @@ import java.util.List;
 
 public class LoudHotel {
     @JsonProperty(value = "HotelId")
-    private String hotelId;
+    private String HOTELID;
 
     @JsonProperty(value = "HotelName")
-    private String hotelName;
+    private String HOTELNAME;
 
     @JsonProperty(value = "Description")
     @JsonInclude(JsonInclude.Include.ALWAYS)
-    private String description;
+    private String DESCRIPTION;
 
     @JsonProperty(value = "Description_fr")
-    private String descriptionFrench;
+    private String DESCRIPTIONFRENCH;
 
     @JsonProperty(value = "Category")
-    private String category;
+    private String CATEGORY;
 
     @JsonProperty(value = "Tags")
-    private List<String> tags;
+    private List<String> TAGS;
 
     @JsonProperty(value = "ParkingIncluded")
-    private Boolean parkingIncluded;
+    private Boolean PARKINGINCLUDED;
 
     @JsonProperty(value = "SmokingAllowed")
-    private Boolean smokingAllowed;
+    private Boolean SMOKINGALLOWED;
 
     @JsonProperty(value = "LastRenovationDate")
-    private Date lastRenovationDate;
+    private Date LASTRENOVATIONDATE;
 
     @JsonProperty(value = "Rating")
-    private Integer rating;
+    private Integer RATING;
 
     @JsonProperty(value = "Location")
     @JsonInclude(JsonInclude.Include.ALWAYS)
-    private GeoPoint location;
+    private GeoPoint LOCATION;
 
     @JsonProperty(value = "Address")
-    private HotelAddress address;
+    private HotelAddress ADDRESS;
 
     @JsonProperty(value = "Rooms")
-    private List<HotelRoom> rooms;
+    private List<HotelRoom> ROOMS;
 
     public LoudHotel() {
-        this.tags = new ArrayList<>();
-        this.rooms = new ArrayList<>();
+        this.TAGS = new ArrayList<>();
+        this.ROOMS = new ArrayList<>();
     }
 
-    public String hotelId() {
-        return this.hotelId;
+    public String HOTELID() {
+        return this.HOTELID;
     }
 
-    public LoudHotel hotelId(String hotelId) {
-        this.hotelId = hotelId;
+    public LoudHotel HOTELID(String hotelId) {
+        this.HOTELID = hotelId;
         return this;
     }
 
-    public String hotelName() {
-        return this.hotelName;
+    public String HOTELNAME() {
+        return this.HOTELNAME;
     }
 
-    public LoudHotel hotelName(String hotelName) {
-        this.hotelName = hotelName;
+    public LoudHotel HOTELNAME(String hotelName) {
+        this.HOTELNAME = hotelName;
         return this;
     }
 
-    public String description() {
-        return this.description;
+    public String DESCRIPTION() {
+        return this.DESCRIPTION;
     }
 
-    public LoudHotel description(String description) {
-        this.description = description;
+    public LoudHotel DESCRIPTION(String description) {
+        this.DESCRIPTION = description;
         return this;
     }
 
-    public String descriptionFrench() {
-        return this.descriptionFrench;
+    public String DESCRIPTIONFRENCH() {
+        return this.DESCRIPTIONFRENCH;
     }
 
-    public LoudHotel descriptionFrench(String descriptionFr) {
-        this.descriptionFrench = descriptionFr;
+    public LoudHotel DESCRIPTIONFRENCH(String descriptionFr) {
+        this.DESCRIPTIONFRENCH = descriptionFr;
         return this;
     }
 
-    public String category() {
-        return this.category;
+    public String CATEGORY() {
+        return this.CATEGORY;
     }
 
-    public LoudHotel category(String category) {
-        this.category = category;
+    public LoudHotel CATEGORY(String category) {
+        this.CATEGORY = category;
         return this;
     }
 
-    public List<String> tags() {
-        return this.tags;
+    public List<String> TAGS() {
+        return this.TAGS;
     }
 
-    public LoudHotel tags(List<String> tags) {
-        this.tags = tags;
+    public LoudHotel TAGS(List<String> tags) {
+        this.TAGS = tags;
         return this;
     }
 
 
-    public Boolean parkingIncluded() {
-        return this.parkingIncluded;
+    public Boolean PARKINGINCLUDED() {
+        return this.PARKINGINCLUDED;
     }
 
-    public LoudHotel parkingIncluded(Boolean parkingIncluded) {
-        this.parkingIncluded = parkingIncluded;
+    public LoudHotel PARKINGINCLUDED(Boolean parkingIncluded) {
+        this.PARKINGINCLUDED = parkingIncluded;
         return this;
     }
 
-    public Boolean smokingAllowed() {
-        return this.smokingAllowed;
+    public Boolean SMOKINGALLOWED() {
+        return this.SMOKINGALLOWED;
     }
 
-    public LoudHotel smokingAllowed(Boolean smokingAllowed) {
-        this.smokingAllowed = smokingAllowed;
+    public LoudHotel SMOKINGALLOWED(Boolean smokingAllowed) {
+        this.SMOKINGALLOWED = smokingAllowed;
         return this;
     }
 
-    public Date lastRenovationDate() {
-        return this.lastRenovationDate;
+    public Date LASTRENOVATIONDATE() {
+        return this.LASTRENOVATIONDATE;
     }
 
-    public LoudHotel lastRenovationDate(Date lastRenovationDate) {
-        this.lastRenovationDate = lastRenovationDate;
+    public LoudHotel LASTRENOVATIONDATE(Date lastRenovationDate) {
+        this.LASTRENOVATIONDATE = lastRenovationDate;
         return this;
     }
 
-    public Integer rating() {
-        return this.rating;
+    public Integer RATING() {
+        return this.RATING;
     }
 
-    public LoudHotel rating(Integer rating) {
-        this.rating = rating;
+    public LoudHotel RATING(Integer rating) {
+        this.RATING = rating;
         return this;
     }
 
-    public GeoPoint location() {
-        return this.location;
+    public GeoPoint LOCATION() {
+        return this.LOCATION;
     }
 
-    public LoudHotel location(GeoPoint location) {
-        this.location = location;
+    public LoudHotel LOCATION(GeoPoint location) {
+        this.LOCATION = location;
         return this;
     }
 
-    public HotelAddress address() {
-        return this.address;
+    public HotelAddress ADDRESS() {
+        return this.ADDRESS;
     }
 
-    public LoudHotel address(HotelAddress address) {
-        this.address = address;
+    public LoudHotel ADDRESS(HotelAddress address) {
+        this.ADDRESS = address;
         return this;
     }
 
-    public List<HotelRoom> rooms() {
-        return this.rooms;
+    public List<HotelRoom> ROOMS() {
+        return this.ROOMS;
     }
 
-    public LoudHotel rooms(List<HotelRoom> rooms) {
-        this.rooms = rooms;
+    public LoudHotel ROOMS(List<HotelRoom> rooms) {
+        this.ROOMS = rooms;
         return this;
     }
 }

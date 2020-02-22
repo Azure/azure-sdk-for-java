@@ -32,7 +32,7 @@ public class AccessConditionTests {
      * @param newResourceDefinition a function to generate a new resource object
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void createOrUpdateIfNotExistsFailsOnExistingResource(
+    public static <T> void createOrUpdateIfNotExistsFailsOnExistingResource(
         BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Supplier<T> newResourceDefinition,
         Function<T, T> mutateResourceDefinition) {
 
@@ -40,8 +40,7 @@ public class AccessConditionTests {
         T newResource = newResourceDefinition.get();
 
         // Create the resource in the search service
-        AccessOptions accessOptions =
-            new AccessOptions(generateIfNotExistsAccessCondition());
+        AccessOptions accessOptions = new AccessOptions(generateIfNotExistsAccessCondition());
         T createdResource = createOrUpdateDefinition.apply(newResource, accessOptions);
 
         try {
@@ -65,8 +64,8 @@ public class AccessConditionTests {
      * @param newResourceDefinition a function to generate a new resource object
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> T createOrUpdateIfNotExistsSucceedsOnNoResource(BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Supplier<T> newResourceDefinition) {
+    public static <T> T createOrUpdateIfNotExistsSucceedsOnNoResource(
+        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Supplier<T> newResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
@@ -90,12 +89,9 @@ public class AccessConditionTests {
      * @param resourceName the name of the resource
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void deleteIfExistsWorksOnlyWhenResourceExists(
-        BiConsumer<String, AccessOptions> deleteFunc,
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Supplier<T> newResourceDefinition,
-        String resourceName
-    ) {
+    public static <T> void deleteIfExistsWorksOnlyWhenResourceExists(BiConsumer<String, AccessOptions> deleteFunc,
+        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Supplier<T> newResourceDefinition,
+        String resourceName) {
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
         AccessOptions accessOptions = new AccessOptions(null);
@@ -104,8 +100,7 @@ public class AccessConditionTests {
         createOrUpdateDefinition.apply(newResource, accessOptions);
 
         // Try to delete and expect to succeed
-        accessOptions =
-            new AccessOptions(generateIfExistsAccessCondition());
+        accessOptions = new AccessOptions(generateIfExistsAccessCondition());
         deleteFunc.accept(resourceName, accessOptions);
 
         // Try to delete again and expect to fail
@@ -125,7 +120,7 @@ public class AccessConditionTests {
      * @param newResourceDefinition a function to generate a new resource object
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void deleteIfNotChangedWorksOnlyOnCurrentResource(BiConsumer<String, AccessOptions> deleteFunc,
+    public static <T> void deleteIfNotChangedWorksOnlyOnCurrentResource(BiConsumer<String, AccessOptions> deleteFunc,
         Supplier<T> newResourceDefinition, BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
         String resourceName) {
 
@@ -166,13 +161,11 @@ public class AccessConditionTests {
      * @param newResourceDefinition a function to generate a new resource object
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void updateIfExistsFailsOnNoResource(
-        Supplier<T> newResourceDefinition,
+    public static <T> void updateIfExistsFailsOnNoResource(Supplier<T> newResourceDefinition,
         BiFunction<T, AccessOptions, T> createOrUpdateDefinition) {
         T newResource = newResourceDefinition.get();
         try {
-            AccessOptions accessOptions =
-                new AccessOptions(generateIfExistsAccessCondition());
+            AccessOptions accessOptions = new AccessOptions(generateIfExistsAccessCondition());
             createOrUpdateDefinition.apply(newResource, accessOptions);
             fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
         } catch (Exception exc) {
@@ -191,17 +184,14 @@ public class AccessConditionTests {
      * @param newResourceDefinition a function to generate a new resource object
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void updateIfExistsSucceedsOnExistingResource(
-        Supplier<T> newResourceDefinition,
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Function<T, T> mutateResourceDefinition) {
+    public static <T> void updateIfExistsSucceedsOnExistingResource(Supplier<T> newResourceDefinition,
+        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
 
         // Create the resource on the search service
-        AccessOptions accessOptions =
-            new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(null);
         newResource = createOrUpdateDefinition.apply(newResource, accessOptions);
 
         // get the original eTag
@@ -229,15 +219,14 @@ public class AccessConditionTests {
      * @param newResourceDefinition a function to generate a new resource object
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void updateIfNotChangedFailsWhenResourceChanged(Supplier<T> newResourceDefinition,
+    public static <T> void updateIfNotChangedFailsWhenResourceChanged(Supplier<T> newResourceDefinition,
         BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
 
         // Create the resource on the search service
-        AccessOptions accessOptions =
-            new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(null);
         newResource = createOrUpdateDefinition.apply(newResource, accessOptions);
         String originalETag = getETag(newResource);
 
@@ -273,7 +262,7 @@ public class AccessConditionTests {
      * @param newResourceDefinition a function to generate a new resource object
      * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void updateIfNotChangedSucceedsWhenResourceUnchanged(Supplier<T> newResourceDefinition,
+    public static <T> void updateIfNotChangedSucceedsWhenResourceUnchanged(Supplier<T> newResourceDefinition,
         BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)

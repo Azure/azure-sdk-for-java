@@ -526,24 +526,24 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
         LoudHotel originalDoc = new LoudHotel()
-            .hotelId("1")
-            .hotelName("Secret Point Motel")
-            .description("The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
-            .descriptionFrench("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
-            .category("Boutique")
-            .tags(Arrays.asList("pool", "air conditioning", "concierge"))
-            .parkingIncluded(false)
-            .smokingAllowed(false)
-            .lastRenovationDate(dateFormat.parse("1970-01-18T05:00:00Z"))
-            .rating(4)
-            .location(GeoPoint.create(40.760586, -73.975403))
-            .address(new HotelAddress()
+            .HOTELID("1")
+            .HOTELNAME("Secret Point Motel")
+            .DESCRIPTION("The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
+            .DESCRIPTIONFRENCH("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .CATEGORY("Boutique")
+            .TAGS(Arrays.asList("pool", "air conditioning", "concierge"))
+            .PARKINGINCLUDED(false)
+            .SMOKINGALLOWED(false)
+            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
+            .RATING(4)
+            .LOCATION(GeoPoint.create(40.760586, -73.975403))
+            .ADDRESS(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
                 .stateProvince("NY")
                 .country("USA")
                 .postalCode("10022")
-            ).rooms(Arrays.asList(
+            ).ROOMS(Arrays.asList(
                 new HotelRoom()
                     .description("Budget Room, 1 Queen Bed (Cityside)")
                     .descriptionFr("Chambre Économique, 1 grand lit (côté ville)")
@@ -565,16 +565,16 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
             ));
 
         LoudHotel updatedDoc = new LoudHotel()
-            .hotelId("1")
-            .description(null)  // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
-            .category(null)     // This property doesn't have JsonInclude.Include.ALWAYS, so this should have no effect.
-            .tags(Arrays.asList("pool", "air conditioning"))
-            .parkingIncluded(true)
-            .lastRenovationDate(dateFormat.parse("1970-01-18T05:00:00Z"))
-            .rating(3)
-            .location(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
-            .address(new HotelAddress())
-            .rooms(Collections.singletonList(
+            .HOTELID("1")
+            .DESCRIPTION(null)  // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
+            .CATEGORY(null)     // This property doesn't have JsonInclude.Include.ALWAYS, so this should have no effect.
+            .TAGS(Arrays.asList("pool", "air conditioning"))
+            .PARKINGINCLUDED(true)
+            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
+            .RATING(3)
+            .LOCATION(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
+            .ADDRESS(new HotelAddress())
+            .ROOMS(Collections.singletonList(
                 new HotelRoom()
                     .description(null)
                     .type("Budget Room")
@@ -584,24 +584,24 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
             ));
 
         LoudHotel expectedDoc = new LoudHotel()
-            .hotelId("1")
-            .hotelName("Secret Point Motel")
-            .description(null)
-            .descriptionFrench("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
-            .category("Boutique")
-            .tags(Arrays.asList("pool", "air conditioning"))
-            .parkingIncluded(true)
-            .smokingAllowed(false)
-            .lastRenovationDate(dateFormat.parse("1970-01-18T05:00:00Z"))
-            .rating(3)
-            .location(null)
-            .address(new HotelAddress()
+            .HOTELID("1")
+            .HOTELNAME("Secret Point Motel")
+            .DESCRIPTION(null)
+            .DESCRIPTIONFRENCH("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .CATEGORY("Boutique")
+            .TAGS(Arrays.asList("pool", "air conditioning"))
+            .PARKINGINCLUDED(true)
+            .SMOKINGALLOWED(false)
+            .LASTRENOVATIONDATE(dateFormat.parse("1970-01-18T05:00:00Z"))
+            .RATING(3)
+            .LOCATION(null)
+            .ADDRESS(new HotelAddress()
                 .streetAddress("677 5th Ave")
                 .city("New York")
                 .stateProvince("NY")
                 .country("USA")
                 .postalCode("10022")
-            ).rooms(Collections.singletonList(
+            ).ROOMS(Collections.singletonList(
                 // Regardless of NullValueHandling, this should look like the merged doc with unspecified fields as null
                 // because we don't support partial updates for complex collections.
                 new HotelRoom()

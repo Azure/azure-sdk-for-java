@@ -168,48 +168,48 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
 
     @Test
     public void createOrUpdateDataSourceIfNotExistsFailsOnExistingResource() {
-        new AccessConditionTests().createOrUpdateIfNotExistsFailsOnExistingResource(createOrUpdateDataSourceFunc,
+        AccessConditionTests.createOrUpdateIfNotExistsFailsOnExistingResource(createOrUpdateDataSourceFunc,
             newDataSourceFunc, mutateDataSourceFunc);
     }
 
     @Test
     public void createOrUpdateDatasourceIfNotExistsSucceedsOnNoResource() {
-        new AccessConditionTests()
-            .createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateDataSourceFunc, newDataSourceFunc);
+        AccessConditionTests.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateDataSourceFunc,
+            newDataSourceFunc);
     }
 
     @Test
     public void deleteDataSourceIfExistsWorksOnlyWhenResourceExists() {
-        new AccessConditionTests().deleteIfExistsWorksOnlyWhenResourceExists(deleteDataSourceFunc,
+        AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteDataSourceFunc,
             createOrUpdateDataSourceFunc, newDataSourceFunc, BLOB_DATASOURCE_TEST_NAME);
     }
 
     @Test
     public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResource() {
-        new AccessConditionTests().deleteIfNotChangedWorksOnlyOnCurrentResource(deleteDataSourceFunc, newDataSourceFunc,
+        AccessConditionTests.deleteIfNotChangedWorksOnlyOnCurrentResource(deleteDataSourceFunc, newDataSourceFunc,
             createOrUpdateDataSourceFunc, BLOB_DATASOURCE_TEST_NAME);
     }
 
     @Test
     public void updateDataSourceIfExistsFailsOnNoResource() {
-        new AccessConditionTests().updateIfExistsFailsOnNoResource(newDataSourceFunc, createOrUpdateDataSourceFunc);
+        AccessConditionTests.updateIfExistsFailsOnNoResource(newDataSourceFunc, createOrUpdateDataSourceFunc);
     }
 
     @Test
     public void updateDataSourceIfExistsSucceedsOnExistingResource() {
-        new AccessConditionTests().updateIfExistsSucceedsOnExistingResource(newDataSourceFunc,
-            createOrUpdateDataSourceFunc, mutateDataSourceFunc);
+        AccessConditionTests.updateIfExistsSucceedsOnExistingResource(newDataSourceFunc, createOrUpdateDataSourceFunc,
+            mutateDataSourceFunc);
     }
 
     @Test
     public void updateDataSourceIfNotChangedFailsWhenResourceChanged() {
-        new AccessConditionTests().updateIfNotChangedFailsWhenResourceChanged(newDataSourceFunc,
-            createOrUpdateDataSourceFunc, mutateDataSourceFunc);
+        AccessConditionTests.updateIfNotChangedFailsWhenResourceChanged(newDataSourceFunc, createOrUpdateDataSourceFunc,
+            mutateDataSourceFunc);
     }
 
     @Test
     public void updateDataSourceIfNotChangedSucceedsWhenResourceUnchanged() {
-        new AccessConditionTests().updateIfNotChangedSucceedsWhenResourceUnchanged(newDataSourceFunc,
+        AccessConditionTests.updateIfNotChangedSucceedsWhenResourceUnchanged(newDataSourceFunc,
             createOrUpdateDataSourceFunc, mutateDataSourceFunc);
     }
 

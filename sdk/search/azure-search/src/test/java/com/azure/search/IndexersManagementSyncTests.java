@@ -316,11 +316,9 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void createOrUpdateIndexerIfNotExistsFailsOnExistingResource() {
         // Prepare data source and index
-        AccessConditionTests act = new AccessConditionTests();
-
         createDataSourceAndIndex();
 
-        act.createOrUpdateIfNotExistsFailsOnExistingResource(
+        AccessConditionTests.createOrUpdateIfNotExistsFailsOnExistingResource(
             createOrUpdateIndexerFunc,
             newIndexerFunc,
             mutateIndexerFunc);
@@ -524,45 +522,36 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
     @Test
     public void createOrUpdateIndexerIfNotExistsSucceedsOnNoResource() {
-        AccessConditionTests act = new AccessConditionTests();
-
         // Prepare data source and index
         createDataSourceAndIndex();
 
-        Indexer indexerResult = act.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateIndexerFunc,
-            newIndexerFunc);
+        Indexer indexerResult = AccessConditionTests
+            .createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateIndexerFunc, newIndexerFunc);
 
         assertFalse(CoreUtils.isNullOrEmpty(indexerResult.getETag()));
     }
 
     @Test
     public void deleteIndexerIfExistsWorksOnlyWhenResourceExists() {
-        AccessConditionTests act = new AccessConditionTests();
-
         // Prepare data source and index
         createDataSourceAndIndex();
 
-        String indexerName = "name";
-        act.deleteIfExistsWorksOnlyWhenResourceExists(deleteIndexerFunc, createOrUpdateIndexerFunc, newIndexerFunc,
-            indexerName);
+        AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteIndexerFunc, createOrUpdateIndexerFunc,
+            newIndexerFunc, "name");
     }
 
     @Test
     public void deleteIndexerIfNotChangedWorksOnlyOnCurrentResource() {
-        AccessConditionTests act = new AccessConditionTests();
-
         // Prepare data source and index
         createDataSourceAndIndex();
 
-        String indexerName = "name";
-        act.deleteIfNotChangedWorksOnlyOnCurrentResource(deleteIndexerFunc, newIndexerFunc, createOrUpdateIndexerFunc,
-            indexerName);
+        AccessConditionTests.deleteIfNotChangedWorksOnlyOnCurrentResource(deleteIndexerFunc, newIndexerFunc,
+            createOrUpdateIndexerFunc, "name");
     }
 
     @Test
     public void updateIndexerIfExistsFailsOnNoResource() {
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfExistsFailsOnNoResource(newIndexerFunc, createOrUpdateIndexerFunc);
+        AccessConditionTests.updateIfExistsFailsOnNoResource(newIndexerFunc, createOrUpdateIndexerFunc);
     }
 
     @Test
@@ -570,8 +559,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         // Prepare datasource and index
         createDataSourceAndIndex();
 
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfExistsSucceedsOnExistingResource(newIndexerFunc, createOrUpdateIndexerFunc, mutateIndexerFunc);
+        AccessConditionTests.updateIfExistsSucceedsOnExistingResource(newIndexerFunc, createOrUpdateIndexerFunc,
+            mutateIndexerFunc);
     }
 
     @Test
@@ -579,8 +568,8 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         // Prepare datasource and index
         createDataSourceAndIndex();
 
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfNotChangedFailsWhenResourceChanged(newIndexerFunc, createOrUpdateIndexerFunc, mutateIndexerFunc);
+        AccessConditionTests.updateIfNotChangedFailsWhenResourceChanged(newIndexerFunc, createOrUpdateIndexerFunc,
+            mutateIndexerFunc);
     }
 
     @Test
@@ -588,8 +577,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         // Prepare datasource and index
         createDataSourceAndIndex();
 
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfNotChangedSucceedsWhenResourceUnchanged(newIndexerFunc, createOrUpdateIndexerFunc,
+        AccessConditionTests.updateIfNotChangedSucceedsWhenResourceUnchanged(newIndexerFunc, createOrUpdateIndexerFunc,
             mutateIndexerFunc);
     }
 

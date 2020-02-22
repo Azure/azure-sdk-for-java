@@ -466,78 +466,48 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
 
     @Test
     public void createOrUpdateSkillsetIfNotExistsFailsOnExistingResource() {
-        AccessConditionTests act = new AccessConditionTests();
-
-        act.createOrUpdateIfNotExistsFailsOnExistingResource(
-            createOrUpdateSkillsetFunc,
-            newSkillsetFunc,
-            mutateSkillsetFunc);
+        AccessConditionTests.createOrUpdateIfNotExistsFailsOnExistingResource(createOrUpdateSkillsetFunc,
+            newSkillsetFunc, mutateSkillsetFunc);
     }
 
     @Test
     public void createOrUpdateSkillsetIfNotExistsSucceedsOnNoResource() {
-        AccessConditionTests act = new AccessConditionTests();
-
-        act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateSkillsetFunc,
-            newSkillsetFunc);
+        AccessConditionTests.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateSkillsetFunc, newSkillsetFunc);
     }
 
     @Test
     public void createOrUpdateSkillsetIfExistsSucceedsOnExistingResource() {
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfExistsSucceedsOnExistingResource(
-            newSkillsetFunc,
-            createOrUpdateSkillsetFunc,
+        AccessConditionTests.updateIfExistsSucceedsOnExistingResource(newSkillsetFunc, createOrUpdateSkillsetFunc,
             mutateSkillsetFunc);
     }
 
     @Test
     public void createOrUpdateSkillsetIfExistsFailsOnNoResource() {
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfExistsFailsOnNoResource(
-            newSkillsetFunc,
-            createOrUpdateSkillsetFunc);
+        AccessConditionTests.updateIfExistsFailsOnNoResource(newSkillsetFunc, createOrUpdateSkillsetFunc);
     }
 
     @Test
     public void createOrUpdateSkillsetIfNotChangedSucceedsWhenResourceUnchanged() {
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfNotChangedSucceedsWhenResourceUnchanged(
-            newSkillsetFunc,
-            createOrUpdateSkillsetFunc,
-            mutateSkillsetFunc);
+        AccessConditionTests.updateIfNotChangedSucceedsWhenResourceUnchanged(newSkillsetFunc,
+            createOrUpdateSkillsetFunc, mutateSkillsetFunc);
     }
 
     @Test
     public void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChanged() {
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfNotChangedFailsWhenResourceChanged(
-            newSkillsetFunc,
-            createOrUpdateSkillsetFunc,
+        AccessConditionTests.updateIfNotChangedFailsWhenResourceChanged(newSkillsetFunc, createOrUpdateSkillsetFunc,
             mutateSkillsetFunc);
     }
 
     @Test
     public void deleteSkillsetIfNotChangedWorksOnlyOnCurrentResource() {
-        AccessConditionTests act = new AccessConditionTests();
-
-        act.deleteIfNotChangedWorksOnlyOnCurrentResource(
-            deleteSkillsetFunc,
-            newSkillsetFunc,
-            createOrUpdateSkillsetFunc,
-            OCR_SKILLSET_NAME);
+        AccessConditionTests.deleteIfNotChangedWorksOnlyOnCurrentResource(deleteSkillsetFunc, newSkillsetFunc,
+            createOrUpdateSkillsetFunc, OCR_SKILLSET_NAME);
     }
 
     @Test
     public void deleteSkillsetIfExistsWorksOnlyWhenResourceExists() {
-        AccessConditionTests act = new AccessConditionTests();
-
-        act.deleteIfExistsWorksOnlyWhenResourceExists(
-            deleteSkillsetFunc,
-            createOrUpdateSkillsetFunc,
-            newSkillsetFunc,
-            OCR_SKILLSET_NAME);
+        AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteSkillsetFunc, createOrUpdateSkillsetFunc,
+            newSkillsetFunc, OCR_SKILLSET_NAME);
     }
 
     private InputFieldMappingEntry simpleInputFieldMappingEntry(String name, String source) {
