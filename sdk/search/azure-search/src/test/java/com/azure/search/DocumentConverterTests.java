@@ -56,7 +56,7 @@ public class DocumentConverterTests {
     @Test
     public void annotationsAreExcludedFromDocument() {
         String json = "{ \"@search.score\": 3.14, \"field1\": \"value1\", \"field2\": 123, \"@search.someOtherAnnotation\": { \"a\": \"b\" }, \"field3\": 2.78 }";
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("field1", "value1");
                 put("field2", 123);
@@ -71,12 +71,12 @@ public class DocumentConverterTests {
     @Test
     public void canReadNullValues() {
         String json = "{\"field1\": null,\"field2\": [ \"hello\", null ], \"field3\": [ null, 123, null ], \"field4\": [ null, { \"name\": \"Bob\" } ]}";
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("field1", null);
                 put("field2", Arrays.asList("hello", null));
                 put("field3", Arrays.asList(null, 123, null));
-                put("field4", Arrays.asList(null, new Document(new HashMap<>() {
+                put("field4", Arrays.asList(null, new Document(new HashMap<String, Object>() {
                     {
                         put("name", "Bob");
                     }
@@ -105,7 +105,7 @@ public class DocumentConverterTests {
             String jsonValue = entry.getKey();
             Object expectedObject = entry.getValue();
             String json = "{\"field\" :".concat(jsonValue).concat("}");
-            Document expectedDoc = new Document(new HashMap<>() {
+            Document expectedDoc = new Document(new HashMap<String, Object>() {
                 {
                     put("field", expectedObject);
                 }
@@ -132,7 +132,7 @@ public class DocumentConverterTests {
             String jsonArray = entry.getKey();
             Object expectedArray = entry.getValue();
             String json = "{\"field\" :".concat(jsonArray).concat("}");
-            Document expectedDoc = new Document(new HashMap<>() {
+            Document expectedDoc = new Document(new HashMap<String, Object>() {
                 {
                     put("field", expectedArray);
                 }
@@ -147,7 +147,7 @@ public class DocumentConverterTests {
     @Test
     public void canReadGeoPoint() {
         String json = "{ \"field\": { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581] } }";
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("field", GeoPoint.create(47.678581, -122.131577));
             }
@@ -160,7 +160,7 @@ public class DocumentConverterTests {
     @Test
     public void canReadGeoPointCollection() {
         String json = "{ \"field\": [{ \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581] }, { \"type\": \"Point\", \"coordinates\": [-121, 49] }]}";
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("field", Arrays.asList(
                     GeoPoint.create(47.678581, -122.131577),
@@ -176,10 +176,10 @@ public class DocumentConverterTests {
     @Test
     public void canReadComplexObject() {
         String json = "{\"name\" : \"Boots\", \"details\": {\"sku\" : 123, \"seasons\" : [\"fall\", \"winter\"]}}";
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("name", "Boots");
-                put("details", new Document(new HashMap<>() {
+                put("details", new Document(new HashMap<String, Object>() {
                     {
                         put("sku", 123);
                         put("seasons", Arrays.asList("fall", "winter"));
@@ -195,20 +195,20 @@ public class DocumentConverterTests {
     @Test
     public void canReadComplexCollection() {
         String json = "{\"stores\" : [{\"name\" : \"North\", \"address\" : {\"city\" : \"Vancouver\", \"country\": \"Canada\"}, \"location\": {\"type\" : \"Point\", \"coordinates\": [-121, 49]}},{\"name\" : \"South\", \"address\" : {\"city\": \"Seattle\", \"country\" : \"USA\"}, \"location\" : {\"type\" : \"Point\", \"coordinates\": [-122.5, 47.6]}}]}";
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("stores", Arrays.asList(
-                    new Document(new HashMap<>() {
+                    new Document(new HashMap<String, Object>() {
                         {
                             put("name", "North");
-                            put("address", new Document(new HashMap<>() {
+                            put("address", new Document(new HashMap<String, Object>() {
                                     {
                                         put("city", "Vancouver");
                                         put("country", "Canada");
                                     }
                                 }
                             ));
-                            put("location", new Document(new HashMap<>() {
+                            put("location", new Document(new HashMap<String, Object>() {
                                     {
                                         put("type", "Point");
                                         put("coordinates", Arrays.asList(-121, 49));
@@ -217,16 +217,16 @@ public class DocumentConverterTests {
                             ));
                         }
                     }),
-                    new Document(new HashMap<>() {
+                    new Document(new HashMap<String, Object>() {
                         {
                             put("name", "South");
-                            put("address", new Document(new HashMap<>() {
+                            put("address", new Document(new HashMap<String, Object>() {
                                 {
                                     put("city", "Seattle");
                                     put("country", "USA");
                                 }
                             }));
-                            put("location", new Document(new HashMap<>() {
+                            put("location", new Document(new HashMap<String, Object>() {
                                 {
                                     put("type", "Point");
                                     put("coordinates", Arrays.asList(-122.5, 47.6));
@@ -245,7 +245,7 @@ public class DocumentConverterTests {
     @Test
     public void dateTimeStringsAreReadAsDateTime() {
         String json = "{\"field1\":\"".concat(testDateString).concat("\",\"field2\" : [\"").concat(testDateString).concat("\", \"").concat(testDateString).concat("\"]}");
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("field1", testDate);
                 put("field2", Arrays.asList(testDate, testDate));
@@ -259,13 +259,13 @@ public class DocumentConverterTests {
     @Test
     public void specialDoublesAreReadAsStrings() {
         String json = "{\"field1\" : \"NaN\", \"field2\": \"INF\", \"field3\": \"-INF\", \"field4\": [\"NaN\", \"INF\", \"-INF\"], \"field5\": {\"value\":\"-INF\"}}";
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("field1", "NaN");
                 put("field2", "INF");
                 put("field3", "-INF");
                 put("field4", Arrays.asList("NaN", "INF", "-INF"));
-                put("field5", new Document(new HashMap<>() {
+                put("field5", new Document(new HashMap<String, Object>() {
                     {
                         put("value", "-INF");
                     }
@@ -280,7 +280,7 @@ public class DocumentConverterTests {
     @Test
     public void dateTimeStringsInArraysAreReadAsDateTime() {
         String json = "{ \"field\": [ \"hello\", \"".concat(testDateString).concat("\", \"123\" ] }}");
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("field", Arrays.asList("hello", testDate, "123"));
             }

@@ -106,7 +106,7 @@ public class LookupSyncTests extends LookupTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("HotelId", "1");
                 put("HotelName", null);
@@ -117,7 +117,7 @@ public class LookupSyncTests extends LookupTestBase {
                 put("Location", null);
                 put("Address", null);
                 put("Rooms", Collections.singletonList(
-                    new Document(new HashMap<>() {
+                    new Document(new HashMap<String, Object>() {
                         {
                             put("BaseRate", null);
                             put("BedOptions", null);
@@ -144,17 +144,17 @@ public class LookupSyncTests extends LookupTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        Document originalDoc = new Document(new HashMap<>() {
+        Document originalDoc = new Document(new HashMap<String, Object>() {
             {
                 put("HotelId", "1");
                 put("Address", new Document());
             }
         });
 
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("HotelId", "1");
-                put("Address", new Document(new HashMap<>() {
+                put("Address", new Document(new HashMap<String, Object>() {
                     {
                         put("StreetAddress", null);
                         put("City", null);
@@ -181,7 +181,7 @@ public class LookupSyncTests extends LookupTestBase {
 
         String docKey = "3";
 
-        Document originalDoc = new Document(new HashMap<>() {
+        Document originalDoc = new Document(new HashMap<String, Object>() {
             {
                 put("Key", docKey);
                 put("Dates", new Object[]{});
@@ -194,7 +194,7 @@ public class LookupSyncTests extends LookupTestBase {
             }
         });
 
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("Key", docKey);
                 put("Doubles", Collections.emptyList());
@@ -218,12 +218,12 @@ public class LookupSyncTests extends LookupTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        Document originalDoc = new Document(new HashMap<>() {
+        Document originalDoc = new Document(new HashMap<String, Object>() {
             {
                 put("HotelId", "1");
                 put("Rooms", Arrays.asList(
                     new Document(),
-                    new Document(new HashMap<>() {
+                    new Document(new HashMap<String, Object>() {
                         {
                             put("BaseRate", null);
                             put("BedOptions", null);
@@ -236,11 +236,11 @@ public class LookupSyncTests extends LookupTestBase {
             }
         });
 
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("HotelId", "1");
                 put("Rooms", Arrays.asList(
-                    new Document(new HashMap<>() {
+                    new Document(new HashMap<String, Object>() {
                         {
                             put("Description", null);
                             put("Description_fr", null);
@@ -252,7 +252,7 @@ public class LookupSyncTests extends LookupTestBase {
                             put("Tags", Collections.emptyList());
                         }
                     }),
-                    new Document(new HashMap<>() {
+                    new Document(new HashMap<String, Object>() {
                         {
                             put("Description", null);
                             put("Description_fr", null);
@@ -280,12 +280,12 @@ public class LookupSyncTests extends LookupTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        Document originalDoc = new Document(new HashMap<>() {
+        Document originalDoc = new Document(new HashMap<String, Object>() {
             {
                 put("HotelId", "1");
                 put("Rooms", Arrays.asList(
                     new Document(),
-                    new Document(new HashMap<>() {
+                    new Document(new HashMap<String, Object>() {
                         {
                             put("BaseRate", null);
                             put("BedOptions", null);
@@ -298,11 +298,11 @@ public class LookupSyncTests extends LookupTestBase {
             }
         });
 
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("HotelId", "1");
                 put("Rooms", Collections.singletonList(
-                    new Document(new HashMap<>() {
+                    new Document(new HashMap<String, Object>() {
                         {
                             put("BaseRate", null);
                             put("BedOptions", null);
@@ -332,7 +332,7 @@ public class LookupSyncTests extends LookupTestBase {
         OffsetDateTime dateTime = OffsetDateTime.parse("2019-08-13T14:30:00Z");
         GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
 
-        Document indexedDoc = new Document(new HashMap<>() {
+        Document indexedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("Key", docKey);
                 put("Dates", new OffsetDateTime[]{dateTime});
@@ -346,7 +346,7 @@ public class LookupSyncTests extends LookupTestBase {
         });
 
         // This is the expected document when querying the document later
-        Document expectedDoc = new Document(new HashMap<>() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("Key", docKey);
                 put("Doubles", Arrays.asList(0.0, 5.8, "INF", "-INF", "NaN"));

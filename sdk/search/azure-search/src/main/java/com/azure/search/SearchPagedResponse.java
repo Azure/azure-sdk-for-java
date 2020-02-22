@@ -40,7 +40,7 @@ public final class SearchPagedResponse extends PagedResponseBase<String, SearchR
      *
      * @param documentSearchResponse an http response with the results
      */
-    public SearchPagedResponse(SimpleResponse<SearchDocumentsResult> documentSearchResponse) {
+    SearchPagedResponse(SimpleResponse<SearchDocumentsResult> documentSearchResponse) {
         super(documentSearchResponse.getRequest(),
             documentSearchResponse.getStatusCode(),
             documentSearchResponse.getHeaders(),
