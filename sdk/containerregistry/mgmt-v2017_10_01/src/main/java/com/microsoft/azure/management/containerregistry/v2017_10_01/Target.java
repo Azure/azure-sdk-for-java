@@ -58,6 +58,18 @@ public class Target {
     private String tag;
 
     /**
+     * The name of the artifact.
+     */
+    @JsonProperty(value = "name")
+    private String name;
+
+    /**
+     * The version of the artifact.
+     */
+    @JsonProperty(value = "version")
+    private String version;
+
+    /**
      * Get the MIME type of the referenced object.
      *
      * @return the mediaType value
@@ -194,6 +206,46 @@ public class Target {
      */
     public Target withTag(String tag) {
         this.tag = tag;
+        return this;
+    }
+
+    /**
+     * Get the name of the artifact.
+     *
+     * @return the name value
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name of the artifact.
+     *
+     * @param name the name value to set
+     * @return the Target object itself.
+     */
+    public Target withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the version of the artifact.
+     *
+     * @return the version value
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version of the artifact.
+     *
+     * @param version the version value to set
+     * @return the Target object itself.
+     */
+    public Target withVersion(String version) {
+        this.version = version;
         return this;
     }
 
