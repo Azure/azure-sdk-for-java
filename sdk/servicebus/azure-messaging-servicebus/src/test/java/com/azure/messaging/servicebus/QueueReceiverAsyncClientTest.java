@@ -45,16 +45,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class QueueReceiverAsyncClientTest {
-    static final String PARTITION_ID_HEADER = "partition-id-sent";
 
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
     private static final String PAYLOAD = "hello";
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
     private static final int PREFETCH = 5;
-    private static final String HOSTNAME = "hostname-foo";
-    private static final String EVENT_HUB_NAME = "event-hub-name";
-    private static final String CONSUMER_GROUP = "consumer-group-test";
-    private static final String PARTITION_ID = "a-partition-id";
+    private static final String NAMESPACE = "mynamespace-foo";
+    private static final String QUEUE_NAME = "queue-name";
 
     private final ClientLogger logger = new ClientLogger(QueueReceiverAsyncClientTest.class);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(2);
@@ -86,8 +83,8 @@ public class QueueReceiverAsyncClientTest {
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
 
-        ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
+        ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, QUEUE_NAME, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
@@ -100,7 +97,7 @@ public class QueueReceiverAsyncClientTest {
             .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getEntityPath(), connectionOptions.getRetry()));
 
-        consumer = new QueueReceiverAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, tracerProvider,
+        consumer = new QueueReceiverAsyncClient(NAMESPACE, QUEUE_NAME, connectionProcessor, tracerProvider,
             messageSerializer, PREFETCH);
     }
 
@@ -117,7 +114,7 @@ public class QueueReceiverAsyncClientTest {
     }
 
     /**
-     * Verifies that this receives a number of events. Verifies that the initial credits we add are equal to the
+     * Verifies that this receives a number of messages. Verifies that the initial credits we add are equal to the
      * prefetch value.
      */
     @Test
