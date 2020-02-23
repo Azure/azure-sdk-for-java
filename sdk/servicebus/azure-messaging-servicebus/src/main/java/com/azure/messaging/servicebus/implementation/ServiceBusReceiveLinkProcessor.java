@@ -99,7 +99,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
     @Override
     public void onSubscribe(Subscription subscription) {
         Objects.requireNonNull(subscription, "'subscription' cannot be null");
-
         if (isTerminated()) {
             return;
         }
@@ -203,7 +202,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
     @Override
     public void subscribe(CoreSubscriber<? super Message> actual) {
         Objects.requireNonNull(actual, "'actual' cannot be null.");
-
         if (isTerminated()) {
             logger.info("AmqpReceiveLink is already terminated.");
 

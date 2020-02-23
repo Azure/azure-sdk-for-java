@@ -6,8 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.implementation.MessageSerializer;
 
-
-import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.Messages;
@@ -162,20 +160,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
         message.clear();
         return eventData;
-    }
-    
-    @SuppressWarnings("unchecked")
-    private <T> T getValue(Object value, Object key, Class<T> clazz) {
-        if (value == null) {
-            throw logger.logExceptionAsError(new AzureException(
-                String.format("AMQP body did not contain a value for key '%s'.", key)));
-        } else if (value.getClass() != clazz) {
-            throw logger.logExceptionAsError(new AzureException(String.format(
-                "AMQP body did not contain correct value for key '%s'. Expected class: '%s'. Actual: '%s'",
-                key, clazz, value.getClass())));
-        }
-
-        return (T) value;
     }
 
     /*
