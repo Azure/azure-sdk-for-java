@@ -10,8 +10,9 @@ import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DocumentSentimentLabel;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.SentimentLabel;
+import com.azure.ai.textanalytics.models.SentenceSentimentLabel;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -98,7 +99,7 @@ class AnalyzeSentimentAsyncClient {
      */
     private AnalyzeSentimentResult convertToAnalyzeSentimentResult(final DocumentSentiment documentSentiment) {
         // Document text sentiment
-        final SentimentLabel documentSentimentLabel = SentimentLabel.fromString(documentSentiment.
+        final DocumentSentimentLabel documentSentimentLabel = DocumentSentimentLabel.fromString(documentSentiment.
             getSentiment().toString());
         if (documentSentimentLabel == null) {
             // Not throw exception for an invalid Sentiment type because we should not skip processing the
@@ -114,9 +115,9 @@ class AnalyzeSentimentAsyncClient {
         // Sentence text sentiment
         final List<SentenceSentiment> sentenceSentiments = documentSentiment.getSentences().stream()
             .map(sentenceSentiment -> {
-                SentimentLabel sentimentLabel = SentimentLabel.fromString(sentenceSentiment
-                    .getSentiment().toString());
-                if (sentimentLabel == null) {
+                SentenceSentimentLabel sentenceSentimentLabel = SentenceSentimentLabel.fromString(
+                    sentenceSentiment.getSentiment().toString());
+                if (sentenceSentimentLabel == null) {
                     // Not throw exception for an invalid Sentiment type because we should not skip processing the
                     // other response. It is a service issue.
                     logger.logExceptionAsWarning(
@@ -127,7 +128,7 @@ class AnalyzeSentimentAsyncClient {
                     confidenceScorePerSentence = sentenceSentiment.getSentenceScores();
 
                 return new SentenceSentiment(
-                    sentimentLabel,
+                    sentenceSentimentLabel,
                     new SentimentConfidenceScorePerLabel(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
                     sentenceSentiment.getLength(),
