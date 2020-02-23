@@ -71,6 +71,12 @@
         "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "interface org\\.reactivestreams\\.(Publisher|Subscriber|Subscription).*",
         "justification": "These classes exposed are publisher, subscriber, and Subscription."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "class com\\.azure\\.storage\\..*",
+        "justification": "azure-storage-common and storage blob classes are allowed to be exposed."
       }
     ]
   }
