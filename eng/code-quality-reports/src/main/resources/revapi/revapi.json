@@ -75,7 +75,7 @@
       {
         "regex": true,
         "code": "java\\.class\\.externalClassExposedInAPI",
-        "new": "class com\\.azure\\.storage\\..*",
+        "new": "(class|interface|enum) com\\.azure\\.storage\\..*",
         "justification": "azure-storage-common and storage blob classes are allowed to be exposed."
       }
     ]
