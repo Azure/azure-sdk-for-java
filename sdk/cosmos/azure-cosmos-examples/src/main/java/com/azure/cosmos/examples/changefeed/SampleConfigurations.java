@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.examples.ChangeFeed;
+package com.azure.cosmos.examples.changefeed;
 
 import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;

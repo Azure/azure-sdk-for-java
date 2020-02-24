@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.examples.ChangeFeed;
+package com.azure.cosmos.examples.changefeed;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ConnectionPolicy;
@@ -13,7 +13,6 @@ import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.SerializationFormattingPolicy;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
