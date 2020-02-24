@@ -74,17 +74,14 @@ class MavenComponent {
     }
 }
 
-function Get-Dependencies($pomFile) {
+function Get-Dependencies($mavenExecutable, $pomFile) {
     $transitiveDependencies = @{}
 
     $temp = New-TemporaryFile
     Write-Host "Getting dependencies for $($pomFile.FullName) -> $($temp.FullName)"
 
-    Write-Host "Writing to output..."
-    Invoke-Expression "$($maven.Path) -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
-
     Write-Host "Writing to file..."
-    Invoke-Expression "$($maven.Path) -DoutputFile=$($temp.FullName) -q -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
+    Invoke-Expression "$mavenExecutable -DoutputFile=$($temp.FullName) -q -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
 
     $contents = Get-Content $temp
     if ($contents.Length -eq 0) {
@@ -93,9 +90,9 @@ function Get-Dependencies($pomFile) {
         return $null
     }
 
-    Write-Host "START: DEPENDENCY TREE"
+    Write-Host "--- START: DEPENDENCY TREE ---"
     Write-Verbose "$contents"
-    Write-Host "END:   DEPENDENCY TREE"
+    Write-Host "--- END:   DEPENDENCY TREE ---"
 
     if (!$KeepTemporaryFile) {
         Write-Host "Removing temp file: '$($temp.FullName)'"
@@ -153,17 +150,41 @@ function Write-Table($header, $table) {
     Write-Host "--- END:   $header ---"
 }
 
-$allMavenInstallations = @(Get-Command mvn -CommandType Application -ErrorAction Ignore)
-if ($allMavenInstallations.Length -eq 0) {
-    Write-Error "mvn is not in path. Cannot continue."
+<# Locates maven installation using algorithm from Azure tasks.
+   https://github.com/microsoft/azure-pipelines-tasks/blob/master/Tasks/MavenV3/maventask.ts#L68 #>
+function Get-Maven() {
+    if (!($env:M2_HOME -eq $mavenHome)) {
+        Write-Verbose "Using maven from: '$($env:M2_HOME)'"
+
+        $mavenBin = Join-Path $(Join-Path $env:M2_HOME "bin") "mvn"
+
+        # On Windows, append .cmd or .bat to the executable as necessary
+        # Maven 3 uses mvn.cmd. Maven 2 uses mvn.bat
+        $lowercaseBin = $mavenBin.ToLowerInvariant()
+        if ($IsWindows -and !$lowercaseBin.EndsWith(".bat") -and !$lowercaseBin.EndsWith(".cmd")) {
+            if (Test-Path "$($mavenBin).cmd") {
+                $mavenBin += ".cmd"
+            } elseif (Test-Path "$($mavenBin).bat") {
+                $mavenBin += ".bat"
+            }
+        }
+
+        return $mavenBin
+    } else {
+        Write-Verbose "Finding maven in path."
+
+        $allMavenInstallations = @(Get-Command mvn -CommandType Application -ErrorAction Ignore)
+        if ($allMavenInstallations.Length -eq 0) {
+            Write-Error "mvn is not in path and M2_HOME is not set. Cannot continue."
+        }
+        $maven = $allMavenInstallations[0]
+        return $maven.Path
+    }
 }
 
-$maven = $allMavenInstallations[0]
-
-Write-Host "Maven installation..."
-$maven | Format-List *
-
-Invoke-Expression "/usr/share/apache-maven-3.6.3/bin/mvn --version"
+$maven = Get-Maven
+Write-Host "Using maven at: '$maven'"
+Invoke-Expression "$maven --version"
 
 $pomFiles = Get-ChildItem -Path $Directory -Filter pom.xml -Recurse -File | Where-Object {
     ($null -eq $ExcludeRegex) -or ($ExcludeRegex.Length -eq 0) -or ($_.Directory.Name -notmatch $ExcludeRegex)
@@ -202,7 +223,7 @@ foreach ($file in $pomFiles) {
         }
     }
 
-    $dependencies = Get-Dependencies $file
+    $dependencies = Get-Dependencies $maven $file
     if (($null -eq $dependencies) -or ($null -eq $dependencies.Keys)) {
         Write-Host "Skipping $($file.FullName)"
         continue
