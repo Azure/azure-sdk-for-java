@@ -16,7 +16,7 @@
   <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-quickquery;current} -->
 
   <name>Microsoft Azure client library for Storage quick query</name>
-  <description>This module contains client library for Microsoft Azure Blob Storage quick query.</description>
+  <description>This module contains client library for Microsoft Azure Storage quick query.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -258,8 +258,6 @@
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-                --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
-                --add-opens com.azure.storage.blob.quickquery/com.azure.storage.blob.specialized.quickquery=ALL-UNNAMED
                 --add-reads com.azure.core=ALL-UNNAMED
                 --add-reads com.azure.core.test=ALL-UNNAMED
                 --add-reads com.azure.core.amqp=ALL-UNNAMED
