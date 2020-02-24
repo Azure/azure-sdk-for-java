@@ -22,28 +22,40 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.implementation.Lin
 @JsonFlatten
 public class Db2LinkedService extends LinkedServiceInner {
     /**
-     * Server name for connection. Type: string (or Expression with resultType
+     * The connection string. It is mutually exclusive with server, database,
+     * authenticationType, userName, packageCollection and
+     * certificateCommonName property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     */
+    @JsonProperty(value = "typeProperties.connectionString")
+    private Object connectionString;
+
+    /**
+     * Server name for connection. It is mutually exclusive with
+     * connectionString property. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "typeProperties.server", required = true)
+    @JsonProperty(value = "typeProperties.server")
     private Object server;
 
     /**
-     * Database name for connection. Type: string (or Expression with
-     * resultType string).
+     * Database name for connection. It is mutually exclusive with
+     * connectionString property. Type: string (or Expression with resultType
+     * string).
      */
-    @JsonProperty(value = "typeProperties.database", required = true)
+    @JsonProperty(value = "typeProperties.database")
     private Object database;
 
     /**
-     * AuthenticationType to be used for connection. Possible values include:
-     * 'Basic'.
+     * AuthenticationType to be used for connection. It is mutually exclusive
+     * with connectionString property. Possible values include: 'Basic'.
      */
     @JsonProperty(value = "typeProperties.authenticationType")
     private Db2AuthenticationType authenticationType;
 
     /**
-     * Username for authentication. Type: string (or Expression with resultType
+     * Username for authentication. It is mutually exclusive with
+     * connectionString property. Type: string (or Expression with resultType
      * string).
      */
     @JsonProperty(value = "typeProperties.username")
@@ -56,29 +68,52 @@ public class Db2LinkedService extends LinkedServiceInner {
     private SecretBase password;
 
     /**
-     * Under where packages are created when querying database. Type: string
-     * (or Expression with resultType string).
+     * Under where packages are created when querying database. It is mutually
+     * exclusive with connectionString property. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "typeProperties.packageCollection")
     private Object packageCollection;
 
     /**
-     * Certificate Common Name when TLS is enabled. Type: string (or Expression
-     * with resultType string).
+     * Certificate Common Name when TLS is enabled. It is mutually exclusive
+     * with connectionString property. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.certificateCommonName")
     private Object certificateCommonName;
 
     /**
      * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * encrypted using the integration runtime credential manager. It is
+     * mutually exclusive with connectionString property. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /**
-     * Get server name for connection. Type: string (or Expression with resultType string).
+     * Get the connection string. It is mutually exclusive with server, database, authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @return the connectionString value
+     */
+    public Object connectionString() {
+        return this.connectionString;
+    }
+
+    /**
+     * Set the connection string. It is mutually exclusive with server, database, authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     *
+     * @param connectionString the connectionString value to set
+     * @return the Db2LinkedService object itself.
+     */
+    public Db2LinkedService withConnectionString(Object connectionString) {
+        this.connectionString = connectionString;
+        return this;
+    }
+
+    /**
+     * Get server name for connection. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
      *
      * @return the server value
      */
@@ -87,7 +122,7 @@ public class Db2LinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Set server name for connection. Type: string (or Expression with resultType string).
+     * Set server name for connection. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
      *
      * @param server the server value to set
      * @return the Db2LinkedService object itself.
@@ -98,7 +133,7 @@ public class Db2LinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Get database name for connection. Type: string (or Expression with resultType string).
+     * Get database name for connection. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
      *
      * @return the database value
      */
@@ -107,7 +142,7 @@ public class Db2LinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Set database name for connection. Type: string (or Expression with resultType string).
+     * Set database name for connection. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
      *
      * @param database the database value to set
      * @return the Db2LinkedService object itself.
@@ -118,7 +153,7 @@ public class Db2LinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Get authenticationType to be used for connection. Possible values include: 'Basic'.
+     * Get authenticationType to be used for connection. It is mutually exclusive with connectionString property. Possible values include: 'Basic'.
      *
      * @return the authenticationType value
      */
@@ -127,7 +162,7 @@ public class Db2LinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Set authenticationType to be used for connection. Possible values include: 'Basic'.
+     * Set authenticationType to be used for connection. It is mutually exclusive with connectionString property. Possible values include: 'Basic'.
      *
      * @param authenticationType the authenticationType value to set
      * @return the Db2LinkedService object itself.
@@ -138,7 +173,7 @@ public class Db2LinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Get username for authentication. Type: string (or Expression with resultType string).
+     * Get username for authentication. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
      *
      * @return the username value
      */
@@ -147,7 +182,7 @@ public class Db2LinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Set username for authentication. Type: string (or Expression with resultType string).
+     * Set username for authentication. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
      *
      * @param username the username value to set
      * @return the Db2LinkedService object itself.
@@ -178,7 +213,7 @@ public class Db2LinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Get under where packages are created when querying database. Type: string (or Expression with resultType string).
+     * Get under where packages are created when querying database. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
      *
      * @return the packageCollection value
      */
@@ -187,7 +222,7 @@ public class Db2LinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Set under where packages are created when querying database. Type: string (or Expression with resultType string).
+     * Set under where packages are created when querying database. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
      *
      * @param packageCollection the packageCollection value to set
      * @return the Db2LinkedService object itself.
@@ -198,7 +233,7 @@ public class Db2LinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Get certificate Common Name when TLS is enabled. Type: string (or Expression with resultType string).
+     * Get certificate Common Name when TLS is enabled. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
      *
      * @return the certificateCommonName value
      */
@@ -207,7 +242,7 @@ public class Db2LinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Set certificate Common Name when TLS is enabled. Type: string (or Expression with resultType string).
+     * Set certificate Common Name when TLS is enabled. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
      *
      * @param certificateCommonName the certificateCommonName value to set
      * @return the Db2LinkedService object itself.
@@ -218,7 +253,7 @@ public class Db2LinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Get the encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Get the encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
      *
      * @return the encryptedCredential value
      */
@@ -227,7 +262,7 @@ public class Db2LinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Set the encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * Set the encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
      *
      * @param encryptedCredential the encryptedCredential value to set
      * @return the Db2LinkedService object itself.
