@@ -107,11 +107,11 @@
 <!--      <scope>test</scope>-->
 <!--    </dependency>-->
 <!---->
-    <dependency>
-      <groupId>org.apache.avro</groupId>
-      <artifactId>avro</artifactId>
-      <version>1.9.2</version>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.apache.avro</groupId>-->
+<!--      <artifactId>avro</artifactId>-->
+<!--      <version>1.9.2</version>-->
+<!--    </dependency>-->
   </dependencies>
 
   <profiles>
