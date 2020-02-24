@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common;
 
 import com.azure.core.http.HttpHeaders;
@@ -8,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.storage.common.implementation.Constants;
-import groovy.lang.Closure;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -71,7 +73,7 @@ public class MockRequestResponse {
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             return next.process().flatMap(response -> {
-                if (response.getRequest().getHeaders().getValue("x-ms-range") != "bytes=2-6") {
+                if (!response.getRequest().getHeaders().getValue("x-ms-range").equals("bytes=2-6")) {
                     return Mono.error(new IllegalArgumentException("The range header was not set correctly on retry."));
                 } else {
                     // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
