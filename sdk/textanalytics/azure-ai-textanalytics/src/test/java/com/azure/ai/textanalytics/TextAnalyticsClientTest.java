@@ -7,13 +7,14 @@ import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.DocumentSentimentLabel;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.SentimentLabel;
-import com.azure.ai.textanalytics.models.SentimentScorePerLabel;
+import com.azure.ai.textanalytics.models.SentenceSentimentLabel;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.core.exception.HttpResponseException;
@@ -82,7 +83,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguagesBatchListCountryHint() {
         detectLanguagesCountryHintRunner((inputs, countryHint) -> validateDetectLanguage(
             false, getExpectedBatchDetectedLanguages(),
-            client.detectLanguageBatchWithResponse(inputs, countryHint, null, Context.NONE).getValue()));
+            client.detectLanguageBatch(inputs, countryHint, null)));
     }
 
     /**
@@ -136,7 +137,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageInvalidCountryHint() {
         Exception exception = assertThrows(TextAnalyticsException.class, () ->
-            client.detectLanguageWithResponse("Este es un document escrito en Español.", "en", Context.NONE));
+            client.detectLanguage("Este es un document escrito en Español.", "en"));
         assertTrue(exception.getMessage().equals(INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
@@ -207,7 +208,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizeEntitiesForListLanguageHint() {
         recognizeCatgeorizedEntitiesLanguageHintRunner((inputs, language) ->
             validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(),
-                client.recognizeEntitiesBatchWithResponse(inputs, language, null, Context.NONE).getValue()));
+                client.recognizeEntitiesBatch(inputs, language, null)));
     }
 
     @Test
@@ -247,11 +248,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         recognizePiiStringInputRunner((inputs) ->
             validatePiiEntity(false, getExpectedBatchPiiEntities(), client.recognizePiiEntitiesBatch(inputs)));
     }
+
     @Test
     public void recognizePiiEntitiesForListLanguageHint() {
         recognizePiiLanguageHintRunner((inputs, language) ->
             validatePiiEntity(false, getExpectedBatchPiiEntities(),
-                client.recognizePiiEntitiesBatchWithResponse(inputs, language, null, Context.NONE).getValue()));
+                client.recognizePiiEntitiesBatch(inputs, language, null)));
     }
 
     @Test
@@ -296,7 +298,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizeLinkedEntitiesForListLanguageHint() {
         recognizeLinkedLanguageHintRunner((inputs, language) ->
             validateLinkedEntity(false, getExpectedBatchLinkedEntities(),
-                client.recognizeLinkedEntitiesBatchWithResponse(inputs, language, null, Context.NONE).getValue()));
+                client.recognizeLinkedEntitiesBatch(inputs, language, null)));
     }
 
     @Test
@@ -338,7 +340,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void extractKeyPhrasesForListLanguageHint() {
         extractKeyPhrasesLanguageHintRunner((inputs, language) ->
             validateExtractKeyPhrase(false, getExpectedBatchKeyPhrases(),
-                client.extractKeyPhrasesBatchWithResponse(inputs, language, null, Context.NONE).getValue()));
+                client.extractKeyPhrasesBatch(inputs, language, null)));
     }
 
     // Sentiment
@@ -349,11 +351,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void analyseSentimentForTextInput() {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
-            SentimentLabel.MIXED,
-            new SentimentScorePerLabel(0.0, 0.0, 0.0),
+            DocumentSentimentLabel.MIXED,
+            new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
             Arrays.asList(
-                new SentenceSentiment(SentimentLabel.NEGATIVE, new SentimentScorePerLabel(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(SentimentLabel.POSITIVE, new SentimentScorePerLabel(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentiment(SentenceSentimentLabel.NEGATIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentiment(SentenceSentimentLabel.POSITIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 35, 32)
             ));
         DocumentSentiment analyzeSentimentResult =
             client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.");
@@ -375,11 +377,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForFaultyText() {
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(SentimentLabel.NEUTRAL,
-            new SentimentScorePerLabel(0.0, 0.0, 0.0),
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(DocumentSentimentLabel.NEUTRAL,
+            new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
             Arrays.asList(
-                new SentenceSentiment(SentimentLabel.NEUTRAL, new SentimentScorePerLabel(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentiment(SentimentLabel.NEUTRAL, new SentimentScorePerLabel(0.0, 0.0, 0.0), 4, 1)
+                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 1, 0),
+                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 4, 1)
             ));
 
         DocumentSentiment analyzeSentimentResult = client.analyzeSentiment("!@#%%");
@@ -403,7 +405,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyseSentimentForListLanguageHint() {
         analyseSentimentLanguageHintRunner((inputs, language) ->
             validateSentiment(false, getExpectedBatchTextSentiment(),
-                client.analyzeSentimentBatchWithResponse(inputs, language, null, Context.NONE).getValue()));
+                client.analyzeSentimentBatch(inputs, language, null)));
     }
 
     /**

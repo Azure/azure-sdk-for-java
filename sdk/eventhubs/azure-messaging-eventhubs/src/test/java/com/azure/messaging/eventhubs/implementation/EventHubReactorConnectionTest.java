@@ -96,6 +96,12 @@ public class EventHubReactorConnectionTest {
             .thenReturn(connectionHandler);
     }
 
+    @AfterEach
+    public void reset() {
+        Mockito.reset(reactor, selectable, tokenManagerProvider, reactorConnection, messageSerializer, reactorProvider,
+            handlerProvider, tokenCredential, scheduler);
+    }
+
     @Test
     public void getsManagementChannel() {
         // Arrange

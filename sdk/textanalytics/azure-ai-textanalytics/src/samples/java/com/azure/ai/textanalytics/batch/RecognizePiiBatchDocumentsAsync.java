@@ -23,7 +23,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class RecognizePiiBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to recognize the PII entities of a batch input text.
+     * Main method to invoke this demo about how to recognize the Personally Identifiable Information entities of a
+     * batch input text.
      *
      * @param args Unused arguments to the program.
      */
@@ -57,12 +58,13 @@ public class RecognizePiiBatchDocumentsAsync {
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
-                // Recognized PII entities for each of document from a batch of documents
+                // Recognized Personally Identifiable Information entities for each of document from a batch of documents
                 for (RecognizePiiEntitiesResult piiEntityDocumentResult : recognizedBatchResult) {
                     System.out.printf("Document ID: %s%n", piiEntityDocumentResult.getId());
                     // Erroneous document
                     if (piiEntityDocumentResult.isError()) {
-                        System.out.printf("Cannot recognize PII entities. Error: %s%n", piiEntityDocumentResult.getError().getMessage());
+                        System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n",
+                            piiEntityDocumentResult.getError().getMessage());
                         continue;
                     }
                     // Valid document
@@ -77,8 +79,8 @@ public class RecognizePiiBatchDocumentsAsync {
                     }
                 }
             },
-            error -> System.err.println("There was an error recognizing PII entities of the text inputs." + error),
-            () -> System.out.println("Batch of PII entities recognized."));
+            error -> System.err.printf("There was an error recognizing Personally Identifiable Information entities of the text inputs. %s%n", error),
+            () -> System.out.println("Batch of Personally Identifiable Information entities recognized."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of
