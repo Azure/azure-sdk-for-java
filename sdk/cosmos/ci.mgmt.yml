@@ -13,10 +13,10 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/cosmosdb/
+      - sdk/cosmos/
     exclude:
-      - sdk/cosmosdb/microsoft-azure
-      - sdk/cosmosdb/azure
+      - sdk/cosmos/microsoft-azure
+      - sdk/cosmos/azure
 
 pr:
   branches:
@@ -27,15 +27,15 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/cosmosdb/
+      - sdk/cosmos/
     exclude:
-      - sdk/cosmosdb/microsoft-azure
-      - sdk/cosmosdb/azure
+      - sdk/cosmos/microsoft-azure
+      - sdk/cosmos/azure
 
 
 variables:
   BuildOptions: '--batch-mode -Dgpg.skip -Dmaven.wagon.http.pool=false'
-  ServiceDirectory: cosmosdb
+  ServiceDirectory: cosmos
   ProfileFlag: ''
 
 jobs:
