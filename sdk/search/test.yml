@@ -6,6 +6,7 @@ jobs:
           ServiceDirectory: search
           DisableAzureResourceCreation: true
           Timeout: 120
+          maxParallel: 3
           EnvVars:
               AZURE_TEST_MODE: LIVE
               AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
