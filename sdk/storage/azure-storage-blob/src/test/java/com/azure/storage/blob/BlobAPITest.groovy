@@ -31,6 +31,7 @@ import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
+import com.azure.storage.common.MockRequestResponse
 import com.azure.storage.common.implementation.Constants
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
@@ -185,7 +186,7 @@ class BlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def bu2 = getBlobClient(primaryCredential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy())
+        def bu2 = getBlobClient(primaryCredential, bc.getBlobUrl(), new MockRequestResponse.MockRetryRangeResponsePolicy())
 
         when:
         def range = new BlobRange(2, 5L)

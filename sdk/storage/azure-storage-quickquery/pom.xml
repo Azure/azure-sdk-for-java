@@ -15,7 +15,7 @@
   <artifactId>azure-storage-quickquery</artifactId>
   <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-quickquery;current} -->
 
-  <name>Microsoft Azure client library for Blob Storage quick query</name>
+  <name>Microsoft Azure client library for Storage quick query</name>
   <description>This module contains client library for Microsoft Azure Blob Storage quick query.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 

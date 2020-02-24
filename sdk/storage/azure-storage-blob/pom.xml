@@ -126,6 +126,14 @@
       <version>3.2.7</version> <!-- {x-version-update;cglib:cglib-nodep;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Netty -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-common</artifactId>
+      <version>12.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

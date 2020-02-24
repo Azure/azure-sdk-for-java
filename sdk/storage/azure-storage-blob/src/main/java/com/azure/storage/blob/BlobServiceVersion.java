@@ -33,6 +33,6 @@ public enum BlobServiceVersion implements ServiceVersion {
      * @return the latest {@link BlobServiceVersion}
      */
     public static BlobServiceVersion getLatest() {
-        return V2019_12_12;
+        return V2019_07_07;
     }
 }
