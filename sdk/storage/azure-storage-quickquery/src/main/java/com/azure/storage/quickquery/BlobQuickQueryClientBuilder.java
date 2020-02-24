@@ -3,6 +3,11 @@
 
 package com.azure.storage.quickquery;
 
-/* TODO: Fill this out. */
+import com.azure.core.annotation.ServiceClientBuilder;
+
+/**
+ * TODO : Implement class.
+ */
+@ServiceClientBuilder(serviceClients = {BlobQuickQueryClient.class, BlobQuickQueryAsyncClient.class})
 public class BlobQuickQueryClientBuilder {
 }
