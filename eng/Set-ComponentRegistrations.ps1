@@ -77,10 +77,12 @@ class MavenComponent {
 function Get-Dependencies($mavenExecutable, $pomFile) {
     $transitiveDependencies = @{}
 
-    $temp = New-TemporaryFile
-    Write-Host "Getting dependencies for $($pomFile.FullName) -> $($temp.FullName)"
+    Write-Host "Writing to output..."
+    Invoke-Expression "$mavenExecutable -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
 
-    Write-Host "Writing to file..."
+    $temp = New-TemporaryFile
+    Write-Host "Writing dependencies to file: $($pomFile.FullName) -> $($temp.FullName)"
+    Write-Host "Command: $mavenExecutable -DoutputFile=$($temp.FullName) -q -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
     Invoke-Expression "$mavenExecutable -DoutputFile=$($temp.FullName) -q -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
 
     $contents = Get-Content $temp
