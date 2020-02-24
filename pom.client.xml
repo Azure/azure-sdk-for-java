@@ -508,6 +508,10 @@
                 <packages>com.azure.storage.queue*</packages>
               </group>
               <group>
+                <title>Azure Storage - Quick Query</title>
+                <packages>com.azure.storage.quickquery*</packages>
+              </group>
+              <group>
                 <title>Azure Telemetry</title>
                 <title>Azure Telemetry - OpenTelemetry</title>
                 <packages>com.azure.core.tracing*</packages>
