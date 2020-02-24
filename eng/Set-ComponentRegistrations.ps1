@@ -80,6 +80,10 @@ function Get-Dependencies($pomFile) {
     $temp = New-TemporaryFile
     Write-Host "Getting dependencies for $($pomFile.FullName) -> $($temp.FullName)"
 
+    Write-Host "Writing output first..."
+    Invoke-Expression "mvn -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
+
+    Write-Host "Writing to file..."
     Invoke-Expression "mvn -DoutputFile=$($temp.FullName) -q -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
 
     $contents = Get-Content $temp
@@ -148,6 +152,9 @@ $maven = Get-Command mvn -CommandType Application -ErrorAction Ignore
 if ($null -eq $maven) {
     Write-Error "mvn is not in path. Cannot continue."
 }
+
+Write-Host "Maven installations..."
+$maven | Format-List *
 
 $pomFiles = Get-ChildItem -Path $Directory -Filter pom.xml -Recurse -File | Where-Object {
     ($null -eq $ExcludeRegex) -or ($ExcludeRegex.Length -eq 0) -or ($_.Directory.Name -notmatch $ExcludeRegex)
