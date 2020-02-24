@@ -4,37 +4,37 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * The RecognizeEntitiesResult model.
+ * The {@link RecognizeCategorizedEntitiesResult} model.
  */
 @Immutable
-public final class RecognizeEntitiesResult extends DocumentResult {
-    private final List<CategorizedEntity> entities;
+public final class RecognizeCategorizedEntitiesResult extends DocumentResult {
+    private final IterableStream<CategorizedEntity> entities;
 
     /**
-     * Creates a {@code RecognizeEntitiesResult} model that describes recognized entities result.
+     * Creates a {@link RecognizeCategorizedEntitiesResult} model that describes recognized entities result.
      *
-     * @param id unique, non-empty document identifier
-     * @param textDocumentStatistics text document statistics
-     * @param error the document error
-     * @param entities a list of {@link CategorizedEntity}
+     * @param id Unique, non-empty document identifier.
+     * @param textDocumentStatistics The text document statistics.
+     * @param error The document error.
+     * @param entities An {@link IterableStream} of {@link CategorizedEntity}.
      */
-    public RecognizeEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
-        List<CategorizedEntity> entities) {
+    public RecognizeCategorizedEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
+        TextAnalyticsError error, IterableStream<CategorizedEntity> entities) {
         super(id, textDocumentStatistics, error);
-        this.entities = entities == null ? new ArrayList<>() : entities;
+        this.entities = entities == null ? new IterableStream<>(new ArrayList<>()) : entities;
     }
 
     /**
-     * Get a list of categorized entities string.
+     * Get an {@link IterableStream} of {@link CategorizedEntity}.
      *
-     * @return a list of {@link CategorizedEntity}
+     * @return An {@link IterableStream} of {@link CategorizedEntity}.
      */
-    public List<CategorizedEntity> getEntities() {
+    public IterableStream<CategorizedEntity> getEntities() {
         throwExceptionIfError();
         return entities;
     }

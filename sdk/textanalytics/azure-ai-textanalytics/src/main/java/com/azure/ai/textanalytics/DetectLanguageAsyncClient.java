@@ -21,9 +21,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
@@ -87,7 +85,7 @@ class DetectLanguageAsyncClient {
                     .doOnSuccess(response ->
                         logger.info("A batch of detected language output - {}", response.getValue()))
                     .doOnError(error -> logger.warning("Failed to detect language - {}", error))
-                    .map(simpleResponse -> toTextAnalyticsPagedResponse(simpleResponse, textInputs)))
+                    .map(this::toTextAnalyticsPagedResponse))
                     .flux());
         } catch (RuntimeException ex) {
             return new TextAnalyticsPagedFlux<>(() ->
@@ -115,7 +113,7 @@ class DetectLanguageAsyncClient {
                 .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", textInputs.toString()))
                 .doOnSuccess(response -> logger.info("A batch of detected language output - {}", response.getValue()))
                 .doOnError(error -> logger.warning("Failed to detect language - {}", error))
-                .map(simpleResponse -> toTextAnalyticsPagedResponse(simpleResponse, textInputs))
+                .map(this::toTextAnalyticsPagedResponse)
                 .flux());
     }
 
@@ -126,15 +124,13 @@ class DetectLanguageAsyncClient {
      * of {@link DetectLanguageResult}.
      *
      * @param response the {@link SimpleResponse} returned by the service.
-     * @param textInputs The given collection of input texts.
      *
      * @return the {@link TextAnalyticsPagedResponse} of {@link DetectLanguageResult} to be returned by the SDK.
      */
     private TextAnalyticsPagedResponse<DetectLanguageResult> toTextAnalyticsPagedResponse(
-        final SimpleResponse<LanguageResult> response, Iterable<DetectLanguageInput> textInputs) {
+        final SimpleResponse<LanguageResult> response) {
 
         LanguageResult languageResult = response.getValue();
-        Map<String, String> inputMap = toMap(textInputs); // key = id, value = input text
 
         final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
         for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
@@ -151,7 +147,7 @@ class DetectLanguageAsyncClient {
             }
 
             final String documentID = documentLanguage.getId();
-            detectLanguageResults.add(new DetectLanguageResult(documentID, inputMap.get(documentID),
+            detectLanguageResults.add(new DetectLanguageResult(documentID,
                 documentLanguage.getStatistics() == null
                     ? null : Transforms.toTextDocumentStatistics(documentLanguage.getStatistics()),
                 null,
@@ -164,7 +160,7 @@ class DetectLanguageAsyncClient {
             final String documentId = documentError.getId();
 
             detectLanguageResults.add(
-                new DetectLanguageResult(documentId, inputMap.get(documentId), null, error, null));
+                new DetectLanguageResult(documentId, null, error, null));
         }
 
         return new TextAnalyticsPagedResponse<>(
@@ -175,13 +171,5 @@ class DetectLanguageAsyncClient {
             null,
             languageResult.getModelVersion(),
             languageResult.getStatistics() == null ? null : toBatchStatistics(languageResult.getStatistics()));
-    }
-
-
-    private Map<String, String> toMap(Iterable<DetectLanguageInput> textInputs) {
-        Map<String, String> inputsMap = new HashMap<>();
-        textInputs.forEach(detectLanguageInput ->
-            inputsMap.put(detectLanguageInput.getId(), detectLanguageInput.getText()));
-        return inputsMap;
     }
 }

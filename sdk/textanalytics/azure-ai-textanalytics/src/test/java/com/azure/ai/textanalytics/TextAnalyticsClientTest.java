@@ -7,13 +7,13 @@ import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.DocumentSentimentLabel;
-import com.azure.ai.textanalytics.models.EntitiesResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentenceSentimentLabel;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScore;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedIterable;
@@ -171,7 +171,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesBatchInputSingleError() {
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) -> {
-            TextAnalyticsPagedIterable<EntitiesResult<CategorizedEntity>> response = client.recognizeCategorizedEntitiesBatch(inputs, null, Context.NONE);
+            TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> response = client.recognizeCategorizedEntitiesBatch(inputs, null, Context.NONE);
             response.forEach(recognizeEntitiesResult -> {
                 Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getEntities());
                 assertTrue(exception.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE));
@@ -205,7 +205,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForListLanguageHint() {
         recognizeCategorizedEntitiesLanguageHintRunner((inputs, language) ->
-            client.recognizeCategorizedEntitiesBatch(inputs, language).iterableByPage().forEach(
+            client.recognizeCategorizedEntitiesBatch(inputs, language, null).iterableByPage().forEach(
                 pagedResponse ->
                     validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
@@ -351,10 +351,10 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyseSentimentForTextInput() {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
             DocumentSentimentLabel.MIXED,
-            new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
+            new SentimentConfidenceScore(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(SentenceSentimentLabel.NEGATIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(SentenceSentimentLabel.POSITIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentiment(SentenceSentimentLabel.NEGATIVE, new SentimentConfidenceScore(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentiment(SentenceSentimentLabel.POSITIVE, new SentimentConfidenceScore(0.0, 0.0, 0.0), 35, 32)
             )));
         DocumentSentiment analyzeSentimentResult =
             client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.");
@@ -377,10 +377,10 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void analyseSentimentForFaultyText() {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(DocumentSentimentLabel.NEUTRAL,
-            new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
+            new SentimentConfidenceScore(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 4, 1)
+                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScore(0.0, 0.0, 0.0), 1, 0),
+                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScore(0.0, 0.0, 0.0), 4, 1)
             )));
 
         DocumentSentiment analyzeSentimentResult = client.analyzeSentiment("!@#%%");

@@ -12,7 +12,7 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentSentimentLabel;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentenceSentimentLabel;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScore;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -23,10 +23,8 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -89,7 +87,7 @@ class AnalyzeSentimentAsyncClient {
                         logger.info("A batch of text sentiment input - {}", textInputs.toString()))
                     .doOnSuccess(response -> logger.info("A batch of text sentiment output - {}", response))
                     .doOnError(error -> logger.warning("Failed to analyze text sentiment - {}", error))
-                    .map(response -> toTextAnalyticsPagedResponse(response, textInputs)))
+                    .map(this::toTextAnalyticsPagedResponse))
                     .flux());
         } catch (RuntimeException ex) {
             return new TextAnalyticsPagedFlux<>(() ->
@@ -121,7 +119,7 @@ class AnalyzeSentimentAsyncClient {
                     logger.info("A batch of text sentiment input - {}", textInputs.toString()))
                 .doOnSuccess(response -> logger.info("A batch of text sentiment output - {}", response))
                 .doOnError(error -> logger.warning("Failed to analyze text sentiment - {}", error))
-                .map(response -> toTextAnalyticsPagedResponse(response, textInputs))
+                .map(response -> toTextAnalyticsPagedResponse(response))
                 .flux());
     }
 
@@ -131,26 +129,24 @@ class AnalyzeSentimentAsyncClient {
      * of {@link AnalyzeSentimentResult}.
      *
      * @param response the {@link SimpleResponse} returned by the service.
-     * @param textInputs The given collection of input texts.
      *
      * @return the {@link TextAnalyticsPagedResponse} of {@link AnalyzeSentimentResult} to be returned by the SDK.
      */
     private TextAnalyticsPagedResponse<AnalyzeSentimentResult> toTextAnalyticsPagedResponse(
-        final SimpleResponse<SentimentResponse> response, Iterable<TextDocumentInput> textInputs) {
+        final SimpleResponse<SentimentResponse> response) {
         SentimentResponse sentimentResponse = response.getValue();
         List<AnalyzeSentimentResult> analyzeSentimentResults = new ArrayList<>();
-        Map<String, String> inputMap = toMap(textInputs); // key = id, value = input text
         for (DocumentSentiment documentSentiment : sentimentResponse.getDocuments()) {
 
             analyzeSentimentResults.add(
-                convertToAnalyzeSentimentResult(documentSentiment, inputMap.get(documentSentiment.getId())));
+                convertToAnalyzeSentimentResult(documentSentiment));
         }
         for (DocumentError documentError : sentimentResponse.getErrors()) {
             final com.azure.ai.textanalytics.models.TextAnalyticsError error =
                 toTextAnalyticsError(documentError.getError());
 
             final String documentId = documentError.getId();
-            analyzeSentimentResults.add(new AnalyzeSentimentResult(documentId, inputMap.get(documentId), null,
+            analyzeSentimentResults.add(new AnalyzeSentimentResult(documentId, null,
                 error, null));
         }
         return new TextAnalyticsPagedResponse<>(
@@ -167,12 +163,10 @@ class AnalyzeSentimentAsyncClient {
      * Helper method to convert the service response of {@link DocumentSentiment} to {@link AnalyzeSentimentResult}.
      *
      * @param documentSentiment the {@link DocumentSentiment} returned by the service.
-     * @param inputText The input texts in request.
      *
      * @return the {@link AnalyzeSentimentResult} to be returned by the SDK.
      */
-    private AnalyzeSentimentResult convertToAnalyzeSentimentResult(DocumentSentiment documentSentiment,
-        String inputText) {
+    private AnalyzeSentimentResult convertToAnalyzeSentimentResult(DocumentSentiment documentSentiment) {
         // Document text sentiment
         final DocumentSentimentLabel documentSentimentLabel = DocumentSentimentLabel.fromString(documentSentiment.
             getSentiment().toString());
@@ -204,7 +198,7 @@ class AnalyzeSentimentAsyncClient {
 
                 return new SentenceSentiment(
                     sentenceSentimentLabel,
-                    new SentimentConfidenceScorePerLabel(confidenceScorePerSentence.getNegative(),
+                    new SentimentConfidenceScore(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
                     sentenceSentiment.getLength(),
                     sentenceSentiment.getOffset());
@@ -213,22 +207,14 @@ class AnalyzeSentimentAsyncClient {
 
         return new AnalyzeSentimentResult(
             documentSentiment.getId(),
-            inputText,
             documentSentiment.getStatistics() == null ? null
                 : toTextDocumentStatistics(documentSentiment.getStatistics()), null,
             new com.azure.ai.textanalytics.models.DocumentSentiment(
                 documentSentimentLabel,
-                new SentimentConfidenceScorePerLabel(
+                new SentimentConfidenceScore(
                     confidenceScorePerLabel.getNegative(),
                     confidenceScorePerLabel.getNeutral(),
                     confidenceScorePerLabel.getPositive()),
                 new IterableStream<>(sentenceSentiments)));
-    }
-
-    private Map<String, String> toMap(Iterable<TextDocumentInput> textInputs) {
-        Map<String, String> inputsMap = new HashMap<>();
-        textInputs.forEach(detectLanguageInput ->
-            inputsMap.put(detectLanguageInput.getId(), detectLanguageInput.getText()));
-        return inputsMap;
     }
 }

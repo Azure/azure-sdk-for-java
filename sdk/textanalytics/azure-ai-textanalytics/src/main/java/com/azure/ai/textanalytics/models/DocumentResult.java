@@ -15,7 +15,6 @@ public class DocumentResult {
     private final ClientLogger logger = new ClientLogger(DocumentResult.class);
 
     private final String id;
-    private final String inputText;
     private final TextDocumentStatistics textDocumentStatistics;
     private final TextAnalyticsError error;
     private final boolean isError;
@@ -25,14 +24,12 @@ public class DocumentResult {
      * and document error.
      *
      * @param id unique, non-empty document identifier.
-     * @param inputText The input text in request.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    DocumentResult(String id, String inputText, TextDocumentStatistics textDocumentStatistics,
+    DocumentResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error) {
         this.id = id;
-        this.inputText = inputText;
         this.error = error;
         this.isError = error != null;
         this.textDocumentStatistics = textDocumentStatistics;
@@ -45,15 +42,6 @@ public class DocumentResult {
      */
     public String getId() {
         return id;
-    }
-
-    /**
-     * Get the document input text in request.
-     *
-     * @return The document input text in request.
-     */
-    public String getInputText() {
-        return inputText;
     }
 
     /**

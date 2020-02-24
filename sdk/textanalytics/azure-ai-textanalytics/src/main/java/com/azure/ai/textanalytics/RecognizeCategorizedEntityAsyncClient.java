@@ -6,9 +6,10 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
+import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.EntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -20,10 +21,8 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -64,14 +63,14 @@ class RecognizeCategorizedEntityAsyncClient {
                 Collections.singletonList(new TextDocumentInput("0", text, language)), null)
                 .byPage()
                 .map(resOfResult -> {
-                    Iterator<EntitiesResult<CategorizedEntity>> iterator = resOfResult.getValue().iterator();
+                    Iterator<RecognizeCategorizedEntitiesResult> iterator = resOfResult.getValue().iterator();
                     // Collection will never empty
                     if (!iterator.hasNext()) {
                         throw logger.logExceptionAsError(new IllegalStateException(
                             "An empty collection returned which is an unexpected error."));
                     }
 
-                    final EntitiesResult<CategorizedEntity> entitiesResult = iterator.next();
+                    final RecognizeCategorizedEntitiesResult entitiesResult = iterator.next();
                     if (entitiesResult.isError()) {
                         throw logger.logExceptionAsError(
                             Transforms.toTextAnalyticsException(entitiesResult.getError()));
@@ -92,7 +91,7 @@ class RecognizeCategorizedEntityAsyncClient {
      *
      * @return a
      */
-    TextAnalyticsPagedFlux<EntitiesResult<CategorizedEntity>> recognizeEntitiesBatch(
+    TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         try {
@@ -106,7 +105,7 @@ class RecognizeCategorizedEntityAsyncClient {
                     .doOnSuccess(response ->
                         logger.info("A batch of categorized entities output - {}", response.getValue()))
                     .doOnError(error -> logger.warning("Failed to recognize categorized entities - {}", error))
-                    .map(response -> toTextAnalyticsPagedResponse(response, textInputs)))
+                    .map(this::toTextAnalyticsPagedResponse))
                 .flux());
         } catch (RuntimeException ex) {
             return new TextAnalyticsPagedFlux<>(() ->
@@ -122,9 +121,9 @@ class RecognizeCategorizedEntityAsyncClient {
      * @param options aa
      * @param context a
      *
-     * @return text analytics flux of {@link EntitiesResult}
+     * @return text analytics flux of {@link RecognizeCategorizedEntitiesResult}
      */
-    TextAnalyticsPagedFlux<EntitiesResult<CategorizedEntity>> recognizeEntitiesBatchWithContext(
+    TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatchWithContext(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
 
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
@@ -139,30 +138,30 @@ class RecognizeCategorizedEntityAsyncClient {
                 .doOnSuccess(response -> logger.info("A batch of categorized entities output - {}",
                     response.getValue()))
                 .doOnError(error -> logger.warning("Failed to recognize categorized entities - {}", error))
-                .map(response -> toTextAnalyticsPagedResponse(response, textInputs))
+                .map(this::toTextAnalyticsPagedResponse)
                 .flux());
     }
 
     /**
      * Helper method to convert the service response of
-     * {@link com.azure.ai.textanalytics.implementation.models.EntitiesResult} to {@link TextAnalyticsPagedResponse}.
-     * of {@link EntitiesResult} of {@link CategorizedEntity}}
+     * {@link EntitiesResult} to {@link TextAnalyticsPagedResponse}.
+     * of {@link RecognizeCategorizedEntitiesResult}}
+     *
      * @param response the {@link SimpleResponse} returned by the service.
-     * @return the {@link TextAnalyticsPagedResponse} of {@link EntitiesResult} to be returned by the SDK.
+     *
+     * @return the {@link TextAnalyticsPagedResponse} of {@link RecognizeCategorizedEntitiesResult} to be
+     * returned by the SDK.
      */
-    private TextAnalyticsPagedResponse<EntitiesResult<CategorizedEntity>> toTextAnalyticsPagedResponse(
-        final SimpleResponse<com.azure.ai.textanalytics.implementation.models.EntitiesResult> response,
-        final Iterable<TextDocumentInput> textInputs) {
+    private TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult> toTextAnalyticsPagedResponse(
+        final SimpleResponse<EntitiesResult> response) {
 
-        com.azure.ai.textanalytics.implementation.models.EntitiesResult entitiesResult = response.getValue();
-        Map<String, String> inputMap = toMap(textInputs); // key = id, value = input text
+        EntitiesResult entitiesResult = response.getValue();
 
-        List<EntitiesResult<CategorizedEntity>> recognizeCategorizedEntitiesResults = new ArrayList<>();
+        List<RecognizeCategorizedEntitiesResult> recognizeCategorizedEntitiesResults = new ArrayList<>();
         for (DocumentEntities documentEntities : entitiesResult.getDocuments()) {
             final String documentId = documentEntities.getId();
-            recognizeCategorizedEntitiesResults.add(new EntitiesResult<>(
+            recognizeCategorizedEntitiesResults.add(new RecognizeCategorizedEntitiesResult(
                 documentId,
-                inputMap.get(documentId),
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null,
@@ -178,8 +177,8 @@ class RecognizeCategorizedEntityAsyncClient {
                 toTextAnalyticsError(documentError.getError());
             final String documentId = documentError.getId();
 
-            recognizeCategorizedEntitiesResults.add(new EntitiesResult<>(
-                documentId, inputMap.get(documentId), null, error, null));
+            recognizeCategorizedEntitiesResults.add(new RecognizeCategorizedEntitiesResult(
+                documentId, null, error, null));
         }
 
         return new TextAnalyticsPagedResponse<>(
@@ -190,12 +189,5 @@ class RecognizeCategorizedEntityAsyncClient {
             null,
             entitiesResult.getModelVersion(),
             entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics()));
-    }
-
-    private Map<String, String> toMap(Iterable<TextDocumentInput> textInputs) {
-        Map<String, String> inputsMap = new HashMap<>();
-        textInputs.forEach(textDocumentInput ->
-            inputsMap.put(textDocumentInput.getId(), textDocumentInput.getText()));
-        return inputsMap;
     }
 }

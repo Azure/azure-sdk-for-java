@@ -6,9 +6,10 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
+import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.models.EntitiesResult;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -20,10 +21,8 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -78,14 +77,14 @@ class RecognizePiiEntityAsyncClient {
                 Collections.singletonList(new TextDocumentInput("0", text, language)), null)
                 .byPage()
                 .map(resOfResult -> {
-                    Iterator<EntitiesResult<PiiEntity>> iterator = resOfResult.getValue().iterator();
+                    Iterator<RecognizePiiEntitiesResult> iterator = resOfResult.getValue().iterator();
                     // Collection will never empty
                     if (!iterator.hasNext()) {
                         throw logger.logExceptionAsError(new IllegalStateException(
                             "An empty collection returned which is an unexpected error."));
                     }
 
-                    final EntitiesResult<PiiEntity> entitiesResult = iterator.next();
+                    final RecognizePiiEntitiesResult entitiesResult = iterator.next();
                     if (entitiesResult.isError()) {
                         throw logger.logExceptionAsError(
                             Transforms.toTextAnalyticsException(entitiesResult.getError()));
@@ -129,7 +128,7 @@ class RecognizePiiEntityAsyncClient {
      *
      * @return a
      */
-    TextAnalyticsPagedFlux<EntitiesResult<PiiEntity>> recognizePiiEntitiesBatch(Iterable<TextDocumentInput> textInputs,
+    TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(Iterable<TextDocumentInput> textInputs,
                                                                                  TextAnalyticsRequestOptions options) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         try {
@@ -145,7 +144,7 @@ class RecognizePiiEntityAsyncClient {
                         response.getValue()))
                     .doOnError(error ->
                         logger.warning("Failed to recognize Personally Identifiable Information entities - {}", error))
-                    .map(response -> toTextAnalyticsPagedResponse(response, textInputs)))
+                    .map(this::toTextAnalyticsPagedResponse))
                 .flux());
         } catch (RuntimeException ex) {
             return new TextAnalyticsPagedFlux<>(() ->
@@ -161,9 +160,9 @@ class RecognizePiiEntityAsyncClient {
      * @param options aa
      * @param context a
      *
-     * @return text analytics flux of {@link EntitiesResult} of {@link PiiEntity}
+     * @return text analytics flux of {@link RecognizePiiEntitiesResult}.
      */
-    TextAnalyticsPagedFlux<EntitiesResult<PiiEntity>> recognizePiiEntitiesBatchWithContext(
+    TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatchWithContext(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
 
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
@@ -180,35 +179,30 @@ class RecognizePiiEntityAsyncClient {
                         response.getValue()))
                 .doOnError(error ->
                     logger.warning("Failed to recognize Personally Identifiable Information entities - {}", error))
-                .map(response -> toTextAnalyticsPagedResponse(response, textInputs))
+                .map(this::toTextAnalyticsPagedResponse)
                 .flux());
     }
 
     /**
      * Helper method to convert the service response of
-     * {@link com.azure.ai.textanalytics.implementation.models.EntitiesResult} to {@link TextAnalyticsPagedResponse}
-     * of {@link EntitiesResult} of {@link PiiEntity}
+     * {@link EntitiesResult} to {@link TextAnalyticsPagedResponse}
+     * of {@link RecognizePiiEntitiesResult}
      *
      * @param response the {@link SimpleResponse} returned by the service.
-     * @param textInputs The given collection of input texts.
      *
-     * @return the {@link TextAnalyticsPagedResponse} of {@link EntitiesResult} of {@link PiiEntity} to be
-     * returned by the SDK.
+     * @return the {@link TextAnalyticsPagedResponse} of {@link RecognizePiiEntitiesResult} to be returned by the SDK.
      */
-    private TextAnalyticsPagedResponse<EntitiesResult<PiiEntity>> toTextAnalyticsPagedResponse(
-        final SimpleResponse<com.azure.ai.textanalytics.implementation.models.EntitiesResult> response,
-        final Iterable<TextDocumentInput> textInputs) {
+    private TextAnalyticsPagedResponse<RecognizePiiEntitiesResult> toTextAnalyticsPagedResponse(
+        final SimpleResponse<EntitiesResult> response) {
 
-        com.azure.ai.textanalytics.implementation.models.EntitiesResult entitiesResult = response.getValue();
-        Map<String, String> inputMap = toMap(textInputs); // key = id, value = input text
+        EntitiesResult entitiesResult = response.getValue();
 
-        List<EntitiesResult<PiiEntity>> recognizePiiEntitiesResults = new ArrayList<>();
+        List<RecognizePiiEntitiesResult> recognizePiiEntitiesResults = new ArrayList<>();
         for (DocumentEntities documentEntities : entitiesResult.getDocuments()) {
             final String documentId = documentEntities.getId();
 
-            recognizePiiEntitiesResults.add(new EntitiesResult<>(
+            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(
                 documentId,
-                inputMap.get(documentId),
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null,
@@ -224,8 +218,8 @@ class RecognizePiiEntityAsyncClient {
                 toTextAnalyticsError(documentError.getError());
             final String documentId = documentError.getId();
 
-            recognizePiiEntitiesResults.add(new EntitiesResult<>(
-                documentId, inputMap.get(documentId), null, error, null));
+            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(
+                documentId, null, error, null));
         }
 
         return new TextAnalyticsPagedResponse<>(
@@ -237,12 +231,5 @@ class RecognizePiiEntityAsyncClient {
             entitiesResult.getModelVersion(),
             entitiesResult.getStatistics() == null ? null
                 : toBatchStatistics(entitiesResult.getStatistics()));
-    }
-
-    private Map<String, String> toMap(Iterable<TextDocumentInput> textInputs) {
-        Map<String, String> inputsMap = new HashMap<>();
-        textInputs.forEach(textDocumentInput ->
-            inputsMap.put(textDocumentInput.getId(), textDocumentInput.getText()));
-        return inputsMap;
     }
 }

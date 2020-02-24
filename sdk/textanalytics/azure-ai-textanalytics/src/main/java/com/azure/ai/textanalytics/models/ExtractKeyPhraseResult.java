@@ -19,14 +19,13 @@ public final class ExtractKeyPhraseResult extends DocumentResult {
      * Create a {@link ExtractKeyPhraseResult} model that describes extracted key phrases result.
      *
      * @param id Unique, non-empty document identifier.
-     * @param inputText The input text in request.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      * @param keyPhrases A list of key phrases string.
      */
-    public ExtractKeyPhraseResult(String id, String inputText, TextDocumentStatistics textDocumentStatistics,
+    public ExtractKeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error, IterableStream<String> keyPhrases) {
-        super(id, inputText, textDocumentStatistics, error);
+        super(id, textDocumentStatistics, error);
         this.keyPhrases = keyPhrases == null ? new IterableStream<>(new ArrayList<>()) : keyPhrases;
     }
 

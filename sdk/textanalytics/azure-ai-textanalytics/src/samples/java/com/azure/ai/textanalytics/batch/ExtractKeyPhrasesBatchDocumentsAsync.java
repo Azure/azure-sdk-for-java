@@ -26,8 +26,8 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("b2f8b7b697c348dcb0e30055d49f3d0f"))
-            .endpoint("https://javatextanalyticstestresources.cognitiveservices.azure.com/")
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildAsyncClient();
 
         // The texts that need be analyzed.
@@ -54,7 +54,7 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
 
                 // Extracted key phrase for each of document from a batch of documents
                 pagedResponse.getElements().forEach(extractKeyPhraseResult -> {
-                    System.out.printf("%nDocument ID: %s, input text: %s%n", extractKeyPhraseResult.getId(), extractKeyPhraseResult.getInputText());
+                    System.out.printf("%nDocument ID: %s%n", extractKeyPhraseResult.getId());
                     if (extractKeyPhraseResult.isError()) {
                         // Erroneous document
                         System.out.printf("Cannot extract key phrases. Error: %s%n", extractKeyPhraseResult.getError().getMessage());

@@ -105,10 +105,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#detectLanguageBatch(Iterable, String)}
+     * Code snippet for {@link TextAnalyticsClient#detectLanguageBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     public void detectLanguageStringListWithOptions() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#Iterable-String
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#Iterable-String-TextAnalyticsRequestOptions
         List<String> textInputs = Arrays.asList(
             "This is written in English",
             "Este es un document escrito en Español."
@@ -127,7 +127,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 //            System.out.printf("Primary language name: %s, ISO 6391 name: %s, score: %.2f.%n",
 //                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
 //        }
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#Iterable-String
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#Iterable-String-TextAnalyticsRequestOptions
     }
 
     /**
@@ -217,10 +217,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizeCategorizedEntitiesBatch(Iterable, String)}
+     * Code snippet for {@link TextAnalyticsClient#recognizeCategorizedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     public void recognizeEntitiesStringListWithOptions() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntitiesBatch#Iterable-String
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
 //        List<String> textInputs = Arrays.asList(
 //            "I had a wonderful trip to Seattle last week.",
 //            "I work at Microsoft.");
@@ -240,7 +240,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 //                    entity.getText(), entity.getCategory(), entity.getScore());
 //            }
 //        }
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntitiesBatch#Iterable-String
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
     }
 
     /**
@@ -328,10 +328,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntitiesBatch(Iterable, String)}
+     * Code snippet for {@link TextAnalyticsClient#recognizePiiEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     public void recognizePiiEntitiesStringListWithOptions() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
         List<String> textInputs = Arrays.asList(
             "My SSN is 555-55-5555",
             "Visa card 4111 1111 1111 1111"
@@ -352,7 +352,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 //                    entity.getText(), entity.getCategory(), entity.getScore());
 //            }
 //        }
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
     }
 
     /**
@@ -473,10 +473,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizeLinkedEntitiesBatch(Iterable, String)}
+     * Code snippet for {@link TextAnalyticsClient#recognizeLinkedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     public void recognizeLinkedEntitiesStringListWithOptions() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-String
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
         List<String> textInputs = Arrays.asList(
             "Old Faithful is a geyser at Yellowstone Park.",
             "Mount Shasta has lenticular clouds."
@@ -507,7 +507,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 //                }
 //            }
 //        }
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-String
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
     }
 
     /**
@@ -609,10 +609,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#extractKeyPhrasesBatch(Iterable, String)}
+     * Code snippet for {@link TextAnalyticsClient#extractKeyPhrasesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     public void extractKeyPhrasesStringListWithOptions() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#Iterable-String
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#Iterable-String-TextAnalyticsRequestOptions
         List<String> textInputs = Arrays.asList(
             "My cat might need to see a veterinarian.",
             "The pitot tube is used to measure airspeed."
@@ -637,7 +637,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 //                System.out.printf("%s.%n", keyPhrase);
 //            }
 //        }
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#Iterable-String
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#Iterable-String-TextAnalyticsRequestOptions
     }
 
     /**
@@ -770,10 +770,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, String)}
+     * Code snippet for {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     public void analyzeSentimentStringListWithOptions() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-String
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-String-TextAnalyticsRequestOptions
         List<String> textInputs = Arrays.asList(
             "The hotel was dark and unclean. The restaurant had amazing gnocchi.",
             "The restaurant had amazing gnocchi. The hotel was dark and unclean."
@@ -809,7 +809,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 //                    sentenceSentiment.getConfidenceScores().getNegative());
 //            }
 //        }
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-String
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-String-TextAnalyticsRequestOptions
     }
 
     /**

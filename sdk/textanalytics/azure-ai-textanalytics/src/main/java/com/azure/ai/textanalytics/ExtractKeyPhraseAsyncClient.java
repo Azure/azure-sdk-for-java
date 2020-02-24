@@ -20,10 +20,8 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -132,7 +130,7 @@ class ExtractKeyPhraseAsyncClient {
                         logger.info("A batch of key phrases input - {}", textInputs.toString()))
                     .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
                     .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
-                    .map(response -> toTextAnalyticsPagedResponse(response, textInputs)))
+                    .map(this::toTextAnalyticsPagedResponse))
                 .flux());
         } catch (RuntimeException ex) {
             return new TextAnalyticsPagedFlux<>(() ->
@@ -180,7 +178,7 @@ class ExtractKeyPhraseAsyncClient {
                 .doOnSubscribe(ignoredValue -> logger.info("A batch of key phrases input - {}", textInputs.toString()))
                 .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
                 .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
-                .map(response -> toTextAnalyticsPagedResponse(response, textInputs))
+                .map(this::toTextAnalyticsPagedResponse)
                 .flux());
     }
 
@@ -189,22 +187,19 @@ class ExtractKeyPhraseAsyncClient {
      * of {@link ExtractKeyPhraseResult}.
      *
      * @param response the {@link SimpleResponse} returned by the service.
-     * @param textInputs The given collection of input texts.
      *
      * @return the {@link TextAnalyticsPagedResponse} of {@link ExtractKeyPhraseResult} to be returned by the SDK.
      */
     private TextAnalyticsPagedResponse<ExtractKeyPhraseResult> toTextAnalyticsPagedResponse(
-        final SimpleResponse<KeyPhraseResult> response, Iterable<TextDocumentInput> textInputs) {
+        final SimpleResponse<KeyPhraseResult> response) {
 
         KeyPhraseResult keyPhraseResult = response.getValue();
-        Map<String, String> inputMap = toMap(textInputs); // key = id, value = input text
 
         List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
         for (DocumentKeyPhrases documentKeyPhrases : keyPhraseResult.getDocuments()) {
             final String documentId = documentKeyPhrases.getId();
             keyPhraseResultList.add(new ExtractKeyPhraseResult(
                 documentId,
-                inputMap.get(documentId),
                 documentKeyPhrases.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
                 new IterableStream<>(documentKeyPhrases.getKeyPhrases())));
@@ -217,7 +212,7 @@ class ExtractKeyPhraseAsyncClient {
             final String documentId = documentError.getId();
 
             keyPhraseResultList.add(new ExtractKeyPhraseResult(
-                documentId, inputMap.get(documentId), null, error, null));
+                documentId, null, error, null));
         }
 
         return new TextAnalyticsPagedResponse<>(
@@ -228,12 +223,5 @@ class ExtractKeyPhraseAsyncClient {
             null,
             keyPhraseResult.getModelVersion(), keyPhraseResult.getStatistics() == null ? null
             : toBatchStatistics(keyPhraseResult.getStatistics()));
-    }
-
-    private Map<String, String> toMap(Iterable<TextDocumentInput> textInputs) {
-        Map<String, String> inputsMap = new HashMap<>();
-        textInputs.forEach(textDocumentInput ->
-            inputsMap.put(textDocumentInput.getId(), textDocumentInput.getText()));
-        return inputsMap;
     }
 }

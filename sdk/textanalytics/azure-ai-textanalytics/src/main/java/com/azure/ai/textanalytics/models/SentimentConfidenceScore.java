@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * The SentimentConfidenceScorePerLabel model
  */
 @Immutable
-public final class SentimentConfidenceScorePerLabel {
+public final class SentimentConfidenceScore {
     private final double negativeScore;
     private final double neutralScore;
     private final double positiveScore;
@@ -22,7 +22,7 @@ public final class SentimentConfidenceScorePerLabel {
      * @param neutralScore neutral score value, range in between 0 and 1.0
      * @param positiveScore positive score value, range in between 0 and 1.0
      */
-    public SentimentConfidenceScorePerLabel(double negativeScore, double neutralScore, double positiveScore) {
+    public SentimentConfidenceScore(double negativeScore, double neutralScore, double positiveScore) {
         this.negativeScore = negativeScore;
         this.neutralScore = neutralScore;
         this.positiveScore = positiveScore;

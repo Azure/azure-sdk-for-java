@@ -15,14 +15,13 @@ public final class DetectLanguageResult extends DocumentResult {
      * Create a {@code DetectedLanguageResult} model that describes detected languages result.
      *
      * @param id Unique, non-empty document identifier.
-     * @param inputText The input text in request.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      * @param primaryLanguage The detected primary language.
      */
-    public DetectLanguageResult(String id, String inputText, TextDocumentStatistics textDocumentStatistics,
+    public DetectLanguageResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error, DetectedLanguage primaryLanguage) {
-        super(id, inputText, textDocumentStatistics, error);
+        super(id, textDocumentStatistics, error);
         this.primaryLanguage = primaryLanguage;
     }
 

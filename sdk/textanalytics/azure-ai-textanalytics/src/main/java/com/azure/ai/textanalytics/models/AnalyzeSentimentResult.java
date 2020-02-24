@@ -16,14 +16,13 @@ public final class AnalyzeSentimentResult extends DocumentResult {
      * Creates a {@code TextSentimentResult} model that describes analyzed sentiment result.
      *
      * @param id Unique, non-empty document identifier.
-     * @param inputText The input text in request.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      * @param documentSentiment The document sentiment.
      */
-    public AnalyzeSentimentResult(String id, String inputText, TextDocumentStatistics textDocumentStatistics,
+    public AnalyzeSentimentResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error, DocumentSentiment documentSentiment) {
-        super(id, inputText, textDocumentStatistics, error);
+        super(id, textDocumentStatistics, error);
         this.documentSentiment = documentSentiment;
     }
 

@@ -12,7 +12,7 @@ import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentenceSentimentLabel;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScore;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.core.exception.HttpResponseException;
@@ -216,7 +216,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForListLanguageHint() {
         recognizeCategorizedEntitiesLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs, language))
+            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs, language, null))
                 .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities1().getEntities().stream().collect(Collectors.toList()), response.getEntities().stream().collect(Collectors.toList())))
                 .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities2().getEntities().stream().collect(Collectors.toList()), response.getEntities().stream().collect(Collectors.toList())))
                 .verifyComplete());
@@ -396,10 +396,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void analyseSentimentForTextInput() {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(DocumentSentimentLabel.MIXED,
-            new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
+            new SentimentConfidenceScore(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(SentenceSentimentLabel.NEGATIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(SentenceSentimentLabel.POSITIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentiment(SentenceSentimentLabel.NEGATIVE, new SentimentConfidenceScore(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentiment(SentenceSentimentLabel.POSITIVE, new SentimentConfidenceScore(0.0, 0.0, 0.0), 35, 32)
             )));
 //
 //        StepVerifier
@@ -424,10 +424,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyseSentimentForFaultyText() {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
             DocumentSentimentLabel.NEUTRAL,
-            new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
+            new SentimentConfidenceScore(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 4, 1)
+                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScore(0.0, 0.0, 0.0), 1, 0),
+                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScore(0.0, 0.0, 0.0), 4, 1)
             )));
 
         StepVerifier.create(client.analyzeSentiment("!@#%%"))

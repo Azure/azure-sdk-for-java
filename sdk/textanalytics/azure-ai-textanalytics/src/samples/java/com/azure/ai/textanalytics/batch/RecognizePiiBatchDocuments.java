@@ -5,12 +5,7 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.EntitiesResult;
-import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
-import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.util.Context;
 
@@ -30,8 +25,8 @@ public class RecognizePiiBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("b2f8b7b697c348dcb0e30055d49f3d0f"))
-            .endpoint("https://javatextanalyticstestresources.cognitiveservices.azure.com/")
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildClient();
 
         // The texts that need be analyzed.
@@ -40,42 +35,24 @@ public class RecognizePiiBatchDocuments {
             new TextDocumentInput("2", "Visa card 4111 1111 1111 1111", "en")
         );
 
-        // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
-
         // Recognizing batch entities
-        final Iterable<TextAnalyticsPagedResponse<EntitiesResult<PiiEntity>>> recognizedBatchResult =
-            client.recognizePiiEntitiesBatch(inputs, requestOptions, Context.NONE).iterableByPage();
-
-        recognizedBatchResult.forEach(textAnalyticsPagedResponse -> {
-            System.out.printf("Model version: %s%n", textAnalyticsPagedResponse.getModelVersion());
-
-            // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = textAnalyticsPagedResponse.getStatistics();
-            System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
-                batchStatistics.getDocumentCount(),
-                batchStatistics.getInvalidDocumentCount(),
-                batchStatistics.getTransactionCount(),
-                batchStatistics.getValidDocumentCount());
-
+        client.recognizePiiEntitiesBatch(inputs, null, Context.NONE).forEach(entitiesResult -> {
             // Recognized Personally Identifiable Information entities for each of document from a batch of documents
-            textAnalyticsPagedResponse.getElements().forEach(entitiesResult -> {
-                System.out.printf("%nDocument ID: %s, input text: %s%n", entitiesResult.getId(), entitiesResult.getInputText());
-                if (entitiesResult.isError()) {
-                    // Erroneous document
-                    System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n", entitiesResult.getError().getMessage());
-                } else {
-                    // Valid document
-                    entitiesResult.getEntities().forEach(entity ->
-                        System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                            entity.getText(),
-                            entity.getCategory(),
-                            entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                            entity.getOffset(),
-                            entity.getLength(),
-                            entity.getScore()));
-                }
-            });
+            System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
+            if (entitiesResult.isError()) {
+                // Erroneous document
+                System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n", entitiesResult.getError().getMessage());
+            } else {
+                // Valid document
+                entitiesResult.getEntities().forEach(entity ->
+                    System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
+                        entity.getText(),
+                        entity.getCategory(),
+                        entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
+                        entity.getOffset(),
+                        entity.getLength(),
+                        entity.getScore()));
+            }
         });
     }
 }

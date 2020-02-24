@@ -13,7 +13,7 @@ import com.azure.core.annotation.Immutable;
 public final class SentenceSentiment {
     private final int length;
     private final int offset;
-    private final SentimentConfidenceScorePerLabel confidenceScores;
+    private final SentimentConfidenceScore confidenceScores;
     private final SentenceSentimentLabel sentiment;
 
     /**
@@ -25,7 +25,7 @@ public final class SentenceSentiment {
      * @param length length of the sentence.
      * @param offset the offset from the start of the sentence.
      */
-    public SentenceSentiment(SentenceSentimentLabel sentiment, SentimentConfidenceScorePerLabel confidenceScores,
+    public SentenceSentiment(SentenceSentimentLabel sentiment, SentimentConfidenceScore confidenceScores,
         int length, int offset) {
         this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
@@ -64,9 +64,9 @@ public final class SentenceSentiment {
      * Get the confidence score of the sentiment label. All score values sum up to 1, higher the score value means
      * higher confidence the sentiment label represents.
      *
-     * @return the {@link SentimentConfidenceScorePerLabel}.
+     * @return the {@link SentimentConfidenceScore}.
      */
-    public SentimentConfidenceScorePerLabel getConfidenceScores() {
+    public SentimentConfidenceScore getConfidenceScores() {
         return confidenceScores;
     }
 }

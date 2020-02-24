@@ -27,8 +27,8 @@ public class DetectLanguageBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("b2f8b7b697c348dcb0e30055d49f3d0f"))
-            .endpoint("https://javatextanalyticstestresources.cognitiveservices.azure.com/")
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildAsyncClient();
 
         // The texts that need be analyzed.
@@ -55,7 +55,7 @@ public class DetectLanguageBatchDocumentsAsync {
 
                 // Detected languages for a document from a batch of documents
                 pagedResponse.getElements().forEach(detectLanguageResult -> {
-                    System.out.printf("%nDocument ID: %s, input text: %s%n", detectLanguageResult.getId(), detectLanguageResult.getInputText());
+                    System.out.printf("%nDocument ID: %s%n", detectLanguageResult.getId());
                     if (detectLanguageResult.isError()) {
                         // Erroneous document
                         System.out.printf("Cannot detect language. Error: %s%n", detectLanguageResult.getError().getMessage());

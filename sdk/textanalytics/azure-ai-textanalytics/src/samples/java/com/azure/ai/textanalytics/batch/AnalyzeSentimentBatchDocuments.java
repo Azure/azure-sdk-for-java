@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics.batch;
 
-import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
@@ -35,18 +34,18 @@ public class AnalyzeSentimentBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("b2f8b7b697c348dcb0e30055d49f3d0f"))
-            .endpoint("https://javatextanalyticstestresources.cognitiveservices.azure.com/")
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildClient();
 
         // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("1", "The hotel was dark and unclean. The restaurant had amazing gnocchi.", "en"),
-            new TextDocumentInput("2", "The restaurant had amazing gnocchi. The hotel was dark and unclean.", "en")
+            new TextDocumentInput("1", "The hotel was dark and unclean. I wouldn't recommend staying there.", "en"),
+            new TextDocumentInput("2", "The restaurant had amazing gnocchi! The waiters were excellent.", "en")
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true).setModelVersion("latest");
 
         // Analyzing batch sentiments
         final Iterable<TextAnalyticsPagedResponse<AnalyzeSentimentResult>> sentimentBatchResult =
@@ -65,7 +64,7 @@ public class AnalyzeSentimentBatchDocuments {
 
             // Analyzed sentiment for each of document from a batch of documents
             pagedResponse.getElements().forEach(analyzeSentimentResult -> {
-                System.out.printf("%nDocument ID: %s, input text: %s%n", analyzeSentimentResult.getId(), analyzeSentimentResult.getInputText());
+                System.out.printf("%nDocument ID: %s%n", analyzeSentimentResult.getId());
                 if (analyzeSentimentResult.isError()) {
                     // Erroneous document
                     System.out.printf("Cannot analyze sentiment. Error: %s%n", analyzeSentimentResult.getError().getMessage());
@@ -111,7 +110,7 @@ public class AnalyzeSentimentBatchDocuments {
         Stream<AnalyzeSentimentResult> result = sentimentBatchResult.stream().filter(analyzeSentimentResult ->
             analyzeSentimentResult.getDocumentSentiment().getSentiment().equals(DocumentSentimentLabel.POSITIVE));
         result.forEach(analyzeSentimentResult -> {
-            System.out.printf("%nDocument ID: %s, input text: %s%n", analyzeSentimentResult.getId(), analyzeSentimentResult.getInputText());
+            System.out.printf("%nDocument ID: %s%n", analyzeSentimentResult.getId());
             if (analyzeSentimentResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot analyze sentiment. Error: %s%n", analyzeSentimentResult.getError().getMessage());
@@ -158,7 +157,7 @@ public class AnalyzeSentimentBatchDocuments {
 
         sentimentBatchResult.stream().sorted(Comparator.comparing(DocumentResult::getId))
             .forEach(sentimentResult -> {
-                System.out.printf("%nDocument ID: %s, input text: %s%n", sentimentResult.getId(), sentimentResult.getInputText());
+                System.out.printf("%nDocument ID: %s%n", sentimentResult.getId());
                 final DocumentSentiment documentSentiment = sentimentResult.getDocumentSentiment();
                 System.out.printf("Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
                     documentSentiment.getSentiment(),

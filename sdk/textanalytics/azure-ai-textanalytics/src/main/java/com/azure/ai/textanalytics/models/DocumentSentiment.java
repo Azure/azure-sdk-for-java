@@ -13,7 +13,7 @@ import com.azure.core.util.IterableStream;
 @Immutable
 public final class DocumentSentiment {
     private final DocumentSentimentLabel sentiment;
-    private final SentimentConfidenceScorePerLabel confidenceScores;
+    private final SentimentConfidenceScore confidenceScores;
     private final IterableStream<SentenceSentiment> sentences;
 
     /**
@@ -24,7 +24,7 @@ public final class DocumentSentiment {
      *   Higher values signify higher confidence.
      * @param sentences a list of sentence sentiments.
      */
-    public DocumentSentiment(DocumentSentimentLabel sentiment, SentimentConfidenceScorePerLabel confidenceScores,
+    public DocumentSentiment(DocumentSentimentLabel sentiment, SentimentConfidenceScore confidenceScores,
         IterableStream<SentenceSentiment> sentences) {
         this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
@@ -44,9 +44,9 @@ public final class DocumentSentiment {
      * Get the sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      * Higher values signify higher confidence.
      *
-     * @return the {@link SentimentConfidenceScorePerLabel}.
+     * @return the {@link SentimentConfidenceScore}.
      */
-    public SentimentConfidenceScorePerLabel getConfidenceScores() {
+    public SentimentConfidenceScore getConfidenceScores() {
         return confidenceScores;
     }
 

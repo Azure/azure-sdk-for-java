@@ -8,10 +8,10 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.EntitiesResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -391,8 +391,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 //    }
 
     static void validateCategorizedEntity(boolean showStatistics,
-        TextAnalyticsPagedResponse<EntitiesResult<CategorizedEntity>> expected,
-        TextAnalyticsPagedResponse<EntitiesResult<CategorizedEntity>> actual) {
+        TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult> expected,
+        TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult> actual) {
 
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateCategorizedEntities(expectedItem.getEntities().stream().collect(Collectors.toList()), actualItem.getEntities().stream().collect(Collectors.toList())));
