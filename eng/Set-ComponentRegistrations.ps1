@@ -80,6 +80,9 @@ function Get-Dependencies($pomFile) {
     $temp = New-TemporaryFile
     Write-Host "Getting dependencies for $($pomFile.FullName) -> $($temp.FullName)"
 
+    Write-Host "Writing to output..."
+    Invoke-Expression "$($maven.Path) -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
+
     Write-Host "Writing to file..."
     Invoke-Expression "$($maven.Path) -DoutputFile=$($temp.FullName) -q -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
 
@@ -159,6 +162,8 @@ $maven = $allMavenInstallations[0]
 
 Write-Host "Maven installation..."
 $maven | Format-List *
+
+Invoke-Expression "/usr/share/apache-maven-3.6.3/bin/mvn --version"
 
 $pomFiles = Get-ChildItem -Path $Directory -Filter pom.xml -Recurse -File | Where-Object {
     ($null -eq $ExcludeRegex) -or ($ExcludeRegex.Length -eq 0) -or ($_.Directory.Name -notmatch $ExcludeRegex)
