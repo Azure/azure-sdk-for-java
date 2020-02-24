@@ -4,10 +4,6 @@
 package com.azure.search;
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.search.implementation.SerializationUtil;
 import com.azure.search.models.Index;
 import com.azure.search.test.environment.setup.SearchIndexService;
@@ -92,22 +88,17 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
     }
 
     SearchIndexClientBuilder getClientBuilder(String indexName) {
-        if (!interceptorManager.isPlaybackMode()) {
-            return new SearchIndexClientBuilder()
-                .endpoint(endpoint)
-                .indexName(indexName)
-                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .credential(searchApiKeyCredential)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
-                .addPolicy(new HttpLoggingPolicy(
-                    new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-        } else {
-            return new SearchIndexClientBuilder()
-                .endpoint(endpoint)
-                .indexName(indexName)
-                .httpClient(interceptorManager.getPlaybackClient());
+        SearchIndexClientBuilder builder = new SearchIndexClientBuilder().endpoint(endpoint)
+            .indexName(indexName);
+        if (interceptorManager.isPlaybackMode()) {
+            return builder.httpClient(interceptorManager.getPlaybackClient());
         }
+        builder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+            .credential(searchApiKeyCredential);
+        if (!liveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        return builder;
     }
 
     protected void setupIndex(Index index) {

@@ -319,6 +319,14 @@
       "\"moduleName\"": "\"StreamAnalytics\""
     }
   },
+  "synapse/resource-manager": {
+    "source": "specification/synapse/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "timeseriesinsights/resource-manager": {
+    "source": "specification/timeseriesinsights/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "vmwarecloudsimple/resource-manager": {
     "source": "specification/vmwarecloudsimple/resource-manager/readme.md",
     "args": "--multiapi --fluent",

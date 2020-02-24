@@ -251,7 +251,7 @@ for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text)) {
 ```java
 String text = "My SSN is 555-55-5555";
 for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text)) {
-    System.out.printf("Recognized PII entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
+    System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
         entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
 }
 ```
@@ -263,8 +263,8 @@ for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text)) {
 String text = "Old Faithful is a geyser at Yellowstone Park.";
 for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text)) {
     System.out.println("Linked Entities:");
-    System.out.printf("Name: %s, ID: %s, URL: %s, data source: %s.%n",
-        linkedEntity.getName(), linkedEntity.getId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+    System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
+        linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
     for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
         System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n", linkedEntityMatch.getText(),
             linkedEntityMatch.getOffset(), linkedEntityMatch.getLength(), linkedEntityMatch.getScore());

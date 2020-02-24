@@ -11,7 +11,8 @@ import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
  */
 public class RecognizePii {
     /**
-     * Main method to invoke this demo about how to recognize the PII entities of an input text.
+     * Main method to invoke this demo about how to recognize the Personally Identifiable Information entities of
+     * an input text.
      *
      * @param args Unused arguments to the program.
      */

@@ -77,6 +77,12 @@ class WebJobsIdentityTest {
                                               return Mono.just(token);
                                           }
                                       }).block();
+
+        if (accessToken == null) {
+            System.out.println("Error: Access token is null.");
+            return;
+        }
+
         System.out.printf("Received token with length %d and expiry at %s %n "
                               + "testMSIEndpointWithSystemAssigned - Succeeded %n",
             accessToken.getToken().length(), accessToken.getExpiresAt().format(DateTimeFormatter.ISO_DATE_TIME));
@@ -132,6 +138,12 @@ class WebJobsIdentityTest {
                                               return Mono.just(token);
                                           }
                                       }).block();
+
+        if (accessToken == null) {
+            System.out.println("Error: Access token is null.");
+            return;
+        }
+
         System.out.printf("Received token with length %d and expiry at %s %n "
                               + "testMSIEndpointWithUserAssigned - succeeded %n",
             accessToken.getToken().length(), accessToken.getExpiresAt().format(DateTimeFormatter.ISO_DATE_TIME));

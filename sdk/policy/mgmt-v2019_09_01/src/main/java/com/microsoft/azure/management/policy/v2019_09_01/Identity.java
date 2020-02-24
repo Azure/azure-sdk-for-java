@@ -27,7 +27,9 @@ public class Identity {
     private String tenantId;
 
     /**
-     * The identity type. Possible values include: 'SystemAssigned', 'None'.
+     * The identity type. This is the only required field when adding a system
+     * assigned identity to a resource. Possible values include:
+     * 'SystemAssigned', 'None'.
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
@@ -51,7 +53,7 @@ public class Identity {
     }
 
     /**
-     * Get the identity type. Possible values include: 'SystemAssigned', 'None'.
+     * Get the identity type. This is the only required field when adding a system assigned identity to a resource. Possible values include: 'SystemAssigned', 'None'.
      *
      * @return the type value
      */
@@ -60,7 +62,7 @@ public class Identity {
     }
 
     /**
-     * Set the identity type. Possible values include: 'SystemAssigned', 'None'.
+     * Set the identity type. This is the only required field when adding a system assigned identity to a resource. Possible values include: 'SystemAssigned', 'None'.
      *
      * @param type the type value to set
      * @return the Identity object itself.
