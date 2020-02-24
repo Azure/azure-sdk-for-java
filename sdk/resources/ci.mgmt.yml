@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/resources/mgmt-
+      - sdk/resources/
+    exclude:
+      - sdk/resources/azure
+      - sdk/resources/microsoft-azure
+      - sdk/resources/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/resources/mgmt-
+      - sdk/resources/
+    exclude:
+      - sdk/resources/azure
+      - sdk/resources/microsoft-azure
+      - sdk/resources/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

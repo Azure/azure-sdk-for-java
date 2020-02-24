@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/postgresql/mgmt-
+      - sdk/postgresql/
+    exclude:
+      - sdk/postgresql/azure
+      - sdk/postgresql/microsoft-azure
+      - sdk/postgresql/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/postgresql/mgmt-
+      - sdk/postgresql/
+    exclude:
+      - sdk/postgresql/azure
+      - sdk/postgresql/microsoft-azure
+      - sdk/postgresql/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

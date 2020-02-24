@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/cosmos/mgmt-
+      - sdk/cosmos/
+    exclude:
+      - sdk/cosmos/azure
+      - sdk/cosmos/microsoft-azure
+      - sdk/cosmos/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/cosmos/mgmt-
+      - sdk/cosmos/
+    exclude:
+      - sdk/cosmos/azure
+      - sdk/cosmos/microsoft-azure
+      - sdk/cosmos/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

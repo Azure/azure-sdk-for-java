@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/edgegateway/mgmt-
+      - sdk/edgegateway/
+    exclude:
+      - sdk/edgegateway/azure
+      - sdk/edgegateway/microsoft-azure
+      - sdk/edgegateway/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/edgegateway/mgmt-
+      - sdk/edgegateway/
+    exclude:
+      - sdk/edgegateway/azure
+      - sdk/edgegateway/microsoft-azure
+      - sdk/edgegateway/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/signalr/mgmt-
+      - sdk/signalr/
+    exclude:
+      - sdk/signalr/azure
+      - sdk/signalr/microsoft-azure
+      - sdk/signalr/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/signalr/mgmt-
+      - sdk/signalr/
+    exclude:
+      - sdk/signalr/azure
+      - sdk/signalr/microsoft-azure
+      - sdk/signalr/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/dns/mgmt-
+      - sdk/dns/
+    exclude:
+      - sdk/dns/azure
+      - sdk/dns/microsoft-azure
+      - sdk/dns/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/dns/mgmt-
+      - sdk/dns/
+    exclude:
+      - sdk/dns/azure
+      - sdk/dns/microsoft-azure
+      - sdk/dns/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

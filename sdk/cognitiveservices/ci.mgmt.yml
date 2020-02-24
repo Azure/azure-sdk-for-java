@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/cognitiveservices/mgmt-
+      - sdk/cognitiveservices/
+    exclude:
+      - sdk/cognitiveservices/azure
+      - sdk/cognitiveservices/microsoft-azure
+      - sdk/cognitiveservices/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/cognitiveservices/mgmt-
+      - sdk/cognitiveservices/
+    exclude:
+      - sdk/cognitiveservices/azure
+      - sdk/cognitiveservices/microsoft-azure
+      - sdk/cognitiveservices/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

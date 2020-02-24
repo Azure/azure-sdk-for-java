@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/features/mgmt-
+      - sdk/features/
+    exclude:
+      - sdk/features/azure
+      - sdk/features/microsoft-azure
+      - sdk/features/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/features/mgmt-
+      - sdk/features/
+    exclude:
+      - sdk/features/azure
+      - sdk/features/microsoft-azure
+      - sdk/features/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/datamigration/mgmt-
+      - sdk/datamigration/
+    exclude:
+      - sdk/datamigration/azure
+      - sdk/datamigration/microsoft-azure
+      - sdk/datamigration/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/datamigration/mgmt-
+      - sdk/datamigration/
+    exclude:
+      - sdk/datamigration/azure
+      - sdk/datamigration/microsoft-azure
+      - sdk/datamigration/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

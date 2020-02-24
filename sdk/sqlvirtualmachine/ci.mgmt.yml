@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/sqlvirtualmachine/mgmt-
+      - sdk/sqlvirtualmachine/
+    exclude:
+      - sdk/sqlvirtualmachine/azure
+      - sdk/sqlvirtualmachine/microsoft-azure
+      - sdk/sqlvirtualmachine/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/sqlvirtualmachine/mgmt-
+      - sdk/sqlvirtualmachine/
+    exclude:
+      - sdk/sqlvirtualmachine/azure
+      - sdk/sqlvirtualmachine/microsoft-azure
+      - sdk/sqlvirtualmachine/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

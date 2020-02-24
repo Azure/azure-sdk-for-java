@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/notificationhubs/mgmt-
+      - sdk/notificationhubs/
+    exclude:
+      - sdk/notificationhubs/azure
+      - sdk/notificationhubs/microsoft-azure
+      - sdk/notificationhubs/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/notificationhubs/mgmt-
+      - sdk/notificationhubs/
+    exclude:
+      - sdk/notificationhubs/azure
+      - sdk/notificationhubs/microsoft-azure
+      - sdk/notificationhubs/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

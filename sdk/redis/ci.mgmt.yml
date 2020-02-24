@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/redis/mgmt-
+      - sdk/redis/
+    exclude:
+      - sdk/redis/azure
+      - sdk/redis/microsoft-azure
+      - sdk/redis/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/redis/mgmt-
+      - sdk/redis/
+    exclude:
+      - sdk/redis/azure
+      - sdk/redis/microsoft-azure
+      - sdk/redis/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/timeseriesinsights/mgmt-
+      - sdk/timeseriesinsights/
+    exclude:
+      - sdk/timeseriesinsights/azure
+      - sdk/timeseriesinsights/microsoft-azure
+      - sdk/timeseriesinsights/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/timeseriesinsights/mgmt-
+      - sdk/timeseriesinsights/
+    exclude:
+      - sdk/timeseriesinsights/azure
+      - sdk/timeseriesinsights/microsoft-azure
+      - sdk/timeseriesinsights/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

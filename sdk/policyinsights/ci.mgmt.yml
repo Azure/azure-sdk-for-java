@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/policyinsights/mgmt-
+      - sdk/policyinsights/
+    exclude:
+      - sdk/policyinsights/azure
+      - sdk/policyinsights/microsoft-azure
+      - sdk/policyinsights/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/policyinsights/mgmt-
+      - sdk/policyinsights/
+    exclude:
+      - sdk/policyinsights/azure
+      - sdk/policyinsights/microsoft-azure
+      - sdk/policyinsights/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

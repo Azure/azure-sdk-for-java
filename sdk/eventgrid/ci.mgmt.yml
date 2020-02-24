@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/eventgrid/mgmt-
+      - sdk/eventgrid/
+    exclude:
+      - sdk/eventgrid/azure
+      - sdk/eventgrid/microsoft-azure
+      - sdk/eventgrid/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/eventgrid/mgmt-
+      - sdk/eventgrid/
+    exclude:
+      - sdk/eventgrid/azure
+      - sdk/eventgrid/microsoft-azure
+      - sdk/eventgrid/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

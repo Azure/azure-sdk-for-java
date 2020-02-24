@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/sql/mgmt-
+      - sdk/sql/
+    exclude:
+      - sdk/sql/azure
+      - sdk/sql/microsoft-azure
+      - sdk/sql/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/sql/mgmt-
+      - sdk/sql/
+    exclude:
+      - sdk/sql/azure
+      - sdk/sql/microsoft-azure
+      - sdk/sql/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

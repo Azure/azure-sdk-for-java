@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/marketplaceordering/mgmt-
+      - sdk/marketplaceordering/
+    exclude:
+      - sdk/marketplaceordering/azure
+      - sdk/marketplaceordering/microsoft-azure
+      - sdk/marketplaceordering/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/marketplaceordering/mgmt-
+      - sdk/marketplaceordering/
+    exclude:
+      - sdk/marketplaceordering/azure
+      - sdk/marketplaceordering/microsoft-azure
+      - sdk/marketplaceordering/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

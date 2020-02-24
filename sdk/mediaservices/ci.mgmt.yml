@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/mediaservices/mgmt-
+      - sdk/mediaservices/
+    exclude:
+      - sdk/mediaservices/azure
+      - sdk/mediaservices/microsoft-azure
+      - sdk/mediaservices/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/mediaservices/mgmt-
+      - sdk/mediaservices/
+    exclude:
+      - sdk/mediaservices/azure
+      - sdk/mediaservices/microsoft-azure
+      - sdk/mediaservices/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

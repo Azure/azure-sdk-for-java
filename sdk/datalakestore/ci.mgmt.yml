@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/datalakestore/mgmt-
+      - sdk/datalakestore/
+    exclude:
+      - sdk/datalakestore/azure
+      - sdk/datalakestore/microsoft-azure
+      - sdk/datalakestore/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/datalakestore/mgmt-
+      - sdk/datalakestore/
+    exclude:
+      - sdk/datalakestore/azure
+      - sdk/datalakestore/microsoft-azure
+      - sdk/datalakestore/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

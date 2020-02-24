@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/deploymentmanager/mgmt-
+      - sdk/deploymentmanager/
+    exclude:
+      - sdk/deploymentmanager/azure
+      - sdk/deploymentmanager/microsoft-azure
+      - sdk/deploymentmanager/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/deploymentmanager/mgmt-
+      - sdk/deploymentmanager/
+    exclude:
+      - sdk/deploymentmanager/azure
+      - sdk/deploymentmanager/microsoft-azure
+      - sdk/deploymentmanager/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

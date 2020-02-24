@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/appservice/mgmt-
+      - sdk/appservice/
+    exclude:
+      - sdk/appservice/azure
+      - sdk/appservice/microsoft-azure
+      - sdk/appservice/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/appservice/mgmt-
+      - sdk/appservice/
+    exclude:
+      - sdk/appservice/azure
+      - sdk/appservice/microsoft-azure
+      - sdk/appservice/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

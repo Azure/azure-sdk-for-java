@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/loganalytics/mgmt-
+      - sdk/loganalytics/
+    exclude:
+      - sdk/loganalytics/azure
+      - sdk/loganalytics/microsoft-azure
+      - sdk/loganalytics/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/loganalytics/mgmt-
+      - sdk/loganalytics/
+    exclude:
+      - sdk/loganalytics/azure
+      - sdk/loganalytics/microsoft-azure
+      - sdk/loganalytics/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

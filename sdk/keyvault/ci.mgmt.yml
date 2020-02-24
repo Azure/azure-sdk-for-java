@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/keyvault/mgmt-
+      - sdk/keyvault/
+    exclude:
+      - sdk/keyvault/azure
+      - sdk/keyvault/microsoft-azure
+      - sdk/keyvault/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/keyvault/mgmt-
+      - sdk/keyvault/
+    exclude:
+      - sdk/keyvault/azure
+      - sdk/keyvault/microsoft-azure
+      - sdk/keyvault/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

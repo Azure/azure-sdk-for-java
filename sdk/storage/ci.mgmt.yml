@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/storage/mgmt-
+      - sdk/storage/
+    exclude:
+      - sdk/storage/azure
+      - sdk/storage/microsoft-azure
+      - sdk/storage/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/storage/mgmt-
+      - sdk/storage/
+    exclude:
+      - sdk/storage/azure
+      - sdk/storage/microsoft-azure
+      - sdk/storage/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

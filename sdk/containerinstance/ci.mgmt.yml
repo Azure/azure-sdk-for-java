@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/containerinstance/mgmt-
+      - sdk/containerinstance/
+    exclude:
+      - sdk/containerinstance/azure
+      - sdk/containerinstance/microsoft-azure
+      - sdk/containerinstance/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/containerinstance/mgmt-
+      - sdk/containerinstance/
+    exclude:
+      - sdk/containerinstance/azure
+      - sdk/containerinstance/microsoft-azure
+      - sdk/containerinstance/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

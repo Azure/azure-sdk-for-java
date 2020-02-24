@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/powerbidedicated/mgmt-
+      - sdk/powerbidedicated/
+    exclude:
+      - sdk/powerbidedicated/azure
+      - sdk/powerbidedicated/microsoft-azure
+      - sdk/powerbidedicated/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/powerbidedicated/mgmt-
+      - sdk/powerbidedicated/
+    exclude:
+      - sdk/powerbidedicated/azure
+      - sdk/powerbidedicated/microsoft-azure
+      - sdk/powerbidedicated/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

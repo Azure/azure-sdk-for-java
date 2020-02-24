@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/recoveryservices/mgmt-
+      - sdk/recoveryservices/
+    exclude:
+      - sdk/recoveryservices/azure
+      - sdk/recoveryservices/microsoft-azure
+      - sdk/recoveryservices/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/recoveryservices/mgmt-
+      - sdk/recoveryservices/
+    exclude:
+      - sdk/recoveryservices/azure
+      - sdk/recoveryservices/microsoft-azure
+      - sdk/recoveryservices/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

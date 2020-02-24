@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/compute/mgmt-
+      - sdk/compute/
+    exclude:
+      - sdk/compute/azure
+      - sdk/compute/microsoft-azure
+      - sdk/compute/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/compute/mgmt-
+      - sdk/compute/
+    exclude:
+      - sdk/compute/azure
+      - sdk/compute/microsoft-azure
+      - sdk/compute/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

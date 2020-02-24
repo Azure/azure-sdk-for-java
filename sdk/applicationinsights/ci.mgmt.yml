@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/applicationinsights/mgmt-
+      - sdk/applicationinsights/
+    exclude:
+      - sdk/applicationinsights/azure
+      - sdk/applicationinsights/microsoft-azure
+      - sdk/applicationinsights/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/applicationinsights/mgmt-
+      - sdk/applicationinsights/
+    exclude:
+      - sdk/applicationinsights/azure
+      - sdk/applicationinsights/microsoft-azure
+      - sdk/applicationinsights/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

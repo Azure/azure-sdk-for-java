@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/hdinsight/mgmt-
+      - sdk/hdinsight/
+    exclude:
+      - sdk/hdinsight/azure
+      - sdk/hdinsight/microsoft-azure
+      - sdk/hdinsight/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/hdinsight/mgmt-
+      - sdk/hdinsight/
+    exclude:
+      - sdk/hdinsight/azure
+      - sdk/hdinsight/microsoft-azure
+      - sdk/hdinsight/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/mariadb/mgmt-
+      - sdk/mariadb/
+    exclude:
+      - sdk/mariadb/azure
+      - sdk/mariadb/microsoft-azure
+      - sdk/mariadb/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/mariadb/mgmt-
+      - sdk/mariadb/
+    exclude:
+      - sdk/mariadb/azure
+      - sdk/mariadb/microsoft-azure
+      - sdk/mariadb/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

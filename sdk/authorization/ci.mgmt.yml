@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/authorization/mgmt-
+      - sdk/authorization/
+    exclude:
+      - sdk/authorization/azure
+      - sdk/authorization/microsoft-azure
+      - sdk/authorization/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/authorization/mgmt-
+      - sdk/authorization/
+    exclude:
+      - sdk/authorization/azure
+      - sdk/authorization/microsoft-azure
+      - sdk/authorization/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/streamanalytics/mgmt-
+      - sdk/streamanalytics/
+    exclude:
+      - sdk/streamanalytics/azure
+      - sdk/streamanalytics/microsoft-azure
+      - sdk/streamanalytics/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/streamanalytics/mgmt-
+      - sdk/streamanalytics/
+    exclude:
+      - sdk/streamanalytics/azure
+      - sdk/streamanalytics/microsoft-azure
+      - sdk/streamanalytics/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

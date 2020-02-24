@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/operationsmanagement/mgmt-
+      - sdk/operationsmanagement/
+    exclude:
+      - sdk/operationsmanagement/azure
+      - sdk/operationsmanagement/microsoft-azure
+      - sdk/operationsmanagement/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/operationsmanagement/mgmt-
+      - sdk/operationsmanagement/
+    exclude:
+      - sdk/operationsmanagement/azure
+      - sdk/operationsmanagement/microsoft-azure
+      - sdk/operationsmanagement/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

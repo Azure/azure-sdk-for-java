@@ -13,7 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/machinelearningservices/mgmt-
+      - sdk/machinelearningservices/
+    exclude:
+      - sdk/machinelearningservices/azure
+      - sdk/machinelearningservices/microsoft-azure
+      - sdk/machinelearningservices/ms-azure
 
 pr:
   branches:
@@ -24,7 +28,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/machinelearningservices/mgmt-
+      - sdk/machinelearningservices/
+    exclude:
+      - sdk/machinelearningservices/azure
+      - sdk/machinelearningservices/microsoft-azure
+      - sdk/machinelearningservices/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
