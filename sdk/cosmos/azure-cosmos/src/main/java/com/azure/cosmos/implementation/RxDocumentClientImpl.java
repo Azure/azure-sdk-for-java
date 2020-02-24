@@ -250,29 +250,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void initializeGatewayConfigurationReader() {
-        String resourceToken;
-        if(this.tokenResolver != null) {
-            resourceToken = this.tokenResolver.getAuthorizationToken(RequestVerb.GET, "", CosmosResourceType.System, null);
-        } else if(!this.hasAuthKeyResourceToken && this.authorizationTokenProvider == null) {
-            resourceToken = this.firstResourceTokenFromPermissionFeed;
-        } else {
-            assert  this.masterKeyOrResourceToken != null || this.cosmosKeyCredential != null;
-            resourceToken = this.masterKeyOrResourceToken;
-        }
-
-        this.gatewayConfigurationReader = new GatewayServiceConfigurationReader(this.serviceEndpoint,
-                this.hasAuthKeyResourceToken,
-                resourceToken,
-                this.connectionPolicy,
-                this.authorizationTokenProvider,
-                this.reactorHttpClient);
-
-        DatabaseAccount databaseAccount = this.gatewayConfigurationReader.initializeReaderAsync().block();
+        this.gatewayConfigurationReader = new GatewayServiceConfigurationReader(this.serviceEndpoint, this.globalEndpointManager);
+        DatabaseAccount databaseAccount = this.globalEndpointManager.getLatestDatabaseAccount();
         this.useMultipleWriteLocations = this.connectionPolicy.getUsingMultipleWriteLocations() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
 
         // TODO: add support for openAsync
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
-        this.globalEndpointManager.refreshLocationAsync(databaseAccount, false).block();
     }
 
     public void init() {
