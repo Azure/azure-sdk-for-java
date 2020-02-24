@@ -4,7 +4,6 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
@@ -33,14 +32,12 @@ public class AnalyzeSentiment {
             documentSentiment.getConfidenceScores().getPositive(),
             documentSentiment.getConfidenceScores().getNeutral(),
             documentSentiment.getConfidenceScores().getNegative());
-
-        for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-            System.out.printf(
-                "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                sentenceSentiment.getSentiment(),
-                sentenceSentiment.getConfidenceScores().getPositive(),
-                sentenceSentiment.getConfidenceScores().getNeutral(),
-                sentenceSentiment.getConfidenceScores().getNegative());
-        }
+        // Sentence sentiment
+        documentSentiment.getSentences().forEach(sentenceSentiment -> System.out.printf(
+            "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
+            sentenceSentiment.getSentiment(),
+            sentenceSentiment.getConfidenceScores().getPositive(),
+            sentenceSentiment.getConfidenceScores().getNeutral(),
+            sentenceSentiment.getConfidenceScores().getNegative()));
     }
 }

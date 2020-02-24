@@ -13,12 +13,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates how to recognize the PII(Personally Identifiable Information) entities of a batch input text.
+ * Sample demonstrates how to recognize the entities of a batch input text.
  */
-public class RecognizePiiBatchDocuments {
+public class RecognizeCategorizedEntitiesBatchDocuments {
     /**
-     * Main method to invoke this demo about how to recognize the Personally Identifiable Information entities of a
-     * batch input text.
+     * Main method to invoke this demo about how to recognize the entities of a batch input text.
      *
      * @param args Unused arguments to the program.
      */
@@ -31,29 +30,31 @@ public class RecognizePiiBatchDocuments {
 
         // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("1", "My SSN is 555-55-5555", "en"),
-            new TextDocumentInput("2", "Visa card 4111 1111 1111 1111", "en")
+            new TextDocumentInput("1", "Satya Nadella is the CEO of Microsoft.", "en"),
+            new TextDocumentInput("2", "Elon Musk is the CEO of SpaceX and Tesla.", "en")
         );
 
         // Recognizing batch entities
-        client.recognizePiiEntitiesBatch(inputs, null, Context.NONE).forEach(entitiesResult -> {
-            // Recognized Personally Identifiable Information entities for each of document from a batch of documents
+        client.recognizeCategorizedEntitiesBatch(inputs, null, Context.NONE).forEach(entitiesResult -> {
+            // Recognized entities for each of document from a batch of documents
             System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
 
             if (entitiesResult.isError()) {
                 // Erroneous document
-                System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n", entitiesResult.getError().getMessage());
+                System.out.printf("Cannot recognize entities. Error: %s%n", entitiesResult.getError().getMessage());
             } else {
                 // Valid document
                 entitiesResult.getEntities().forEach(entity ->
-                    System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
+                    System.out.printf("Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
                         entity.getOffset(),
                         entity.getLength(),
-                        entity.getScore()));
+                        entity.getScore())
+                );
             }
         });
+
     }
 }

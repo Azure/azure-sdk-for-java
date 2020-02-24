@@ -29,6 +29,7 @@ public class AnalyzeSentimentAsync {
 
         client.analyzeSentiment(text).subscribe(
             documentSentiment -> {
+
                 System.out.printf(
                     "Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
                     documentSentiment.getSentiment(),

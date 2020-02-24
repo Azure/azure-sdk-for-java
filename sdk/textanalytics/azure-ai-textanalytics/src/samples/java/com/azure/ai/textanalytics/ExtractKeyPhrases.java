@@ -25,8 +25,7 @@ public class ExtractKeyPhrases {
         String text = "My cat might need to see a veterinarian.";
 
         System.out.println("Extracted phrases:");
-        for (String keyPhrase : client.extractKeyPhrases(text)) {
-            System.out.printf("%s.%n", keyPhrase);
-        }
+        client.extractKeyPhrases(text).forEach(keyPhrase ->
+            System.out.printf("%s.%n", keyPhrase));
     }
 }
