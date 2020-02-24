@@ -32,6 +32,7 @@
       <modules>
         <module>../core/azure-core</module>
         <module>../core/azure-core-amqp</module>
+        <module>../core/azure-core-http-netty</module>
         <module>../core/azure-core-test</module>
         <module>../identity/azure-identity</module>
         <module>azure-messaging-servicebus</module>
