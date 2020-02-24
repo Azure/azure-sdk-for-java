@@ -191,7 +191,7 @@ jobs:
         displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme'
+          options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme-windows'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
