@@ -89,6 +89,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final UserAgentContainer userAgentContainer;
     private final boolean hasAuthKeyResourceToken;
     private final Configs configs;
+    private final boolean enableTransportClientSharing;
     private CosmosKeyCredential cosmosKeyCredential;
     private TokenResolver tokenResolver;
     private SessionContainer sessionContainer;
@@ -131,8 +132,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 Configs configs,
                                 TokenResolver tokenResolver,
                                 CosmosKeyCredential cosmosKeyCredential,
-                                boolean sessionCapturingOverride) {
-        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverride);
+                                boolean sessionCapturingOverride,
+                                boolean enableTransportClientSharing) {
+        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverride, enableTransportClientSharing);
         this.tokenResolver = tokenResolver;
     }
 
@@ -143,8 +145,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 ConsistencyLevel consistencyLevel,
                                 Configs configs,
                                 CosmosKeyCredential cosmosKeyCredential,
-                                boolean sessionCapturingOverrideEnabled) {
-        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverrideEnabled);
+                                boolean sessionCapturingOverrideEnabled,
+                                boolean enableTransportClientSharing) {
+        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverrideEnabled, enableTransportClientSharing);
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
             for (Permission permission : permissionFeed) {
@@ -193,13 +196,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          ConsistencyLevel consistencyLevel,
                          Configs configs,
                          CosmosKeyCredential cosmosKeyCredential,
-                         boolean sessionCapturingOverrideEnabled) {
+                         boolean sessionCapturingOverrideEnabled,
+                         boolean enableTransportClientSharing) {
 
         logger.info(
             "Initializing DocumentClient with"
                 + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], directModeProtocol [{}]",
             serviceEndpoint, connectionPolicy, consistencyLevel, configs.getProtocol());
 
+        this.enableTransportClientSharing = enableTransportClientSharing;
         this.configs = configs;
         this.masterKeyOrResourceToken = masterKeyOrResourceToken;
         this.serviceEndpoint = serviceEndpoint;
@@ -303,7 +308,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.connectionPolicy.getRequestTimeoutInMillis() / 1000,
            // this.maxConcurrentConnectionOpenRequests,
             0,
-            this.userAgentContainer
+            this.userAgentContainer,
+            this.enableTransportClientSharing
         );
 
         this.addressResolver = new GlobalAddressResolver(

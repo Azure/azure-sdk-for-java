@@ -13,30 +13,38 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 //  https://msdata.visualstudio.com/CosmosDB/SDK/_workitems/edit/262496
 
 public class StoreClientFactory implements AutoCloseable {
+
     private final Configs configs;
     private final int maxConcurrentConnectionOpenRequests;
     private final int requestTimeoutInSeconds;
     private final Protocol protocol;
     private final TransportClient transportClient;
+    private final boolean enableTransportClientSharing;
     private volatile boolean isClosed;
 
     public StoreClientFactory(
         Configs configs,
         int requestTimeoutInSeconds,
         int maxConcurrentConnectionOpenRequests,
-        UserAgentContainer userAgent) {
+        UserAgentContainer userAgent,
+        boolean enableTransportClientSharing) {
 
         this.configs = configs;
         this.protocol = configs.getProtocol();
         this.requestTimeoutInSeconds = requestTimeoutInSeconds;
         this.maxConcurrentConnectionOpenRequests = maxConcurrentConnectionOpenRequests;
+        this.enableTransportClientSharing = enableTransportClientSharing;
 
-        if (protocol == Protocol.HTTPS) {
-            this.transportClient = new HttpTransportClient(configs, requestTimeoutInSeconds, userAgent);
-        } else if (protocol == Protocol.TCP){
-            this.transportClient = new RntbdTransportClient(configs, requestTimeoutInSeconds, userAgent);
+        if (enableTransportClientSharing) {
+            this.transportClient = SharedTransportClient.getOrCreateInstance(protocol, configs, requestTimeoutInSeconds, userAgent);
         } else {
-            throw new IllegalArgumentException(String.format("protocol: %s", this.protocol));
+            if (protocol == Protocol.HTTPS) {
+                this.transportClient = new HttpTransportClient(configs, requestTimeoutInSeconds, userAgent);
+            } else if (protocol == Protocol.TCP) {
+                this.transportClient = new RntbdTransportClient(configs, requestTimeoutInSeconds, userAgent);
+            } else {
+                throw new IllegalArgumentException(String.format("protocol: %s", this.protocol));
+            }
         }
     }
 

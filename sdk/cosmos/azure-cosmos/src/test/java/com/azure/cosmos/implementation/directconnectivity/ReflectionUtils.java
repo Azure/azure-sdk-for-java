@@ -3,7 +3,10 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -45,6 +48,16 @@ public class ReflectionUtils {
         return get(StoreClient.class, serverStoreModel, "storeClient");
     }
 
+    public static TransportClient getTransportClient(CosmosClient client) {
+        StoreClient storeClient = getStoreClient((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client));
+        return get(TransportClient.class, storeClient, "transportClient");
+    }
+
+    public static TransportClient getTransportClient(CosmosAsyncClient client) {
+        StoreClient storeClient = getStoreClient((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client));
+        return get(TransportClient.class, storeClient, "transportClient");
+    }
+
     public static TransportClient getTransportClient(RxDocumentClientImpl client) {
         StoreClient storeClient = getStoreClient(client);
         return get(TransportClient.class, storeClient, "transportClient");
@@ -61,11 +74,11 @@ public class ReflectionUtils {
         assert transportClient instanceof HttpTransportClient;
         set(transportClient, newHttpClient, "httpClient");
     }
-    
+
     public static AsyncDocumentClient getAsyncDocumentClient(CosmosAsyncClient client) {
         return get(AsyncDocumentClient.class, client, "asyncDocumentClient");
     }
-    
+
     public static void setAsyncDocumentClient(CosmosAsyncClient client, RxDocumentClientImpl rxClient) {
         set(client, rxClient, "asyncDocumentClient");
     }
