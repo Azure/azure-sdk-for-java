@@ -70,6 +70,11 @@ public interface ManagedDatabase extends HasInner<ManagedDatabaseInner>, Indexab
     String location();
 
     /**
+     * @return the longTermRetentionBackupResourceId value.
+     */
+    String longTermRetentionBackupResourceId();
+
+    /**
      * @return the name value.
      */
     String name();
@@ -190,10 +195,22 @@ public interface ManagedDatabase extends HasInner<ManagedDatabaseInner>, Indexab
         interface WithCreateMode {
             /**
              * Specifies createMode.
-             * @param createMode Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. Possible values include: 'Default', 'RestoreExternalBackup', 'PointInTimeRestore', 'Recovery'
+             * @param createMode Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. Possible values include: 'Default', 'RestoreExternalBackup', 'PointInTimeRestore', 'Recovery', 'RestoreLongTermRetentionBackup'
              * @return the next definition stage
              */
             WithCreate withCreateMode(ManagedDatabaseCreateMode createMode);
+        }
+
+        /**
+         * The stage of the manageddatabase definition allowing to specify LongTermRetentionBackupResourceId.
+         */
+        interface WithLongTermRetentionBackupResourceId {
+            /**
+             * Specifies longTermRetentionBackupResourceId.
+             * @param longTermRetentionBackupResourceId The name of the Long Term Retention backup to be used for restore of this managed database
+             * @return the next definition stage
+             */
+            WithCreate withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId);
         }
 
         /**
@@ -285,13 +302,13 @@ public interface ManagedDatabase extends HasInner<ManagedDatabaseInner>, Indexab
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ManagedDatabase>, DefinitionStages.WithCatalogCollation, DefinitionStages.WithCollation, DefinitionStages.WithCreateMode, DefinitionStages.WithRecoverableDatabaseId, DefinitionStages.WithRestorableDroppedDatabaseId, DefinitionStages.WithRestorePointInTime, DefinitionStages.WithSourceDatabaseId, DefinitionStages.WithStorageContainerSasToken, DefinitionStages.WithStorageContainerUri, DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<ManagedDatabase>, DefinitionStages.WithCatalogCollation, DefinitionStages.WithCollation, DefinitionStages.WithCreateMode, DefinitionStages.WithLongTermRetentionBackupResourceId, DefinitionStages.WithRecoverableDatabaseId, DefinitionStages.WithRestorableDroppedDatabaseId, DefinitionStages.WithRestorePointInTime, DefinitionStages.WithSourceDatabaseId, DefinitionStages.WithStorageContainerSasToken, DefinitionStages.WithStorageContainerUri, DefinitionStages.WithTags {
         }
     }
     /**
      * The template for a ManagedDatabase update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ManagedDatabase>, UpdateStages.WithCatalogCollation, UpdateStages.WithCollation, UpdateStages.WithCreateMode, UpdateStages.WithRecoverableDatabaseId, UpdateStages.WithRestorableDroppedDatabaseId, UpdateStages.WithRestorePointInTime, UpdateStages.WithSourceDatabaseId, UpdateStages.WithStorageContainerSasToken, UpdateStages.WithStorageContainerUri, UpdateStages.WithTags {
+    interface Update extends Appliable<ManagedDatabase>, UpdateStages.WithCatalogCollation, UpdateStages.WithCollation, UpdateStages.WithCreateMode, UpdateStages.WithLongTermRetentionBackupResourceId, UpdateStages.WithRecoverableDatabaseId, UpdateStages.WithRestorableDroppedDatabaseId, UpdateStages.WithRestorePointInTime, UpdateStages.WithSourceDatabaseId, UpdateStages.WithStorageContainerSasToken, UpdateStages.WithStorageContainerUri, UpdateStages.WithTags {
     }
 
     /**
@@ -328,10 +345,22 @@ public interface ManagedDatabase extends HasInner<ManagedDatabaseInner>, Indexab
         interface WithCreateMode {
             /**
              * Specifies createMode.
-             * @param createMode Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. Possible values include: 'Default', 'RestoreExternalBackup', 'PointInTimeRestore', 'Recovery'
+             * @param createMode Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. Possible values include: 'Default', 'RestoreExternalBackup', 'PointInTimeRestore', 'Recovery', 'RestoreLongTermRetentionBackup'
              * @return the next update stage
              */
             Update withCreateMode(ManagedDatabaseCreateMode createMode);
+        }
+
+        /**
+         * The stage of the manageddatabase update allowing to specify LongTermRetentionBackupResourceId.
+         */
+        interface WithLongTermRetentionBackupResourceId {
+            /**
+             * Specifies longTermRetentionBackupResourceId.
+             * @param longTermRetentionBackupResourceId The name of the Long Term Retention backup to be used for restore of this managed database
+             * @return the next update stage
+             */
+            Update withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId);
         }
 
         /**

@@ -58,6 +58,11 @@ public interface SensitivityLabel extends HasInner<SensitivityLabelInner>, Index
     String name();
 
     /**
+     * @return the rank value.
+     */
+    SensitivityLabelRank rank();
+
+    /**
      * @return the type value.
      */
     String type();
@@ -144,17 +149,29 @@ public interface SensitivityLabel extends HasInner<SensitivityLabelInner>, Index
         }
 
         /**
+         * The stage of the sensitivitylabel definition allowing to specify Rank.
+         */
+        interface WithRank {
+            /**
+             * Specifies rank.
+             * @param rank Possible values include: 'None', 'Low', 'Medium', 'High', 'Critical'
+             * @return the next definition stage
+             */
+            WithCreate withRank(SensitivityLabelRank rank);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<SensitivityLabel>, DefinitionStages.WithInformationType, DefinitionStages.WithInformationTypeId, DefinitionStages.WithLabelId, DefinitionStages.WithLabelName {
+        interface WithCreate extends Creatable<SensitivityLabel>, DefinitionStages.WithInformationType, DefinitionStages.WithInformationTypeId, DefinitionStages.WithLabelId, DefinitionStages.WithLabelName, DefinitionStages.WithRank {
         }
     }
     /**
      * The template for a SensitivityLabel update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<SensitivityLabel>, UpdateStages.WithInformationType, UpdateStages.WithInformationTypeId, UpdateStages.WithLabelId, UpdateStages.WithLabelName {
+    interface Update extends Appliable<SensitivityLabel>, UpdateStages.WithInformationType, UpdateStages.WithInformationTypeId, UpdateStages.WithLabelId, UpdateStages.WithLabelName, UpdateStages.WithRank {
     }
 
     /**
@@ -207,6 +224,18 @@ public interface SensitivityLabel extends HasInner<SensitivityLabelInner>, Index
              * @return the next update stage
              */
             Update withLabelName(String labelName);
+        }
+
+        /**
+         * The stage of the sensitivitylabel update allowing to specify Rank.
+         */
+        interface WithRank {
+            /**
+             * Specifies rank.
+             * @param rank Possible values include: 'None', 'Low', 'Medium', 'High', 'Critical'
+             * @return the next update stage
+             */
+            Update withRank(SensitivityLabelRank rank);
         }
 
     }
