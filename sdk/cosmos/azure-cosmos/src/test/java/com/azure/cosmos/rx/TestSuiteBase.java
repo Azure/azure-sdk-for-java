@@ -1077,4 +1077,19 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             {false},
         };
     }
+
+    public static CosmosClientBuilder copyCosmosClientBuilder(CosmosClientBuilder builder) {
+        CosmosClientBuilder copy = new CosmosClientBuilder();
+
+        copy.setEndpoint(builder.getEndpoint())
+            .setKey(builder.getKey())
+            .setConnectionPolicy(builder.getConnectionPolicy())
+            .setConsistencyLevel(builder.getConsistencyLevel())
+            .setCosmosKeyCredential(builder.getCosmosKeyCredential())
+            .setPermissions(builder.getPermissions())
+            .setTokenResolver(builder.getTokenResolver())
+            .setResourceToken(builder.getResourceToken());
+
+        return copy;
+    }
 }
