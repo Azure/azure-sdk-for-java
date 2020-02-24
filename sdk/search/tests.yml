@@ -4,9 +4,8 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: search
-      DisableAzureResourceCreation: true
       Timeout: 120
-      maxParallel: 3
+      MaxParallel: 3
       EnvVars:
         AZURE_TEST_MODE: LIVE
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
