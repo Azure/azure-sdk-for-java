@@ -14,12 +14,12 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 
 public class TestUtils {
@@ -36,15 +36,21 @@ public class TestUtils {
     // An application property key used to identify that the request belongs to a test set.
     public static final String MESSAGE_TRACKING_ID = "message-tracking-id";
 
+    static {
+        APPLICATION_PROPERTIES.put("test-name", com.azure.messaging.servicebus.Message.class.getName());
+        APPLICATION_PROPERTIES.put("a-number", 10L);
+    }
+
     static Symbol getSymbol(AmqpMessageConstant messageConstant) {
         return Symbol.getSymbol(messageConstant.getValue());
     }
+
+
     /**
      * Creates a message with the required system properties set.
      */
     static org.apache.qpid.proton.message.Message getMessage(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
         final Map<Symbol, Object> systemProperties = new HashMap<>();
-        systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), String.valueOf(offsetNumber));
         systemProperties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), enqueuedTime);
         systemProperties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME), sequenceNumber);
 
@@ -81,5 +87,17 @@ public class TestUtils {
         return message;
     }
 
+    /**
+     * Creates a mock message with the contents provided.
+     */
+    static Message getMessage(byte[] contents) {
+        return getMessage(contents, null);
+    }
 
+    /**
+     * Creates a mock message with the contents provided.
+     */
+    static Message getMessage(byte[] contents, String messageTrackingValue) {
+        return getMessage(contents, messageTrackingValue, Collections.emptyMap());
+    }
 }

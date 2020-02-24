@@ -151,15 +151,15 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             body = new byte[0];
         }
 
-        final Message eventData = new Message(body, receiveProperties, Context.NONE);
+        final Message sbMessage = new Message(body, receiveProperties, Context.NONE);
         final Map<String, Object> properties = message.getApplicationProperties() == null
             ? new HashMap<>()
             : message.getApplicationProperties().getValue();
 
-        properties.forEach((key, value) -> eventData.getProperties().put(key, value));
+        properties.forEach((key, value) -> sbMessage.getProperties().put(key, value));
 
         message.clear();
-        return eventData;
+        return sbMessage;
     }
 
     /*

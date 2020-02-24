@@ -35,9 +35,21 @@ public class MessageTest {
         // Assert
         Assertions.assertNotNull(messageData.getSystemProperties());
         Assertions.assertNotNull(messageData.getBody());
+        Assertions.assertNotNull(messageData.getContext());
         Assertions.assertNotNull(messageData.getProperties());
     }
 
+    @Test
+    public void stringMessagePropertiesShouldNotBeNull() {
+        // Act
+        final Message messageData = new Message(PAYLOAD);
+
+        // Assert
+        Assertions.assertNotNull(messageData.getSystemProperties());
+        Assertions.assertNotNull(messageData.getBody());
+        Assertions.assertNotNull(messageData.getContext());
+        Assertions.assertNotNull(messageData.getProperties());
+    }
     /**
      * Verify that we can create an Message with an empty byte array.
      */
@@ -79,5 +91,20 @@ public class MessageTest {
         // Assert
         Assertions.assertNotNull(messageData.getBody());
         Assertions.assertEquals(PAYLOAD, new String(messageData.getBody(), UTF_8));
+    }
+
+    /**
+     * Verify that we can create an Message with the correct body contents.
+     */
+    @Test
+    public void canCreateWithStringPayloadAndContentType() {
+        // Act
+        String contentType = "contentType";
+        final Message messageData = new Message(PAYLOAD_STRING, contentType);
+
+        // Assert
+        Assertions.assertNotNull(messageData.getBody());
+        Assertions.assertEquals(PAYLOAD, new String(messageData.getBody(), UTF_8));
+        Assertions.assertEquals(contentType, messageData.getContentType());
     }
 }
