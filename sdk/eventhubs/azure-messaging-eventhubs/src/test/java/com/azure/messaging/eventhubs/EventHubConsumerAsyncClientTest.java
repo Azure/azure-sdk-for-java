@@ -176,27 +176,6 @@ class EventHubConsumerAsyncClientTest {
             .verifyComplete();
     }
 
-    /**
-     * Verify that by default, lastEnqueuedInformation is null if {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()}
-     * is not set.
-     */
-    @Test
-    void lastEnqueuedEventInformationIsNull() {
-        final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, messageSerializer, CONSUMER_GROUP, DEFAULT_PREFETCH_COUNT, Schedulers.parallel(), false);
-        final int numberOfEvents = 10;
-        when(amqpReceiveLink.getCredits()).thenReturn(numberOfEvents);
-        final int numberToReceive = 3;
-
-        // Assert
-        StepVerifier.create(runtimeConsumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest()).take(numberToReceive))
-            .then(() -> sendMessages(messageProcessor.sink(), numberOfEvents, PARTITION_ID))
-            .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
-            .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
-            .assertNext(event -> Assertions.assertNull(event.getLastEnqueuedEventProperties()))
-            .verifyComplete();
-    }
-
 
     /**
      * Verifies that this receives a number of events. Verifies that the initial credits we add are equal to the
