@@ -9,19 +9,26 @@ import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.BlobType
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.datalake.models.*
+import reactor.core.Exceptions
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Hooks
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
+import java.nio.file.FileAlreadyExistsException
+import java.nio.file.OpenOption
+import java.nio.file.StandardOpenOption
 import java.nio.file.Files
 import java.security.MessageDigest
+import java.time.Duration
 
 class FileAPITest extends APISpec {
     DataLakeFileClient fc
@@ -230,7 +237,6 @@ class FileAPITest extends APISpec {
         def e = thrown(DataLakeStorageException)
         e.getResponse().getStatusCode() == 404
         e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND.toString()
-        // message not correctly passed through - need to investigate
     }
 
     @Unroll
@@ -1030,6 +1036,496 @@ class FileAPITest extends APISpec {
 
         then:
         thrown(NullPointerException)
+    }
+
+    def "Download to file exists"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (!testFile.exists()) {
+            assert testFile.createNewFile()
+        }
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
+        when:
+        // Default overwrite is false so this should fail
+        fc.readToFile(testFile.getPath())
+
+        then:
+        def ex = thrown(UncheckedIOException)
+        ex.getCause() instanceof FileAlreadyExistsException
+
+        cleanup:
+        testFile.delete()
+    }
+
+    def "Download to file exists succeeds"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (!testFile.exists()) {
+            assert testFile.createNewFile()
+        }
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
+        when:
+        fc.readToFile(testFile.getPath(), true)
+
+        then:
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+
+        cleanup:
+        testFile.delete()
+    }
+
+    def "Download to file does not exist"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (testFile.exists()) {
+            assert testFile.delete()
+        }
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
+        when:
+        fc.readToFile(testFile.getPath())
+
+        then:
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+
+        cleanup:
+        testFile.delete()
+    }
+
+    def "Download file does not exist open options"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (testFile.exists()) {
+            assert testFile.delete()
+        }
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
+        when:
+        Set<OpenOption> openOptions = new HashSet<>()
+        openOptions.add(StandardOpenOption.CREATE_NEW)
+        openOptions.add(StandardOpenOption.READ)
+        openOptions.add(StandardOpenOption.WRITE)
+        fc.readToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
+
+        then:
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+
+        cleanup:
+        testFile.delete()
+    }
+
+    def "Download file exist open options"() {
+        setup:
+        def testFile = new File(testName + ".txt")
+        if (!testFile.exists()) {
+            assert testFile.createNewFile()
+        }
+        fc.append(new ByteArrayInputStream(defaultData.array()), 0, defaultDataSize)
+        fc.flush(defaultDataSize)
+
+        when:
+        Set<OpenOption> openOptions = new HashSet<>()
+        openOptions.add(StandardOpenOption.CREATE)
+        openOptions.add(StandardOpenOption.TRUNCATE_EXISTING)
+        openOptions.add(StandardOpenOption.READ)
+        openOptions.add(StandardOpenOption.WRITE)
+        fc.readToFileWithResponse(testFile.getPath(), null, null, null, null, false, openOptions, null, null)
+
+        then:
+        new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8) == defaultText
+
+        cleanup:
+        testFile.delete()
+    }
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file"() {
+        setup:
+        def file = getRandomFile(fileSize)
+        fc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        def properties = fc.readToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(4 * 1024 * 1024, null, null, null), null, null, false, null, null, null)
+
+        then:
+        compareFiles(file, outFile, 0, fileSize)
+        properties.getValue().fileSize == fileSize
+
+        cleanup:
+        outFile.delete()
+        file.delete()
+
+        where:
+        fileSize             | _
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
+        // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
+    }
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file sync buffer copy"() {
+        setup:
+        def fileSystemName = generateFileSystemName()
+        def datalakeServiceClient = new DataLakeServiceClientBuilder()
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .credential(primaryCredential)
+            .buildClient()
+
+        def fileClient = datalakeServiceClient.createFileSystem(fileSystemName)
+            .getFileClient(generatePathName())
+
+
+        def file = getRandomFile(fileSize)
+        fileClient.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        def properties = fileClient.readToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(4 * 1024 * 1024, null, null, null), null, null, false, null, null, null)
+
+        then:
+        compareFiles(file, outFile, 0, fileSize)
+        properties.getValue().getFileSize() == fileSize
+
+        cleanup:
+        datalakeServiceClient.deleteFileSystem(fileSystemName)
+        outFile.delete()
+        file.delete()
+
+        where:
+        fileSize             | _
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
+    }
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file async buffer copy"() {
+        setup:
+        def fileSystemName = generateFileSystemName()
+        def datalakeServiceAsyncClient = new DataLakeServiceClientBuilder()
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .credential(primaryCredential)
+            .buildAsyncClient()
+
+        def fileAsyncClient = datalakeServiceAsyncClient.createFileSystem(fileSystemName).block()
+            .getFileAsyncClient(generatePathName())
+
+        def file = getRandomFile(fileSize)
+        fileAsyncClient.uploadFromFile(file.toPath().toString(), true).block()
+        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        def downloadMono = fileAsyncClient.readToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(4 * 1024 * 1024, null, null, null), null, null, false, null)
+
+        then:
+        StepVerifier.create(downloadMono)
+            .assertNext({ it -> it.getValue().getFileSize() == fileSize })
+            .verifyComplete()
+
+        compareFiles(file, outFile, 0, fileSize)
+
+        cleanup:
+        datalakeServiceAsyncClient.deleteFileSystem(fileSystemName)
+        outFile.delete()
+        file.delete()
+
+        where:
+        fileSize             | _
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
+    }
+    @Unroll
+    def "Download file range"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        fc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(resourceNamer.randomName(testName, 60))
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        fc.readToFileWithResponse(outFile.toPath().toString(), range, null, null, null, false, null, null, null)
+
+        then:
+        compareFiles(file, outFile, range.getOffset(), range.getCount())
+
+        cleanup:
+        outFile.delete()
+        file.delete()
+
+        /*
+        The last case is to test a range much much larger than the size of the file to ensure we don't accidentally
+        send off parallel requests with invalid ranges.
+         */
+        where:
+        range                                         | _
+        new FileRange(0, defaultDataSize)             | _ // Exact count
+        new FileRange(1, defaultDataSize - 1 as Long) | _ // Offset and exact count
+        new FileRange(3, 2)                           | _ // Narrow range in middle
+        new FileRange(0, defaultDataSize - 1 as Long) | _ // Count that is less than total
+        new FileRange(0, 10 * 1024)                   | _ // Count much larger than remaining data
+    }
+
+    @Unroll
+    def "Download file range fail"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        fc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        fc.readToFileWithResponse(outFile.toPath().toString(), new FileRange(defaultDataSize + 1), null, null, null, false,
+            null, null, null)
+
+        then:
+        thrown(DataLakeStorageException)
+
+        cleanup:
+        outFile.delete()
+        file.delete()
+    }
+
+    def "Download file count null"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        fc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        fc.readToFileWithResponse(outFile.toPath().toString(), new FileRange(0), null, null, null, false, null, null, null)
+
+        then:
+        compareFiles(file, outFile, 0, defaultDataSize)
+
+        cleanup:
+        outFile.delete()
+        file.delete()
+    }
+
+    @Unroll
+    def "Download file AC"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        fc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        match = setupPathMatchCondition(fc, match)
+        leaseID = setupPathLeaseCondition(fc, leaseID)
+        DataLakeRequestConditions bro = new DataLakeRequestConditions().setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified).setIfMatch(match).setIfNoneMatch(noneMatch)
+            .setLeaseId(leaseID)
+
+        when:
+        fc.readToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, false, null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+
+        cleanup:
+        outFile.delete()
+        file.delete()
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Download file AC fail"() {
+        setup:
+        def file = getRandomFile(defaultDataSize)
+        fc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        noneMatch = setupPathMatchCondition(fc, noneMatch)
+        setupPathLeaseCondition(fc, leaseID)
+        DataLakeRequestConditions bro = new DataLakeRequestConditions().setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified).setIfMatch(match).setIfNoneMatch(noneMatch)
+            .setLeaseId(leaseID)
+
+        when:
+        fc.readToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, false, null, null, null)
+
+        then:
+        def e = thrown(DataLakeStorageException)
+        e.getErrorCode() == "ConditionNotMet" ||
+            e.getErrorCode() == "LeaseIdMismatchWithBlobOperation"
+
+        cleanup:
+        outFile.delete()
+        file.delete()
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    @Requires({ liveMode() })
+    def "Download file etag lock"() {
+        setup:
+        def file = getRandomFile(Constants.MB)
+        fc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        Files.deleteIfExists(file.toPath())
+
+        expect:
+        def fac = new DataLakePathClientBuilder()
+            .pipeline(fc.getHttpPipeline())
+            .endpoint(fc.getPathUrl())
+            .buildFileAsyncClient()
+
+        /*
+         * Setup the download to happen in small chunks so many requests need to be sent, this will give the upload time
+         * to change the ETag therefore failing the download.
+         */
+        def options = new ParallelTransferOptions(Constants.KB, null, null, null)
+
+        /*
+         * This is done to prevent onErrorDropped exceptions from being logged at the error level. If no hook is
+         * registered for onErrorDropped the error is logged at the ERROR level.
+         *
+         * onErrorDropped is triggered once the reactive stream has emitted one element, after that exceptions are
+         * dropped.
+         */
+        Hooks.onErrorDropped({ ignored -> /* do nothing with it */ })
+
+        /*
+         * When the download begins trigger an upload to overwrite the downloading blob after waiting 500 milliseconds
+         * so that the download is able to get an ETag before it is changed.
+         */
+        StepVerifier.create(fac.readToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false, null)
+            .doOnSubscribe({ fac.upload(defaultFlux, null, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
+            .verifyErrorSatisfies({
+                /*
+                 * If an operation is running on multiple threads and multiple return an exception Reactor will combine
+                 * them into a CompositeException which needs to be unwrapped. If there is only a single exception
+                 * 'Exceptions.unwrapMultiple' will return a singleton list of the exception it was passed.
+                 *
+                 * These exceptions may be wrapped exceptions where the exception we are expecting is contained within
+                 * ReactiveException that needs to be unwrapped. If the passed exception isn't a 'ReactiveException' it
+                 * will be returned unmodified by 'Exceptions.unwrap'.
+                 */
+                assert Exceptions.unwrapMultiple(it).stream().anyMatch({ it2 ->
+                    def exception = Exceptions.unwrap(it2)
+                    if (exception instanceof DataLakeStorageException) {
+                        assert ((DataLakeStorageException) exception).getStatusCode() == 412
+                        return true
+                    }
+                })
+            })
+
+        // Give the file a chance to be deleted by the download operation before verifying its deletion
+        sleep(500)
+        !outFile.exists()
+
+        cleanup:
+        file.delete()
+        outFile.delete()
+    }
+
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file progress receiver"() {
+        def file = getRandomFile(fileSize)
+        fc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(testName + "")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        def mockReceiver = Mock(ProgressReceiver)
+
+        def numBlocks = fileSize / (4 * 1024 * 1024)
+        def prevCount = 0
+
+        when:
+        fc.readToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(null, null, mockReceiver, null),
+            new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null, null)
+
+        then:
+        /*
+         * Should receive at least one notification indicating completed progress, multiple notifications may be
+         * received if there are empty buffers in the stream.
+         */
+        (1.._) * mockReceiver.reportProgress(fileSize)
+
+        // There should be NO notification with a larger than expected size.
+        0 * mockReceiver.reportProgress({ it > fileSize })
+
+        /*
+        We should receive at least one notification reporting an intermediary value per block, but possibly more
+        notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
+        will be the total size as above. Finally, we assert that the number reported monotonically increases.
+         */
+        (numBlocks - 1.._) * mockReceiver.reportProgress(!file.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred >= prevCount)) {
+                throw new IllegalArgumentException("Reported progress should monotonically increase")
+            } else {
+                prevCount = bytesTransferred
+            }
+        }
+
+        // We should receive no notifications that report more progress than the size of the file.
+        0 * mockReceiver.reportProgress({ it > fileSize })
+
+        cleanup:
+        file.delete()
+        outFile.delete()
+
+        where:
+        fileSize             | _
+        100                  | _
+        8 * 1026 * 1024 + 10 | _
     }
 
     def "Rename min"() {
