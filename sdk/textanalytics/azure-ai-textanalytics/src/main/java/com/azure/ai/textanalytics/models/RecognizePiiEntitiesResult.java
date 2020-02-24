@@ -9,23 +9,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The RecognizePiiEntitiesResult model.
+ * The {@link RecognizePiiEntitiesResult} model.
  */
 @Immutable
 public final class RecognizePiiEntitiesResult extends DocumentResult {
     private final List<PiiEntity> entities;
 
     /**
-     * Creates a {@code RecognizePiiEntitiesResult} model that describes recognized entities result.
+     * Creates a {@link RecognizePiiEntitiesResult} model that describes recognized entities result.
      *
-     * @param id unique, non-empty document identifier
-     * @param textDocumentStatistics text document statistics
-     * @param error the document error
-     * @param entities a list of {@link PiiEntity}
+     * @param id Unique, non-empty document identifier.
+     * @param inputText The input text in request.
+     * @param textDocumentStatistics The text document statistics.
+     * @param error The document error.
+     * @param entities A list of {@link PiiEntity}.
      */
-    public RecognizePiiEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public RecognizePiiEntitiesResult(String id, String inputText, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error, List<PiiEntity> entities) {
-        super(id, textDocumentStatistics, error);
+        super(id, inputText, textDocumentStatistics, error);
         this.entities = entities == null ? new ArrayList<>() : entities;
     }
 

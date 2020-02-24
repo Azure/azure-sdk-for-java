@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The AnalyzeSentimentResult model.
+ * The {@link AnalyzeSentimentResult} model.
  */
 @Immutable
 public final class AnalyzeSentimentResult extends DocumentResult {
@@ -15,21 +15,22 @@ public final class AnalyzeSentimentResult extends DocumentResult {
     /**
      * Creates a {@code TextSentimentResult} model that describes analyzed sentiment result.
      *
-     * @param id unique, non-empty document identifier
-     * @param textDocumentStatistics text document statistics
-     * @param error the document error
-     * @param documentSentiment the document sentiment
+     * @param id Unique, non-empty document identifier.
+     * @param inputText The input text in request.
+     * @param textDocumentStatistics The text document statistics.
+     * @param error The document error.
+     * @param documentSentiment The document sentiment.
      */
-    public AnalyzeSentimentResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
-        DocumentSentiment documentSentiment) {
-        super(id, textDocumentStatistics, error);
+    public AnalyzeSentimentResult(String id, String inputText, TextDocumentStatistics textDocumentStatistics,
+        TextAnalyticsError error, DocumentSentiment documentSentiment) {
+        super(id, inputText, textDocumentStatistics, error);
         this.documentSentiment = documentSentiment;
     }
 
     /**
      * Get the document sentiment.
      *
-     * @return the document sentiment
+     * @return The document sentiment.
      */
     public DocumentSentiment getDocumentSentiment() {
         throwExceptionIfError();

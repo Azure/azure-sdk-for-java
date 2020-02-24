@@ -9,30 +9,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The ExtractKeyPhraseResult model.
+ * The {@link ExtractKeyPhraseResult} model.
  */
 @Immutable
 public final class ExtractKeyPhraseResult extends DocumentResult {
     private final List<String> keyPhrases;
 
     /**
-     * Create a {@code KeyPhraseResult} model that describes extracted key phrases result.
+     * Create a {@link ExtractKeyPhraseResult} model that describes extracted key phrases result.
      *
      * @param id Unique, non-empty document identifier.
-     * @param textDocumentStatistics text document statistics
-     * @param error the document error.
-     * @param keyPhrases a list of key phrases string
+     * @param inputText The input text in request.
+     * @param textDocumentStatistics The text document statistics.
+     * @param error The document error.
+     * @param keyPhrases A list of key phrases string.
      */
-    public ExtractKeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
-        List<String> keyPhrases) {
-        super(id, textDocumentStatistics, error);
+    public ExtractKeyPhraseResult(String id, String inputText, TextDocumentStatistics textDocumentStatistics,
+        TextAnalyticsError error, List<String> keyPhrases) {
+        super(id, inputText, textDocumentStatistics, error);
         this.keyPhrases = keyPhrases == null ? new ArrayList<>() : keyPhrases;
     }
 
     /**
      * Get a list of key phrase string.
      *
-     * @return a list of key phrase string
+     * @return A list of key phrase string.
      */
     public List<String> getKeyPhrases() {
         throwExceptionIfError();

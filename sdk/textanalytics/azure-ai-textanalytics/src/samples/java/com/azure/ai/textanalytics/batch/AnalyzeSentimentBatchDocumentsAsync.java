@@ -29,8 +29,8 @@ public class AnalyzeSentimentBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
-            .endpoint("{endpoint}")
+            .apiKey(new TextAnalyticsApiKeyCredential("b2f8b7b697c348dcb0e30055d49f3d0f"))
+            .endpoint("https://javatextanalyticstestresources.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         // The texts that need be analyzed.
@@ -57,7 +57,8 @@ public class AnalyzeSentimentBatchDocumentsAsync {
 
                 // Analyzed sentiment for each of document from a batch of documents
                 for (AnalyzeSentimentResult analyzeSentimentResult : pagedResponse.getElements()) {
-                    System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
+                    System.out.printf("%nDocument ID: %s%n", analyzeSentimentResult.getId());
+                    System.out.printf("Input text: %s%n", analyzeSentimentResult.getInputText());
                     // Erroneous document
                     if (analyzeSentimentResult.isError()) {
                         System.out.printf("Cannot analyze sentiment. Error: %s%n", analyzeSentimentResult.getError().getMessage());

@@ -36,6 +36,7 @@ module com.azure.core {
     opens com.azure.core.implementation.logging to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer.jsonwrapper to com.fasterxml.jackson.databind;
+    exports com.azure.core.util.paging;
 
     // service provider interfaces
     uses com.azure.core.util.tracing.Tracer;

@@ -9,30 +9,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The RecognizeLinkedEntitiesResult model.
+ * The {@link RecognizeLinkedEntitiesResult} model.
  */
 @Immutable
 public final class RecognizeLinkedEntitiesResult extends DocumentResult {
     private final List<LinkedEntity> entities;
 
     /**
-     * Creates a {@code RecognizeLinkedEntitiesResult} model that describes recognized linked entities result.
+     * Creates a {@link RecognizeLinkedEntitiesResult} model that describes recognized linked entities result.
      *
-     * @param id unique, non-empty document identifier
-     * @param textDocumentStatistics text document statistics
-     * @param error the document error
-     * @param entities a list of linked entities
+     * @param id Unique, non-empty document identifier.
+     * @param inputText The input text in request.
+     * @param textDocumentStatistics The text document statistics.
+     * @param error The document error.
+     * @param entities A list of linked entities.
      */
-    public RecognizeLinkedEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public RecognizeLinkedEntitiesResult(String id, String inputText, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error, List<LinkedEntity> entities) {
-        super(id, textDocumentStatistics, error);
+        super(id, inputText, textDocumentStatistics, error);
         this.entities = entities == null ? new ArrayList<>() : entities;
     }
 
     /**
      * Get a list of linked entities.
      *
-     * @return a list of linked entities.
+     * @return A list of linked entities.
      */
     public List<LinkedEntity> getEntities() {
         throwExceptionIfError();

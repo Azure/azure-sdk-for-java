@@ -28,8 +28,8 @@ public class RecognizeEntitiesBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
-            .endpoint("{endpoint}")
+            .apiKey(new TextAnalyticsApiKeyCredential("b2f8b7b697c348dcb0e30055d49f3d0f"))
+            .endpoint("https://javatextanalyticstestresources.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         // The texts that need be analyzed.
@@ -56,7 +56,8 @@ public class RecognizeEntitiesBatchDocumentsAsync {
 
                 // Recognized entities for each of document from a batch of documents
                 for (RecognizeEntitiesResult recognizeEntitiesResult : pagedResponse.getElements()) {
-                    System.out.printf("Document ID: %s%n", recognizeEntitiesResult.getId());
+                    System.out.printf("%nDocument ID: %s%n", recognizeEntitiesResult.getId());
+                    System.out.printf("Input text: %s%n", recognizeEntitiesResult.getInputText());
                     // Erroneous document
                     if (recognizeEntitiesResult.isError()) {
                         System.out.printf("Cannot recognize entities. Error: %s%n", recognizeEntitiesResult.getError().getMessage());

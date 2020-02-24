@@ -3,24 +3,19 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResult;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -279,7 +274,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS);
     }
 
-    void recognizeCatgeorizedEntitiesLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
+    void recognizeCategorizedEntitiesLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS, "en");
     }
 
@@ -388,44 +383,46 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             : Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
     }
 
-    static void validateDetectLanguage(boolean showStatistics, DocumentResultCollection<DetectLanguageResult> expected,
-        DocumentResultCollection<DetectLanguageResult> actual) {
-        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
-            validatePrimaryLanguage(expectedItem.getPrimaryLanguage(), actualItem.getPrimaryLanguage());
-        });
-    }
+//    static void validateDetectLanguage(boolean showStatistics, DocumentResultCollection<DetectLanguageResult> expected,
+//        DocumentResultCollection<DetectLanguageResult> actual) {
+////        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
+////            validatePrimaryLanguage(expectedItem.getPrimaryLanguage(), actualItem.getPrimaryLanguage());
+////        });
+//    }
 
-    static void validateCategorizedEntity(boolean showStatistics, DocumentResultCollection<RecognizeEntitiesResult> expected,
-        DocumentResultCollection<RecognizeEntitiesResult> actual) {
+    static void validateCategorizedEntity(boolean showStatistics,
+        TextAnalyticsPagedResponse<RecognizeEntitiesResult> expected,
+        TextAnalyticsPagedResponse<RecognizeEntitiesResult> actual) {
+
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateCategorizedEntities(expectedItem.getEntities(), actualItem.getEntities()));
     }
 
-    static void validatePiiEntity(boolean showStatistics, DocumentResultCollection<RecognizePiiEntitiesResult> expected,
-        DocumentResultCollection<RecognizePiiEntitiesResult> actual) {
-        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validatePiiEntities(expectedItem.getEntities(), actualItem.getEntities()));
-    }
+//    static void validatePiiEntity(boolean showStatistics, DocumentResultCollection<RecognizePiiEntitiesResult> expected,
+//        DocumentResultCollection<RecognizePiiEntitiesResult> actual) {
+////        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+////            validatePiiEntities(expectedItem.getEntities(), actualItem.getEntities()));
+//    }
 
-    static void validateLinkedEntity(boolean showStatistics,
-        DocumentResultCollection<RecognizeLinkedEntitiesResult> expected,
-        DocumentResultCollection<RecognizeLinkedEntitiesResult> actual) {
-        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validateLinkedEntities(expectedItem.getEntities(), actualItem.getEntities()));
-    }
+//    static void validateLinkedEntity(boolean showStatistics,
+//        DocumentResultCollection<RecognizeLinkedEntitiesResult> expected,
+//        DocumentResultCollection<RecognizeLinkedEntitiesResult> actual) {
+////        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+////            validateLinkedEntities(expectedItem.getEntities(), actualItem.getEntities()));
+//    }
 
-    static void validateExtractKeyPhrase(boolean showStatistics, DocumentResultCollection<ExtractKeyPhraseResult> expected,
-        DocumentResultCollection<ExtractKeyPhraseResult> actual) {
-        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validateKeyPhrases(expectedItem.getKeyPhrases(), actualItem.getKeyPhrases()));
-    }
-
-    static void validateSentiment(boolean showStatistics, DocumentResultCollection<AnalyzeSentimentResult> expected,
-        DocumentResultCollection<AnalyzeSentimentResult> actual) {
-        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
-            validateAnalyzedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment());
-        });
-    }
+//    static void validateExtractKeyPhrase(boolean showStatistics, DocumentResultCollection<ExtractKeyPhraseResult> expected,
+//        DocumentResultCollection<ExtractKeyPhraseResult> actual) {
+////        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+////            validateKeyPhrases(expectedItem.getKeyPhrases(), actualItem.getKeyPhrases()));
+//    }
+//
+//    static void validateSentiment(boolean showStatistics, DocumentResultCollection<AnalyzeSentimentResult> expected,
+//        DocumentResultCollection<AnalyzeSentimentResult> actual) {
+////        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
+////            validateAnalyzedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment());
+////        });
+//    }
 
     /**
      * Helper method to validate a single detected language.
@@ -604,11 +601,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * Helper method to verify {@link DocumentResult documents} returned in a batch request.
      */
     private static <T extends DocumentResult> void validateDocumentResult(boolean showStatistics,
-        DocumentResultCollection<T> expectedResults, DocumentResultCollection<T> actualResults,
+        TextAnalyticsPagedResponse<T> expectedResults, TextAnalyticsPagedResponse<T> actualResults,
         BiConsumer<T, T> additionalAssertions) {
 
-        final Map<String, T> expected = expectedResults.stream().collect(Collectors.toMap(r -> r.getId(), r -> r));
-        final Map<String, T> actual = actualResults.stream().collect(Collectors.toMap(r -> r.getId(), r -> r));
+        final Map<String, T> expected = expectedResults.getElements().stream().collect(Collectors.toMap(r -> r.getId(), r -> r));
+        final Map<String, T> actual = actualResults.getElements().stream().collect(Collectors.toMap(r -> r.getId(), r -> r));
 
         assertEquals(expected.size(), actual.size());
 

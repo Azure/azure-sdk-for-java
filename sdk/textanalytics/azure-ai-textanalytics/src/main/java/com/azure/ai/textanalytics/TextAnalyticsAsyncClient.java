@@ -9,7 +9,6 @@ import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
@@ -19,24 +18,20 @@ import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
+import com.azure.ai.textanalytics.models.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
-import java.util.Iterator;
 
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.pagedFluxError;
-import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Text Analytics.
@@ -158,8 +153,7 @@ public final class TextAnalyticsAsyncClient {
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link DetectedLanguage detected language} of the text.
+     * @return A {@link Mono} containing a {@link DetectedLanguage detected language} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -167,21 +161,13 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectedLanguage> detectLanguage(String text, String countryHint) {
         return detectLanguageBatch(Collections.singletonList(text), countryHint, null)
-            .map(documentCollection -> {
-                final Iterator<DetectLanguageResult> iterator = documentCollection.iterator();
-                // Collection will never be empty
-                if (!iterator.hasNext()) {
+            .map(detectLanguageResult -> {
+                if (detectLanguageResult.isError()) {
                     throw logger.logExceptionAsError(
-                        new IllegalStateException("An empty collection returned which is an unexpected error."));
+                        Transforms.toTextAnalyticsException(detectLanguageResult.getError()));
                 }
-
-                final DetectLanguageResult languageResult = iterator.next();
-                if (languageResult.isError()) {
-                    throw logger.logExceptionAsError(Transforms.toTextAnalyticsException(languageResult.getError()));
-                }
-
-                return languageResult.getPrimaryLanguage();
-            });
+                return detectLanguageResult.getPrimaryLanguage();
+            }).last();
     }
 
     /**
@@ -201,13 +187,13 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected language}.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguageBatch(Iterable<String> textInputs) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(Iterable<String> textInputs) {
         return detectLanguageBatch(textInputs, defaultCountryHint, null);
     }
 
@@ -228,17 +214,16 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected language}.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguageBatch(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(
         Iterable<String> textInputs, String countryHint, TextAnalyticsRequestOptions options) {
-        return detectLanguageBatchWithResponse(
-            mapByIndex(textInputs, (index, value) -> new DetectLanguageInput(index, value, countryHint)), options)
-            .flatMap(FluxUtil::toMono);
+        return detectLanguageBatch(
+            mapByIndex(textInputs, (index, value) -> new DetectLanguageInput(index, value, countryHint)), options);
     }
 
     /**
@@ -256,20 +241,15 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected language}.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguageBatchWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(
         Iterable<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options) {
-        try {
-            return withContext(
-                context -> detectLanguageAsyncClient.detectLanguageBatchWithResponse(textInputs, options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return detectLanguageAsyncClient.detectLanguageBatch(textInputs, options);
     }
 
     // Categorized Entity
@@ -293,13 +273,14 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link PagedFlux} containing the {@link CategorizedEntity categorized entities} of the text.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link CategorizedEntity recognized categorized entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CategorizedEntity> recognizeEntities(String text) {
+    public TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String text) {
         return recognizeEntities(text, defaultLanguage);
     }
 
@@ -320,19 +301,15 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
      * default.
      *
-     * @return A {@link PagedFlux} containing the {@link CategorizedEntity categorized entities} of the text.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link CategorizedEntity recognized categorized entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CategorizedEntity> recognizeEntities(String text, String language) {
-        try {
-            return new PagedFlux<>(() -> withContext(context ->
-                recognizeEntityAsyncClient.recognizeEntitiesWithResponse(text, language, context)));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+    public TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String text, String language) {
+        return recognizeEntityAsyncClient.recognizeEntities(text, language);
     }
 
     /**
@@ -352,13 +329,13 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult categorized entity} of the text.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link RecognizeEntitiesResult recognized categorized entity document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizeEntitiesBatch(Iterable<String> textInputs) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizeEntitiesResult> recognizeEntitiesBatch(Iterable<String> textInputs) {
         return recognizeEntitiesBatch(textInputs, defaultLanguage, null);
     }
 
@@ -379,17 +356,16 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult categorized entity}.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link RecognizeEntitiesResult recognized categorized entity document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizeEntitiesBatch(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> textInputs, String language, TextAnalyticsRequestOptions options) {
-        return recognizeEntitiesBatchWithResponse(
-            mapByIndex(textInputs, (index, value) -> new TextDocumentInput(index, value, language)), options)
-            .flatMap(FluxUtil::toMono);
+        return recognizeEntitiesBatch(
+            mapByIndex(textInputs, (index, value) -> new TextDocumentInput(index, value, language)), options);
     }
 
     /**
@@ -407,20 +383,15 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult categorized entity}.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link RecognizeEntitiesResult recognized categorized entity document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesBatchWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
-        try {
-            return withContext(context ->
-                recognizeEntityAsyncClient.recognizeEntitiesBatchWithResponse(textInputs, options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizeEntityAsyncClient.recognizeEntitiesBatch(textInputs, options);
     }
 
     // Personally Identifiable Information Entity
@@ -443,14 +414,14 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link PagedFlux} containing the {@link PiiEntity Personally Identifiable Information entities} of
-     * the text.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link PiiEntity Personally Identifiable Information entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PiiEntity> recognizePiiEntities(String text) {
+    public TextAnalyticsPagedFlux<PiiEntity> recognizePiiEntities(String text) {
         return recognizePiiEntities(text, defaultLanguage);
     }
 
@@ -470,20 +441,15 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link PagedFlux} containing the {@link PiiEntity Personally Identifiable Information entities} of
-     * the text.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link PiiEntity Personally Identifiable Information entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PiiEntity> recognizePiiEntities(String text, String language) {
-        try {
-            return new PagedFlux<>(() -> withContext(context ->
-                recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(text, language, context)));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+    public TextAnalyticsPagedFlux<PiiEntity> recognizePiiEntities(String text, String language) {
+        return recognizePiiEntityAsyncClient.recognizePiiEntities(text, language);
     }
 
     /**
@@ -504,13 +470,13 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizePiiEntitiesResult Personally Identifiable Information entity} of the text.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link RecognizePiiEntitiesResult Personally Identifiable Information entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntitiesBatch(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
         Iterable<String> textInputs) {
         return recognizePiiEntitiesBatch(textInputs, defaultLanguage, null);
     }
@@ -533,17 +499,16 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizePiiEntitiesResult Personally Identifiable Information entity}.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link RecognizePiiEntitiesResult Personally Identifiable Information entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntitiesBatch(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
         Iterable<String> textInputs, String language, TextAnalyticsRequestOptions options) {
-        return recognizePiiEntitiesBatchWithResponse(
-            mapByIndex(textInputs, (index, value) -> new TextDocumentInput(index, value, language)), options)
-            .flatMap(FluxUtil::toMono);
+        return recognizePiiEntitiesBatch(
+            mapByIndex(textInputs, (index, value) -> new TextDocumentInput(index, value, language)), options);
     }
 
     /**
@@ -564,21 +529,15 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of
-     * {@link RecognizePiiEntitiesResult Personally Identifiable Information entity}.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link RecognizePiiEntitiesResult Personally Identifiable Information entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesBatchWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
-        try {
-            return withContext(context ->
-                recognizePiiEntityAsyncClient.recognizePiiEntitiesBatchWithResponse(textInputs, options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return recognizePiiEntityAsyncClient.recognizePiiEntitiesBatch(textInputs, options);
     }
 
     // Linked Entity
@@ -600,13 +559,13 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link PagedFlux} containing the {@link LinkedEntity linked entities} of the text.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of {@link LinkedEntity recognized linked entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LinkedEntity> recognizeLinkedEntities(String text) {
+    public TextAnalyticsPagedFlux<LinkedEntity> recognizeLinkedEntities(String text) {
         return recognizeLinkedEntities(text, defaultLanguage);
     }
 
@@ -625,19 +584,14 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link PagedFlux} containing the {@link LinkedEntity linked entities} of the text.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of {@link LinkedEntity recognized linked entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LinkedEntity> recognizeLinkedEntities(String text, String language) {
-        try {
-            return new PagedFlux<>(() -> withContext(context ->
-                recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(text, language, context)));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+    public TextAnalyticsPagedFlux<LinkedEntity> recognizeLinkedEntities(String text, String language) {
+        return recognizeLinkedEntityAsyncClient.recognizeLinkedEntities(text, language);
     }
 
     /**
@@ -657,13 +611,13 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeLinkedEntitiesResult linked entity} of the text.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link RecognizeLinkedEntitiesResult recognized linked entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesBatch(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<String> textInputs) {
         return recognizeLinkedEntitiesBatch(textInputs, defaultLanguage, null);
     }
@@ -685,17 +639,16 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeLinkedEntitiesResult linked entity}.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link RecognizeLinkedEntitiesResult recognized linked entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesBatch(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<String> textInputs, String language, TextAnalyticsRequestOptions options) {
-        return recognizeLinkedEntitiesBatchWithResponse(
-            mapByIndex(textInputs, (index, value) -> new TextDocumentInput(index, value, language)), options)
-            .flatMap(FluxUtil::toMono);
+        return recognizeLinkedEntitiesBatch(
+            mapByIndex(textInputs, (index, value) -> new TextDocumentInput(index, value, language)), options);
     }
 
     /**
@@ -713,21 +666,15 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizeLinkedEntitiesResult linked entity}.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link RecognizeLinkedEntitiesResult recognized linked entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>>
-        recognizeLinkedEntitiesBatchWithResponse(Iterable<TextDocumentInput> textInputs,
-            TextAnalyticsRequestOptions options) {
-        try {
-            return withContext(context -> recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatchWithResponse(
-                textInputs, options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
+        return recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatch(textInputs, options);
     }
 
     // Key Phrases
@@ -748,13 +695,13 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link PagedFlux} containing the key phrases of the text.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of extracted key phrases.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> extractKeyPhrases(String text) {
+    public TextAnalyticsPagedFlux<String> extractKeyPhrases(String text) {
         return extractKeyPhrases(text, defaultLanguage);
     }
 
@@ -773,19 +720,14 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link PagedFlux} containing the key phrases of the text.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of extracted key phrases.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> extractKeyPhrases(String text, String language) {
-        try {
-            return new PagedFlux<>(() -> withContext(context ->
-                extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(text, language, context)));
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+    public TextAnalyticsPagedFlux<String> extractKeyPhrases(String text, String language) {
+        return extractKeyPhraseAsyncClient.extractKeyPhrasesSingleText(text, language);
     }
 
     /**
@@ -804,13 +746,13 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link ExtractKeyPhraseResult key phrases} of the text.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<ExtractKeyPhraseResult>> extractKeyPhrasesBatch(Iterable<String> textInputs) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrasesBatch(Iterable<String> textInputs) {
         return extractKeyPhrasesBatch(textInputs, defaultLanguage, null);
     }
 
@@ -831,17 +773,16 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link ExtractKeyPhraseResult key phrases}.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<ExtractKeyPhraseResult>> extractKeyPhrasesBatch(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
         Iterable<String> textInputs, String language, TextAnalyticsRequestOptions options) {
-        return extractKeyPhrasesBatchWithResponse(
-            mapByIndex(textInputs, (index, value) -> new TextDocumentInput(index, value, language)), options)
-            .flatMap(FluxUtil::toMono);
+        return extractKeyPhrasesBatch(
+            mapByIndex(textInputs, (index, value) -> new TextDocumentInput(index, value, language)), options);
     }
 
     /**
@@ -859,20 +800,15 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link ExtractKeyPhraseResult key phrases}.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesBatchWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
-        try {
-            return withContext(context ->
-                extractKeyPhraseAsyncClient.extractKeyPhrasesBatchWithResponse(textInputs, options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return extractKeyPhraseAsyncClient.extractKeyPhrases(textInputs, options);
     }
 
     // Sentiment
@@ -894,7 +830,7 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link Mono} containing the {@link DocumentSentiment document sentiment} of the text.
+     * @return A {@link Mono} containing the {@link DocumentSentiment analyzed document sentiment} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -923,7 +859,7 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing the {@link DocumentSentiment document sentiment} of the text.
+     * @return A {@link Mono} containing the {@link DocumentSentiment analyzed document sentiment} of the text.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -931,21 +867,13 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentSentiment> analyzeSentiment(String text, String language) {
         return analyzeSentimentBatch(Collections.singletonList(text), language, null)
-            .map(documentCollection -> {
-                final Iterator<AnalyzeSentimentResult> iterator = documentCollection.iterator();
-                // Collection will never be empty
-                if (!iterator.hasNext()) {
-                    throw logger.logExceptionAsError(
-                        new IllegalStateException("An empty collection returned which is an unexpected error."));
-                }
-
-                final AnalyzeSentimentResult sentimentResult = iterator.next();
+            .map(sentimentResult -> {
                 if (sentimentResult.isError()) {
                     throw logger.logExceptionAsError(Transforms.toTextAnalyticsException(sentimentResult.getError()));
                 }
 
                 return sentimentResult.getDocumentSentiment();
-            });
+            }).last();
     }
 
     /**
@@ -965,13 +893,13 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link AnalyzeSentimentResult text sentiment} of the text.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<AnalyzeSentimentResult>> analyzeSentimentBatch(Iterable<String> textInputs) {
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(Iterable<String> textInputs) {
         return analyzeSentimentBatch(textInputs, defaultLanguage, null);
     }
 
@@ -992,17 +920,16 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link AnalyzeSentimentResult text sentiment}.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<AnalyzeSentimentResult>> analyzeSentimentBatch(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(
         Iterable<String> textInputs, String language, TextAnalyticsRequestOptions options) {
-        return analyzeSentimentBatchWithResponse(
-            mapByIndex(textInputs, (index, value) -> new TextDocumentInput(index, value, language)), options)
-            .flatMap(FluxUtil::toMono);
+        return analyzeSentimentBatch(
+            mapByIndex(textInputs, (index, value) -> new TextDocumentInput(index, value, language)), options);
     }
 
     /**
@@ -1020,19 +947,14 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link AnalyzeSentimentResult text sentiment}.
+     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeSentimentBatchWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
-        try {
-            return withContext(context -> analyzeSentimentAsyncClient.analyzeSentimentBatchWithResponse(textInputs,
-                options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return analyzeSentimentAsyncClient.analyzeSentimentBatch(textInputs, options);
     }
 }

@@ -8,13 +8,14 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Locale;
 
 /**
- * The DocumentResult model.
+ * The {@link DocumentResult} model.
  */
 @Immutable
 public class DocumentResult {
     private final ClientLogger logger = new ClientLogger(DocumentResult.class);
 
     private final String id;
+    private final String inputText;
     private final TextDocumentStatistics textDocumentStatistics;
     private final TextAnalyticsError error;
     private final boolean isError;
@@ -23,12 +24,15 @@ public class DocumentResult {
      * Create a {@code DocumentResult} model that maintains document id, information about the document payload,
      * and document error.
      *
-     * @param id unique, non-empty document identifier
-     * @param textDocumentStatistics text document statistics
-     * @param error the document error.
+     * @param id unique, non-empty document identifier.
+     * @param inputText The input text in request.
+     * @param textDocumentStatistics The text document statistics.
+     * @param error The document error.
      */
-    DocumentResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error) {
+    DocumentResult(String id, String inputText, TextDocumentStatistics textDocumentStatistics,
+        TextAnalyticsError error) {
         this.id = id;
+        this.inputText = inputText;
         this.error = error;
         this.isError = error != null;
         this.textDocumentStatistics = textDocumentStatistics;
@@ -37,16 +41,25 @@ public class DocumentResult {
     /**
      * Get the document id.
      *
-     * @return the document id
+     * @return The document id.
      */
     public String getId() {
         return id;
     }
 
     /**
+     * Get the document input text in request.
+     *
+     * @return The document input text in request.
+     */
+    public String getInputText() {
+        return inputText;
+    }
+
+    /**
      * Get the statistics of the text document.
      *
-     * @return the {@link TextDocumentStatistics} statistics of the text document
+     * @return The {@link TextDocumentStatistics} statistics of the text document.
      */
     public TextDocumentStatistics getStatistics() {
         throwExceptionIfError();
@@ -56,7 +69,7 @@ public class DocumentResult {
     /**
      * Get the error of text document.
      *
-     * @return the error of text document
+     * @return the error of text document.
      */
     public TextAnalyticsError getError() {
         return error;
@@ -65,7 +78,7 @@ public class DocumentResult {
     /**
      * Get the boolean value indicates if the document result is error or not.
      *
-     * @return A boolean indicates if the document result is error or not
+     * @return A boolean indicates if the document result is error or not.
      */
     public boolean isError() {
         return isError;

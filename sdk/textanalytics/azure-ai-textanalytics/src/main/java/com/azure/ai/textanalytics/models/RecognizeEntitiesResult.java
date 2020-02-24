@@ -9,30 +9,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The RecognizeEntitiesResult model.
+ * The {@link RecognizeEntitiesResult} model.
  */
 @Immutable
 public final class RecognizeEntitiesResult extends DocumentResult {
     private final List<CategorizedEntity> entities;
 
     /**
-     * Creates a {@code RecognizeEntitiesResult} model that describes recognized entities result.
+     * Creates a {@link RecognizeEntitiesResult} model that describes recognized entities result.
      *
-     * @param id unique, non-empty document identifier
-     * @param textDocumentStatistics text document statistics
-     * @param error the document error
-     * @param entities a list of {@link CategorizedEntity}
+     * @param id Unique, non-empty document identifier.
+     * @param inputText The input text in request.
+     * @param textDocumentStatistics The text document statistics.
+     * @param error The document error.
+     * @param entities A list of {@link CategorizedEntity}.
      */
-    public RecognizeEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error,
-        List<CategorizedEntity> entities) {
-        super(id, textDocumentStatistics, error);
+    public RecognizeEntitiesResult(String id, String inputText, TextDocumentStatistics textDocumentStatistics,
+        TextAnalyticsError error, List<CategorizedEntity> entities) {
+        super(id, inputText, textDocumentStatistics, error);
         this.entities = entities == null ? new ArrayList<>() : entities;
     }
 
     /**
      * Get a list of categorized entities string.
      *
-     * @return a list of {@link CategorizedEntity}
+     * @return A list of {@link CategorizedEntity}.
      */
     public List<CategorizedEntity> getEntities() {
         throwExceptionIfError();

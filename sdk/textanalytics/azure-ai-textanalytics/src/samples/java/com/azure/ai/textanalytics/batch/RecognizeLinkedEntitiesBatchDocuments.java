@@ -30,8 +30,8 @@ public class RecognizeLinkedEntitiesBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
-            .endpoint("{endpoint}")
+            .apiKey(new TextAnalyticsApiKeyCredential("b2f8b7b697c348dcb0e30055d49f3d0f"))
+            .endpoint("https://javatextanalyticstestresources.cognitiveservices.azure.com/")
             .buildClient();
 
         // The texts that need be analyzed.
@@ -62,7 +62,8 @@ public class RecognizeLinkedEntitiesBatchDocuments {
 
             // Recognized linked entities from a batch of documents
             for (RecognizeLinkedEntitiesResult linkedEntityDocumentResult : textAnalyticsPagedResponse.getElements()) {
-                System.out.printf("Document ID: %s%n", linkedEntityDocumentResult.getId());
+                System.out.printf("%nDocument ID: %s%n", linkedEntityDocumentResult.getId());
+                System.out.printf("Input text: %s%n", linkedEntityDocumentResult.getInputText());
                 // Erroneous document
                 if (linkedEntityDocumentResult.isError()) {
                     System.out.printf("Cannot recognize linked entities. Error: %s%n", linkedEntityDocumentResult.getError().getMessage());
