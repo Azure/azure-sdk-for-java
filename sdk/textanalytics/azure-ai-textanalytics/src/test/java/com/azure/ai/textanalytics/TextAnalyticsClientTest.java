@@ -7,10 +7,10 @@ import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.DocumentSentimentLabel;
+import com.azure.ai.textanalytics.models.EntitiesResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentenceSentimentLabel;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
@@ -24,6 +24,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -151,26 +152,26 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         final CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
         final CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
 
-        final List<CategorizedEntity> entities = client.recognizeEntities("I had a wonderful trip to Seattle last week.").stream().collect(Collectors.toList());
+        final List<CategorizedEntity> entities = client.recognizeCategorizedEntities("I had a wonderful trip to Seattle last week.").stream().collect(Collectors.toList());
         validateCategorizedEntity(categorizedEntity1, entities.get(0));
         validateCategorizedEntity(categorizedEntity2, entities.get(1));
     }
 
     @Test
     public void recognizeEntitiesForEmptyText() {
-        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.recognizeEntities("").iterator().hasNext());
+        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.recognizeCategorizedEntities("").iterator().hasNext());
         assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
     @Test
     public void recognizeEntitiesForFaultyText() {
-        assertFalse(client.recognizeEntities("!@#%%").iterator().hasNext());
+        assertFalse(client.recognizeCategorizedEntities("!@#%%").iterator().hasNext());
     }
 
     @Test
     public void recognizeEntitiesBatchInputSingleError() {
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) -> {
-            TextAnalyticsPagedIterable<RecognizeEntitiesResult> response = client.recognizeEntitiesBatch(inputs, null, Context.NONE);
+            TextAnalyticsPagedIterable<EntitiesResult<CategorizedEntity>> response = client.recognizeCategorizedEntitiesBatch(inputs, null, Context.NONE);
             response.forEach(recognizeEntitiesResult -> {
                 Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getEntities());
                 assertTrue(exception.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE));
@@ -181,7 +182,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForBatchInput() {
         recognizeBatchCategorizedEntityRunner((inputs) ->
-            client.recognizeEntitiesBatch(inputs, null, Context.NONE).iterableByPage().forEach(
+            client.recognizeCategorizedEntitiesBatch(inputs, null, Context.NONE).iterableByPage().forEach(
                 pagedResponse ->
                     validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
@@ -189,14 +190,14 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForBatchInputShowStatistics() {
         recognizeBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
-            client.recognizeEntitiesBatch(inputs, options, Context.NONE).iterableByPage().forEach(
+            client.recognizeCategorizedEntitiesBatch(inputs, options, Context.NONE).iterableByPage().forEach(
                 pagedResponse ->
                     validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
 
     @Test
     public void recognizeEntitiesForBatchStringInput() {
-        recognizeCategorizedEntityStringInputRunner((inputs) -> client.recognizeEntitiesBatch(inputs).iterableByPage()
+        recognizeCategorizedEntityStringInputRunner((inputs) -> client.recognizeCategorizedEntitiesBatch(inputs).iterableByPage()
             .forEach(pagedResponse ->
                 validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
@@ -204,7 +205,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForListLanguageHint() {
         recognizeCategorizedEntitiesLanguageHintRunner((inputs, language) ->
-            client.recognizeEntitiesBatch(inputs, language, null).iterableByPage().forEach(
+            client.recognizeCategorizedEntitiesBatch(inputs, language).iterableByPage().forEach(
                 pagedResponse ->
                     validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
@@ -257,7 +258,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
         final LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
-        final LinkedEntity linkedEntity1 = new LinkedEntity("Seattle", Collections.singletonList(linkedEntityMatch1), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
+        final LinkedEntity linkedEntity1 = new LinkedEntity("Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch1)), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
         final List<LinkedEntity> linkedEntities = client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week.").stream().collect(Collectors.toList());
         validateLinkedEntity(linkedEntity1, linkedEntities.get(0));
     }
@@ -351,10 +352,10 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
             DocumentSentimentLabel.MIXED,
             new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
-            Arrays.asList(
+            new IterableStream<>(Arrays.asList(
                 new SentenceSentiment(SentenceSentimentLabel.NEGATIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 31, 0),
                 new SentenceSentiment(SentenceSentimentLabel.POSITIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 35, 32)
-            ));
+            )));
         DocumentSentiment analyzeSentimentResult =
             client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.");
 
@@ -377,10 +378,10 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyseSentimentForFaultyText() {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(DocumentSentimentLabel.NEUTRAL,
             new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
-            Arrays.asList(
+            new IterableStream<>(Arrays.asList(
                 new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 1, 0),
                 new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 4, 1)
-            ));
+            )));
 
         DocumentSentiment analyzeSentimentResult = client.analyzeSentiment("!@#%%");
 

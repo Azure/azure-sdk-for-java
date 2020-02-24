@@ -6,17 +6,16 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
-import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.models.EntitiesResult;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ class RecognizePiiEntityAsyncClient {
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code RecognizePiiEntityAsyncClient} that sends requests to the Text Analytics services's
+     * Create a {@link RecognizePiiEntityAsyncClient} that sends requests to the Text Analytics services's
      * recognize Personally Identifiable Information entity endpoint.
      *
      * @param service The proxy service used to perform REST calls.
@@ -79,23 +78,23 @@ class RecognizePiiEntityAsyncClient {
                 Collections.singletonList(new TextDocumentInput("0", text, language)), null)
                 .byPage()
                 .map(resOfResult -> {
-                    Iterator<RecognizePiiEntitiesResult> iterator = resOfResult.getValue().iterator();
+                    Iterator<EntitiesResult<PiiEntity>> iterator = resOfResult.getValue().iterator();
                     // Collection will never empty
                     if (!iterator.hasNext()) {
                         throw logger.logExceptionAsError(new IllegalStateException(
                             "An empty collection returned which is an unexpected error."));
                     }
 
-                    final RecognizePiiEntitiesResult entitiesResult = iterator.next();
+                    final EntitiesResult<PiiEntity> entitiesResult = iterator.next();
                     if (entitiesResult.isError()) {
                         throw logger.logExceptionAsError(
                             Transforms.toTextAnalyticsException(entitiesResult.getError()));
                     }
 
                     return new TextAnalyticsPagedResponse<>(
-                        resOfResult.getRequest(), resOfResult.getStatusCode(),
-                        resOfResult.getHeaders(), entitiesResult.getEntities(), null,
-                        resOfResult.getModelVersion(), resOfResult.getStatistics());
+                        resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
+                        entitiesResult.getEntities().stream().collect(Collectors.toList()),
+                        null, resOfResult.getModelVersion(), resOfResult.getStatistics());
                 }));
     }
 
@@ -130,7 +129,7 @@ class RecognizePiiEntityAsyncClient {
      *
      * @return a
      */
-    TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(Iterable<TextDocumentInput> textInputs,
+    TextAnalyticsPagedFlux<EntitiesResult<PiiEntity>> recognizePiiEntitiesBatch(Iterable<TextDocumentInput> textInputs,
                                                                                  TextAnalyticsRequestOptions options) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         try {
@@ -162,9 +161,9 @@ class RecognizePiiEntityAsyncClient {
      * @param options aa
      * @param context a
      *
-     * @return text analytics flux of {@link RecognizeEntitiesResult}
+     * @return text analytics flux of {@link EntitiesResult} of {@link PiiEntity}
      */
-    TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatchWithContext(
+    TextAnalyticsPagedFlux<EntitiesResult<PiiEntity>> recognizePiiEntitiesBatchWithContext(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
 
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
@@ -186,32 +185,38 @@ class RecognizePiiEntityAsyncClient {
     }
 
     /**
-     * Helper method to convert the service response of {@link EntitiesResult} to {@link TextAnalyticsPagedResponse}
-     * of {@link RecognizePiiEntitiesResult}
+     * Helper method to convert the service response of
+     * {@link com.azure.ai.textanalytics.implementation.models.EntitiesResult} to {@link TextAnalyticsPagedResponse}
+     * of {@link EntitiesResult} of {@link PiiEntity}
      *
      * @param response the {@link SimpleResponse} returned by the service.
      * @param textInputs The given collection of input texts.
      *
-     * @return the {@link TextAnalyticsPagedResponse} of {@link RecognizePiiEntitiesResult} to be returned by the SDK.
+     * @return the {@link TextAnalyticsPagedResponse} of {@link EntitiesResult} of {@link PiiEntity} to be
+     * returned by the SDK.
      */
-    private TextAnalyticsPagedResponse<RecognizePiiEntitiesResult> toTextAnalyticsPagedResponse(
-        final SimpleResponse<EntitiesResult> response, Iterable<TextDocumentInput> textInputs) {
+    private TextAnalyticsPagedResponse<EntitiesResult<PiiEntity>> toTextAnalyticsPagedResponse(
+        final SimpleResponse<com.azure.ai.textanalytics.implementation.models.EntitiesResult> response,
+        final Iterable<TextDocumentInput> textInputs) {
 
-        EntitiesResult entitiesResult = response.getValue();
+        com.azure.ai.textanalytics.implementation.models.EntitiesResult entitiesResult = response.getValue();
         Map<String, String> inputMap = toMap(textInputs); // key = id, value = input text
 
-        List<RecognizePiiEntitiesResult> recognizePiiEntitiesResults = new ArrayList<>();
+        List<EntitiesResult<PiiEntity>> recognizePiiEntitiesResults = new ArrayList<>();
         for (DocumentEntities documentEntities : entitiesResult.getDocuments()) {
             final String documentId = documentEntities.getId();
 
-            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(
+            recognizePiiEntitiesResults.add(new EntitiesResult<>(
                 documentId,
                 inputMap.get(documentId),
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
-                null, documentEntities.getEntities().stream().map(entity ->
-                new PiiEntity(entity.getText(), entity.getType(), entity.getSubtype(), entity.getOffset(),
-                    entity.getLength(), entity.getScore())).collect(Collectors.toList())));
+                null,
+                new IterableStream<>(documentEntities.getEntities().stream().map(entity -> new PiiEntity(
+                    entity.getText(), entity.getType(), entity.getSubtype(), entity.getOffset(),
+                    entity.getLength(), entity.getScore()))
+                    .collect(Collectors.toList()))
+            ));
         }
 
         for (DocumentError documentError : entitiesResult.getErrors()) {
@@ -219,7 +224,7 @@ class RecognizePiiEntityAsyncClient {
                 toTextAnalyticsError(documentError.getError());
             final String documentId = documentError.getId();
 
-            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(
+            recognizePiiEntitiesResults.add(new EntitiesResult<>(
                 documentId, inputMap.get(documentId), null, error, null));
         }
 

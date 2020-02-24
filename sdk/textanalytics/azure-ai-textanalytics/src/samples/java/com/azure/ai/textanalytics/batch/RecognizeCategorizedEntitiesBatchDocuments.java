@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.EntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Sample demonstrates how to recognize the entities of a batch input text.
  */
-public class RecognizeEntitiesBatchDocuments {
+public class RecognizeCategorizedEntitiesBatchDocuments {
     /**
      * Main method to invoke this demo about how to recognize the entities of a batch input text.
      *
@@ -43,39 +43,39 @@ public class RecognizeEntitiesBatchDocuments {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Recognizing batch entities
-        final Iterable<TextAnalyticsPagedResponse<RecognizeEntitiesResult>> recognizedBatchResult =
-            client.recognizeEntitiesBatch(inputs, requestOptions, Context.NONE).iterableByPage();
+        final Iterable<TextAnalyticsPagedResponse<EntitiesResult<CategorizedEntity>>> recognizedBatchResult =
+            client.recognizeCategorizedEntitiesBatch(inputs, requestOptions, Context.NONE).iterableByPage();
 
-        for (TextAnalyticsPagedResponse<RecognizeEntitiesResult> textAnalyticsPagedResponse : recognizedBatchResult) {
-            System.out.printf("Model version: %s%n", textAnalyticsPagedResponse.getModelVersion());
+        recognizedBatchResult.forEach(pagedResponse -> {
+            System.out.printf("Model version: %s%n", pagedResponse.getModelVersion());
 
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = textAnalyticsPagedResponse.getStatistics();
+            final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
             System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getDocumentCount(),
                 batchStatistics.getInvalidDocumentCount(),
                 batchStatistics.getTransactionCount(),
                 batchStatistics.getValidDocumentCount());
+
             // Recognized entities for each of document from a batch of documents
-            for (RecognizeEntitiesResult recognizeEntitiesResult : textAnalyticsPagedResponse.getElements()) {
-                System.out.printf("%nDocument ID: %s%n", recognizeEntitiesResult.getId());
-                System.out.printf("Input text: %s%n", recognizeEntitiesResult.getInputText());
-                // Erroneous document
-                if (recognizeEntitiesResult.isError()) {
-                    System.out.printf("Cannot recognize entities. Error: %s%n", recognizeEntitiesResult.getError().getMessage());
-                    continue;
+            pagedResponse.getElements().forEach(entitiesResult -> {
+                System.out.printf("%nDocument ID: %s, input text: %s%n", entitiesResult.getId(), entitiesResult.getInputText());
+                if (entitiesResult.isError()) {
+                    // Erroneous document
+                    System.out.printf("Cannot recognize entities. Error: %s%n", entitiesResult.getError().getMessage());
+                } else {
+                    // Valid document
+                    entitiesResult.getEntities().forEach(entity ->
+                        System.out.printf("Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
+                            entity.getText(),
+                            entity.getCategory(),
+                            entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
+                            entity.getOffset(),
+                            entity.getLength(),
+                            entity.getScore())
+                    );
                 }
-                // Valid document
-                for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
-                    System.out.printf("Recognized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                        entity.getText(),
-                        entity.getCategory(),
-                        entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                        entity.getOffset(),
-                        entity.getLength(),
-                        entity.getScore());
-                }
-            }
-        }
+            });
+        });
     }
 }

@@ -4,8 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-
-import java.util.List;
+import com.azure.core.util.IterableStream;
 
 /**
  * The LinkedEntity model.
@@ -20,7 +19,7 @@ public final class LinkedEntity {
     /*
      * List of instances this entity appears in the text.
      */
-    private final List<LinkedEntityMatch> linkedEntityMatches;
+    private final IterableStream<LinkedEntityMatch> linkedEntityMatches;
 
     /*
      * Language used in the data source.
@@ -52,7 +51,7 @@ public final class LinkedEntity {
      * @param url URL for the entity's page from the data source
      * @param dataSource data source used to extract entity linking, such as Wiki/Bing etc
      */
-    public LinkedEntity(String name, List<LinkedEntityMatch> linkedEntityMatches, String language,
+    public LinkedEntity(String name, IterableStream<LinkedEntityMatch> linkedEntityMatches, String language,
         String dataSourceEntityId, String url, String dataSource) {
         this.name = name;
         this.linkedEntityMatches = linkedEntityMatches;
@@ -76,7 +75,7 @@ public final class LinkedEntity {
      *
      * @return the linkedEntityMatches value.
      */
-    public List<LinkedEntityMatch> getLinkedEntityMatches() {
+    public IterableStream<LinkedEntityMatch> getLinkedEntityMatches() {
         return this.linkedEntityMatches;
     }
 

@@ -7,17 +7,17 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLinkedEntities;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
-import com.azure.ai.textanalytics.implementation.models.LinkedEntity;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.models.EntitiesResult;
+import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
@@ -75,30 +75,29 @@ class RecognizeLinkedEntityAsyncClient {
      *
      * @return a
      */
-    TextAnalyticsPagedFlux<com.azure.ai.textanalytics.models.LinkedEntity>
-        recognizeLinkedEntities(String text, String language) {
+    TextAnalyticsPagedFlux<LinkedEntity> recognizeLinkedEntities(String text, String language) {
         return new TextAnalyticsPagedFlux<>(() ->
             (continuationToken, pageSize) -> recognizeLinkedEntitiesBatch(
                 Collections.singletonList(new TextDocumentInput("0", text, language)), null)
                 .byPage()
                 .map(resOfResult -> {
-                    Iterator<RecognizeLinkedEntitiesResult> iterator = resOfResult.getValue().iterator();
+                    Iterator<EntitiesResult<LinkedEntity>> iterator = resOfResult.getValue().iterator();
                     // Collection will never empty
                     if (!iterator.hasNext()) {
                         throw logger.logExceptionAsError(new IllegalStateException(
                             "An empty collection returned which is an unexpected error."));
                     }
 
-                    final RecognizeLinkedEntitiesResult entitiesResult = iterator.next();
+                    final EntitiesResult<LinkedEntity> entitiesResult = iterator.next();
                     if (entitiesResult.isError()) {
                         throw logger.logExceptionAsError(
                             Transforms.toTextAnalyticsException(entitiesResult.getError()));
                     }
 
                     return new TextAnalyticsPagedResponse<>(
-                        resOfResult.getRequest(), resOfResult.getStatusCode(),
-                        resOfResult.getHeaders(), entitiesResult.getEntities(), null,
-                        resOfResult.getModelVersion(), resOfResult.getStatistics());
+                        resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
+                        entitiesResult.getEntities().stream().collect(Collectors.toList()),
+                        null, resOfResult.getModelVersion(), resOfResult.getStatistics());
                 }));
     }
 
@@ -140,7 +139,7 @@ class RecognizeLinkedEntityAsyncClient {
      *
      * @return a
      */
-    TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
+    TextAnalyticsPagedFlux<EntitiesResult<LinkedEntity>> recognizeLinkedEntitiesBatch(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         try {
@@ -169,9 +168,9 @@ class RecognizeLinkedEntityAsyncClient {
      * @param options aa
      * @param context a
      *
-     * @return text analytics flux of {@link RecognizeEntitiesResult}
+     * @return text analytics flux of {@link EntitiesResult}
      */
-    TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatchWithContext(
+    TextAnalyticsPagedFlux<EntitiesResult<LinkedEntity>> recognizeLinkedEntitiesBatchWithContext(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
 
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
@@ -191,36 +190,38 @@ class RecognizeLinkedEntityAsyncClient {
 
     /**
      * Helper method to convert the service response of {@link EntityLinkingResult} to
-     * {@link TextAnalyticsPagedResponse} of {@link RecognizeLinkedEntitiesResult}
+     * {@link TextAnalyticsPagedResponse} of {@link EntitiesResult}
      *
      * @param response the {@link SimpleResponse} returned by the service.
      * @param textInputs The given collection of input texts.
      *
-     * @return the {@link TextAnalyticsPagedResponse} of {@link RecognizeLinkedEntitiesResult} to be returned
+     * @return the {@link TextAnalyticsPagedResponse} of {@link EntitiesResult} to be returned
      * by the SDK.
      */
-    private TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult> toTextAnalyticsPagedResponse(
+    private TextAnalyticsPagedResponse<EntitiesResult<LinkedEntity>> toTextAnalyticsPagedResponse(
         final SimpleResponse<EntityLinkingResult> response, Iterable<TextDocumentInput> textInputs) {
 
         EntityLinkingResult entityLinkingResult = response.getValue();
         Map<String, String> inputMap = toMap(textInputs); // key = id, value = input text
 
-        List<RecognizeLinkedEntitiesResult> linkedEntitiesResults = new ArrayList<>();
+        List<EntitiesResult<LinkedEntity>> linkedEntitiesResults = new ArrayList<>();
         for (DocumentLinkedEntities documentLinkedEntities : entityLinkingResult.getDocuments()) {
             final String documentId = documentLinkedEntities.getId();
-            linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(
+            linkedEntitiesResults.add(new EntitiesResult<>(
                 documentId,
                 inputMap.get(documentId),
                 documentLinkedEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentLinkedEntities.getStatistics()),
-                null, mapLinkedEntity(documentLinkedEntities.getEntities())));
+                null,
+                mapLinkedEntity(documentLinkedEntities.getEntities())
+            ));
         }
         for (DocumentError documentError : entityLinkingResult.getErrors()) {
             final com.azure.ai.textanalytics.models.TextAnalyticsError error =
                 toTextAnalyticsError(documentError.getError());
             final String documentId = documentError.getId();
             linkedEntitiesResults.add(
-                new RecognizeLinkedEntitiesResult(documentId, inputMap.get(documentId), null, error, null));
+                new EntitiesResult<>(documentId, inputMap.get(documentId), null, error, null));
         }
 
         return new TextAnalyticsPagedResponse<>(
@@ -234,16 +235,19 @@ class RecognizeLinkedEntityAsyncClient {
                 : toBatchStatistics(entityLinkingResult.getStatistics()));
     }
 
-    private List<com.azure.ai.textanalytics.models.LinkedEntity> mapLinkedEntity(List<LinkedEntity> linkedEntities) {
-        List<com.azure.ai.textanalytics.models.LinkedEntity> linkedEntitiesList = new ArrayList<>();
-        for (LinkedEntity linkedEntity : linkedEntities) {
-            linkedEntitiesList.add(new com.azure.ai.textanalytics.models.LinkedEntity(linkedEntity.getName(),
-                linkedEntity.getMatches().stream().map(match ->
-                    new LinkedEntityMatch(match.getText(), match.getScore(), match.getLength(),
-                        match.getOffset())).collect(Collectors.toList()), linkedEntity.getLanguage(),
+    private IterableStream<LinkedEntity> mapLinkedEntity(
+        List<com.azure.ai.textanalytics.implementation.models.LinkedEntity> linkedEntities) {
+        List<LinkedEntity> linkedEntitiesList = new ArrayList<>();
+        for (com.azure.ai.textanalytics.implementation.models.LinkedEntity linkedEntity : linkedEntities) {
+            linkedEntitiesList.add(new LinkedEntity(
+                linkedEntity.getName(),
+                new IterableStream<>(linkedEntity.getMatches().stream().map(match -> new LinkedEntityMatch(
+                    match.getText(), match.getScore(), match.getLength(), match.getOffset()))
+                    .collect(Collectors.toList())),
+                linkedEntity.getLanguage(),
                 linkedEntity.getId(), linkedEntity.getUrl(), linkedEntity.getDataSource()));
         }
-        return linkedEntitiesList;
+        return new IterableStream<>(linkedEntitiesList);
     }
 
     private Map<String, String> toMap(Iterable<TextDocumentInput> textInputs) {

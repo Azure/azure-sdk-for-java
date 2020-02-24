@@ -5,8 +5,8 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.EntitiesResult;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -44,11 +44,10 @@ public class RecognizePiiBatchDocuments {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Recognizing batch entities
-        final Iterable<TextAnalyticsPagedResponse<RecognizePiiEntitiesResult>> recognizedBatchResult =
+        final Iterable<TextAnalyticsPagedResponse<EntitiesResult<PiiEntity>>> recognizedBatchResult =
             client.recognizePiiEntitiesBatch(inputs, requestOptions, Context.NONE).iterableByPage();
 
-        for (TextAnalyticsPagedResponse<RecognizePiiEntitiesResult> textAnalyticsPagedResponse : recognizedBatchResult) {
-
+        recognizedBatchResult.forEach(textAnalyticsPagedResponse -> {
             System.out.printf("Model version: %s%n", textAnalyticsPagedResponse.getModelVersion());
 
             // Batch statistics
@@ -60,26 +59,23 @@ public class RecognizePiiBatchDocuments {
                 batchStatistics.getValidDocumentCount());
 
             // Recognized Personally Identifiable Information entities for each of document from a batch of documents
-            for (RecognizePiiEntitiesResult piiEntityDocumentResult : textAnalyticsPagedResponse.getElements()) {
-                System.out.printf("%nDocument ID: %s%n", piiEntityDocumentResult.getId());
-                System.out.printf("Input text: %s%n", piiEntityDocumentResult.getInputText());
-                // Erroneous document
-                if (piiEntityDocumentResult.isError()) {
-                    System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n",
-                        piiEntityDocumentResult.getError().getMessage());
-                    continue;
+            textAnalyticsPagedResponse.getElements().forEach(entitiesResult -> {
+                System.out.printf("%nDocument ID: %s, input text: %s%n", entitiesResult.getId(), entitiesResult.getInputText());
+                if (entitiesResult.isError()) {
+                    // Erroneous document
+                    System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n", entitiesResult.getError().getMessage());
+                } else {
+                    // Valid document
+                    entitiesResult.getEntities().forEach(entity ->
+                        System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
+                            entity.getText(),
+                            entity.getCategory(),
+                            entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
+                            entity.getOffset(),
+                            entity.getLength(),
+                            entity.getScore()));
                 }
-                // Valid document
-                for (PiiEntity entity : piiEntityDocumentResult.getEntities()) {
-                    System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                        entity.getText(),
-                        entity.getCategory(),
-                        entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                        entity.getOffset(),
-                        entity.getLength(),
-                        entity.getScore());
-                }
-            }
-        }
+            });
+        });
     }
 }

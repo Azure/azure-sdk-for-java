@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -19,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Sample demonstrates how to asynchronously recognize the entities of a batch input text.
  */
-public class RecognizeEntitiesBatchDocumentsAsync {
+public class RecognizeCategorizedEntitiesBatchDocumentsAsync {
     /**
      * Main method to invoke this demo about how to recognize the entities of a batch input text.
      *
@@ -42,7 +40,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Recognizing batch entities
-        client.recognizeEntitiesBatch(inputs, requestOptions).byPage().subscribe(
+        client.recognizeCategorizedEntitiesBatch(inputs, requestOptions).byPage().subscribe(
             pagedResponse -> {
                 System.out.printf("Model version: %s%n", pagedResponse.getModelVersion());
 
@@ -55,25 +53,23 @@ public class RecognizeEntitiesBatchDocumentsAsync {
                     batchStatistics.getValidDocumentCount());
 
                 // Recognized entities for each of document from a batch of documents
-                for (RecognizeEntitiesResult recognizeEntitiesResult : pagedResponse.getElements()) {
-                    System.out.printf("%nDocument ID: %s%n", recognizeEntitiesResult.getId());
-                    System.out.printf("Input text: %s%n", recognizeEntitiesResult.getInputText());
-                    // Erroneous document
-                    if (recognizeEntitiesResult.isError()) {
-                        System.out.printf("Cannot recognize entities. Error: %s%n", recognizeEntitiesResult.getError().getMessage());
-                        continue;
+                pagedResponse.getElements().forEach(entitiesResult -> {
+                    System.out.printf("%nDocument ID: %s, input text: %s%n", entitiesResult.getId(), entitiesResult.getInputText());
+                    if (entitiesResult.isError()) {
+                        // Erroneous document
+                        System.out.printf("Cannot recognize entities. Error: %s%n", entitiesResult.getError().getMessage());
+                    } else {
+                        // Valid document
+                        entitiesResult.getEntities().forEach(entity ->
+                            System.out.printf("Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
+                                entity.getText(),
+                                entity.getCategory(),
+                                entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
+                                entity.getOffset(),
+                                entity.getLength(),
+                                entity.getScore()));
                     }
-                    // Valid document
-                    for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
-                        System.out.printf("Recognized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                            entity.getText(),
-                            entity.getCategory(),
-                            entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                            entity.getOffset(),
-                            entity.getLength(),
-                            entity.getScore());
-                    }
-                }
+                });
             },
             error -> System.err.println("There was an error recognizing entities of the text inputs." + error),
             () -> System.out.println("Batch of entities recognized."));

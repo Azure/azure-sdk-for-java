@@ -5,11 +5,12 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.EntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
+import com.azure.core.util.IterableStream;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -97,7 +98,7 @@ final class TestUtils {
     /**
      * Helper method to get the expected Batch Categorized Entities
      */
-    static TextAnalyticsPagedResponse<RecognizeEntitiesResult> getExpectedBatchCategorizedEntities() {
+    static TextAnalyticsPagedResponse<EntitiesResult<CategorizedEntity>> getExpectedBatchCategorizedEntities() {
         return new TextAnalyticsPagedResponse<>(null, 200, null,
             Arrays.asList(getExpectedBatchCategorizedEntities1(), getExpectedBatchCategorizedEntities2()),
             null,  DEFAULT_MODEL_VERSION,
@@ -107,25 +108,25 @@ final class TestUtils {
     /**
      * Helper method to get the expected Batch Categorized Entities
      */
-    static RecognizeEntitiesResult getExpectedBatchCategorizedEntities1() {
+    static EntitiesResult<CategorizedEntity> getExpectedBatchCategorizedEntities1() {
         CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
         CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
 
-        List<CategorizedEntity> categorizedEntityList1 = Arrays.asList(categorizedEntity1, categorizedEntity2);
+        IterableStream<CategorizedEntity> categorizedEntityList1 = new IterableStream<>(Arrays.asList(categorizedEntity1, categorizedEntity2));
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
-        RecognizeEntitiesResult recognizeEntitiesResult1 = new RecognizeEntitiesResult("0", "I had a wonderful trip to Seattle last week.", textDocumentStatistics1, null, categorizedEntityList1);
-        return recognizeEntitiesResult1;
+        EntitiesResult<CategorizedEntity> recognizeCategorizedEntitiesResult1 = new EntitiesResult<>("0", "I had a wonderful trip to Seattle last week.", textDocumentStatistics1, null, categorizedEntityList1);
+        return recognizeCategorizedEntitiesResult1;
     }
 
     /**
      * Helper method to get the expected Batch Categorized Entities
      */
-    static RecognizeEntitiesResult getExpectedBatchCategorizedEntities2() {
+    static EntitiesResult<CategorizedEntity> getExpectedBatchCategorizedEntities2() {
         CategorizedEntity categorizedEntity3 = new CategorizedEntity("Microsoft", "Organization", null, 10, 9, 0.0);
-        List<CategorizedEntity> categorizedEntityList2 = Collections.singletonList(categorizedEntity3);
+        IterableStream<CategorizedEntity> categorizedEntityList2 = new IterableStream<>(Collections.singletonList(categorizedEntity3));
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(20, 1);
-        RecognizeEntitiesResult recognizeEntitiesResult2 = new RecognizeEntitiesResult("1", "I work at Microsoft.", textDocumentStatistics2, null, categorizedEntityList2);
-        return recognizeEntitiesResult2;
+        EntitiesResult<CategorizedEntity> recognizeCategorizedEntitiesResult2 = new EntitiesResult<>("1", "I work at Microsoft.", textDocumentStatistics2, null, categorizedEntityList2);
+        return recognizeCategorizedEntitiesResult2;
     }
 
 //    /**

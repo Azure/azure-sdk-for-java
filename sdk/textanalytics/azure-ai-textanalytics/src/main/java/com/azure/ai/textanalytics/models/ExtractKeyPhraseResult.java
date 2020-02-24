@@ -4,16 +4,16 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The {@link ExtractKeyPhraseResult} model.
  */
 @Immutable
 public final class ExtractKeyPhraseResult extends DocumentResult {
-    private final List<String> keyPhrases;
+    private final IterableStream<String> keyPhrases;
 
     /**
      * Create a {@link ExtractKeyPhraseResult} model that describes extracted key phrases result.
@@ -25,9 +25,9 @@ public final class ExtractKeyPhraseResult extends DocumentResult {
      * @param keyPhrases A list of key phrases string.
      */
     public ExtractKeyPhraseResult(String id, String inputText, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error, List<String> keyPhrases) {
+        TextAnalyticsError error, IterableStream<String> keyPhrases) {
         super(id, inputText, textDocumentStatistics, error);
-        this.keyPhrases = keyPhrases == null ? new ArrayList<>() : keyPhrases;
+        this.keyPhrases = keyPhrases == null ? new IterableStream<>(new ArrayList<>()) : keyPhrases;
     }
 
     /**
@@ -35,7 +35,7 @@ public final class ExtractKeyPhraseResult extends DocumentResult {
      *
      * @return A list of key phrase string.
      */
-    public List<String> getKeyPhrases() {
+    public IterableStream<String> getKeyPhrases() {
         throwExceptionIfError();
         return keyPhrases;
     }

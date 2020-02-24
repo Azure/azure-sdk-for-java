@@ -5,13 +5,11 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.SentenceSentiment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,31 +54,29 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                     batchStatistics.getValidDocumentCount());
 
                 // Analyzed sentiment for each of document from a batch of documents
-                for (AnalyzeSentimentResult analyzeSentimentResult : pagedResponse.getElements()) {
-                    System.out.printf("%nDocument ID: %s%n", analyzeSentimentResult.getId());
-                    System.out.printf("Input text: %s%n", analyzeSentimentResult.getInputText());
-                    // Erroneous document
+                pagedResponse.getElements().forEach(analyzeSentimentResult -> {
+                    System.out.printf("%nDocument ID: %s, input text: %s%n", analyzeSentimentResult.getId(), analyzeSentimentResult.getInputText());
                     if (analyzeSentimentResult.isError()) {
+                        // Erroneous document
                         System.out.printf("Cannot analyze sentiment. Error: %s%n", analyzeSentimentResult.getError().getMessage());
-                        continue;
+                    } else {
+                        // Valid document
+                        final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+                        System.out.printf("Analyzed document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
+                            documentSentiment.getSentiment(),
+                            documentSentiment.getConfidenceScores().getPositive(),
+                            documentSentiment.getConfidenceScores().getNeutral(),
+                            documentSentiment.getConfidenceScores().getNegative());
+                        documentSentiment.getSentences().forEach(sentenceSentiment ->
+                            System.out.printf("Analyzed sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
+                                sentenceSentiment.getSentiment(),
+                                sentenceSentiment.getConfidenceScores().getPositive(),
+                                sentenceSentiment.getConfidenceScores().getNeutral(),
+                                sentenceSentiment.getConfidenceScores().getNegative(),
+                                sentenceSentiment.getLength(),
+                                sentenceSentiment.getOffset()));
                     }
-                    // Valid document
-                    final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-                    System.out.printf("Analyzed document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                        documentSentiment.getSentiment(),
-                        documentSentiment.getConfidenceScores().getPositive(),
-                        documentSentiment.getConfidenceScores().getNeutral(),
-                        documentSentiment.getConfidenceScores().getNegative());
-                    for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-                        System.out.printf("Analyzed sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
-                            sentenceSentiment.getSentiment(),
-                            sentenceSentiment.getConfidenceScores().getPositive(),
-                            sentenceSentiment.getConfidenceScores().getNeutral(),
-                            sentenceSentiment.getConfidenceScores().getNegative(),
-                            sentenceSentiment.getLength(),
-                            sentenceSentiment.getOffset());
-                    }
-                }
+                });
             },
             error -> System.err.println("There was an error analyzing sentiment of the text inputs." + error),
             () -> System.out.println("Batch of sentiment analyzed."));

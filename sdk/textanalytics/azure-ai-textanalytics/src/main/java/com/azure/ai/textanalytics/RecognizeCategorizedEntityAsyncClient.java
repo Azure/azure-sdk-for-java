@@ -6,16 +6,16 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
-import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.EntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
@@ -36,22 +36,23 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * Helper class for managing recognize entity endpoint.
  */
-class RecognizeEntityAsyncClient {
-    private final ClientLogger logger = new ClientLogger(RecognizeEntityAsyncClient.class);
+class RecognizeCategorizedEntityAsyncClient {
+    private final ClientLogger logger = new ClientLogger(RecognizeCategorizedEntityAsyncClient.class);
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code RecognizeEntityAsyncClient} that sends requests to the Text Analytics services's recognize entity
-     * endpoint.
+     * Create a {@link RecognizeCategorizedEntityAsyncClient} that sends requests to the Text Analytics services's
+     * recognize entity endpoint.
      *
      * @param service The proxy service used to perform REST calls.
      */
-    RecognizeEntityAsyncClient(TextAnalyticsClientImpl service) {
+    RecognizeCategorizedEntityAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
     }
 
     /**
      * a
+     *
      * @param text a
      * @param language a
      *
@@ -63,35 +64,36 @@ class RecognizeEntityAsyncClient {
                 Collections.singletonList(new TextDocumentInput("0", text, language)), null)
                 .byPage()
                 .map(resOfResult -> {
-                    Iterator<RecognizeEntitiesResult> iterator = resOfResult.getValue().iterator();
+                    Iterator<EntitiesResult<CategorizedEntity>> iterator = resOfResult.getValue().iterator();
                     // Collection will never empty
                     if (!iterator.hasNext()) {
                         throw logger.logExceptionAsError(new IllegalStateException(
                             "An empty collection returned which is an unexpected error."));
                     }
 
-                    final RecognizeEntitiesResult entitiesResult = iterator.next();
+                    final EntitiesResult<CategorizedEntity> entitiesResult = iterator.next();
                     if (entitiesResult.isError()) {
                         throw logger.logExceptionAsError(
                             Transforms.toTextAnalyticsException(entitiesResult.getError()));
                     }
 
                     return new TextAnalyticsPagedResponse<>(
-                        resOfResult.getRequest(), resOfResult.getStatusCode(),
-                        resOfResult.getHeaders(), entitiesResult.getEntities(), null,
+                        resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
+                        entitiesResult.getEntities().stream().collect(Collectors.toList()), null,
                         resOfResult.getModelVersion(), resOfResult.getStatistics());
                 }));
     }
 
     /**
      * // TODO: add java doc stirng
+     *
      * @param textInputs a
      * @param options a
      *
      * @return a
      */
-    TextAnalyticsPagedFlux<RecognizeEntitiesResult> recognizeEntitiesBatch(Iterable<TextDocumentInput> textInputs,
-        TextAnalyticsRequestOptions options) {
+    TextAnalyticsPagedFlux<EntitiesResult<CategorizedEntity>> recognizeEntitiesBatch(
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
@@ -120,9 +122,9 @@ class RecognizeEntityAsyncClient {
      * @param options aa
      * @param context a
      *
-     * @return text analytics flux of {@link RecognizeEntitiesResult}
+     * @return text analytics flux of {@link EntitiesResult}
      */
-    TextAnalyticsPagedFlux<RecognizeEntitiesResult> recognizeEntitiesBatchWithContext(
+    TextAnalyticsPagedFlux<EntitiesResult<CategorizedEntity>> recognizeEntitiesBatchWithContext(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
 
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
@@ -142,28 +144,33 @@ class RecognizeEntityAsyncClient {
     }
 
     /**
-     * Helper method to convert the service response of {@link EntitiesResult} to {@link TextAnalyticsPagedResponse}.
-     * of {@link RecognizeEntitiesResult}
+     * Helper method to convert the service response of
+     * {@link com.azure.ai.textanalytics.implementation.models.EntitiesResult} to {@link TextAnalyticsPagedResponse}.
+     * of {@link EntitiesResult} of {@link CategorizedEntity}}
      * @param response the {@link SimpleResponse} returned by the service.
-     * @return the {@link TextAnalyticsPagedResponse} of {@link RecognizeEntitiesResult} to be returned by the SDK.
+     * @return the {@link TextAnalyticsPagedResponse} of {@link EntitiesResult} to be returned by the SDK.
      */
-    private TextAnalyticsPagedResponse<RecognizeEntitiesResult> toTextAnalyticsPagedResponse(
-        final SimpleResponse<EntitiesResult> response, Iterable<TextDocumentInput> textInputs) {
+    private TextAnalyticsPagedResponse<EntitiesResult<CategorizedEntity>> toTextAnalyticsPagedResponse(
+        final SimpleResponse<com.azure.ai.textanalytics.implementation.models.EntitiesResult> response,
+        final Iterable<TextDocumentInput> textInputs) {
 
-        EntitiesResult entitiesResult = response.getValue();
+        com.azure.ai.textanalytics.implementation.models.EntitiesResult entitiesResult = response.getValue();
         Map<String, String> inputMap = toMap(textInputs); // key = id, value = input text
 
-        List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
+        List<EntitiesResult<CategorizedEntity>> recognizeCategorizedEntitiesResults = new ArrayList<>();
         for (DocumentEntities documentEntities : entitiesResult.getDocuments()) {
             final String documentId = documentEntities.getId();
-            recognizeEntitiesResults.add(new RecognizeEntitiesResult(
+            recognizeCategorizedEntitiesResults.add(new EntitiesResult<>(
                 documentId,
                 inputMap.get(documentId),
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
-                null, documentEntities.getEntities().stream().map(entity ->
-                new CategorizedEntity(entity.getText(), entity.getType(), entity.getSubtype(), entity.getOffset(),
-                    entity.getLength(), entity.getScore())).collect(Collectors.toList())));
+                null,
+                new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
+                    new CategorizedEntity(entity.getText(), entity.getType(), entity.getSubtype(),
+                        entity.getOffset(), entity.getLength(), entity.getScore()))
+                    .collect(Collectors.toList())))
+            );
         }
 
         for (DocumentError documentError : entitiesResult.getErrors()) {
@@ -171,7 +178,7 @@ class RecognizeEntityAsyncClient {
                 toTextAnalyticsError(documentError.getError());
             final String documentId = documentError.getId();
 
-            recognizeEntitiesResults.add(new RecognizeEntitiesResult(
+            recognizeCategorizedEntitiesResults.add(new EntitiesResult<>(
                 documentId, inputMap.get(documentId), null, error, null));
         }
 
@@ -179,7 +186,7 @@ class RecognizeEntityAsyncClient {
             response.getRequest(),
             response.getStatusCode(),
             response.getHeaders(),
-            recognizeEntitiesResults,
+            recognizeCategorizedEntitiesResults,
             null,
             entitiesResult.getModelVersion(),
             entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics()));

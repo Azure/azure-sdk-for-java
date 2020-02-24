@@ -46,10 +46,10 @@ public class DetectLanguageBatchDocuments {
         final Iterable<TextAnalyticsPagedResponse<DetectLanguageResult>> detectedBatchResult =
             client.detectLanguageBatch(inputs, requestOptions, Context.NONE).iterableByPage();
 
-        detectedBatchResult.forEach(textAnalyticsPagedResponse -> {
-            System.out.printf("Model version: %s%n", textAnalyticsPagedResponse.getModelVersion());
+        detectedBatchResult.forEach(pagedResponse -> {
+            System.out.printf("Model version: %s%n", pagedResponse.getModelVersion());
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = textAnalyticsPagedResponse.getStatistics();
+            final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
             System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getDocumentCount(),
                 batchStatistics.getInvalidDocumentCount(),
@@ -57,21 +57,20 @@ public class DetectLanguageBatchDocuments {
                 batchStatistics.getValidDocumentCount());
 
             // Detected languages for a document from a batch of documents
-            for (DetectLanguageResult detectLanguageResult : textAnalyticsPagedResponse.getElements()) {
-                System.out.printf("%nDocument ID: %s%n", detectLanguageResult.getId());
-                System.out.printf("Input text: %s%n", detectLanguageResult.getInputText());
-                // Erroneous document
+            pagedResponse.getElements().forEach(detectLanguageResult -> {
+                System.out.printf("%nDocument ID: %s, input text: %s%n", detectLanguageResult.getId(), detectLanguageResult.getInputText());
                 if (detectLanguageResult.isError()) {
+                    // Erroneous document
                     System.out.printf("Cannot detect language. Error: %s%n", detectLanguageResult.getError().getMessage());
-                    continue;
+                } else {
+                    // Valid document
+                    final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
+                    System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %.2f.%n",
+                        detectedPrimaryLanguage.getName(),
+                        detectedPrimaryLanguage.getIso6391Name(),
+                        detectedPrimaryLanguage.getScore());
                 }
-                // Valid document
-                final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
-                System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %.2f.%n",
-                    detectedPrimaryLanguage.getName(),
-                    detectedPrimaryLanguage.getIso6391Name(),
-                    detectedPrimaryLanguage.getScore());
-            }
+            });
         });
     }
 }

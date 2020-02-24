@@ -19,6 +19,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
@@ -221,7 +222,7 @@ class AnalyzeSentimentAsyncClient {
                     confidenceScorePerLabel.getNegative(),
                     confidenceScorePerLabel.getNeutral(),
                     confidenceScorePerLabel.getPositive()),
-                sentenceSentiments));
+                new IterableStream<>(sentenceSentiments)));
     }
 
     private Map<String, String> toMap(Iterable<TextDocumentInput> textInputs) {

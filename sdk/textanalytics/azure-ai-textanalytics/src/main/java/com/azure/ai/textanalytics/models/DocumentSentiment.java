@@ -4,8 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-
-import java.util.List;
+import com.azure.core.util.IterableStream;
 
 /**
  * The {@link DocumentSentiment} model that contains sentiment label of a document, confidence score of the sentiment
@@ -15,7 +14,7 @@ import java.util.List;
 public final class DocumentSentiment {
     private final DocumentSentimentLabel sentiment;
     private final SentimentConfidenceScorePerLabel confidenceScores;
-    private final List<SentenceSentiment> sentences;
+    private final IterableStream<SentenceSentiment> sentences;
 
     /**
      * Creates a {@link DocumentSentiment} model that describes the sentiment of the document.
@@ -26,7 +25,7 @@ public final class DocumentSentiment {
      * @param sentences a list of sentence sentiments.
      */
     public DocumentSentiment(DocumentSentimentLabel sentiment, SentimentConfidenceScorePerLabel confidenceScores,
-        List<SentenceSentiment> sentences) {
+        IterableStream<SentenceSentiment> sentences) {
         this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
         this.sentences = sentences;
@@ -56,7 +55,7 @@ public final class DocumentSentiment {
      *
      * @return a list of sentence sentiments.
      */
-    public List<SentenceSentiment> getSentences() {
+    public IterableStream<SentenceSentiment> getSentences() {
         return sentences;
     }
 }

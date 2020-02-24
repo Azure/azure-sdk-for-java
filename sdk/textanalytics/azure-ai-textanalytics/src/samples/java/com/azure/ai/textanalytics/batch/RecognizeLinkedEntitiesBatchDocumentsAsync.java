@@ -5,11 +5,8 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 
@@ -56,31 +53,29 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                     batchStatistics.getValidDocumentCount());
 
                 // Recognized linked entities from a batch of documents
-                for (RecognizeLinkedEntitiesResult linkedEntityDocumentResult : pagedResponse.getElements()) {
-                    System.out.printf("%nDocument ID: %s%n", linkedEntityDocumentResult.getId());
-                    System.out.printf("Input text: %s%n", linkedEntityDocumentResult.getInputText());
-                    // Erroneous document
-                    if (linkedEntityDocumentResult.isError()) {
-                        System.out.printf("Cannot recognize linked entities. Error: %s%n", linkedEntityDocumentResult.getError().getMessage());
-                        continue;
+                pagedResponse.getElements().forEach(entitiesResult -> {
+                    System.out.printf("%nDocument ID: %s, input text: %s%n", entitiesResult.getId(), entitiesResult.getInputText());
+                    if (entitiesResult.isError()) {
+                        // Erroneous document
+                        System.out.printf("Cannot recognize linked entities. Error: %s%n", entitiesResult.getError().getMessage());
+                    } else {
+                        // Valid document
+                        entitiesResult.getEntities().forEach(linkedEntity -> {
+                            System.out.println("Linked Entities:");
+                            System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
+                                linkedEntity.getName(),
+                                linkedEntity.getDataSourceEntityId(),
+                                linkedEntity.getUrl(),
+                                linkedEntity.getDataSource());
+                            linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
+                                System.out.printf("(Linked Entity Match) Text: %s, offset: %s, length: %s, score: %.2f.%n",
+                                    linkedEntityMatch.getText(),
+                                    linkedEntityMatch.getOffset(),
+                                    linkedEntityMatch.getLength(),
+                                    linkedEntityMatch.getScore()));
+                        });
                     }
-                    // Valid document
-                    for (LinkedEntity linkedEntity : linkedEntityDocumentResult.getEntities()) {
-                        System.out.println("Linked Entities:");
-                        System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                            linkedEntity.getName(),
-                            linkedEntity.getDataSourceEntityId(),
-                            linkedEntity.getUrl(),
-                            linkedEntity.getDataSource());
-                        for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
-                            System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
-                                linkedEntityMatch.getText(),
-                                linkedEntityMatch.getOffset(),
-                                linkedEntityMatch.getLength(),
-                                linkedEntityMatch.getScore());
-                        }
-                    }
-                }
+                });
             },
             error -> System.err.println("There was an error recognizing linked entities of the text inputs." + error),
             () -> System.out.println("Batch of linked entities recognized."));

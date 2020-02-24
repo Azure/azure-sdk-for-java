@@ -5,14 +5,13 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.core.util.Context;
 
 import java.util.Arrays;
@@ -47,11 +46,11 @@ public class AnalyzeSentimentBatchDocuments {
         final Iterable<TextAnalyticsPagedResponse<AnalyzeSentimentResult>> sentimentBatchResult =
             client.analyzeSentimentBatch(inputs, requestOptions, Context.NONE).iterableByPage();
 
-        for (TextAnalyticsPagedResponse<AnalyzeSentimentResult> textAnalyticsPagedResponse : sentimentBatchResult) {
-            System.out.printf("Model version: %s%n", textAnalyticsPagedResponse.getModelVersion());
+        sentimentBatchResult.forEach(pagedResponse -> {
+            System.out.printf("Model version: %s%n", pagedResponse.getModelVersion());
 
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = textAnalyticsPagedResponse.getStatistics();
+            final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
             System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getDocumentCount(),
                 batchStatistics.getInvalidDocumentCount(),
@@ -59,61 +58,29 @@ public class AnalyzeSentimentBatchDocuments {
                 batchStatistics.getValidDocumentCount());
 
             // Analyzed sentiment for each of document from a batch of documents
-            for (AnalyzeSentimentResult analyzeSentimentResult : textAnalyticsPagedResponse.getElements()) {
-                System.out.printf("%nDocument ID: %s%n", analyzeSentimentResult.getId());
-                System.out.printf("Input text: %s%n", analyzeSentimentResult.getInputText());
-                // Erroneous document
+            pagedResponse.getElements().forEach(analyzeSentimentResult -> {
+                System.out.printf("%nDocument ID: %s, input text: %s%n", analyzeSentimentResult.getId(), analyzeSentimentResult.getInputText());
                 if (analyzeSentimentResult.isError()) {
+                    // Erroneous document
                     System.out.printf("Cannot analyze sentiment. Error: %s%n", analyzeSentimentResult.getError().getMessage());
-                    continue;
+                } else {
+                    // Valid document
+                    final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+                    System.out.printf("Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
+                        documentSentiment.getSentiment(),
+                        documentSentiment.getConfidenceScores().getPositive(),
+                        documentSentiment.getConfidenceScores().getNeutral(),
+                        documentSentiment.getConfidenceScores().getNegative());
+                    documentSentiment.getSentences().forEach(sentenceSentiment ->
+                        System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
+                            sentenceSentiment.getSentiment(),
+                            sentenceSentiment.getConfidenceScores().getPositive(),
+                            sentenceSentiment.getConfidenceScores().getNeutral(),
+                            sentenceSentiment.getConfidenceScores().getNegative(),
+                            sentenceSentiment.getLength(),
+                            sentenceSentiment.getOffset()));
                 }
-                // Valid document
-                final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-                System.out.printf("Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                    documentSentiment.getSentiment(),
-                    documentSentiment.getConfidenceScores().getPositive(),
-                    documentSentiment.getConfidenceScores().getNeutral(),
-                    documentSentiment.getConfidenceScores().getNegative());
-                for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-                    System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
-                        sentenceSentiment.getSentiment(),
-                        sentenceSentiment.getConfidenceScores().getPositive(),
-                        sentenceSentiment.getConfidenceScores().getNeutral(),
-                        sentenceSentiment.getConfidenceScores().getNegative(),
-                        sentenceSentiment.getLength(),
-                        sentenceSentiment.getOffset());
-                }
-            }
-        }
-
-
-        client.analyzeSentimentBatch(inputs, requestOptions, Context.NONE).forEach(analyzeSentimentResult -> {
-            System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
-            // Erroneous document
-            if (analyzeSentimentResult.isError()) {
-                System.out.printf("Cannot analyze sentiment. Error: %s%n", analyzeSentimentResult.getError().getMessage());
-                return;
-            }
-            // Valid document
-            final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-            System.out.printf("Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                documentSentiment.getSentiment(),
-                documentSentiment.getConfidenceScores().getPositive(),
-                documentSentiment.getConfidenceScores().getNeutral(),
-                documentSentiment.getConfidenceScores().getNegative());
-            for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-                System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
-                    sentenceSentiment.getSentiment(),
-                    sentenceSentiment.getConfidenceScores().getPositive(),
-                    sentenceSentiment.getConfidenceScores().getNeutral(),
-                    sentenceSentiment.getConfidenceScores().getNegative(),
-                    sentenceSentiment.getLength(),
-                    sentenceSentiment.getOffset());
-            }
+            });
         });
-
-
-
-
     }
 }

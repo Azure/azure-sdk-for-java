@@ -5,10 +5,8 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 
@@ -57,26 +55,23 @@ public class RecognizePiiBatchDocumentsAsync {
                     batchStatistics.getValidDocumentCount());
 
                 // Recognized Personally Identifiable Information entities for each of document from a batch of documents
-                for (RecognizePiiEntitiesResult piiEntityDocumentResult : pagedResponse.getElements()) {
-                    System.out.printf("%nDocument ID: %s%n", piiEntityDocumentResult.getId());
-                    System.out.printf("Input text: %s%n", piiEntityDocumentResult.getInputText());
-                    // Erroneous document
-                    if (piiEntityDocumentResult.isError()) {
-                        System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n",
-                            piiEntityDocumentResult.getError().getMessage());
-                        continue;
+                pagedResponse.getElements().forEach(entitiesResult -> {
+                    System.out.printf("%nDocument ID: %s, input text: %s%n", entitiesResult.getId(), entitiesResult.getInputText());
+                    if (entitiesResult.isError()) {
+                        // Erroneous document
+                        System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n", entitiesResult.getError().getMessage());
+                    } else {
+                        // Valid document
+                        entitiesResult.getEntities().forEach(entity ->
+                            System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
+                                entity.getText(),
+                                entity.getCategory(),
+                                entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
+                                entity.getOffset(),
+                                entity.getLength(),
+                                entity.getScore()));
                     }
-                    // Valid document
-                    for (PiiEntity entity : piiEntityDocumentResult.getEntities()) {
-                        System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                            entity.getText(),
-                            entity.getCategory(),
-                            entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                            entity.getOffset(),
-                            entity.getLength(),
-                            entity.getScore());
-                    }
-                }
+                });
             },
             error -> System.err.printf("There was an error recognizing Personally Identifiable Information entities of the text inputs. %s%n", error),
             () -> System.out.println("Batch of Personally Identifiable Information entities recognized."));

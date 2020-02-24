@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 import java.util.concurrent.TimeUnit;
@@ -35,13 +34,12 @@ public class RecognizeLinkedEntitiesAsync {
                     linkedEntity.getDataSourceEntityId(),
                     linkedEntity.getUrl(),
                     linkedEntity.getDataSource());
-                for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
-                    System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
+                linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch -> System.out.printf(
+                        "(Linked Entity Match) Text: %s, offset: %s, length: %s, score: %.2f.%n",
                         linkedEntityMatch.getText(),
                         linkedEntityMatch.getOffset(),
                         linkedEntityMatch.getLength(),
-                        linkedEntityMatch.getScore());
-                }
+                        linkedEntityMatch.getScore()));
             },
             error -> System.err.println("There was an error recognizing linked entity of the text." + error),
             () -> System.out.println("Linked entity recognized."));

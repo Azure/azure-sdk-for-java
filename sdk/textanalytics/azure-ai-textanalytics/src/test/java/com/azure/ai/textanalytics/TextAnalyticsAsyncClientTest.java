@@ -21,6 +21,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -156,7 +158,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeEntitiesForTextInput() {
         final CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
         final CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
-        StepVerifier.create(client.recognizeEntities("I had a wonderful trip to Seattle last week."))
+        StepVerifier.create(client.recognizeCategorizedEntities("I had a wonderful trip to Seattle last week."))
             .assertNext(response -> validateCategorizedEntity(categorizedEntity1, response))
             .assertNext(response -> validateCategorizedEntity(categorizedEntity2, response))
             .verifyComplete();
@@ -164,14 +166,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForEmptyText() {
-        StepVerifier.create(client.recognizeEntities(""))
+        StepVerifier.create(client.recognizeCategorizedEntities(""))
             .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
                 && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
     @Test
     public void recognizeEntitiesForFaultyText() {
-        StepVerifier.create(client.recognizeEntities("!@#%%"))
+        StepVerifier.create(client.recognizeCategorizedEntities("!@#%%"))
             .expectNextCount(0)
             .verifyComplete();
     }
@@ -179,7 +181,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesBatchInputSingleError() {
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) ->
-            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null))
+            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs, null))
                 .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
                     && throwable.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE)));
     }
@@ -187,36 +189,36 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForBatchInput() {
         recognizeBatchCategorizedEntityRunner((inputs) ->
-            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null))
-                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities1().getEntities(), response.getEntities()))
-                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities2().getEntities(), response.getEntities()))
+            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs, null))
+                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities1().getEntities().stream().collect(Collectors.toList()), response.getEntities().stream().collect(Collectors.toList())))
+                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities2().getEntities().stream().collect(Collectors.toList()), response.getEntities().stream().collect(Collectors.toList())))
                 .verifyComplete());
     }
 
     @Test
     public void recognizeEntitiesForBatchInputShowStatistics() {
         recognizeBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizeEntitiesBatch(inputs, options))
-                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities1().getEntities(), response.getEntities()))
-                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities2().getEntities(), response.getEntities()))
+            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs, options))
+                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities1().getEntities().stream().collect(Collectors.toList()), response.getEntities().stream().collect(Collectors.toList())))
+                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities2().getEntities().stream().collect(Collectors.toList()), response.getEntities().stream().collect(Collectors.toList())))
                 .verifyComplete());
     }
 
     @Test
     public void recognizeEntitiesForBatchStringInput() {
         recognizeCategorizedEntityStringInputRunner((inputs) ->
-            StepVerifier.create(client.recognizeEntitiesBatch(inputs))
-                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities1().getEntities(), response.getEntities()))
-                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities2().getEntities(), response.getEntities()))
+            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs))
+                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities1().getEntities().stream().collect(Collectors.toList()), response.getEntities().stream().collect(Collectors.toList())))
+                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities2().getEntities().stream().collect(Collectors.toList()), response.getEntities().stream().collect(Collectors.toList())))
                 .verifyComplete());
     }
 
     @Test
     public void recognizeEntitiesForListLanguageHint() {
         recognizeCategorizedEntitiesLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizeEntitiesBatch(inputs, language, null))
-                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities1().getEntities(), response.getEntities()))
-                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities2().getEntities(), response.getEntities()))
+            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs, language))
+                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities1().getEntities().stream().collect(Collectors.toList()), response.getEntities().stream().collect(Collectors.toList())))
+                .assertNext(response -> validateCategorizedEntities(TestUtils.getExpectedBatchCategorizedEntities2().getEntities().stream().collect(Collectors.toList()), response.getEntities().stream().collect(Collectors.toList())))
                 .verifyComplete());
     }
 
@@ -224,7 +226,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
         final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
-        final LinkedEntity linkedEntity = new LinkedEntity("Seattle", Collections.singletonList(linkedEntityMatch), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
+        final LinkedEntity linkedEntity = new LinkedEntity("Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch)), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
 
         StepVerifier.create(client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week."))
             .assertNext(response -> validateLinkedEntity(linkedEntity, response))
@@ -395,10 +397,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyseSentimentForTextInput() {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(DocumentSentimentLabel.MIXED,
             new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
-            Arrays.asList(
+            new IterableStream<>(Arrays.asList(
                 new SentenceSentiment(SentenceSentimentLabel.NEGATIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 31, 0),
                 new SentenceSentiment(SentenceSentimentLabel.POSITIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 35, 32)
-            ));
+            )));
 //
 //        StepVerifier
 //            .create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi."))
@@ -423,10 +425,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
             DocumentSentimentLabel.NEUTRAL,
             new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
-            Arrays.asList(
+            new IterableStream<>(Arrays.asList(
                 new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 1, 0),
                 new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 4, 1)
-            ));
+            )));
 
         StepVerifier.create(client.analyzeSentiment("!@#%%"))
             .assertNext(response -> validateAnalyzedSentiment(expectedDocumentSentiment, response)).verifyComplete();

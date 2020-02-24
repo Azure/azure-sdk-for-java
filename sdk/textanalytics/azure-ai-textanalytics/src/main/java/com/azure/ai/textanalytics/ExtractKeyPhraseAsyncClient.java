@@ -15,6 +15,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
@@ -94,9 +96,9 @@ class ExtractKeyPhraseAsyncClient {
                     }
 
                     return new TextAnalyticsPagedResponse<>(
-                        resOfResult.getRequest(), resOfResult.getStatusCode(),
-                        resOfResult.getHeaders(), keyPhraseResult.getKeyPhrases(), null,
-                        resOfResult.getModelVersion(), resOfResult.getStatistics());
+                        resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
+                        keyPhraseResult.getKeyPhrases().stream().collect(Collectors.toList()),
+                        null, resOfResult.getModelVersion(), resOfResult.getStatistics());
                 }));
     }
 
@@ -205,7 +207,7 @@ class ExtractKeyPhraseAsyncClient {
                 inputMap.get(documentId),
                 documentKeyPhrases.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
-                documentKeyPhrases.getKeyPhrases()));
+                new IterableStream<>(documentKeyPhrases.getKeyPhrases())));
         }
 
         for (DocumentError documentError : keyPhraseResult.getErrors()) {

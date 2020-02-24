@@ -8,10 +8,10 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.EntitiesResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -391,11 +391,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 //    }
 
     static void validateCategorizedEntity(boolean showStatistics,
-        TextAnalyticsPagedResponse<RecognizeEntitiesResult> expected,
-        TextAnalyticsPagedResponse<RecognizeEntitiesResult> actual) {
+        TextAnalyticsPagedResponse<EntitiesResult<CategorizedEntity>> expected,
+        TextAnalyticsPagedResponse<EntitiesResult<CategorizedEntity>> actual) {
 
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validateCategorizedEntities(expectedItem.getEntities(), actualItem.getEntities()));
+            validateCategorizedEntities(expectedItem.getEntities().stream().collect(Collectors.toList()), actualItem.getEntities().stream().collect(Collectors.toList())));
     }
 
 //    static void validatePiiEntity(boolean showStatistics, DocumentResultCollection<RecognizePiiEntitiesResult> expected,
@@ -480,7 +480,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedLinkedEntity.getLanguage(), actualLinkedEntity.getLanguage());
         assertEquals(expectedLinkedEntity.getUrl(), actualLinkedEntity.getUrl());
         assertEquals(expectedLinkedEntity.getDataSourceEntityId(), actualLinkedEntity.getDataSourceEntityId());
-        validateLinkedEntityMatches(expectedLinkedEntity.getLinkedEntityMatches(), actualLinkedEntity.getLinkedEntityMatches());
+        validateLinkedEntityMatches(expectedLinkedEntity.getLinkedEntityMatches().stream().collect(Collectors.toList()), actualLinkedEntity.getLinkedEntityMatches().stream().collect(Collectors.toList()));
     }
 
     /**
@@ -594,7 +594,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      */
     static void validateAnalyzedSentiment(DocumentSentiment expectedSentiment, DocumentSentiment actualSentiment) {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
-        validateAnalyzedSentenceSentiment(expectedSentiment.getSentences(), expectedSentiment.getSentences());
+        validateAnalyzedSentenceSentiment(expectedSentiment.getSentences().stream().collect(Collectors.toList()), expectedSentiment.getSentences().stream().collect(Collectors.toList()));
     }
 
     /**

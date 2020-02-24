@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -55,21 +54,20 @@ public class DetectLanguageBatchDocumentsAsync {
                     batchStatistics.getValidDocumentCount());
 
                 // Detected languages for a document from a batch of documents
-                for (DetectLanguageResult detectLanguageResult : pagedResponse.getElements()) {
-                    System.out.printf("%nDocument ID: %s%n", detectLanguageResult.getId());
-                    System.out.printf("Input text: %s%n", detectLanguageResult.getInputText());
-                    // Erroneous document
+                pagedResponse.getElements().forEach(detectLanguageResult -> {
+                    System.out.printf("%nDocument ID: %s, input text: %s%n", detectLanguageResult.getId(), detectLanguageResult.getInputText());
                     if (detectLanguageResult.isError()) {
+                        // Erroneous document
                         System.out.printf("Cannot detect language. Error: %s%n", detectLanguageResult.getError().getMessage());
-                        continue;
+                    } else {
+                        // Valid document
+                        final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
+                        System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %.2f.%n",
+                            detectedPrimaryLanguage.getName(),
+                            detectedPrimaryLanguage.getIso6391Name(),
+                            detectedPrimaryLanguage.getScore());
                     }
-                    // Valid document
-                    final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
-                    System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %.2f.%n",
-                        detectedPrimaryLanguage.getName(),
-                        detectedPrimaryLanguage.getIso6391Name(),
-                        detectedPrimaryLanguage.getScore());
-                }
+                });
             },
             error -> System.err.println("There was an error detecting language of the text inputs." + error),
             () -> System.out.println("Batch of language detected."));

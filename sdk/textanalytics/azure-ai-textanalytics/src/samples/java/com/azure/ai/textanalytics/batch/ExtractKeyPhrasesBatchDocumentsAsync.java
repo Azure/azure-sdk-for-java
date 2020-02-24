@@ -5,9 +5,8 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 
@@ -54,20 +53,17 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
                     batchStatistics.getValidDocumentCount());
 
                 // Extracted key phrase for each of document from a batch of documents
-                for (ExtractKeyPhraseResult extractKeyPhraseResult : pagedResponse.getElements()) {
-                    System.out.printf("%nDocument ID: %s%n", extractKeyPhraseResult.getId());
-                    System.out.printf("Input text: %s%n", extractKeyPhraseResult.getInputText());
-                    // Erroneous document
+                pagedResponse.getElements().forEach(extractKeyPhraseResult -> {
+                    System.out.printf("%nDocument ID: %s, input text: %s%n", extractKeyPhraseResult.getId(), extractKeyPhraseResult.getInputText());
                     if (extractKeyPhraseResult.isError()) {
+                        // Erroneous document
                         System.out.printf("Cannot extract key phrases. Error: %s%n", extractKeyPhraseResult.getError().getMessage());
-                        continue;
+                    } else {
+                        // Valid document
+                        System.out.println("Extracted phrases:");
+                        extractKeyPhraseResult.getKeyPhrases().forEach(keyPhrases -> System.out.printf("%s.%n", keyPhrases));
                     }
-                    // Valid document
-                    System.out.println("Extracted phrases:");
-                    for (String keyPhrases : extractKeyPhraseResult.getKeyPhrases()) {
-                        System.out.printf("%s.%n", keyPhrases);
-                    }
-                }
+                });
             },
             error -> System.err.println("There was an error extracting key phrases of the text inputs." + error),
             () -> System.out.println("Batch of key phrases extracted."));

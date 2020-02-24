@@ -45,11 +45,11 @@ public class ExtractKeyPhrasesBatchDocuments {
         final Iterable<TextAnalyticsPagedResponse<ExtractKeyPhraseResult>> extractedBatchResult =
             client.extractKeyPhrasesBatch(inputs, requestOptions, Context.NONE).iterableByPage();
 
-        for (TextAnalyticsPagedResponse<ExtractKeyPhraseResult> textAnalyticsPagedResponse : extractedBatchResult) {
-            System.out.printf("Model version: %s%n", textAnalyticsPagedResponse.getModelVersion());
+        extractedBatchResult.forEach(pagedResponse -> {
+            System.out.printf("Model version: %s%n", pagedResponse.getModelVersion());
 
             // Batch statistics
-            final TextDocumentBatchStatistics batchStatistics = textAnalyticsPagedResponse.getStatistics();
+            final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
             System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getDocumentCount(),
                 batchStatistics.getInvalidDocumentCount(),
@@ -57,20 +57,17 @@ public class ExtractKeyPhrasesBatchDocuments {
                 batchStatistics.getValidDocumentCount());
 
             // Extracted key phrase for each of document from a batch of documents
-            for (ExtractKeyPhraseResult extractKeyPhraseResult : textAnalyticsPagedResponse.getElements()) {
-                System.out.printf("%nDocument ID: %s%n", extractKeyPhraseResult.getId());
-                System.out.printf("Input text: %s%n", extractKeyPhraseResult.getInputText());
-                // Erroneous document
+            pagedResponse.getElements().forEach(extractKeyPhraseResult -> {
+                System.out.printf("%nDocument ID: %s, input text: %s%n", extractKeyPhraseResult.getId(), extractKeyPhraseResult.getInputText());
                 if (extractKeyPhraseResult.isError()) {
+                    // Erroneous document
                     System.out.printf("Cannot extract key phrases. Error: %s%n", extractKeyPhraseResult.getError().getMessage());
-                    continue;
+                } else {
+                    // Valid document
+                    System.out.println("Extracted phrases:");
+                    extractKeyPhraseResult.getKeyPhrases().forEach(keyPhrases -> System.out.printf("%s.%n", keyPhrases));
                 }
-                // Valid document
-                System.out.println("Extracted phrases:");
-                for (String keyPhrases : extractKeyPhraseResult.getKeyPhrases()) {
-                    System.out.printf("%s.%n", keyPhrases);
-                }
-            }
-        }
+            });
+        });
     }
 }

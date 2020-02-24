@@ -86,7 +86,7 @@ public class ReadmeSamples {
      */
     public void recognizeCategorizedEntity() {
         String text = "Satya Nadella is the CEO of Microsoft";
-        for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text)) {
+        for (CategorizedEntity entity : textAnalyticsClient.recognizeCategorizedEntities(text)) {
             System.out.printf("Recognized categorized entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
         }

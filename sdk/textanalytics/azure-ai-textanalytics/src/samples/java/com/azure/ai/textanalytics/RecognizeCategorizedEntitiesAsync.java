@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Sample demonstrates how to asynchronously recognize the entities of an input text.
  */
-public class RecognizeEntitiesAsync {
+public class RecognizeCategorizedEntitiesAsync {
     /**
      * Main method to invoke this demo about how to recognize the entities of an input text.
      *
@@ -26,9 +26,9 @@ public class RecognizeEntitiesAsync {
         // The text that needs be analyzed.
         String text = "Satya Nadella is the CEO of Microsoft";
 
-        client.recognizeEntities(text).subscribe(
+        client.recognizeCategorizedEntities(text).subscribe(
             entity -> System.out.printf(
-                "Recognized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
+                "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
                 entity.getText(),
                 entity.getCategory(),
                 entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
