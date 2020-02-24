@@ -77,9 +77,6 @@ class MavenComponent {
 function Get-Dependencies($mavenExecutable, $pomFile) {
     $transitiveDependencies = @{}
 
-    Write-Host "Writing to output..."
-    Invoke-Expression "$mavenExecutable -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
-
     $temp = New-TemporaryFile
     Write-Host "Writing dependencies to file: $($pomFile.FullName) -> $($temp.FullName)"
     Write-Host "Command: $mavenExecutable -DoutputFile=$($temp.FullName) -q -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
@@ -126,11 +123,12 @@ function Get-Dependencies($mavenExecutable, $pomFile) {
             continue
         }
 
-        [MavenReference]$maven = [MavenReference]::new($dependencyParts[0], $dependencyParts[1], $dependencyParts[3])
-        $key = $maven.ToString()
+        [MavenReference]$reference = [MavenReference]::new($dependencyParts[0], $dependencyParts[1], $dependencyParts[3])
+        $key = $reference.ToString()
 
         if (!$transitiveDependencies.ContainsKey($key)) {
-            $transitiveDependencies.Add($key, $maven) | Out-Null
+            Write-Host "[$key]: $reference"
+            $transitiveDependencies.Add($key, $reference) | Out-Null
         } else {
             Write-Warning "$key already exists. Skipping."
         }
@@ -146,7 +144,7 @@ function Write-Table($header, $table) {
 
     Write-Host "--- START: $header ---"
     foreach ($key in $($table.Keys | Sort-Object)) {
-        $value = $table.Item($key);
+        $value = $table[$key];
         Write-Verbose "    [$key]: $value"
     }
     Write-Host "--- END:   $header ---"
@@ -225,7 +223,7 @@ foreach ($file in $pomFiles) {
         }
     }
 
-    $dependencies = Get-Dependencies $maven $file
+    [hashtable]$dependencies = Get-Dependencies $maven $file
     if (($null -eq $dependencies) -or ($null -eq $dependencies.Keys)) {
         Write-Host "Skipping $($file.FullName)"
         continue
@@ -245,8 +243,11 @@ foreach ($file in $pomFiles) {
             $isUpdated = $true
             $json.Version++
         }
-        $mavenComponent = [MavenComponent]::new($dependencies.Item($key))
+        
+        $value = $dependencies[$key]
+        Write-Host "Adding: $value"
 
+        $mavenComponent = [MavenComponent]::new($value)
         $json.Registrations += @{ Component = $mavenComponent }
     }
 
