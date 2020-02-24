@@ -1,15 +1,15 @@
 trigger: none
 
 jobs:
-    - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-      parameters:
-          ServiceDirectory: search
-          DisableAzureResourceCreation: true
-          Timeout: 120
-          maxParallel: 3
-          EnvVars:
-              AZURE_TEST_MODE: LIVE
-              AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-              AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
-              AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
-              AZURE_SUBSCRIPTION_ID: $(aad-azure-sdk-test-subscription-id)
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: search
+      DisableAzureResourceCreation: true
+      Timeout: 120
+      maxParallel: 3
+      EnvVars:
+        AZURE_TEST_MODE: LIVE
+        AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+        AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
+        AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
+        AZURE_SUBSCRIPTION_ID: $(aad-azure-sdk-test-subscription-id)
