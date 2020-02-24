@@ -4,6 +4,9 @@ package com.azure.core.util.tracing;
 
 import com.azure.core.util.Context;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.ServiceLoader;
 
 /**
@@ -14,7 +17,10 @@ import java.util.ServiceLoader;
  */
 public final class TracerProxy {
 
-    private static final ServiceLoader<? extends Tracer> TRACERS = ServiceLoader.load(Tracer.class);
+    private static final TracerProxy INSTANCE = new TracerProxy();
+
+    private List<Tracer> tracers = null;
+    private final Object lock = new Object();
 
     private TracerProxy() {
         // no-op
@@ -34,7 +40,7 @@ public final class TracerProxy {
      */
     public static Context start(String methodName, Context context) {
         Context local = context;
-        for (Tracer tracer : TRACERS) {
+        for (Tracer tracer : INSTANCE.getTracers()) {
             local = tracer.start(methodName, local);
         }
 
@@ -50,7 +56,7 @@ public final class TracerProxy {
      * @param context Additional metadata that is passed through the call stack.
      */
     public static void setAttribute(String key, String value, Context context) {
-        TRACERS.forEach(tracer -> tracer.setAttribute(key, value, context));
+        INSTANCE.getTracers().forEach(tracer -> tracer.setAttribute(key, value, context));
     }
 
     /**
@@ -61,7 +67,7 @@ public final class TracerProxy {
      * @param context Additional metadata that is passed through the call stack.
      */
     public static void end(int responseCode, Throwable error, Context context) {
-        TRACERS.forEach(tracer -> tracer.end(responseCode, error, context));
+        INSTANCE.getTracers().forEach(tracer -> tracer.end(responseCode, error, context));
     }
 
     /**
@@ -74,10 +80,21 @@ public final class TracerProxy {
      */
     public static Context setSpanName(String spanName, Context context) {
         Context local = context;
-        for (Tracer tracer : TRACERS) {
+        for (Tracer tracer : INSTANCE.getTracers()) {
             local = tracer.setSpanName(spanName, context);
         }
 
         return local;
+    }
+
+    private List<? extends Tracer> getTracers() {
+        if (tracers == null) {
+            synchronized (lock) {
+                List<Tracer> tracersInClassLoad = new ArrayList<>();
+                ServiceLoader.load(Tracer.class).forEach(tracersInClassLoad::add);
+                tracers = Collections.unmodifiableList(tracersInClassLoad);
+            }
+        }
+        return tracers;
     }
 }
