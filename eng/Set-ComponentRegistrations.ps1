@@ -80,11 +80,8 @@ function Get-Dependencies($pomFile) {
     $temp = New-TemporaryFile
     Write-Host "Getting dependencies for $($pomFile.FullName) -> $($temp.FullName)"
 
-    Write-Host "Writing output first..."
-    Invoke-Expression "mvn -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
-
     Write-Host "Writing to file..."
-    Invoke-Expression "mvn -DoutputFile=$($temp.FullName) -q -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
+    Invoke-Expression "$($maven.Path) -DoutputFile=$($temp.FullName) -q -DoutputType=dot -f $($pomFile.FullName) dependency:tree"
 
     $contents = Get-Content $temp
     if ($contents.Length -eq 0) {
@@ -92,6 +89,10 @@ function Get-Dependencies($pomFile) {
         $temp.Delete()
         return $null
     }
+
+    Write-Host "START: DEPENDENCY TREE"
+    Write-Verbose "$contents"
+    Write-Host "END:   DEPENDENCY TREE"
 
     if (!$KeepTemporaryFile) {
         Write-Host "Removing temp file: '$($temp.FullName)'"
@@ -141,19 +142,22 @@ function Write-Table($header, $table) {
         return
     }
 
-    Write-Verbose "START: $header"
-    foreach ($kvp in $table.Values) {
-        Write-Verbose "$($kvp.ToString())"
+    Write-Host "--- START: $header ---"
+    foreach ($key in $($table.Keys | Sort-Object)) {
+        $value = $table.Item($key);
+        Write-Verbose "    [$key]: $value"
     }
-    Write-Verbose "END:   $header"
+    Write-Host "--- END:   $header ---"
 }
 
-$maven = Get-Command mvn -CommandType Application -ErrorAction Ignore
-if ($null -eq $maven) {
+$allMavenInstallations = @(Get-Command mvn -CommandType Application -ErrorAction Ignore)
+if ($allMavenInstallations.Length -eq 0) {
     Write-Error "mvn is not in path. Cannot continue."
 }
 
-Write-Host "Maven installations..."
+$maven = $allMavenInstallations[0]
+
+Write-Host "Maven installation..."
 $maven | Format-List *
 
 $pomFiles = Get-ChildItem -Path $Directory -Filter pom.xml -Recurse -File | Where-Object {
