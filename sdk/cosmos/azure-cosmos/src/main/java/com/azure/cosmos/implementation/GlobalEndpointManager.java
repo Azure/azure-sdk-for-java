@@ -3,15 +3,12 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.routing.LocationCache;
+import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.DatabaseAccount;
-import com.azure.cosmos.DatabaseAccountLocation;
-import com.azure.cosmos.implementation.caches.AsyncCache;
-import com.azure.cosmos.implementation.routing.LocationCache;
-import com.azure.cosmos.implementation.routing.LocationHelper;
 import org.apache.commons.collections4.list.UnmodifiableList;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -19,13 +16,13 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.net.URISyntaxException;
 import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -48,13 +45,9 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Scheduler scheduler = Schedulers.fromExecutor(executor);
     private volatile boolean isClosed;
-    private final AsyncCache<String, DatabaseAccount> databaseAccountAsyncCache;
-    private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
-    private volatile DatabaseAccount latestDatabaseAccount;
 
     public GlobalEndpointManager(DatabaseAccountManagerInternal owner, ConnectionPolicy connectionPolicy, Configs configs)  {
         this.backgroundRefreshLocationTimeIntervalInMS = configs.getUnavailableLocationsExpirationTimeInSeconds() * 1000;
-        this.databaseAccountAsyncCache = new AsyncCache<>();
         try {
             this.locationCache = new LocationCache(
                     new ArrayList<>(connectionPolicy.getPreferredLocations() != null ?
@@ -166,20 +159,6 @@ public class GlobalEndpointManager implements AutoCloseable {
         });
     }
 
-    public Mono<DatabaseAccount> getDatabaseAccountFromCache(URI defaultEndpoint) {
-        return this.databaseAccountAsyncCache.getAsync(StringUtils.EMPTY, null, () -> this.owner.getDatabaseAccountFromEndpoint(defaultEndpoint).single().doOnSuccess(databaseAccount -> {
-            if(databaseAccount != null) {
-                this.latestDatabaseAccount = databaseAccount;
-            }
-
-            this.refreshLocationAsync(databaseAccount, false);
-        }));
-    }
-
-    public DatabaseAccount getLatestDatabaseAccount() {
-        return this.latestDatabaseAccount;
-    }
-
     private Mono<Void> refreshLocationPrivateAsync(DatabaseAccount databaseAccount) {
         return Mono.defer(() -> {
             logger.debug("refreshLocationPrivateAsync() refreshing locations");
@@ -274,27 +253,8 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     private Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {
-        final GlobalEndpointManager that = this;
-        Callable<Mono<DatabaseAccount>> fetchDatabaseAccount = () -> {
-            return that.owner.getDatabaseAccountFromEndpoint(serviceEndpoint).doOnNext(databaseAccount -> {
-                if(databaseAccount != null) {
-                    this.latestDatabaseAccount = databaseAccount;
-                }
-
-                logger.debug("account retrieved: {}", databaseAccount);
-            }).single();
-        };
-
-        Mono<DatabaseAccount> obsoleteValueMono = databaseAccountAsyncCache.getAsync(StringUtils.EMPTY, null, fetchDatabaseAccount);
-        return obsoleteValueMono.flatMap(obsoleteValue -> {
-            if (firstTimeDatabaseAccountInitialization.compareAndSet(true, false)) {
-                return Mono.just(obsoleteValue);
-            }
-            return databaseAccountAsyncCache.getAsync(StringUtils.EMPTY, obsoleteValue, fetchDatabaseAccount).doOnError(t -> {
-                //Putting back the old value in cache, this will avoid cache corruption
-                databaseAccountAsyncCache.set(StringUtils.EMPTY, obsoleteValue);
-            });
-        });
+        return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint)
+            .doOnNext(i -> logger.debug("account retrieved: {}", i)).single();
     }
 
     public boolean isClosed() {
