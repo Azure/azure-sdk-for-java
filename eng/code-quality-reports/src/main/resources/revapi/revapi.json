@@ -8,8 +8,9 @@
           "exclude": [
             "com\\.azure\\..+\\.implementation(\\..+)?",
             "com\\.fasterxml\\.jackson\\..+",
-            "reactor\\.netty\\..+",
-            "io\\.netty\\..+"
+            "reactor\\..+\\..+",
+            "io\\.netty\\..+",
+            "org\\.springframework\\..+"
           ]
         }
       }
