@@ -4,8 +4,8 @@
 package com.azure.search;
 
 /**
- * Credentials that authorize requests to Azure Cognitive Search. It uses content within the HTTP request to
- * generate the correct "api-key" header value
+ * Credentials that authorize requests to Azure Cognitive Search. It uses content within the HTTP request to generate
+ * the correct "api-key" header value
  *
  * @see SearchIndexClientBuilder
  * @see SearchServiceClientBuilder

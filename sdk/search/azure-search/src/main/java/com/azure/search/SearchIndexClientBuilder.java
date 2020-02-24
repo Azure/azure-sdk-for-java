@@ -30,15 +30,13 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of
- * {@link SearchIndexClient SearchIndexClients} and {@link SearchIndexAsyncClient SearchIndexAsyncClients}.
- * Call {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct
- * an instance of the desired client.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of {@link SearchIndexClient
+ * SearchIndexClients} and {@link SearchIndexAsyncClient SearchIndexAsyncClients}. Call {@link #buildClient()
+ * buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired
+ * client.
  *
- * The following information must be provided on this builder:
- *         the Azure Cognitive Search service endpoint through {@code .endpoint()}
- *         the index name through {@code .indexName()}
- *         the API key through {@code .credential()}
+ * The following information must be provided on this builder: the Azure Cognitive Search service endpoint through
+ * {@code .endpoint()} the index name through {@code .indexName()} the API key through {@code .credential()}
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
 public final class SearchIndexClientBuilder {
@@ -97,10 +95,10 @@ public final class SearchIndexClientBuilder {
     }
 
     /**
-     *  Returns the list of policies configured for this builder.
+     * Returns the list of policies configured for this builder.
      *
-     *  @return List of HttpPipelinePolicy
-     *  */
+     * @return List of HttpPipelinePolicy
+     */
     List<HttpPipelinePolicy> getPolicies() {
         return this.policies;
     }
@@ -166,9 +164,9 @@ public final class SearchIndexClientBuilder {
     }
 
     /**
-     * Sets the configuration store that is used during construction of the service client.
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
+     * Sets the configuration store that is used during construction of the service client. The default configuration
+     * store is a clone of the {@link Configuration#getGlobalConfiguration() global configuration store}, use {@link
+     * Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store.
      * @return The updated SearchIndexClientBuilder object.
@@ -193,8 +191,8 @@ public final class SearchIndexClientBuilder {
     /**
      * Sets the {@link RetryPolicy} that is used when each request is sent.
      * <p>
-     * The default retry policy will be used if not provided {@link SearchIndexClientBuilder#buildAsyncClient()}
-     * to build {@link SearchServiceAsyncClient} or {@link SearchServiceClient}.
+     * The default retry policy will be used if not provided {@link SearchIndexClientBuilder#buildAsyncClient()} to
+     * build {@link SearchServiceAsyncClient} or {@link SearchServiceClient}.
      *
      * @param retryPolicy RetryPolicy applied to each request.
      * @return The updated SearchIndexClientBuilder object.

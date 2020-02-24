@@ -3,15 +3,11 @@
 package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -33,15 +29,13 @@ import com.azure.search.models.TokenInfo;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Asynchronous Client to manage and query indexes,
- * as well as manage other resources, on a Cognitive Search service
+ * Asynchronous Client to manage and query indexes, as well as manage other resources, on a Cognitive Search service
  */
 @ServiceClient(builder = SearchServiceClientBuilder.class, isAsync = true)
 public final class SearchServiceAsyncClient {
@@ -104,18 +98,14 @@ public final class SearchServiceAsyncClient {
     }
 
     /**
-     * Initializes a new {@link SearchIndexAsyncClient} using the given Index name and the
-     * same configuration as the SearchServiceAsyncClient.
+     * Initializes a new {@link SearchIndexAsyncClient} using the given Index name and the same configuration as the
+     * SearchServiceAsyncClient.
      *
      * @param indexName the name of the Index for the client
      * @return a {@link SearchIndexAsyncClient} created from the service client configuration
      */
     public SearchIndexAsyncClient getIndexClient(String indexName) {
-        return new SearchIndexAsyncClient(
-            endpoint,
-            indexName,
-            searchServiceVersion,
-            httpPipeline);
+        return new SearchIndexAsyncClient(endpoint, indexName, searchServiceVersion, httpPipeline);
     }
 
     /**
@@ -143,12 +133,7 @@ public final class SearchServiceAsyncClient {
      * @return the data source that was created or updated.
      */
     public Mono<DataSource> createOrUpdateDataSource(DataSource dataSource) {
-        try {
-            return this.createOrUpdateDataSourceWithResponse(dataSource, null, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createOrUpdateDataSourceWithResponse(dataSource, null, null).map(Response::getValue);
     }
 
     /**
@@ -156,26 +141,19 @@ public final class SearchServiceAsyncClient {
      *
      * @param dataSource The definition of the data source to create or update.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     *                        Contains the tracking ID sent with the request to help with debugging
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a data source response.
      */
     public Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
-                                                                           AccessCondition accessCondition,
-                                                                           RequestOptions requestOptions) {
-        try {
-            return withContext(context -> this.createOrUpdateDataSourceWithResponse(dataSource,
-                accessCondition, requestOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        AccessCondition accessCondition, RequestOptions requestOptions) {
+        return withContext(context ->
+            createOrUpdateDataSourceWithResponse(dataSource, accessCondition, requestOptions, context));
     }
 
     Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
-                                                                    AccessCondition accessCondition,
-                                                                    RequestOptions requestOptions,
-                                                                    Context context) {
+        AccessCondition accessCondition, RequestOptions requestOptions, Context context) {
         try {
             return restClient
                 .dataSources()
@@ -194,37 +172,31 @@ public final class SearchServiceAsyncClient {
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<DataSource> createDataSource(DataSource dataSource) {
-        try {
-            return this.createDataSourceWithResponse(dataSource, null).map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createDataSourceWithResponse(dataSource, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search data source
      *
      * @param dataSource The definition of the data source to create.
-     * @param requestOptions Additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging.
+     * @param requestOptions Additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging.
      * @return a Mono which performs the network request upon subscription.
      */
     public Mono<Response<DataSource>> createDataSourceWithResponse(DataSource dataSource,
-                                                                   RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
+        return withContext(context -> this.createDataSourceWithResponse(dataSource, requestOptions, context));
+    }
+
+    Mono<Response<DataSource>> createDataSourceWithResponse(DataSource dataSource, RequestOptions requestOptions,
+        Context context) {
         try {
-            return withContext(context -> this.createDataSourceWithResponse(dataSource, requestOptions, context));
+            return restClient.dataSources()
+                .createWithRestResponseAsync(dataSource, requestOptions, context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<DataSource>> createDataSourceWithResponse(DataSource dataSource,
-                                                            RequestOptions requestOptions,
-                                                            Context context) {
-        return restClient
-            .dataSources()
-            .createWithRestResponseAsync(dataSource, requestOptions, context)
-            .map(Function.identity());
     }
 
     /**
@@ -234,38 +206,30 @@ public final class SearchServiceAsyncClient {
      * @return the DataSource.
      */
     public Mono<DataSource> getDataSource(String dataSourceName) {
-        try {
-            return this.getDataSourceWithResponse(dataSourceName, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getDataSourceWithResponse(dataSourceName, null).map(Response::getValue);
     }
 
     /**
      * Retrieves a DataSource from an Azure Cognitive Search service.
      *
      * @param dataSourceName the name of the data source to retrieve
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging.
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging.
      * @return a response containing the DataSource.
      */
-    public Mono<Response<DataSource>> getDataSourceWithResponse(String dataSourceName,
-                                                                RequestOptions requestOptions) {
+    public Mono<Response<DataSource>> getDataSourceWithResponse(String dataSourceName, RequestOptions requestOptions) {
+        return withContext(context -> getDataSourceWithResponse(dataSourceName, requestOptions, context));
+    }
+
+    Mono<Response<DataSource>> getDataSourceWithResponse(String dataSourceName, RequestOptions requestOptions,
+        Context context) {
         try {
-            return withContext(context -> this.getDataSourceWithResponse(dataSourceName, requestOptions, context));
+            return restClient.dataSources()
+                .getWithRestResponseAsync(dataSourceName, requestOptions, context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<DataSource>> getDataSourceWithResponse(String dataSourceName,
-                                                         RequestOptions requestOptions,
-                                                         Context context) {
-        return restClient
-            .dataSources()
-            .getWithRestResponseAsync(dataSourceName, requestOptions, context)
-            .map(Function.identity());
     }
 
     /**
@@ -274,42 +238,37 @@ public final class SearchServiceAsyncClient {
      * @return a list of DataSources
      */
     public PagedFlux<DataSource> listDataSources() {
-        try {
-            return this.listDataSources(null, null);
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return listDataSources(null, null);
     }
 
     /**
      * List all DataSources from an Azure Cognitive Search service.
      *
-     * @param select Selects which top-level properties of DataSource definitions to retrieve.
-     *                       Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *                       The default is all properties.
-     * @param requestOptions Additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging.
+     * @param select Selects which top-level properties of DataSource definitions to retrieve. Specified as a
+     * comma-separated list of JSON property names, or '*' for all properties. The default is all properties.
+     * @param requestOptions Additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging.
      * @return a list of DataSources
      */
     public PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions) {
         try {
-            return new PagedFlux<>(
-                () -> withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context)),
-                nextLink -> Mono.empty());
+            return new PagedFlux<>(() ->
+                withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
     PagedFlux<DataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
-        return new PagedFlux<>(
-            () -> this.listDataSourcesWithResponse(select, requestOptions, context),
-            nextLink -> Mono.empty());
+        try {
+            return new PagedFlux<>(() -> this.listDataSourcesWithResponse(select, requestOptions, context));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
-    private Mono<PagedResponse<DataSource>> listDataSourcesWithResponse(String select,
-                                                                        RequestOptions requestOptions,
-                                                                        Context context) {
+    private Mono<PagedResponse<DataSource>> listDataSourcesWithResponse(String select, RequestOptions requestOptions,
+        Context context) {
         return restClient.dataSources()
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
@@ -318,8 +277,7 @@ public final class SearchServiceAsyncClient {
                 response.getHeaders(),
                 response.getValue().getDataSources(),
                 null,
-                deserializeHeaders(response.getHeaders()))
-            );
+                null));
     }
 
     /**
@@ -329,12 +287,7 @@ public final class SearchServiceAsyncClient {
      * @return a void Mono
      */
     public Mono<Void> deleteDataSource(String dataSourceName) {
-        try {
-            return this.deleteDataSourceWithResponse(dataSourceName, null, null)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteDataSourceWithResponse(dataSourceName, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -342,71 +295,29 @@ public final class SearchServiceAsyncClient {
      *
      * @param dataSourceName The name of the data source to delete.
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     *                        Contains the tracking ID sent with the request to help with debugging
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a mono response
      */
-    public Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName,
-                                                             AccessCondition accessCondition,
-                                                             RequestOptions requestOptions) {
-        try {
-            return withContext(context -> this.deleteDataSourceWithResponse(dataSourceName,
-                accessCondition, requestOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName,
-                                                      AccessCondition accessCondition,
-                                                      RequestOptions requestOptions,
-                                                      Context context) {
-        return restClient.dataSources()
-            .deleteWithRestResponseAsync(
-                dataSourceName,
-                requestOptions,
-                accessCondition,
-                context).map(Function.identity());
-    }
-
-
-    /**
-     * Determines whether or not the given data source exists.
-     *
-     * @param dataSourceName the name of the data source
-     * @return true if the data source exists; false otherwise.
-     */
-    public Mono<Boolean> doesDataSourceExist(String dataSourceName) {
-        try {
-            return this.doesDataSourceExistWithResponse(dataSourceName, null).map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Determines whether or not the given data source exists.
-     *
-     * @param dataSourceName the name of the data source
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
-     * @return true if the data source exists; false otherwise.
-     */
-    public Mono<Response<Boolean>> doesDataSourceExistWithResponse(String dataSourceName,
+    public Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName, AccessCondition accessCondition,
         RequestOptions requestOptions) {
+        return withContext(context ->
+            deleteDataSourceWithResponse(dataSourceName, accessCondition, requestOptions, context));
+    }
+
+    Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName, AccessCondition accessCondition,
+        RequestOptions requestOptions, Context context) {
         try {
-            return withContext(context -> this.doesDataSourceExistWithResponse(dataSourceName, requestOptions,
-                context));
+            return restClient.dataSources()
+                .deleteWithRestResponseAsync(
+                    dataSourceName,
+                    requestOptions,
+                    accessCondition,
+                    context).map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<Boolean>> doesDataSourceExistWithResponse(String dataSourceName, RequestOptions requestOptions,
-        Context context) {
-        return resourceExistsWithResponse(() ->
-            this.getDataSourceWithResponse(dataSourceName, requestOptions, context));
     }
 
     /**
@@ -416,35 +327,29 @@ public final class SearchServiceAsyncClient {
      * @return the created Indexer.
      */
     public Mono<Indexer> createIndexer(Indexer indexer) {
-        try {
-            return this.createIndexerWithResponse(indexer, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createIndexerWithResponse(indexer, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search indexer.
      *
      * @param indexer definition of the indexer to create
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing the created Indexer.
      */
     public Mono<Response<Indexer>> createIndexerWithResponse(Indexer indexer, RequestOptions requestOptions) {
-        try {
-            return withContext(context -> this.createIndexerWithResponse(indexer, requestOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return withContext(context -> createIndexerWithResponse(indexer, requestOptions, context));
     }
 
     Mono<Response<Indexer>> createIndexerWithResponse(Indexer indexer, RequestOptions requestOptions, Context context) {
-        return restClient
-            .indexers()
-            .createWithRestResponseAsync(indexer, requestOptions, context)
-            .map(Function.identity());
+        try {
+            return restClient.indexers()
+                .createWithRestResponseAsync(indexer, requestOptions, context)
+                .map(Function.identity());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -454,12 +359,7 @@ public final class SearchServiceAsyncClient {
      * @return a response containing the created Indexer.
      */
     public Mono<Indexer> createOrUpdateIndexer(Indexer indexer) {
-        try {
-            return this.createOrUpdateIndexerWithResponse(indexer, null, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createOrUpdateIndexerWithResponse(indexer, null, null).map(Response::getValue);
     }
 
     /**
@@ -467,30 +367,27 @@ public final class SearchServiceAsyncClient {
      *
      * @param indexer the definition of the indexer to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
-     * @param requestOptions additional parameters for the operation
-     *                        Contains the tracking ID sent with the request to help with debugging
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing the created Indexer.
      */
-    public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer,
-                                                                     AccessCondition accessCondition,
-                                                                     RequestOptions requestOptions) {
+    public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer, AccessCondition accessCondition,
+        RequestOptions requestOptions) {
+        return withContext(context ->
+            createOrUpdateIndexerWithResponse(indexer, accessCondition, requestOptions, context));
+    }
+
+    Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer, AccessCondition accessCondition,
+        RequestOptions requestOptions, Context context) {
         try {
-            return withContext(context -> this.createOrUpdateIndexerWithResponse(indexer,
-                accessCondition, requestOptions, context));
+            return restClient.indexers()
+                .createOrUpdateWithRestResponseAsync(indexer.getName(), indexer, requestOptions, accessCondition,
+                    context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer,
-                                                              AccessCondition accessCondition,
-                                                              RequestOptions requestOptions,
-                                                              Context context) {
-        return restClient
-            .indexers()
-            .createOrUpdateWithRestResponseAsync(indexer.getName(), indexer, requestOptions, accessCondition, context)
-            .map(Function.identity());
     }
 
     /**
@@ -500,80 +397,66 @@ public final class SearchServiceAsyncClient {
      * @return the indexer.
      */
     public Mono<Indexer> getIndexer(String indexerName) {
-        try {
-            return this.getIndexerWithResponse(indexerName, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getIndexerWithResponse(indexerName, null).map(Response::getValue);
     }
 
     /**
      * Retrieves an indexer definition.
      *
      * @param indexerName the name of the indexer to retrieve
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing the indexer.
      */
     public Mono<Response<Indexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
-        try {
-            return withContext(
-                context -> this.getIndexerWithResponse(indexerName, requestOptions, context)
-            );
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return withContext(context -> getIndexerWithResponse(indexerName, requestOptions, context));
     }
 
     Mono<Response<Indexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
-        return restClient
-            .indexers()
-            .getWithRestResponseAsync(indexerName, requestOptions, context)
-            .map(Function.identity());
+        try {
+            return restClient.indexers()
+                .getWithRestResponseAsync(indexerName, requestOptions, context)
+                .map(Function.identity());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
      * @return all Indexers from the Search service.
      */
     public PagedFlux<Indexer> listIndexers() {
-        try {
-            return this.listIndexers(null, null);
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return listIndexers(null, null);
     }
 
     /**
      * Lists all indexers available for an Azure Cognitive Search service.
      *
-     * @param select Selects which top-level properties of the indexers to retrieve.
-     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *               The default is all properties.
+     * @param select Selects which top-level properties of the indexers to retrieve. Specified as a comma-separated list
+     * of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Additional parameters for the operation.
      * @return a response containing all Indexers from the Search service.
      */
     public PagedFlux<Indexer> listIndexers(String select, RequestOptions requestOptions) {
         try {
-            return new PagedFlux<>(
-                () -> withContext(context -> this.listIndexersWithResponse(select, requestOptions, context)),
-                nextLink -> Mono.empty());
+            return new PagedFlux<>(() ->
+                withContext(context -> this.listIndexersWithResponse(select, requestOptions, context)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
     PagedFlux<Indexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
-        return new PagedFlux<>(
-            () -> this.listIndexersWithResponse(select, requestOptions, context),
-            nextLink -> Mono.empty());
+        try {
+            return new PagedFlux<>(() -> this.listIndexersWithResponse(select, requestOptions, context));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
-    private Mono<PagedResponse<Indexer>> listIndexersWithResponse(String select,
-                                                                  RequestOptions requestOptions,
-                                                                  Context context) {
-        return restClient
-            .indexers()
+    private Mono<PagedResponse<Indexer>> listIndexersWithResponse(String select, RequestOptions requestOptions,
+        Context context) {
+        return restClient.indexers()
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
                 response.getRequest(),
@@ -581,8 +464,7 @@ public final class SearchServiceAsyncClient {
                 response.getHeaders(),
                 response.getValue().getIndexers(),
                 null,
-                deserializeHeaders(response.getHeaders()))
-            );
+                null));
     }
 
     /**
@@ -592,12 +474,7 @@ public final class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteIndexer(String indexerName) {
-        try {
-            return this.deleteIndexerWithResponse(indexerName, null, null)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteIndexerWithResponse(indexerName, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -605,20 +482,14 @@ public final class SearchServiceAsyncClient {
      *
      * @param indexerName the name of the indexer to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteIndexerWithResponse(String indexerName,
-                                                          AccessCondition accessCondition,
-                                                          RequestOptions requestOptions) {
-        try {
-            return withContext(context -> this.deleteIndexerWithResponse(indexerName,
-                accessCondition, requestOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, AccessCondition accessCondition,
+        RequestOptions requestOptions) {
+        return withContext(context -> deleteIndexerWithResponse(indexerName, accessCondition, requestOptions, context));
     }
 
     /**
@@ -626,17 +497,21 @@ public final class SearchServiceAsyncClient {
      *
      * @param indexerName the name of the indexer to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @param context the context
      * @return a response signalling completion.
      */
     Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, AccessCondition accessCondition,
-                                                   RequestOptions requestOptions, Context context) {
-        return restClient.indexers().deleteWithRestResponseAsync(
-            indexerName, requestOptions, accessCondition, context)
-            .map(Function.identity());
+        RequestOptions requestOptions, Context context) {
+        try {
+            return restClient.indexers()
+                .deleteWithRestResponseAsync(indexerName, requestOptions, accessCondition, context)
+                .map(Function.identity());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -646,35 +521,29 @@ public final class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> resetIndexer(String indexerName) {
-        try {
-            return this.resetIndexerWithResponse(indexerName, null)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return resetIndexerWithResponse(indexerName, null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Resets the change tracking state associated with an indexer.
      *
      * @param indexerName the name of the indexer to reset
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
+        return withContext(context -> resetIndexerWithResponse(indexerName, requestOptions, context));
+    }
+
+    Mono<Response<Void>> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
         try {
-            return withContext(context -> this.resetIndexerWithResponse(indexerName, requestOptions, context));
+            return restClient.indexers()
+                .resetWithRestResponseAsync(indexerName, requestOptions, context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<Void>> resetIndexerWithResponse(String indexerName,
-                                                  RequestOptions requestOptions,
-                                                  Context context) {
-        return restClient.indexers().resetWithRestResponseAsync(indexerName, requestOptions, context)
-            .map(Function.identity());
     }
 
     /**
@@ -684,35 +553,28 @@ public final class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> runIndexer(String indexerName) {
-        try {
-            return this.runIndexerWithResponse(indexerName, null)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return runIndexerWithResponse(indexerName, null).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Runs an indexer on-demand.
      *
      * @param indexerName the name of the indexer to run
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response signalling completion.
      */
     public Mono<Response<Void>> runIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
+        return withContext(context -> runIndexerWithResponse(indexerName, requestOptions, context));
+    }
+
+    Mono<Response<Void>> runIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
         try {
-            return withContext(context -> this.runIndexerWithResponse(indexerName, requestOptions, context));
+            return restClient.indexers().runWithRestResponseAsync(indexerName, requestOptions, context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<Void>> runIndexerWithResponse(String indexerName,
-                                                RequestOptions requestOptions,
-                                                Context context) {
-        return restClient.indexers().runWithRestResponseAsync(indexerName, requestOptions, context)
-            .map(Function.identity());
     }
 
     /**
@@ -722,73 +584,31 @@ public final class SearchServiceAsyncClient {
      * @return the indexer execution info.
      */
     public Mono<IndexerExecutionInfo> getIndexerStatus(String indexerName) {
-        try {
-            return this.getIndexerStatusWithResponse(indexerName, null).map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getIndexerStatusWithResponse(indexerName, null).map(Response::getValue);
     }
 
     /**
      * Returns the current status and execution history of an indexer.
      *
      * @param indexerName the name of the indexer for which to retrieve status
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response with the indexer execution info.
      */
     public Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse(String indexerName,
-                                                                             RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
+        return withContext(context -> getIndexerStatusWithResponse(indexerName, requestOptions, context));
+    }
+
+    Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse(String indexerName, RequestOptions requestOptions,
+        Context context) {
         try {
-            return withContext(context -> this.getIndexerStatusWithResponse(indexerName, requestOptions, context));
+            return restClient.indexers()
+                .getStatusWithRestResponseAsync(indexerName, requestOptions, context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<IndexerExecutionInfo>> getIndexerStatusWithResponse(String indexerName,
-                                                                      RequestOptions requestOptions,
-                                                                      Context context) {
-        return restClient.indexers().getStatusWithRestResponseAsync(
-            indexerName, requestOptions, context)
-            .map(Function.identity());
-    }
-
-
-    /**
-     * Determines whether or not the given indexer exists.
-     *
-     * @param indexerName the name of the indexer
-     * @return true if the indexer exists; false otherwise.
-     */
-    public Mono<Boolean> doesIndexerExist(String indexerName) {
-        try {
-            return this.doesIndexerExistWithResponse(indexerName, null).map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Determines whether or not the given indexer exists.
-     *
-     * @param indexerName the name of the indexer
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
-     * @return true if the indexer exists; false otherwise.
-     */
-    public Mono<Response<Boolean>> doesIndexerExistWithResponse(String indexerName, RequestOptions requestOptions) {
-        try {
-            return withContext(context -> this.doesIndexerExistWithResponse(indexerName, requestOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<Boolean>> doesIndexerExistWithResponse(String indexerName,
-                                                      RequestOptions requestOptions,
-                                                      Context context) {
-        return resourceExistsWithResponse(() -> this.getIndexerWithResponse(indexerName, requestOptions, context));
     }
 
     /**
@@ -798,35 +618,29 @@ public final class SearchServiceAsyncClient {
      * @return the created Index.
      */
     public Mono<Index> createIndex(Index index) {
-        try {
-            return this.createIndexWithResponse(index, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createIndexWithResponse(index, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search index.
      *
      * @param index definition of the index to create
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing the created Index.
      */
     public Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions) {
-        try {
-            return withContext(context -> this.createIndexWithResponse(index, requestOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return withContext(context -> createIndexWithResponse(index, requestOptions, context));
     }
 
     Mono<Response<Index>> createIndexWithResponse(Index index, RequestOptions requestOptions, Context context) {
-        return restClient
-            .indexes()
-            .createWithRestResponseAsync(index, requestOptions, context)
-            .map(Function.identity());
+        try {
+            return restClient.indexes()
+                .createWithRestResponseAsync(index, requestOptions, context)
+                .map(Function.identity());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -836,71 +650,29 @@ public final class SearchServiceAsyncClient {
      * @return the Index.
      */
     public Mono<Index> getIndex(String indexName) {
-        try {
-            return this.getIndexWithResponse(indexName, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getIndexWithResponse(indexName, null).map(Response::getValue);
     }
 
     /**
      * Retrieves an index definition from the Azure Cognitive Search.
      *
      * @param indexName the name of the index to retrieve
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing the Index.
      */
     public Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions) {
-        try {
-            return withContext(context -> this.getIndexWithResponse(indexName, requestOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return withContext(context -> getIndexWithResponse(indexName, requestOptions, context));
     }
 
     Mono<Response<Index>> getIndexWithResponse(String indexName, RequestOptions requestOptions, Context context) {
-        return restClient
-            .indexes()
-            .getWithRestResponseAsync(indexName, requestOptions, context)
-            .map(Function.identity());
-    }
-
-    /**
-     * Determines whether or not the given index exists in the Azure Cognitive Search.
-     *
-     * @param indexName the name of the index
-     * @return true if the index exists; false otherwise.
-     */
-    public Mono<Boolean> doesIndexExist(String indexName) {
         try {
-            return this.doesIndexExistWithResponse(indexName, null).map(Response::getValue);
+            return restClient.indexes()
+                .getWithRestResponseAsync(indexName, requestOptions, context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    /**
-     * Determines whether or not the given index exists in the Azure Cognitive Search.
-     *
-     * @param indexName the name of the index
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
-     * @return true if the index exists; false otherwise.
-     */
-    public Mono<Response<Boolean>> doesIndexExistWithResponse(String indexName, RequestOptions requestOptions) {
-        try {
-            return withContext(context -> this.doesIndexExistWithResponse(indexName, requestOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<Boolean>> doesIndexExistWithResponse(String indexName,
-                                                    RequestOptions requestOptions,
-                                                    Context context) {
-        return resourceExistsWithResponse(() -> this.getIndexWithResponse(indexName, requestOptions, context));
     }
 
     /**
@@ -910,38 +682,31 @@ public final class SearchServiceAsyncClient {
      * @return the index statistics result.
      */
     public Mono<GetIndexStatisticsResult> getIndexStatistics(String indexName) {
-        try {
-            return this.getIndexStatisticsWithResponse(indexName, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getIndexStatisticsWithResponse(indexName, null).map(Response::getValue);
     }
 
     /**
      * Returns statistics for the given index, including a document count and storage usage.
      *
      * @param indexName the name of the index for which to retrieve statistics
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing the index statistics result.
      */
     public Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
-                                                                                   RequestOptions requestOptions) {
-        try {
-            return withContext(context -> this.getIndexStatisticsWithResponse(indexName, requestOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        RequestOptions requestOptions) {
+        return withContext(context -> getIndexStatisticsWithResponse(indexName, requestOptions, context));
     }
 
     Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
-                                                                            RequestOptions requestOptions,
-                                                                            Context context) {
-        return restClient
-            .indexes()
-            .getStatisticsWithRestResponseAsync(indexName, requestOptions, context)
-            .map(Function.identity());
+        RequestOptions requestOptions, Context context) {
+        try {
+            return restClient.indexes()
+                .getStatisticsWithRestResponseAsync(indexName, requestOptions, context)
+                .map(Function.identity());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -950,41 +715,37 @@ public final class SearchServiceAsyncClient {
      * @return a reactive response emitting the list of indexes.
      */
     public PagedFlux<Index> listIndexes() {
-        try {
-            return this.listIndexes(null, null);
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return listIndexes(null, null);
     }
 
     /**
      * Lists all indexes available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the index definitions to retrieve.
-     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *               The default is all properties
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param select selects which top-level properties of the index definitions to retrieve. Specified as a
+     * comma-separated list of JSON property names, or '*' for all properties. The default is all properties
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a reactive response emitting the list of indexes.
      */
     public PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions) {
         try {
-            return new PagedFlux<>(
-                () -> withContext(context -> this.listIndexesWithResponse(select, requestOptions, context)),
-                nextLink -> Mono.empty());
+            return new PagedFlux<>(() ->
+                withContext(context -> this.listIndexesWithResponse(select, requestOptions, context)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
     PagedFlux<Index> listIndexes(String select, RequestOptions requestOptions, Context context) {
-        return new PagedFlux<>(
-            () -> this.listIndexesWithResponse(select, requestOptions, context),
-            nextLink -> Mono.empty());
+        try {
+            return new PagedFlux<>(() -> this.listIndexesWithResponse(select, requestOptions, context));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
-    private Mono<PagedResponse<Index>> listIndexesWithResponse(String select,
-                                                               RequestOptions requestOptions, Context context) {
+    private Mono<PagedResponse<Index>> listIndexesWithResponse(String select, RequestOptions requestOptions,
+        Context context) {
         return restClient.indexes()
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
@@ -993,8 +754,7 @@ public final class SearchServiceAsyncClient {
                 response.getHeaders(),
                 response.getValue().getIndexes(),
                 null,
-                deserializeHeaders(response.getHeaders()))
-            );
+                null));
     }
 
     /**
@@ -1004,13 +764,7 @@ public final class SearchServiceAsyncClient {
      * @return the index that was created or updated.
      */
     public Mono<Index> createOrUpdateIndex(Index index) {
-        try {
-            return this.createOrUpdateIndexWithResponse(index,
-                false, null, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createOrUpdateIndexWithResponse(index, false, null, null).map(Response::getValue);
     }
 
     /**
@@ -1018,38 +772,31 @@ public final class SearchServiceAsyncClient {
      *
      * @param index the definition of the index to create or update
      * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     *                           index by taking the index offline for at least a few seconds. This temporarily causes
-     *                           indexing and query requests to fail. Performance and write availability of the index
-     *                           can be impaired for several minutes after the index is updated, or longer for very
-     *                           large indexes
+     * index by taking the index offline for at least a few seconds. This temporarily causes indexing and query requests
+     * to fail. Performance and write availability of the index can be impaired for several minutes after the index is
+     * updated, or longer for very large indexes
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing the index that was created or updated
      */
-    public Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index,
-                                                                 boolean allowIndexDowntime,
-                                                                 AccessCondition accessCondition,
-                                                                 RequestOptions requestOptions) {
+    public Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index, boolean allowIndexDowntime,
+        AccessCondition accessCondition, RequestOptions requestOptions) {
+        return withContext(context ->
+            createOrUpdateIndexWithResponse(index, allowIndexDowntime, accessCondition, requestOptions, context));
+    }
+
+    Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index, boolean allowIndexDowntime,
+        AccessCondition accessCondition, RequestOptions requestOptions, Context context) {
         try {
-            return withContext(context -> this.createOrUpdateIndexWithResponse(index,
-                allowIndexDowntime, accessCondition, requestOptions, context));
+            return restClient.indexes()
+                .createOrUpdateWithRestResponseAsync(index.getName(), index, allowIndexDowntime, requestOptions,
+                    accessCondition, context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index,
-                                                          boolean allowIndexDowntime,
-                                                          AccessCondition accessCondition,
-                                                          RequestOptions requestOptions,
-                                                          Context context) {
-        return restClient
-            .indexes()
-            .createOrUpdateWithRestResponseAsync(index.getName(),
-                index, allowIndexDowntime, requestOptions, accessCondition, context)
-            .map(Function.identity());
     }
 
     /**
@@ -1059,12 +806,7 @@ public final class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteIndex(String indexName) {
-        try {
-            return this.deleteIndexWithResponse(indexName, null, null)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteIndexWithResponse(indexName, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1072,30 +814,25 @@ public final class SearchServiceAsyncClient {
      *
      * @param indexName the name of the index to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteIndexWithResponse(String indexName,
-                                                        AccessCondition accessCondition,
-                                                        RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteIndexWithResponse(String indexName, AccessCondition accessCondition,
+        RequestOptions requestOptions) {
+        return withContext(context -> deleteIndexWithResponse(indexName, accessCondition, requestOptions, context));
+    }
+
+    Mono<Response<Void>> deleteIndexWithResponse(String indexName, AccessCondition accessCondition,
+        RequestOptions requestOptions, Context context) {
         try {
-            return withContext(context -> this.deleteIndexWithResponse(indexName,
-                accessCondition, requestOptions, context));
+            return restClient.indexes()
+                .deleteWithRestResponseAsync(indexName, requestOptions, accessCondition, context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<Void>> deleteIndexWithResponse(String indexName,
-                                                 AccessCondition accessCondition,
-                                                 RequestOptions requestOptions,
-                                                 Context context) {
-        return restClient
-            .indexes()
-            .deleteWithRestResponseAsync(indexName, requestOptions, accessCondition, context)
-            .map(Function.identity());
     }
 
     /**
@@ -1106,11 +843,7 @@ public final class SearchServiceAsyncClient {
      * @return analyze result.
      */
     public PagedFlux<TokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest) {
-        try {
-            return this.analyzeText(indexName, analyzeRequest, null);
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return analyzeText(indexName, analyzeRequest, null);
     }
 
     /**
@@ -1118,35 +851,31 @@ public final class SearchServiceAsyncClient {
      *
      * @param indexName the name of the index for which to test an analyzer
      * @param analyzeRequest the text and analyzer or analysis components to test
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing analyze result.
      */
-    public PagedFlux<TokenInfo> analyzeText(String indexName,
-                                            AnalyzeRequest analyzeRequest, RequestOptions requestOptions) {
+    public PagedFlux<TokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest,
+        RequestOptions requestOptions) {
         try {
-            return new PagedFlux<>(
-                () -> withContext(context -> this.analyzeTextWithResponse(indexName,
-                    analyzeRequest, requestOptions, context)),
-                nextLink -> Mono.empty());
+            return new PagedFlux<>(() ->
+                withContext(context -> analyzeTextWithResponse(indexName, analyzeRequest, requestOptions, context)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<TokenInfo> analyzeText(String indexName,
-                                     AnalyzeRequest analyzeRequest,
-                                     RequestOptions requestOptions,
-                                     Context context) {
-        return new PagedFlux<>(
-            () -> this.analyzeTextWithResponse(indexName, analyzeRequest, requestOptions, context),
-            nextLink -> Mono.empty());
+    PagedFlux<TokenInfo> analyzeText(String indexName, AnalyzeRequest analyzeRequest, RequestOptions requestOptions,
+        Context context) {
+        try {
+            return new PagedFlux<>(() -> analyzeTextWithResponse(indexName, analyzeRequest, requestOptions, context));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
-    private Mono<PagedResponse<TokenInfo>> analyzeTextWithResponse(String indexName,
-                                                                   AnalyzeRequest analyzeRequest,
-                                                                   RequestOptions requestOptions,
-                                                                   Context context) {
+    private Mono<PagedResponse<TokenInfo>> analyzeTextWithResponse(String indexName, AnalyzeRequest analyzeRequest,
+        RequestOptions requestOptions, Context context) {
         return restClient.indexes()
             .analyzeWithRestResponseAsync(indexName, analyzeRequest, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
@@ -1155,7 +884,7 @@ public final class SearchServiceAsyncClient {
                 response.getHeaders(),
                 response.getValue().getTokens(),
                 null,
-                deserializeHeaders(response.getHeaders())));
+                null));
     }
 
     /**
@@ -1165,37 +894,30 @@ public final class SearchServiceAsyncClient {
      * @return the created Skillset.
      */
     public Mono<Skillset> createSkillset(Skillset skillset) {
-        try {
-            return this.createSkillsetWithResponse(skillset, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createSkillsetWithResponse(skillset, null).map(Response::getValue);
     }
 
     /**
      * Creates a new skillset in an Azure Cognitive Search service.
      *
      * @param skillset definition of the skillset containing one or more cognitive skills
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing the created Skillset.
      */
     public Mono<Response<Skillset>> createSkillsetWithResponse(Skillset skillset, RequestOptions requestOptions) {
+        return withContext(context -> createSkillsetWithResponse(skillset, requestOptions, context));
+    }
+
+    Mono<Response<Skillset>> createSkillsetWithResponse(Skillset skillset, RequestOptions requestOptions,
+        Context context) {
         try {
-            return withContext(context -> createSkillsetWithResponse(skillset, requestOptions, context));
+            return restClient.skillsets()
+                .createWithRestResponseAsync(skillset, requestOptions, context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<Skillset>> createSkillsetWithResponse(Skillset skillset,
-                                                        RequestOptions requestOptions,
-                                                        Context context) {
-        return restClient
-            .skillsets()
-            .createWithRestResponseAsync(skillset, requestOptions, context)
-            .map(Function.identity());
     }
 
     /**
@@ -1205,39 +927,30 @@ public final class SearchServiceAsyncClient {
      * @return the Skillset.
      */
     public Mono<Skillset> getSkillset(String skillsetName) {
-        try {
-            return this.getSkillsetWithResponse(skillsetName, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getSkillsetWithResponse(skillsetName, null).map(Response::getValue);
     }
 
     /**
      * Retrieves a skillset definition.
      *
      * @param skillsetName the name of the skillset to retrieve
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing the Skillset.
      */
-    public Mono<Response<Skillset>> getSkillsetWithResponse(String skillsetName,
-                                                            RequestOptions requestOptions) {
+    public Mono<Response<Skillset>> getSkillsetWithResponse(String skillsetName, RequestOptions requestOptions) {
+        return withContext(context -> getSkillsetWithResponse(skillsetName, requestOptions, context));
+    }
+
+    Mono<Response<Skillset>> getSkillsetWithResponse(String skillsetName, RequestOptions requestOptions,
+        Context context) {
         try {
-            return withContext(context ->
-                this.getSkillsetWithResponse(skillsetName, requestOptions, context));
+            return this.restClient.skillsets()
+                .getWithRestResponseAsync(skillsetName, requestOptions, context)
+                .map(result -> result);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<Skillset>> getSkillsetWithResponse(String skillsetName,
-                                                     RequestOptions requestOptions,
-                                                     Context context) {
-        return this.restClient
-            .skillsets()
-            .getWithRestResponseAsync(skillsetName, requestOptions, context)
-            .map(result -> result);
     }
 
     /**
@@ -1246,42 +959,38 @@ public final class SearchServiceAsyncClient {
      * @return a reactive response emitting the list of skillsets.
      */
     public PagedFlux<Skillset> listSkillsets() {
-        try {
-            return this.listSkillsets(null, null);
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return listSkillsets(null, null);
     }
 
     /**
      * Lists all skillsets available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the skillset definitions to retrieve.
-     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *               The default is all properties
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param select selects which top-level properties of the skillset definitions to retrieve. Specified as a
+     * comma-separated list of JSON property names, or '*' for all properties. The default is all properties
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a reactive response emitting the list of skillsets.
      */
     public PagedFlux<Skillset> listSkillsets(String select, RequestOptions requestOptions) {
         try {
-            return new PagedFlux<>(
-                () -> withContext(context -> this.listSkillsetsWithResponse(select, requestOptions, context)),
-                nextLink -> Mono.empty());
+            return new PagedFlux<>(() ->
+                withContext(context -> listSkillsetsWithResponse(select, requestOptions, context)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
     PagedFlux<Skillset> listSkillsets(String select, RequestOptions requestOptions, Context context) {
-        return new PagedFlux<>(
-            () -> this.listSkillsetsWithResponse(select, requestOptions, context),
-            nextLink -> Mono.empty());
+        try {
+            return new PagedFlux<>(() -> listSkillsetsWithResponse(select, requestOptions, context));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     private Mono<PagedResponse<Skillset>> listSkillsetsWithResponse(String select,
-                                                                    RequestOptions requestOptions,
-                                                                    Context context) {
+        RequestOptions requestOptions,
+        Context context) {
         return this.restClient.skillsets()
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
@@ -1290,8 +999,7 @@ public final class SearchServiceAsyncClient {
                 response.getHeaders(),
                 response.getValue().getSkillsets(),
                 null,
-                deserializeHeaders(response.getHeaders()))
-            );
+                null));
     }
 
     /**
@@ -1301,12 +1009,7 @@ public final class SearchServiceAsyncClient {
      * @return the skillset that was created or updated.
      */
     public Mono<Skillset> createOrUpdateSkillset(Skillset skillset) {
-        try {
-            return this.createOrUpdateSkillsetWithResponse(skillset, null, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createOrUpdateSkillsetWithResponse(skillset, null, null).map(Response::getValue);
     }
 
     /**
@@ -1314,33 +1017,27 @@ public final class SearchServiceAsyncClient {
      *
      * @param skillset the definition of the skillset to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing the skillset that was created or updated.
      */
     public Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
-                                                                       AccessCondition accessCondition,
-                                                                       RequestOptions requestOptions) {
+        AccessCondition accessCondition, RequestOptions requestOptions) {
+        return withContext(context ->
+            createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions, context));
+    }
+
+    Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset, AccessCondition accessCondition,
+        RequestOptions requestOptions, Context context) {
         try {
-            return withContext(context -> this.createOrUpdateSkillsetWithResponse(skillset,
-                accessCondition,
-                requestOptions,
-                context));
+            return restClient.skillsets()
+                .createOrUpdateWithRestResponseAsync(skillset.getName(), skillset, requestOptions, accessCondition,
+                    context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
-                                                                AccessCondition accessCondition,
-                                                                RequestOptions requestOptions,
-                                                                Context context) {
-        return restClient
-            .skillsets()
-            .createOrUpdateWithRestResponseAsync(skillset.getName(),
-                skillset, requestOptions, accessCondition, context)
-            .map(Function.identity());
     }
 
     /**
@@ -1350,12 +1047,7 @@ public final class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteSkillset(String skillsetName) {
-        try {
-            return this.deleteSkillsetWithResponse(skillsetName, null, null)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteSkillsetWithResponse(skillsetName, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1363,67 +1055,26 @@ public final class SearchServiceAsyncClient {
      *
      * @param skillsetName the name of the skillset to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName,
-                                                           AccessCondition accessCondition,
-                                                           RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, AccessCondition accessCondition,
+        RequestOptions requestOptions) {
+        return withContext(context ->
+            deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions, context));
+    }
+
+    Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, AccessCondition accessCondition,
+        RequestOptions requestOptions, Context context) {
         try {
-            return withContext(context -> this.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions,
-                context));
+            return restClient.skillsets()
+                .deleteWithRestResponseAsync(skillsetName, requestOptions, accessCondition, context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName,
-                                                    AccessCondition accessCondition,
-                                                    RequestOptions requestOptions,
-                                                    Context context) {
-        return restClient
-            .skillsets()
-            .deleteWithRestResponseAsync(skillsetName, requestOptions, accessCondition, context)
-            .map(Function.identity());
-    }
-
-    /**
-     * Determines whether or not the given skillset exists.
-     *
-     * @param skillsetName the name of the skillset
-     * @return true if the skillset exists; false otherwise.
-     */
-    public Mono<Boolean> doesSkillsetExist(String skillsetName) {
-        try {
-            return this.doesSkillsetExistWithResponse(skillsetName, null).map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Determines whether or not the given skillset exists.
-     *
-     * @param skillsetName the name of the skillset
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
-     * @return true if the skillset exists; false otherwise.
-     */
-    public Mono<Response<Boolean>> doesSkillsetExistWithResponse(String skillsetName, RequestOptions requestOptions) {
-        try {
-            return withContext(context -> this.doesSkillsetExistWithResponse(skillsetName, requestOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<Boolean>> doesSkillsetExistWithResponse(String skillsetName,
-                                                       RequestOptions requestOptions,
-                                                       Context context) {
-        return resourceExistsWithResponse(() ->
-            this.getSkillsetWithResponse(skillsetName, requestOptions, context));
     }
 
     /**
@@ -1433,38 +1084,31 @@ public final class SearchServiceAsyncClient {
      * @return the created {@link SynonymMap}.
      */
     public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap) {
-        try {
-            return this.createSynonymMapWithResponse(synonymMap, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createSynonymMapWithResponse(synonymMap, null).map(Response::getValue);
     }
 
     /**
      * Creates a new Azure Cognitive Search synonym map.
      *
      * @param synonymMap the definition of the synonym map to create
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing the created SynonymMap.
      */
     public Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
-                                                                   RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
+        return withContext(context -> createSynonymMapWithResponse(synonymMap, requestOptions, context));
+    }
+
+    Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap, RequestOptions requestOptions,
+        Context context) {
         try {
-            return withContext(context -> this.createSynonymMapWithResponse(synonymMap, requestOptions, context));
+            return restClient.synonymMaps()
+                .createWithRestResponseAsync(synonymMap, requestOptions, context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
-                                                            RequestOptions requestOptions,
-                                                            Context context) {
-        return restClient
-            .synonymMaps()
-            .createWithRestResponseAsync(synonymMap, requestOptions, context)
-            .map(Function.identity());
     }
 
     /**
@@ -1474,37 +1118,30 @@ public final class SearchServiceAsyncClient {
      * @return the {@link SynonymMap} definition
      */
     public Mono<SynonymMap> getSynonymMap(String synonymMapName) {
-        try {
-            return this.getSynonymMapWithResponse(synonymMapName, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getSynonymMapWithResponse(synonymMapName, null).map(Response::getValue);
     }
 
     /**
      * Retrieves a synonym map definition.
      *
      * @param synonymMapName name of the synonym map to retrieve
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing the SynonymMap.
      */
     public Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName, RequestOptions requestOptions) {
+        return withContext(context -> getSynonymMapWithResponse(synonymMapName, requestOptions, context));
+    }
+
+    Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName, RequestOptions requestOptions,
+        Context context) {
         try {
-            return withContext(context -> this.getSynonymMapWithResponse(synonymMapName, requestOptions, context));
+            return restClient.synonymMaps()
+                .getWithRestResponseAsync(synonymMapName, requestOptions, context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName,
-                                                         RequestOptions requestOptions,
-                                                         Context context) {
-        return restClient
-            .synonymMaps()
-            .getWithRestResponseAsync(synonymMapName, requestOptions, context)
-            .map(Function.identity());
     }
 
     /**
@@ -1513,44 +1150,38 @@ public final class SearchServiceAsyncClient {
      * @return a reactive response emitting the list of synonym maps.
      */
     public PagedFlux<SynonymMap> listSynonymMaps() {
-        try {
-            return this.listSynonymMaps(null, null);
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
+        return listSynonymMaps(null, null);
     }
 
     /**
      * Lists all synonym maps available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the synonym maps to retrieve.
-     *               Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     *               The default is all properties
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param select selects which top-level properties of the synonym maps to retrieve. Specified as a comma-separated
+     * list of JSON property names, or '*' for all properties. The default is all properties
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a reactive response emitting the list of synonym maps.
      */
     public PagedFlux<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions) {
         try {
-            return new PagedFlux<>(
-                () -> withContext(context -> this.listSynonymMapsWithResponse(select, requestOptions, context)),
-                nextLink -> Mono.empty());
+            return new PagedFlux<>(() ->
+                withContext(context -> listSynonymMapsWithResponse(select, requestOptions, context)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return pagedFluxError(logger, ex);
         }
     }
 
     PagedFlux<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions, Context context) {
-        return new PagedFlux<>(
-            () -> this.listSynonymMapsWithResponse(select, requestOptions, context),
-            nextLink -> Mono.empty());
+        try {
+            return new PagedFlux<>(() -> listSynonymMapsWithResponse(select, requestOptions, context));
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
-    private Mono<PagedResponse<SynonymMap>> listSynonymMapsWithResponse(String select,
-                                                                        RequestOptions requestOptions,
-                                                                        Context context) {
-        return restClient
-            .synonymMaps()
+    private Mono<PagedResponse<SynonymMap>> listSynonymMapsWithResponse(String select, RequestOptions requestOptions,
+        Context context) {
+        return restClient.synonymMaps()
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
                 response.getRequest(),
@@ -1558,8 +1189,7 @@ public final class SearchServiceAsyncClient {
                 response.getHeaders(),
                 response.getValue().getSynonymMaps(),
                 null,
-                deserializeHeaders(response.getHeaders()))
-            );
+                null));
     }
 
     /**
@@ -1569,12 +1199,7 @@ public final class SearchServiceAsyncClient {
      * @return the synonym map that was created or updated.
      */
     public Mono<SynonymMap> createOrUpdateSynonymMap(SynonymMap synonymMap) {
-        try {
-            return this.createOrUpdateSynonymMapWithResponse(synonymMap, null, null)
-                .map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createOrUpdateSynonymMapWithResponse(synonymMap, null, null).map(Response::getValue);
     }
 
     /**
@@ -1582,34 +1207,27 @@ public final class SearchServiceAsyncClient {
      *
      * @param synonymMap the definition of the synonym map to create or update
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response containing the synonym map that was created or updated.
      */
     public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
-                                                                           AccessCondition accessCondition,
-                                                                           RequestOptions requestOptions) {
-        try {
-            return withContext(context -> this.createOrUpdateSynonymMapWithResponse(synonymMap,
-                accessCondition, requestOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        AccessCondition accessCondition, RequestOptions requestOptions) {
+        return withContext(context ->
+            createOrUpdateSynonymMapWithResponse(synonymMap, accessCondition, requestOptions, context));
     }
 
     Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
-                                                                    AccessCondition accessCondition,
-                                                                    RequestOptions requestOptions,
-                                                                    Context context) {
-        return restClient
-            .synonymMaps()
-            .createOrUpdateWithRestResponseAsync(synonymMap.getName(),
-                synonymMap,
-                requestOptions,
-                accessCondition,
-                context)
-            .map(Function.identity());
+        AccessCondition accessCondition, RequestOptions requestOptions, Context context) {
+        try {
+            return restClient.synonymMaps()
+                .createOrUpdateWithRestResponseAsync(synonymMap.getName(), synonymMap, requestOptions, accessCondition,
+                    context)
+                .map(Function.identity());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -1619,12 +1237,7 @@ public final class SearchServiceAsyncClient {
      * @return a response signalling completion.
      */
     public Mono<Void> deleteSynonymMap(String synonymMapName) {
-        try {
-            return this.deleteSynonymMapWithResponse(synonymMapName, null, null)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteSynonymMapWithResponse(synonymMapName, null, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1632,89 +1245,26 @@ public final class SearchServiceAsyncClient {
      *
      * @param synonymMapName the name of the synonym map to delete
      * @param accessCondition the condition where the operation will be performed if the ETag on the server matches or
-     *                        doesn't match specified values
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * doesn't match specified values
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName,
-                                                             AccessCondition accessCondition,
-                                                             RequestOptions requestOptions) {
-        try {
-            return withContext(context ->
-                this.deleteSynonymMapWithResponse(synonymMapName, accessCondition, requestOptions, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName,
-                                                      AccessCondition accessCondition,
-                                                      RequestOptions requestOptions,
-                                                      Context context) {
-        return restClient
-            .synonymMaps()
-            .deleteWithRestResponseAsync(synonymMapName, requestOptions, accessCondition, context)
-            .map(Function.identity());
-    }
-
-    /**
-     * Determines whether or not the given synonym map exists.
-     *
-     * @param synonymMapName the name of the synonym map
-     * @return true if the synonym map exists; false otherwise.
-     */
-    public Mono<Boolean> doesSynonymMapExist(String synonymMapName) {
-        try {
-            return this.doesSynonymMapExistWithResponse(synonymMapName, null).map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Determines whether or not the given synonym map exists.
-     *
-     * @param synonymMapName the name of the synonym map
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
-     * @return true if the synonym map exists; false otherwise.
-     */
-    public Mono<Response<Boolean>> doesSynonymMapExistWithResponse(String synonymMapName,
+    public Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, AccessCondition accessCondition,
         RequestOptions requestOptions) {
+        return withContext(context ->
+            deleteSynonymMapWithResponse(synonymMapName, accessCondition, requestOptions, context));
+    }
+
+    Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, AccessCondition accessCondition,
+        RequestOptions requestOptions, Context context) {
         try {
-            return withContext(context -> this.doesSynonymMapExistWithResponse(synonymMapName, requestOptions,
-                context));
+            return restClient.synonymMaps()
+                .deleteWithRestResponseAsync(synonymMapName, requestOptions, accessCondition, context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<Boolean>> doesSynonymMapExistWithResponse(String synonymMapName,
-                                                         RequestOptions requestOptions,
-                                                         Context context) {
-        return resourceExistsWithResponse(() ->
-            this.getSynonymMapWithResponse(synonymMapName, requestOptions, context));
-    }
-
-    /**
-     * Runs an async action and determines if a resource exists or not
-     *
-     * @param action the runnable async action
-     * @return true if the resource exists (service returns a '200' status code); otherwise false.
-     */
-    private <T> Mono<Response<Boolean>> resourceExistsWithResponse(Supplier<Mono<Response<T>>> action) {
-        return action.get()
-            .map(i ->
-                (Response<Boolean>) new SimpleResponse<>(i, i.getStatusCode() == 200))
-            .onErrorResume(
-                t -> t instanceof HttpResponseException
-                    && ((HttpResponseException) t).getResponse().getStatusCode() == 404,
-                t -> {
-                    HttpResponse response = ((HttpResponseException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), false));
-                });
     }
 
     /**
@@ -1725,38 +1275,27 @@ public final class SearchServiceAsyncClient {
      * @return the search service statistics result.
      */
     public Mono<ServiceStatistics> getServiceStatistics() {
-        try {
-            return this.getServiceStatisticsWithResponse(null).map(Response::getValue);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getServiceStatisticsWithResponse(null).map(Response::getValue);
     }
 
 
     /**
      * Returns service level statistics for a search service, including service counters and limits.
      *
-     * @param requestOptions additional parameters for the operation.
-     *                       Contains the tracking ID sent with the request to help with debugging
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return the search service statistics result.
      */
     public Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
+        return withContext(context -> getServiceStatisticsWithResponse(requestOptions, context));
+    }
+
+    Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions, Context context) {
         try {
-            return withContext(context -> this.getServiceStatisticsWithResponse(requestOptions, context));
+            return restClient.getServiceStatisticsWithRestResponseAsync(requestOptions, context)
+                .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions,
-                                                                       Context context) {
-        return restClient.getServiceStatisticsWithRestResponseAsync(requestOptions, context).map(Function.identity());
-    }
-
-
-    private static String deserializeHeaders(HttpHeaders headers) {
-        return headers.toMap().entrySet().stream().map((entry) ->
-            entry.getKey() + "," + entry.getValue()
-        ).collect(Collectors.joining(","));
     }
 }

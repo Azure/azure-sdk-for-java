@@ -9,27 +9,40 @@ import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
+import com.azure.search.test.environment.models.Hotel;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import static com.azure.search.SearchTestBase.HOTELS_DATA_JSON;
 import static com.azure.search.SearchTestBase.HOTELS_INDEX_NAME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SuggestSyncTests extends SuggestTestBase {
+public class SuggestSyncTests extends SearchIndexClientTestBase {
+    private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
+    private static final String BOOKS_INDEX_NAME = "books";
 
     private SearchIndexClient client;
 
     @Test
-    public void canSuggestDynamicDocuments() throws IOException {
+    public void canSuggestDynamicDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -43,11 +56,11 @@ public class SuggestSyncTests extends SuggestTestBase {
             .iterator();
 
         verifyDynamicDocumentSuggest(suggestResultIterator.next());
-        Assert.assertFalse(suggestResultIterator.hasNext());
+        assertFalse(suggestResultIterator.hasNext());
     }
 
     @Test
-    public void searchFieldsExcludesFieldsFromSuggest() throws IOException {
+    public void searchFieldsExcludesFieldsFromSuggest() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -61,11 +74,11 @@ public class SuggestSyncTests extends SuggestTestBase {
             .iterator();
 
         verifyFieldsExcludesFieldsSuggest(suggestResultIterator.next());
-        Assert.assertFalse(suggestResultIterator.hasNext());
+        assertFalse(suggestResultIterator.hasNext());
     }
 
     @Test
-    public void canUseSuggestHitHighlighting() throws IOException {
+    public void canUseSuggestHitHighlighting() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -82,11 +95,11 @@ public class SuggestSyncTests extends SuggestTestBase {
             .iterator();
 
         verifyHitHighlightingSuggest(suggestResultIterator.next());
-        Assert.assertFalse(suggestResultIterator.hasNext());
+        assertFalse(suggestResultIterator.hasNext());
     }
 
     @Test
-    public void canGetFuzzySuggestions() throws IOException {
+    public void canGetFuzzySuggestions() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -100,11 +113,11 @@ public class SuggestSyncTests extends SuggestTestBase {
             .iterator();
 
         verifyFuzzySuggest(suggestResultIterator.next());
-        Assert.assertFalse(suggestResultIterator.hasNext());
+        assertFalse(suggestResultIterator.hasNext());
     }
 
     @Test
-    public void canSuggestStaticallyTypedDocuments() throws IOException {
+    public void canSuggestStaticallyTypedDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -153,7 +166,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void fuzzyIsOffByDefault() throws IOException {
+    public void fuzzyIsOffByDefault() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -204,7 +217,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void testCanSuggestWithMinimumCoverage() throws IOException {
+    public void testCanSuggestWithMinimumCoverage() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -227,7 +240,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void testTopTrimsResults() throws IOException {
+    public void testTopTrimsResults() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -248,7 +261,7 @@ public class SuggestSyncTests extends SuggestTestBase {
     }
 
     @Test
-    public void testCanFilter() throws IOException {
+    public void testCanFilter() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -264,15 +277,15 @@ public class SuggestSyncTests extends SuggestTestBase {
             .iterator()
             .next();
 
-        Assert.assertNotNull(suggestPagedResponse);
+        assertNotNull(suggestPagedResponse);
         List<String> actualIds = suggestPagedResponse.getValue().stream()
             .map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "5");
-        Assert.assertEquals(expectedIds, actualIds);
+        assertEquals(expectedIds, actualIds);
     }
 
     @Test
-    public void testOrderByProgressivelyBreaksTies() throws IOException {
+    public void testOrderByProgressivelyBreaksTies() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -288,15 +301,15 @@ public class SuggestSyncTests extends SuggestTestBase {
             "sg", suggestOptions, generateRequestOptions(), Context.NONE)
             .iterableByPage().iterator().next();
 
-        Assert.assertNotNull(suggestPagedResponse);
+        assertNotNull(suggestPagedResponse);
         List<String> actualIds = suggestPagedResponse.getValue().stream()
             .map(s -> (String) s.getDocument().get("HotelId")).collect(Collectors.toList());
         List<String> expectedIds = Arrays.asList("1", "9", "4", "3", "5");
-        Assert.assertEquals(expectedIds, actualIds);
+        assertEquals(expectedIds, actualIds);
     }
 
     @Test
-    public void testCanSuggestWithSelectedFields() throws IOException {
+    public void testCanSuggestWithSelectedFields() {
         createHotelIndex();
         client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -311,5 +324,109 @@ public class SuggestSyncTests extends SuggestTestBase {
 
         verifySuggestWithSelectedFields(result);
 
+    }
+
+    void verifyFuzzySuggest(SuggestPagedResponse suggestResultPagedResponse) {
+        assertNotNull(suggestResultPagedResponse);
+        assertEquals(5, suggestResultPagedResponse.getValue().size());
+    }
+
+    void verifyHitHighlightingSuggest(SuggestPagedResponse suggestResultPagedResponse) {
+        assertNotNull(suggestResultPagedResponse);
+        assertEquals(1, suggestResultPagedResponse.getValue().size());
+        assertTrue(
+            suggestResultPagedResponse.getValue()
+                .get(0)
+                .getText()
+                .startsWith("Best <b>hotel</b> in town"));
+    }
+
+    void verifyFieldsExcludesFieldsSuggest(SuggestPagedResponse suggestResultPagedResponse) {
+        assertNotNull(suggestResultPagedResponse);
+        assertEquals(0, suggestResultPagedResponse.getValue().size());
+    }
+
+    void verifyDynamicDocumentSuggest(SuggestPagedResponse suggestResultPagedResponse) {
+        assertNotNull(suggestResultPagedResponse);
+        assertEquals(2, suggestResultPagedResponse.getValue().size());
+        Hotel hotel = convertToType(suggestResultPagedResponse.getValue().get(0).getDocument(), Hotel.class);
+        assertEquals("10", hotel.hotelId());
+    }
+
+    void verifyCanSuggestStaticallyTypedDocuments(SuggestPagedResponse suggestResultPagedResponse, List<Map<String, Object>> expectedHotels) {
+        //sanity
+        assertNotNull(suggestResultPagedResponse);
+        List<Document> docs = suggestResultPagedResponse.getValue()
+            .stream()
+            .map(SuggestResult::getDocument)
+            .collect(Collectors.toList());
+        List<SuggestResult> hotelsList = suggestResultPagedResponse.getValue();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        df.setTimeZone(TimeZone.getDefault());
+        objectMapper.setDateFormat(df);
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        List<Hotel> expectedHotelsList = expectedHotels.stream().map(hotel ->
+            objectMapper.convertValue(hotel, Hotel.class))
+            .filter(h -> h.hotelId().equals("10") || h.hotelId().equals("8"))
+            .sorted(Comparator.comparing(Hotel::hotelId)).collect(Collectors.toList());
+
+        //assert
+        //verify fields
+        assertEquals(2, docs.size());
+        assertEquals(hotelsList.stream().map(SuggestResult::getText).collect(Collectors.toList()),
+            expectedHotelsList.stream().map(Hotel::description).collect(Collectors.toList()));
+    }
+
+    void verifyFuzzyIsOffByDefault(SuggestPagedResponse suggestResultPagedResponse) {
+        assertNotNull(suggestResultPagedResponse);
+        assertEquals(0, suggestResultPagedResponse.getValue().size());
+    }
+
+    void verifyMinimumCoverage(SuggestPagedResponse suggestResultPagedResponse) {
+
+        assertNotNull(suggestResultPagedResponse);
+        assertEquals(Double.valueOf(100.0), suggestResultPagedResponse.getCoverage());
+    }
+
+    void verifyTopDocumentSuggest(SuggestPagedResponse suggestResultPagedResponse) {
+        assertNotNull(suggestResultPagedResponse);
+        assertEquals(3, suggestResultPagedResponse.getValue().size());
+        List<String> resultIds = suggestResultPagedResponse
+            .getValue()
+            .stream()
+            .map(hotel -> convertToType(hotel.getDocument(), Hotel.class).hotelId())
+            .collect(Collectors.toList());
+
+        assertEquals(Arrays.asList("1", "10", "2"), resultIds);
+    }
+
+    void verifyCanSuggestWithDateTimeInStaticModel(SuggestPagedResponse suggestResultPagedResponse) {
+        List<SuggestResult> books = suggestResultPagedResponse.getValue();
+        List<Document> docs = suggestResultPagedResponse.getValue()
+            .stream()
+            .map(SuggestResult::getDocument)
+            .collect(Collectors.toList());
+
+        assertEquals(1, docs.size());
+        assertEquals("War and Peace", books.get(0).getText());
+    }
+
+    @SuppressWarnings("unchecked")
+    void verifySuggestWithSelectedFields(PagedResponse<SuggestResult> suggestResultPagedResponse) {
+        assertEquals(1, suggestResultPagedResponse.getValue().size());
+        Document result = suggestResultPagedResponse.getValue().get(0).getDocument();
+
+        assertEquals("Secret Point Motel", result.get("HotelName"));
+        assertEquals(4, result.get("Rating"));
+        assertEquals("New York", ((LinkedHashMap) result.get("Address")).get("City"));
+        assertEquals(Arrays.asList("Budget Room", "Budget Room"),
+            ((ArrayList<LinkedHashMap<String, String>>) result.get("Rooms"))
+                .parallelStream()
+                .map(room -> room.get("Type"))
+                .collect(Collectors.toList()));
     }
 }
