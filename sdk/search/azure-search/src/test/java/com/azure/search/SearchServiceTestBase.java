@@ -4,12 +4,9 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
@@ -74,6 +71,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     private static final String DOGFOOD_DNS_SUFFIX = "search-dogfood.windows-int.net";
 
     private static final String FAKE_DESCRIPTION = "Some data source";
+    private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
 
     // The connection string we use here, as well as table name and target index schema, use the USGS database
     // that we set up to support our code samples.
@@ -155,20 +153,20 @@ public abstract class SearchServiceTestBase extends TestBase {
         SearchServiceClientBuilder builder = new SearchServiceClientBuilder()
             .endpoint(endpoint);
 
-        if (!interceptorManager.isPlaybackMode()) {
-            addPolicies(builder, policies);
-            builder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .credential(searchApiKeyCredential)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
-                .addPolicy(new HttpLoggingPolicy(
-                    new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-            return builder;
-        } else {
+        if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
             addPolicies(builder, policies);
+            return builder;
+        }
+
+        addPolicies(builder, policies);
+        builder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+            .credential(searchApiKeyCredential);
+        if (!liveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
         return builder;
+
     }
 
     private void addPolicies(SearchServiceClientBuilder builder, List<HttpPipelinePolicy> policies) {
@@ -541,22 +539,18 @@ public abstract class SearchServiceTestBase extends TestBase {
     }
 
     protected SearchIndexClientBuilder getSearchIndexClientBuilder(String indexName) {
-        if (!interceptorManager.isPlaybackMode()) {
-            return new SearchIndexClientBuilder()
-                .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
-                .indexName(indexName)
-                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .credential(searchApiKeyCredential)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
-                .addPolicy(new HttpLoggingPolicy(
-                    new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-        } else {
-            return new SearchIndexClientBuilder()
-                .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
-                .indexName(indexName)
-                .httpClient(interceptorManager.getPlaybackClient());
+        SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
+            .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
+            .indexName(indexName);
+        if (interceptorManager.isPlaybackMode()) {
+            return builder.httpClient(interceptorManager.getPlaybackClient());
         }
+        builder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+            .credential(searchApiKeyCredential);
+        if (!liveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        return builder;
     }
 
     protected void assertIndexesEqual(Index expected, Index actual) {
@@ -655,5 +649,23 @@ public abstract class SearchServiceTestBase extends TestBase {
         return new ServiceStatistics()
             .setCounters(serviceCounters)
             .setLimits(serviceLimits);
+    }
+
+    static boolean liveMode() {
+        return setupTestMode() == TestMode.LIVE;
+    }
+
+    static TestMode setupTestMode() {
+        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
+
+        if (testMode != null) {
+            try {
+                return TestMode.valueOf(testMode.toUpperCase(Locale.US));
+            } catch (IllegalArgumentException ignore) {
+                return TestMode.PLAYBACK;
+            }
+        }
+
+        return TestMode.PLAYBACK;
     }
 }
