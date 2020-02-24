@@ -305,7 +305,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         props.getContentMd5() == contentMd5
         props.getCacheControl() == "myControl"
     }
-    
+
     @Unroll
     def "FileSystemProvider copy source"() {
         setup:

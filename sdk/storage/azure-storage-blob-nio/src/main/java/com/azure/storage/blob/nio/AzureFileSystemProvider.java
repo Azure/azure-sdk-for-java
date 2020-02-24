@@ -5,7 +5,6 @@ package com.azure.storage.blob.nio;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
@@ -408,7 +407,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         // Remove accepted options as we find them. Anything left we don't support.
         boolean replaceExisting = false;
         List<CopyOption> optionsList = new ArrayList<>(Arrays.asList(copyOptions));
-        if(!optionsList.contains(StandardCopyOption.COPY_ATTRIBUTES)) {
+        if (!optionsList.contains(StandardCopyOption.COPY_ATTRIBUTES)) {
             throw Utility.logError(logger, new UnsupportedOperationException("StandardCopyOption.COPY_ATTRIBUTES "
                 + "must be specified as the service will always copy file attributes."));
         }
@@ -446,8 +445,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         between our check and put.
          */
         BlobRequestConditions requestConditions = null;
-        if (!replaceExisting)
-        {
+        if (!replaceExisting) {
             if (!destinationStatus.equals(DirectoryStatus.DOES_NOT_EXIST)) {
                 throw Utility.logError(logger, new FileAlreadyExistsException(destination.toString()));
             }
@@ -482,8 +480,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         } catch (BlobStorageException e) {
             // If the source was not found, it could be because it's a virtual directory. Check the status.
             // If a non-dir resource existed, it would have been copied above. This check is therefore sufficient.
-            if (e.getErrorCode().equals(BlobErrorCode.BLOB_NOT_FOUND) &&
-                !checkDirStatus(sourceBlob).equals(DirectoryStatus.DOES_NOT_EXIST)) {
+            if (e.getErrorCode().equals(BlobErrorCode.BLOB_NOT_FOUND)
+                && !checkDirStatus(sourceBlob).equals(DirectoryStatus.DOES_NOT_EXIST)) {
                 /*
                 We already checked that the parent exists and validated the paths above, so we can put the blob
                 directly.
