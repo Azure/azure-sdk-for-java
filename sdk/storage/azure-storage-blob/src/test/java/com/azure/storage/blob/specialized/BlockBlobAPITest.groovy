@@ -27,6 +27,8 @@ import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.common.CompareTestUtils
+import com.azure.storage.common.MockRequestResponse
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
@@ -655,7 +657,7 @@ class BlockBlobAPITest extends APISpec {
         outStream.write(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.download()).block())
         outStream.close()
 
-        compareFiles(file, outFile, 0, fileSize)
+        CompareTestUtils.compareFiles(file, outFile, 0, fileSize)
         StepVerifier.create(blobAsyncClient.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED))
             .assertNext({ assert it.getCommittedBlocks().size() == commitedBlockCount })
             .verifyComplete()
@@ -1101,18 +1103,6 @@ class BlockBlobAPITest extends APISpec {
         10 * Constants.MB  | 3 * Constants.MB  | 3        || 4 // Data does not squarely fit in buffers.
     }
 
-    def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
-        result.position(0)
-        for (ByteBuffer buffer : buffers) {
-            buffer.position(0)
-            result.limit(result.position() + buffer.remaining())
-            if (buffer != result) {
-                return false
-            }
-            result.position(result.position() + buffer.remaining())
-        }
-        return result.remaining() == 0
-    }
 
     /*      Reporter for testing Progress Receiver
     *        Will count the number of reports that are triggered         */
@@ -1183,7 +1173,7 @@ class BlockBlobAPITest extends APISpec {
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
-            .assertNext({ assert compareListToBuffer(dataList, it) })
+            .assertNext({ assert CompareTestUtils.compareListToBuffer(dataList, it) })
             .verifyComplete()
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
@@ -1209,7 +1199,7 @@ class BlockBlobAPITest extends APISpec {
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
-            .assertNext({ assert compareListToBuffer(dataList, it) })
+            .assertNext({ assert CompareTestUtils.compareListToBuffer(dataList, it) })
             .verifyComplete()
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
@@ -1234,7 +1224,7 @@ class BlockBlobAPITest extends APISpec {
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
-            .assertNext({ assert compareListToBuffer(dataList, it) })
+            .assertNext({ assert CompareTestUtils.compareListToBuffer(dataList, it) })
             .verifyComplete()
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
@@ -1493,7 +1483,7 @@ class BlockBlobAPITest extends APISpec {
         blockBlobAsyncClient.upload(Flux.just(defaultData), defaultDataSize, true).block()
 
         // Mock a response that will always be retried.
-        def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
+        def mockHttpResponse = MockRequestResponse.getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
 
         // Mock a policy that will always then check that the data is still the same and return a retryable error.
         def mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->

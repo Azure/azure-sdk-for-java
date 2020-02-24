@@ -31,6 +31,8 @@ import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
+import com.azure.storage.common.CompareTestUtils
+import com.azure.storage.common.MockRequestResponse
 import com.azure.storage.common.implementation.Constants
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
@@ -39,7 +41,6 @@ import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
-import java.nio.channels.NonWritableChannelException
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Files
@@ -185,7 +186,7 @@ class BlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def bu2 = getBlobClient(primaryCredential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy())
+        def bu2 = getBlobClient(primaryCredential, bc.getBlobUrl(), new MockRequestResponse.MockRetryRangeResponsePolicy())
 
         when:
         def range = new BlobRange(2, 5L)
@@ -434,7 +435,7 @@ class BlobAPITest extends APISpec {
             new ParallelTransferOptions(4 * 1024 * 1024, null, null), null, null, false, null, null)
 
         then:
-        compareFiles(file, outFile, 0, fileSize)
+        CompareTestUtils.compareFiles(file, outFile, 0, fileSize)
         properties.getValue().getBlobType() == BlobType.BLOCK_BLOB
 
         cleanup:
@@ -480,7 +481,7 @@ class BlobAPITest extends APISpec {
             new ParallelTransferOptions(4 * 1024 * 1024, null, null), null, null, false, null, null)
 
         then:
-        compareFiles(file, outFile, 0, fileSize)
+        CompareTestUtils.compareFiles(file, outFile, 0, fileSize)
         properties.getValue().getBlobType() == BlobType.BLOCK_BLOB
 
         cleanup:
@@ -529,7 +530,7 @@ class BlobAPITest extends APISpec {
             .assertNext({ it -> it.getValue().getBlobType() == BlobType.BLOCK_BLOB })
             .verifyComplete()
 
-        compareFiles(file, outFile, 0, fileSize)
+        CompareTestUtils.compareFiles(file, outFile, 0, fileSize)
 
         cleanup:
         blobServiceAsyncClient.deleteBlobContainer(containerName)
@@ -560,7 +561,7 @@ class BlobAPITest extends APISpec {
         bc.downloadToFileWithResponse(outFile.toPath().toString(), range, null, null, null, false, null, null)
 
         then:
-        compareFiles(file, outFile, range.getOffset(), range.getCount())
+        CompareTestUtils.compareFiles(file, outFile, range.getOffset(), range.getCount())
 
         cleanup:
         outFile.delete()
@@ -620,7 +621,7 @@ class BlobAPITest extends APISpec {
         bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(0), null, null, null, false, null, null)
 
         then:
-        compareFiles(file, outFile, 0, defaultDataSize)
+        CompareTestUtils.compareFiles(file, outFile, 0, defaultDataSize)
 
         cleanup:
         outFile.delete()

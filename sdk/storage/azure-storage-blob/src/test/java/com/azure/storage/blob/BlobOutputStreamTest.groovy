@@ -3,6 +3,7 @@ package com.azure.storage.blob
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
+import com.azure.storage.common.CompareTestUtils
 import com.azure.storage.common.implementation.Constants
 import spock.lang.Requires
 
@@ -22,7 +23,7 @@ class BlobOutputStreamTest extends APISpec {
 
         then:
         blockBlobClient.getProperties().getBlobSize() == data.length
-        convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
+        CompareTestUtils.convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
     }
 
     @Requires({ liveMode() })
@@ -79,7 +80,7 @@ class BlobOutputStreamTest extends APISpec {
 
         then:
         blockBlobClient.getProperties().getBlobSize() == data.length
-        convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
+        CompareTestUtils.convertInputStreamToByteArray(blockBlobClient.openInputStream()) == data
     }
 
     @Requires({ liveMode() })
@@ -96,7 +97,7 @@ class BlobOutputStreamTest extends APISpec {
         outputStream.close()
 
         then:
-        convertInputStreamToByteArray(pageBlobClient.openInputStream()) == data
+        CompareTestUtils.convertInputStreamToByteArray(pageBlobClient.openInputStream()) == data
     }
 
     // Test is failing, need to investigate.
@@ -116,20 +117,6 @@ class BlobOutputStreamTest extends APISpec {
 
         then:
         appendBlobClient.getProperties().getBlobSize() == data.length
-        convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data
-    }
-
-    def convertInputStreamToByteArray(InputStream inputStream) {
-        int b
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
-        try {
-            while ((b = inputStream.read()) != -1) {
-                outputStream.write(b)
-            }
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex)
-        }
-
-        return outputStream.toByteArray()
+        CompareTestUtils.convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data
     }
 }
