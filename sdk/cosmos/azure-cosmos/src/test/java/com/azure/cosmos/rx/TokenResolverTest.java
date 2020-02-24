@@ -507,9 +507,7 @@ public class TokenResolverTest extends TestSuiteBase {
 
     private TokenResolver getTokenResolver(PermissionMode permissionMode) {
         return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
-            if(resourceType.equals(CosmosResourceType.System)) {
-                return readPermission.getToken();
-            } if (permissionMode == null) {
+            if (permissionMode == null) {
                 return "invalid";
             } else if (permissionMode.equals(PermissionMode.READ)) {
                 return readPermission.getToken();
