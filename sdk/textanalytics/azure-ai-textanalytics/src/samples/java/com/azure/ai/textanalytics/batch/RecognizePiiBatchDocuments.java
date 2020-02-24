@@ -39,6 +39,7 @@ public class RecognizePiiBatchDocuments {
         client.recognizePiiEntitiesBatch(inputs, null, Context.NONE).forEach(entitiesResult -> {
             // Recognized Personally Identifiable Information entities for each of document from a batch of documents
             System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
+
             if (entitiesResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n", entitiesResult.getError().getMessage());

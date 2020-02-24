@@ -39,6 +39,7 @@ public class DetectLanguageBatchDocuments {
         client.detectLanguageBatch(inputs, null, Context.NONE).forEach(detectLanguageResult -> {
             // Detected languages for a document from a batch of documents
             System.out.printf("%nDocument ID: %s%n", detectLanguageResult.getId());
+
             if (detectLanguageResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot detect language. Error: %s%n", detectLanguageResult.getError().getMessage());

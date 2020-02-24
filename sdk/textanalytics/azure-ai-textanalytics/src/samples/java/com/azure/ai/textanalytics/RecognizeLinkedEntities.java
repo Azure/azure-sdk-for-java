@@ -36,7 +36,8 @@ public class RecognizeLinkedEntities {
                     linkedEntityMatch.getText(),
                     linkedEntityMatch.getOffset(),
                     linkedEntityMatch.getLength(),
-                    linkedEntityMatch.getScore()));
+                    linkedEntityMatch.getScore())
+            );
         });
     }
 }

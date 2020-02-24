@@ -32,6 +32,7 @@ public class RecognizePii {
             entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
             entity.getOffset(),
             entity.getLength(),
-            entity.getScore()));
+            entity.getScore())
+        );
     }
 }

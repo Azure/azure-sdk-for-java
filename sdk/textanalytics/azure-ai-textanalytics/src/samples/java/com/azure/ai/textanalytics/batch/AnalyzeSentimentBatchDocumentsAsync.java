@@ -67,6 +67,7 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                             documentSentiment.getConfidenceScores().getPositive(),
                             documentSentiment.getConfidenceScores().getNeutral(),
                             documentSentiment.getConfidenceScores().getNegative());
+
                         documentSentiment.getSentences().forEach(sentenceSentiment ->
                             System.out.printf("Analyzed sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
                                 sentenceSentiment.getSentiment(),

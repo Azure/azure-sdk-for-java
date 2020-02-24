@@ -26,13 +26,14 @@ public class AnalyzeSentiment {
         String text = "The hotel was dark and unclean. I like Microsoft.";
 
         final DocumentSentiment documentSentiment = client.analyzeSentiment(text);
+        // Document sentiment
         System.out.printf(
             "Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
             documentSentiment.getSentiment(),
             documentSentiment.getConfidenceScores().getPositive(),
             documentSentiment.getConfidenceScores().getNeutral(),
             documentSentiment.getConfidenceScores().getNegative());
-
+        // Sentence sentiment
         documentSentiment.getSentences().forEach(sentenceSentiment -> System.out.printf(
             "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
             sentenceSentiment.getSentiment(),

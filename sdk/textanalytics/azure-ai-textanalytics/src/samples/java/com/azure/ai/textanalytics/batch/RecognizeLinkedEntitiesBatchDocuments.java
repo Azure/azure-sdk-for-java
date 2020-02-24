@@ -38,6 +38,7 @@ public class RecognizeLinkedEntitiesBatchDocuments {
         client.recognizeLinkedEntitiesBatch(inputs, null, Context.NONE).forEach(entitiesResult -> {
             // Recognized linked entities from a batch of documents
             System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
+
             if (entitiesResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot recognize linked entities. Error: %s%n", entitiesResult.getError().getMessage());

@@ -88,12 +88,12 @@ public class AnalyzeSentimentBatchDocuments {
             });
         });
 
-        filterPositiveDocumentSentiment(client, requestOptions);
-        countMixedAndSortDocumentSentiment(client, requestOptions);
+        filterPositiveDocumentSentiment(client);
+        countMixedAndSortDocumentSentiment(client);
     }
 
 
-    private static void filterPositiveDocumentSentiment(TextAnalyticsClient client, TextAnalyticsRequestOptions requestOptions) {
+    private static void filterPositiveDocumentSentiment(TextAnalyticsClient client) {
         System.out.println("====================== Positive Filtering========================");
         // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
@@ -105,7 +105,8 @@ public class AnalyzeSentimentBatchDocuments {
 
         // Analyzing batch sentiments
         final TextAnalyticsPagedIterable<AnalyzeSentimentResult> sentimentBatchResult =
-            client.analyzeSentimentBatch(inputs, requestOptions, Context.NONE);
+            client.analyzeSentimentBatch(inputs, null, Context.NONE);
+
         // Filter only positive document sentiment;
         Stream<AnalyzeSentimentResult> result = sentimentBatchResult.stream().filter(analyzeSentimentResult ->
             analyzeSentimentResult.getDocumentSentiment().getSentiment().equals(DocumentSentimentLabel.POSITIVE));
@@ -134,7 +135,7 @@ public class AnalyzeSentimentBatchDocuments {
         });
     }
 
-    private static void countMixedAndSortDocumentSentiment(TextAnalyticsClient client, TextAnalyticsRequestOptions requestOptions) {
+    private static void countMixedAndSortDocumentSentiment(TextAnalyticsClient client) {
         System.out.println("====================== Count Mixed Document Sentiment ========================");
         // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
@@ -146,7 +147,7 @@ public class AnalyzeSentimentBatchDocuments {
 
         // Analyzing batch sentiments
         final TextAnalyticsPagedIterable<AnalyzeSentimentResult> sentimentBatchResult =
-            client.analyzeSentimentBatch(inputs, requestOptions, Context.NONE);
+            client.analyzeSentimentBatch(inputs, null, Context.NONE);
 
         long count = sentimentBatchResult.stream().filter(analyzeSentimentResult ->
             analyzeSentimentResult.getDocumentSentiment().getSentiment().equals(DocumentSentimentLabel.MIXED)).count();
