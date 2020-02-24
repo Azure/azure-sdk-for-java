@@ -47,6 +47,7 @@ com.azure:azure-servicebus-spring-boot-starter;2.2.3-beta.0;2.2.3-beta.1
 com.azure:azure-spring-boot-metrics-starter;2.2.3-beta.0;2.2.3-beta.1
 com.azure:azure-spring-boot-starter;2.2.3-beta.0;2.2.3-beta.1
 com.azure:azure-storage-spring-boot-starter;2.2.3-beta.0;2.2.3-beta.1
+com.azure:spring-data-gremlin-boot-starter;2.2.3-beta.0;2.2.3-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.
