@@ -295,7 +295,7 @@ public class SearchIndexClient {
      * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
      * facet, and coverage information.
      */
-    public PagedIterable<SearchResult> search(String searchText) {
+    public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText) {
         return search(searchText, null, null, Context.NONE);
     }
 
@@ -315,9 +315,9 @@ public class SearchIndexClient {
      * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
      * facet, and coverage information.
      */
-    public PagedIterable<SearchResult> search(String searchText, SearchOptions searchOptions,
+    public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText, SearchOptions searchOptions,
         RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.search(searchText, searchOptions, requestOptions, context));
+        return new PagedIterableBase<>(asyncClient.search(searchText, searchOptions, requestOptions, context));
     }
 
     /**
@@ -394,7 +394,7 @@ public class SearchIndexClient {
      * and provides access to the {@link SuggestPagedResponse} object for each page containing
      * HTTP response and coverage information.
      */
-    public PagedIterable<SuggestResult> suggest(String searchText, String suggesterName) {
+    public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName) {
         return suggest(searchText, suggesterName, null, null, Context.NONE);
     }
 
@@ -413,9 +413,9 @@ public class SearchIndexClient {
      * and provides access to the {@link SuggestPagedResponse} object for each page containing
      * HTTP response and coverage information.
      */
-    public PagedIterable<SuggestResult> suggest(String searchText, String suggesterName, SuggestOptions suggestOptions,
-        RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.suggest(searchText, suggesterName, suggestOptions, requestOptions,
+    public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName,
+        SuggestOptions suggestOptions, RequestOptions requestOptions, Context context) {
+        return new PagedIterableBase<>(asyncClient.suggest(searchText, suggesterName, suggestOptions, requestOptions,
             context));
     }
 
@@ -466,7 +466,8 @@ public class SearchIndexClient {
      * @param suggesterName suggester name
      * @return auto complete result.
      */
-    public PagedIterable<AutocompleteItem> autocomplete(String searchText, String suggesterName) {
+    public PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
+        String suggesterName) {
         return autocomplete(searchText, suggesterName, null, null, Context.NONE);
     }
 
@@ -481,9 +482,9 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return auto complete result.
      */
-    public PagedIterable<AutocompleteItem> autocomplete(String searchText, String suggesterName,
-        AutocompleteOptions autocompleteOptions, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.autocomplete(searchText, suggesterName, autocompleteOptions,
+    public PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
+        String suggesterName, AutocompleteOptions autocompleteOptions, RequestOptions requestOptions, Context context) {
+        return new PagedIterableBase<>(asyncClient.autocomplete(searchText, suggesterName, autocompleteOptions,
             requestOptions, context));
     }
 }

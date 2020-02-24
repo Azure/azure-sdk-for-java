@@ -463,7 +463,7 @@ public class SearchIndexAsyncClient {
      * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
      * facet, and coverage information.
      */
-    public PagedFlux<SearchResult> search(String searchText) {
+    public SearchPagedFlux<SearchResult, SearchPagedResponse> search(String searchText) {
         return search(searchText, null, null);
     }
 
@@ -482,11 +482,11 @@ public class SearchIndexAsyncClient {
      * and provides access to the {@link SearchPagedResponse} object for each page containing HTTP response and count,
      * facet, and coverage information.
      */
-    public PagedFlux<SearchResult> search(String searchText, SearchOptions searchOptions,
+    public SearchPagedFlux<SearchResult, SearchPagedResponse> search(String searchText, SearchOptions searchOptions,
         RequestOptions requestOptions) {
         try {
             SearchRequest searchRequest = createSearchRequest(searchText, searchOptions);
-            return new PagedFlux<>(
+            return new SearchPagedFlux<>(
                 () -> withContext(context -> searchFirstPage(searchRequest, requestOptions, context)),
                 (nextPageParameters) ->
                     withContext(context -> searchNextPage(searchRequest, requestOptions, nextPageParameters, context)));
@@ -495,8 +495,8 @@ public class SearchIndexAsyncClient {
         }
     }
 
-    PagedFlux<SearchResult> search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions,
-        Context context) {
+    SearchPagedFlux<SearchResult, SearchPagedResponse> search(String searchText, SearchOptions searchOptions,
+        RequestOptions requestOptions, Context context) {
         SearchRequest searchRequest = this.createSearchRequest(searchText, searchOptions);
         try {
             return new PagedFlux<>(() -> searchFirstPage(searchRequest, requestOptions, context),
@@ -607,7 +607,7 @@ public class SearchIndexAsyncClient {
      * and provides access to the {@link SuggestPagedResponse} object for each page containing
      * HTTP response and coverage information.
      */
-    public PagedFlux<SuggestResult> suggest(String searchText, String suggesterName) {
+    public SearchPagedFlux<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName) {
         return suggest(searchText, suggesterName, null, null);
     }
 
@@ -625,8 +625,8 @@ public class SearchIndexAsyncClient {
      * and provides access to the {@link SuggestPagedResponse} object for each page containing
      * HTTP response and coverage information.
      */
-    public PagedFlux<SuggestResult> suggest(String searchText, String suggesterName, SuggestOptions suggestOptions,
-        RequestOptions requestOptions) {
+    public SearchPagedFlux<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName,
+        SuggestOptions suggestOptions, RequestOptions requestOptions) {
         try {
             SuggestRequest suggestRequest = createSuggestRequest(searchText,
                 suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
@@ -636,8 +636,8 @@ public class SearchIndexAsyncClient {
         }
     }
 
-    PagedFlux<SuggestResult> suggest(String searchText, String suggesterName, SuggestOptions suggestOptions,
-        RequestOptions requestOptions, Context context) {
+    SearchPagedFlux<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName,
+        SuggestOptions suggestOptions, RequestOptions requestOptions, Context context) {
         SuggestRequest suggestRequest = this.createSuggestRequest(searchText,
             suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
         try {
@@ -714,7 +714,8 @@ public class SearchIndexAsyncClient {
      * @param suggesterName suggester name
      * @return auto complete result.
      */
-    public PagedFlux<AutocompleteItem> autocomplete(String searchText, String suggesterName) {
+    public SearchPagedFlux<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
+        String suggesterName) {
         return autocomplete(searchText, suggesterName, null, null);
     }
 
@@ -728,8 +729,8 @@ public class SearchIndexAsyncClient {
      *                       Contains the tracking ID sent with the request to help with debugging
      * @return auto complete result.
      */
-    public PagedFlux<AutocompleteItem> autocomplete(String searchText, String suggesterName,
-        AutocompleteOptions autocompleteOptions, RequestOptions requestOptions) {
+    public SearchPagedFlux<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
+        String suggesterName, AutocompleteOptions autocompleteOptions, RequestOptions requestOptions) {
         try {
             AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(
                 searchText, suggesterName, autocompleteOptions);
@@ -740,7 +741,7 @@ public class SearchIndexAsyncClient {
         }
     }
 
-    PagedFlux<AutocompleteItem> autocomplete(String searchText, String suggesterName,
+    SearchPagedFlux<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText, String suggesterName,
         AutocompleteOptions autocompleteOptions, RequestOptions requestOptions, Context context) {
         AutocompleteRequest autocompleteRequest = createAutoCompleteRequest(
             searchText, suggesterName, autocompleteOptions);
