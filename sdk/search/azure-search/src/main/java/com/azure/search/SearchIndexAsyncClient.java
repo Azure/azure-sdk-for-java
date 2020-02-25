@@ -340,7 +340,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Gets the version of the Search service the client is using.
      *
-     * @return the search service version value.
+     * @return The version of the Search service the client is using.
      */
     public SearchServiceVersion getServiceVersion() {
         return this.searchServiceVersion;
