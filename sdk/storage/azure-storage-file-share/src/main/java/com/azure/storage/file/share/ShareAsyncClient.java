@@ -154,30 +154,26 @@ public class ShareAsyncClient {
     }
 
     /**
-     * Gets if the share this client represents exists in the cloud.
+     * Determines if the share this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.exists}
      *
-     * @return true if the share exists, false if it doesn't
+     * @return Flag indicating existence of the share.
      */
     public Mono<Boolean> exists() {
-        try {
-            return existsWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return existsWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Gets if the share this client represents exists in the cloud.
+     * Determines if the share this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.existsWithResponse}
      *
-     * @return true if the share exists, false if it doesn't
+     * @return Flag indicating existence of the share.
      */
     public Mono<Response<Boolean>> existsWithResponse() {
         try {
@@ -187,16 +183,11 @@ public class ShareAsyncClient {
         }
     }
 
-    /**
-     * Gets if the share this client represents exists in the cloud.
-     *
-     * @return true if the share exists, false if it doesn't
-     */
     Mono<Response<Boolean>> existsWithResponse(Context context) {
         return this.getPropertiesWithResponse(context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
-            .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode()
-                    == 404,
+            .onErrorResume(t ->
+                    t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
                 t -> {
                     HttpResponse response = ((ShareStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),

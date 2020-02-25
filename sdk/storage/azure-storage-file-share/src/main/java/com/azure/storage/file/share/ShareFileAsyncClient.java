@@ -162,30 +162,26 @@ public class ShareFileAsyncClient {
     }
 
     /**
-     * Gets if the file this client represents exists in the cloud.
+     * Determines if the file this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.exists}
      *
-     * @return true if the file exists, false if it doesn't
+     * @return Flag indicating existence of the file.
      */
     public Mono<Boolean> exists() {
-        try {
-            return existsWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return existsWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Gets if the file this client represents exists in the cloud.
+     * Determines if the file this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.existsWithResponse}
      *
-     * @return true if the file exists, false if it doesn't
+     * @return Flag indicating existence of the file.
      */
     public Mono<Response<Boolean>> existsWithResponse() {
         try {
@@ -195,11 +191,6 @@ public class ShareFileAsyncClient {
         }
     }
 
-    /**
-     * Gets if the file this client represents exists in the cloud.
-     *
-     * @return true if the file exists, false if it doesn't
-     */
     Mono<Response<Boolean>> existsWithResponse(Context context) {
         return this.getPropertiesWithResponse(null, context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
