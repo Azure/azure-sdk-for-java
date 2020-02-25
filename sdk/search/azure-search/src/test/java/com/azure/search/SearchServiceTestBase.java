@@ -127,7 +127,6 @@ public abstract class SearchServiceTestBase extends TestBase {
 
         if (!interceptorManager.isPlaybackMode()) {
             azureSearchResources.initialize();
-            azureSearchResources.createResourceGroup(testResourceNamer);
             azureSearchResources.createService(testResourceNamer);
             searchApiKeyCredential = new SearchApiKeyCredential(azureSearchResources.getSearchAdminKey());
         }
