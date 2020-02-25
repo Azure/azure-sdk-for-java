@@ -508,6 +508,10 @@
                 <packages>com.azure.storage.queue*</packages>
               </group>
               <group>
+                <title>Azure Storage - Quick Query</title>
+                <packages>com.azure.storage.quickquery*</packages>
+              </group>
+              <group>
                 <title>Azure Telemetry</title>
                 <title>Azure Telemetry - OpenTelemetry</title>
                 <packages>com.azure.core.tracing*</packages>
@@ -1258,6 +1262,7 @@
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
+    <module>sdk/storage/azure-storage-quickquery</module>
     <module>sdk/storage/perf-test</module>
     <module>sdk/textanalytics/azure-ai-textanalytics</module>
   </modules>
