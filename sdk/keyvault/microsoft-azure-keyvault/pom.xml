@@ -56,7 +56,7 @@ the MIT License. See License.txt in the project root for license information. --
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>1.6.15</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
+      <version>1.7.2</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
     </dependency>
 
     <!-- Other Microsoft Dependencies -->
@@ -129,7 +129,7 @@ the MIT License. See License.txt in the project root for license information. --
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-authentication</artifactId>
-      <version>1.6.15</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
+      <version>1.7.2</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
