@@ -73,7 +73,7 @@ public final class DataSources {
      * @param storageConnectionString The connection string for the Azure Storage account.
      * It must follow this format: "DefaultEndpointsProtocol=https;AccountName=[your storage account];
      * AccountKey=[your account key];" Note that HTTPS is required.
-     * @param containerName The dataSourceName of the container from which to read blobs.
+     * @param containerName The name of the container from which to read blobs.
      * @param pathPrefix Optional. If specified, the data source will include only blobs
      * with dataSourceNames starting with this prefix. This is useful when blobs are
      * organized into "virtual folders", for example.
