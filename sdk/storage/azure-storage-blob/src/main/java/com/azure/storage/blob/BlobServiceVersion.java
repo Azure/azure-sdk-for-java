@@ -32,7 +32,7 @@ public enum BlobServiceVersion implements ServiceVersion {
      *
      * @return the latest {@link BlobServiceVersion}
      */
-    // TODO : Change latest to 12-12. Not changed right now so recorded tests do not get affected until later.
+    // TODO (gapra): Change latest to 12-12. Not changed right now so recorded tests do not get affected until later.
     public static BlobServiceVersion getLatest() {
         return V2019_07_07;
     }
