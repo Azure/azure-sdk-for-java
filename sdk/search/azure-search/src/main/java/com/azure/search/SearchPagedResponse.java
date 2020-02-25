@@ -3,16 +3,18 @@
 
 package com.azure.search;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Page;
-import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.IterableStream;
+import com.azure.core.util.paging.ContinuablePage;
 import com.azure.search.models.FacetResult;
 import com.azure.search.models.SearchDocumentsResult;
-import com.azure.search.models.SearchRequest;
+import com.azure.search.models.SearchNextPageParameters;
 import com.azure.search.models.SearchResult;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -24,8 +26,14 @@ import java.util.Map;
  * information is: count - number of total documents returned. Will be returned only if isIncludeTotalResultCount is set
  * to true coverage - coverage value.
  */
-public final class SearchPagedResponse extends PagedResponseBase<Void, SearchResult> {
+public final class SearchPagedResponse implements ContinuablePage<SearchNextPageParameters, SearchResult>,
+    Response<List<SearchResult>> {
+    private final int statusCode;
+    private final HttpHeaders headers;
+    private final HttpRequest request;
+    private final List<SearchResult> value;
 
+    private final SearchNextPageParameters nextPageParameters;
     private final Map<String, List<FacetResult>> facets;
     private final Long count;
     private final Double coverage;
@@ -36,28 +44,28 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
      * @param documentSearchResponse an http response with the results
      */
     SearchPagedResponse(SimpleResponse<SearchDocumentsResult> documentSearchResponse) {
-        super(documentSearchResponse.getRequest(),
-            documentSearchResponse.getStatusCode(),
-            documentSearchResponse.getHeaders(),
-            documentSearchResponse.getValue().getResults(),
-            CoreUtils.isNullOrEmpty(documentSearchResponse.getValue().getNextLink())
-                || documentSearchResponse.getValue().getNextPageParameters() == null
-                || documentSearchResponse.getValue().getNextPageParameters().getSkip() == null
-                ? null : serialize(documentSearchResponse.getValue().getNextPageParameters()),
-            null);
+        this.statusCode = documentSearchResponse.getStatusCode();
+        this.headers = documentSearchResponse.getHeaders();
+        this.request = documentSearchResponse.getRequest();
 
-        this.facets = documentSearchResponse.getValue().getFacets();
-        this.count = documentSearchResponse.getValue().getCount();
-        this.coverage = documentSearchResponse.getValue().getCoverage();
+        SearchDocumentsResult documentsResult = documentSearchResponse.getValue();
+        this.value = documentsResult.getResults();
+        this.facets = documentsResult.getFacets();
+        this.count = documentsResult.getCount();
+        this.coverage = documentsResult.getCoverage();
+
+        this.nextPageParameters = getNextPageParameters(documentsResult);
     }
 
-    private static String serialize(SearchRequest nextPageParameters) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            return objectMapper.writeValueAsString(nextPageParameters);
-        } catch (JsonProcessingException e) {
+    private static SearchNextPageParameters getNextPageParameters(SearchDocumentsResult result) {
+        if (CoreUtils.isNullOrEmpty(result.getNextLink())
+            || result.getNextPageParameters() == null
+            || result.getNextPageParameters().getSkip() == null) {
             return null;
         }
+
+        return new SearchNextPageParameters(result.getNextPageParameters().getTop(),
+            result.getNextPageParameters().getSkip());
     }
 
     /**
@@ -93,5 +101,35 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
      */
     public Long getCount() {
         return count;
+    }
+
+    @Override
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    @Override
+    public HttpHeaders getHeaders() {
+        return headers;
+    }
+
+    @Override
+    public HttpRequest getRequest() {
+        return request;
+    }
+
+    @Override
+    public List<SearchResult> getValue() {
+        return value;
+    }
+
+    @Override
+    public IterableStream<SearchResult> getElements() {
+        return new IterableStream<>(value);
+    }
+
+    @Override
+    public SearchNextPageParameters getContinuationToken() {
+        return nextPageParameters;
     }
 }
