@@ -13,11 +13,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/search/
+      - sdk/managedapplications/
     exclude:
-      - sdk/search/azure
-      - sdk/search/microsoft-azure
-      - sdk/search/ms-azure
+      - sdk/managedapplications/azure
+      - sdk/managedapplications/microsoft-azure
+      - sdk/managedapplications/ms-azure
 
 pr:
   branches:
@@ -28,13 +28,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/search/
+      - sdk/managedapplications/
     exclude:
-      - sdk/search/azure
-      - sdk/search/microsoft-azure
-      - sdk/search/ms-azure
+      - sdk/managedapplications/azure
+      - sdk/managedapplications/microsoft-azure
+      - sdk/managedapplications/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
     parameters:
-      ServiceDirectory: search
+      ServiceDirectory: managedapplications
