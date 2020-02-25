@@ -116,8 +116,13 @@ public class AzureSearchResources {
      * Creates the Resource Group in Azure. This should be run at @BeforeAll
      */
     public void createResourceGroup() {
-        if (resourceGroup == null) {
-            String resourceGroupName = Configuration.getGlobalConfiguration().get(AZURE_RESOURCEGROUP_NAME);
+        String resourceGroupName = Configuration.getGlobalConfiguration().get(AZURE_RESOURCEGROUP_NAME);
+        if (azure.resourceGroups().checkExistence(resourceGroupName)) {
+            System.out.println("Fetching Resource Group: " + resourceGroupName);
+            resourceGroup = azure.resourceGroups()
+                .getByName(resourceGroupName);
+        } else {
+
             //String resourceGroupName = testResourceNamer.randomName(RESOURCE_GROUP_NAME_PREFIX, 24);
             System.out.println("Creating Resource Group: " + resourceGroupName);
             resourceGroup = azure.resourceGroups()
