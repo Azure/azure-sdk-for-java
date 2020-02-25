@@ -8,6 +8,6 @@ import com.azure.core.annotation.ServiceClient;
 /**
  * TEMP
  */
-@ServiceClient(builder = BlobQuickQueryClientBuilder.class, isAsync = true)
+@ServiceClient(builder = BlobQuickQueryClientBuilder.class)
 public class BlobQuickQueryClient {
 }
