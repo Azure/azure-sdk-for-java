@@ -79,6 +79,23 @@ class DirectoryAPITests extends APISpec {
         fileClient instanceof ShareFileClient
     }
 
+    def "Exists min"() {
+        when:
+        primaryDirectoryClient.create()
+
+        then:
+        primaryDirectoryClient.exists()
+    }
+
+    def "Does not exist"() {
+        expect:
+        !primaryDirectoryClient.exists()
+    }
+
+    def "Exists error"() {
+
+    }
+
     def "Create directory"() {
         expect:
         FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.createWithResponse(null, null, null, null, null), 201)
