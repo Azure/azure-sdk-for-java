@@ -108,20 +108,20 @@ public class ShareClient {
     }
 
     /**
-     * Gets if the share this client represents exists in the cloud.
+     * Determines if the share this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.share.ShareClient.exists}
      *
-     * @return true if the share exists, false if it doesn't
+     * @return Flag indicating existence of the share.
      */
     public Boolean exists() {
         return existsWithResponse(null, Context.NONE).getValue();
     }
 
     /**
-     * Gets if the share this client represents exists in the cloud.
+     * Determines if the share this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -129,7 +129,7 @@ public class ShareClient {
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return true if the share exists, false if it doesn't
+     * @return Flag indicating existence of the share.
      */
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
         Mono<Response<Boolean>> response = client.existsWithResponse(context);

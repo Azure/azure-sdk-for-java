@@ -103,20 +103,20 @@ public class ShareDirectoryClient {
     }
 
     /**
-     * Gets if the directory this client represents exists in the cloud.
+     * Determines if the directory this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.exists}
      *
-     * @return true if the directory exists, false if it doesn't
+     * @return Flag indicating existence of the directory.
      */
     public Boolean exists() {
         return existsWithResponse(null, Context.NONE).getValue();
     }
 
     /**
-     * Gets if the directory this client represents exists in the cloud.
+     * Determines if the directory this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -124,7 +124,7 @@ public class ShareDirectoryClient {
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return true if the directory exists, false if it doesn't
+     * @return Flag indicating existence of the directory.
      */
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
         Mono<Response<Boolean>> response = shareDirectoryAsyncClient.existsWithResponse(context);
