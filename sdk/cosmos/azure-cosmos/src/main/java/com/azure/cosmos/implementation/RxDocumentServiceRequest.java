@@ -1105,13 +1105,8 @@ public class RxDocumentServiceRequest {
 
     public RxDocumentServiceRequest clone() {
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
-<<<<<<< HEAD
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
         rxDocumentServiceRequest.setByteBuffer(this.getByteBuffer());
-=======
-        // TODO: this may require cloning data too?
-        rxDocumentServiceRequest.setByteBuffer(wrapByteBuffer(toByteArray(this.getByteBuffer())));
->>>>>>> 0b504e4f26... now works
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
         rxDocumentServiceRequest.setDefaultReplicaIndex(this.getDefaultReplicaIndex());
         rxDocumentServiceRequest.setEndpointOverride(this.getEndpointOverride());
