@@ -4,8 +4,9 @@
 [![MIT License](http://img.shields.io/badge/license-MIT-green.svg) ](https://github.com/Microsoft/azure-spring-boot/blob/master/LICENSE)
 [![Gitter](https://badges.gitter.im/Microsoft/spring-on-azure.svg)](https://gitter.im/Microsoft/spring-on-azure)
 
-# Azure Spring Boot
+# Azure Spring Boot client library for Java
 
+## Getting started
 ### Introduction
 
 This repo is for Spring Boot Starters of Azure services. It helps Spring Boot developers to adopt Azure services.
@@ -17,6 +18,7 @@ This repository supports both Spring Boot 1.5.x, 2.0.x and 2.1.x. Please read [B
 - JDK 1.8 and above
 - [Maven](http://maven.apache.org/) 3.0 and above
 
+## Key concepts
 ### Usage
 
 Below starters are available with latest release version. We recommend users to leverage latest version for bug fix and new features.
@@ -52,16 +54,18 @@ Snapshots built from `master` branch are available, add [maven repositories](htt
   </repository>
 </repositories>
 ```
-
-### How to Build and Contribute
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
-
-Please follow [instructions here](HowToContribute.md) to build from source or contribute.
-
-### Other articles
+### Examples
 You could check below articles to learn more on usage of specific starters.
 
 [How to use the Spring Boot Starter with Azure Cosmos DB API](https://docs.microsoft.com/en-us/java/azure/spring-framework/configure-spring-boot-starter-java-app-with-cosmos-db).
+
+## Troubleshooting
+## Next steps
+
+## Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
+
+Please follow [instructions here](HowToContribute.md) to build from source or contribute.
 
 ### Filing Issues
 

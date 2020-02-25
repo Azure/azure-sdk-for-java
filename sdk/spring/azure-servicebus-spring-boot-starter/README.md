@@ -74,5 +74,6 @@ When telemetry is enabled, an HTTP request will be sent to URL `https://dc.servi
 Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/en-us/privacystatement/OnlineServices/Default.aspx). 
 
 
-
-
+## Troubleshooting
+## Next steps
+## Contributing

@@ -40,3 +40,7 @@ Alternatively you may want to use the [starters](../azure-spring-boot-starters)
 ```
 
 Please refer to the [samples](../azure-spring-boot-samples) for more getting started instructions.
+
+## Troubleshooting
+## Next steps
+## Contributing

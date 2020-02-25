@@ -1,4 +1,4 @@
-## Azure Cosmos DB Spring Boot Starter
+## Azure Cosmos DB Spring Boot Starter client library for Java
 
 [Azure Cosmos DB](https://azure.microsoft.com/en-us/services/cosmos-db/) is a globally-distributed database service that allows developers to work with data using a variety of standard APIs, such as SQL, MongoDB, Graph, and Azure Table storage. 
 
@@ -8,7 +8,7 @@
 * [Sample Code](#sample-codes)
 * [Quick Start](#quick-start)
 
-## Feature List
+## Key concepts
 - Spring Data ReactiveCrudRepository basic CRUD functionality
     - save
     - findAll
@@ -28,10 +28,10 @@
 - Supports [spring-boot-starter-data-rest](https://projects.spring.io/spring-data-rest/).
 - Supports List and nested type in domain class.
 
-## Sample Code
+## Examples
 Please refer to [sample project here](../azure-spring-boot-samples/azure-cosmosdb-spring-boot-sample).
 
-## Quick Start
+## Getting started
 
 ### Add the dependency
 
@@ -168,8 +168,9 @@ azure.cosmosdb.allow-telemetry=false
 When telemetry is enabled, an HTTP request will be sent to URL `https://dc.services.visualstudio.com/v2/track`. So please make sure it's not blocked by your firewall.  
 Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/en-us/privacystatement/OnlineServices/Default.aspx). 
 
-### Further info
+### Next steps
 
 Besides using this Azure CosmosDb Spring Boot Starter, you can directly use Spring Data for Azure CosmosDb package for more complex scenarios. Please refer to [Spring Data for Azure CosmosDB](https://github.com/Microsoft/spring-data-cosmosdb) for more details.
 
-
+## Troubleshooting
+## Contributing
