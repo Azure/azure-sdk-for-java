@@ -22,6 +22,7 @@ public class AzureSearchResources {
     private static final String SEARCH_SERVICE_NAME_PREFIX = "azs-sdk";
     private static final String BLOB_DATASOURCE_NAME_PREFIX = "azsblob";
     private static final String STORAGE_NAME_PREFIX = "azsstor";
+    private static final String AZURE_RESOURCEGROUP_NAME = "AZURE_RESOURCEGROUP_NAME";
 
 
     private String searchServiceName;
@@ -113,12 +114,12 @@ public class AzureSearchResources {
     /**
      * Creates the Resource Group in Azure. This should be run at @BeforeAll
      */
-    public void createResourceGroup(TestResourceNamer testResourceNamer) {
+    public void createResourceGroup() {
         if (resourceGroup == null) {
-            String resourceGroupName = testResourceNamer.randomName(RESOURCE_GROUP_NAME_PREFIX, 24);
-            System.out.println("Creating Resource Group: " + resourceGroupName);
+            //String resourceGroupName = testResourceNamer.randomName(RESOURCE_GROUP_NAME_PREFIX, 24);
+            System.out.println("Creating Resource Group: " + AZURE_RESOURCEGROUP_NAME);
             resourceGroup = azure.resourceGroups()
-                .define(resourceGroupName)
+                .define(AZURE_RESOURCEGROUP_NAME)
                 .withRegion(location)
                 .create();
         }

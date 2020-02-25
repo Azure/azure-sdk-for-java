@@ -113,11 +113,12 @@ public abstract class SearchServiceTestBase extends TestBase {
     @BeforeAll
     public static void beforeAll() {
         initializeAzureResources();
+        azureSearchResources.createResourceGroup();
     }
 
     @AfterAll
     public static void afterAll() {
-        azureSearchResources.deleteResourceGroup();
+        //azureSearchResources.deleteResourceGroup();
     }
 
     @Override
