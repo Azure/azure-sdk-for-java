@@ -75,7 +75,7 @@ public final class DataSources {
      * AccountKey=[your account key];" Note that HTTPS is required.
      * @param containerName The name of the container from which to read blobs.
      * @param pathPrefix Optional. If specified, the data source will include only blobs
-     * with dataSourceNames starting with this prefix. This is useful when blobs are
+     * with names starting with this prefix. This is useful when blobs are
      * organized into "virtual folders", for example.
      * @param description Optional. Description of the data source
      * @param deletionDetectionPolicy Optional. The data deletion detection policy for the data source
