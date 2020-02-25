@@ -39,6 +39,7 @@ import java.util.UUID;
  * This is meant to be internally used only by our sdk.
  */
 public class Utils {
+    private static final int ONE_KB = 1024;
     private static final ZoneId GMT_ZONE_ID = ZoneId.of("GMT");
     public static final Base64.Encoder Base64Encoder = Base64.getEncoder();
     public static final Base64.Decoder Base64Decoder = Base64.getDecoder();
@@ -584,7 +585,7 @@ public class Utils {
 
     public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {
         try {
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(ONE_KB);
             objectMapper.writeValue(byteArrayOutputStream, object);
             return ByteBuffer.wrap(byteArrayOutputStream.toByteArray());
         } catch (IOException e) {

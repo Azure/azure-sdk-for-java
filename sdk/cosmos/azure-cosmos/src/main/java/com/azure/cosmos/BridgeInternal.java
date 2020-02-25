@@ -11,12 +11,12 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -26,9 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.apache.commons.lang3.tuple.Pair;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -62,10 +60,6 @@ public class BridgeInternal {
 
     public static ByteBuffer serializeJsonToByteBuffer(Document document, ObjectMapper mapper) {
         return document.serializeJsonToByteBuffer();
-    }
-
-    public static String toJsonByteBuffer(Object document, ObjectMapper mapper) {
-        return CosmosItemProperties.toJsonString(document, mapper);
     }
 
     public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
