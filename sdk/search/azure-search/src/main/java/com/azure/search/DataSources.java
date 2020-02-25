@@ -58,7 +58,7 @@ public final class DataSources {
      *
      * @param dataSourceName The dataSourceName of the data source.
      * @param sqlConnectionString The connection string for the Azure SQL database.
-     * @param tableOrViewName The dataSourceName of the table or view from which to read rows.
+     * @param tableOrViewName The name of the table or view from which to read rows.
      * @return A new DataSource instance.
      */
     public static DataSource createFromAzureSql(String dataSourceName, String sqlConnectionString,
