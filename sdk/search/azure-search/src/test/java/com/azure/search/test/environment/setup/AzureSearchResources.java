@@ -4,6 +4,7 @@
 package com.azure.search.test.environment.setup;
 
 import com.azure.core.test.utils.TestResourceNamer;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -33,7 +34,7 @@ public class AzureSearchResources {
     private Region location;
 
     private Azure azure = null;
-    private ResourceGroup resourceGroup = null;
+    private static ResourceGroup resourceGroup;
     private SearchService searchService = null;
 
     /**
@@ -116,10 +117,11 @@ public class AzureSearchResources {
      */
     public void createResourceGroup() {
         if (resourceGroup == null) {
+            String resourceGroupName = Configuration.getGlobalConfiguration().get(AZURE_RESOURCEGROUP_NAME);
             //String resourceGroupName = testResourceNamer.randomName(RESOURCE_GROUP_NAME_PREFIX, 24);
-            System.out.println("Creating Resource Group: " + AZURE_RESOURCEGROUP_NAME);
+            System.out.println("Creating Resource Group: " + resourceGroupName);
             resourceGroup = azure.resourceGroups()
-                .define(AZURE_RESOURCEGROUP_NAME)
+                .define(resourceGroupName)
                 .withRegion(location)
                 .create();
         }
