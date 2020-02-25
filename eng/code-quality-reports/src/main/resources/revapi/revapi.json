@@ -10,7 +10,9 @@
             "com\\.fasterxml\\.jackson\\..+",
             "reactor\\..+\\..+",
             "io\\.netty\\..+",
-            "org\\.springframework\\..+"
+            "org\\.springframework\\..+",
+            "com\\.nimbusds(\\..+)?",
+            "com\\.microsoft\\.azure\\..+"
           ]
         }
       }
