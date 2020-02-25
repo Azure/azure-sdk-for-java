@@ -79,7 +79,7 @@ public final class DataSources {
      * organized into "virtual folders", for example.
      * @param description Optional. Description of the data source
      * @param deletionDetectionPolicy Optional. The data deletion detection policy for the data source
-     * @throws IllegalArgumentException if dataSourceName, containerName or storageConnectionString are null or empty.
+     * @throws IllegalArgumentException If {@code dataSourceName}, {@code containerName} or {@code storageConnectionString} are null or empty.
      * @return A new Azure Blob DataSource instance.
      */
     public static DataSource createFromAzureBlobStorage(String dataSourceName, String storageConnectionString,
