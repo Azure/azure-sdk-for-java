@@ -23,10 +23,9 @@ public class Document extends HashMap<String, Object> {
     }
 
     /**
-     * Constructs a new {@code Document} with the same mappings as the
-     * specified {@code Map}.
+     * Constructs a new {@code Document} with the same mappings as the specified {@code Map}.
      *
-     * @param   m the map whose mappings are to be placed in this map
+     * @param m the map whose mappings are to be placed in this map
      */
     public Document(Map<? extends String, ?> m) {
         super(m);

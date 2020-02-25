@@ -6,9 +6,9 @@ package com.azure.search.test.environment.setup;
 import com.azure.search.SearchApiKeyCredential;
 import com.azure.search.SearchServiceClient;
 import com.azure.search.SearchServiceClientBuilder;
+import com.azure.search.TestHelpers;
 import com.azure.search.models.Index;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.platform.commons.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,13 +19,12 @@ public class SearchIndexService {
     private String endpoint;
     private String apiAdminKey;
     private String indexName;
-    private String indexDataFileName;
 
     private SearchServiceClient searchServiceClient;
 
     /**
-     * Creates an instance of SearchIndexService to be used in creating a sample index in Azure Cognitive Search,
-     * to be used in tests.
+     * Creates an instance of SearchIndexService to be used in creating a sample index in Azure Cognitive Search, to be
+     * used in tests.
      *
      * @param endpoint the endpoint of an Azure Cognitive Search instance.
      * @param apiAdminKey the Admin Key of Azure Cognitive Search service
@@ -39,7 +38,6 @@ public class SearchIndexService {
      * Creates a new sample Index in Azure Cognitive Search with configuration retrieved from INDEX_DATA_JSON
      *
      * @param index the index to be created.
-     *
      */
     public void initializeAndCreateIndex(Index index) {
         initServiceClient();
@@ -59,7 +57,7 @@ public class SearchIndexService {
     public void initializeAndCreateIndex(String indexDataFileName) throws IOException {
         initServiceClient();
 
-        if (StringUtils.isNotBlank(indexDataFileName)) {
+        if (!TestHelpers.isBlank(indexDataFileName)) {
             Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(indexDataFileName));
             Index index = new ObjectMapper().readValue(indexData, Index.class);
             this.indexName = index.getName();
@@ -77,7 +75,6 @@ public class SearchIndexService {
     }
 
     /**
-     *
      * @return the sample index name
      */
     public String indexName() {

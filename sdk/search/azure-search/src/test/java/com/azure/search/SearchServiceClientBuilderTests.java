@@ -2,8 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class SearchServiceClientBuilderTests {
     private final SearchApiKeyCredential searchApiKeyCredential = new SearchApiKeyCredential("0123");
@@ -18,8 +22,8 @@ public class SearchServiceClientBuilderTests {
             .apiVersion(apiVersion)
             .buildClient();
 
-        Assert.assertNotNull(client);
-        Assert.assertEquals(SearchServiceClient.class.getSimpleName(), client.getClass().getSimpleName());
+        assertNotNull(client);
+        assertEquals(SearchServiceClient.class.getSimpleName(), client.getClass().getSimpleName());
     }
 
     @Test
@@ -29,8 +33,8 @@ public class SearchServiceClientBuilderTests {
             .credential(searchApiKeyCredential)
             .buildClient();
 
-        Assert.assertNotNull(client);
-        Assert.assertEquals(SearchServiceClient.class.getSimpleName(), client.getClass().getSimpleName());
+        assertNotNull(client);
+        assertEquals(SearchServiceClient.class.getSimpleName(), client.getClass().getSimpleName());
     }
 
     @Test
@@ -41,8 +45,8 @@ public class SearchServiceClientBuilderTests {
             .apiVersion(apiVersion)
             .buildAsyncClient();
 
-        Assert.assertNotNull(client);
-        Assert.assertEquals(SearchServiceAsyncClient.class.getSimpleName(), client.getClass().getSimpleName());
+        assertNotNull(client);
+        assertEquals(SearchServiceAsyncClient.class.getSimpleName(), client.getClass().getSimpleName());
     }
 
     @Test
@@ -52,8 +56,8 @@ public class SearchServiceClientBuilderTests {
             .credential(searchApiKeyCredential)
             .buildAsyncClient();
 
-        Assert.assertNotNull(client);
-        Assert.assertEquals(SearchServiceAsyncClient.class.getSimpleName(), client.getClass().getSimpleName());
+        assertNotNull(client);
+        assertEquals(SearchServiceAsyncClient.class.getSimpleName(), client.getClass().getSimpleName());
     }
 
     @Test
@@ -66,14 +70,14 @@ public class SearchServiceClientBuilderTests {
             .apiVersion(expectedApiVersion)
             .buildClient();
 
-        Assert.assertEquals(expectedApiVersion.getVersion(), client.getApiVersion().getVersion());
+        assertEquals(expectedApiVersion.getVersion(), client.getApiVersion().getVersion());
 
         SearchServiceAsyncClient asyncClient = new SearchServiceClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .apiVersion(expectedApiVersion)
             .buildAsyncClient();
-        Assert.assertEquals(expectedApiVersion.getVersion(), asyncClient.getApiVersion().getVersion());
+        assertEquals(expectedApiVersion.getVersion(), asyncClient.getApiVersion().getVersion());
     }
 
     @Test
@@ -83,8 +87,8 @@ public class SearchServiceClientBuilderTests {
             .credential(searchApiKeyCredential)
             .buildClient();
 
-        Assert.assertEquals(searchEndpoint, client.getEndpoint());
-        Assert.assertEquals(apiVersion, client.getApiVersion());
+        assertEquals(searchEndpoint, client.getEndpoint());
+        assertEquals(apiVersion, client.getApiVersion());
 
         SearchServiceAsyncClient asyncClient = new SearchServiceClientBuilder()
             .endpoint(searchEndpoint)
@@ -92,8 +96,8 @@ public class SearchServiceClientBuilderTests {
             .apiVersion(apiVersion)
             .buildAsyncClient();
 
-        Assert.assertEquals(searchEndpoint, asyncClient.getEndpoint());
-        Assert.assertEquals(apiVersion, asyncClient.getApiVersion());
+        assertEquals(searchEndpoint, asyncClient.getEndpoint());
+        assertEquals(apiVersion, asyncClient.getApiVersion());
     }
 
     @Test
@@ -175,7 +179,7 @@ public class SearchServiceClientBuilderTests {
             .credential(searchApiKeyCredential)
             .buildClient();
 
-        Assert.assertEquals(SearchServiceVersion.getLatest().getVersion(),
+        assertEquals(SearchServiceVersion.getLatest().getVersion(),
             searchServiceClient.getApiVersion().getVersion());
     }
 
@@ -186,18 +190,18 @@ public class SearchServiceClientBuilderTests {
             .credential(searchApiKeyCredential)
             .buildAsyncClient();
 
-        Assert.assertEquals(SearchServiceVersion.getLatest().getVersion(),
+        assertEquals(SearchServiceVersion.getLatest().getVersion(),
             searchServiceAsyncClient.getApiVersion().getVersion());
     }
 
     private void expectThrowsWithMessage(String expectedMessage, Runnable runnable) {
         try {
             runnable.run();
-            Assert.fail();
+            fail();
 
         } catch (Exception e) {
-            Assert.assertEquals(IllegalArgumentException.class, e.getClass());
-            Assert.assertTrue(e.getMessage().contains(expectedMessage));
+            assertEquals(IllegalArgumentException.class, e.getClass());
+            assertTrue(e.getMessage().contains(expectedMessage));
         }
     }
 }
