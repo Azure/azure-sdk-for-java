@@ -201,7 +201,8 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<Boolean>> existsWithResponse(Context context) {
         return this.getPropertiesWithResponse(context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
-            .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode()
+            .onErrorResume(t ->
+                    t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode()
                     == 404,
                 t -> {
                     HttpResponse response = ((ShareStorageException) t).getResponse();

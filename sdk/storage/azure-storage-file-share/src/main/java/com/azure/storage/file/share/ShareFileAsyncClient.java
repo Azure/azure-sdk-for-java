@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
@@ -202,10 +203,14 @@ public class ShareFileAsyncClient {
     Mono<Response<Boolean>> existsWithResponse(Context context) {
         return this.getPropertiesWithResponse(null, context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
-            .onErrorResume(t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode()
-                    == 404,
+            .onErrorResume(t ->
+                    (t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404)
+                || (t instanceof HttpResponseException && ((HttpResponseException) t).getResponse().getStatusCode()
+                        == 404),
                 t -> {
-                    HttpResponse response = ((ShareStorageException) t).getResponse();
+                    HttpResponse response = t instanceof ShareStorageException
+                        ? ((ShareStorageException) t).getResponse()
+                        : ((HttpResponseException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), false));
                 });
