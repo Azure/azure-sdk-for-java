@@ -5,7 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosUserProperties;
 import com.azure.cosmos.FeedOptions;
@@ -47,7 +47,7 @@ public class UserQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         int maxItemCount = 5;
-        CosmosContinuablePagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
+        CosmosPagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
 
         List<CosmosUserProperties> expectedUsers = createdUsers.stream()
                                                                .filter(c -> StringUtils.equals(filterUserId, c.getId()) ).collect(Collectors.toList());
@@ -75,7 +75,7 @@ public class UserQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
         String databaseLink = TestUtils.getDatabaseNameLink(databaseId);
-        CosmosContinuablePagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
+        CosmosPagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
 
         List<CosmosUserProperties> expectedUsers = createdUsers;
 
@@ -99,7 +99,7 @@ public class UserQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        CosmosContinuablePagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
+        CosmosPagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
 
         FeedResponseListValidator<CosmosUserProperties> validator = new FeedResponseListValidator.Builder<CosmosUserProperties>()
                 .containsExactly(new ArrayList<>())

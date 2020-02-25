@@ -3,11 +3,11 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.CosmosPagedFlux;
 
 /**
  * Specifies paging options for Cosmos Paged Flux implementation.
- * @see CosmosContinuablePagedFlux
+ * @see CosmosPagedFlux
  */
 public class CosmosPagedFluxOptions {
 
