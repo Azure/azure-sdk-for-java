@@ -83,7 +83,7 @@ public class SearchIndexClientBuilderTests {
             .searchServiceVersion(expectedVersion)
             .buildClient();
 
-        assertEquals(expectedVersion, searchIndexClient.getApiVersion());
+        assertEquals(expectedVersion, searchIndexClient.getServiceVersion());
 
         SearchIndexAsyncClient asyncClient = new SearchIndexClientBuilder()
             .endpoint(searchEndpoint)

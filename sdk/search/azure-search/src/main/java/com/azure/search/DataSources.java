@@ -30,8 +30,8 @@ public final class DataSources {
      * @return A new DataSource instance.
      * @throws IllegalArgumentException if name, tableName or ConnectionString are null or empty.
      */
-    public static DataSource createFromAzureSql(String dataSourceName, String sqlConnectionString, String tableOrViewName,
-        String description, DataChangeDetectionPolicy changeDetectionPolicy,
+    public static DataSource createFromAzureSql(String dataSourceName, String sqlConnectionString,
+        String tableOrViewName, String description, DataChangeDetectionPolicy changeDetectionPolicy,
         DataDeletionDetectionPolicy deletionDetectionPolicy) {
         if (CoreUtils.isNullOrEmpty(dataSourceName)) {
             throw new IllegalArgumentException("dataSourceName cannot be null or empty");
