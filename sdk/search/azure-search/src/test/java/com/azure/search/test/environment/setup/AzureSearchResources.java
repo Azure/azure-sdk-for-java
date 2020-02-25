@@ -122,8 +122,6 @@ public class AzureSearchResources {
             resourceGroup = azure.resourceGroups()
                 .getByName(resourceGroupName);
         } else {
-
-            //String resourceGroupName = testResourceNamer.randomName(RESOURCE_GROUP_NAME_PREFIX, 24);
             System.out.println("Creating Resource Group: " + resourceGroupName);
             resourceGroup = azure.resourceGroups()
                 .define(resourceGroupName)

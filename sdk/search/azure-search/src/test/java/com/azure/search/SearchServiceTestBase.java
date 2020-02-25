@@ -121,7 +121,6 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     @AfterAll
     public static void afterAll() {
-        //azureSearchResources.deleteResourceGroup();
     }
 
     @Override
