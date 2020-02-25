@@ -1,3 +1,4 @@
+# Azure AAD B2C Spring Boot Starter client library for Java
 ## Overview
 
 Azure Active Directory (Azure AD) B2C is an identity management service that enables you to customize and control how
@@ -14,7 +15,7 @@ The following prerequisites are required in order to complete the steps in this 
 
 If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F) before you begin.
 
-## Create Azure Active Directory instance
+## Getting started
 
 ### Create the Active Directory instance
 
@@ -45,7 +46,8 @@ If you don't have an Azure subscription, create a [free account](https://azure.m
 5. Choose **Sign up or in**, **Profile editing** and **Password reset** to create user flows
 respectively. Specify your user flow **Name** and **User attributes and claims**, click **Create**.
 
-## Configure and compile your app
+## Examples
+### Configure and compile your app
 
 1. Extract the files from the project archive you created and downloaded earlier in this tutorial into a directory.
 
@@ -191,7 +193,7 @@ respectively. Specify your user flow **Name** and **User attributes and claims**
 `${your-profile-edit-user-flow}` and `${your-password-reset-user-flow}` with your user flow name
 respectively that completed earlier.
 
-## Build and test your app
+### Build and test your app
 
 1. Open a command prompt and change directory to the folder where your app's *pom.xml* file is located.
 
@@ -220,6 +222,12 @@ azure.activedirectory.b2c.allow-telemetry=false
 When telemetry is enabled, an HTTP request will be sent to URL `https://dc.services.visualstudio.com/v2/track`. So please make sure it's not blocked by your firewall.
 
 Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/en-us/privacystatement/OnlineServices/Default.aspx).
+
+## Troubleshooting
+
+## Next steps
+
+## Contributing
 
 ## Summary
 
