@@ -21,6 +21,7 @@ import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.RetryOptions;
 import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.fasterxml.jackson.core.JsonParser;
@@ -39,6 +40,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -53,6 +55,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doAnswer;
 
+@Listeners({TestNGLogListener.class})
 public class TestSuiteBase extends DocumentClientTest {
 
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
