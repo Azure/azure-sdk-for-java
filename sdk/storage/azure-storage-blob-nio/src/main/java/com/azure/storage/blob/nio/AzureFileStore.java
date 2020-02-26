@@ -9,13 +9,8 @@ import com.azure.storage.blob.nio.implementation.util.Utility;
 
 import java.io.IOException;
 import java.nio.file.FileStore;
-import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.attribute.FileStoreAttributeView;
-import java.nio.file.attribute.UserDefinedFileAttributeView;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -29,14 +24,7 @@ public final class AzureFileStore extends FileStore {
     private final ClientLogger logger = new ClientLogger(AzureFileStore.class);
     private final AzureFileSystem parentFileSystem;
     private final BlobContainerClient containerClient;
-    private static final Map<Class<? extends FileAttributeView>, String> SUPPORTED_ATTRIBUTE_VIEWS;
-    static {
-        Map<Class<? extends FileAttributeView>, String> map = new HashMap<>();
-        map.put(BasicFileAttributeView.class, "basic");
-        map.put(UserDefinedFileAttributeView.class, "user");
-        map.put(AzureStorageFileAttributeView.class, "azureStorage");
-        SUPPORTED_ATTRIBUTE_VIEWS = Collections.unmodifiableMap(map);
-    }
+
 
     AzureFileStore(AzureFileSystem parentFileSystem, String containerName) throws IOException {
         // A FileStore should only ever be created by a FileSystem.
@@ -123,19 +111,33 @@ public final class AzureFileStore extends FileStore {
     }
 
     /**
+     * All file stores in this file system support the following views:
+     * <ul>
+     *     <li>{@link java.nio.file.attribute.BasicFileAttributeView}</li>
+     *     <li>{@link java.nio.file.attribute.UserDefinedFileAttributeView}</li>
+     *     <li>{@link AzureStorageFileAttributeView}</li>
+     * </ul>
+     *
      * {@inheritDoc}
      */
     @Override
     public boolean supportsFileAttributeView(Class<? extends FileAttributeView> aClass) {
-        return SUPPORTED_ATTRIBUTE_VIEWS.containsKey(aClass);
+        return AzureFileSystem.SUPPORTED_ATTRIBUTE_VIEWS.containsKey(aClass);
     }
 
     /**
+     * All file stores in this file system support the following views:
+     * <ul>
+     *     <li>{@link java.nio.file.attribute.BasicFileAttributeView}</li>
+     *     <li>{@link java.nio.file.attribute.UserDefinedFileAttributeView}</li>
+     *     <li>{@link AzureStorageFileAttributeView}</li>
+     * </ul>
+     *
      * {@inheritDoc}
      */
     @Override
     public boolean supportsFileAttributeView(String s) {
-        return SUPPORTED_ATTRIBUTE_VIEWS.containsValue(s);
+        return AzureFileSystem.SUPPORTED_ATTRIBUTE_VIEWS.containsValue(s);
     }
 
     /**
@@ -157,5 +159,9 @@ public final class AzureFileStore extends FileStore {
     @Override
     public Object getAttribute(String s) throws IOException {
         throw new UnsupportedOperationException("FileStoreAttributeViews aren't supported.");
+    }
+
+    BlobContainerClient getContainerClient() {
+        return this.containerClient;
     }
 }

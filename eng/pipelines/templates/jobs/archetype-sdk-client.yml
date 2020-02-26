@@ -130,7 +130,7 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: 'windows-2019'
 
     steps:
       - pwsh: |
@@ -148,12 +148,6 @@ jobs:
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
 
-      - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
-        # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
-        # builds should be sufficient.
-        condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
-        displayName: 'Component Detection'
-
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
       - template: ../steps/install-reporting-tools.yml
@@ -161,17 +155,49 @@ jobs:
           Options: --batch-mode
           MavenOptions: $(MemoryOptions) $(LoggingOptions)
 
+      # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
-        displayName: 'Install Module and Run SpotBugs, Checkstyle, RevApi, and Javadoc'
+        displayName: 'Build and Install'
         inputs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme'
+          goals: 'install'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
+      - pwsh: |
+          if ("${{parameters.SDKType}}" -ieq "client") {
+            $excludes = "^(microsoft|mgmt)"
+          } else {
+            $excludes = "^(azure|mgmt)"
+          }
+
+          $directory = "$(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}"
+
+          Write-Host "Directory: '$directory'. Excludes: '$excludes'"
+          $(Build.SourcesDirectory)/eng/Set-ComponentRegistrations.ps1 $directory -ExcludeRegex $excludes -Verbose
+        displayName: 'Generate cgmanifest.json'
+
+      - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+        # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
+        # builds should be sufficient.
+        condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
+        displayName: 'Component Detection'
+
+      - task: Maven@3
+        displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
+        inputs:
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme-windows'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'install'
+          goals: 'verify'
 
   - job: 'Test'
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))

@@ -3,26 +3,30 @@
 
 package com.azure.search.models;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CoordinateSystemUnitTests {
     @Test
     public void canCreate() {
         CoordinateSystem coordinateSystem = CoordinateSystem.create();
 
-        Assert.assertNotNull(coordinateSystem);
-        Assert.assertEquals("name", coordinateSystem.getType());
-        Assert.assertEquals(1, coordinateSystem.getProperties().size());
-        Assert.assertTrue(coordinateSystem.getProperties().get("name").startsWith("EPSG"));
+        assertNotNull(coordinateSystem);
+        assertEquals("name", coordinateSystem.getType());
+        assertEquals(1, coordinateSystem.getProperties().size());
+        assertTrue(coordinateSystem.getProperties().get("name").startsWith("EPSG"));
     }
 
     @Test
     public void canValidate() {
         CoordinateSystem coordinateSystem = CoordinateSystem.create();
-        Assert.assertTrue(coordinateSystem.isValid());
+        assertTrue(coordinateSystem.isValid());
     }
 
     @Test
@@ -30,21 +34,21 @@ public class CoordinateSystemUnitTests {
         CoordinateSystem coordinateSystem = CoordinateSystem.create()
             .setType("IncorrectType");
 
-        Assert.assertFalse(coordinateSystem.isValid());
+        assertFalse(coordinateSystem.isValid());
     }
 
     @Test
     public void canInvalidateWithNullProperties() {
         CoordinateSystem coordinateSystem = CoordinateSystem.create().setProperties(null);
 
-        Assert.assertFalse(coordinateSystem.isValid());
+        assertFalse(coordinateSystem.isValid());
     }
 
     @Test
     public void canInvalidateWithEmptyProperties() {
         CoordinateSystem coordinateSystem = CoordinateSystem.create().setProperties(new HashMap<>());
 
-        Assert.assertFalse(coordinateSystem.isValid());
+        assertFalse(coordinateSystem.isValid());
     }
 
     @Test
@@ -52,7 +56,7 @@ public class CoordinateSystemUnitTests {
         CoordinateSystem coordinateSystem = CoordinateSystem.create();
         coordinateSystem.getProperties().put("IncorrectKey", "value");
 
-        Assert.assertFalse(coordinateSystem.isValid());
+        assertFalse(coordinateSystem.isValid());
     }
 
     @Test
@@ -61,7 +65,7 @@ public class CoordinateSystemUnitTests {
         coordinateSystem.getProperties().remove("name");
         coordinateSystem.getProperties().put("IncorrectKey", "value");
 
-        Assert.assertFalse(coordinateSystem.isValid());
+        assertFalse(coordinateSystem.isValid());
     }
 
     @Test
@@ -69,6 +73,6 @@ public class CoordinateSystemUnitTests {
         CoordinateSystem coordinateSystem = CoordinateSystem.create();
         coordinateSystem.getProperties().put("name", "IncorrectValue");
 
-        Assert.assertFalse(coordinateSystem.isValid());
+        assertFalse(coordinateSystem.isValid());
     }
 }

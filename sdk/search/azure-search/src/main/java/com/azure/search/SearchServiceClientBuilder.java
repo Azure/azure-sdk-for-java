@@ -23,14 +23,13 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of
- * {@link SearchServiceClient SearchServiceClients} and {@link SearchServiceAsyncClient SearchServiceAsyncClients}.
- * Call {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct
- * an instance of the desired client.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
+ * SearchServiceClient SearchServiceClients} and {@link SearchServiceAsyncClient SearchServiceAsyncClients}. Call {@link
+ * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
+ * the desired client.
  *
- * The following information must be provided on this builder:
- *         the Azure Cognitive Search service endpoint through {@code .endpoint()}
- *         the API key through {@code .credential()}
+ * The following information must be provided on this builder: the Azure Cognitive Search service endpoint through
+ * {@code .endpoint()} the API key through {@code .credential()}
  */
 @ServiceClientBuilder(serviceClients = {SearchServiceClient.class, SearchServiceAsyncClient.class})
 public class SearchServiceClientBuilder {

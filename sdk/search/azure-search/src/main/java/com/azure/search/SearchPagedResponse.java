@@ -3,7 +3,6 @@
 
 package com.azure.search;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -12,24 +11,20 @@ import com.azure.search.models.FacetResult;
 import com.azure.search.models.SearchDocumentsResult;
 import com.azure.search.models.SearchRequest;
 import com.azure.search.models.SearchResult;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 /**
- * Represents an HTTP response from the search API request
- * that contains a list of items deserialized into a {@link Page}.
- * Each page contains additional information returned by the API request. In the Search API case
- * the additional information is:
- * count - number of total documents returned. Will be returned only if isIncludeTotalResultCount is set to true
- * coverage - coverage value.
+ * Represents an HTTP response from the search API request that contains a list of items deserialized into a {@link
+ * Page}. Each page contains additional information returned by the API request. In the Search API case the additional
+ * information is: count - number of total documents returned. Will be returned only if isIncludeTotalResultCount is set
+ * to true coverage - coverage value.
  */
-public class SearchPagedResponse extends PagedResponseBase<String, SearchResult> {
+public final class SearchPagedResponse extends PagedResponseBase<Void, SearchResult> {
 
     private final Map<String, List<FacetResult>> facets;
     private final Long count;
@@ -40,7 +35,7 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
      *
      * @param documentSearchResponse an http response with the results
      */
-    public SearchPagedResponse(SimpleResponse<SearchDocumentsResult> documentSearchResponse) {
+    SearchPagedResponse(SimpleResponse<SearchDocumentsResult> documentSearchResponse) {
         super(documentSearchResponse.getRequest(),
             documentSearchResponse.getStatusCode(),
             documentSearchResponse.getHeaders(),
@@ -49,7 +44,7 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
                 || documentSearchResponse.getValue().getNextPageParameters() == null
                 || documentSearchResponse.getValue().getNextPageParameters().getSkip() == null
                 ? null : serialize(documentSearchResponse.getValue().getNextPageParameters()),
-            deserializeHeaders(documentSearchResponse.getHeaders()));
+            null);
 
         this.facets = documentSearchResponse.getValue().getFacets();
         this.count = documentSearchResponse.getValue().getCount();
@@ -66,35 +61,37 @@ public class SearchPagedResponse extends PagedResponseBase<String, SearchResult>
     }
 
     /**
-     * Get coverage
+     * The percentage of the index covered in the search request.
+     * <p>
+     * If {@code minimumCoverage} wasn't supplied in the request this will be {@code null}.
      *
-     * @return Double
+     * @return The percentage of the index covered in the search request if {@code minimumCoverage} was set in the
+     * request, otherwise {@code null}.
      */
     public Double getCoverage() {
         return coverage;
     }
 
     /**
-     * Get facets
+     * The facet query results based on the search request.
+     * <p>
+     * If {@code facets} weren't supplied in the request this will be {@code null}.
      *
-     * @return {@link Map}{@code <}{@link String}{@code ,}{@link List}{@code <}{@link FacetResult}{@code >}{@code >}
+     * @return The facet query results if {@code facets} were supplied in the request, otherwise {@code null}.
      */
     public Map<String, List<FacetResult>> getFacets() {
         return facets;
     }
 
     /**
-     * Get documents count
+     * The approximate number of documents that matched the search and filter parameters in the request.
+     * <p>
+     * If {@code count} is set to {@code false} in the request this will be {@code null}.
      *
-     * @return long
+     * @return The approximate number of documents that match the request if {@code count} is {@code true}, otherwise
+     * {@code null}.
      */
     public Long getCount() {
         return count;
-    }
-
-    private static String deserializeHeaders(HttpHeaders headers) {
-        return headers.toMap().entrySet().stream().map((entry) ->
-            entry.getKey() + "," + entry.getValue()
-        ).collect(Collectors.joining(","));
     }
 }

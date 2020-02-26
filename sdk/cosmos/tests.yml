@@ -15,6 +15,7 @@ jobs:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
         ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
         SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-secondary-key)
+        ACCOUNT_CONSISTENCY: "Session"
       MaxParallel: 1
       Matrix:
         # 59m 59s, timed out
@@ -24,24 +25,31 @@ jobs:
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Session'
+        # 59m 59s, timed out
+        Session_Tcp_E2E:
+          DisplayName: ReadMyWrites Integration Tests
+          OSVmImage: 'windows-2019'
+          ProfileFlag: '-Pe2e'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
+          DESIRED_CONSISTENCY: 'Session'
         # 09m 23s, expect passed
         Single_Region_Fast:
           DisplayName: Single Region Fast
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pfast'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Session"]'
         # 09m 0s, expect passed
         Single_Region_Direct:
           DisplayName: Single Region Direct
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pdirect'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Session"]'
         # 7m 44s, expect passed
         Single_Region_Examples:
           DisplayName: Single Region Examples
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pexamples'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Session"]'
@@ -66,6 +74,7 @@ jobs:
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
         ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-key)
+        ACCOUNT_CONSISTENCY: "Session"
         SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-secondary-key)
         DESIRED_CONSISTENCIES: '["Session"]'
         PROTOCOLS: '["Tcp"]'
@@ -74,27 +83,23 @@ jobs:
         # 09m 07s, expect passed
         Fast:
           DisplayName: Multimaster Single Region Fast
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
         # 09m 14s, expect passed
         Direct:
           DisplayName: Multimaster Single Region Direct
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pdirect'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
         # 07m 42s, expect passed
         Examples:
           DisplayName: Multimaster Single Region Examples
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pexamples'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
         # 07m 05s, expect passed
         NonEmulator:
           DisplayName: Multimaster Single Region NonEmulator
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
         # 28m 42s, expect passed (rebalanced)
         Single_Region_Long:
           DisplayName: Long Integration Tests
@@ -105,8 +110,8 @@ jobs:
           PROTOCOLS: ''
         # 6m 58s, expect passed (rebalanced)
         Single_Region_NonEmulator:
-          DisplayName: Single Region Examples
-          OSVmImage: 'macOS-10.13'
+          DisplayName: Single Region NonEmulator
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Session"]'
@@ -134,33 +139,47 @@ jobs:
         # 09m 32s, expect passed
         Strong_Tcp_Fast:
           DisplayName: Strong TCP Fast
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        Bounded_Staleness_Tcp_Fast:
+          DisplayName: Bounded Staleness TCP Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["BoundedStaleness"]'
+        Consistent_Prefix_Tcp_Fast:
+          DisplayName: Consistent Prefix TCP Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["ConsistentPrefix"]'
         # 08m 53s, expect passed
         Strong_Tcp_Direct:
           DisplayName: Strong TCP Direct
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pdirect'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 07m 36s, expect passed
         Strong_Tcp_Examples:
           DisplayName: Strong TCP Examples
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pexamples'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 06m 59s, expect passed
         Strong_Tcp_NonEmulator:
           DisplayName: Strong TCP NonEmulator
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
@@ -192,36 +211,57 @@ jobs:
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Strong'
+        # 59m 58s, timed out
+        Strong_Tcp_E2E:
+          DisplayName: Single Region ReadMyWrites
+          OSVmImage: 'windows-2019'
+          ProfileFlag: '-Pe2e'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
+          DESIRED_CONSISTENCY: 'Strong'
         # 08m 50s, expect passed
         Strong_Https_Fast:
           DisplayName: Strong HTTP Fast
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        Bounded_Staleness_Https_Fast:
+          DisplayName: Bounded Staleness HTTP Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Https"]'
+          DESIRED_CONSISTENCIES: '["BoundedStaleness"]'
+        Consistent_Prefix_Https_Fast:
+          DisplayName: Consistent Prefix HTTP Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Https"]'
+          DESIRED_CONSISTENCIES: '["ConsistentPrefix"]'
         # 08m 50s, expect passed
         Strong_Https_Direct:
           DisplayName: Strong HTTP Direct
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pdirect'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 07m 36s, expect passed
         Strong_Https_Examples:
           DisplayName: Strong HTTP Examples
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pexamples'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
         # 06m 59s, expect passed
         Strong_Https_NonEmulator:
           DisplayName: Strong HTTP NonEmulator
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
-          AdditionalArgs: '-DargLine="-DACCOUNT_DEFAULT_CONSISTENCY=Strong"'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
@@ -244,6 +284,7 @@ jobs:
         ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
         ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-key)
         SECONDARY_ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-secondary-key)
+        ACCOUNT_CONSISTENCY: "Session"
         DESIRED_CONSISTENCIES: '["Session"]'
         PREFERRED_LOCATIONS: '["East US 2"]'
       MaxParallel: 1
@@ -257,27 +298,27 @@ jobs:
         # 06m 34s, previously failing
         MultiMaster:
           DisplayName: Multimaster Multi Region Multi-Master
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pmulti-master'
         # 09m 43s, expect passed
         Fast:
           DisplayName: Multimaster Multi Region Fast
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pfast'
         # 09m 10s, expect passed
         Direct:
           DisplayName: Multimaster Multi Region Direct
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pdirect'
         # 07m 49s, expect passed
         Examples:
           DisplayName: Multimaster Multi Region Examples
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pexamples'
         # 08m 0s, expect passed
         NonEmulator:
           DisplayName: Multimaster Multi Region NonEmulator
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
 
       PreRunSteps:
@@ -306,27 +347,28 @@ jobs:
         # 05m 21s, previously failing
         MultiMaster:
           DisplayName: MultiMaster Single Region Multi-Master
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pmulti-master'
         # 09m 34s, expect passed
         Fast:
           DisplayName: Multimaster Single Region Fast
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pfast'
         # 09m 05s, expect passed
         Direct:
           DisplayName: Multimaster Single Region Direct
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pdirect'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session"'
         # 07m 52s, expect passed
         Examples:
           DisplayName: Multimaster Single Region Examples
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pexamples'
         # 07m 10s, expect passed
         NonEmulator:
           DisplayName: Multimaster Single Region NonEmulator
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
 
       PreRunSteps:
