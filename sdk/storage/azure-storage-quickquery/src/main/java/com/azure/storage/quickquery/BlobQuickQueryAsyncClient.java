@@ -18,12 +18,7 @@ import com.azure.storage.blob.implementation.models.QuickQuerySerialization;
 import com.azure.storage.blob.implementation.models.QuickQueryType;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.quickquery.models.BlobQuickQueryAsyncResponse;
-import com.azure.storage.quickquery.models.BlobQuickQueryDelimitedSerialization;
-import com.azure.storage.quickquery.models.BlobQuickQueryJsonSerialization;
-import com.azure.storage.quickquery.models.BlobQuickQuerySerialization;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 
 import static com.azure.core.util.FluxUtil.monoError;
