@@ -144,6 +144,20 @@ jobs:
           AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        Bounded_Staleness_Tcp_Fast:
+          DisplayName: Bounded Staleness TCP Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["BoundedStaleness"]'
+        Consistent_Prefix_Tcp_Fast:
+          DisplayName: Consistent Prefix TCP Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["ConsistentPrefix"]'
         # 08m 53s, expect passed
         Strong_Tcp_Direct:
           DisplayName: Strong TCP Direct
@@ -212,6 +226,20 @@ jobs:
           AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        Bounded_Staleness_Https_Fast:
+          DisplayName: Bounded Staleness HTTP Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Https"]'
+          DESIRED_CONSISTENCIES: '["BoundedStaleness"]'
+        Consistent_Prefix_Https_Fast:
+          DisplayName: Consistent Prefix HTTP Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Https"]'
+          DESIRED_CONSISTENCIES: '["ConsistentPrefix"]'
         # 08m 50s, expect passed
         Strong_Https_Direct:
           DisplayName: Strong HTTP Direct
