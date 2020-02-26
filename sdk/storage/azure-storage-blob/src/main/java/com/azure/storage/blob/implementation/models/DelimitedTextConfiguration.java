@@ -42,7 +42,7 @@ public final class DelimitedTextConfiguration {
      * has headers
      */
     @JsonProperty(value = "HasHeaders", required = true)
-    private String hasHeaders;
+    private boolean hasHeaders;
 
     /**
      * Get the columnSeparator property: column separator.
@@ -129,7 +129,7 @@ public final class DelimitedTextConfiguration {
      *
      * @return the hasHeaders value.
      */
-    public String getHasHeaders() {
+    public boolean isHasHeaders() {
         return this.hasHeaders;
     }
 
@@ -139,7 +139,7 @@ public final class DelimitedTextConfiguration {
      * @param hasHeaders the hasHeaders value to set.
      * @return the DelimitedTextConfiguration object itself.
      */
-    public DelimitedTextConfiguration setHasHeaders(String hasHeaders) {
+    public DelimitedTextConfiguration setHasHeaders(boolean hasHeaders) {
         this.hasHeaders = hasHeaders;
         return this;
     }
