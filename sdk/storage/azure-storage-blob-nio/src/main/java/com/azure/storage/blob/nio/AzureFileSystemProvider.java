@@ -109,6 +109,13 @@ import java.util.concurrent.ConcurrentMap;
 public final class AzureFileSystemProvider extends FileSystemProvider {
     private final ClientLogger logger = new ClientLogger(AzureFileSystemProvider.class);
 
+    public static final String CONTENT_TYPE = "Content-Type";
+    public static final String CONTENT_DISPOSITION = "Content-Disposition";
+    public static final String CONTENT_LANGUAGE = "Content-Language";
+    public static final String CONTENT_ENCODING = "Content-Encoding";
+    public static final String CONTENT_MD5 = "Content-MD5";
+    public static final String CACHE_CONTROL = "Cache-Control";
+
     private static final String ACCOUNT_QUERY_KEY = "account";
 
     static final String DIR_METADATA_MARKER = "is_hdi_folder";
@@ -229,7 +236,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * This method will attempt to extract standard HTTP content headers from the list of file attributes to set them
      * as blob headers. All other attributes will be set as blob metadata. The value of every attribute will be
      * converted to a {@code String} with the exception of the Content-MD5 attribute which expects a {@code byte[]}.
-     * When extracting the content headers, the following strings will be used for comparison:
+     * When extracting the content headers, the following strings will be used for comparison (constants for these
+     * values can be found on this type):
      * <ul>
      *     <li>{@code Content-Type}</li>
      *     <li>{@code Content-Disposition}</li>

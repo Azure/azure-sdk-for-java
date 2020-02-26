@@ -163,12 +163,13 @@ class AzureFileSystemProviderSpec extends APISpec {
     def "FileSystemProvider createDir relativePath"() {
         setup:
         def fs = createFS(config)
+        def fileName = generateBlobName()
         def containerClient =
             primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
-        AppendBlobClient blobClient = containerClient.getBlobClient("foo").getAppendBlobClient()
+        AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
 
         when: "Relative paths are resolved against the default directory"
-        fs.provider().createDirectory(fs.getPath("foo"))
+        fs.provider().createDirectory(fs.getPath(fileName))
 
         then:
         blobClient.getProperties().getMetadata().containsKey(AzureFileSystemProvider.DIR_METADATA_MARKER)
@@ -177,37 +178,58 @@ class AzureFileSystemProviderSpec extends APISpec {
     def "FileSystemProvider createDir file already exists"() {
         setup:
         def fs = createFS(config)
+        def fileName = generateBlobName()
         def containerClient =
             primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
-        AppendBlobClient blobClient = containerClient.getBlobClient("foo").getAppendBlobClient()
+        AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
 
-        when: "A file already exists at the location"
+        when:
         blobClient.create()
-        fs.provider().createDirectory(fs.getPath("foo")) // Will go to default directory
+        fs.provider().createDirectory(fs.getPath(fileName)) // Will go to default directory
 
         then:
         thrown(FileAlreadyExistsException)
 
-        when: "A directory with marker already exists"
-        blobClient.createWithResponse(null, [(AzureFileSystemProvider.DIR_METADATA_MARKER):"true"], null, null, null)
-        fs.provider().createDirectory(fs.getPath("foo"))
+    }
+
+    def "FileSystemProvider createDir concrete dir already exists"() {
+        setup:
+        def fs = createFS(config)
+        def fileName = generateBlobName()
+        def containerClient =
+            primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
+        AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
+
+        when:
+        blobClient.createWithResponse(null, [(AzureFileSystemProvider.DIR_METADATA_MARKER): "true"], null, null, null)
+        fs.provider().createDirectory(fs.getPath(fileName))
 
         then:
         thrown(FileAlreadyExistsException)
+    }
 
-        when: "A virtual directory without marker already exists--no failure"
-        blobClient.delete()
-        AppendBlobClient blobClient2 = containerClient.getBlobClient("foo/bar").getAppendBlobClient()
+    def "FileSystemProvider createDir virtual dir already exists"() {
+        setup:
+        def fs = createFS(config)
+        def fileName = generateBlobName()
+        def childName = generateBlobName()
+        def containerClient =
+            primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
+        AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
+
+        when:
+        AppendBlobClient blobClient2 = containerClient.getBlobClient(fileName + fs.getSeparator() + childName)
+            .getAppendBlobClient()
         blobClient2.create()
-        fs.provider().createDirectory(fs.getPath("foo"))
+        fs.provider().createDirectory(fs.getPath(fileName))
 
         then:
         notThrown(FileAlreadyExistsException)
-        blobClient.exists()
+        blobClient.exists() // We will turn the directory from virtual to concrete
         blobClient.getProperties().getMetadata().containsKey(AzureFileSystemProvider.DIR_METADATA_MARKER)
     }
 
-    def "FileSystemProvider createDir IOException"() {
+    def "FileSystemProvider createDir root"() {
         setup:
         def fs = createFS(config)
 
@@ -216,15 +238,28 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         then:
         thrown(IOException)
+    }
+
+    def "FileSystemProvider createDir no parent"() {
+        setup:
+        def fs = createFS(config)
+        def fileName = generateBlobName()
+        def childName = generateBlobName()
 
         when: "Parent doesn't exist"
-        fs.provider().createDirectory(fs.getPath("foo/bar"))
+        fs.provider().createDirectory(fs.getPath(fileName + fs.getSeparator() + childName))
 
         then:
         thrown(IOException)
+    }
 
-        when: "Invalid root"
-        fs.provider().createDirectory(fs.getPath("fakeRoot:/foo"))
+    def "FileSystemProvider createDir invalid root"() {
+        setup:
+        def fs = createFS(config)
+        def fileName = generateBlobName()
+
+        when:
+        fs.provider().createDirectory(fs.getPath("fakeRoot:" + fs.getSeparator() + fileName))
 
         then:
         thrown(IOException)
@@ -233,9 +268,10 @@ class AzureFileSystemProviderSpec extends APISpec {
     def "FileSystemProvider createDir attributes"() {
         setup:
         def fs = createFS(config)
+        def fileName = generateBlobName()
         def containerClient =
             primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
-        AppendBlobClient blobClient = containerClient.getBlobClient("foo").getAppendBlobClient()
+        AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
         def contentMd5 = getRandomByteArray(10)
         FileAttribute<?>[] attributes = [new TestFileAttribute<String>("fizz", "buzz"),
                                          new TestFileAttribute<String>("foo", "bar"),
@@ -247,7 +283,7 @@ class AzureFileSystemProviderSpec extends APISpec {
                                          new TestFileAttribute<byte[]>("Content-MD5", contentMd5)]
 
         when:
-        fs.provider().createDirectory(fs.getPath("foo"), attributes)
+        fs.provider().createDirectory(fs.getPath(fileName), attributes)
         def props = blobClient.getProperties()
 
         then:
@@ -267,32 +303,54 @@ class AzureFileSystemProviderSpec extends APISpec {
         props.getCacheControl() == "myControl"
     }
 
-    def "FileSystemProvider parent dir exists"() {
+    def "FileSystemProvider parent dir exists false"() {
+        setup:
+        def fs = createFS(config)
+        def fileName = generateBlobName()
+        def containerClient =
+            primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
+
+        expect:
+        !((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(containerClient, fs.getPath(fileName))
+    }
+
+    def "FileSystemProvider parent dir exists virtual"() {
+        setup:
+        def fs = createFS(config)
+        def fileName = generateBlobName()
+        def childName = generateBlobName()
+        def containerClient =
+            primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
+
+        when:
+        AppendBlobClient blobClient = containerClient.getBlobClient(fileName + fs.getSeparator() + childName)
+            .getAppendBlobClient()
+        blobClient.create()
+
+        then:
+        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(containerClient, fs.getPath(fileName))
+    }
+
+    def "FileSystemProvider parent dir exists concrete"() {
+        setup:
+        def fs = createFS(config)
+        def fileName = generateBlobName()
+        def containerClient =
+            primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
+
+        when:
+        AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
+        blobClient.createWithResponse(null, [(AzureFileSystemProvider.DIR_METADATA_MARKER): "true"], null, null, null)
+
+        then:
+        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(containerClient, fs.getPath(fileName))
+    }
+
+    def "FileSystemProvider parent dir exists root"() {
         setup:
         def fs = createFS(config)
         def containerClient =
             primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
-        AppendBlobClient blobClient
-
-        when: "If nothing present, no directory"
-        blobClient = containerClient.getBlobClient("foo/bar").getAppendBlobClient()
-
-        then:
-        !((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(containerClient, fs.getPath("foo"))
-
-        when: "Virtual directories suffice for parent existence"
-        blobClient.create()
-
-        then:
-        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(containerClient, fs.getPath("foo"))
-
-        when: "Marker blobs suffice for parent existence"
-        blobClient.delete()
-        blobClient = containerClient.getBlobClient("foo").getAppendBlobClient()
-        blobClient.createWithResponse(null, [(AzureFileSystemProvider.DIR_METADATA_MARKER):"true"], null, null, null)
-
-        then:
-        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(containerClient, fs.getPath("foo"))
 
         expect: "Null directory means the path is targeting the root directory"
         ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(containerClient, null)
