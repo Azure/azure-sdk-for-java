@@ -36,7 +36,7 @@ import java.util.Objects;
  * The following information must be provided to successfully create a client.
  * <ul>
  *     <li>{@link #endpoint(String)}</li>
- *     <li>{@link #credential(SearchApiKeyCredential)} or {@link #pipeline(HttpPipeline}</li>
+ *     <li>{@link #credential(SearchApiKeyCredential)} or {@link #pipeline(HttpPipeline)}</li>
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {SearchServiceClient.class, SearchServiceAsyncClient.class})
