@@ -5,6 +5,10 @@ package com.microsoft.azure.applicationinsights.query;
 import com.microsoft.azure.arm.utils.ResourceNamer;
 import com.microsoft.azure.arm.utils.ResourceNamerFactory;
 
+/**
+ * From:
+ * https://github.com/Azure/autorest-clientruntime-for-java/blob/master/azure-arm-client-runtime/src/test/java/com/microsoft/azure/arm/core/TestResourceNamerFactory.java
+ */
 class TestResourceNamerFactory extends ResourceNamerFactory {
     private final InterceptorManager interceptorManager;
 
