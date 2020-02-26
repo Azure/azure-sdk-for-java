@@ -10,7 +10,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobRequestConditions;
 
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.quickquery.models.BlobQuickQueryResponse;
+import com.azure.storage.quickquery.models.BlobQuickQuerySerialization;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
