@@ -24,13 +24,10 @@ import java.util.Map;
  */
 public class GatewayServiceConfigurationReader {
 
-    private URI serviceEndpoint;
     private GlobalEndpointManager globalEndpointManager;
 
-    public GatewayServiceConfigurationReader(URI serviceEndpoint, GlobalEndpointManager globalEndpointManager) {
-        this.serviceEndpoint = serviceEndpoint;
+    public GatewayServiceConfigurationReader(GlobalEndpointManager globalEndpointManager) {
         this.globalEndpointManager = globalEndpointManager;
-        this.globalEndpointManager.getDatabaseAccountFromCache(this.serviceEndpoint).block();
     }
 
     public ReplicationPolicy getUserReplicationPolicy() {

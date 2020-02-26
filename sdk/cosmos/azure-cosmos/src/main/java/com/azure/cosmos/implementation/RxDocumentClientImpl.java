@@ -250,8 +250,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void initializeGatewayConfigurationReader() {
-        this.gatewayConfigurationReader = new GatewayServiceConfigurationReader(this.serviceEndpoint, this.globalEndpointManager);
+        this.gatewayConfigurationReader = new GatewayServiceConfigurationReader(this.globalEndpointManager);
         DatabaseAccount databaseAccount = this.globalEndpointManager.getLatestDatabaseAccount();
+        //Database account should not be null here,
+        // this.globalEndpointManager.init() must have been already called
+        // hence asserting it
+        assert(databaseAccount != null);
         this.useMultipleWriteLocations = this.connectionPolicy.getUsingMultipleWriteLocations() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
 
         // TODO: add support for openAsync

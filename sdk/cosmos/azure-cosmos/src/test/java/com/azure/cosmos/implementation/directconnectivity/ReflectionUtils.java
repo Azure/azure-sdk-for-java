@@ -6,13 +6,10 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.DatabaseAccount;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.routing.LocationCache;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 /**
@@ -89,18 +86,6 @@ public class ReflectionUtils {
     public static GatewayServiceConfigurationReader getServiceConfigurationReader(RxDocumentClientImpl rxDocumentClient){
         return get(GatewayServiceConfigurationReader.class, rxDocumentClient, "gatewayConfigurationReader");
     }
-
-    public static GlobalEndpointManager getGlobalEndpointManager(GatewayServiceConfigurationReader serviceConfigurationReader){
-        return get(GlobalEndpointManager.class, serviceConfigurationReader, "globalEndpointManager");
-    }
-
-    public static LocationCache getLocationCache(GlobalEndpointManager globalEndpointManager){
-        return get(LocationCache.class, globalEndpointManager, "locationCache");
-    }
-
-    public static AsyncCache<String, DatabaseAccount> getDatabaseAccountAsyncCache(GlobalEndpointManager globalEndpointManager){
-        return get(AsyncCache.class, globalEndpointManager, "databaseAccountAsyncCache");
-    };
 
     public static void setBackgroundRefreshLocationTimeIntervalInMS(GlobalEndpointManager globalEndPointManager, int millSec){
         set(globalEndPointManager, millSec, "backgroundRefreshLocationTimeIntervalInMS");

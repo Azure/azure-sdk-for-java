@@ -47,13 +47,11 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Scheduler scheduler = Schedulers.fromExecutor(executor);
     private volatile boolean isClosed;
-    private final AsyncCache<String, DatabaseAccount> databaseAccountAsyncCache;
     private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
     private volatile DatabaseAccount latestDatabaseAccount;
 
     public GlobalEndpointManager(DatabaseAccountManagerInternal owner, ConnectionPolicy connectionPolicy, Configs configs)  {
         this.backgroundRefreshLocationTimeIntervalInMS = configs.getUnavailableLocationsExpirationTimeInSeconds() * 1000;
-        this.databaseAccountAsyncCache = new AsyncCache<>();
         try {
             this.locationCache = new LocationCache(
                     new ArrayList<>(connectionPolicy.getPreferredLocations() != null ?
@@ -165,17 +163,12 @@ public class GlobalEndpointManager implements AutoCloseable {
         });
     }
 
-    public Mono<DatabaseAccount> getDatabaseAccountFromCache(URI defaultEndpoint) {
-        return this.databaseAccountAsyncCache.getAsync(StringUtils.EMPTY, null, () -> this.owner.getDatabaseAccountFromEndpoint(defaultEndpoint).flatMap(databaseAccount -> {
-            if (databaseAccount != null) {
-                this.latestDatabaseAccount = databaseAccount;
-            }
-
-            Mono<Void> refreshLocationCompletable = this.refreshLocationAsync(databaseAccount, false);
-            return refreshLocationCompletable.then(Mono.just(databaseAccount));
-        }).single());
-    }
-
+    /**
+     * This will provide the latest databaseAccount.
+     * If due to some reason last databaseAccount update was null,
+     * this method will return previous valid value
+     * @return DatabaseAccount
+     */
     public DatabaseAccount getLatestDatabaseAccount() {
         return this.latestDatabaseAccount;
     }
@@ -274,27 +267,14 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     private Mono<DatabaseAccount> getDatabaseAccountAsync(URI serviceEndpoint) {
-        final GlobalEndpointManager that = this;
-        Callable<Mono<DatabaseAccount>> fetchDatabaseAccount = () -> {
-            return that.owner.getDatabaseAccountFromEndpoint(serviceEndpoint).doOnNext(databaseAccount -> {
+        return this.owner.getDatabaseAccountFromEndpoint(serviceEndpoint)
+            .doOnNext(databaseAccount -> {
                 if(databaseAccount != null) {
                     this.latestDatabaseAccount = databaseAccount;
                 }
 
                 logger.debug("account retrieved: {}", databaseAccount);
             }).single();
-        };
-
-        Mono<DatabaseAccount> obsoleteValueMono = databaseAccountAsyncCache.getAsync(StringUtils.EMPTY, null, fetchDatabaseAccount);
-        return obsoleteValueMono.flatMap(obsoleteValue -> {
-            if (firstTimeDatabaseAccountInitialization.compareAndSet(true, false)) {
-                return Mono.just(obsoleteValue);
-            }
-            return databaseAccountAsyncCache.getAsync(StringUtils.EMPTY, obsoleteValue, fetchDatabaseAccount).doOnError(t -> {
-                //Putting back the old value in cache, this will avoid cache corruption
-                databaseAccountAsyncCache.set(StringUtils.EMPTY, obsoleteValue);
-            });
-        });
     }
 
     public boolean isClosed() {
