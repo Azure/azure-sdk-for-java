@@ -439,6 +439,7 @@ public class DocumentProducerTest {
     private CosmosClientException mockThrottlingException(long retriesAfter) {
         CosmosClientException throttleException = mock(CosmosClientException.class);
         doReturn(429).when(throttleException).getStatusCode();
+        doReturn(new StackTraceElement[0]).when(throttleException).getStackTrace();
         doReturn(retriesAfter).when(throttleException).getRetryAfterInMilliseconds();
         return throttleException;
     }

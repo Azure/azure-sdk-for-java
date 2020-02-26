@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.PartitionKeyDefinition;
@@ -49,7 +49,7 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
 
         int maxItemCount = 2;
 
-        CosmosContinuablePagedFlux<CosmosContainerProperties> feedObservable = createdDatabase.readAllContainers(options);
+        CosmosPagedFlux<CosmosContainerProperties> feedObservable = createdDatabase.readAllContainers(options);
 
         int expectedPageSize = (createdCollections.size() + maxItemCount - 1) / maxItemCount;
 

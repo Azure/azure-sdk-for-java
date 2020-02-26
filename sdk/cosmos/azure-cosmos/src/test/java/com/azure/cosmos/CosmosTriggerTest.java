@@ -87,7 +87,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
 
         FeedOptions feedOptions = new FeedOptions();
         
-        CosmosContinuablePagedIterable<CosmosTriggerProperties> feedResponseIterator3 =
+        CosmosPagedIterable<CosmosTriggerProperties> feedResponseIterator3 =
                 container.getScripts().readAllTriggers(feedOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
@@ -108,12 +108,12 @@ public class CosmosTriggerTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        CosmosContinuablePagedIterable<CosmosTriggerProperties> feedResponseIterator1 =
+        CosmosPagedIterable<CosmosTriggerProperties> feedResponseIterator1 =
                 container.getScripts().queryTriggers(query, feedOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosContinuablePagedIterable<CosmosTriggerProperties> feedResponseIterator2 =
+        CosmosPagedIterable<CosmosTriggerProperties> feedResponseIterator2 =
                 container.getScripts().queryTriggers(query, feedOptions);
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
     }

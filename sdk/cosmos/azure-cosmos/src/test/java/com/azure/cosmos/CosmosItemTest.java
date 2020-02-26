@@ -15,7 +15,6 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -128,7 +127,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
         FeedOptions feedOptions = new FeedOptions();
 
-        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator3 =
+        CosmosPagedIterable<CosmosItemProperties> feedResponseIterator3 =
                 container.readAllItems(feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
@@ -142,13 +141,13 @@ public class CosmosItemTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator1 =
+        CosmosPagedIterable<CosmosItemProperties> feedResponseIterator1 =
                 container.queryItems(query, feedOptions, CosmosItemProperties.class);
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator3 =
+        CosmosPagedIterable<CosmosItemProperties> feedResponseIterator3 =
                 container.queryItems(querySpec, feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
@@ -175,7 +174,7 @@ public class CosmosItemTest extends TestSuiteBase {
         int initialDocumentCount = 3;
         int finalDocumentCount = 0;
 
-        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator1 =
+        CosmosPagedIterable<CosmosItemProperties> feedResponseIterator1 =
             container.queryItems(query, feedOptions, CosmosItemProperties.class);
 
         do {
