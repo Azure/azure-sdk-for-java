@@ -19,10 +19,12 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.SpyClientUnderTestFactory;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
+import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
 import io.reactivex.subscribers.TestSubscriber;
@@ -121,35 +123,40 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(new DatabaseAccount(GlobalEndPointManagerTest.dbAccountJson1)));
         Mockito.when(databaseAccountManagerInternal.getServiceEndpoint()).thenReturn(new URI(TestConfigurations.HOST));
         GlobalEndpointManager globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, new ConnectionPolicy(), new Configs());
-        ReflectionUtils.setBackgroundRefreshLocationTimeIntervalInMS(globalEndpointManager, 1000);
-        globalEndpointManager.init();
+        LocationCache locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
 
-        assertThat(BridgeInternal.getConsistencyPolicy(globalEndpointManager.getLatestDatabaseAccount()).getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.SESSION);
-        assertThat((boolean) BridgeInternal.getQueryEngineConfiuration(globalEndpointManager.getLatestDatabaseAccount()).get("enableSpatialIndexing")).isTrue();
-        assertThat(BridgeInternal.getSystemReplicationPolicy(globalEndpointManager.getLatestDatabaseAccount()).getMaxReplicaSetSize()).isEqualTo(4);
-        assertThat(BridgeInternal.getReplicationPolicy(globalEndpointManager.getLatestDatabaseAccount()).getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(BridgeInternal.getConsistencyPolicy(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.SESSION);
+        assertThat((boolean) BridgeInternal.getQueryEngineConfiuration(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).get("enableSpatialIndexing")).isTrue();
+        assertThat(BridgeInternal.getSystemReplicationPolicy(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(BridgeInternal.getReplicationPolicy(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(locationCache.getWriteEndpoints().get(0).toString()).contains("eastus");
+
 
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(new DatabaseAccount(GlobalEndPointManagerTest.dbAccountJson2)));
-        Thread.sleep(2000);
-        assertThat(BridgeInternal.getConsistencyPolicy(globalEndpointManager.getLatestDatabaseAccount()).getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.EVENTUAL);
-        assertThat((boolean) BridgeInternal.getQueryEngineConfiuration(globalEndpointManager.getLatestDatabaseAccount()).get("enableSpatialIndexing")).isFalse();
-        assertThat(BridgeInternal.getSystemReplicationPolicy(globalEndpointManager.getLatestDatabaseAccount()).getMaxReplicaSetSize()).isEqualTo(5);
-        assertThat(BridgeInternal.getReplicationPolicy(globalEndpointManager.getLatestDatabaseAccount()).getMaxReplicaSetSize()).isEqualTo(5);
+        AsyncCache<String, DatabaseAccount> databaseAccountAsyncCache = ReflectionUtils.getDatabaseAccountAsyncCache(globalEndpointManager);
+        databaseAccountAsyncCache.clear();
+
+        assertThat(BridgeInternal.getConsistencyPolicy(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.EVENTUAL);
+        assertThat((boolean) BridgeInternal.getQueryEngineConfiuration(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).get("enableSpatialIndexing")).isFalse();
+        assertThat(BridgeInternal.getSystemReplicationPolicy(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).getMaxReplicaSetSize()).isEqualTo(5);
+        assertThat(BridgeInternal.getReplicationPolicy(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).getMaxReplicaSetSize()).isEqualTo(5);
+        assertThat(locationCache.getWriteEndpoints().get(0).toString()).contains("eastasia");
+        databaseAccountAsyncCache.clear();
 
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(new DatabaseAccount(GlobalEndPointManagerTest.dbAccountJson3)));
-        Thread.sleep(2000);
-        assertThat(BridgeInternal.getConsistencyPolicy(globalEndpointManager.getLatestDatabaseAccount()).getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.SESSION);
-        assertThat((boolean) BridgeInternal.getQueryEngineConfiuration(globalEndpointManager.getLatestDatabaseAccount()).get("enableSpatialIndexing")).isTrue();
-        assertThat(BridgeInternal.getSystemReplicationPolicy(globalEndpointManager.getLatestDatabaseAccount()).getMaxReplicaSetSize()).isEqualTo(4);
-        assertThat(BridgeInternal.getReplicationPolicy(globalEndpointManager.getLatestDatabaseAccount()).getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(BridgeInternal.getConsistencyPolicy(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.SESSION);
+        assertThat((boolean) BridgeInternal.getQueryEngineConfiuration(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).get("enableSpatialIndexing")).isTrue();
+        assertThat(BridgeInternal.getSystemReplicationPolicy(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(BridgeInternal.getReplicationPolicy(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(locationCache.getWriteEndpoints().get(0).toString()).contains("westus");
 
         //Testing scenario of scheduled cache refresh with error
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.FORBIDDEN)));
-        Thread.sleep(2000);
-        assertThat(BridgeInternal.getConsistencyPolicy(globalEndpointManager.getLatestDatabaseAccount()).getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.SESSION);
-        assertThat((boolean) BridgeInternal.getQueryEngineConfiuration(globalEndpointManager.getLatestDatabaseAccount()).get("enableSpatialIndexing")).isTrue();
-        assertThat(BridgeInternal.getSystemReplicationPolicy(globalEndpointManager.getLatestDatabaseAccount()).getMaxReplicaSetSize()).isEqualTo(4);
-        assertThat(BridgeInternal.getReplicationPolicy(globalEndpointManager.getLatestDatabaseAccount()).getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(BridgeInternal.getConsistencyPolicy(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.SESSION);
+        assertThat((boolean) BridgeInternal.getQueryEngineConfiuration(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).get("enableSpatialIndexing")).isTrue();
+        assertThat(BridgeInternal.getSystemReplicationPolicy(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(BridgeInternal.getReplicationPolicy(globalEndpointManager.getDatabaseAccountFromCache(new URI(TestConfigurations.HOST)).block()).getMaxReplicaSetSize()).isEqualTo(4);
+        assertThat(locationCache.getWriteEndpoints().get(0).toString()).contains("westus");
     }
 
     public static void validateSuccess(Mono<DatabaseAccount> observable) {

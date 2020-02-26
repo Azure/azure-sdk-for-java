@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.DatabaseAccount;
-import com.azure.cosmos.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.LocationHelper;
@@ -167,13 +166,14 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     public Mono<DatabaseAccount> getDatabaseAccountFromCache(URI defaultEndpoint) {
-        return this.databaseAccountAsyncCache.getAsync(StringUtils.EMPTY, null, () -> this.owner.getDatabaseAccountFromEndpoint(defaultEndpoint).single().doOnSuccess(databaseAccount -> {
-            if(databaseAccount != null) {
+        return this.databaseAccountAsyncCache.getAsync(StringUtils.EMPTY, null, () -> this.owner.getDatabaseAccountFromEndpoint(defaultEndpoint).flatMap(databaseAccount -> {
+            if (databaseAccount != null) {
                 this.latestDatabaseAccount = databaseAccount;
             }
 
-            this.refreshLocationAsync(databaseAccount, false);
-        }));
+            Mono<Void> refreshLocationCompletable = this.refreshLocationAsync(databaseAccount, false);
+            return refreshLocationCompletable.then(Mono.just(databaseAccount));
+        }).single());
     }
 
     public DatabaseAccount getLatestDatabaseAccount() {
