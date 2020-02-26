@@ -52,12 +52,12 @@ public final class SearchServiceClient {
     }
 
     /**
-     * Gets Client Api Version.
+     * Gets search service version.
      *
-     * @return the apiVersion value.
+     * @return the search service version value.
      */
-    public SearchServiceVersion getApiVersion() {
-        return this.asyncClient.getApiVersion();
+    public SearchServiceVersion getServiceVersion() {
+        return this.asyncClient.getServiceVersion();
     }
 
     /**

@@ -32,7 +32,7 @@ import java.util.Objects;
  * {@code .endpoint()} the API key through {@code .credential()}
  */
 @ServiceClientBuilder(serviceClients = {SearchServiceClient.class, SearchServiceAsyncClient.class})
-public class SearchServiceClientBuilder {
+public final class SearchServiceClientBuilder {
     private final ClientLogger logger = new ClientLogger(SearchServiceClientBuilder.class);
 
     private static final String SEARCH_PROPERTIES = "azure-search.properties";
@@ -40,7 +40,7 @@ public class SearchServiceClientBuilder {
     private static final String VERSION = "version";
 
     SearchApiKeyCredential searchApiKeyCredential;
-    SearchServiceVersion apiVersion;
+    SearchServiceVersion searchServiceVersion;
     String endpoint;
     HttpClient httpClient;
     HttpLogOptions httpLogOptions;
@@ -53,7 +53,7 @@ public class SearchServiceClientBuilder {
      * Default Constructor
      */
     public SearchServiceClientBuilder() {
-        apiVersion = SearchServiceVersion.getLatest();
+        searchServiceVersion = SearchServiceVersion.getLatest();
         policies = new ArrayList<>();
         httpClient = HttpClient.createDefault();
         httpLogOptions = new HttpLogOptions();
@@ -66,14 +66,14 @@ public class SearchServiceClientBuilder {
     /**
      * Sets the api version to work against
      *
-     * @param apiVersion api version
+     * @param searchServiceVersion api version
      * @return the updated SearchServiceClientBuilder object
      */
-    public SearchServiceClientBuilder apiVersion(SearchServiceVersion apiVersion) {
-        if (apiVersion == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid apiVersion"));
+    public SearchServiceClientBuilder searchServiceVersion(SearchServiceVersion searchServiceVersion) {
+        if (searchServiceVersion == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid searchServiceVersion"));
         }
-        this.apiVersion = apiVersion;
+        this.searchServiceVersion = searchServiceVersion;
         return this;
     }
 
@@ -169,7 +169,7 @@ public class SearchServiceClientBuilder {
      * @return a {@link SearchIndexAsyncClient} created from the configurations in this builder.
      */
     public SearchServiceAsyncClient buildAsyncClient() {
-        return new SearchServiceAsyncClient(endpoint, apiVersion, prepareForBuildClient());
+        return new SearchServiceAsyncClient(endpoint, searchServiceVersion, prepareForBuildClient());
     }
 
     HttpPipeline prepareForBuildClient() {
