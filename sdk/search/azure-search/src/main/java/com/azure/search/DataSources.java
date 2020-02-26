@@ -56,7 +56,7 @@ public final class DataSources {
     /**
      * Creates a new DataSource to connect to an Azure SQL database.
      *
-     * @param dataSourceName The dataSourceName of the data source.
+     * @param dataSourceName The name of the data source.
      * @param sqlConnectionString The connection string for the Azure SQL database.
      * @param tableOrViewName The name of the table or view from which to read rows.
      * @return A new DataSource instance.
