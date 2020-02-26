@@ -75,7 +75,7 @@ public final class DataSources {
      * <p>
      * {@code "DefaultEndpointsProtocol=https;AccountName=[your storage account];AccountKey=[your account key]:}
      * <p>
-     * <em>Note: The connection string must use HTTPS.<em>
+     * <em> Note: The connection string must use HTTPS. </em>
      * @param containerName The name of the container from which to read blobs.
      * @param pathPrefix Optional. Limits the data source to only include blobs starting with the specified prefix,
      * this is useful when blobs are organized into "virtual folders".
@@ -118,7 +118,7 @@ public final class DataSources {
      * <p>
      * {@code "DefaultEndpointsProtocol=https;AccountName=[your storage account];AccountKey=[your account key]:}
      * <p>
-     * <em>Note: The connection string must use HTTPS.<em>
+     * <em> Note: The connection string must use HTTPS. </em>
      * @param containerName The name of the container from which to read blobs.
      * @return A new Azure Blob DataSource instance.
      */
