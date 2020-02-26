@@ -446,7 +446,7 @@ public class JsonSerializable {
     }
 
     /**
-     * Gets a JsonNode.
+     * Gets a ObjectNode.
      *
      * @param propertyName the property to get.
      * @return the ObjectNode.
