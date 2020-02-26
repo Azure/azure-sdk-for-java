@@ -71,15 +71,18 @@ public final class DataSources {
      *
      * @param dataSourceName The name of the data source.
      * @param storageConnectionString The connection string for the Azure Storage account.
-     * It must follow this format: "DefaultEndpointsProtocol=https;AccountName=[your storage account];
-     * AccountKey=[your account key];" Note that HTTPS is required.
+     * The Storage connection string must use this format:
+     * <p>
+     * {@code "DefaultEndpointsProtocol=https;AccountName=[your storage account];AccountKey=[your account key]:}
+     * <p>
+     * <em>Note: The connection string must use HTTPS.<em>
      * @param containerName The name of the container from which to read blobs.
-     * @param pathPrefix Optional. If specified, the data source will include only blobs
-     * with names starting with this prefix. This is useful when blobs are
-     * organized into "virtual folders", for example.
+     * @param pathPrefix Optional. Limits the data source to only include blobs starting with the specified prefix,
+     * this is useful when blobs are organized into "virtual folders".
      * @param description Optional. Description of the data source
      * @param deletionDetectionPolicy Optional. The data deletion detection policy for the data source
-     * @throws IllegalArgumentException If {@code dataSourceName}, {@code containerName} or {@code storageConnectionString} are null or empty.
+     * @throws IllegalArgumentException If {@code dataSourceName}, {@code containerName} or
+     * {@code storageConnectionString} are null or empty.
      * @return A new Azure Blob DataSource instance.
      */
     public static DataSource createFromAzureBlobStorage(String dataSourceName, String storageConnectionString,
@@ -111,8 +114,11 @@ public final class DataSources {
      *
      * @param dataSourceName The name of the data source.
      * @param storageConnectionString The connection string for the Azure Storage account.
-     * It must follow this format: "DefaultEndpointsProtocol=https;AccountName=[your storage account];
-     * AccountKey=[your account key];" Note that HTTPS is required.
+     * The Storage connection string must use this format:
+     * <p>
+     * {@code "DefaultEndpointsProtocol=https;AccountName=[your storage account];AccountKey=[your account key]:}
+     * <p>
+     * <em>Note: The connection string must use HTTPS.<em>
      * @param containerName The name of the container from which to read blobs.
      * @return A new Azure Blob DataSource instance.
      */
