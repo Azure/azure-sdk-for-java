@@ -95,17 +95,6 @@ public class SearchIndexAsyncClient {
         HttpPipeline httpPipeline) {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
-
-        if (CoreUtils.isNullOrEmpty(indexName)) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid indexName"));
-        }
-        if (apiVersion == null) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid apiVersion"));
-        }
-        if (httpPipeline == null) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid httpPipeline"));
-        }
-
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.apiVersion = apiVersion;

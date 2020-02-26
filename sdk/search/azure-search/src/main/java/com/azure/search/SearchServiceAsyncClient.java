@@ -66,16 +66,7 @@ public final class SearchServiceAsyncClient {
     private final HttpPipeline httpPipeline;
 
     SearchServiceAsyncClient(String endpoint, SearchServiceVersion apiVersion, HttpPipeline httpPipeline) {
-
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
-
-        if (apiVersion == null) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid apiVersion"));
-        }
-        if (httpPipeline == null) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid httpPipeline"));
-        }
-
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
         this.httpPipeline = httpPipeline;
