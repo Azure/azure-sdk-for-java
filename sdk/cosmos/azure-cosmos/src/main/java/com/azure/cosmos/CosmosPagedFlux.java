@@ -25,11 +25,11 @@ import java.util.function.Function;
  * @see CosmosPagedFluxOptions
  * @see FeedResponse
  */
-public class CosmosContinuablePagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
+public class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
 
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
 
-    CosmosContinuablePagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction) {
+    CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction) {
         this.optionsFluxFunction = optionsFluxFunction;
     }
 
@@ -70,7 +70,7 @@ public class CosmosContinuablePagedFlux<T> extends ContinuablePagedFlux<String, 
      * This is recommended for most common scenarios. This will seamlessly fetch next
      * page when required and provide with a {@link Flux} of items.
      *
-     * @param coreSubscriber The subscriber for this {@link CosmosContinuablePagedFlux}
+     * @param coreSubscriber The subscriber for this {@link CosmosPagedFlux}
      */
     @Override
     public void subscribe(CoreSubscriber<? super T> coreSubscriber) {

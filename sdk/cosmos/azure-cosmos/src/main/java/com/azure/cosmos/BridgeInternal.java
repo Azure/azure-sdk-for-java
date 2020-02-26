@@ -26,9 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.apache.commons.lang3.tuple.Pair;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -485,8 +483,8 @@ public class BridgeInternal {
         feedOptions.maxItemCount(maxItemCount);
     }
 
-    public static <T> CosmosContinuablePagedFlux<T> createCosmosContinuablePagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
-        return new CosmosContinuablePagedFlux<>(pagedFluxOptionsFluxFunction);
+    public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
+        return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction);
     }
 
     public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
