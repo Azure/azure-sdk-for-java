@@ -4,6 +4,7 @@
 package com.azure.core.util.paging;
 
 import com.azure.core.util.IterableStream;
+
 import java.util.stream.Stream;
 
 /**
@@ -18,17 +19,28 @@ import java.util.stream.Stream;
  * @see ContinuablePagedFlux
  */
 public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> extends IterableStream<T> {
-    private static final int DEFAULT_BATCH_SIZE = 1;
     private final ContinuablePagedFlux<C, T, P> pagedFlux;
+    private final int batchSize;
 
     /**
-     * Creates instance given {@link ContinuablePagedFlux}.
+     * Creates instance with the given {@link ContinuablePagedFlux}.
      *
      * @param pagedFlux the paged flux use as iterable
      */
     public ContinuablePagedIterable(ContinuablePagedFlux<C, T, P> pagedFlux) {
+        this(pagedFlux, 1);
+    }
+
+    /**
+     * Creates instance with the given {@link ContinuablePagedFlux}.
+     *
+     * @param pagedFlux the paged flux use as iterable
+     * @param batchSize the bounded capacity to prefetch from the {@link ContinuablePagedFlux}
+     */
+    public ContinuablePagedIterable(ContinuablePagedFlux<C, T, P> pagedFlux, int batchSize) {
         super(pagedFlux);
         this.pagedFlux = pagedFlux;
+        this.batchSize = batchSize;
     }
 
     /**
@@ -38,7 +50,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage() {
-        return pagedFlux.byPage().toStream(DEFAULT_BATCH_SIZE);
+        return pagedFlux.byPage().toStream(this.batchSize);
     }
 
     /**
@@ -49,7 +61,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(C continuationToken) {
-        return this.pagedFlux.byPage(continuationToken).toStream(DEFAULT_BATCH_SIZE);
+        return this.pagedFlux.byPage(continuationToken).toStream(this.batchSize);
     }
 
     /**
@@ -64,7 +76,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(int preferredPageSize) {
-        return this.pagedFlux.byPage(null, preferredPageSize).toStream(DEFAULT_BATCH_SIZE);
+        return this.pagedFlux.byPage(null, preferredPageSize).toStream(this.batchSize);
     }
 
     /**
@@ -79,7 +91,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(C continuationToken, int preferredPageSize) {
-        return this.pagedFlux.byPage(continuationToken, preferredPageSize).toStream(DEFAULT_BATCH_SIZE);
+        return this.pagedFlux.byPage(continuationToken, preferredPageSize).toStream(this.batchSize);
     }
 
     /**
@@ -89,7 +101,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return {@link Stream} of a pages
      */
     public Iterable<P> iterableByPage() {
-        return this.pagedFlux.byPage().toIterable(DEFAULT_BATCH_SIZE);
+        return this.pagedFlux.byPage().toIterable(this.batchSize);
     }
 
     /**
@@ -100,7 +112,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(C continuationToken) {
-        return this.pagedFlux.byPage(continuationToken).toIterable(DEFAULT_BATCH_SIZE);
+        return this.pagedFlux.byPage(continuationToken).toIterable(this.batchSize);
     }
 
     /**
@@ -115,7 +127,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(int preferredPageSize) {
-        return this.pagedFlux.byPage(null, preferredPageSize).toIterable(DEFAULT_BATCH_SIZE);
+        return this.pagedFlux.byPage(null, preferredPageSize).toIterable(this.batchSize);
     }
 
     /**
@@ -130,6 +142,6 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(C continuationToken, int preferredPageSize) {
-        return this.pagedFlux.byPage(continuationToken, preferredPageSize).toIterable(DEFAULT_BATCH_SIZE);
+        return this.pagedFlux.byPage(continuationToken, preferredPageSize).toIterable(this.batchSize);
     }
 }
