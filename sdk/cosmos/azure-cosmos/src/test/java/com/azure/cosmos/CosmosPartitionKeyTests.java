@@ -180,7 +180,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
 
         // one document was created during setup, one with create (which was replaced) and one with upsert
         FeedOptions feedOptions = new FeedOptions();
-        feedOptions.partitionKey(PartitionKey.NONE);
+        feedOptions.setPartitionKey(PartitionKey.NONE);
         ArrayList<String> expectedIds = new ArrayList<String>();
         expectedIds.add(NON_PARTITIONED_CONTAINER_DOCUEMNT_ID);
         expectedIds.add(replacedItemId);

@@ -128,11 +128,11 @@ public class BasicDemo {
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
         FeedOptions options = new FeedOptions();
-        options.populateQueryMetrics(true);
-        options.maxItemCount(1);
+        options.setPopulateQueryMetrics(true);
+        options.setMaxItemCount(1);
         String continuation = null;
         do {
-            options.requestContinuation(continuation);
+            options.setRequestContinuation(continuation);
             CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
             FeedResponse<TestObject> page = queryFlux.byPage().blockFirst();
             assert page != null;

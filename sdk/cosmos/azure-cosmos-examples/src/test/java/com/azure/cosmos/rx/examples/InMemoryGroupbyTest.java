@@ -105,7 +105,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         // If you want to understand the steps in more details see groupByInMemoryMoreDetail()
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<Document> documentsObservable = client
                 .<Document>queryDocuments(getCollectionLink(),
@@ -136,7 +136,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
 
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<Document> documentsObservable = client
                 .<Document>queryDocuments(getCollectionLink(),

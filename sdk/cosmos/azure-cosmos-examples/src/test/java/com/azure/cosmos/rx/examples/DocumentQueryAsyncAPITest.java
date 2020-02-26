@@ -129,7 +129,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_Async() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -174,7 +174,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_Async_withoutLambda() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -222,7 +222,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_findTotalRequestCharge() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<Double> totalChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
@@ -246,7 +246,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_unsubscribeAfterFirstPage() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<FeedResponse<Document>> requestChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -282,7 +282,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_filterFetchedResults() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Predicate<Document> isPrimeNumber = new Predicate<Document>() {
 
@@ -341,7 +341,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         // Query for documents
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -390,7 +390,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         // Query for the documents order by the prop field
         SqlQuerySpec query = new SqlQuerySpec("SELECT r.id FROM r ORDER BY r.prop", new SqlParameterList());
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
+        options.setMaxItemCount(5);
 
         // Max degree of parallelism determines the number of partitions that
         // the SDK establishes simultaneous connections to.
@@ -426,7 +426,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void transformObservableToCompletableFuture() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
