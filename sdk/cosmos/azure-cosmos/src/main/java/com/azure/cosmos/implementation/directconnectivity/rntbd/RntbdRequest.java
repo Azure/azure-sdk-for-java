@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.azure.cosmos.implementation.guava27.Strings;
 import io.netty.buffer.ByteBuf;
 
-import java.nio.ByteBuffer;
 import java.util.UUID;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdRequestHeader;
@@ -20,17 +19,16 @@ public final class RntbdRequest {
 
     private final RntbdRequestFrame frame;
     private final RntbdRequestHeaders headers;
-    private final ByteBuffer payload;
+    private final byte[] payload;
 
-    private RntbdRequest(final RntbdRequestFrame frame, final RntbdRequestHeaders headers, final ByteBuffer payload) {
+    private RntbdRequest(final RntbdRequestFrame frame, final RntbdRequestHeaders headers, final byte[] payload) {
 
         checkNotNull(frame, "frame");
         checkNotNull(headers, "headers");
 
         this.frame = frame;
         this.headers = headers;
-        this.payload = payload == null ? ByteBuffer.wrap(EMPTY_BYTE_ARRAY) : payload;
-        this.payload.position(0);
+        this.payload = payload == null ? EMPTY_BYTE_ARRAY : payload;
     }
 
     public UUID getActivityId() {
@@ -74,7 +72,7 @@ public final class RntbdRequest {
         payloadBuf.readBytes(payload);
         in.discardReadBytes();
 
-        return new RntbdRequest(header, metadata, ByteBuffer.wrap(payload));
+        return new RntbdRequest(header, metadata, payload);
     }
 
     void encode(final ByteBuf out) {
@@ -88,9 +86,9 @@ public final class RntbdRequest {
 
         assert out.writerIndex() - start == expectedLength;
 
-        if (this.payload.limit() > 0) {
-            out.writeIntLE(this.payload.limit());
-            out.writeBytes(this.payload);
+        if (this.payload.length > 0) {
+            out.writeIntLE(this.payload.length);
+            out.writeBytes(payload);
         }
     }
 
@@ -105,6 +103,6 @@ public final class RntbdRequest {
 
         final RntbdRequestHeaders headers = new RntbdRequestHeaders(args, frame);
 
-        return new RntbdRequest(frame, headers, serviceRequest.getByteBuffer());
+        return new RntbdRequest(frame, headers, serviceRequest.getContentAsByteArray());
     }
 }

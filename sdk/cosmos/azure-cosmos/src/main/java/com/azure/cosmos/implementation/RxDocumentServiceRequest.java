@@ -59,7 +59,7 @@ public class RxDocumentServiceRequest {
 
     private Flux<byte[]> contentObservable;
 
-    private ByteBuffer byteBuffer;
+    private byte[] contentAsByteArray;
 
     // NOTE: TODO: these fields are copied from .Net SDK
     // some of these fields are missing from the main java sdk service request
@@ -130,7 +130,7 @@ public class RxDocumentServiceRequest {
         this.operationType = operationType;
         this.forceNameCacheRefresh = false;
         this.resourceType = resourceType;
-        this.byteBuffer = byteBuffer;
+        this.contentAsByteArray = toByteArray(byteBuffer);
         this.headers = headers != null ? headers : new HashMap<>();
         this.activityId = Utils.randomUUID();
         this.isFeed = false;
@@ -233,7 +233,7 @@ public class RxDocumentServiceRequest {
             path,
             headers);
         this.authorizationTokenType = authorizationTokenType;
-        this.byteBuffer = byteBuffer;
+        this.contentAsByteArray = toByteArray(byteBuffer);
         this.contentObservable = contentObservable;
     }
 
@@ -325,11 +325,11 @@ public class RxDocumentServiceRequest {
     }
 
     public void setContentBytes(byte[] contentBytes) {
-        this.byteBuffer = wrapByteBuffer(contentBytes);
+        this.contentAsByteArray = contentBytes;
     }
 
     public void setByteBuffer(ByteBuffer byteBuffer) {
-        this.byteBuffer = byteBuffer;
+        this.contentAsByteArray = toByteArray(byteBuffer);
     }
 
     /**
@@ -1075,37 +1075,22 @@ public class RxDocumentServiceRequest {
         return contentObservable;
     }
 
-    public Flux<ByteBuf> getContentAsByteBufFlux() {
-        if (byteBuffer == null) {
+    public synchronized Flux<ByteBuf> getContentAsByteBufFlux() {
+        if (contentAsByteArray == null) {
             return Flux.empty();
         }
 
-        return Flux.just(Unpooled.wrappedBuffer(getByteBuffer()));
+        return Flux.just(Unpooled.wrappedBuffer(contentAsByteArray));
     }
 
-    public byte[] copyContentAsByteArray() {
-        if (byteBuffer == null) {
-            return null;
-        }
-
-        try {
-            return IOUtils.toByteArray(new ByteBufferBackedInputStream(getByteBuffer()));
-        } catch (IOException e) {
-           throw new IllegalArgumentException(e);
-        }
-    }
-
-    public ByteBuffer getByteBuffer() {
-        if (this.byteBuffer != null) {
-            this.byteBuffer.rewind();
-        }
-        return this.byteBuffer;
+    public byte[] getContentAsByteArray() {
+        return contentAsByteArray;
     }
 
     public RxDocumentServiceRequest clone() {
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
-        rxDocumentServiceRequest.setByteBuffer(this.getByteBuffer());
+        rxDocumentServiceRequest.setContentBytes(rxDocumentServiceRequest.contentAsByteArray);
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
         rxDocumentServiceRequest.setDefaultReplicaIndex(this.getDefaultReplicaIndex());
         rxDocumentServiceRequest.setEndpointOverride(this.getEndpointOverride());
@@ -1127,8 +1112,8 @@ public class RxDocumentServiceRequest {
             return;
         }
 
-        if (this.byteBuffer != null) {
-            this.byteBuffer = null;
+        if (this.contentAsByteArray != null) {
+            this.contentAsByteArray = null;
         }
 
         this.isDisposed = true;
@@ -1169,5 +1154,9 @@ public class RxDocumentServiceRequest {
 
     private static ByteBuffer wrapByteBuffer(byte[] bytes) {
         return bytes != null ? ByteBuffer.wrap(bytes) : null;
+    }
+
+    public String summaryToString() {
+        return operationType + ":" + resourceType;
     }
 }
