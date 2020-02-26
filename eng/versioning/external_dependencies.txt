@@ -193,11 +193,6 @@ keyvault_org.mockito:mockito-core;1.10.19
 # sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
 keyvault_com.microsoft.azure:azure-storage;4.4.0
 
-# sdk\loganalytics\microsoft-azure-loganalytics\pom.xml
-loganalytics_com.microsoft.azure:azure-arm-client-runtime;1.6.3
-loganalytics_com.microsoft.azure:azure-client-authentication;1.6.3
-loganalytics_com.microsoft.azure:azure-client-runtime;1.6.3
-
 # sdk\mediaservices\microsoft-azure-media\pom.xml which hasn't been released for 2 years
 # all of these unique references below are listed here because they're old, some are over 10 years old
 media_javax.xml.bind:jaxb-api;2.2.7
