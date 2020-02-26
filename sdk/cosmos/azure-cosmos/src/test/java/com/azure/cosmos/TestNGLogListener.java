@@ -7,22 +7,35 @@ import org.slf4j.LoggerFactory;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
 import org.testng.ITestResult;
+import org.testng.SkipException;
 
 public class TestNGLogListener implements IInvokedMethodListener {
     private final Logger logger = LoggerFactory.getLogger(TestNGLogListener.class);
+
     @Override
     public void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
-        logger.info("... beforeInvocation: {}#{}", iInvokedMethod.getTestMethod().getRealClass().getSimpleName(), iInvokedMethod.getTestMethod().getMethodName());
+        logger.info("beforeInvocation: {}", methodName(iInvokedMethod));
     }
 
     @Override
     public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
-        logger.info("... afterInvocation: {}#{}, total time {}ms, result {}",
-            iInvokedMethod.getTestMethod().getRealClass().getSimpleName(), iInvokedMethod.getTestMethod().getMethodName(),
+        logger.info("afterInvocation: {}, total time {}ms, result {}",
+            methodName(iInvokedMethod),
             iTestResult.getEndMillis() - iTestResult.getStartMillis(),
-            iTestResult.isSuccess() ? "test success": "test failure. reason: " + failureDetails(iTestResult)
-            );
+            resultDetails(iTestResult)
+        );
+    }
 
+    private String resultDetails(ITestResult iTestResult) {
+        if (iTestResult.isSuccess()) {
+            return "success";
+        }
+
+        if (iTestResult.getThrowable() instanceof SkipException) {
+            return "skipped. reason: " + failureDetails(iTestResult);
+        }
+
+        return "failed. reason: " + failureDetails(iTestResult);
     }
 
     private String failureDetails(ITestResult iTestResult) {
@@ -30,7 +43,15 @@ public class TestNGLogListener implements IInvokedMethodListener {
             return null;
         }
 
+        if (iTestResult.getThrowable() == null) {
+            logger.error("throwable is null");
+            return null;
+        }
 
         return iTestResult.getThrowable().getClass().getName() + ": " + iTestResult.getThrowable().getMessage();
+    }
+
+    private String methodName(IInvokedMethod iInvokedMethod) {
+        return iInvokedMethod.getTestMethod().getRealClass().getSimpleName() + "#" + iInvokedMethod.getTestMethod().getMethodName();
     }
 }
