@@ -47,9 +47,17 @@ public class ModelWithPrimitiveCollections {
         return this;
     }
 
+    public Boolean[] bools() {
+        return  bools;
+    }
+
     public ModelWithPrimitiveCollections dates(OffsetDateTime[] dates) {
         this.dates = dates;
         return this;
+    }
+
+    public OffsetDateTime[] dates() {
+        return dates;
     }
 
     public ModelWithPrimitiveCollections doubles(Double[] doubles) {
@@ -57,9 +65,17 @@ public class ModelWithPrimitiveCollections {
         return this;
     }
 
+    public Double[] doubles() {
+        return doubles;
+    }
+
     public ModelWithPrimitiveCollections ints(int[] ints) {
         this.ints = ints;
         return this;
+    }
+
+    public int[] ints() {
+        return ints;
     }
 
     public ModelWithPrimitiveCollections longs(Long[] longs) {
@@ -67,13 +83,25 @@ public class ModelWithPrimitiveCollections {
         return this;
     }
 
+    public Long[] longs() {
+        return longs;
+    }
+
     public ModelWithPrimitiveCollections points(GeoPoint[] points) {
         this.points = points;
         return this;
     }
 
+    public GeoPoint[] points() {
+        return points;
+    }
+
     public ModelWithPrimitiveCollections strings(String[] strings) {
         this.strings = strings;
         return this;
+    }
+
+    public String[] strings() {
+        return strings;
     }
 }

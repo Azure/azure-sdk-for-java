@@ -9,8 +9,8 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.util.Context;
 
@@ -33,7 +33,7 @@ public class DetectLanguageBatchDocuments {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The texts that need be analysed.
+        // The texts that need be analyzed.
         List<DetectLanguageInput> inputs = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English.", "US"),
             new DetectLanguageInput("2", "Este es un document escrito en Español.", "ES")
@@ -44,7 +44,7 @@ public class DetectLanguageBatchDocuments {
 
         // Detecting batch languages
         final DocumentResultCollection<DetectLanguageResult> detectedBatchResult =
-            client.detectBatchLanguagesWithResponse(inputs, requestOptions, Context.NONE).getValue();
+            client.detectLanguageBatchWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", detectedBatchResult.getModelVersion());
 
         // Batch statistics
@@ -65,16 +65,10 @@ public class DetectLanguageBatchDocuments {
             }
             // Valid document
             final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
-            System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %s.%n",
+            System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %.2f.%n",
                 detectedPrimaryLanguage.getName(),
                 detectedPrimaryLanguage.getIso6391Name(),
                 detectedPrimaryLanguage.getScore());
-            for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
-                System.out.printf("Another detected language: %s, ISO 6391 name: %s, score: %s.%n",
-                    detectedLanguage.getName(),
-                    detectedLanguage.getIso6391Name(),
-                    detectedLanguage.getScore());
-            }
         }
     }
 }

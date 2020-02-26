@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
@@ -22,15 +23,23 @@ public class RecognizeLinkedEntities {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that need be analysed.
+        // The text that needs be analyzed.
         String text = "Old Faithful is a geyser at Yellowstone Park.";
 
         for (LinkedEntity linkedEntity : client.recognizeLinkedEntities(text)) {
-            System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
+            System.out.println("Linked Entities:");
+            System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(),
+                linkedEntity.getDataSourceEntityId(),
                 linkedEntity.getUrl(),
                 linkedEntity.getDataSource());
+            for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
+                System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
+                    linkedEntityMatch.getText(),
+                    linkedEntityMatch.getOffset(),
+                    linkedEntityMatch.getLength(),
+                    linkedEntityMatch.getScore());
+            }
         }
     }
-
 }

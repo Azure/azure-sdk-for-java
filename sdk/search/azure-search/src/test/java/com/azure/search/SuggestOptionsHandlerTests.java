@@ -4,10 +4,12 @@
 package com.azure.search;
 
 import com.azure.search.models.SuggestOptions;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+
 import java.util.Collections;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SuggestOptionsHandlerTests {
 
@@ -19,10 +21,10 @@ public class SuggestOptionsHandlerTests {
         List<String> emptySelect =  Collections.emptyList();
 
         SuggestOptions suggestOptions = createTestOptions();
-        Assert.assertEquals(suggestOptions.getSelect(), emptySelect);
+        assertEquals(suggestOptions.getSelect(), emptySelect);
 
         SuggestOptions ensuredSuggestOptions = SuggestOptionsHandler.ensureSuggestOptions(suggestOptions);
-        Assert.assertEquals(ensuredSuggestOptions.getSelect(), SELECT_STAR);
+        assertEquals(ensuredSuggestOptions.getSelect(), SELECT_STAR);
     }
 
     @Test
@@ -31,14 +33,14 @@ public class SuggestOptionsHandlerTests {
         SuggestOptions suggestOptions = createTestOptions();
         SuggestOptions ensuredSuggestOptions = SuggestOptionsHandler.ensureSuggestOptions(suggestOptions);
 
-        Assert.assertEquals(suggestOptions.getFilter(), ensuredSuggestOptions.getFilter());
-        Assert.assertEquals(suggestOptions.getHighlightPostTag(), ensuredSuggestOptions.getHighlightPostTag());
-        Assert.assertEquals(suggestOptions.getHighlightPreTag(), ensuredSuggestOptions.getHighlightPreTag());
-        Assert.assertEquals(suggestOptions.getMinimumCoverage(), ensuredSuggestOptions.getMinimumCoverage());
-        Assert.assertEquals(suggestOptions.getOrderBy(), ensuredSuggestOptions.getOrderBy());
-        Assert.assertEquals(suggestOptions.getSearchFields(), ensuredSuggestOptions.getSearchFields());
-        Assert.assertEquals(suggestOptions.getTop(), ensuredSuggestOptions.getTop());
-        Assert.assertEquals(suggestOptions.isUseFuzzyMatching(), ensuredSuggestOptions.isUseFuzzyMatching());
+        assertEquals(suggestOptions.getFilter(), ensuredSuggestOptions.getFilter());
+        assertEquals(suggestOptions.getHighlightPostTag(), ensuredSuggestOptions.getHighlightPostTag());
+        assertEquals(suggestOptions.getHighlightPreTag(), ensuredSuggestOptions.getHighlightPreTag());
+        assertEquals(suggestOptions.getMinimumCoverage(), ensuredSuggestOptions.getMinimumCoverage());
+        assertEquals(suggestOptions.getOrderBy(), ensuredSuggestOptions.getOrderBy());
+        assertEquals(suggestOptions.getSearchFields(), ensuredSuggestOptions.getSearchFields());
+        assertEquals(suggestOptions.getTop(), ensuredSuggestOptions.getTop());
+        assertEquals(suggestOptions.isUseFuzzyMatching(), ensuredSuggestOptions.isUseFuzzyMatching());
 
     }
 
@@ -47,7 +49,7 @@ public class SuggestOptionsHandlerTests {
         SuggestOptions suggestOptions = createTestOptions();
         SuggestOptions ensuredSuggestOptions = SuggestOptionsHandler.ensureSuggestOptions(suggestOptions);
 
-        Assert.assertSame(suggestOptions, ensuredSuggestOptions);
+        assertEquals(suggestOptions, ensuredSuggestOptions);
     }
 
     private static SuggestOptions createTestOptions() {

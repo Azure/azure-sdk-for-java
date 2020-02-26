@@ -22,7 +22,8 @@ import java.util.List;
  */
 public class RecognizePiiBatchDocuments {
     /**
-     * Main method to invoke this demo about how to recognize the PII entities of a batch input text.
+     * Main method to invoke this demo about how to recognize the Personally Identifiable Information entities of a
+     * batch input text.
      *
      * @param args Unused arguments to the program.
      */
@@ -33,7 +34,7 @@ public class RecognizePiiBatchDocuments {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The texts that need be analysed.
+        // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
             new TextDocumentInput("1", "My SSN is 555-55-5555", "en"),
             new TextDocumentInput("2", "Visa card 4111 1111 1111 1111", "en")
@@ -44,7 +45,7 @@ public class RecognizePiiBatchDocuments {
 
         // Recognizing batch entities
         final DocumentResultCollection<RecognizePiiEntitiesResult> recognizedBatchResult =
-            client.recognizeBatchPiiEntitiesWithResponse(inputs, requestOptions, Context.NONE).getValue();
+            client.recognizePiiEntitiesBatchWithResponse(inputs, requestOptions, Context.NONE).getValue();
         System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
 
         // Batch statistics
@@ -55,17 +56,18 @@ public class RecognizePiiBatchDocuments {
             batchStatistics.getTransactionCount(),
             batchStatistics.getValidDocumentCount());
 
-        // Recognized PII entities for each of document from a batch of documents
+        // Recognized Personally Identifiable Information entities for each of document from a batch of documents
         for (RecognizePiiEntitiesResult piiEntityDocumentResult : recognizedBatchResult) {
             System.out.printf("Document ID: %s%n", piiEntityDocumentResult.getId());
             // Erroneous document
             if (piiEntityDocumentResult.isError()) {
-                System.out.printf("Cannot recognize PII entities. Error: %s%n", piiEntityDocumentResult.getError().getMessage());
+                System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n",
+                    piiEntityDocumentResult.getError().getMessage());
                 continue;
             }
             // Valid document
             for (PiiEntity entity : piiEntityDocumentResult.getEntities()) {
-                System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %s.%n",
+                System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
                     entity.getText(),
                     entity.getCategory(),
                     entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),

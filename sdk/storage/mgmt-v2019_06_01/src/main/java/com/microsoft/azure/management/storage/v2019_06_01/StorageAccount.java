@@ -38,6 +38,11 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
     AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication();
 
     /**
+     * @return the blobRestoreStatus value.
+     */
+    BlobRestoreStatus blobRestoreStatus();
+
+    /**
      * @return the creationTime value.
      */
     DateTime creationTime();

@@ -6,27 +6,29 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The SentenceSentiment model.
+ * The {@link SentenceSentiment} model that contains a sentiment label of a sentence, confidence score of the sentiment
+ * label, length of the sentence and offset of the sentence within a document.
  */
 @Immutable
 public final class SentenceSentiment {
     private final int length;
     private final int offset;
-    private final SentimentScorePerLabel sentimentScores;
-    private final SentimentLabel sentiment;
+    private final SentimentConfidenceScorePerLabel confidenceScores;
+    private final SentenceSentimentLabel sentiment;
 
     /**
-     * Creates a {@code SentenceSentiment} model that describes the sentiment analysis of sentence.
+     * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
      *
-     * @param sentiment sentiment label of the sentence
-     * @param sentimentScores the score of sentiment label of the sentence
-     * @param length length of the sentence
-     * @param offset the offset from the start of the sentence
+     * @param sentiment sentiment label of the sentence.
+     * @param confidenceScores the sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
+     *   Higher values signify higher confidence.
+     * @param length length of the sentence.
+     * @param offset the offset from the start of the sentence.
      */
-    public SentenceSentiment(SentimentLabel sentiment, SentimentScorePerLabel sentimentScores, int length,
-                             int offset) {
+    public SentenceSentiment(SentenceSentimentLabel sentiment, SentimentConfidenceScorePerLabel confidenceScores,
+        int length, int offset) {
         this.sentiment = sentiment;
-        this.sentimentScores = sentimentScores;
+        this.confidenceScores = confidenceScores;
         this.length = length;
         this.offset = offset;
     }
@@ -34,7 +36,7 @@ public final class SentenceSentiment {
     /**
      * Get the length of the sentence by Unicode standard.
      *
-     * @return the length of the sentence by Unicode standard
+     * @return the length of the sentence by Unicode standard.
      */
     public int getLength() {
         return length;
@@ -43,28 +45,28 @@ public final class SentenceSentiment {
     /**
      * Get the offset of the sentence sentiment.
      *
-     * @return the offset of sentence sentiment
+     * @return the offset of sentence sentiment.
      */
     public int getOffset() {
         return offset;
     }
 
     /**
-     * Get the text sentiment labels: POSITIVE, NEGATIVE, NEUTRAL, MIXED.
+     * Get the text sentiment label: POSITIVE, NEGATIVE, or NEUTRAL.
      *
-     * @return the SentimentLabel
+     * @return the {@link SentenceSentimentLabel}.
      */
-    public SentimentLabel getSentiment() {
+    public SentenceSentimentLabel getSentiment() {
         return sentiment;
     }
 
     /**
-     * Get the score of the sentiment label. All score values sum up to 1, higher the score value means higher
-     * confidence the sentiment label represents.
+     * Get the confidence score of the sentiment label. All score values sum up to 1, higher the score value means
+     * higher confidence the sentiment label represents.
      *
-     * @return the SentimentScorePerLabel
+     * @return the {@link SentimentConfidenceScorePerLabel}.
      */
-    public SentimentScorePerLabel getSentimentScores() {
-        return sentimentScores;
+    public SentimentConfidenceScorePerLabel getConfidenceScores() {
+        return confidenceScores;
     }
 }

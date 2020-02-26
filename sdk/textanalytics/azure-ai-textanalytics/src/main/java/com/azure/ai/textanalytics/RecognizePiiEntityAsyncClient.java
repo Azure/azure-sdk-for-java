@@ -28,14 +28,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 
 /**
- * Helper class for managing recognize PII entity endpoint.
+ * Helper class for managing recognize Personally Identifiable Information entity endpoint.
  */
 class RecognizePiiEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(RecognizePiiEntityAsyncClient.class);
@@ -43,7 +42,7 @@ class RecognizePiiEntityAsyncClient {
 
     /**
      * Create a {@code RecognizePiiEntityAsyncClient} that sends requests to the Text Analytics services's
-     * recognize PII entity endpoint.
+     * recognize Personally Identifiable Information entity endpoint.
      *
      * @param service The proxy service used to perform REST calls.
      */
@@ -54,7 +53,7 @@ class RecognizePiiEntityAsyncClient {
     Mono<PagedResponse<PiiEntity>> recognizePiiEntitiesWithResponse(String text, String language, Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
-        return recognizeBatchPiiEntitiesWithResponse(
+        return recognizePiiEntitiesBatchWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
             .map(response -> new PagedResponseBase<>(
                 response.getRequest(),
@@ -70,27 +69,19 @@ class RecognizePiiEntityAsyncClient {
         return new PagedFlux<>(() -> recognizePiiEntitiesWithResponse(text, language, context));
     }
 
-    Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesWithResponse(
-        List<String> textInputs, String language, Context context) {
+    Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesBatchWithResponse(
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
-            new TextDocumentInput(index, value, language));
-        return recognizeBatchPiiEntitiesWithResponse(documentInputs, null, context);
-    }
-
-    Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizeBatchPiiEntitiesWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-            .setDocuments(toMultiLanguageInput(textInputs));
         return service.entitiesRecognitionPiiWithRestResponseAsync(
-            batchInput,
+            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(textInputs)),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("Processing a batch of PII entities input"))
-            .doOnSuccess(response -> logger.info("A batch of PII entities output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to recognize PII entities - {}", error))
+            .doOnSubscribe(ignoredValue ->
+                logger.info("Processing a batch of Personally Identifiable Information entities input"))
+            .doOnSuccess(response -> logger.info("A batch of Personally Identifiable Information entities output - {}",
+                response.getValue()))
+            .doOnError(error -> logger.warning("Failed to recognize Personally Identifiable Information entities - {}",
+                error))
             .map(response -> new SimpleResponse<>(response, toPiiDocumentResultCollection(response.getValue())));
     }
 

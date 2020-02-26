@@ -11,7 +11,7 @@ package com.microsoft.azure.management.policy.v2019_09_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ParameterValuesValue model.
+ * The value of a parameter.
  */
 public class ParameterValuesValue {
     /**

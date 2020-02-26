@@ -168,6 +168,25 @@
   <!-- Suppress IO exception in the NIO package because they are required by the interface -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.nio/*"/>
 
+
+  <!-- Suppress the checks as these are internal smoke test classes in Java perf framework not used by public API -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.perf.test.core.SleepTest.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.perf.test.core.ExceptionTest.java"/>
+
+  <!-- Internal smoke test classes in Java perf framework need the public modifier -->
+  <suppress checks="RedundantModifier" files="com.azure.perf.test.core.NoOpTest.java"/>
+  <suppress checks="RedundantModifier" files="com.azure.perf.test.core.SleepTest.java"/>
+  <suppress checks="RedundantModifier" files="com.azure.perf.test.core.ExceptionTest.java"/>
+
+  <!-- The variables are assigned by jcommander annotation injection framework, cannot be made final. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.SizeOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.CountOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.PerfStressOptions.java"/>
+
+  <!-- These classes do general output, which is required always, not only when logging is turned on -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLogging" files="com.azure.perf.test.core.SleepTest.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLogging" files="com.azure.perf.test.core.PerfStressProgram.java"/>
+
   <!-- Suppress external dependency Checkstyle on Netty and OkHttp HttpClient packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
@@ -208,6 +227,10 @@
   <!-- Report AMQP retry attempts in static withRetry method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.amqp.implementation.RetryUtil.java"/>
   
+  <!-- The Identity Azure Platform End to tend Test.-->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.endtoend.identity.IdentityTest.java"/>
+    <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.endtoend.identity.WebJobsIdentityTest.java"/>
+  
   <!-- Use the logger in a Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.textanalytics.Transforms.java" />
 
@@ -234,7 +257,7 @@
   <!-- Suppress the check on any implementation code and codegen classes -->
   <suppress checks="LineLength" files=".*[/\\]storage[/\\].*implementation[/\\].*"/>
   <suppress checks="LineLength" files="com.azure.storage.blob.models.BlobErrorCode.java"/>
-  <suppress checks="LineLength" files="com.azure.storage.file.share.models.FileErrorCode.java"/>
+  <suppress checks="LineLength" files="com.azure.storage.file.share.models.ShareErrorCode.java"/>
   <suppress checks="LineLength" files="com.azure.storage.queue.models.QueueErrorCode.java"/>
 
   <!-- Suppress datalake for now as it is new development -->
@@ -249,6 +272,8 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.data.appconfiguration.ConfigurationAsyncClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.file.share.specialized.ShareLeaseClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.file.share.specialized.ShareLeaseAsyncClient.java"/>
 
   <!-- Suppress public/private constructor check since BlobClients need protected constructors to create EncryptedClients -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.storage.blob.BlobAsyncClient.java"/>
@@ -295,4 +320,7 @@
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]textanalytics[/\\].*"/>
 
+  <!-- Don't enforce non-static ClientLogger instances in azure-core-mgmt PollerFactory and PollingState types-->
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)" files="com.azure.core.management.implementation.polling.PollerFactory.java"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)" files="com.azure.core.management.implementation.polling.PollingState.java"/>
 </suppressions>

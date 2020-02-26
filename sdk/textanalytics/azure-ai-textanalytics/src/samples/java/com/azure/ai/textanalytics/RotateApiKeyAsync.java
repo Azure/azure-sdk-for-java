@@ -24,19 +24,21 @@ public class RotateApiKeyAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analysed.
+        // The text that needs be analyzed.
         String text = "My cat might need to see a veterinarian.";
 
+        System.out.println("Extracted phrases:");
         client.extractKeyPhrases(text).subscribe(
-            keyPhrase -> System.out.printf("Recognized phrases: %s.%n", keyPhrase),
+            keyPhrase -> System.out.printf("%s.%n", keyPhrase),
             error -> System.err.println("There was an error extracting key phrases of the text." + error),
             () -> System.out.println("Key phrases extracted."));
 
         // Update the API key
         credential.updateCredential("{valid_api_key}");
 
+        System.out.println("Extracted phrases:");
         client.extractKeyPhrases(text).subscribe(
-            keyPhrase -> System.out.printf("Recognized phrases: %s.%n", keyPhrase),
+            keyPhrase -> System.out.printf("%s.%n", keyPhrase),
             error -> System.err.println("There was an error extracting key phrases of the text." + error),
             () -> System.out.println("Key phrases extracted."));
 

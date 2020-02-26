@@ -3,17 +3,19 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
@@ -75,28 +77,28 @@ public class ReadmeSamples {
     public void detectLanguages() {
         String inputText = "Bonjour tout le monde";
         DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(inputText);
-        System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %s.%n",
+        System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %.2f.%n",
             detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
     }
 
     /**
-     * Code snippet for recognizing Category entity in a text.
+     * Code snippet for recognizing category entity in a text.
      */
     public void recognizeCategorizedEntity() {
         String text = "Satya Nadella is the CEO of Microsoft";
         for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text)) {
-            System.out.printf("Recognized categorized entity: %s, category: %s, subCategory: %s, score: %s.%n",
+            System.out.printf("Recognized categorized entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
         }
     }
 
     /**
-     * Code snippet for recognizing PII entity in a text.
+     * Code snippet for recognizing Personally Identifiable Information entity in a text.
      */
     public void recognizePiiEntity() {
         String text = "My SSN is 555-55-5555";
         for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text)) {
-            System.out.printf("Recognized PII entity: %s, category: %s, subCategory: %s, score: %s.%n",
+            System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
         }
     }
@@ -107,8 +109,13 @@ public class ReadmeSamples {
     public void recognizeLinkedEntity() {
         String text = "Old Faithful is a geyser at Yellowstone Park.";
         for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text)) {
-            System.out.printf("Recognized linked entity: %s, url: %s, data source: %s.%n",
-                linkedEntity.getName(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+            System.out.println("Linked Entities:");
+            System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
+                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+            for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
+                System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n", linkedEntityMatch.getText(),
+                    linkedEntityMatch.getOffset(), linkedEntityMatch.getLength(), linkedEntityMatch.getScore());
+            }
         }
     }
 
@@ -117,8 +124,9 @@ public class ReadmeSamples {
      */
     public void extractKeyPhrases() {
         String text = "My cat might need to see a veterinarian.";
+        System.out.println("Extracted phrases:");
         for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text)) {
-            System.out.printf("Recognized phrases: %s.%n", keyPhrase);
+            System.out.printf("%s.%n", keyPhrase);
         }
     }
 
@@ -144,7 +152,7 @@ public class ReadmeSamples {
         );
 
         try {
-            textAnalyticsClient.detectBatchLanguages(inputs);
+            textAnalyticsClient.detectLanguageBatchWithResponse(inputs, null, Context.NONE);
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }

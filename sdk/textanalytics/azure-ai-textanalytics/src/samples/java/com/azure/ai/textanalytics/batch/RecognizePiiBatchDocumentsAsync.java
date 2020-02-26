@@ -23,7 +23,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class RecognizePiiBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to recognize the PII entities of a batch input text.
+     * Main method to invoke this demo about how to recognize the Personally Identifiable Information entities of a
+     * batch input text.
      *
      * @param args Unused arguments to the program.
      */
@@ -34,7 +35,7 @@ public class RecognizePiiBatchDocumentsAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The texts that need be analysed.
+        // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
             new TextDocumentInput("1", "My SSN is 555-55-5555", "en"),
             new TextDocumentInput("2", "Visa card 4111 1111 1111 1111", "en")
@@ -44,7 +45,7 @@ public class RecognizePiiBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Recognizing batch entities
-        client.recognizeBatchPiiEntitiesWithResponse(inputs, requestOptions).subscribe(
+        client.recognizePiiEntitiesBatchWithResponse(inputs, requestOptions).subscribe(
             result -> {
                 final DocumentResultCollection<RecognizePiiEntitiesResult> recognizedBatchResult = result.getValue();
                 System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
@@ -57,17 +58,18 @@ public class RecognizePiiBatchDocumentsAsync {
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
-                // Recognized PII entities for each of document from a batch of documents
+                // Recognized Personally Identifiable Information entities for each of document from a batch of documents
                 for (RecognizePiiEntitiesResult piiEntityDocumentResult : recognizedBatchResult) {
                     System.out.printf("Document ID: %s%n", piiEntityDocumentResult.getId());
                     // Erroneous document
                     if (piiEntityDocumentResult.isError()) {
-                        System.out.printf("Cannot recognize PII entities. Error: %s%n", piiEntityDocumentResult.getError().getMessage());
+                        System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n",
+                            piiEntityDocumentResult.getError().getMessage());
                         continue;
                     }
                     // Valid document
                     for (PiiEntity entity : piiEntityDocumentResult.getEntities()) {
-                        System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %s.%n",
+                        System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
                             entity.getText(),
                             entity.getCategory(),
                             entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
@@ -77,8 +79,8 @@ public class RecognizePiiBatchDocumentsAsync {
                     }
                 }
             },
-            error -> System.err.println("There was an error recognizing PII entities of the text inputs." + error),
-            () -> System.out.println("Batch of PII entities recognized."));
+            error -> System.err.printf("There was an error recognizing Personally Identifiable Information entities of the text inputs. %s%n", error),
+            () -> System.out.println("Batch of Personally Identifiable Information entities recognized."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

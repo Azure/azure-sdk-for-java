@@ -1,6 +1,9 @@
 # Release History
 
-## 1.3.0-beta.1 (2020-02-07)
+## 1.3.0-beta.2 (Unreleased)
+
+
+## 1.3.0-beta.1 (2020-02-11)
 - Added default logging implementation for SLF4J.
 - Modified checks to determine if logging is allowed.
 - Improved logging performance.

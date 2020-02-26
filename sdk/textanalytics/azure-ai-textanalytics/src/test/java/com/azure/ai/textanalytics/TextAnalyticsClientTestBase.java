@@ -145,9 +145,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void detectLanguagesBatchInputShowStatistics();
 
     @Test
-    abstract void detectLanguagesBatchStringInput();
-
-    @Test
     abstract void detectLanguagesBatchListCountryHint();
 
     // Categorized Entities
@@ -170,12 +167,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void recognizeEntitiesForBatchInputShowStatistics();
 
     @Test
-    abstract void recognizeEntitiesForBatchStringInput();
-
-    @Test
     abstract void recognizeEntitiesForListLanguageHint();
 
-    // Pii Entities
+    // Personally Identifiable Information Entities
     @Test
     abstract void recognizePiiEntitiesForTextInput();
 
@@ -190,9 +184,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizePiiEntitiesForBatchInputShowStatistics();
-
-    @Test
-    abstract void recognizePiiEntitiesForBatchStringInput();
 
     @Test
     abstract void recognizePiiEntitiesForListLanguageHint();
@@ -214,9 +205,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void recognizeLinkedEntitiesForBatchInputShowStatistics();
 
     @Test
-    abstract void recognizeLinkedEntitiesForBatchStringInput();
-
-    @Test
     abstract void recognizeLinkedEntitiesForListLanguageHint();
 
     // Key Phrases
@@ -234,9 +222,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void extractKeyPhrasesForBatchInputShowStatistics();
-
-    @Test
-    abstract void extractKeyPhrasesForBatchStringInput();
 
     @Test
     abstract void extractKeyPhrasesForListLanguageHint();
@@ -315,7 +300,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(textDocumentInputs, options);
     }
 
-    // PII Entity runner
+    // Personally Identifiable Information Entity runner
     void recognizePiiLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS, "en");
     }
@@ -407,7 +392,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         DocumentResultCollection<DetectLanguageResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
             validatePrimaryLanguage(expectedItem.getPrimaryLanguage(), actualItem.getPrimaryLanguage());
-            validateDetectedLanguages(expectedItem.getDetectedLanguages(), actualItem.getDetectedLanguages());
         });
     }
 
@@ -427,7 +411,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         DocumentResultCollection<RecognizeLinkedEntitiesResult> expected,
         DocumentResultCollection<RecognizeLinkedEntitiesResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validateLinkedEntities(expectedItem.getLinkedEntities(), actualItem.getLinkedEntities()));
+            validateLinkedEntities(expectedItem.getEntities(), actualItem.getEntities()));
     }
 
     static void validateExtractKeyPhrase(boolean showStatistics, DocumentResultCollection<ExtractKeyPhraseResult> expected,
@@ -439,27 +423,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateSentiment(boolean showStatistics, DocumentResultCollection<AnalyzeSentimentResult> expected,
         DocumentResultCollection<AnalyzeSentimentResult> actual) {
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
-            validateAnalysedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment());
+            validateAnalyzedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment());
         });
     }
 
     /**
-     * Helper method to validate the list of detected language.
+     * Helper method to validate a single detected language.
      *
-     * @param expectedLanguageList detectedLanguages returned by the service.
-     * @param actualLanguageList detectedLanguages returned by the API.
+     * @param expectedLanguage detectedLanguage returned by the service.
+     * @param actualLanguage detectedLanguage returned by the API.
      */
-    static void validateDetectedLanguages(List<DetectedLanguage> expectedLanguageList,
-        List<DetectedLanguage> actualLanguageList) {
-        assertEquals(expectedLanguageList.size(), actualLanguageList.size());
-        expectedLanguageList.sort(Comparator.comparing(DetectedLanguage::getName));
-        actualLanguageList.sort(Comparator.comparing(DetectedLanguage::getName));
-
-        for (int i = 0; i < expectedLanguageList.size(); i++) {
-            DetectedLanguage expectedDetectedLanguage = expectedLanguageList.get(i);
-            DetectedLanguage actualDetectedLanguage = actualLanguageList.get(i);
-            validatePrimaryLanguage(expectedDetectedLanguage, actualDetectedLanguage);
-        }
+    static void validatePrimaryLanguage(DetectedLanguage expectedLanguage, DetectedLanguage actualLanguage) {
+        assertEquals(expectedLanguage.getIso6391Name(), actualLanguage.getIso6391Name());
+        assertEquals(expectedLanguage.getName(), actualLanguage.getName());
+        assertNotNull(actualLanguage.getScore());
     }
 
     /**
@@ -479,7 +456,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to validate a single PII entity.
+     * Helper method to validate a single Personally Identifiable Information entity.
      *
      * @param expectedPiiEntity PiiEntity returned by the service.
      * @param actualPiiEntity PiiEntity returned by the API.
@@ -505,7 +482,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedLinkedEntity.getDataSource(), actualLinkedEntity.getDataSource());
         assertEquals(expectedLinkedEntity.getLanguage(), actualLinkedEntity.getLanguage());
         assertEquals(expectedLinkedEntity.getUrl(), actualLinkedEntity.getUrl());
-        assertEquals(expectedLinkedEntity.getId(), actualLinkedEntity.getId());
+        assertEquals(expectedLinkedEntity.getDataSourceEntityId(), actualLinkedEntity.getDataSourceEntityId());
         validateLinkedEntityMatches(expectedLinkedEntity.getLinkedEntityMatches(), actualLinkedEntity.getLinkedEntityMatches());
     }
 
@@ -544,7 +521,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to validate the list of PII entities.
+     * Helper method to validate the list of Personally Identifiable Information entities.
      *
      * @param expectedPiiEntityList piiEntities returned by the service.
      * @param actualPiiEntityList piiEntities returned by the API.
@@ -588,7 +565,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedSentimentList a list of analyzed sentence sentiment returned by the service.
      * @param actualSentimentList a list of analyzed sentence sentiment returned by the API.
      */
-    static void validateAnalysedSentenceSentiment(List<SentenceSentiment> expectedSentimentList,
+    static void validateAnalyzedSentenceSentiment(List<SentenceSentiment> expectedSentimentList,
         List<SentenceSentiment> actualSentimentList) {
 
         assertEquals(expectedSentimentList.size(), actualSentimentList.size());
@@ -598,7 +575,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to validate one pair of analysed sentiments. Can't really validate score numbers because it
+     * Helper method to validate one pair of analyzed sentiments. Can't really validate score numbers because it
      * frequently changed by background model computation.
      *
      * @param expectedSentiment analyzed sentence sentiment returned by the service.
@@ -612,15 +589,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to validate one pair of analysed sentiments. Can't really validate score numbers because it
+     * Helper method to validate one pair of analyzed sentiments. Can't really validate score numbers because it
      * frequently changed by background model computation.
      *
      * @param expectedSentiment analyzed document sentiment returned by the service.
      * @param actualSentiment analyzed document sentiment returned by the API.
      */
-    static void validateAnalysedSentiment(DocumentSentiment expectedSentiment, DocumentSentiment actualSentiment) {
+    static void validateAnalyzedSentiment(DocumentSentiment expectedSentiment, DocumentSentiment actualSentiment) {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
-        validateAnalysedSentenceSentiment(expectedSentiment.getSentences(), expectedSentiment.getSentences());
+        validateAnalyzedSentenceSentiment(expectedSentiment.getSentences(), expectedSentiment.getSentences());
     }
 
     /**
@@ -717,18 +694,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedError.getCode(), actualError.getCode());
         assertEquals(expectedError.getMessage(), actualError.getMessage());
         assertEquals(expectedError.getTarget(), actualError.getTarget());
-    }
-
-    /**
-     * Helper method to validate a single detected language.
-     *
-     * @param expectedLanguage detectedLanguage returned by the service.
-     * @param actualLanguage detectedLanguage returned by the API.
-     */
-    static void validatePrimaryLanguage(DetectedLanguage expectedLanguage, DetectedLanguage actualLanguage) {
-        assertEquals(expectedLanguage.getIso6391Name(), actualLanguage.getIso6391Name());
-        assertEquals(expectedLanguage.getName(), actualLanguage.getName());
-        assertNotNull(actualLanguage.getScore());
     }
 
     /**

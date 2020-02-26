@@ -14,7 +14,6 @@ import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
@@ -29,7 +28,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
@@ -55,7 +53,7 @@ class RecognizeEntityAsyncClient {
         Context context) {
         Objects.requireNonNull(text, "'text' cannot be null.");
 
-        return recognizeBatchEntitiesWithResponse(
+        return recognizeEntitiesBatchWithResponse(
             Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
             .map(response -> new PagedResponseBase<>(
                     response.getRequest(),
@@ -67,27 +65,11 @@ class RecognizeEntityAsyncClient {
                 ));
     }
 
-    PagedFlux<CategorizedEntity> recognizeEntities(String text, String language, Context context) {
-        return new PagedFlux<>(() -> recognizeEntitiesWithResponse(text, language, context));
-    }
-
-    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(
-        List<String> textInputs, String language, Context context) {
+    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesBatchWithResponse(
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
-            new TextDocumentInput(index, value, language));
-        return recognizeBatchEntitiesWithResponse(documentInputs, null, context);
-    }
-
-    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeBatchEntitiesWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-            .setDocuments(Transforms.toMultiLanguageInput(textInputs));
         return service.entitiesRecognitionGeneralWithRestResponseAsync(
-            batchInput,
+            new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.showStatistics(), context)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of categorized entities input - {}",

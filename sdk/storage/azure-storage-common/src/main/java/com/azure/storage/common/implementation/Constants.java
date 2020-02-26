@@ -57,6 +57,9 @@ public final class Constants {
     public static final String BLOB_ALREADY_EXISTS =
         "Blob already exists. Specify overwrite to true to force update the blob.";
 
+    public static final String FILE_ALREADY_EXISTS =
+        "File already exists. Specify overwrite to true to force update the file.";
+
     /**
      * Buffer width used to copy data to output streams.
      */
@@ -186,7 +189,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2019-02-02";
+        public static final String TARGET_STORAGE_VERSION = "2019-07-07";
 
         /**
          * Error code returned from the service.

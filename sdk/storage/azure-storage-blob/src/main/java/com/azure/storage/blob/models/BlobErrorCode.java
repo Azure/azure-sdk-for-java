@@ -448,6 +448,11 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     public static final BlobErrorCode MAX_BLOB_SIZE_CONDITION_NOT_MET = fromString("MaxBlobSizeConditionNotMet");
 
     /**
+     * Static value NoAuthenticationInformation for BlobErrorCode.
+     */
+    public static final BlobErrorCode NO_AUTHENTICATION_INFORMATION = fromString("NoAuthenticationInformation");
+
+    /**
      * Static value NoPendingCopyOperation for BlobErrorCode.
      */
     public static final BlobErrorCode NO_PENDING_COPY_OPERATION = fromString("NoPendingCopyOperation");

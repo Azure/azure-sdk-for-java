@@ -34,7 +34,7 @@ public class AnalyzeSentimentBatchDocuments {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The texts that need be analysed.
+        // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
             new TextDocumentInput("1", "The hotel was dark and unclean. The restaurant had amazing gnocchi.", "en"),
             new TextDocumentInput("2", "The restaurant had amazing gnocchi. The hotel was dark and unclean.", "en")
@@ -44,12 +44,12 @@ public class AnalyzeSentimentBatchDocuments {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
 
         // Analyzing batch sentiments
-        DocumentResultCollection<AnalyzeSentimentResult> analyzedBatchResult = client.analyzeBatchSentimentWithResponse(
+        DocumentResultCollection<AnalyzeSentimentResult> sentimentBatchResult = client.analyzeSentimentBatchWithResponse(
             inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s%n", analyzedBatchResult.getModelVersion());
+        System.out.printf("Model version: %s%n", sentimentBatchResult.getModelVersion());
 
         // Batch statistics
-        final TextDocumentBatchStatistics batchStatistics = analyzedBatchResult.getStatistics();
+        final TextDocumentBatchStatistics batchStatistics = sentimentBatchResult.getStatistics();
         System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
             batchStatistics.getDocumentCount(),
             batchStatistics.getInvalidDocumentCount(),
@@ -57,7 +57,7 @@ public class AnalyzeSentimentBatchDocuments {
             batchStatistics.getValidDocumentCount());
 
         // Analyzed sentiment for each of document from a batch of documents
-        for (AnalyzeSentimentResult analyzeSentimentResult : analyzedBatchResult) {
+        for (AnalyzeSentimentResult analyzeSentimentResult : sentimentBatchResult) {
             System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
             // Erroneous document
             if (analyzeSentimentResult.isError()) {
@@ -66,17 +66,17 @@ public class AnalyzeSentimentBatchDocuments {
             }
             // Valid document
             final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-            System.out.printf("Recognized document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
+            System.out.printf("Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
                 documentSentiment.getSentiment(),
-                documentSentiment.getSentimentScores().getPositive(),
-                documentSentiment.getSentimentScores().getNeutral(),
-                documentSentiment.getSentimentScores().getNegative());
+                documentSentiment.getConfidenceScores().getPositive(),
+                documentSentiment.getConfidenceScores().getNeutral(),
+                documentSentiment.getConfidenceScores().getNegative());
             for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-                System.out.printf("Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s, length of sentence: %s, offset of sentence: %s.%n",
+                System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
                     sentenceSentiment.getSentiment(),
-                    sentenceSentiment.getSentimentScores().getPositive(),
-                    sentenceSentiment.getSentimentScores().getNeutral(),
-                    sentenceSentiment.getSentimentScores().getNegative(),
+                    sentenceSentiment.getConfidenceScores().getPositive(),
+                    sentenceSentiment.getConfidenceScores().getNeutral(),
+                    sentenceSentiment.getConfidenceScores().getNegative(),
                     sentenceSentiment.getLength(),
                     sentenceSentiment.getOffset());
             }

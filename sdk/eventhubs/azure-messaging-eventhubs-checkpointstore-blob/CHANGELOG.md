@@ -2,6 +2,8 @@
 
 ## 1.1.0-beta.1 (Unreleased)
 
+## 1.0.2 (2020-02-12)
+- Dependency fixed so `EventProcessor` consumers can use blocking method calls in their code.
 
 ## 1.0.1 (2020-02-11)
 

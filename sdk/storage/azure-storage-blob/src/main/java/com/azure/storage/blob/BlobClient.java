@@ -19,6 +19,7 @@ import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -214,7 +215,7 @@ public class BlobClient extends BlobClientBase {
 
         if (!overwrite) {
             // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
-            if (client.uploadInBlocks(filePath, BlockBlobClient.MAX_UPLOAD_BLOB_BYTES) && exists()) {
+            if (UploadUtils.shouldUploadInChunks(filePath, BlockBlobClient.MAX_UPLOAD_BLOB_BYTES, logger) && exists()) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);

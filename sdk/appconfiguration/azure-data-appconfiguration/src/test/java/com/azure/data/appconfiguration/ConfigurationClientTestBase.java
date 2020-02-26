@@ -286,7 +286,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         tags.put("tag2", "value2");
 
         final SettingSelector selector = new SettingSelector()
-            .setLabelFilter("*-second*")
+            .setLabelFilter("my-second*")
             .setKeyFilter(keyPrefix + "-fetch-*")
             .setFields(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
 
@@ -308,6 +308,30 @@ public abstract class ConfigurationClientTestBase extends TestBase {
             assertNull(setting.getContentType());
             assertNull(setting.getLabel());
         }
+    }
+
+    @Test
+    public abstract void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter();
+
+    @Test
+    public abstract void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter();
+
+    @Test
+    public abstract void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter();
+
+    @Test
+    public abstract void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter();
+
+    void listConfigurationSettingsSelectFieldsWithNotSupportedFilterRunner(String keyFilter, String labelFilter, Consumer<SettingSelector> testRunner) {
+        final Map<String, String> tags = new HashMap<>();
+        tags.put("tag1", "value1");
+        tags.put("tag2", "value2");
+
+        final SettingSelector selector = new SettingSelector()
+            .setKeyFilter(keyFilter)
+            .setLabelFilter(labelFilter)
+            .setFields(SettingFields.KEY, SettingFields.ETAG, SettingFields.CONTENT_TYPE, SettingFields.TAGS);
+        testRunner.accept(selector);
     }
 
     @Test

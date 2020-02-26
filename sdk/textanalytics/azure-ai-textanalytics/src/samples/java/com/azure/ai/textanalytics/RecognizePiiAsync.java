@@ -13,7 +13,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class RecognizePiiAsync {
     /**
-     * Main method to invoke this demo about how to recognize the PII entities of an input text.
+     * Main method to invoke this demo about how to recognize the Personally Identifiable Information entities of
+     * an input text.
      *
      * @param args Unused arguments to the program.
      */
@@ -24,20 +25,21 @@ public class RecognizePiiAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analysed.
+        // The text that needs be analyzed.
         String text = "My SSN is 555-55-5555";
 
         client.recognizePiiEntities(text).subscribe(
             entity -> System.out.printf(
-                "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %s.%n",
+                "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
                 entity.getText(),
                 entity.getCategory(),
                 entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
                 entity.getOffset(),
                 entity.getLength(),
                 entity.getScore()),
-            error -> System.err.println("There was an error recognizing PII entities of the text." + error),
-            () -> System.out.println("PII entities recognized."));
+            error -> System.err.printf(
+                "There was an error recognizing Personally Identifiable Information entities of the text. %s%n", error),
+            () -> System.out.println("Personally Identifiable Information entities recognized."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.DocumentSentimentLabel;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
@@ -17,12 +18,12 @@ import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.SentimentScorePerLabel;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SentenceSentimentLabel;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
-import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.SentimentLabel;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -97,9 +98,9 @@ final class TestUtils {
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(39, 1);
         TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics(6, 1);
 
-        DetectLanguageResult detectLanguageResult1 = new DetectLanguageResult("0", textDocumentStatistics1, null, detectedLanguage1, detectedLanguageList1);
-        DetectLanguageResult detectLanguageResult2 = new DetectLanguageResult("1", textDocumentStatistics2, null, detectedLanguage2, detectedLanguageList2);
-        DetectLanguageResult detectLanguageResult3 = new DetectLanguageResult("2", textDocumentStatistics3, null, detectedLanguage3, detectedLanguageList3);
+        DetectLanguageResult detectLanguageResult1 = new DetectLanguageResult("0", textDocumentStatistics1, null, detectedLanguage1);
+        DetectLanguageResult detectLanguageResult2 = new DetectLanguageResult("1", textDocumentStatistics2, null, detectedLanguage2);
+        DetectLanguageResult detectLanguageResult3 = new DetectLanguageResult("2", textDocumentStatistics3, null, detectedLanguage3);
 
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(3, 3, 0, 3);
         List<DetectLanguageResult> detectLanguageResultList = Arrays.asList(detectLanguageResult1, detectLanguageResult2, detectLanguageResult3);
@@ -131,7 +132,7 @@ final class TestUtils {
     }
 
     /**
-     * Helper method to get the expected Batch PII Entities
+     * Helper method to get the expected batch of Personally Identifiable Information entities
      */
     static DocumentResultCollection<RecognizePiiEntitiesResult> getExpectedBatchPiiEntities() {
         PiiEntity piiEntity1 = new PiiEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
@@ -208,18 +209,18 @@ final class TestUtils {
     static DocumentResultCollection<AnalyzeSentimentResult> getExpectedBatchTextSentiment() {
         final TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(67, 1);
 
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(SentimentLabel.MIXED,
-            new SentimentScorePerLabel(0.0, 0.0, 0.0),
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(DocumentSentimentLabel.MIXED,
+            new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
             Arrays.asList(
-                new SentenceSentiment(SentimentLabel.NEGATIVE, new SentimentScorePerLabel(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(SentimentLabel.POSITIVE, new SentimentScorePerLabel(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentiment(SentenceSentimentLabel.NEGATIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentiment(SentenceSentimentLabel.POSITIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 35, 32)
             ));
 
-        final DocumentSentiment expectedDocumentSentiment2 = new DocumentSentiment(SentimentLabel.MIXED,
-            new SentimentScorePerLabel(0.0, 0.0, 0.0),
+        final DocumentSentiment expectedDocumentSentiment2 = new DocumentSentiment(DocumentSentimentLabel.MIXED,
+            new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
             Arrays.asList(
-                new SentenceSentiment(SentimentLabel.POSITIVE, new SentimentScorePerLabel(0.0, 0.0, 0.0), 35, 0),
-                new SentenceSentiment(SentimentLabel.NEGATIVE, new SentimentScorePerLabel(0.0, 0.0, 0.0), 31, 36)
+                new SentenceSentiment(SentenceSentimentLabel.POSITIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 35, 0),
+                new SentenceSentiment(SentenceSentimentLabel.NEGATIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 31, 36)
             ));
 
         final AnalyzeSentimentResult analyzeSentimentResult1 = new AnalyzeSentimentResult("0",

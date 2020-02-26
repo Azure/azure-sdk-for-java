@@ -7,6 +7,9 @@ import java.time.Duration;
 
 public final class ClientConstants {
     public static final String AZURE_ACTIVE_DIRECTORY_SCOPE = "https://eventhubs.azure.net/.default";
+    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    public static final String AZ_NAMESPACE_VALUE = "Microsoft.EventHub";
     public static final Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
     public static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(60);
 

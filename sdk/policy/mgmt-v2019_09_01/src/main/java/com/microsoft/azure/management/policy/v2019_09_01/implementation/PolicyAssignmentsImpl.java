@@ -93,6 +93,24 @@ class PolicyAssignmentsImpl extends WrapperImpl<PolicyAssignmentsInner> implemen
     }
 
     @Override
+    public Observable<PolicyAssignment> listForManagementGroupAsync(final String managementGroupId, final String filter) {
+        PolicyAssignmentsInner client = this.inner();
+        return client.listForManagementGroupAsync(managementGroupId, filter)
+        .flatMapIterable(new Func1<Page<PolicyAssignmentInner>, Iterable<PolicyAssignmentInner>>() {
+            @Override
+            public Iterable<PolicyAssignmentInner> call(Page<PolicyAssignmentInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<PolicyAssignmentInner, PolicyAssignment>() {
+            @Override
+            public PolicyAssignment call(PolicyAssignmentInner inner) {
+                return new PolicyAssignmentImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<PolicyAssignment> deleteByIdAsync(String policyAssignmentId) {
         PolicyAssignmentsInner client = this.inner();
         return client.deleteByIdAsync(policyAssignmentId)

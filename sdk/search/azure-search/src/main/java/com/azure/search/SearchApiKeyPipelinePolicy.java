@@ -15,6 +15,7 @@ import java.util.Objects;
  * Policy that adds the Cognitive Search Service api-key into the request's Authorization header.
  */
 public class SearchApiKeyPipelinePolicy implements HttpPipelinePolicy {
+    private static final String API_KEY = "api-key";
 
     private final SearchApiKeyCredential apiKey;
 
@@ -25,14 +26,13 @@ public class SearchApiKeyPipelinePolicy implements HttpPipelinePolicy {
      * @throws IllegalArgumentException when the api key is an empty string
      */
     public SearchApiKeyPipelinePolicy(SearchApiKeyCredential apiKey) {
-        Objects.requireNonNull(apiKey);
+        Objects.requireNonNull(apiKey, "'apiKey' cannot be null.");
         this.apiKey = apiKey;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        context.getHttpRequest()
-            .setHeader("api-key", this.apiKey.getApiKey());
+        context.getHttpRequest().setHeader(API_KEY, this.apiKey.getApiKey());
         return next.process();
     }
 }
