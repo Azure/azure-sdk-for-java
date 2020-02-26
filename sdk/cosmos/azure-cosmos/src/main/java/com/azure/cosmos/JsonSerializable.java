@@ -137,7 +137,7 @@ public class JsonSerializable {
     }
 
     /**
-     * Returns the propertybag(JSONObject) in a hashMap
+     * Returns the propertybag(JsonNode) in a hashMap
      *
      * @return the HashMap.
      */
@@ -218,7 +218,7 @@ public class JsonSerializable {
                 targetArray.add(castedValue.propertyBag != null ? castedValue.propertyBag
                                     : this.getMapper().createObjectNode());
             } else {
-                // POJO, JSONObject, NUMBER (includes Int, Float, Double etc),
+                // POJO, JsonNode, NUMBER (includes Int, Float, Double etc),
                 // Boolean, and STRING.
                 targetArray.add(this.getMapper().valueToTree(childValue));
             }
@@ -457,10 +457,10 @@ public class JsonSerializable {
     }
 
     /**
-     * Gets a JSONObject.
+     * Gets a ObjectNode.
      *
      * @param propertyName the property to get.
-     * @return the JSONObject.
+     * @return the ObjectNode.
      */
     ObjectNode getObject(String propertyName) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
@@ -471,10 +471,10 @@ public class JsonSerializable {
     }
 
     /**
-     * Gets a JSONObject collection.
+     * Gets a ObjectNode collection.
      *
      * @param propertyName the property to get.
-     * @return the JSONObject collection.
+     * @return the ObjectNode collection.
      */
     Collection<ObjectNode> getCollection(String propertyName) {
         Collection<ObjectNode> result = null;
@@ -571,10 +571,10 @@ public class JsonSerializable {
     }
 
     /**
-     * Converts to an Object (only POJOs and JSONObject are supported).
+     * Converts to an Object (only POJOs and JsonNode are supported).
      *
      * @param <T> the type of the object.
-     * @param c the class of the object, either a POJO class or JSONObject. If c is a POJO class, it must be a member
+     * @param c the class of the object, either a POJO class or JsonNode. If c is a POJO class, it must be a member
      * (and not an anonymous or local) and a static one.
      * @return the POJO.
      * @throws IllegalArgumentException thrown if an error occurs
@@ -598,11 +598,11 @@ public class JsonSerializable {
             }
         }
         if (JsonNode.class.isAssignableFrom(c) || ObjectNode.class.isAssignableFrom(c)) {
-            // JSONObject
+            // JsonNode
             if( JsonNode.class != c) {
                 if (ObjectNode.class != c) {
                     throw new IllegalArgumentException(
-                        "We support JSONObject but not its sub-classes.");
+                        "We support JsonNode but not its sub-classes.");
                 }
             }
             return c.cast(this.propertyBag);
