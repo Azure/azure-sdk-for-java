@@ -449,7 +449,7 @@ public class JsonSerializable {
      * Gets a JsonNode.
      *
      * @param propertyName the property to get.
-     * @return the JsonNode.
+     * @return the ObjectNode.
      */
     ObjectNode getObject(String propertyName) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
@@ -460,10 +460,10 @@ public class JsonSerializable {
     }
 
     /**
-     * Gets a JsonNode collection.
+     * Gets a ObjectNode collection.
      *
      * @param propertyName the property to get.
-     * @return the JsonNode collection.
+     * @return the ObjectNode collection.
      */
     Collection<ObjectNode> getCollection(String propertyName) {
         Collection<ObjectNode> result = null;
