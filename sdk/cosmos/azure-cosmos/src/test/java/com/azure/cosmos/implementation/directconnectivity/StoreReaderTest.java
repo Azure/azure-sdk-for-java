@@ -82,7 +82,7 @@ public class StoreReaderTest {
         subject.onNext(uris);
         subject.onComplete();
 
-        TimeUnit.MILLISECONDS.sleep(100);
+        TimeUnit.MILLISECONDS.sleep(500);
         AssertionsForClassTypes.assertThat(c.getCount()).isEqualTo(0);
         AssertionsForClassTypes.assertThat(b.getNumberWaiting()).isEqualTo(1);
         b.await(1000, TimeUnit.MILLISECONDS);

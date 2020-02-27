@@ -15,6 +15,7 @@ import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.TestConfigurations;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

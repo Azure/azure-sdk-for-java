@@ -46,7 +46,7 @@ public final class SearchResult {
      * @return the additionalProperties value.
      */
     @JsonIgnore
-public Document getDocument() {
+    public Document getDocument() {
         return this.additionalProperties;
     }
 

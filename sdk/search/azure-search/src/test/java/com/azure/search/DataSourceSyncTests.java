@@ -335,19 +335,19 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
     }
 
     DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
-        return DataSources.azureBlobStorage(BLOB_DATASOURCE_TEST_NAME, FAKE_STORAGE_CONNECTION_STRING, "fakecontainer",
+        return DataSources.createFromAzureBlobStorage(BLOB_DATASOURCE_TEST_NAME, FAKE_STORAGE_CONNECTION_STRING, "fakecontainer",
             "/fakefolder/", FAKE_DESCRIPTION, deletionDetectionPolicy);
     }
 
     DataSource createTestTableStorageDataSource() {
-        return DataSources.azureTableStorage("azs-java-test-tablestorage", FAKE_STORAGE_CONNECTION_STRING, "faketable",
+        return DataSources.createFromAzureTableStorage("azs-java-test-tablestorage", FAKE_STORAGE_CONNECTION_STRING, "faketable",
             "fake query", FAKE_DESCRIPTION, null);
     }
 
     DataSource createTestCosmosDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy,
         boolean useChangeDetection) {
 
-        return DataSources.cosmos("azs-java-test-cosmos", FAKE_COSMOS_CONNECTION_STRING, "faketable",
+        return DataSources.createFromCosmos("azs-java-test-cosmos", FAKE_COSMOS_CONNECTION_STRING, "faketable",
             "SELECT ... FROM x where x._ts > @HighWaterMark", useChangeDetection, FAKE_DESCRIPTION,
             deletionDetectionPolicy);
     }

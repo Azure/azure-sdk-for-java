@@ -3,18 +3,11 @@
 
 package com.azure.search;
 
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SearchIndexClientBuilderTests {
     private final SearchApiKeyCredential searchApiKeyCredential = new SearchApiKeyCredential("0123");
@@ -28,7 +21,7 @@ public class SearchIndexClientBuilderTests {
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .indexName(indexName)
-            .apiVersion(apiVersion)
+            .searchServiceVersion(apiVersion)
             .buildClient();
 
         assertNotNull(client);
@@ -53,7 +46,7 @@ public class SearchIndexClientBuilderTests {
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .indexName(indexName)
-            .apiVersion(apiVersion)
+            .searchServiceVersion(apiVersion)
             .buildAsyncClient();
 
         assertNotNull(client);
@@ -80,18 +73,18 @@ public class SearchIndexClientBuilderTests {
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .indexName(indexName)
-            .apiVersion(expectedVersion)
+            .searchServiceVersion(expectedVersion)
             .buildClient();
 
-        assertEquals(expectedVersion, searchIndexClient.getApiVersion());
+        assertEquals(expectedVersion, searchIndexClient.getServiceVersion());
 
         SearchIndexAsyncClient asyncClient = new SearchIndexClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .indexName(indexName)
-            .apiVersion(expectedVersion)
+            .searchServiceVersion(expectedVersion)
             .buildAsyncClient();
-        assertEquals(expectedVersion, asyncClient.getApiVersion());
+        assertEquals(expectedVersion, asyncClient.getServiceVersion());
     }
 
     @Test
@@ -102,7 +95,7 @@ public class SearchIndexClientBuilderTests {
             .indexName(indexName)
             .buildClient();
 
-        assertEquals(apiVersion, client.getApiVersion());
+        assertEquals(apiVersion, client.getServiceVersion());
 
         SearchIndexAsyncClient asyncClient = new SearchIndexClientBuilder()
             .endpoint(searchEndpoint)
@@ -110,7 +103,7 @@ public class SearchIndexClientBuilderTests {
             .indexName(indexName)
             .buildAsyncClient();
 
-        assertEquals(apiVersion, asyncClient.getApiVersion());
+        assertEquals(apiVersion, asyncClient.getServiceVersion());
     }
 
     @Test
@@ -123,7 +116,7 @@ public class SearchIndexClientBuilderTests {
 
         assertEquals(searchEndpoint, client.getEndpoint());
         assertEquals(indexName, client.getIndexName());
-        assertEquals(apiVersion, client.getApiVersion());
+        assertEquals(apiVersion, client.getServiceVersion());
 
         SearchIndexAsyncClient asyncClient = new SearchIndexClientBuilder()
             .endpoint(searchEndpoint)
@@ -133,127 +126,45 @@ public class SearchIndexClientBuilderTests {
 
         assertEquals(searchEndpoint, asyncClient.getEndpoint());
         assertEquals(indexName, asyncClient.getIndexName());
-        assertEquals(apiVersion, asyncClient.getApiVersion());
+        assertEquals(apiVersion, asyncClient.getServiceVersion());
     }
 
     @Test
-    public void verifyEmptyEndpointIsInvalidAsyncTest() {
-        expectThrowsWithMessage("'endpoint' must be a valid URL", () -> new SearchIndexClientBuilder()
-            .endpoint("")
-            .credential(searchApiKeyCredential)
-            .apiVersion(apiVersion)
-            .indexName(indexName)
-            .buildAsyncClient());
+    public void emptyEndpointThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new SearchIndexClientBuilder().endpoint(""));
     }
 
     @Test
-    public void verifyEmptyEndpointIsInvalidTest() {
-        expectThrowsWithMessage("'endpoint' must be a valid URL", () -> new SearchIndexClientBuilder()
-            .endpoint("")
-            .credential(searchApiKeyCredential)
-            .apiVersion(apiVersion)
-            .indexName(indexName)
-            .buildClient());
+    public void nullIndexNameThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new SearchIndexClientBuilder().indexName(null));
     }
 
     @Test
-    public void verifyNullIndexNameIsInvalidAsyncTest() {
-        expectThrowsWithMessage("Invalid indexName", () -> new SearchIndexClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .apiVersion(apiVersion)
-            .indexName(null)
-            .buildAsyncClient());
+    public void emptyIndexNameThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new SearchIndexClientBuilder().indexName(""));
     }
 
     @Test
-    public void verifyNullIndexNameIsInvalidTest() {
-        expectThrowsWithMessage("Invalid indexName", () -> new SearchIndexClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .apiVersion(apiVersion)
-            .indexName(null)
-            .buildClient());
+    public void nullCredentialThrowsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new SearchIndexClientBuilder().credential(null));
     }
 
     @Test
-    public void verifyEmptyIndexNameIsInvalidAsyncTest() {
-        expectThrowsWithMessage("Invalid indexName", () -> new SearchIndexClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .apiVersion(apiVersion)
-            .indexName("")
-            .buildAsyncClient());
+    public void credentialWithEmptyApiKeyThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new SearchIndexClientBuilder()
+            .credential(new SearchApiKeyCredential("")));
     }
 
     @Test
-    public void verifyEmptyIndexNameIsInvalidTest() {
-        expectThrowsWithMessage("Invalid indexName", () -> new SearchIndexClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .apiVersion(apiVersion)
-            .indexName("")
-            .buildClient());
-    }
-
-    @Test
-    public void verifyNullApiKeyIsInvalidAsyncTest() {
-        expectNullPointerExceptionWithMessage("Empty apiKeyCredentials", () -> new SearchIndexClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(null)
-            .indexName(indexName)
-            .apiVersion(apiVersion)
-            .buildAsyncClient());
-    }
-
-    @Test
-    public void verifyNullApiKeyIsInvalidTest() {
-        expectNullPointerExceptionWithMessage("Empty apiKeyCredentials", () -> new SearchIndexClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(null)
-            .indexName(indexName)
-            .apiVersion(apiVersion)
-            .buildClient());
-    }
-
-    @Test
-    public void verifyEmptyApiKeyIsInvalidAsyncTest() {
-        expectThrowsWithMessage("Empty apiKeyCredentials", () -> new SearchIndexClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(new SearchApiKeyCredential(""))
-            .indexName(indexName)
-            .apiVersion(apiVersion)
-            .buildAsyncClient());
-    }
-
-    @Test
-    public void verifyEmptyApiKeyIsInvalidTest() {
-        expectThrowsWithMessage("Empty apiKeyCredentials", () -> new SearchIndexClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(new SearchApiKeyCredential(""))
-            .indexName(indexName)
-            .apiVersion(apiVersion)
-            .buildClient());
-    }
-
-    @Test
-    public void verifyNullApiVersionIsInvalidAsyncTest() {
-        expectThrowsWithMessage("Invalid apiVersion", () -> new SearchIndexClientBuilder()
+    public void nullApiVersionUsesLatest() {
+        SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .indexName(indexName)
-            .apiVersion(null)
-            .buildAsyncClient());
-    }
+            .searchServiceVersion(null);
 
-    @Test
-    public void verifyNullApiVersionIsInvalidTest() {
-        expectThrowsWithMessage("Invalid apiVersion", () -> new SearchIndexClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .indexName(indexName)
-            .apiVersion(null)
-            .buildClient());
+        assertEquals(SearchServiceVersion.getLatest(), builder.buildAsyncClient().getServiceVersion());
+        assertEquals(SearchServiceVersion.getLatest(), builder.buildClient().getServiceVersion());
     }
 
     @Test
@@ -265,7 +176,7 @@ public class SearchIndexClientBuilderTests {
             .buildClient();
 
         assertEquals(SearchServiceVersion.getLatest().getVersion(),
-            searchIndexClient.getApiVersion().getVersion());
+            searchIndexClient.getServiceVersion().getVersion());
     }
 
     @Test
@@ -277,92 +188,6 @@ public class SearchIndexClientBuilderTests {
             .buildAsyncClient();
 
         assertEquals(SearchServiceVersion.getLatest().getVersion(),
-            searchIndexAsyncClient.getApiVersion().getVersion());
-    }
-
-    @Test
-    public void verifyEmptyVersionThrowsIllegalArgumentException() {
-        expectThrowsWithMessage("Invalid apiVersion",
-            () -> new SearchIndexClientBuilder()
-                .endpoint(searchEndpoint)
-                .credential(searchApiKeyCredential)
-                .indexName("indexName")
-                .apiVersion(null)
-                .buildClient()
-        );
-    }
-
-    @Test
-    public void verifyEmptyVersionThrowsIllegalArgumentExceptionAsync() {
-        expectThrowsWithMessage("Invalid apiVersion",
-            () ->  new SearchIndexClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .indexName("indexName")
-            .apiVersion(null)
-            .buildAsyncClient()
-        );
-    }
-
-    @Test
-    public void whenCreateUsingClientBuilderThenDefaultPoliciesExists() {
-        SearchIndexClientBuilder searchIndexClientBuilder = new SearchIndexClientBuilder();
-        searchIndexClientBuilder
-            .endpoint(searchEndpoint)
-            .indexName(indexName)
-            .credential(searchApiKeyCredential)
-            .apiVersion(apiVersion)
-            .buildAsyncClient();
-
-        int policyCount = searchIndexClientBuilder.getPolicies().size();
-
-        assertEquals(7, policyCount);
-
-        assertEquals(1,
-            searchIndexClientBuilder.getPolicies().stream()
-                .filter(p -> p.getClass() == RetryPolicy.class).count()
-        );
-        assertEquals(1,
-            searchIndexClientBuilder.getPolicies().stream()
-                .filter(p -> p.getClass() == RequestIdPolicy.class).count()
-        );
-        assertEquals(1,
-            searchIndexClientBuilder.getPolicies().stream()
-                .filter(p -> p.getClass() == UserAgentPolicy.class).count()
-        );
-        assertEquals(1,
-            searchIndexClientBuilder.getPolicies().stream()
-                .filter(p -> p.getClass() == AddHeadersPolicy.class).count()
-        );
-        assertEquals(1,
-            searchIndexClientBuilder.getPolicies().stream()
-                .filter(p -> p.getClass() == AddDatePolicy.class).count()
-        );
-        assertEquals(1,
-            searchIndexClientBuilder.getPolicies().stream()
-                .filter(p -> p.getClass() == HttpLoggingPolicy.class).count()
-        );
-    }
-
-    private void expectThrowsWithMessage(String expectedMessage, Runnable runnable) {
-        try {
-            runnable.run();
-            fail();
-
-        } catch (Exception e) {
-            assertEquals(IllegalArgumentException.class, e.getClass());
-            assertTrue(e.getMessage().contains(expectedMessage));
-        }
-    }
-
-    private void expectNullPointerExceptionWithMessage(String expectedMessage, Runnable runnable) {
-        try {
-            runnable.run();
-            fail();
-
-        } catch (Exception e) {
-            assertEquals(NullPointerException.class, e.getClass());
-            assertTrue(e.getMessage().contains(expectedMessage));
-        }
+            searchIndexAsyncClient.getServiceVersion().getVersion());
     }
 }

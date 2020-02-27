@@ -281,17 +281,17 @@ public class HttpTransportClient extends TransportClient {
             case Create:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
-                assert request.getContent() != null;
+                assert request.getContentAsByteBufFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContent());
+                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 break;
 
             case ExecuteJavaScript:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
-                assert request.getContent() != null;
+                assert request.getContentAsByteBufFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContent());
+                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 break;
 
             case Delete:
@@ -315,35 +315,35 @@ public class HttpTransportClient extends TransportClient {
             case Replace:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.PUT;
-                assert request.getContent() != null;
+                assert request.getContentAsByteBufFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContent());
+                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 break;
 
             case Update:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = new HttpMethod("PATCH");
-                assert request.getContent() != null;
+                assert request.getContentAsByteBufFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContent());
+                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 break;
 
             case Query:
             case SqlQuery:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
-                assert request.getContent() != null;
+                assert request.getContentAsByteBufFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContent());
+                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 HttpTransportClient.addHeader(httpRequestMessage.headers(), HttpConstants.HttpHeaders.CONTENT_TYPE, request);
                 break;
 
             case Upsert:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
-                assert request.getContent() != null;
+                assert request.getContentAsByteBufFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContent());
+                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 break;
 
             case Head:

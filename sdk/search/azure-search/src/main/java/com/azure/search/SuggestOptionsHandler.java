@@ -9,7 +9,7 @@ import com.azure.search.models.SuggestOptions;
 /**
  * Ensure all suggest parameters are correct Use this whenever SuggestOptions are passed to the search service
  */
-class SuggestOptionsHandler {
+final class SuggestOptionsHandler {
 
     /**
      * Ensures that all suggest parameters are correctly set. This method should be used when {@link SuggestOptions} is
