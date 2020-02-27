@@ -13,7 +13,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.search.models.FacetResult;
 import com.azure.search.models.SearchDocumentsResult;
-import com.azure.search.models.SearchNextPageParameters;
+import com.azure.search.models.SearchRequest;
 import com.azure.search.models.SearchResult;
 
 import java.util.List;
@@ -26,14 +26,14 @@ import java.util.Map;
  * information is: count - number of total documents returned. Will be returned only if isIncludeTotalResultCount is set
  * to true coverage - coverage value.
  */
-public final class SearchPagedResponse implements ContinuablePage<SearchNextPageParameters, SearchResult>,
+public final class SearchPagedResponse implements ContinuablePage<SearchRequest, SearchResult>,
     Response<List<SearchResult>> {
     private final int statusCode;
     private final HttpHeaders headers;
     private final HttpRequest request;
     private final List<SearchResult> value;
 
-    private final SearchNextPageParameters nextPageParameters;
+    private final SearchRequest nextPageParameters;
     private final Map<String, List<FacetResult>> facets;
     private final Long count;
     private final Double coverage;
@@ -57,15 +57,14 @@ public final class SearchPagedResponse implements ContinuablePage<SearchNextPage
         this.nextPageParameters = getNextPageParameters(documentsResult);
     }
 
-    private static SearchNextPageParameters getNextPageParameters(SearchDocumentsResult result) {
+    private static SearchRequest getNextPageParameters(SearchDocumentsResult result) {
         if (CoreUtils.isNullOrEmpty(result.getNextLink())
             || result.getNextPageParameters() == null
             || result.getNextPageParameters().getSkip() == null) {
             return null;
         }
 
-        return new SearchNextPageParameters(result.getNextPageParameters().getTop(),
-            result.getNextPageParameters().getSkip());
+        return result.getNextPageParameters();
     }
 
     /**
@@ -129,7 +128,7 @@ public final class SearchPagedResponse implements ContinuablePage<SearchNextPage
     }
 
     @Override
-    public SearchNextPageParameters getContinuationToken() {
+    public SearchRequest getContinuationToken() {
         return nextPageParameters;
     }
 }

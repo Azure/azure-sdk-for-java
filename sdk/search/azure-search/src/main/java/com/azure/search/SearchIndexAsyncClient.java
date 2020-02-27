@@ -10,14 +10,12 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.SearchServiceUrlParser.SearchServiceUrlParts;
 import com.azure.search.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.implementation.SearchIndexRestClientImpl;
 import com.azure.search.implementation.SerializationUtil;
-import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
 import com.azure.search.models.IndexAction;
@@ -25,13 +23,15 @@ import com.azure.search.models.IndexActionType;
 import com.azure.search.models.IndexBatch;
 import com.azure.search.models.IndexDocumentsResult;
 import com.azure.search.models.RequestOptions;
-import com.azure.search.models.SearchNextPageParameters;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchRequest;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestRequest;
 import com.azure.search.models.SuggestResult;
+import com.azure.search.util.AutocompletePagedFlux;
+import com.azure.search.util.SearchPagedFlux;
+import com.azure.search.util.SuggestPagedFlux;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
@@ -390,12 +390,12 @@ public class SearchIndexAsyncClient {
      * syntax in Azure Search</a> for more information about search query syntax.
      *
      * @param searchText A full-text search query expression.
-     * @return A {@link ContinuablePagedFlux} that iterates over {@link SearchResult} objects and provides access to
-     * the {@link SearchPagedResponse} object for each page containing HTTP response and count, facet, and coverage
+     * @return A {@link SearchPagedFlux} that iterates over {@link SearchResult} objects and provides access to the
+     * {@link SearchPagedResponse} object for each page containing HTTP response and count, facet, and coverage
      * information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
-    public ContinuablePagedFlux<SearchNextPageParameters, SearchResult, SearchPagedResponse> search(String searchText) {
+    public SearchPagedFlux search(String searchText) {
         return this.search(searchText, null, null);
     }
 
@@ -410,37 +410,31 @@ public class SearchIndexAsyncClient {
      * @param searchOptions Parameters to further refine the search query
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
-     * @return A {@link ContinuablePagedFlux} that iterates over {@link SearchResult} objects and provides access to
-     * the {@link SearchPagedResponse} object for each page containing HTTP response and count, facet, and coverage
+     * @return A {@link SearchPagedFlux} that iterates over {@link SearchResult} objects and provides access to the
+     * {@link SearchPagedResponse} object for each page containing HTTP response and count, facet, and coverage
      * information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
-    public ContinuablePagedFlux<SearchNextPageParameters, SearchResult, SearchPagedResponse> search(String searchText,
-        SearchOptions searchOptions, RequestOptions requestOptions) {
+    public SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
 
-        return new SearchSearchPagedFlux(() -> (continuationToken, pageSize) -> withContext(context ->
+        return new SearchPagedFlux(() -> (continuationToken, pageSize) -> withContext(context ->
             search(request, requestOptions, continuationToken, context)).flux());
     }
 
-    ContinuablePagedFlux<SearchNextPageParameters, SearchResult, SearchPagedResponse> search(String searchText,
-        SearchOptions searchOptions, RequestOptions requestOptions, Context context) {
+    SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions,
+        Context context) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
 
-        return new SearchSearchPagedFlux(() -> (continuationToken, pageSize) ->
+        return new SearchPagedFlux(() -> (continuationToken, pageSize) ->
             search(request, requestOptions, continuationToken, context).flux());
     }
 
     private Mono<SearchPagedResponse> search(SearchRequest request, RequestOptions requestOptions,
-        SearchNextPageParameters continuationToken, Context context) {
-        if (continuationToken != null) {
-            request.setSkip(continuationToken.getSkip());
-            if (continuationToken.getTop() != null) {
-                request.setTop(continuationToken.getTop());
-            }
-        }
+        SearchRequest nextPageRequest, Context context) {
+        SearchRequest requestToUse = (nextPageRequest == null) ? request : nextPageRequest;
 
-        return restClient.documents().searchPostWithRestResponseAsync(request, requestOptions, context)
+        return restClient.documents().searchPostWithRestResponseAsync(requestToUse, requestOptions, context)
             .map(SearchPagedResponse::new);
     }
 
@@ -500,11 +494,11 @@ public class SearchIndexAsyncClient {
      * @param searchText The search text on which to base suggestions
      * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
      * definition
-     * @return A {@link SearchPagedFlux} that iterates over {@link SuggestResult} objects and provides access to the
+     * @return A {@link SuggestPagedFlux} that iterates over {@link SuggestResult} objects and provides access to the
      * {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
-    public SearchPagedFlux<SuggestResult, SuggestPagedResponse> suggest(String searchText,
+    public SuggestPagedFlux suggest(String searchText,
         String suggesterName) {
         return suggest(searchText, suggesterName, null, null);
     }
@@ -518,26 +512,24 @@ public class SearchIndexAsyncClient {
      * @param suggestOptions Parameters to further refine the suggestion query.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
-     * @return A {@link SearchPagedFlux} that iterates over {@link SuggestResult} objects and provides access to the
+     * @return A {@link SuggestPagedFlux} that iterates over {@link SuggestResult} objects and provides access to the
      * {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
-    public SearchPagedFlux<SuggestResult, SuggestPagedResponse> suggest(String searchText,
-        String suggesterName, SuggestOptions suggestOptions, RequestOptions requestOptions) {
+    public SuggestPagedFlux suggest(String searchText, String suggesterName, SuggestOptions suggestOptions,
+        RequestOptions requestOptions) {
         SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName,
             SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
 
-        return new SearchPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-            suggest(requestOptions, suggestRequest, context)).flux());
+        return new SuggestPagedFlux(() -> withContext(context -> suggest(requestOptions, suggestRequest, context)));
     }
 
-    SearchPagedFlux<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName,
-        SuggestOptions suggestOptions, RequestOptions requestOptions, Context context) {
+    SuggestPagedFlux suggest(String searchText, String suggesterName, SuggestOptions suggestOptions,
+        RequestOptions requestOptions, Context context) {
         SuggestRequest suggestRequest = createSuggestRequest(searchText,
             suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
 
-        return new SearchPagedFlux<>(() -> (continuationToken, pageSize) ->
-            suggest(requestOptions, suggestRequest, context).flux());
+        return new SuggestPagedFlux(() -> suggest(requestOptions, suggestRequest, context));
     }
 
     private Mono<SuggestPagedResponse> suggest(RequestOptions requestOptions, SuggestRequest suggestRequest,
@@ -604,8 +596,7 @@ public class SearchIndexAsyncClient {
      * @param suggesterName suggester name
      * @return auto complete result.
      */
-    public SearchPagedFlux<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
-        String suggesterName) {
+    public AutocompletePagedFlux autocomplete(String searchText, String suggesterName) {
         return autocomplete(searchText, suggesterName, null, null);
     }
 
@@ -619,20 +610,18 @@ public class SearchIndexAsyncClient {
      * help with debugging
      * @return auto complete result.
      */
-    public SearchPagedFlux<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
-        String suggesterName, AutocompleteOptions autocompleteOptions, RequestOptions requestOptions) {
+    public AutocompletePagedFlux autocomplete(String searchText, String suggesterName,
+        AutocompleteOptions autocompleteOptions, RequestOptions requestOptions) {
         AutocompleteRequest request = createAutoCompleteRequest(searchText, suggesterName, autocompleteOptions);
 
-        return new SearchPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-            autocomplete(requestOptions, request, context)).flux());
+        return new AutocompletePagedFlux(() -> withContext(context -> autocomplete(requestOptions, request, context)));
     }
 
-    SearchPagedFlux<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
-        String suggesterName, AutocompleteOptions autocompleteOptions, RequestOptions requestOptions, Context context) {
+    AutocompletePagedFlux autocomplete(String searchText, String suggesterName, AutocompleteOptions autocompleteOptions,
+        RequestOptions requestOptions, Context context) {
         AutocompleteRequest request = createAutoCompleteRequest(searchText, suggesterName, autocompleteOptions);
 
-        return new SearchPagedFlux<>(() -> (continuationToken, pageSize) ->
-            autocomplete(requestOptions, request, context).flux());
+        return new AutocompletePagedFlux(() -> autocomplete(requestOptions, request, context));
     }
 
     private Mono<AutocompletePagedResponse> autocomplete(RequestOptions requestOptions, AutocompleteRequest request,

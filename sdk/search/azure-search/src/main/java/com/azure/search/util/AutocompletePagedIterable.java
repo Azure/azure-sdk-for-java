@@ -1,0 +1,24 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.search.util;
+
+import com.azure.core.http.rest.PagedFluxBase;
+import com.azure.core.http.rest.PagedIterableBase;
+import com.azure.search.AutocompletePagedResponse;
+import com.azure.search.models.AutocompleteItem;
+
+/**
+ * Implementation of {@link PagedIterableBase} where the element type is {@link AutocompleteItem} and the page type is
+ * {@link AutocompletePagedResponse}.
+ */
+public final class AutocompletePagedIterable extends PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> {
+    /**
+     * Creates instance given {@link PagedFluxBase}.
+     *
+     * @param pagedFluxBase to use as iterable
+     */
+    public AutocompletePagedIterable(PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> pagedFluxBase) {
+        super(pagedFluxBase);
+    }
+}

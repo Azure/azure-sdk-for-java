@@ -14,6 +14,7 @@ import com.azure.search.models.AutocompleteResult;
  * AutocompleteItems} returned from the service.
  */
 public final class AutocompletePagedResponse extends PagedResponseBase<Void, AutocompleteItem> {
+    private final Double coverage;
 
     /**
      * Creates an {@link AutocompletePagedResponse} from the returned {@link Response}.
@@ -27,5 +28,19 @@ public final class AutocompletePagedResponse extends PagedResponseBase<Void, Aut
             autocompleteResponse.getValue().getResults(),
             null,
             null);
+
+        this.coverage = autocompleteResponse.getValue().getCoverage();
+    }
+
+    /**
+     * The percentage of the index covered in the autocomplete request.
+     * <p>
+     * If {@code minimumCoverage} wasn't supplied in the request this will be {@code null}.
+     *
+     * @return The percentage of the index covered in the suggest request if {@code minimumCoverage} was set in the
+     * request, otherwise {@code null}.
+     */
+    public Double getCoverage() {
+        return coverage;
     }
 }
