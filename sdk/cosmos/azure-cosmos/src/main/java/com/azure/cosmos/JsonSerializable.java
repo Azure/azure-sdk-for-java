@@ -133,7 +133,7 @@ public class JsonSerializable {
         return logger;
     }
 
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
     }
 
     /**
