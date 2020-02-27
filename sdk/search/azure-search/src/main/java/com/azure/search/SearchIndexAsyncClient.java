@@ -91,20 +91,9 @@ public final class SearchIndexAsyncClient {
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
      */
     SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion searchServiceVersion,
-                           HttpPipeline httpPipeline) {
+        HttpPipeline httpPipeline) {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
-
-        if (CoreUtils.isNullOrEmpty(indexName)) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid indexName"));
-        }
-        if (searchServiceVersion == null) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid search service version"));
-        }
-        if (httpPipeline == null) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid httpPipeline"));
-        }
-
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.searchServiceVersion = searchServiceVersion;
