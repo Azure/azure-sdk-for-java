@@ -3,12 +3,12 @@
 
 package com.azure.search;
 
-import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
+import com.azure.search.util.SearchPagedIterable;
 
 import java.util.stream.Stream;
 
@@ -50,7 +50,7 @@ public class SearchOptionsExample {
     private static void searchResultsFacets(SearchIndexClient searchClient) {
         // Each page in the response of the search query holds the facets value
         // Get Facets property from the first page in the response
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
+        SearchPagedIterable results = searchClient.search("*",
             new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"), new RequestOptions(), Context.NONE);
 
         results.iterableByPage().forEach(page ->
@@ -69,7 +69,7 @@ public class SearchOptionsExample {
     private static void searchResultsFacetsFromStream(SearchIndexClient searchClient) {
         // Each page in the response of the search query holds the facets value
         // Accessing Facets property with stream
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
+        SearchPagedIterable results = searchClient.search("*",
             new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"), new RequestOptions(), Context.NONE);
 
         Stream<SearchPagedResponse> searchPagedResponseStream = results.streamByPage();
@@ -89,7 +89,7 @@ public class SearchOptionsExample {
     private static void searchResultsCoverageFromStream(SearchIndexClient searchClient) {
         // Each page in the response of the search query holds the coverage value
         // Get Coverage property from the first page in the response
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
+        SearchPagedIterable results = searchClient.search("*",
             new SearchOptions().setMinimumCoverage(80.0), new RequestOptions(), Context.NONE);
 
         results.streamByPage().forEach(searchPagedResponse ->
@@ -100,7 +100,7 @@ public class SearchOptionsExample {
     private static void searchResultsCoverage(SearchIndexClient searchClient) {
         // Each page in the response of the search query holds the coverage value
         // Accessing Coverage property when iterating by page
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
+        SearchPagedIterable results = searchClient.search("*",
             new SearchOptions().setMinimumCoverage(80.0), new RequestOptions(), Context.NONE);
 
         results.iterableByPage().forEach(page ->
@@ -112,7 +112,7 @@ public class SearchOptionsExample {
         // Each page in the response of the search query holds the count value
         // Get total search results count
         // Get count property from the first page in the response
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
+        SearchPagedIterable results = searchClient.search("*",
             new SearchOptions().setIncludeTotalResultCount(true), new RequestOptions(), Context.NONE);
 
         Iterable<SearchPagedResponse> searchPagedResponses = results.iterableByPage();
@@ -125,7 +125,7 @@ public class SearchOptionsExample {
         // Each page in the response of the search query holds the count value
         // Get total search results count by accessing the SearchPagedResponse
         // Access Count property when iterating by page
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
+        SearchPagedIterable results = searchClient.search("*",
             new SearchOptions().setIncludeTotalResultCount(true), new RequestOptions(), Context.NONE);
 
         Stream<SearchPagedResponse> searchPagedResponseStream = results.streamByPage();
@@ -137,7 +137,7 @@ public class SearchOptionsExample {
 
     private static void searchResultAsStream(SearchIndexClient searchClient) {
         // Converting search results to stream
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*");
+        SearchPagedIterable results = searchClient.search("*");
         Stream<SearchResult> resultStream = results.stream();
         resultStream.forEach(result ->
             result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
@@ -145,8 +145,7 @@ public class SearchOptionsExample {
     }
 
     private static void searchResultsAsPagedIterable(SearchIndexClient searchClient) {
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = searchClient.search("*");
-        results.forEach(result ->
+        searchClient.search("*").forEach(result ->
             result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
         );
     }
