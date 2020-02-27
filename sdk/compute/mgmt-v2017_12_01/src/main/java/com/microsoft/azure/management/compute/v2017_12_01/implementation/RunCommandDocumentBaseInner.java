@@ -46,7 +46,7 @@ public class RunCommandDocumentBaseInner {
     private String description;
 
     /**
-     * Get the schema value.
+     * Get the VM run command schema.
      *
      * @return the schema value
      */
@@ -55,7 +55,7 @@ public class RunCommandDocumentBaseInner {
     }
 
     /**
-     * Set the schema value.
+     * Set the VM run command schema.
      *
      * @param schema the schema value to set
      * @return the RunCommandDocumentBaseInner object itself.
@@ -66,7 +66,7 @@ public class RunCommandDocumentBaseInner {
     }
 
     /**
-     * Get the id value.
+     * Get the VM run command id.
      *
      * @return the id value
      */
@@ -75,7 +75,7 @@ public class RunCommandDocumentBaseInner {
     }
 
     /**
-     * Set the id value.
+     * Set the VM run command id.
      *
      * @param id the id value to set
      * @return the RunCommandDocumentBaseInner object itself.
@@ -86,7 +86,7 @@ public class RunCommandDocumentBaseInner {
     }
 
     /**
-     * Get the osType value.
+     * Get the Operating System type. Possible values include: 'Windows', 'Linux'.
      *
      * @return the osType value
      */
@@ -95,7 +95,7 @@ public class RunCommandDocumentBaseInner {
     }
 
     /**
-     * Set the osType value.
+     * Set the Operating System type. Possible values include: 'Windows', 'Linux'.
      *
      * @param osType the osType value to set
      * @return the RunCommandDocumentBaseInner object itself.
@@ -106,7 +106,7 @@ public class RunCommandDocumentBaseInner {
     }
 
     /**
-     * Get the label value.
+     * Get the VM run command label.
      *
      * @return the label value
      */
@@ -115,7 +115,7 @@ public class RunCommandDocumentBaseInner {
     }
 
     /**
-     * Set the label value.
+     * Set the VM run command label.
      *
      * @param label the label value to set
      * @return the RunCommandDocumentBaseInner object itself.
@@ -126,7 +126,7 @@ public class RunCommandDocumentBaseInner {
     }
 
     /**
-     * Get the description value.
+     * Get the VM run command description.
      *
      * @return the description value
      */
@@ -135,7 +135,7 @@ public class RunCommandDocumentBaseInner {
     }
 
     /**
-     * Set the description value.
+     * Set the VM run command description.
      *
      * @param description the description value to set
      * @return the RunCommandDocumentBaseInner object itself.
