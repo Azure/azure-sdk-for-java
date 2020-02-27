@@ -28,6 +28,7 @@ class WorkflowRunActionImpl extends IndexableRefreshableWrapperImpl<WorkflowRunA
     WorkflowRunActionImpl(WorkflowRunActionInner inner,  LogicManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.workflowName = IdParsingUtils.getValueFromIdByName(inner.id(), "workflows");
         this.runName = IdParsingUtils.getValueFromIdByName(inner.id(), "runs");

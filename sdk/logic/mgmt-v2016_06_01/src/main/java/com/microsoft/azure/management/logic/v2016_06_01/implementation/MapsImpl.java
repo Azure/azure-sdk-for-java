@@ -78,10 +78,14 @@ class MapsImpl extends WrapperImpl<MapsInner> implements Maps {
     public Observable<IntegrationAccountMap> getAsync(String resourceGroupName, String integrationAccountName, String mapName) {
         MapsInner client = this.inner();
         return client.getAsync(resourceGroupName, integrationAccountName, mapName)
-        .map(new Func1<IntegrationAccountMapInner, IntegrationAccountMap>() {
+        .flatMap(new Func1<IntegrationAccountMapInner, Observable<IntegrationAccountMap>>() {
             @Override
-            public IntegrationAccountMap call(IntegrationAccountMapInner inner) {
-                return wrapModel(inner);
+            public Observable<IntegrationAccountMap> call(IntegrationAccountMapInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((IntegrationAccountMap)wrapModel(inner));
+                }
             }
        });
     }
