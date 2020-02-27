@@ -734,7 +734,7 @@ public class RxDocumentServiceRequest {
 
     static String getAttachmentIdFromMediaId(String mediaId) {
         // '/' was replaced with '-'.
-        byte[] buffer = Utils.Base64Decoder.decode(mediaId.replace('-', '/').getBytes());
+        byte[] buffer = Utils.Base64Decoder.decode(mediaId.replace('-', '/').getBytes(StandardCharsets.UTF_8));
 
         final int resoureIdLength = 20;
         String attachmentId;

@@ -92,20 +92,9 @@ public final class SearchIndexAsyncClient {
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
      */
     SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion searchServiceVersion,
-                           HttpPipeline httpPipeline) {
+        HttpPipeline httpPipeline) {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
-
-        if (CoreUtils.isNullOrEmpty(indexName)) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid indexName"));
-        }
-        if (searchServiceVersion == null) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid search service version"));
-        }
-        if (httpPipeline == null) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid httpPipeline"));
-        }
-
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.searchServiceVersion = searchServiceVersion;
@@ -185,11 +174,11 @@ public final class SearchIndexAsyncClient {
      * Merges a collection of documents with existing documents in the target index.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
-     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended
-     * that you always declare primitive-typed properties with their class equivalents (for example, an integer
-     * property should be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
+     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
+     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
+     * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged
      * @return document index result
@@ -209,11 +198,11 @@ public final class SearchIndexAsyncClient {
      * Merges a collection of documents with existing documents in the target index.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
-     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended
-     * that you always declare primitive-typed properties with their class equivalents (for example, an integer
-     * property should be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
+     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
+     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
+     * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged
      * @return response containing the document index result.
@@ -242,11 +231,11 @@ public final class SearchIndexAsyncClient {
      * not exist, it behaves like upload with a new document.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
-     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended
-     * that you always declare primitive-typed properties with their class equivalents (for example, an integer
-     * property should be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
+     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
+     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
+     * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
@@ -267,11 +256,11 @@ public final class SearchIndexAsyncClient {
      * not exist, it behaves like upload with a new document.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
-     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended
-     * that you always declare primitive-typed properties with their class equivalents (for example, an integer
-     * property should be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
+     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
+     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
+     * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
