@@ -551,6 +551,7 @@ public class JsonSerializable {
     }
 
     public ByteBuffer serializeJsonToByteBuffer() {
+        this.populatePropertyBag();
         return Utils.serializeJsonToByteBuffer(getMapper(), propertyBag);
     }
 
