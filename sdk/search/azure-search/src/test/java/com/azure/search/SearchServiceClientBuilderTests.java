@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SearchServiceClientBuilderTests {
     private final SearchApiKeyCredential searchApiKeyCredential = new SearchApiKeyCredential("0123");
@@ -101,75 +100,30 @@ public class SearchServiceClientBuilderTests {
     }
 
     @Test
-    public void verifyEmptyEndpointIsInvalidAsyncTest() {
-        expectThrowsWithMessage("'endpoint' must be a valid URL", () -> new SearchServiceClientBuilder()
-            .endpoint("")
-            .credential(searchApiKeyCredential)
-            .searchServiceVersion(apiVersion)
-            .buildAsyncClient());
+    public void emptyEndpointThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new SearchServiceClientBuilder().endpoint(""));
     }
 
     @Test
-    public void verifyEmptyEndpointIsInvalidTest() {
-        expectThrowsWithMessage("'endpoint' must be a valid URL", () -> new SearchServiceClientBuilder()
-            .endpoint("")
-            .credential(searchApiKeyCredential)
-            .searchServiceVersion(apiVersion)
-            .buildClient());
+    public void nullCredentialThrowsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new SearchServiceClientBuilder().credential(null));
     }
 
     @Test
-    public void verifyNullApiKeyIsInvalidAsyncTest() {
-        expectThrowsWithMessage("Empty apiKeyCredentials", () -> new SearchServiceClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(null)
-            .searchServiceVersion(apiVersion)
-            .buildAsyncClient());
+    public void credentialWithEmptyApiKeyThrowsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new SearchServiceClientBuilder()
+            .credential(new SearchApiKeyCredential("")));
     }
 
     @Test
-    public void verifyNullApiKeyIsInvalidTest() {
-        expectThrowsWithMessage("Empty apiKeyCredentials", () -> new SearchServiceClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(null)
-            .searchServiceVersion(apiVersion)
-            .buildClient());
-    }
-
-    @Test
-    public void verifyEmptyApiKeyIsInvalidAsyncTest() {
-        expectThrowsWithMessage("Empty apiKeyCredentials", () -> new SearchServiceClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(new SearchApiKeyCredential(""))
-            .searchServiceVersion(apiVersion)
-            .buildAsyncClient());
-    }
-
-    @Test
-    public void verifyEmptyApiKeyIsInvalidTest() {
-        expectThrowsWithMessage("Empty apiKeyCredentials", () -> new SearchServiceClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(new SearchApiKeyCredential(""))
-            .searchServiceVersion(apiVersion)
-            .buildClient());
-    }
-
-    @Test
-    public void verifyNullApiVersionIsInvalidAsyncTest() {
-        expectThrowsWithMessage("Invalid searchServiceVersion", () -> new SearchServiceClientBuilder()
+    void nullApiVersionSetsLatest() {
+        SearchServiceClientBuilder builder = new SearchServiceClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
-            .searchServiceVersion(null)
-            .buildAsyncClient());
-    }
+            .searchServiceVersion(null);
 
-    @Test
-    public void verifyNullApiVersionIsInvalidTest() {
-        expectThrowsWithMessage("Invalid searchServiceVersion", () -> new SearchServiceClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .searchServiceVersion(null)
-            .buildClient());
+        assertEquals(SearchServiceVersion.getLatest(), builder.buildAsyncClient().getServiceVersion());
+        assertEquals(SearchServiceVersion.getLatest(), builder.buildClient().getServiceVersion());
     }
 
     @Test
@@ -179,8 +133,7 @@ public class SearchServiceClientBuilderTests {
             .credential(searchApiKeyCredential)
             .buildClient();
 
-        assertEquals(SearchServiceVersion.getLatest().getVersion(),
-            searchServiceClient.getServiceVersion().getVersion());
+        assertEquals(SearchServiceVersion.getLatest(), searchServiceClient.getServiceVersion());
     }
 
     @Test
@@ -190,18 +143,6 @@ public class SearchServiceClientBuilderTests {
             .credential(searchApiKeyCredential)
             .buildAsyncClient();
 
-        assertEquals(SearchServiceVersion.getLatest().getVersion(),
-            searchServiceAsyncClient.getServiceVersion().getVersion());
-    }
-
-    private void expectThrowsWithMessage(String expectedMessage, Runnable runnable) {
-        try {
-            runnable.run();
-            fail();
-
-        } catch (Exception e) {
-            assertEquals(IllegalArgumentException.class, e.getClass());
-            assertTrue(e.getMessage().contains(expectedMessage));
-        }
+        assertEquals(SearchServiceVersion.getLatest(), searchServiceAsyncClient.getServiceVersion());
     }
 }
