@@ -104,7 +104,7 @@ public interface Workflow extends HasInner<WorkflowInner>, Resource, GroupableRe
         interface WithDefinition {
             /**
              * Specifies definition.
-             * @param definition The definition
+             * @param definition The definition. See [Schema reference for Workflow Definition Language in Azure Logic Apps](https://aka.ms/logic-apps-workflow-definition-language)
              * @return the next definition stage
              */
             WithCreate withDefinition(Object definition);
@@ -182,7 +182,7 @@ public interface Workflow extends HasInner<WorkflowInner>, Resource, GroupableRe
         interface WithDefinition {
             /**
              * Specifies definition.
-             * @param definition The definition
+             * @param definition The definition. See [Schema reference for Workflow Definition Language in Azure Logic Apps](https://aka.ms/logic-apps-workflow-definition-language)
              * @return the next update stage
              */
             Update withDefinition(Object definition);
