@@ -537,6 +537,13 @@ public final class AzurePath implements Path {
         return containerClient.getBlobClient(blobName);
     }
 
+    /**
+     * @return Whether this path consists of only a root component.
+     */
+    boolean isRoot() {
+        return this.equals(this.getRoot());
+    }
+
     private String withoutRoot() {
         Path root = this.getRoot();
         String str = this.pathString;
