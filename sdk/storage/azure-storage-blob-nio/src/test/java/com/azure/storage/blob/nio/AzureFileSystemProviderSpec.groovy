@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.nio
 
-import com.azure.storage.blob.BlobClient
+
 import com.azure.storage.blob.specialized.AppendBlobClient
 import spock.lang.Unroll
 
@@ -126,20 +126,15 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
-        def rootName = fs.getRootDirectories().last().toString()
-        def containerName = rootToContainer(rootName)
-        def parent = ""
-        for (int i = 0; i < depth; i++) {
-            parent += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
-        }
+        def rootName = getNonDefaultDir(fs)
+        def parent = getPathWithDepth(depth)
         def dirName = generateBlobName()
         def dirPathStr = parent + dirName
 
         def dirPath = fs.getPath(rootName, dirPathStr)
 
         // Generate clients to resources. Create resources as necessary
-        def containerClient = primaryBlobServiceClient
-            .getBlobContainerClient(containerName)
+        def containerClient = rootNameToContainerClient(rootName)
         /*
         In this case, we are putting the blob in the root directory, i.e. directly in the container, so no need to
         create a blob.
@@ -168,8 +163,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
-        def containerClient =
-            primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
+        def containerClient = rootNameToContainerClient(getDefaultDir(fs))
         AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
 
         when: "Relative paths are resolved against the default directory"
@@ -183,8 +177,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
-        def containerClient =
-            primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
+        def containerClient = rootNameToContainerClient(getDefaultDir(fs))
         AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
 
         when:
@@ -199,8 +192,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
-        def containerClient =
-            primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
+        def containerClient = rootNameToContainerClient(getDefaultDir(fs))
         AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
 
         when:
@@ -216,8 +208,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         def fs = createFS(config)
         def fileName = generateBlobName()
         def childName = generateBlobName()
-        def containerClient =
-            primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
+        def containerClient = rootNameToContainerClient(getDefaultDir(fs))
         AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
 
         when:
@@ -272,8 +263,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
-        def containerClient =
-            primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
+        def containerClient = rootNameToContainerClient(getDefaultDir(fs))
         AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
         def contentMd5 = getRandomByteArray(10)
         FileAttribute<?>[] attributes = [new TestFileAttribute<String>("fizz", "buzz"),
@@ -314,17 +304,12 @@ class AzureFileSystemProviderSpec extends APISpec {
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
         def rootName = fs.getRootDirectories().last().toString()
-        def containerName = rootToContainer(rootName)
-        def sourceName = generateBlobName()
-        def sourcePath = fs.getPath(rootName, sourceName)
-        def destName = generateBlobName()
-        def destPath = fs.getPath(rootName, destName)
+        def sourcePath = (AzurePath) fs.getPath(rootName, generateBlobName())
+        def destPath = (AzurePath) fs.getPath(rootName, generateBlobName())
 
         // Generate clients to resources.
-        def containerClient = primaryBlobServiceClient
-            .getBlobContainerClient(containerName)
-        def sourceClient = containerClient.getBlobClient(sourceName)
-        def destinationClient = containerClient.getBlobClient(destName)
+        def sourceClient = sourcePath.toBlobClient()
+        def destinationClient = destPath.toBlobClient()
         def sourceChildClient = null
         def destChildClient = null
 
@@ -335,10 +320,10 @@ class AzureFileSystemProviderSpec extends APISpec {
             }
             if (!sourceEmpty) {
                 def sourceChildName = generateBlobName()
-                def sourceChildPath = fs.getPath(rootName, sourceName, sourceChildName)
-                sourceChildClient = ((AzurePath) sourceChildPath).toBlobClient().getAppendBlobClient()
+                sourceChildClient = ((AzurePath) sourcePath.resolve(sourceChildName)).toBlobClient()
+                    .getAppendBlobClient()
                 sourceChildClient.create()
-                destChildClient = ((AzurePath) fs.getPath(rootName, destName, sourceChildName)).toBlobClient()
+                destChildClient = ((AzurePath) destPath.resolve(sourceChildName)).toBlobClient()
                     .getAppendBlobClient()
             }
         } else { // source is file
@@ -389,18 +374,13 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
-        def rootName = fs.getRootDirectories().last().toString()
-        def containerName = rootToContainer(rootName)
-        def sourceName = generateBlobName()
-        def sourcePath = fs.getPath(rootName, sourceName)
-        def destName = generateBlobName()
-        def destPath = fs.getPath(rootName, destName)
+        def rootName = getNonDefaultDir(fs)
+        def sourcePath = (AzurePath)fs.getPath(rootName, generateBlobName())
+        def destPath = (AzurePath)fs.getPath(rootName, generateBlobName())
 
         // Generate clients to resources.
-        def containerClient = primaryBlobServiceClient
-            .getBlobContainerClient(containerName)
-        def sourceClient = containerClient.getBlobClient(sourceName)
-        def destinationClient = containerClient.getBlobClient(destName)
+        def sourceClient = sourcePath.toBlobClient()
+        def destinationClient = destPath.toBlobClient()
 
         // Create resources as necessary
         sourceClient.upload(defaultInputStream.get(), defaultDataSize)
@@ -437,18 +417,13 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
-        def rootName = fs.getRootDirectories().last().toString()
-        def containerName = rootToContainer(rootName)
-        def sourceName = generateBlobName()
-        def sourcePath = fs.getPath(rootName, sourceName)
-        def destName = generateBlobName()
-        def destPath = fs.getPath(rootName, destName)
+        def rootName = getNonDefaultDir(fs)
+        def sourcePath = (AzurePath) fs.getPath(rootName, generateBlobName())
+        def destPath = (AzurePath) fs.getPath(rootName, generateBlobName())
 
         // Generate clients to resources.
-        def containerClient = primaryBlobServiceClient
-            .getBlobContainerClient(containerName)
-        def sourceClient = containerClient.getBlobClient(sourceName)
-        def destinationClient = containerClient.getBlobClient(destName)
+        def sourceClient = sourcePath.toBlobClient()
+        def destinationClient = destPath.toBlobClient()
         def destChildClient
 
         // Create resources as necessary
@@ -456,8 +431,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         if (!destinationIsVirtual) {
             fs.provider().createDirectory(destPath)
         }
-        def childName = generateBlobName()
-        destChildClient = ((AzurePath) fs.getPath(rootName, destName, childName)).toBlobClient()
+        destChildClient = ((AzurePath) destPath.resolve(generateBlobName())).toBlobClient()
         destChildClient.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
@@ -483,18 +457,13 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
-        def rootName = fs.getRootDirectories().last().toString()
-        def containerName = rootToContainer(rootName)
-        def sourceName = generateBlobName()
-        def sourcePath = fs.getPath(rootName, sourceName)
-        def destName = generateBlobName()
-        def destPath = fs.getPath(rootName, destName)
+        def rootName = getNonDefaultDir(fs)
+        def sourcePath = (AzurePath) fs.getPath(rootName, generateBlobName())
+        def destPath = (AzurePath) fs.getPath(rootName, generateBlobName())
 
         // Generate clients to resources.
-        def containerClient = primaryBlobServiceClient
-            .getBlobContainerClient(containerName)
-        def sourceClient = containerClient.getBlobClient(sourceName)
-        def destinationClient = containerClient.getBlobClient(destName)
+        def sourceClient = sourcePath.toBlobClient()
+        def destinationClient = destPath.toBlobClient()
 
         // Create resources as necessary
         sourceClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20)
@@ -531,11 +500,9 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
-        def rootName = fs.getRootDirectories().last().toString()
-        def sourceName = generateBlobName()
-        def sourcePath = fs.getPath(rootName, sourceName)
-        def destName = generateBlobName()
-        def destPath = fs.getPath(rootName, destName)
+        def rootName = getNonDefaultDir(fs)
+        def sourcePath = fs.getPath(rootName, generateBlobName())
+        def destPath = fs.getPath(rootName, generateBlobName())
 
         when: "Missing COPY_ATTRIBUTES"
         fs.provider().copy(sourcePath, destPath)
@@ -557,30 +524,16 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
-        def rootName = fs.getRootDirectories().last().toString()
-        def containerName = rootToContainer(rootName)
-        def sourceParent = ""
-        for (int i = 0; i < sourceDepth; i++) {
-            sourceParent += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
-        }
-        def sourceFileName = generateBlobName()
-        def sourceFilePathStr = sourceParent + sourceFileName
-        def sourcePath = fs.getPath(rootName, sourceFilePathStr)
+        def rootName = getNonDefaultDir(fs)
+        def sourcePath = (AzurePath) fs.getPath(rootName, getPathWithDepth(sourceDepth), generateBlobName())
 
-        def destParent = ""
-        for (int i = 0; i < destDepth; i++) {
-            destParent += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
-        }
-        def destFileName = generateBlobName()
-        def destFilePathStr = destParent + destFileName
-        def destPath = fs.getPath(rootName, destFilePathStr)
+        def destParent = getPathWithDepth(destDepth)
+        def destPath = (AzurePath) fs.getPath(rootName, destParent, generateBlobName())
 
         // Generate clients to resources.
-        def containerClient = primaryBlobServiceClient
-            .getBlobContainerClient(containerName)
-        def sourceClient = containerClient.getBlobClient(sourceFilePathStr)
-        def destinationClient = containerClient.getBlobClient(destFilePathStr)
-        def destParentClient = containerClient.getBlobClient(destParent)
+        def sourceClient = sourcePath.toBlobClient()
+        def destinationClient = destPath.toBlobClient()
+        def destParentClient = ((AzurePath) destPath.getParent()).toBlobClient()
 
         // Create resources as necessary
         sourceClient.upload(defaultInputStream.get(), defaultDataSize)
@@ -614,18 +567,13 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
-        def rootName = fs.getRootDirectories().last().toString()
-        def containerName = rootToContainer(rootName)
-        def sourceName = generateBlobName()
-        def sourcePath = fs.getPath(rootName, sourceName)
-        def destName = generateBlobName() + fs.getSeparator() + generateBlobName()
-        def destPath = fs.getPath(rootName, destName)
+        def rootName = getNonDefaultDir(fs)
+        def sourcePath = (AzurePath) fs.getPath(rootName, generateBlobName())
+        def destPath = (AzurePath) fs.getPath(rootName, generateBlobName(), generateBlobName())
 
         // Generate clients to resources.
-        def containerClient = primaryBlobServiceClient
-            .getBlobContainerClient(containerName)
-        def sourceClient = containerClient.getBlobClient(sourceName)
-        def destinationClient = containerClient.getBlobClient(destName)
+        def sourceClient = sourcePath.toBlobClient()
+        def destinationClient = destPath.toBlobClient()
 
         // Create resources as necessary
         sourceClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20)
@@ -645,10 +593,8 @@ class AzureFileSystemProviderSpec extends APISpec {
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
         def rootName = fs.getRootDirectories().last().toString()
-        def sourceName = generateBlobName()
-        def sourcePath = fs.getPath(rootName, sourceName)
-        def destName = generateBlobName()
-        def destPath = fs.getPath(rootName, destName)
+        def sourcePath = fs.getPath(rootName, generateBlobName())
+        def destPath = fs.getPath(rootName, generateBlobName())
 
         when:
         fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
@@ -664,10 +610,8 @@ class AzureFileSystemProviderSpec extends APISpec {
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
         def rootName = fs.getRootDirectories().last().toString()
-        def sourceName = generateBlobName()
-        def sourcePath = fs.getPath(rootName, sourceName)
-        def destName = generateBlobName()
-        def destPath = fs.getPath(rootName, destName)
+        def sourcePath = fs.getPath(rootName, generateBlobName())
+        def destPath = fs.getPath(rootName, generateBlobName())
 
         when: "Source root"
         fs.provider().copy(fs.getPath(rootName), destPath, StandardCopyOption.COPY_ATTRIBUTES)
@@ -689,8 +633,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
         def rootName = fs.getRootDirectories().last().toString()
-        def sourceName = generateBlobName()
-        def sourcePath = fs.getPath(rootName, sourceName)
+        def sourcePath = fs.getPath(rootName, generateBlobName())
 
         when:
         // Even when the source does not exist or COPY_ATTRIBUTES is not specified, this will succeed as no-op
@@ -705,20 +648,14 @@ class AzureFileSystemProviderSpec extends APISpec {
         def fs = createFS(config)
 
         // Generate resource names.
-        def sourceRootName = fs.getRootDirectories().last().toString()
-        def destRootName = fs.getRootDirectories().first().toString()
-        def sourceContainerName = rootToContainer(sourceRootName)
-        def destContainerName = rootToContainer(destRootName)
-        def sourceName = generateBlobName()
-        def sourcePath = fs.getPath(sourceRootName, sourceName)
-        def destName = generateBlobName()
-        def destPath = fs.getPath(destRootName, destName)
+        def sourceRootName = getNonDefaultDir(fs)
+        def destRootName = getDefaultDir(fs)
+        def sourcePath = (AzurePath) fs.getPath(sourceRootName, generateBlobName())
+        def destPath = (AzurePath) fs.getPath(destRootName, generateBlobName())
 
         // Generate clients to resources.
-        def sourceContainerClient = primaryBlobServiceClient.getBlobContainerClient(sourceContainerName)
-        def sourceClient = sourceContainerClient.getBlobClient(sourceName)
-        def destContainerClient = primaryBlobServiceClient.getBlobContainerClient(destContainerName)
-        def destinationClient = destContainerClient.getBlobClient(destName)
+        def sourceClient = sourcePath.toBlobClient()
+        def destinationClient = destPath.toBlobClient()
 
         // Create resources as necessary
         sourceClient.upload(defaultInputStream.get(), defaultDataSize)
@@ -731,6 +668,30 @@ class AzureFileSystemProviderSpec extends APISpec {
         destinationClient.exists()
     }
 
+    def "FileSystemProvider delete"() {
+        setup:
+        def fs = createFS(config)
+
+        def containerName = rootNameToContainerName(fs.getRootDirectories().last().toString())
+        def blobName = generateBlobName()
+
+        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
+        def blobClient = containerClient.getBlobClient(blobName).getBlockBlobClient()
+
+        if (isDir) {
+
+        }
+
+        where:
+        isDir | _
+        true  | _
+        false | _
+
+        // File, concrete dir
+        // File not exist, non-empty dir (virtual, concrete)
+        // Non default directory
+    }
+
     @Unroll
     def "FileSystemProvider directory status"() {
         setup:
@@ -739,26 +700,15 @@ class AzureFileSystemProviderSpec extends APISpec {
         // Generate resource names.
         // In root1, the resource will be in the root. In root2, the resource will be several levels deep. Also
         // root1 will be non-default directory and root2 is default directory.
-        def root1 = fs.getRootDirectories().last().toString()
-        def root2 = fs.getRootDirectories().first().toString()
-        def container1 = rootToContainer(root1)
-        def container2 = rootToContainer(root2)
-        def name1 = generateBlobName()
-        def parent2 = ""
-        for (int i = 0; i < 3; i++) {
-            parent2 += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
-        }
-        def name2 = generateBlobName()
+        def container1 = rootNameToContainerName(getNonDefaultDir(fs))
+        def parentPath1 = (AzurePath) fs.getPath(container1, generateBlobName())
+        def parentPath2 = (AzurePath) fs.getPath(getPathWithDepth(3), generateBlobName())
 
         // Generate clients to resources.
-        def containerClient1 = primaryBlobServiceClient.getBlobContainerClient(container1)
-        def blobClient1 = containerClient1.getBlobClient(name1)
-        def containerClient2 = primaryBlobServiceClient.getBlobContainerClient(container2)
-        def blobClient2 = containerClient2.getBlobClient(parent2 + name2)
-        def childClient1 = containerClient1.getBlobClient(
-            blobClient1.getBlobName() + AzureFileSystem.PATH_SEPARATOR + generateBlobName())
-        def childClient2 = containerClient2.getBlobClient(
-            blobClient2.getBlobName() + AzureFileSystem.PATH_SEPARATOR + generateBlobName())
+        def blobClient1 = parentPath1.toBlobClient()
+        def blobClient2 = parentPath2.toBlobClient()
+        def childClient1 = ((AzurePath) parentPath1.resolve(generateBlobName())).toBlobClient()
+        def childClient2 = ((AzurePath) parentPath2.resolve(generateBlobName())).toBlobClient()
 
         // Create resources as necessary
         def dirMetadata = [(AzureFileSystemProvider.DIR_METADATA_MARKER):"true"]
@@ -816,8 +766,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         def fs = createFS(config)
         def fileName = generateBlobName()
         def childName = generateBlobName()
-        def containerClient =
-            primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
+        def containerClient = rootNameToContainerClient(getDefaultDir(fs))
 
         when:
         AppendBlobClient blobClient = containerClient.getBlobClient(fileName + fs.getSeparator() + childName)
@@ -832,8 +781,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
-        def containerClient =
-            primaryBlobServiceClient.getBlobContainerClient(rootToContainer(fs.getDefaultDirectory().toString()))
+        def containerClient = rootNameToContainerClient(getDefaultDir(fs))
 
         when:
         AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
@@ -851,13 +799,17 @@ class AzureFileSystemProviderSpec extends APISpec {
         // No parent means the parent is implicitly the default root, which always exists
         ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(fs.getPath("foo"))
 
-        when: "Non-default root"
-        // Checks for a bug where we would check the wrong root container for existence on a path with depth > 1
-        blobClient.delete()
-        def rootName = fs.getRootDirectories().last().toString()
-        containerClient = primaryBlobServiceClient.getBlobContainerClient(rootToContainer(rootName))
+    }
 
-        blobClient = containerClient.getBlobClient("fizz/buzz/bazz")
+    def "FileSystemProvider parent dir exists non default root"() {
+        // Checks for a bug where we would check the wrong root container for existence on a path with depth > 1
+        setup:
+        def fs = createFS(config)
+        def rootName = getNonDefaultDir(fs)
+        def containerClient = rootNameToContainerClient(rootName)
+
+        when:
+        def blobClient = containerClient.getBlobClient("fizz/buzz/bazz")
         blobClient.getAppendBlobClient().create()
 
         then:

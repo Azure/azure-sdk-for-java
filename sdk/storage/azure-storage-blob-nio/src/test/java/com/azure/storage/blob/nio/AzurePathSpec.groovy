@@ -13,7 +13,7 @@ class AzurePathSpec extends APISpec {
     AzureFileSystem fs
 
     // Just need one fs instance for creating the paths.
-    def setupSpec() {
+    def setup() {
         def config = initializeConfigMap()
         config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = "jtcazurepath1,jtcazurepath2"
@@ -368,12 +368,12 @@ class AzurePathSpec extends APISpec {
 
         then:
         client.getBlobName() == "foo/bar"
-        client.getContainerName() == rootToContainer(fs.getDefaultDirectory().toString())
+        client.getContainerName() == rootNameToContainerName(getDefaultDir(fs))
     }
 
     def "Path getBlobClient empty"() {
         when:
-        def path = fs.getPath(fs.getRootDirectories().last().toString())
+        def path = fs.getPath(getNonDefaultDir(fs))
         ((AzurePath) path).toBlobClient()
 
         then:
@@ -387,12 +387,13 @@ class AzurePathSpec extends APISpec {
 
         then:
         client.getBlobName() == "foo/bar"
-        client.getContainerName() == rootToContainer(fs.getRootDirectories().last().toString())
+        client.getContainerName() == rootNameToContainerName(getNonDefaultDir(fs))
     }
 
     def "Path getBlobClient fail"() {
         when:
-        ((AzurePath) fs.getPath("fakeRoot:", "foo/bar")).toBlobClient() // Can't get a client to a nonexistent root/container.
+        // Can't get a client to a nonexistent root/container.
+        ((AzurePath) fs.getPath("fakeRoot:", "foo/bar")).toBlobClient()
 
         then:
         thrown(IOException)
