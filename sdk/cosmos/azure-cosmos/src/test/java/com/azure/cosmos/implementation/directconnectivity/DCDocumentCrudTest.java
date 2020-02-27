@@ -221,7 +221,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(-1);
-        options.maxItemCount(100);
+        options.setMaxItemCount(100);
 
         Flux<FeedResponse<Document>> results = client.queryDocuments(getCollectionLink(), "SELECT * FROM r", options);
 

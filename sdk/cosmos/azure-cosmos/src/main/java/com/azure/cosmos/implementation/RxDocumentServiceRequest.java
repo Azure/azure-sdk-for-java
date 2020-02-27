@@ -1125,7 +1125,7 @@ public class RxDocumentServiceRequest {
         } else if (options instanceof RequestOptions) {
             return ((RequestOptions) options).getProperties();
         } else if (options instanceof FeedOptions) {
-            return ((FeedOptions) options).properties();
+            return ((FeedOptions) options).getProperties();
         } else if (options instanceof ChangeFeedOptions) {
             return ((ChangeFeedOptions) options).getProperties();
         } else {

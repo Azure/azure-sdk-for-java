@@ -212,7 +212,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
             FeedOptions feedOptions = new FeedOptions();
             if (properties != null) {
-                feedOptions.properties(properties);
+                feedOptions.setProperties(properties);
             }
             return client.readPartitionKeyRanges(coll.getSelfLink(), feedOptions)
                     // maxConcurrent = 1 to makes it in the right getOrder

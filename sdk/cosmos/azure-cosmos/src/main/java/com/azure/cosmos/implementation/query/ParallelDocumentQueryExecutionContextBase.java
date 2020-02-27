@@ -77,8 +77,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
 
                 PartitionKeyInternal partitionKeyInternal = null;
-                if (feedOptions.partitionKey() != null && feedOptions.partitionKey() != PartitionKey.NONE) {
-                    partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey());
+                if (feedOptions.getPartitionKey() != null && feedOptions.getPartitionKey() != PartitionKey.NONE) {
+                    partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(feedOptions.getPartitionKey());
                     headers.put(HttpConstants.HttpHeaders.PARTITION_KEY,
                         partitionKeyInternal.toJson());
 
