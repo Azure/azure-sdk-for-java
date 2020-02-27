@@ -127,7 +127,7 @@ public class BridgeInternal {
         String ifNoneMatchValue = null;
         if (options.getRequestContinuation() != null) {
             ifNoneMatchValue = options.getRequestContinuation();
-        } else if (!options.getStartFromBeginning()) {
+        } else if (!options.isStartFromBeginning()) {
             ifNoneMatchValue = "*";
         }
         // On REST level, change feed is using IF_NONE_MATCH/ETag instead of
@@ -239,7 +239,7 @@ public class BridgeInternal {
     }
 
     public static boolean getUseMultipleWriteLocations(ConnectionPolicy policy) {
-        return policy.getUsingMultipleWriteLocations();
+        return policy.isUsingMultipleWriteLocations();
     }
 
     public static void setUseMultipleWriteLocations(ConnectionPolicy policy, boolean value) {

@@ -59,16 +59,16 @@ public class CosmosConflictProperties extends Resource {
      * Gets the conflicting resource in the Azure Cosmos DB service.
      *
      * @param <T> the type of the object.
-     * @param klass The returned type of conflicting resource.
+     * @param classType The returned type of conflicting resource.
      * @return The conflicting resource.
      * @throws IllegalStateException thrown if an error occurs
      */
-    public <T extends Resource> T getResource(Class<T> klass) {
+    public <T extends Resource> T getResource(Class<T> classType) {
         String resourceAsString = super.getString(Constants.Properties.CONTENT);
 
         if (!Strings.isNullOrEmpty(resourceAsString)) {
             try {
-                return klass.getConstructor(String.class).newInstance(resourceAsString);
+                return classType.getConstructor(String.class).newInstance(resourceAsString);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                          | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                 throw new IllegalStateException("Failed to instantiate class object.", e);

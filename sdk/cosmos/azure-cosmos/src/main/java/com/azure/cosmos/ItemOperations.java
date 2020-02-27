@@ -21,13 +21,13 @@ public class ItemOperations {
      * @param <T> the type parameter
      * @param container   the cosmos async container
      * @param itemKeyList document id and partition key pair that needs to be read
-     * @param klass       class type
+     * @param classType   class type
      * @return a feed response of cosmos items
      */
     public static <T> FeedResponse<T> readMany(CosmosContainer container,
                                                List<Pair<String, PartitionKey>> itemKeyList,
-                                               Class<T> klass) {
-        return readManyAsync(container.asyncContainer, itemKeyList, klass).block();
+                                               Class<T> classType) {
+        return readManyAsync(container.asyncContainer, itemKeyList, classType).block();
     }
 
     /**
@@ -38,25 +38,25 @@ public class ItemOperations {
      * @param <T> the type parameter
      * @param container   the cosmos async container
      * @param itemKeyList document id and partition key pair that needs to be read
-     * @param klass       class type
+     * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
     public static <T> Mono<FeedResponse<T>> readManyAsync(CosmosAsyncContainer container,
                                                           List<Pair<String, PartitionKey>> itemKeyList,
-                                                          Class<T> klass) {
+                                                          Class<T> classType) {
 
 
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(-1);
-        return readManyInternal(container, itemKeyList, new FeedOptions(), klass);
+        return readManyInternal(container, itemKeyList, new FeedOptions(), classType);
     }
 
     static <T> Mono<FeedResponse<T>> readManyInternal(CosmosAsyncContainer container,
                                                       List<Pair<String, PartitionKey>> itemKeyList,
                                                       FeedOptions options,
-                                                      Class<T> klass) {
+                                                      Class<T> classType) {
         return container.getDatabase()
             .getDocClientWrapper()
-            .readMany(itemKeyList, container.getLink(), options, klass);
+            .readMany(itemKeyList, container.getLink(), options, classType);
     }
 }

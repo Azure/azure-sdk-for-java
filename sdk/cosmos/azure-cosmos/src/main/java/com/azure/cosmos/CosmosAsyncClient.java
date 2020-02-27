@@ -13,6 +13,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -25,7 +26,7 @@ import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxIt
 @ServiceClient(
     builder = CosmosClientBuilder.class,
     isAsync = true)
-public class CosmosAsyncClient implements AutoCloseable {
+public class CosmosAsyncClient implements Closeable {
 
     // Async document client wrapper
     private final Configs configs;
@@ -62,15 +63,6 @@ public class CosmosAsyncClient implements AutoCloseable {
                                        .withCosmosKeyCredential(this.cosmosKeyCredential)
                                        .withTransportClientSharing(this.enableTransportClientSharing)
                                        .build();
-    }
-
-    /**
-     * Instantiate the cosmos client builder to build cosmos client
-     *
-     * @return {@link CosmosClientBuilder}
-     */
-    public static CosmosClientBuilder cosmosClientBuilder() {
-        return new CosmosClientBuilder();
     }
 
     AsyncDocumentClient getContextClient() {

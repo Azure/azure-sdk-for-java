@@ -1022,7 +1022,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         RetryOptions options = new RetryOptions();
         options.setMaxRetryWaitTimeInSeconds(SUITE_SETUP_TIMEOUT);
         connectionPolicy.setRetryOptions(options);
-        return CosmosAsyncClient.cosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
+        return new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
             .setCosmosKeyCredential(cosmosKeyCredential)
             .setConnectionPolicy(connectionPolicy)
             .setConsistencyLevel(ConsistencyLevel.SESSION);
@@ -1033,7 +1033,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         connectionPolicy.setUsingMultipleWriteLocations(multiMasterEnabled);
         connectionPolicy.setPreferredLocations(preferredLocations);
-        return CosmosAsyncClient.cosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
+        return new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
             .setCosmosKeyCredential(cosmosKeyCredential)
             .setConnectionPolicy(connectionPolicy)
             .setConsistencyLevel(consistencyLevel);
@@ -1061,7 +1061,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         Configs configs = spy(new Configs());
         doAnswer((Answer<Protocol>)invocation -> protocol).when(configs).getProtocol();
 
-        CosmosClientBuilder builder = CosmosAsyncClient.cosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
+        CosmosClientBuilder builder = new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
             .setCosmosKeyCredential(cosmosKeyCredential)
             .setConnectionPolicy(connectionPolicy)
             .setConsistencyLevel(consistencyLevel);
