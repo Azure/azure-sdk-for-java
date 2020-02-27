@@ -37,6 +37,7 @@ import spock.lang.Timeout
 import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.StandardCharsets
+import java.nio.file.FileSystem
 import java.nio.file.attribute.FileAttribute
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -168,7 +169,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
             return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
-            accountKey = "astorageaccountkey"
+            return "astorageaccountkey"
         }
     }
 
@@ -176,7 +177,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
             return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
         } else {
-            accountName = "azstoragesdkaccount"
+            return "azstoragesdkaccount"
         }
     }
 
@@ -481,8 +482,28 @@ class APISpec extends Specification {
         }
     }
 
-    def rootToContainer(String root) {
+    def rootNameToContainerName(String root) {
         return root.substring(0, root.length() - 1)
+    }
+
+    def rootNameToContainerClient(String root) {
+        return primaryBlobServiceClient.getBlobContainerClient(rootNameToContainerName(root))
+    }
+
+    def getNonDefaultDir(FileSystem fs) {
+        return fs.getRootDirectories().last().toString()
+    }
+
+    def getDefaultDir(FileSystem fs) {
+        return fs.getRootDirectories().first().toString()
+    }
+
+    def getPathWithDepth(int depth) {
+        def pathStr = ""
+        for (int i = 0; i < depth; i++) {
+            pathStr += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
+        }
+        return pathStr
     }
 
     static class TestFileAttribute<T> implements  FileAttribute<T> {
