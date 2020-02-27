@@ -12,19 +12,22 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
- * Injects a custom query string the URL before the request is initiated
+ * Adds a custom query string to the URL.
  */
 public class CustomQueryPipelinePolicy implements HttpPipelinePolicy {
 
     private final String paramKey;
     private final String paramValue;
 
+    /**
+     * Constructor for {@link CustomQueryPipelinePolicy}.
+     *
+     * @param paramKey Name of the query parameter to add.
+     * @param paramValue Value of the query parameter being added.
+     */
     public CustomQueryPipelinePolicy(String paramKey, String paramValue) {
-        Objects.requireNonNull(paramKey);
-        Objects.requireNonNull(paramValue);
-
-        this.paramKey = paramKey;
-        this.paramValue = paramValue;
+        this.paramKey = Objects.requireNonNull(paramKey);
+        this.paramValue = Objects.requireNonNull(paramValue);
     }
 
     @Override

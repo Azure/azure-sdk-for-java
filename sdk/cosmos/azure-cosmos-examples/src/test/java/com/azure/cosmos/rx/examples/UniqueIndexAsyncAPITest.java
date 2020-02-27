@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import io.reactivex.subscribers.TestSubscriber;

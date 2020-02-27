@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -23,7 +24,7 @@ public class StoreResponse {
     final private String[] responseHeaderNames;
     final private String[] responseHeaderValues;
     final private InputStream httpEntityStream;
-    final private String content;
+    final private byte[] content;
 
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
     private RequestTimeline requestTimeline;
@@ -32,14 +33,18 @@ public class StoreResponse {
         this(status, headerEntries, null, inputStream);
     }
 
-    public StoreResponse(int status, List<Entry<String, String>> headerEntries, String content) {
+    public StoreResponse(int status, List<Entry<String, String>> headerEntries, byte[] content) {
         this(status, headerEntries, content, null);
+    }
+
+    public StoreResponse(int status, List<Entry<String, String>> headerEntries, String content) {
+        this(status, headerEntries, safeToByteArray(content), null);
     }
 
     private StoreResponse(
             int status,
             List<Entry<String, String>> headerEntries,
-            String content,
+            byte[] content,
             InputStream inputStream) {
 
         requestTimeline = RequestTimeline.empty();
@@ -72,8 +77,16 @@ public class StoreResponse {
         return responseHeaderValues;
     }
 
-    public String getResponseBody() {
+    public byte[] getResponseBodyAsByteArray() {
         return this.content;
+    }
+
+    public String getResponseBody() {
+        if (this.content == null) {
+            return null;
+        }
+
+        return new String(this.content);
     }
 
     public InputStream getResponseStream() {
@@ -140,5 +153,17 @@ public class StoreResponse {
             }
         }
         return subStatusCode;
+    }
+
+    static private byte[] safeToByteArray(String content) {
+        if (content == null) {
+            return null;
+        }
+
+        try {
+            return content.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }

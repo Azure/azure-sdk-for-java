@@ -7,7 +7,7 @@ import com.azure.search.models.AccessCondition;
 import com.azure.search.models.RequestOptions;
 
 /**
- * This class holds common options for the search service api.
+ * Contains common options for the Search service.
  */
 public class AccessOptions {
     private AccessCondition accessCondition;

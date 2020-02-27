@@ -48,6 +48,18 @@ public class ReflectionUtils {
         return get(StoreClient.class, serverStoreModel, "storeClient");
     }
 
+    public static HttpClient getGatewayHttpClient(CosmosClient client) {
+        return getGatewayHttpClient((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client));
+    }
+
+    public static HttpClient getGatewayHttpClient(CosmosAsyncClient client) {
+        return getGatewayHttpClient((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client));
+    }
+
+    public static HttpClient getGatewayHttpClient(RxDocumentClientImpl client) {
+        return get(HttpClient.class, client, "reactorHttpClient");
+    }
+
     public static TransportClient getTransportClient(CosmosClient client) {
         StoreClient storeClient = getStoreClient((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client));
         return get(TransportClient.class, storeClient, "transportClient");

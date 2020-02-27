@@ -3,17 +3,17 @@
 
 package com.azure.search;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.search.models.SuggestOptions;
 
 /**
- * Ensure all suggest parameters are correct
- * Use this whenever SuggestOptions are passed to the search service
+ * Ensure all suggest parameters are correct Use this whenever SuggestOptions are passed to the search service
  */
-class SuggestOptionsHandler {
+final class SuggestOptionsHandler {
 
     /**
-     * Ensure all suggest parameters are correct
-     * Use this method whenever SuggestOptions are passed to the search service
+     * Ensures that all suggest parameters are correctly set. This method should be used when {@link SuggestOptions} is
+     * passed to the Search service.
      *
      * @param suggestOptions suggest parameters
      * @return SuggestOptions ensured suggest parameters
@@ -22,9 +22,7 @@ class SuggestOptionsHandler {
         if (suggestOptions == null) {
             return null;
         }
-        if (suggestOptions.getSelect() == null || suggestOptions.getSelect().isEmpty()) {
-            suggestOptions.setSelect("*");
-        }
-        return suggestOptions;
+
+        return CoreUtils.isNullOrEmpty(suggestOptions.getSelect()) ? suggestOptions.setSelect("*") : suggestOptions;
     }
 }

@@ -23,11 +23,7 @@ class StringPartitionKeyComponent implements IPartitionKeyComponent {
         }
 
         this.value = value;
-        try {
-            this.utf8Value = Utils.getUTF8Bytes(value);
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException(e);
-        }
+        this.utf8Value = Utils.getUTF8Bytes(value);
     }
 
     @Override

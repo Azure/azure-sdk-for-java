@@ -1,0 +1,101 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://xclientdev2.blob.core.windows.net?prefix=jtcfilesystemgetrootdirsgetfilestores&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "c60db06f-fc76-4da6-abdc-1cc79ce4e04e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "bde62226-b01e-00af-5f94-d8338d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcfilesystemgetrootdirsgetfilestores</Prefix><Containers><Container><Name>jtcfilesystemgetrootdirsgetfilestores1484555f0e27c40e</Name><Properties><Last-Modified>Sat, 01 Feb 2020 00:13:50 GMT</Last-Modified><Etag>\"0x8D7A6AB9D299FE1\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtcfilesystemgetrootdirsgetfilestores181141a711776820</Name><Properties><Last-Modified>Sat, 01 Feb 2020 00:15:12 GMT</Last-Modified><Etag>\"0x8D7A6ABCE73E427\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtcfilesystemgetrootdirsgetfilestores231050ee2cc16767</Name><Properties><Last-Modified>Sat, 01 Feb 2020 00:15:13 GMT</Last-Modified><Etag>\"0x8D7A6ABCE8B9097\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtcfilesystemgetrootdirsgetfilestores2809208624afdab8</Name><Properties><Last-Modified>Sat, 01 Feb 2020 00:13:50 GMT</Last-Modified><Etag>\"0x8D7A6AB9D3C6914\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Sat, 01 Feb 2020 00:15:12 GMT",
+      "x-ms-client-request-id" : "c60db06f-fc76-4da6-abdc-1cc79ce4e04e",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemgetrootdirsgetfilestores1484555f0e27c40e?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "0aeb3e23-9f74-4418-b33a-bed6b8707af2"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "bde62240-b01e-00af-7894-d8338d000000",
+      "Date" : "Sat, 01 Feb 2020 00:15:12 GMT",
+      "x-ms-client-request-id" : "0aeb3e23-9f74-4418-b33a-bed6b8707af2"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemgetrootdirsgetfilestores181141a711776820?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9739343d-e0fe-42af-b9e0-1b574557619a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "bde62276-b01e-00af-2594-d8338d000000",
+      "Date" : "Sat, 01 Feb 2020 00:15:12 GMT",
+      "x-ms-client-request-id" : "9739343d-e0fe-42af-b9e0-1b574557619a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemgetrootdirsgetfilestores231050ee2cc16767?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "1c5c9a03-14b1-4024-8290-f8d371a35964"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "bde62286-b01e-00af-3494-d8338d000000",
+      "Date" : "Sat, 01 Feb 2020 00:15:12 GMT",
+      "x-ms-client-request-id" : "1c5c9a03-14b1-4024-8290-f8d371a35964"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemgetrootdirsgetfilestores2809208624afdab8?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b71be6c0-88cf-4be4-a906-eaf8efde4529"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "bde622ab-b01e-00af-5894-d8338d000000",
+      "Date" : "Sat, 01 Feb 2020 00:15:12 GMT",
+      "x-ms-client-request-id" : "b71be6c0-88cf-4be4-a906-eaf8efde4529"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcfilesystemgetrootdirsgetfilestores00772438b66b7d54", "jtcfilesystemgetrootdirsgetfilestores181141a711776820", "jtcfilesystemgetrootdirsgetfilestores231050ee2cc16767" ]
+}
