@@ -27,7 +27,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      * Specifies the max number of retries when an authentication request fails.
      *
      * @param maxRetry the number of retries
-     * @return itself
+     * @return An updated instance of this builder with the max retry set as specified.
      */
     @SuppressWarnings("unchecked")
     public T maxRetry(int maxRetry) {
@@ -39,7 +39,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      * Specifies a Function to calculate seconds of timeout on every retried request.
      *
      * @param retryTimeout the Function that returns a timeout in seconds given the number of retry
-     * @return itself
+     * @return An updated instance of this builder with the retry timeout set as specified.
      */
     @SuppressWarnings("unchecked")
     public T retryTimeout(Function<Duration, Duration> retryTimeout) {
@@ -51,7 +51,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      * Specifies he options for proxy configuration.
      *
      * @param proxyOptions the options for proxy configuration
-     * @return itself
+     * @return An updated instance of this builder with the proxy options set as specified.
      */
     @SuppressWarnings("unchecked")
     public T proxyOptions(ProxyOptions proxyOptions) {
@@ -63,7 +63,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      * Specifies the HttpPipeline to send all requests. This setting overrides the others.
      *
      * @param httpPipeline the HttpPipeline to send all requests
-     * @return itself
+     * @return An updated instance of this builder with the http pipeline set as specified.
      */
     @SuppressWarnings("unchecked")
     public T httpPipeline(HttpPipeline httpPipeline) {
@@ -75,7 +75,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return itself
+     * @return An updated instance of this builder with the http client set as specified.
      * @throws NullPointerException If {@code client} is {@code null}.
      */
     @SuppressWarnings("unchecked")
