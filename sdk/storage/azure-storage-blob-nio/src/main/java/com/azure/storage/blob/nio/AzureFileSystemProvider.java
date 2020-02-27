@@ -34,6 +34,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystemAlreadyExistsException;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.LinkOption;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -265,23 +266,17 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public void createDirectory(Path path, FileAttribute<?>... fileAttributes) throws IOException {
-        if (!(path instanceof AzurePath)) {
-            throw Utility.logError(logger, new IllegalArgumentException("This provider cannot operate on subtypes of "
-                + "Path other than AzurePath"));
-        }
+        AzurePath aPath = validatePathInstanceType(path);
         fileAttributes = fileAttributes == null ? new FileAttribute<?>[0] : fileAttributes;
 
         // Get the destination for the directory.
-        BlobClient client = ((AzurePath) path).toBlobClient();
+        BlobClient client = aPath.toBlobClient();
 
         // Validate that we are not trying to create a root.
-        Path root = path.getRoot();
-        if (root != null && root.equals(path)) {
-            throw Utility.logError(logger, new IOException("Creating a root directory is not supported."));
-        }
+        validateNotRoot(aPath, "Create");
 
         // Check if parent exists. If it does, atomically check if a file already exists and create a new dir if not.
-        if (checkParentDirectoryExists(path)) {
+        if (checkParentDirectoryExists(aPath)) {
             try {
                 List<FileAttribute<?>> attributeList = new ArrayList<>(Arrays.asList(fileAttributes));
                 BlobHttpHeaders headers = Utility.extractHttpHeaders(attributeList, logger);
@@ -290,14 +285,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             } catch (BlobStorageException e) {
                 if (e.getStatusCode() == HttpURLConnection.HTTP_CONFLICT
                     && e.getErrorCode().equals(BlobErrorCode.BLOB_ALREADY_EXISTS)) {
-                    throw Utility.logError(logger, new FileAlreadyExistsException(path.toString()));
+                    throw Utility.logError(logger, new FileAlreadyExistsException(aPath.toString()));
                 } else {
                     throw Utility.logError(logger, new IOException("An error occured when creating the directory", e));
                 }
             }
         } else {
             throw Utility.logError(logger, new IOException("Parent directory does not exist for path: "
-                + path.toString()));
+                + aPath.toString()));
         }
     }
 
@@ -339,7 +334,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     /**
      * Checks whether a directory exists by either being empty or having children.
      */
-    boolean checkDirectoryExists(BlobClient dirBlobClient) {
+    boolean checkDirectoryExists(BlobClient dirBlobClient) throws IOException {
         if (dirBlobClient == null) {
             throw Utility.logError(logger, new IllegalArgumentException("One or both of the parameters was null."));
         }
@@ -363,11 +358,35 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
+     * As noted by the NIO docs, this method is not atomic. It is possible to delete a file in use by another process.
+     * Root directories cannot be deleted even when empty.
+     *
      * {@inheritDoc}
      */
     @Override
     public void delete(Path path) throws IOException {
+        // Basic validation. Must be an AzurePath. Cannot be a root.
+        AzurePath aPath = validatePathInstanceType(path);
+        validateNotRoot(path, "Delete");
 
+        // Get client.
+        BlobClient blobClient = aPath.toBlobClient();
+
+        // Check directory status--possibly throw DirectoryNotEmpty or NoSuchFile.
+        DirectoryStatus dirStatus = checkDirStatus(blobClient);
+        if (dirStatus.equals(DirectoryStatus.DOES_NOT_EXIST)) {
+            throw Utility.logError(logger, new NoSuchFileException(path.toString()));
+        }
+        if (dirStatus.equals(DirectoryStatus.NOT_EMPTY)) {
+            throw Utility.logError(logger, new DirectoryNotEmptyException(path.toString()));
+        }
+
+        // After all validation has completed, delete the resource.
+        try {
+            blobClient.delete();
+        } catch (BlobStorageException e) {
+            throw Utility.logError(logger, new IOException(e));
+        }
     }
 
     /**
@@ -395,13 +414,11 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public void copy(Path source, Path destination, CopyOption... copyOptions) throws IOException {
         // Validate instance types.
-        if (!(source instanceof AzurePath && destination instanceof AzurePath)) {
-            throw Utility.logError(logger, new IllegalArgumentException("This provider cannot operate on subtypes of "
-                + "Path other than AzurePath"));
-        }
+        AzurePath aSource = validatePathInstanceType(source);
+        AzurePath aDestination = validatePathInstanceType(destination);
 
         // If paths point to the same file, operation is a no-op.
-        if (source.equals(destination)) {
+        if (aSource.equals(aDestination)) {
             return;
         }
 
@@ -425,20 +442,17 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         // Validate paths.
         // Copying a root directory or attempting to create/overwrite a root directory is illegal.
-        if (source.equals(source.getRoot()) || destination.equals(destination.getRoot())) {
-            throw Utility.logError(logger, new IllegalArgumentException(String.format("Neither source nor destination "
-                + "can be just a root directory. Source: %s. Destination: %s.", source.toString(),
-                destination.toString())));
-        }
+        validateNotRoot(aSource, "Copy source");
+        validateNotRoot(aDestination, "Copy destination");
 
         // Build clients.
-        BlobClient sourceBlob = ((AzurePath) source).toBlobClient();
-        BlobClient destinationBlob = ((AzurePath) destination).toBlobClient();
+        BlobClient sourceBlob = aSource.toBlobClient();
+        BlobClient destinationBlob = aDestination.toBlobClient();
 
         // Check destination is not a directory with children.
         DirectoryStatus destinationStatus = checkDirStatus(destinationBlob);
         if (destinationStatus.equals(DirectoryStatus.NOT_EMPTY)) {
-            throw Utility.logError(logger, new DirectoryNotEmptyException(destination.toString()));
+            throw Utility.logError(logger, new DirectoryNotEmptyException(aDestination.toString()));
         }
 
         /*
@@ -449,7 +463,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         BlobRequestConditions requestConditions = null;
         if (!replaceExisting) {
             if (!destinationStatus.equals(DirectoryStatus.DOES_NOT_EXIST)) {
-                throw Utility.logError(logger, new FileAlreadyExistsException(destination.toString()));
+                throw Utility.logError(logger, new FileAlreadyExistsException(aDestination.toString()));
             }
             requestConditions = new BlobRequestConditions().setIfNoneMatch("*");
         }
@@ -461,9 +475,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         currently at the destination, for if the destination exists, its parent at least weakly exists and we
         can skip a service call.
          */
-        if (destinationStatus.equals(DirectoryStatus.DOES_NOT_EXIST) && !checkParentDirectoryExists(destination)) {
+        if (destinationStatus.equals(DirectoryStatus.DOES_NOT_EXIST) && !checkParentDirectoryExists(aDestination)) {
             throw Utility.logError(logger, new IOException("Parent directory of destination location does not exist."
-                + "The destination path is therefore invalid. Destination: " + destination.toString()));
+                + "The destination path is therefore invalid. Destination: " + aDestination.toString()));
         }
 
         /*
@@ -501,7 +515,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * This method will check if a directory is extant and/or empty and accommodates virtual directories. This method
      * will not check the status of root directories.
      */
-    DirectoryStatus checkDirStatus(BlobClient dirBlobClient) {
+    DirectoryStatus checkDirStatus(BlobClient dirBlobClient) throws IOException {
         if (dirBlobClient == null) {
             throw Utility.logError(logger, new IllegalArgumentException("The blob client was null."));
         }
@@ -521,26 +535,30 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         Note that blob names that match the prefix exactly are returned in listing operations.
          */
-        Iterator<BlobItem> blobIterator = containerClient.listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR,
-            listOptions, null).iterator();
-        if (!blobIterator.hasNext()) { // Nothing there
-            return DirectoryStatus.DOES_NOT_EXIST;
-        } else {
-            BlobItem item = blobIterator.next();
-            if (blobIterator.hasNext()) { // More than one item with dir path as prefix. Must be a dir.
-                return DirectoryStatus.NOT_EMPTY;
-            }
-            if (!item.getName().equals(dirBlobClient.getBlobName())) {
+        try {
+            Iterator<BlobItem> blobIterator = containerClient.listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR,
+                listOptions, null).iterator();
+            if (!blobIterator.hasNext()) { // Nothing there
+                return DirectoryStatus.DOES_NOT_EXIST;
+            } else {
+                BlobItem item = blobIterator.next();
+                if (blobIterator.hasNext()) { // More than one item with dir path as prefix. Must be a dir.
+                    return DirectoryStatus.NOT_EMPTY;
+                }
+                if (!item.getName().equals(dirBlobClient.getBlobName())) {
                 /*
                 Names do not match. Must be a virtual dir with one item. e.g. blob with name "foo/bar" means dir "foo"
                 exists.
                  */
-                return DirectoryStatus.NOT_EMPTY;
+                    return DirectoryStatus.NOT_EMPTY;
+                }
+                if (item.getMetadata() != null && item.getMetadata().containsKey(DIR_METADATA_MARKER)) {
+                    return DirectoryStatus.EMPTY; // Metadata marker.
+                }
+                return DirectoryStatus.NOT_A_DIRECTORY; // There is a file (not a directory) at this location.
             }
-            if (item.getMetadata() != null && item.getMetadata().containsKey(DIR_METADATA_MARKER)) {
-                return DirectoryStatus.EMPTY; // Metadata marker.
-            }
-            return DirectoryStatus.NOT_A_DIRECTORY; // There is a file (not a directory) at this location.
+        } catch (BlobStorageException e) {
+            throw Utility.logError(logger, new IOException(e));
         }
     }
 
@@ -649,5 +667,20 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
 
         return accountName;
+    }
+
+    private AzurePath validatePathInstanceType(Path path) {
+        if (!(path instanceof AzurePath)) {
+            throw Utility.logError(logger, new IllegalArgumentException("This provider cannot operate on subtypes of "
+                + "Path other than AzurePath"));
+        }
+        return (AzurePath)path;
+    }
+
+    private void validateNotRoot(Path path, String operation) {
+        if (((AzurePath) path).isRoot()) {
+            throw Utility.logError(logger, new IllegalArgumentException(
+                String.format("%s is not supported on a root directory. Path: %s", operation, path.toString())));
+        }
     }
 }
