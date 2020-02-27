@@ -22,7 +22,7 @@ public class PageImpl<T> implements Page<T> {
     /**
      * The link to the next page.
      */
-    @JsonProperty("")
+    @JsonProperty("nextLink")
     private String nextPageLink;
 
     /**
