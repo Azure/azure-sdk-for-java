@@ -13,6 +13,7 @@ import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
 import com.azure.search.test.environment.models.ModelWithPrimitiveCollections;
+import java.util.HashMap;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
@@ -112,7 +113,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        Document expectedDoc = new Document() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("HotelId", "1");
                 put("HotelName", null);
@@ -123,7 +124,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                 put("Location", null);
                 put("Address", null);
                 put("Rooms", Collections.singletonList(
-                    new Document() {
+                    new Document(new HashMap<String, Object>() {
                         {
                             put("BaseRate", null);
                             put("BedOptions", null);
@@ -132,9 +133,9 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                             put("Tags", Collections.emptyList());
                         }
                     }
-                ));
+                )));
             }
-        };
+        });
 
         uploadDocument(client, expectedDoc);
         // Select only the fields set in the test case so we don't get superfluous data back.
@@ -149,17 +150,17 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        Document originalDoc = new Document() {
+        Document originalDoc = new Document(new HashMap<String, Object>() {
             {
                 put("HotelId", "1");
                 put("Address", new Document());
             }
-        };
+        });
 
-        Document expectedDoc = new Document() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("HotelId", "1");
-                put("Address", new Document() {
+                put("Address", new Document(new HashMap<String, Object>() {
                     {
                         put("StreetAddress", null);
                         put("City", null);
@@ -167,9 +168,9 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                         put("Country", null);
                         put("PostalCode", null);
                     }
-                });
+                }));
             }
-        };
+        });
 
         uploadDocument(client, originalDoc);
         // Select only the fields set in the test case so we don't get superfluous data back.
@@ -186,7 +187,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
         String docKey = "3";
 
-        Document originalDoc = new Document() {
+        Document originalDoc = new Document(new HashMap<String, Object>() {
             {
                 put("Key", docKey);
                 put("Dates", new Object[]{});
@@ -197,9 +198,9 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                 put("Ints", new int[]{});
                 put("Points", new Object[]{});
             }
-        };
+        });
 
-        Document expectedDoc = new Document() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("Key", docKey);
                 put("Doubles", Collections.emptyList());
@@ -210,7 +211,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                 put("Points", Collections.emptyList());
                 put("Dates", Collections.emptyList());
             }
-        };
+        });
 
         uploadDocument(client, originalDoc);
 
@@ -223,12 +224,12 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        Document originalDoc = new Document() {
+        Document originalDoc = new Document(new HashMap<String, Object>() {
             {
                 put("HotelId", "1");
                 put("Rooms", Arrays.asList(
                     new Document(),
-                    new Document() {
+                    new Document(new HashMap<String, Object>() {
                         {
                             put("BaseRate", null);
                             put("BedOptions", null);
@@ -237,15 +238,15 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                             put("Tags", Collections.emptyList());
                         }
                     }
-                ));
+                )));
             }
-        };
+        });
 
-        Document expectedDoc = new Document() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("HotelId", "1");
                 put("Rooms", Arrays.asList(
-                    new Document() {
+                    new Document(new HashMap<String, Object>() {
                         {
                             put("Description", null);
                             put("Description_fr", null);
@@ -256,8 +257,8 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                             put("SmokingAllowed", null);
                             put("Tags", Collections.emptyList());
                         }
-                    },
-                    new Document() {
+                    }),
+                    new Document(new HashMap<String, Object>() {
                         {
                             put("Description", null);
                             put("Description_fr", null);
@@ -269,9 +270,9 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                             put("Tags", Collections.emptyList());
                         }
                     }
-                ));
+                )));
             }
-        };
+        });
 
         uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms");
@@ -340,12 +341,12 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        Document originalDoc = new Document() {
+        Document originalDoc = new Document(new HashMap<String, Object>() {
             {
                 put("HotelId", "1");
                 put("Rooms", Arrays.asList(
                     new Document(),
-                    new Document() {
+                    new Document(new HashMap<String, Object>() {
                         {
                             put("BaseRate", null);
                             put("BedOptions", null);
@@ -354,15 +355,15 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                             put("Tags", Collections.emptyList());
                         }
                     }
-                ));
+                )));
             }
-        };
+        });
 
-        Document expectedDoc = new Document() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("HotelId", "1");
                 put("Rooms", Collections.singletonList(
-                    new Document() {
+                    new Document(new HashMap<String, Object>() {
                         {
                             put("BaseRate", null);
                             put("BedOptions", null);
@@ -371,9 +372,9 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                             put("Tags", Collections.emptyList());
                         }
                     }
-                ));
+                )));
             }
-        };
+        });
 
         uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
@@ -391,7 +392,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         OffsetDateTime dateTime = OffsetDateTime.parse("2019-08-13T14:30:00Z");
         GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
 
-        Document indexedDoc = new Document() {
+        Document indexedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("Key", docKey);
                 put("Dates", new OffsetDateTime[]{dateTime});
@@ -402,10 +403,10 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                 put("Ints", new int[]{1, 2, 3, 4, -13, 5, 0});
                 put("Points", new GeoPoint[]{geoPoint});
             }
-        };
+        });
 
         // This is the expected document when querying the document later
-        Document expectedDoc = new Document() {
+        Document expectedDoc = new Document(new HashMap<String, Object>() {
             {
                 put("Key", docKey);
                 put("Doubles", Arrays.asList(0.0, 5.8, "INF", "-INF", "NaN"));
@@ -416,7 +417,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                 put("Points", Collections.singletonList(geoPoint));
                 put("Dates", Collections.singletonList(dateTime));
             }
-        };
+        });
 
         uploadDocument(client, indexedDoc);
 

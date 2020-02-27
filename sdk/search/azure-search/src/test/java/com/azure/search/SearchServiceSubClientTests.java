@@ -22,7 +22,7 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
 
         // Validate the client points to the same instance
         assertEquals(serviceClient.getEndpoint(), indexClient.getEndpoint());
-        assertEquals(serviceClient.getApiVersion(), indexClient.getApiVersion());
+        assertEquals(serviceClient.getServiceVersion(), indexClient.getServiceVersion());
 
         // Validate that the client uses the same HTTP pipeline for authentication, retries, etc
         HttpPipeline servicePipeline = serviceClient.getHttpPipeline();
@@ -45,7 +45,7 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
 
         // Validate the client points to the same instance
         assertEquals(serviceClient.getEndpoint(), indexClient.getEndpoint());
-        assertEquals(serviceClient.getApiVersion(), indexClient.getApiVersion());
+        assertEquals(serviceClient.getServiceVersion(), indexClient.getServiceVersion());
 
         // Validate that the client uses the same HTTP pipeline for authentication, retries, etc
         HttpPipeline servicePipeline = serviceClient.getHttpPipeline();

@@ -462,7 +462,7 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     DataSource createTestSqlDataSourceObject(DataDeletionDetectionPolicy deletionDetectionPolicy,
         DataChangeDetectionPolicy changeDetectionPolicy) {
-        return DataSources.azureSql(
+        return DataSources.createFromAzureSql(
             SearchServiceTestBase.SQL_DATASOURCE_NAME,
             AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND,
             "GeoNamesRI",
@@ -493,7 +493,7 @@ public abstract class SearchServiceTestBase extends TestBase {
         }
 
         // create the new data source object for this storage account and container
-        return DataSources.azureBlobStorage(
+        return DataSources.createFromAzureBlobStorage(
             BLOB_DATASOURCE_NAME,
             storageConnString,
             blobContainerDatasourceName,

@@ -42,7 +42,7 @@ import java.util.Objects;
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
-public class SearchIndexClientBuilder {
+public final class SearchIndexClientBuilder {
     /*
      * This header tells the service to return the request ID in the HTTP response. This is useful for correlating the
      * request sent to the response.
@@ -68,7 +68,7 @@ public class SearchIndexClientBuilder {
     private final String clientVersion;
 
     private SearchApiKeyCredential searchApiKeyCredential;
-    private SearchServiceVersion apiVersion;
+    private SearchServiceVersion searchServiceVersion;
     private String endpoint;
     private HttpClient httpClient;
     private HttpPipeline httpPipeline;
@@ -118,7 +118,9 @@ public class SearchIndexClientBuilder {
         Objects.requireNonNull(indexName, "'indexName' cannot be null.");
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
-        SearchServiceVersion buildVersion = (apiVersion == null) ? SearchServiceVersion.getLatest() : apiVersion;
+        SearchServiceVersion buildVersion = (searchServiceVersion == null)
+            ? SearchServiceVersion.getLatest()
+            : searchServiceVersion;
 
         if (httpPipeline != null) {
             return new SearchIndexAsyncClient(endpoint, indexName, buildVersion, httpPipeline);
@@ -149,7 +151,7 @@ public class SearchIndexClientBuilder {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
-        return new SearchIndexAsyncClient(endpoint, indexName, apiVersion, buildPipeline);
+        return new SearchIndexAsyncClient(endpoint, indexName, buildVersion, buildPipeline);
     }
 
     /**
@@ -172,7 +174,7 @@ public class SearchIndexClientBuilder {
     /**
      * Sets the {@link SearchApiKeyCredential} used to authenticate HTTP requests.
      *
-     * @param searchApiKeyCredential SearchApiKeyCredential used to authenticate HTTP requests.
+     * @param searchApiKeyCredential The {@link SearchApiKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchIndexClientBuilder object.
      * @throws NullPointerException If {@code searchApiKeyCredential} is {@code null}.
      * @throws IllegalArgumentException If {@link SearchApiKeyCredential#getApiKey()} is {@code null} or empty.
@@ -293,16 +295,16 @@ public class SearchIndexClientBuilder {
     }
 
     /**
-     * Sets the api version to work against
+     * Sets the {@link SearchServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, {@link SearchServiceVersion#getLatest()} will be used as a default. When
+     * this default is used updating to a newer client library may result in a newer version of the service being used.
      *
-     * @param apiVersion api version
-     * @return the updated SearchIndexClientBuilder object
+     * @param searchServiceVersion The version of the service to be used when making requests.
+     * @return The updated SearchIndexClientBuilder object.
      */
-    public SearchIndexClientBuilder apiVersion(SearchServiceVersion apiVersion) {
-        if (apiVersion == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid apiVersion"));
-        }
-        this.apiVersion = apiVersion;
+    public SearchIndexClientBuilder searchServiceVersion(SearchServiceVersion searchServiceVersion) {
+        this.searchServiceVersion = searchServiceVersion;
         return this;
     }
 }

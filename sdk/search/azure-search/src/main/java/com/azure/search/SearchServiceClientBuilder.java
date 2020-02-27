@@ -40,7 +40,7 @@ import java.util.Objects;
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {SearchServiceClient.class, SearchServiceAsyncClient.class})
-public class SearchServiceClientBuilder {
+public final class SearchServiceClientBuilder {
     /*
      * This header tells the service to return the request ID in the HTTP response. This is useful for correlating the
      * request sent to the response.
@@ -66,7 +66,7 @@ public class SearchServiceClientBuilder {
     private final String clientVersion;
 
     private SearchApiKeyCredential searchApiKeyCredential;
-    private SearchServiceVersion apiVersion;
+    private SearchServiceVersion searchServiceVersion;
     private String endpoint;
     private HttpClient httpClient;
     private HttpPipeline httpPipeline;
@@ -103,7 +103,8 @@ public class SearchServiceClientBuilder {
      * buildAsyncClient()} is called a new instance of {@link SearchServiceAsyncClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline} and {@link #endpoint(String)
-     * endpoint} are used to create the {@link SearchServiceAsyncClient client}. All other builder settings are ignored.
+     * endpoint} are used to create the {@link SearchServiceAsyncClient client}. All other builder settings are
+     * ignored.
      *
      * @return A SearchServiceAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} are {@code null}.
@@ -111,7 +112,9 @@ public class SearchServiceClientBuilder {
     public SearchServiceAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
-        SearchServiceVersion buildVersion = (apiVersion == null) ? SearchServiceVersion.getLatest() : apiVersion;
+        SearchServiceVersion buildVersion = (searchServiceVersion == null)
+            ? SearchServiceVersion.getLatest()
+            : searchServiceVersion;
 
         if (httpPipeline != null) {
             return new SearchServiceAsyncClient(endpoint, buildVersion, httpPipeline);
@@ -142,7 +145,7 @@ public class SearchServiceClientBuilder {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
-        return new SearchServiceAsyncClient(endpoint, apiVersion, buildPipeline);
+        return new SearchServiceAsyncClient(endpoint, buildVersion, buildPipeline);
     }
 
     /**
@@ -165,7 +168,7 @@ public class SearchServiceClientBuilder {
     /**
      * Sets the {@link SearchApiKeyCredential} used to authenticate HTTP requests.
      *
-     * @param searchApiKeyCredential SearchApiKeyCredential used to authenticate HTTP requests.
+     * @param searchApiKeyCredential The {@link SearchApiKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchServiceClientBuilder object.
      * @throws NullPointerException If {@code searchApiKeyCredential} is {@code null}.
      * @throws IllegalArgumentException If {@link SearchApiKeyCredential#getApiKey()} is {@code null} or empty.
@@ -271,16 +274,16 @@ public class SearchServiceClientBuilder {
     }
 
     /**
-     * Sets the api version to work against
+     * Sets the {@link SearchServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, {@link SearchServiceVersion#getLatest()} will be used as a default. When
+     * this default is used updating to a newer client library may result in a newer version of the service being used.
      *
-     * @param apiVersion api version
-     * @return the updated SearchServiceClientBuilder object
+     * @param searchServiceVersion The version of the service to be used when making requests.
+     * @return The updated SearchServiceClientBuilder object.
      */
-    public SearchServiceClientBuilder apiVersion(SearchServiceVersion apiVersion) {
-        if (apiVersion == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid apiVersion"));
-        }
-        this.apiVersion = apiVersion;
+    public SearchServiceClientBuilder searchServiceVersion(SearchServiceVersion searchServiceVersion) {
+        this.searchServiceVersion = searchServiceVersion;
         return this;
     }
 }
