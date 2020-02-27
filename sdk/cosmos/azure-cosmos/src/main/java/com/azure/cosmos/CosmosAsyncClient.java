@@ -38,6 +38,7 @@ public class CosmosAsyncClient implements AutoCloseable {
     private final TokenResolver tokenResolver;
     private final CosmosKeyCredential cosmosKeyCredential;
     private final boolean sessionCapturingOverride;
+    private final boolean enableTransportClientSharing;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         this.configs = builder.configs();
@@ -48,7 +49,8 @@ public class CosmosAsyncClient implements AutoCloseable {
         this.permissions = builder.getPermissions();
         this.tokenResolver = builder.getTokenResolver();
         this.cosmosKeyCredential = builder.getCosmosKeyCredential();
-        this.sessionCapturingOverride = builder.isSessionCapturingOverride();
+        this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
+        this.enableTransportClientSharing = builder.isConnectionReuseAcrossClientsEnabled();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)
                                        .withMasterKeyOrResourceToken(this.keyOrResourceToken)
@@ -58,6 +60,7 @@ public class CosmosAsyncClient implements AutoCloseable {
                                        .withConfigs(this.configs)
                                        .withTokenResolver(this.tokenResolver)
                                        .withCosmosKeyCredential(this.cosmosKeyCredential)
+                                       .withTransportClientSharing(this.enableTransportClientSharing)
                                        .build();
     }
 
@@ -323,14 +326,14 @@ public class CosmosAsyncClient implements AutoCloseable {
      * Reads all databases.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options {@link FeedOptions}
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
-        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+    public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
                                         .map(response ->
@@ -344,12 +347,12 @@ public class CosmosAsyncClient implements AutoCloseable {
      * Reads all databases.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosDatabaseProperties> readAllDatabases() {
+    public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases() {
         return readAllDatabases(new FeedOptions());
     }
 
@@ -358,14 +361,14 @@ public class CosmosAsyncClient implements AutoCloseable {
      * Query for databases.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosDatabaseProperties> queryDatabases(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(String query, FeedOptions options) {
         return queryDatabases(new SqlQuerySpec(query), options);
     }
 
@@ -373,15 +376,15 @@ public class CosmosAsyncClient implements AutoCloseable {
      * Query for databases.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
-        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+    public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                                         .map(response -> BridgeInternal.createFeedResponse(

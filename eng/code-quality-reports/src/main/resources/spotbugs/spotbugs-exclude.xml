@@ -615,9 +615,13 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
-  <!-- Retry thus does not throw -->
+  <!-- Retry thus does not throw.
+    SharedTokenCacheCredential needs to catch any catch exception that gets thrown.-->
   <Match>
-    <Class name="com.azure.identity.implementation.msalextensions.CacheLock"/>
+    <Or>
+      <Class name="com.azure.identity.SharedTokenCacheCredential"/>
+      <Class name="com.azure.identity.implementation.msalextensions.CacheLock"/>
+    </Or>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
   <!-- Return value not needed -->

@@ -8,8 +8,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
@@ -114,7 +113,7 @@ public class BasicDemo {
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(2);
-        CosmosContinuablePagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
+        CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
 
         queryFlux.byPage()
                  .publishOn(Schedulers.elastic())
@@ -129,12 +128,12 @@ public class BasicDemo {
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
         FeedOptions options = new FeedOptions();
-        options.populateQueryMetrics(true);
-        options.maxItemCount(1);
+        options.setPopulateQueryMetrics(true);
+        options.setMaxItemCount(1);
         String continuation = null;
         do {
-            options.requestContinuation(continuation);
-            CosmosContinuablePagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
+            options.setRequestContinuation(continuation);
+            CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
             FeedResponse<TestObject> page = queryFlux.byPage().blockFirst();
             assert page != null;
             log(page.getResults());

@@ -21,10 +21,11 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosDatabaseProperties;
+import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.CosmosResponse;
@@ -64,6 +65,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -82,6 +84,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
+@Listeners({TestNGLogListener.class})
 public class TestSuiteBase extends CosmosAsyncClientTest {
 
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
@@ -175,7 +178,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
 
         @Override
-        public CosmosContinuablePagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec query) {
+        public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec query) {
             return client.queryDatabases(query, null);
         }
 
@@ -571,7 +574,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static void deleteDocumentIfExists(CosmosAsyncClient client, String databaseId, String collectionId, String docId) {
         FeedOptions options = new FeedOptions();
-        options.partitionKey(new PartitionKey(docId));
+        options.setPartitionKey(new PartitionKey(docId));
         CosmosAsyncContainer cosmosContainer = client.getDatabase(databaseId).getContainer(collectionId);
 
         List<CosmosItemProperties> res = cosmosContainer
@@ -1076,5 +1079,20 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             {true},
             {false},
         };
+    }
+
+    public static CosmosClientBuilder copyCosmosClientBuilder(CosmosClientBuilder builder) {
+        CosmosClientBuilder copy = new CosmosClientBuilder();
+
+        copy.setEndpoint(builder.getEndpoint())
+            .setKey(builder.getKey())
+            .setConnectionPolicy(builder.getConnectionPolicy())
+            .setConsistencyLevel(builder.getConsistencyLevel())
+            .setCosmosKeyCredential(builder.getCosmosKeyCredential())
+            .setPermissions(builder.getPermissions())
+            .setTokenResolver(builder.getTokenResolver())
+            .setResourceToken(builder.getResourceToken());
+
+        return copy;
     }
 }

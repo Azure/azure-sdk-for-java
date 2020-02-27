@@ -385,7 +385,7 @@
             </configurationFile>
           </analysisConfigurationFiles>
           <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
-          <checkDependencies>false</checkDependencies>
+          <checkDependencies>true</checkDependencies>
           <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
         </configuration>
         <dependencies>
@@ -1239,7 +1239,7 @@
     <module>sdk/appconfiguration/azure-data-appconfiguration</module>
     <module>sdk/core/azure-core</module>
     <module>sdk/core/azure-core-amqp</module>
-<!--    <module>sdk/core/azure-core-management</module>--> <!-- Removed for now, as this library is unused -->
+    <module>sdk/core/azure-core-management</module>
     <module>sdk/core/azure-core-http-netty</module>
     <module>sdk/core/azure-core-http-okhttp</module>
     <module>sdk/core/azure-core-test</module>

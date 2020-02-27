@@ -15,7 +15,9 @@ trigger:
     include:
       - sdk/signalr/
     exclude:
+      - sdk/signalr/azure
       - sdk/signalr/microsoft-azure
+      - sdk/signalr/ms-azure
 
 pr:
   branches:
@@ -28,47 +30,11 @@ pr:
     include:
       - sdk/signalr/
     exclude:
+      - sdk/signalr/azure
       - sdk/signalr/microsoft-azure
+      - sdk/signalr/ms-azure
 
-
-variables:
-  BuildOptions: '--batch-mode -Dgpg.skip -Dmaven.wagon.http.pool=false'
-  ServiceDirectory: signalr
-  ProfileFlag: ''
-
-jobs:
-  - job: 'Build'
-
-    variables:
-      - template: ../../eng/pipelines/templates/variables/globals.yml
-
-    strategy:
-      matrix:
-        Java 8:
-          ArtifactName: 'packages'
-          JavaVersion: '1.8'
-        Java 7:
-          ArtifactName: 'packages'
-          JavaVersion: '1.7'
-
-    pool:
-      vmImage: 'ubuntu-16.04'
-
-    steps:
-      - task: Maven@3
-        displayName: 'Build'
-        inputs:
-          mavenPomFile: sdk/$(ServiceDirectory)/pom.mgmt.xml
-          goals: 'compile'
-          options: '$(BuildOptions) $(ProfileFlag) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-
-      - task: PublishTestResults@2
-        condition: succeededOrFailed()
-        inputs:
-          mergeTestResults: true
-          testRunTitle: 'On Java $(JavaVersion)'
+stages:
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
+    parameters:
+      ServiceDirectory: signalr

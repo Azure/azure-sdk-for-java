@@ -24,7 +24,6 @@ import com.azure.search.models.SynonymMap;
 import com.azure.search.test.AccessConditionTests;
 import com.azure.search.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -37,15 +36,21 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class IndexManagementSyncTests extends IndexManagementTestBase {
+import static com.azure.search.TestHelpers.generateIfNotChangedAccessCondition;
+import static com.azure.search.TestHelpers.getETag;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+public class IndexManagementSyncTests extends SearchServiceTestBase {
     private SearchServiceClient client;
 
     // commonly used lambda definitions
-    private BiFunction<Index,
-        AccessOptions,
-        Index> createOrUpdateIndexFunc =
-            (Index index, AccessOptions ac) ->
-                createOrUpdateIndex(index, ac.getAccessCondition(), ac.getRequestOptions());
+    private BiFunction<Index, AccessOptions, Index> createOrUpdateIndexFunc = (Index index, AccessOptions ac) ->
+        createOrUpdateIndex(index, ac.getAccessCondition(), ac.getRequestOptions());
 
     private Supplier<Index> newIndexFunc = this::createTestIndex;
 
@@ -55,15 +60,9 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         (String name, AccessOptions ac) ->
             client.deleteIndexWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
 
-    private Index createOrUpdateIndex(Index index,
-        AccessCondition accessCondition,
-        RequestOptions requestOptions) {
-        return client.createOrUpdateIndexWithResponse(
-            index,
-            false,
-            accessCondition,
-            requestOptions,
-            Context.NONE).getValue();
+    private Index createOrUpdateIndex(Index index, AccessCondition accessCondition, RequestOptions requestOptions) {
+        return client.createOrUpdateIndexWithResponse(index, false, accessCondition, requestOptions, Context.NONE)
+            .getValue();
     }
 
     @Override
@@ -77,7 +76,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
 
         Index createdIndex = client.createIndex(index);
-        assertIndexesEqual(index, createdIndex);
+        TestHelpers.assertIndexesEqual(index, createdIndex);
     }
 
     @Test
@@ -86,7 +85,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         Response<Index> createIndexResponse = client.createIndexWithResponse(index.setName("hotel2"),
             generateRequestOptions(), Context.NONE);
-        assertIndexesEqual(index, createIndexResponse.getValue());
+        TestHelpers.assertIndexesEqual(index, createIndexResponse.getValue());
     }
 
     @Test
@@ -106,10 +105,10 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         Index indexResponse = client.createIndex(index);
         ScoringProfile scoringProfile = indexResponse.getScoringProfiles().get(0);
-        Assert.assertNull(indexResponse.getCorsOptions().getMaxAgeInSeconds());
-        Assert.assertEquals(ScoringFunctionAggregation.SUM, scoringProfile.getFunctionAggregation());
-        Assert.assertNotNull(scoringProfile.getFunctions().get(0));
-        Assert.assertEquals(ScoringFunctionInterpolation.LINEAR, scoringProfile.getFunctions().get(0).getInterpolation());
+        assertNull(indexResponse.getCorsOptions().getMaxAgeInSeconds());
+        assertEquals(ScoringFunctionAggregation.SUM, scoringProfile.getFunctionAggregation());
+        assertNotNull(scoringProfile.getFunctions().get(0));
+        assertEquals(ScoringFunctionInterpolation.LINEAR, scoringProfile.getFunctions().get(0).getInterpolation());
     }
 
     @Test
@@ -128,11 +127,11 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         try {
             client.createIndex(index);
-            Assert.fail("createOrUpdateIndex did not throw an expected Exception");
+            fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
-            Assert.assertEquals(HttpResponseException.class, ex.getClass());
-            Assert.assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
-            Assert.assertTrue(ex.getMessage().contains(expectedMessage));
+            assertEquals(HttpResponseException.class, ex.getClass());
+            assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
+            assertTrue(ex.getMessage().contains(expectedMessage));
         }
     }
 
@@ -142,7 +141,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         client.createIndex(index);
 
         Index createdIndex = client.getIndex(index.getName());
-        assertIndexesEqual(index, createdIndex);
+        TestHelpers.assertIndexesEqual(index, createdIndex);
     }
 
     @Test
@@ -152,7 +151,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         Response<Index> getIndexResponse = client.getIndexWithResponse(index.getName(), generateRequestOptions(),
             Context.NONE);
-        assertIndexesEqual(index, getIndexResponse.getValue());
+        TestHelpers.assertIndexesEqual(index, getIndexResponse.getValue());
     }
 
     @Test
@@ -165,46 +164,41 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
     }
 
     @Test
-    public void existsReturnsTrueForExistingIndex() {
-        Index index = createTestIndex();
-        client.createIndex(index);
-
-        Assert.assertTrue(client.indexExists(index.getName()));
-    }
-
-    @Test
-    public void existsReturnsTrueForExistingIndexWithResponse() {
-        Index index = createTestIndex();
-        client.createIndex(index);
-
-        Assert.assertTrue(client.indexExistsWithResponse(index.getName(), generateRequestOptions(), Context.NONE).getValue());
-    }
-
-    @Test
-    public void existsReturnsFalseForNonExistingIndex() {
-        Assert.assertFalse(client.indexExists("invalidindex"));
-    }
-
-    @Test
     public void deleteIndexIfNotChangedWorksOnlyOnCurrentResource() {
-        AccessConditionTests act = new AccessConditionTests();
+        Index indexToCreate = createTestIndex();
+        AccessOptions accessOptions = new AccessOptions(null);
 
-        act.deleteIfNotChangedWorksOnlyOnCurrentResource(
-            deleteIndexFunc,
-            newIndexFunc,
-            createOrUpdateIndexFunc,
-            HOTEL_INDEX_NAME);
+        // Create the resource in the search service
+        Index originalIndex = createOrUpdateIndexFunc.apply(indexToCreate, accessOptions);
+
+        // Get the eTag for the newly created resource
+        String eTagStale = getETag(originalIndex);
+
+        // Update the resource, the eTag will be changed
+        Index updatedIndex = createOrUpdateIndexFunc.apply(originalIndex
+            .setCorsOptions(new CorsOptions().setAllowedOrigins("https://test.com/")), accessOptions);
+
+        try {
+            accessOptions = new AccessOptions(generateIfNotChangedAccessCondition(eTagStale));
+            deleteIndexFunc.accept(HOTEL_INDEX_NAME, accessOptions);
+            fail("deleteFunc should have failed due to selected AccessCondition");
+        } catch (Exception exc) {
+            assertEquals(HttpResponseException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+        }
+
+        // Get the new eTag
+        String eTagCurrent = getETag(updatedIndex);
+        accessOptions = new AccessOptions(generateIfNotChangedAccessCondition(eTagCurrent));
+
+        // Delete should succeed
+        deleteIndexFunc.accept(HOTEL_INDEX_NAME, accessOptions);
     }
 
     @Test
     public void deleteIndexIfExistsWorksOnlyWhenResourceExists() {
-        AccessConditionTests act = new AccessConditionTests();
-
-        act.deleteIfExistsWorksOnlyWhenResourceExists(
-            deleteIndexFunc,
-            createOrUpdateIndexFunc,
-            newIndexFunc,
-            HOTEL_INDEX_NAME);
+        AccessConditionTests.deleteIfExistsWorksOnlyWhenResourceExists(deleteIndexFunc, createOrUpdateIndexFunc,
+            newIndexFunc, HOTEL_INDEX_NAME);
     }
 
     @Test
@@ -218,17 +212,17 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
                     .setKey(true)
             ));
         Response<Void> deleteResponse = client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
+        assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
         Response<Index> createResponse = client.createIndexWithResponse(index, generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
+        assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
 
         // Delete the same index twice
         deleteResponse = client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
+        assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
 
         deleteResponse = client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
+        assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
     @Test
@@ -236,7 +230,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         client.createIndex(index);
         client.deleteIndex(index.getName());
-        Assert.assertFalse(client.indexExists(index.getName()));
+
+        assertThrows(HttpResponseException.class, () -> client.getIndex(index.getName()));
     }
 
     @Test
@@ -250,9 +245,9 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         PagedIterable<Index> actual = client.listIndexes();
         List<Index> result = actual.stream().collect(Collectors.toList());
 
-        Assert.assertEquals(2, result.size());
-        Assert.assertEquals(index1.getName(), result.get(0).getName());
-        Assert.assertEquals(index2.getName(), result.get(1).getName());
+        assertEquals(2, result.size());
+        assertEquals(index1.getName(), result.get(0).getName());
+        assertEquals(index2.getName(), result.get(1).getName());
     }
 
     @Test
@@ -268,21 +263,21 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         List<Index> result = selectedFieldListResponse.stream().collect(Collectors.toList());
 
         result.forEach(res -> {
-            Assert.assertNotNull(res.getName());
-            Assert.assertNull(res.getFields());
-            Assert.assertNull(res.getDefaultScoringProfile());
-            Assert.assertNull(res.getCorsOptions());
-            Assert.assertNull(res.getScoringProfiles());
-            Assert.assertNull(res.getSuggesters());
-            Assert.assertNull(res.getAnalyzers());
-            Assert.assertNull(res.getTokenizers());
-            Assert.assertNull(res.getTokenFilters());
-            Assert.assertNull(res.getCharFilters());
+            assertNotNull(res.getName());
+            assertNull(res.getFields());
+            assertNull(res.getDefaultScoringProfile());
+            assertNull(res.getCorsOptions());
+            assertNull(res.getScoringProfiles());
+            assertNull(res.getSuggesters());
+            assertNull(res.getAnalyzers());
+            assertNull(res.getTokenizers());
+            assertNull(res.getTokenFilters());
+            assertNull(res.getCharFilters());
         });
 
-        Assert.assertEquals(2, result.size());
-        Assert.assertEquals(result.get(0).getName(), index1.getName());
-        Assert.assertEquals(result.get(1).getName(), index2.getName());
+        assertEquals(2, result.size());
+        assertEquals(result.get(0).getName(), index1.getName());
+        assertEquals(result.get(1).getName(), index2.getName());
     }
 
     @Test
@@ -308,7 +303,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         List<String> actualSynonym = index.getFields().get(1).getSynonymMaps();
         List<String> expectedSynonym = createdIndex.getFields().get(1).getSynonymMaps();
-        Assert.assertEquals(actualSynonym, expectedSynonym);
+        assertEquals(actualSynonym, expectedSynonym);
     }
 
     @Test
@@ -333,7 +328,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         Index updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
             true, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
-        assertIndexesEqual(existingIndex, updatedIndex);
+        TestHelpers.assertIndexesEqual(existingIndex, updatedIndex);
     }
 
     @Test
@@ -359,7 +354,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         Index updatedIndex = client.createOrUpdateIndex(index);
 
-        assertIndexesEqual(fullFeaturedIndex, updatedIndex);
+        TestHelpers.assertIndexesEqual(fullFeaturedIndex, updatedIndex);
 
         // Modify the fields on an existing index
         Index existingIndex = client.getIndex(fullFeaturedIndex.getName());
@@ -386,7 +381,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
             true, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
-        assertIndexesEqual(existingIndex, updatedIndex);
+        TestHelpers.assertIndexesEqual(existingIndex, updatedIndex);
     }
 
     @Test
@@ -411,7 +406,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
             true, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
 
-        assertIndexesEqual(existingIndex, updatedIndex);
+        TestHelpers.assertIndexesEqual(existingIndex, updatedIndex);
     }
 
     @Test
@@ -430,7 +425,7 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
             () -> client.createOrUpdateIndex(existingIndex),
             HttpResponseStatus.BAD_REQUEST,
             String.format("Fields that were already present in an index (%s) cannot be "
-                + "referenced by a new suggester. Only new fields added in the same index update operation are allowed.",
+                    + "referenced by a new suggester. Only new fields added in the same index update operation are allowed.",
                 existingFieldName)
         );
     }
@@ -440,13 +435,13 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index expected = createTestIndex();
 
         Index actual = client.createOrUpdateIndex(expected);
-        assertIndexesEqual(expected, actual);
+        TestHelpers.assertIndexesEqual(expected, actual);
 
         actual = client.createOrUpdateIndex(expected.setName("hotel1"));
-        assertIndexesEqual(expected, actual);
+        TestHelpers.assertIndexesEqual(expected, actual);
 
         Index res = client.createOrUpdateIndex(expected.setName("hotel2"));
-        Assert.assertEquals(expected.getName(), res.getName());
+        assertEquals(expected.getName(), res.getName());
     }
 
     @Test
@@ -455,69 +450,49 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         Index actual = client.createOrUpdateIndexWithResponse(expected, false, new AccessCondition(),
             generateRequestOptions(), Context.NONE).getValue();
-        assertIndexesEqual(expected, actual);
+        TestHelpers.assertIndexesEqual(expected, actual);
 
         actual = client.createOrUpdateIndexWithResponse(expected.setName("hotel1"),
             false, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
-        assertIndexesEqual(expected, actual);
+        TestHelpers.assertIndexesEqual(expected, actual);
 
         Response<Index> createOrUpdateResponse = client.createOrUpdateIndexWithResponse(expected.setName("hotel2"),
             false, new AccessCondition(), generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
+        assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
     }
 
     @Test
     public void createOrUpdateIndexIfNotExistsFailsOnExistingResource() {
-        AccessConditionTests act = new AccessConditionTests();
-
-        act.createOrUpdateIfNotExistsFailsOnExistingResource(
-            createOrUpdateIndexFunc,
-            newIndexFunc,
+        AccessConditionTests.createOrUpdateIfNotExistsFailsOnExistingResource(createOrUpdateIndexFunc, newIndexFunc,
             mutateIndexFunc);
     }
 
     @Test
     public void createOrUpdateIndexIfNotExistsSucceedsOnNoResource() {
-        AccessConditionTests act = new AccessConditionTests();
-
-        act.createOrUpdateIfNotExistsSucceedsOnNoResource(
-            createOrUpdateIndexFunc,
-            newIndexFunc);
+        AccessConditionTests.createOrUpdateIfNotExistsSucceedsOnNoResource(createOrUpdateIndexFunc, newIndexFunc);
     }
 
 
     @Test
     public void createOrUpdateIndexIfExistsSucceedsOnExistingResource() {
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfExistsSucceedsOnExistingResource(
-            newIndexFunc,
-            createOrUpdateIndexFunc,
+        AccessConditionTests.updateIfExistsSucceedsOnExistingResource(newIndexFunc, createOrUpdateIndexFunc,
             mutateIndexFunc);
     }
 
     @Test
     public void createOrUpdateIndexIfExistsFailsOnNoResource() {
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfExistsFailsOnNoResource(
-            newIndexFunc,
-            createOrUpdateIndexFunc);
+        AccessConditionTests.updateIfExistsFailsOnNoResource(newIndexFunc, createOrUpdateIndexFunc);
     }
 
     @Test
     public void createOrUpdateIndexIfNotChangedSucceedsWhenResourceUnchanged() {
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfNotChangedSucceedsWhenResourceUnchanged(
-            newIndexFunc,
-            createOrUpdateIndexFunc,
+        AccessConditionTests.updateIfNotChangedSucceedsWhenResourceUnchanged(newIndexFunc, createOrUpdateIndexFunc,
             mutateIndexFunc);
     }
 
     @Test
     public void createOrUpdateIndexIfNotChangedFailsWhenResourceChanged() {
-        AccessConditionTests act = new AccessConditionTests();
-        act.updateIfNotChangedFailsWhenResourceChanged(
-            newIndexFunc,
-            createOrUpdateIndexFunc,
+        AccessConditionTests.updateIfNotChangedFailsWhenResourceChanged(newIndexFunc, createOrUpdateIndexFunc,
             mutateIndexFunc);
     }
 
@@ -526,8 +501,8 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
         Index index = createTestIndex();
         client.createOrUpdateIndex(index);
         GetIndexStatisticsResult indexStatistics = client.getIndexStatistics(index.getName());
-        Assert.assertEquals(0, indexStatistics.getDocumentCount());
-        Assert.assertEquals(0, indexStatistics.getStorageSize());
+        assertEquals(0, indexStatistics.getDocumentCount());
+        assertEquals(0, indexStatistics.getStorageSize());
     }
 
     @Test
@@ -537,7 +512,19 @@ public class IndexManagementSyncTests extends IndexManagementTestBase {
 
         Response<GetIndexStatisticsResult> indexStatisticsResponse = client.getIndexStatisticsWithResponse(index.getName(),
             generateRequestOptions(), Context.NONE);
-        Assert.assertEquals(0, indexStatisticsResponse.getValue().getDocumentCount());
-        Assert.assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());
+        assertEquals(0, indexStatisticsResponse.getValue().getDocumentCount());
+        assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());
+    }
+
+    Index mutateCorsOptionsInIndex(Index index) {
+        index.getCorsOptions().setAllowedOrigins("*");
+        return index;
+    }
+
+    Field getFieldByName(Index index, String name) {
+        return index.getFields()
+            .stream()
+            .filter(f -> f.getName().equals(name))
+            .findFirst().get();
     }
 }

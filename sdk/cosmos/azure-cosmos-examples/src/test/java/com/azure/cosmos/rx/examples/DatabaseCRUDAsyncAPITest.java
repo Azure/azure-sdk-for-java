@@ -11,6 +11,7 @@ import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.TestConfigurations;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

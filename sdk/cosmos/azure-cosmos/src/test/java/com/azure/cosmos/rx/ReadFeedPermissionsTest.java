@@ -45,11 +45,11 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
     public void readPermissions() throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
+        options.setMaxItemCount(2);
 
         Flux<FeedResponse<Permission>> feedObservable = client.readPermissions(getUserLink(), options);
 
-        int expectedPageSize = (createdPermissions.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (createdPermissions.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<Permission> validator = new FeedResponseListValidator.Builder<Permission>()
                 .totalSize(createdPermissions.size())

@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosItemRequestOptions;
 import com.azure.cosmos.FeedOptions;
@@ -25,7 +25,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,15 +56,15 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from c where c.prop = 99";
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
+        options.setMaxItemCount(5);
         
-        options.populateQueryMetrics(queryMetricsEnabled);
-        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        options.setPopulateQueryMetrics(queryMetricsEnabled);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> 99 == d.getInt("prop") ).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
-        int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(expectedDocs.size())
@@ -86,14 +85,14 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         SqlQuerySpec sqs = new SqlQuerySpec(query, params);
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
+        options.setMaxItemCount(5);
         
-        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(sqs, options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(sqs, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> (3 == d.getInt("prop") || 4 == d.getInt("prop"))).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
-        int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(expectedDocs.size())
@@ -113,14 +112,14 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         SqlQuerySpec sqs = new SqlQuerySpec(query, params);
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
+        options.setMaxItemCount(5);
         
-        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(sqs, options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(sqs, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> 3 == d.getInt("prop")).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
-        int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(expectedDocs.size())
@@ -139,7 +138,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
         
-        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .containsExactly(new ArrayList<>())
@@ -155,12 +154,12 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(3);
+        options.setMaxItemCount(3);
         
-        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments;
-        int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator
             .Builder<CosmosItemProperties>()
@@ -182,11 +181,11 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * FROM r ORDER BY r.prop ASC";
         FeedOptions options = new FeedOptions();
         
-        options.maxItemCount(3);
-        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        options.setMaxItemCount(3);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments;
-        int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .containsExactly(createdDocuments.stream()
@@ -205,8 +204,8 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * FROM r ORDER BY r.prop ASC";
         FeedOptions options = new FeedOptions();
         
-        options.maxItemCount(3);
-        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        options.setMaxItemCount(3);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
         
         TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<>();
         queryObservable.byPage().take(1).subscribe(subscriber);
@@ -221,11 +220,11 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         assertThat(page.getContinuationToken()).isNotEmpty();
 
 
-        options.requestContinuation(page.getContinuationToken());
+        options.setRequestContinuation(page.getContinuationToken());
         queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> (d.getInt("prop") > 2)).collect(Collectors.toList());
-        int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         assertThat(expectedDocs).hasSize(createdDocuments.size() -3);
 
@@ -245,7 +244,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
         
-        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(CosmosClientException.class)

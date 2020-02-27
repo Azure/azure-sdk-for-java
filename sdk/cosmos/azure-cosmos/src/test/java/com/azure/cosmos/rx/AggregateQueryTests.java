@@ -7,17 +7,15 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -74,12 +72,12 @@ public class AggregateQueryTests extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         
-        options.populateQueryMetrics(qmEnabled);
+        options.setPopulateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
 
         for (QueryConfig queryConfig : queryConfigs) {
 
-            CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(queryConfig.query, options, CosmosItemProperties.class);
+            CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(queryConfig.query, options, CosmosItemProperties.class);
 
             FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .withAggregateValue(queryConfig.expected)

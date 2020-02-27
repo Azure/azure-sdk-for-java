@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdkeea66410f82b.search-dogfood.windows-int.net/indexes('hotels')/docs('1000000001')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk14244329cc8.search.windows.net/indexes('hotels')/docs('1000000001')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "138",
+      "elapsed-time" : "51",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "Content-Length" : "0",
-      "request-id" : "9d3a70fc-9647-4627-8844-c06fac8ee516",
+      "request-id" : "44595901-122b-498a-8843-71567e1ecd4d",
       "StatusCode" : "404",
-      "Date" : "Tue, 24 Dec 2019 16:21:14 GMT"
+      "Date" : "Mon, 24 Feb 2020 19:48:20 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ ]
+  "variables" : [ "azs-sdk6593500d898", "azs-sdk14244329cc8" ]
 }

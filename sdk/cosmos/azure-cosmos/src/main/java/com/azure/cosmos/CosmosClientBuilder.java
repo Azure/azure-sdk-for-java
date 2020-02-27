@@ -15,13 +15,13 @@ import java.util.List;
  *
  * <pre>
  * {@code
- * ConnectionPolicy getConnectionPolicy = new ConnectionPolicy();
+ * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
  * getConnectionPolicy.getConnectionMode(ConnectionMode.DIRECT);
- * CosmonsClient client = new CosmosAsyncClient.cosmosClientBuilder()
- *         .getEndpoint(serviceEndpoint)
- *         .getKey(getKey)
- *         .getConnectionPolicy(getConnectionPolicy)
- *         .getConsistencyLevel(ConsistencyLevel.SESSION)
+ * CosmosAsyncClient client = new CosmosAsyncClient.cosmosClientBuilder()
+ *         .setEndpoint(serviceEndpoint)
+ *         .setKey(key)
+ *         .setConnectionPolicy(connectionPolicy)
+ *         .setConsistencyLevel(ConsistencyLevel.SESSION)
  *         .buildAsyncClient();
  * }
  * </pre>
@@ -36,7 +36,8 @@ public class CosmosClientBuilder {
     private List<Permission> permissions;
     private TokenResolver tokenResolver;
     private CosmosKeyCredential cosmosKeyCredential;
-    private boolean sessionCapturingOverride;
+    private boolean sessionCapturingOverrideEnabled;
+    private boolean connectionReuseAcrossClientsEnabled;
 
     public CosmosClientBuilder() {
     }
@@ -45,12 +46,14 @@ public class CosmosClientBuilder {
      * Session capturing is enabled by default for {@link ConsistencyLevel#SESSION}.
      * For other consistency levels, it is not needed, unless if you need occasionally send requests with Session
      * Consistency while the client is not configured in session.
-     *
+     * <p>
      * enabling Session capturing for Session mode has no effect.
-     * @param sessionCapturingOverride the session capturing override
+     * @param sessionCapturingOverrideEnabled session capturing override
+     * @return current cosmosClientBuilder
      */
-    public void enableSessionCapturing(boolean sessionCapturingOverride) {
-        this.sessionCapturingOverride = sessionCapturingOverride;
+    public CosmosClientBuilder setSessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
+        this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
+        return this;
     }
 
     /**
@@ -59,8 +62,62 @@ public class CosmosClientBuilder {
      *
      * @return the session capturing override
      */
-    public boolean isSessionCapturingOverride() {
-        return this.sessionCapturingOverride;
+    public boolean isSessionCapturingOverrideEnabled() {
+        return this.sessionCapturingOverrideEnabled;
+    }
+
+    /**
+     * Enables connections sharing across multiple Cosmos Clients. The default is false.
+     *
+     *
+     * <pre>
+     * {@code
+     * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+     * getConnectionPolicy.getConnectionMode(ConnectionMode.DIRECT);
+     * CosmosAsyncClient client1 = new CosmosAsyncClient.cosmosClientBuilder()
+     *         .setEndpoint(serviceEndpoint1)
+     *         .setKey(key1)
+     *         .setConnectionPolicy(connectionPolicy)
+     *         .setConsistencyLevel(ConsistencyLevel.SESSION)
+     *         .setConnectionSharingAcrossClientsEnabled(true)
+     *         .buildAsyncClient();
+     *
+     * CosmosAsyncClient client2 = new CosmosAsyncClient.cosmosClientBuilder()
+     *         .setEndpoint(serviceEndpoint2)
+     *         .setKey(key2)
+     *         .setConnectionPolicy(connectionPolicy)
+     *         .setConsistencyLevel(ConsistencyLevel.SESSION)
+     *         .setConnectionSharingAcrossClientsEnabled(true)
+     *         .buildAsyncClient();
+     *
+     * // when configured this way client1 and client2 will share connections when possible.
+     * }
+     * </pre>
+     *
+     * When you have multiple instances of Cosmos Client in the same JVM interacting to multiple Cosmos accounts,
+     * enabling this allows connection sharing in Direct mode if possible between instances of Cosmos Client.
+     *
+     * Please note, when setting this option, the connection configuration (e.g., socket timeout config, idle timeout config)
+     * of the first instantiated client will be used for all other client instances.
+     *
+     * @param connectionReuseAcrossClientsEnabled connection sharing
+     * @return current cosmosClientBuilder
+     */
+    public CosmosClientBuilder setConnectionReuseAcrossClientsEnabled(boolean connectionReuseAcrossClientsEnabled) {
+        this.connectionReuseAcrossClientsEnabled = true;
+        return this;
+    }
+
+    /**
+     * Indicates whether connection sharing is enabled. The default is false.
+     *
+     * When you have multiple instances of Cosmos Client in the same JVM interacting to multiple Cosmos accounts,
+     * enabling this allows connection sharing in Direct mode if possible between instances of Cosmos Client.
+     *
+     * @return the connection sharing across multiple clients
+     */
+    public boolean isConnectionReuseAcrossClientsEnabled() {
+        return this.connectionReuseAcrossClientsEnabled;
     }
 
     /**

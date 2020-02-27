@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.TestConfigurations;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;

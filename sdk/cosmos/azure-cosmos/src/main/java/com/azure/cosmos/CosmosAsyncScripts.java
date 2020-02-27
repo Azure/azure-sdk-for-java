@@ -64,15 +64,15 @@ public class CosmosAsyncScripts {
      * Reads all cosmos stored procedures in a container.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response pages of the read cosmos stored procedure properties.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read cosmos stored procedure properties.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the read cosmos stored procedures
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos stored procedures
      * properties or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> readAllStoredProcedures(FeedOptions options) {
-        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+    public CosmosPagedFlux<CosmosStoredProcedureProperties> readAllStoredProcedures(FeedOptions options) {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                            .readStoredProcedures(container.getLink(), options)
@@ -86,16 +86,16 @@ public class CosmosAsyncScripts {
      * Query for stored procedures in a container.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response pages of the obtained stored procedures.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained stored procedures.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the the query.
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained stored procedures or
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained stored procedures or
      * an error.
      */
-    public CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(String query,
-                                                                                             FeedOptions options) {
+    public CosmosPagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(String query,
+                                                                                  FeedOptions options) {
         return queryStoredProcedures(new SqlQuerySpec(query), options);
     }
 
@@ -103,17 +103,17 @@ public class CosmosAsyncScripts {
      * Query for stored procedures in a container.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response pages of the obtained stored procedures.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained stored procedures.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained stored procedures or
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained stored procedures or
      * an error.
      */
-    public CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(SqlQuerySpec querySpec,
-                                                                                     FeedOptions options) {
-        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+    public CosmosPagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(SqlQuerySpec querySpec,
+                                                                                  FeedOptions options) {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                            .queryStoredProcedures(container.getLink(), querySpec, options)
@@ -162,15 +162,15 @@ public class CosmosAsyncScripts {
      * Reads all cosmos user defined functions in the container
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response pages of the read user defined functions.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read user defined functions.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the read user defined functions or an
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read user defined functions or an
      * error.
      */
-    public CosmosContinuablePagedFlux<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(FeedOptions options) {
-        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+    public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(FeedOptions options) {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                            .readUserDefinedFunctions(container.getLink(), options)
@@ -184,16 +184,16 @@ public class CosmosAsyncScripts {
      * Query for user defined functions in the container.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response pages of the obtained user defined functions.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained user defined functions.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained user defined functions
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained user defined functions
      * or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(String query,
-                                                                                                     FeedOptions options) {
+    public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(String query,
+                                                                                          FeedOptions options) {
         return queryUserDefinedFunctions(new SqlQuerySpec(query), options);
     }
 
@@ -201,17 +201,17 @@ public class CosmosAsyncScripts {
      * Query for user defined functions in the container.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response pages of the obtained user defined functions.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained user defined functions.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained user defined functions
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained user defined functions
      * or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(SqlQuerySpec querySpec,
-                                                                                             FeedOptions options) {
-        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+    public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(SqlQuerySpec querySpec,
+                                                                                          FeedOptions options) {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                            .queryUserDefinedFunctions(container.getLink(), querySpec, options)
@@ -256,15 +256,15 @@ public class CosmosAsyncScripts {
      * Reads all triggers in a container
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response pages of the read cosmos trigger properties.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read cosmos trigger properties.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the read cosmos rigger properties or
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos rigger properties or
      * an error.
      */
-    public CosmosContinuablePagedFlux<CosmosTriggerProperties> readAllTriggers(FeedOptions options) {
-        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+    public CosmosPagedFlux<CosmosTriggerProperties> readAllTriggers(FeedOptions options) {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                            .readTriggers(container.getLink(), options)
@@ -278,14 +278,14 @@ public class CosmosAsyncScripts {
      * Query for triggers in the container
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response pages of the obtained triggers.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained triggers.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained triggers or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained triggers or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosTriggerProperties> queryTriggers(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosTriggerProperties> queryTriggers(String query, FeedOptions options) {
         return queryTriggers(new SqlQuerySpec(query), options);
     }
 
@@ -293,16 +293,16 @@ public class CosmosAsyncScripts {
      * Query for triggers in the container
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response pages of the obtained triggers.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained triggers.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained triggers or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained triggers or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosTriggerProperties> queryTriggers(SqlQuerySpec querySpec,
-                                                                     FeedOptions options) {
-        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+    public CosmosPagedFlux<CosmosTriggerProperties> queryTriggers(SqlQuerySpec querySpec,
+                                                                  FeedOptions options) {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                            .queryTriggers(container.getLink(), querySpec, options)

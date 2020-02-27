@@ -103,7 +103,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
 
         FeedOptions feedOptions = new FeedOptions();
         
-        CosmosContinuablePagedIterable<CosmosUserDefinedFunctionProperties> feedResponseIterator3 =
+        CosmosPagedIterable<CosmosUserDefinedFunctionProperties> feedResponseIterator3 =
                 container.getScripts().readAllUserDefinedFunctions(feedOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
@@ -117,12 +117,12 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         FeedOptions feedOptions = new FeedOptions();
         
 
-        CosmosContinuablePagedIterable<CosmosUserDefinedFunctionProperties> feedResponseIterator1 =
+        CosmosPagedIterable<CosmosUserDefinedFunctionProperties> feedResponseIterator1 =
                 container.getScripts().queryUserDefinedFunctions(query, feedOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosContinuablePagedIterable<CosmosUserDefinedFunctionProperties> feedResponseIterator2 =
+        CosmosPagedIterable<CosmosUserDefinedFunctionProperties> feedResponseIterator2 =
                 container.getScripts().queryUserDefinedFunctions(query, feedOptions);
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
     }

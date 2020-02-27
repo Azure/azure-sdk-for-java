@@ -347,7 +347,7 @@ public class TokenResolverTest extends TestSuiteBase {
             FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                 .totalSize(2)
                 .exactlyContainsInAnyOrder(expectedIds).build();
-            validateQuerySuccess(queryObservable, validator, 10000);
+            validateQuerySuccess(queryObservable, validator, TIMEOUT);
         } finally {
             safeClose(asyncClientWithTokenResolver);
         }
@@ -398,7 +398,7 @@ public class TokenResolverTest extends TestSuiteBase {
                     .queryDocumentChangeFeed(createdCollection.getSelfLink(), options);
             FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                     .exactlyContainsInAnyOrder(expectedIds).build();
-            validateQuerySuccess(queryObservable, validator, 10000);
+            validateQuerySuccess(queryObservable, validator, TIMEOUT);
         } finally {
             safeClose(asyncClientWithTokenResolver);
         }
@@ -507,7 +507,9 @@ public class TokenResolverTest extends TestSuiteBase {
 
     private TokenResolver getTokenResolver(PermissionMode permissionMode) {
         return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
-            if (permissionMode == null) {
+            if(resourceType.equals(CosmosResourceType.System)) {
+                return readPermission.getToken();
+            } if (permissionMode == null) {
                 return "invalid";
             } else if (permissionMode.equals(PermissionMode.READ)) {
                 return readPermission.getToken();

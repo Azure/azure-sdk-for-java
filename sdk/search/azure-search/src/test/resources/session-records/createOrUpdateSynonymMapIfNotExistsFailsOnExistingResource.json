@@ -1,44 +1,44 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk7890467660ce.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk49122f0a89e.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "57b83544-d105-45f6-8863-3aca16b92b33",
+      "request-id" : "3d3e1abc-cddf-4b27-8552-27be10db10a5",
       "StatusCode" : "201",
-      "Date" : "Tue, 24 Dec 2019 17:59:44 GMT",
+      "Date" : "Mon, 24 Feb 2020 20:03:29 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7889B0E9B96DE\"",
+      "ETag" : "W/\"0x8D7B9649E5B7DBA\"",
       "elapsed-time" : "38",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "231",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk7890467660ce.search-dogfood.windows-int.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7889B0E9B96DE\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Content-Length" : "218",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk49122f0a89e.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7B9649E5B7DBA\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk7890467660ce.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+      "Location" : "https://azs-sdk49122f0a89e.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azs-sdk7890467660ce.search-dogfood.windows-int.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk49122f0a89e.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
     "Headers" : {
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "4963c2ff-09b9-4cb2-883c-3b697829527f",
+      "request-id" : "8e5fcb8a-e2f0-4948-9d6a-15b52e24e248",
       "StatusCode" : "412",
-      "Date" : "Tue, 24 Dec 2019 17:59:44 GMT",
+      "Date" : "Mon, 24 Feb 2020 20:03:29 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "7",
+      "elapsed-time" : "6",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "160",
@@ -49,5 +49,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ ]
+  "variables" : [ "azs-sdk49122f0a89e" ]
 }

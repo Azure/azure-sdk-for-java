@@ -5,7 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.CosmosStoredProcedureProperties;
 import com.azure.cosmos.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.FeedOptions;
@@ -39,8 +39,8 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
 
-        CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> feedObservable = createdCollection.getScripts()
-                                                                                                      .readAllStoredProcedures(options);
+        CosmosPagedFlux<CosmosStoredProcedureProperties> feedObservable = createdCollection.getScripts()
+                                                                                           .readAllStoredProcedures(options);
 
         int expectedPageSize = (createdStoredProcedures.size() + maxItemCount - 1) / maxItemCount;
 

@@ -108,10 +108,10 @@ public class DocumentQueryExecutionContextFactory {
                                   partitionedQueryExecutionInfo.getQueryRanges();
 
                               if (feedOptions != null 
-                                      && feedOptions.partitionKey() != null
-                                      && feedOptions.partitionKey() != PartitionKey.NONE) {
+                                      && feedOptions.getPartitionKey() != null
+                                      && feedOptions.getPartitionKey() != PartitionKey.NONE) {
                                   PartitionKeyInternal internalPartitionKey =
-                                      BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey());
+                                      BridgeInternal.getPartitionKeyInternal(feedOptions.getPartitionKey());
                                   Range<String> range = Range
                                                             .getPointRange(internalPartitionKey
                                                                                .getEffectivePartitionKeyString(internalPartitionKey,
@@ -154,7 +154,7 @@ public class DocumentQueryExecutionContextFactory {
             String collectionRid,
             UUID correlatedActivityId) {
 
-        int initialPageSize = Utils.getValueOrDefault(feedOptions.maxItemCount(), ParallelQueryConfig.ClientInternalPageSize);
+        int initialPageSize = Utils.getValueOrDefault(feedOptions.getMaxItemCount(), ParallelQueryConfig.ClientInternalPageSize);
 
         BadRequestException validationError = Utils.checkRequestOrReturnException
                 (initialPageSize > 0 || initialPageSize == -1, "MaxItemCount", "Invalid MaxItemCount %s",

@@ -1,21 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk624337555549.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk451307e2296.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "31666d10-898f-4e91-b891-53fea248748e",
+      "request-id" : "a6ecd310-613d-4065-8b44-663eb1ba1e94",
       "StatusCode" : "404",
-      "Date" : "Tue, 24 Dec 2019 06:59:18 GMT",
+      "Date" : "Mon, 24 Feb 2020 19:30:21 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "45",
+      "elapsed-time" : "21",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "134",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No datasource with the name 'azs-java-test-blob' was found in a service named 'azs-sdk624337555549'.\"}}",
+      "Content-Length" : "133",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No datasource with the name 'azs-java-test-blob' was found in a service named 'azs-sdk451307e2296'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
@@ -23,26 +23,26 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk624337555549.search-dogfood.windows-int.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
+    "Uri" : "https://azs-sdk451307e2296.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
     "Headers" : { },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "bbedd618-1f92-4723-b1b9-bda43664d97f",
+      "request-id" : "0e9a519a-27c6-44dd-8f7b-0802e01dd7d0",
       "StatusCode" : "404",
-      "Date" : "Tue, 24 Dec 2019 06:59:19 GMT",
+      "Date" : "Mon, 24 Feb 2020 19:30:21 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "22",
+      "elapsed-time" : "6",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "127",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'azs-java-test-blob' was found in service 'azs-sdk624337555549'.\"}}",
+      "Content-Length" : "126",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'azs-java-test-blob' was found in service 'azs-sdk451307e2296'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ ]
+  "variables" : [ "azs-sdk451307e2296" ]
 }
