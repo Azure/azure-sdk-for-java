@@ -20,6 +20,7 @@ import com.azure.cosmos.PermissionMode;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.TokenResolver;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.User;
 import com.google.common.collect.ImmutableMap;
 import org.testng.annotations.AfterClass;

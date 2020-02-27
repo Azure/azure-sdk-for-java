@@ -2,11 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.Resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +21,25 @@ public class CosmosItemProperties extends Resource {
      * Initialize an empty CosmosItemProperties object.
      */
     public CosmosItemProperties() {
+    }
+
+    /**
+     * Initialize a CosmosItemProperties object from json string.
+     *
+     * @param bytes the json string that represents the document object.
+     */
+    public CosmosItemProperties(byte[] bytes) {
+        super(bytes);
+    }
+
+
+    /**
+     * Initialize a CosmosItemProperties object from json string.
+     *
+     * @param byteBuffer the json string that represents the document object.
+     */
+    public CosmosItemProperties(ByteBuffer byteBuffer) {
+        super(byteBuffer);
     }
 
     /**
@@ -62,18 +84,15 @@ public class CosmosItemProperties extends Resource {
         return typedItem;
     }
 
-    static String toJsonString(Object cosmosItem, ObjectMapper objectMapper) {
-        if (cosmosItem instanceof CosmosItemProperties) {
-            return ((CosmosItemProperties) cosmosItem).toJson();
+    public static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper) {
+        if (cosmosItem instanceof com.azure.cosmos.implementation.CosmosItemProperties) {
+            return ((com.azure.cosmos.implementation.CosmosItemProperties) cosmosItem).serializeJsonToByteBuffer();
         } else {
             if (cosmosItem instanceof Document) {
-                return ((Document) cosmosItem).toJson();
+                return BridgeInternal.serializeJsonToByteBuffer((Document) cosmosItem, objectMapper);
             }
-            try {
-                return objectMapper.writeValueAsString(cosmosItem);
-            } catch (IOException e) {
-                throw new IllegalArgumentException("Can't serialize the object into the json string", e);
-            }
+
+            return Utils.serializeJsonToByteBuffer(objectMapper, cosmosItem);
         }
     }
 
