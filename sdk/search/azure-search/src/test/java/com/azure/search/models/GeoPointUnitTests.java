@@ -3,73 +3,73 @@
 
 package com.azure.search.models;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GeoPointUnitTests {
     @Test
     public void canCreate() {
         GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
 
-        Assert.assertNotNull(geoPoint);
-        Assert.assertNotNull(geoPoint.getCoordinates());
-        Assert.assertEquals(2, geoPoint.getCoordinates().size());
-        Assert.assertEquals(100.0, geoPoint.getCoordinates().get(0), 0.0);
-        Assert.assertEquals(1.0, geoPoint.getCoordinates().get(1), 0.0);
-        Assert.assertNotNull(geoPoint.getCoordinateSystem());
+        assertNotNull(geoPoint);
+        assertEquals(100.0, geoPoint.getLongitude(), 0.0);
+        assertEquals(1.0, geoPoint.getLatitude(), 0.0);
+        assertNotNull(geoPoint.getCoordinateSystem());
     }
 
     @Test
     public void canCreateWithCrs() {
         GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
 
-        Assert.assertNotNull(geoPoint);
-        Assert.assertNotNull(geoPoint.getCoordinates());
-        Assert.assertEquals(2, geoPoint.getCoordinates().size());
-        Assert.assertEquals(100.0, geoPoint.getCoordinates().get(0), 0.0);
-        Assert.assertEquals(1.0, geoPoint.getCoordinates().get(1), 0.0);
-        Assert.assertNotNull(geoPoint.getCoordinateSystem());
-        Assert.assertEquals("name", geoPoint.getCoordinateSystem().getType());
-        Assert.assertEquals(1, geoPoint.getCoordinateSystem().getProperties().size());
-        Assert.assertTrue(geoPoint.getCoordinateSystem().getProperties().get("name").startsWith("EPSG"));
+        assertNotNull(geoPoint);
+        assertEquals(100.0, geoPoint.getLongitude(), 0.0);
+        assertEquals(1.0, geoPoint.getLatitude(), 0.0);
+        assertNotNull(geoPoint.getCoordinateSystem());
+        assertEquals("name", geoPoint.getCoordinateSystem().getType());
+        assertEquals(1, geoPoint.getCoordinateSystem().getProperties().size());
+        assertTrue(geoPoint.getCoordinateSystem().getProperties().get("name").startsWith("EPSG"));
     }
 
     @Test
     public void canValidateWithCrs() {
         GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
-        Assert.assertTrue(geoPoint.isValid());
+        assertTrue(geoPoint.isValid());
     }
 
     @Test
     public void canValidateWithoutCrs() {
         GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
-        Assert.assertTrue(geoPoint.isValid());
+        assertTrue(geoPoint.isValid());
     }
 
     @Test
     public void canInvalidateWithIncorrectLatitudeHi() {
         GeoPoint geoPoint = GeoPoint.create(180.1, 1.0);
-        Assert.assertFalse(geoPoint.isValid());
+        assertFalse(geoPoint.isValid());
     }
 
     @Test
     public void canInvalidateWithIncorrectLatitudeLow() {
         GeoPoint geoPoint = GeoPoint.create(-180.1, 1.0);
-        Assert.assertFalse(geoPoint.isValid());
+        assertFalse(geoPoint.isValid());
     }
 
     @Test
     public void canInvalidateWithIncorrectLongitudeHi() {
         GeoPoint geoPoint = GeoPoint.create(100.0, 90.1);
-        Assert.assertFalse(geoPoint.isValid());
+        assertFalse(geoPoint.isValid());
     }
 
     @Test
     public void canInvalidateWithIncorrectLongitudeLow() {
         GeoPoint geoPoint = GeoPoint.create(-100.0, -90.1);
-        Assert.assertFalse(geoPoint.isValid());
+        assertFalse(geoPoint.isValid());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class GeoPointUnitTests {
         GeoPoint geoPoint = GeoPoint.create(100.0, 0.1)
             .setCoordinates(Collections.singletonList(100.0));
 
-        Assert.assertFalse(geoPoint.isValid());
+        assertFalse(geoPoint.isValid());
     }
 
     @Test
@@ -85,13 +85,13 @@ public class GeoPointUnitTests {
         GeoPoint geoPoint = GeoPoint.create(100.0, 0.1)
             .setCoordinates(null);
 
-        Assert.assertFalse(geoPoint.isValid());
+        assertFalse(geoPoint.isValid());
     }
 
     @Test
     public void canFormatWithToString() {
         GeoPoint point = GeoPoint.create(7.678581, -122.131577);
 
-        Assert.assertEquals("+7.678581-122.131577CRSEPSG:4326/", point.toString());
+        assertEquals("+7.678581-122.131577CRSEPSG:4326/", point.toString());
     }
 }

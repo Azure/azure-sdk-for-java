@@ -32,6 +32,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
+import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
 import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
 import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
@@ -89,7 +90,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final UserAgentContainer userAgentContainer;
     private final boolean hasAuthKeyResourceToken;
     private final Configs configs;
-    private final boolean enableTransportClientSharing;
+    private final boolean connectionSharingAcrossClientsEnabled;
     private CosmosKeyCredential cosmosKeyCredential;
     private TokenResolver tokenResolver;
     private SessionContainer sessionContainer;
@@ -133,8 +134,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 TokenResolver tokenResolver,
                                 CosmosKeyCredential cosmosKeyCredential,
                                 boolean sessionCapturingOverride,
-                                boolean enableTransportClientSharing) {
-        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverride, enableTransportClientSharing);
+                                boolean connectionSharingAcrossClientsEnabled) {
+        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled);
         this.tokenResolver = tokenResolver;
     }
 
@@ -146,8 +147,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 Configs configs,
                                 CosmosKeyCredential cosmosKeyCredential,
                                 boolean sessionCapturingOverrideEnabled,
-                                boolean enableTransportClientSharing) {
-        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverrideEnabled, enableTransportClientSharing);
+                                boolean connectionSharingAcrossClientsEnabled) {
+        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled);
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
             for (Permission permission : permissionFeed) {
@@ -197,14 +198,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          Configs configs,
                          CosmosKeyCredential cosmosKeyCredential,
                          boolean sessionCapturingOverrideEnabled,
-                         boolean enableTransportClientSharing) {
+                         boolean connectionSharingAcrossClientsEnabled) {
 
         logger.info(
             "Initializing DocumentClient with"
                 + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}], directModeProtocol [{}]",
             serviceEndpoint, connectionPolicy, consistencyLevel, configs.getProtocol());
 
-        this.enableTransportClientSharing = enableTransportClientSharing;
+        this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
         this.configs = configs;
         this.masterKeyOrResourceToken = masterKeyOrResourceToken;
         this.serviceEndpoint = serviceEndpoint;
@@ -309,7 +310,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
            // this.maxConcurrentConnectionOpenRequests,
             0,
             this.userAgentContainer,
-            this.enableTransportClientSharing
+            this.connectionSharingAcrossClientsEnabled
         );
 
         this.addressResolver = new GlobalAddressResolver(
@@ -371,7 +372,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .withHttpProxy(this.connectionPolicy.getProxy())
                 .withRequestTimeoutInMillis(this.connectionPolicy.getRequestTimeoutInMillis());
 
-        return HttpClient.createFixed(httpClientConfig);
+        if (connectionSharingAcrossClientsEnabled) {
+            return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig);
+        } else {
+            return HttpClient.createFixed(httpClientConfig);
+        }
     }
 
     private void createStoreModel(boolean subscribeRntbdStatus) {

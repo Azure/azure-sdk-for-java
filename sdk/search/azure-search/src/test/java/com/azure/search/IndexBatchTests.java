@@ -5,14 +5,15 @@ package com.azure.search;
 import com.azure.search.models.IndexAction;
 import com.azure.search.models.IndexActionType;
 import com.azure.search.models.IndexBatch;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IndexBatchTests {
 
@@ -46,15 +47,10 @@ public class IndexBatchTests {
         doc3.put("Id", "3");
 
         List<Document> docs = Arrays.asList(doc1, doc2, doc3);
-        List<IndexAction<Document>> indexActions = new LinkedList<>();
+        List<IndexAction<Document>> indexActions = docs.stream()
+            .map(doc -> new IndexAction<Document>().setActionType(IndexActionType.UPLOAD).setDocument(doc))
+            .collect(Collectors.toList());
 
-        for (Document doc : docs) {
-            indexActions.add(
-                new IndexAction<Document>()
-                    .setActionType(IndexActionType.UPLOAD)
-                    .setDocument(doc)
-            );
-        }
         IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
             .actions(indexActions);
 
@@ -94,15 +90,10 @@ public class IndexBatchTests {
         doc3.put("Id", "3");
 
         List<Document> docs = Arrays.asList(doc1, doc2, doc3);
-        List<IndexAction<Document>> indexActions = new LinkedList<>();
+        List<IndexAction<Document>> indexActions = docs.stream()
+            .map(doc -> new IndexAction<Document>().setActionType(IndexActionType.MERGE).setDocument(doc))
+            .collect(Collectors.toList());
 
-        for (Document doc : docs) {
-            indexActions.add(
-                new IndexAction<Document>()
-                    .setActionType(IndexActionType.MERGE)
-                    .setDocument(doc)
-            );
-        }
         IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
             .actions(indexActions);
 
@@ -142,15 +133,10 @@ public class IndexBatchTests {
         doc3.put("Id", "3");
 
         List<Document> docs = Arrays.asList(doc1, doc2, doc3);
-        List<IndexAction<Document>> indexActions = new LinkedList<>();
+        List<IndexAction<Document>> indexActions = docs.stream()
+            .map(doc -> new IndexAction<Document>().setActionType(IndexActionType.MERGE_OR_UPLOAD).setDocument(doc))
+            .collect(Collectors.toList());
 
-        for (Document doc : docs) {
-            indexActions.add(
-                new IndexAction<Document>()
-                    .setActionType(IndexActionType.MERGE_OR_UPLOAD)
-                    .setDocument(doc)
-            );
-        }
         IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
             .actions(indexActions);
 
@@ -190,15 +176,10 @@ public class IndexBatchTests {
         doc3.put("Id", "3");
 
         List<Document> docs = Arrays.asList(doc1, doc2, doc3);
-        List<IndexAction<Document>> indexActions = new LinkedList<>();
+        List<IndexAction<Document>> indexActions = docs.stream()
+            .map(doc -> new IndexAction<Document>().setActionType(IndexActionType.DELETE).setDocument(doc))
+            .collect(Collectors.toList());
 
-        for (Document doc : docs) {
-            indexActions.add(
-                new IndexAction<Document>()
-                    .setActionType(IndexActionType.DELETE)
-                    .setDocument(doc)
-            );
-        }
         IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
             .actions(indexActions);
 
@@ -213,7 +194,7 @@ public class IndexBatchTests {
         Document documentToMerge = new Document();
         documentToMerge.put("Id", "merge");
 
-        Document documentToMergeOrUpload =  new Document();
+        Document documentToMergeOrUpload = new Document();
         documentToMergeOrUpload.put("Id", "mergeOrUpload");
 
         Document documentToUpload = new Document();
@@ -349,14 +330,14 @@ public class IndexBatchTests {
     }
 
     private void validate(IndexBatch<Document> expected, IndexBatch<Document> actual) {
-        Assert.assertEquals(expected.getActions().size(), actual.getActions().size());
+        assertEquals(expected.getActions().size(), actual.getActions().size());
 
         for (int i = 0; i < actual.getActions().size(); i++) {
             IndexAction<Document> expectedIndexAction = expected.getActions().get(i);
             IndexAction<Document> actualIndexAction = actual.getActions().get(i);
 
-            Assert.assertEquals(expectedIndexAction.getActionType(), actualIndexAction.getActionType());
-            Assert.assertEquals(expectedIndexAction.getDocument(), actualIndexAction.getDocument());
+            assertEquals(expectedIndexAction.getActionType(), actualIndexAction.getActionType());
+            assertEquals(expectedIndexAction.getDocument(), actualIndexAction.getDocument());
         }
     }
 }
