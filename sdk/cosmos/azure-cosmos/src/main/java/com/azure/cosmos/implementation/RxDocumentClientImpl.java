@@ -939,6 +939,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (objectDoc instanceof CosmosItemProperties) {
                 cosmosItemProperties = (CosmosItemProperties) objectDoc;
             } else {
+                contentAsByteBuffer.rewind();
                 cosmosItemProperties = new CosmosItemProperties(contentAsByteBuffer);
             }
 
