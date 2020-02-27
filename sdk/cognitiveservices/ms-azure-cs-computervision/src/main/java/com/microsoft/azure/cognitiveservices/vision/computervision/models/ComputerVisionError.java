@@ -15,10 +15,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ComputerVisionError {
     /**
-     * The error code.
+     * The error code. Possible values include: 'InvalidImageFormat',
+     * 'UnsupportedMediaType', 'InvalidImageUrl', 'NotSupportedFeature',
+     * 'NotSupportedImage', 'Timeout', 'InternalServerError',
+     * 'InvalidImageSize', 'BadArgument', 'DetectFaceError',
+     * 'NotSupportedLanguage', 'InvalidThumbnailSize', 'InvalidDetails',
+     * 'InvalidModel', 'CancelledRequest', 'NotSupportedVisualFeature',
+     * 'FailedToProcess', 'Unspecified', 'StorageException'.
      */
     @JsonProperty(value = "code", required = true)
-    private Object code;
+    private ComputerVisionErrorCodes code;
 
     /**
      * A message explaining the error reported by the service.
@@ -37,7 +43,7 @@ public class ComputerVisionError {
      *
      * @return the code value
      */
-    public Object code() {
+    public ComputerVisionErrorCodes code() {
         return this.code;
     }
 
@@ -47,7 +53,7 @@ public class ComputerVisionError {
      * @param code the code value to set
      * @return the ComputerVisionError object itself.
      */
-    public ComputerVisionError withCode(Object code) {
+    public ComputerVisionError withCode(ComputerVisionErrorCodes code) {
         this.code = code;
         return this;
     }

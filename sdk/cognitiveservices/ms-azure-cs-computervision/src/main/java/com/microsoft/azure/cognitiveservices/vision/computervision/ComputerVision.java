@@ -8,43 +8,34 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision;
 
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageOptionalParameter;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.AreaOfInterestResult;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.BatchReadFileHeaders;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.BatchReadFileInStreamHeaders;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionErrorException;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescriptionExclude;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.Details;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DetectResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DomainModelResults;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageAnalysis;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageDescription;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ListModelsResult;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrLanguages;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ReadOperationResult;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizeTextHeaders;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizeTextInStreamHeaders;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextOperationResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextRecognitionMode;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.VisualFeatureTypes;
-import java.io.InputStream;
-import java.io.IOException;
-import java.util.List;
 import rx.Observable;
+
+import java.io.InputStream;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -57,7 +48,7 @@ public interface ComputerVision {
       *  Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use
       *  the Read Document interface, the response contains a field called 'Operation-Location'. The
       *  'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation'
-      *  to access OCR results.​.
+      *  to access OCR results.​
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -71,7 +62,7 @@ public interface ComputerVision {
       *  Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use
       *  the Read Document interface, the response contains a field called 'Operation-Location'. The
       *  'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation'
-      *  to access OCR results.​.
+      *  to access OCR results.
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -137,7 +128,7 @@ public interface ComputerVision {
       *  Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read
       *  File interface, the response contains a field called 'Operation-Location'. The
       *  'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult'
-      *  operation to access OCR results.​.
+      *  operation to access OCR results.
      *
      * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -151,7 +142,7 @@ public interface ComputerVision {
       *  Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read
       *  File interface, the response contains a field called 'Operation-Location'. The
       *  'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult'
-      *  operation to access OCR results.​.
+      *  operation to access OCR results.
      *
      * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -228,6 +219,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TagResult object if successful.
      */
+    @Deprecated
     TagResult tagImageInStream(byte[] image, TagImageInStreamOptionalParameter tagImageInStreamOptionalParameter);
 
     /**
@@ -245,6 +237,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TagResult object
      */
+    @Deprecated
     Observable<TagResult> tagImageInStreamAsync(byte[] image, TagImageInStreamOptionalParameter tagImageInStreamOptionalParameter);
 
 
@@ -265,6 +258,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OcrResult object if successful.
      */
+    @Deprecated
     OcrResult recognizePrintedTextInStream(boolean detectOrientation, byte[] image, RecognizePrintedTextInStreamOptionalParameter recognizePrintedTextInStreamOptionalParameter);
 
     /**
@@ -282,6 +276,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OcrResult object
      */
+    @Deprecated
     Observable<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, RecognizePrintedTextInStreamOptionalParameter recognizePrintedTextInStreamOptionalParameter);
 
 
@@ -302,6 +297,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainModelResults object if successful.
      */
+    @Deprecated
     DomainModelResults analyzeImageByDomainInStream(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter);
 
     /**
@@ -319,6 +315,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
      */
+    @Deprecated
     Observable<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter);
 
 
@@ -341,6 +338,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
+    @Deprecated
     InputStream generateThumbnailInStream(int width, int height, byte[] image, GenerateThumbnailInStreamOptionalParameter generateThumbnailInStreamOptionalParameter);
 
     /**
@@ -360,6 +358,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
+    @Deprecated
     Observable<InputStream> generateThumbnailInStreamAsync(int width, int height, byte[] image, GenerateThumbnailInStreamOptionalParameter generateThumbnailInStreamOptionalParameter);
 
 
@@ -407,6 +406,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageDescription object if successful.
      */
+    @Deprecated
     ImageDescription describeImageInStream(byte[] image, DescribeImageInStreamOptionalParameter describeImageInStreamOptionalParameter);
 
     /**
@@ -423,6 +423,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageDescription object
      */
+    @Deprecated
     Observable<ImageDescription> describeImageInStreamAsync(byte[] image, DescribeImageInStreamOptionalParameter describeImageInStreamOptionalParameter);
 
 
@@ -473,6 +474,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageAnalysis object if successful.
      */
+    @Deprecated
     ImageAnalysis analyzeImageInStream(byte[] image, AnalyzeImageInStreamOptionalParameter analyzeImageInStreamOptionalParameter);
 
     /**
@@ -488,6 +490,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
      */
+    @Deprecated
     Observable<ImageAnalysis> analyzeImageInStreamAsync(byte[] image, AnalyzeImageInStreamOptionalParameter analyzeImageInStreamOptionalParameter);
 
 
@@ -542,6 +545,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InputStream object if successful.
      */
+    @Deprecated
     InputStream generateThumbnail(int width, int height, String url, GenerateThumbnailOptionalParameter generateThumbnailOptionalParameter);
 
     /**
@@ -561,6 +565,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
+    @Deprecated
     Observable<InputStream> generateThumbnailAsync(int width, int height, String url, GenerateThumbnailOptionalParameter generateThumbnailOptionalParameter);
 
 
@@ -581,6 +586,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TagResult object if successful.
      */
+    @Deprecated
     TagResult tagImage(String url, TagImageOptionalParameter tagImageOptionalParameter);
 
     /**
@@ -598,6 +604,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TagResult object
      */
+    @Deprecated
     Observable<TagResult> tagImageAsync(String url, TagImageOptionalParameter tagImageOptionalParameter);
 
 
@@ -618,6 +625,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OcrResult object if successful.
      */
+    @Deprecated
     OcrResult recognizePrintedText(boolean detectOrientation, String url, RecognizePrintedTextOptionalParameter recognizePrintedTextOptionalParameter);
 
     /**
@@ -635,6 +643,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OcrResult object
      */
+    @Deprecated
     Observable<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url, RecognizePrintedTextOptionalParameter recognizePrintedTextOptionalParameter);
 
 
@@ -655,6 +664,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DomainModelResults object if successful.
      */
+    @Deprecated
     DomainModelResults analyzeImageByDomain(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter);
 
     /**
@@ -672,6 +682,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
      */
+    @Deprecated
     Observable<DomainModelResults> analyzeImageByDomainAsync(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter);
 
 
@@ -747,6 +758,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageDescription object if successful.
      */
+    @Deprecated
     ImageDescription describeImage(String url, DescribeImageOptionalParameter describeImageOptionalParameter);
 
     /**
@@ -763,6 +775,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageDescription object
      */
+    @Deprecated
     Observable<ImageDescription> describeImageAsync(String url, DescribeImageOptionalParameter describeImageOptionalParameter);
 
 
@@ -781,6 +794,7 @@ public interface ComputerVision {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageAnalysis object if successful.
      */
+    @Deprecated
     ImageAnalysis analyzeImage(String url, AnalyzeImageOptionalParameter analyzeImageOptionalParameter);
 
     /**
@@ -796,6 +810,7 @@ public interface ComputerVision {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
      */
+    @Deprecated
     Observable<ImageAnalysis> analyzeImageAsync(String url, AnalyzeImageOptionalParameter analyzeImageOptionalParameter);
 
 
