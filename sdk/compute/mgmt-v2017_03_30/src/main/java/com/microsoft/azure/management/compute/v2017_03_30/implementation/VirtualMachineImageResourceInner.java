@@ -37,7 +37,7 @@ public class VirtualMachineImageResourceInner extends SubResource {
     private Map<String, String> tags;
 
     /**
-     * Get the name value.
+     * Get the name of the resource.
      *
      * @return the name value
      */
@@ -46,7 +46,7 @@ public class VirtualMachineImageResourceInner extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the resource.
      *
      * @param name the name value to set
      * @return the VirtualMachineImageResourceInner object itself.
@@ -57,7 +57,7 @@ public class VirtualMachineImageResourceInner extends SubResource {
     }
 
     /**
-     * Get the location value.
+     * Get the supported Azure location of the resource.
      *
      * @return the location value
      */
@@ -66,7 +66,7 @@ public class VirtualMachineImageResourceInner extends SubResource {
     }
 
     /**
-     * Set the location value.
+     * Set the supported Azure location of the resource.
      *
      * @param location the location value to set
      * @return the VirtualMachineImageResourceInner object itself.
@@ -77,7 +77,7 @@ public class VirtualMachineImageResourceInner extends SubResource {
     }
 
     /**
-     * Get the tags value.
+     * Get specifies the tags that are assigned to the virtual machine. For more information about using tags, see [Using tags to organize your Azure resources](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md).
      *
      * @return the tags value
      */
@@ -86,7 +86,7 @@ public class VirtualMachineImageResourceInner extends SubResource {
     }
 
     /**
-     * Set the tags value.
+     * Set specifies the tags that are assigned to the virtual machine. For more information about using tags, see [Using tags to organize your Azure resources](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-using-tags.md).
      *
      * @param tags the tags value to set
      * @return the VirtualMachineImageResourceInner object itself.
