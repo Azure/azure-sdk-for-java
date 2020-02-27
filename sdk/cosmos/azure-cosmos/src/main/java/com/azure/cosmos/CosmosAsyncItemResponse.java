@@ -5,11 +5,13 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 public class CosmosAsyncItemResponse<T> {
     private final Class<T> itemClassType;
@@ -34,19 +36,25 @@ public class CosmosAsyncItemResponse<T> {
             return item;
         }
 
-        if (this.itemClassType == CosmosItemProperties.class) {
-            item = (T) getProperties();
+        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getCosmosResponseDiagnostics());
+        if (item == null && this.itemClassType == CosmosItemProperties.class) {
+            Callable<T> createItemPropertiesFunction = () -> {
+                return (T) getProperties();
+            };
+            item = serializationDiagnosticsContext.getResource(createItemPropertiesFunction, SerializationDiagnosticsContext.SerializationType.ItemSerialization);
             return item;
         }
 
         if (item == null) {
             synchronized (this) {
                 if (item == null && !StringUtils.isEmpty(responseBodyString)) {
-                    item = Utils.parse(responseBodyString, itemClassType);
+                    Callable<T> createTypedItemFunction = () -> {
+                        return Utils.parse(responseBodyString, itemClassType);
+                    };
+                    item = serializationDiagnosticsContext.getResource(createTypedItemFunction, SerializationDiagnosticsContext.SerializationType.ItemSerialization);
                 }
             }
         }
-
         return item;
     }
 

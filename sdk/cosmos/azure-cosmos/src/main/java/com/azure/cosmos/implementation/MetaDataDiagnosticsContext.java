@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ZonedDateTimeSerializer;
@@ -12,7 +15,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MetaDataDiagnosticContext {
+public class MetaDataDiagnosticsContext {
     public volatile List<MetaDataDiagnostic> metaDataDiagnosticList;
 
     public void addMetaDataDiagnostic(MetaDataDiagnostic metaDataDiagnostic) {

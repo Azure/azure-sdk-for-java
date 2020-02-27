@@ -3,12 +3,13 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.MetaDataDiagnosticContext;
+import com.azure.cosmos.implementation.MetaDataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -52,7 +53,8 @@ class ClientSideRequestStatistics {
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
     private RequestTimeline transportRequestTimeline;
-    private MetaDataDiagnosticContext metaDataDiagnosticContext;
+    private MetaDataDiagnosticsContext metaDataDiagnosticsContext;
+    private SerializationDiagnosticsContext serializationDiagnosticsContext;
 
     ClientSideRequestStatistics() {
         this.requestStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
@@ -65,7 +67,8 @@ class ClientSideRequestStatistics {
         this.regionsContacted = new HashSet<>();
         this.connectionMode = ConnectionMode.DIRECT;
         this.retryContext = retryContext;
-        this.metaDataDiagnosticContext = new MetaDataDiagnosticContext();
+        this.metaDataDiagnosticsContext = new MetaDataDiagnosticsContext();
+        this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
     }
 
     Duration getRequestLatency() {
@@ -201,8 +204,12 @@ class ClientSideRequestStatistics {
         this.regionsContacted = regionsContacted;
     }
 
-    MetaDataDiagnosticContext getMetaDataDiagnosticContext(){
-        return this.metaDataDiagnosticContext;
+    MetaDataDiagnosticsContext getMetaDataDiagnosticsContext(){
+        return this.metaDataDiagnosticsContext;
+    }
+
+    SerializationDiagnosticsContext getSerializationDiagnosticsContext(){
+        return this.serializationDiagnosticsContext;
     }
 
     void recordRetryContext(RxDocumentServiceRequest request) {
@@ -273,7 +280,8 @@ class ClientSideRequestStatistics {
             generator.writeObjectField("addressResolutionStatistics", statistics.addressResolutionStatistics);
             generator.writeObjectField("regionsContacted", statistics.regionsContacted);
             generator.writeObjectField("retryContext", statistics.retryContext);
-            generator.writeObjectField("metaDataDiagnosticContext", statistics.getMetaDataDiagnosticContext());
+            generator.writeObjectField("metaDataDiagnosticsContext", statistics.getMetaDataDiagnosticsContext());
+            generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
 
             try {

@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.MetaDataDiagnosticContext;
+import com.azure.cosmos.implementation.MetaDataDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -40,12 +40,12 @@ public abstract class RxCollectionCache {
      * @return an instance of Single&lt;DocumentCollection&gt;
      */
     public Mono<Utils.ValueHolder<DocumentCollection>> resolveCollectionAsync(
-        MetaDataDiagnosticContext metaDataDiagnosticContext, RxDocumentServiceRequest request) {
+        MetaDataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {
         //  Mono Void to represent only terminal events specifically complete and error
         Mono<Void> init = null;
         if (request.getIsNameBased()) {
             if (request.isForceNameCacheRefresh()) {
-                Mono<Void> mono = this.refreshAsync(metaDataDiagnosticContext, request);
+                Mono<Void> mono = this.refreshAsync(metaDataDiagnosticsContext, request);
                 init = mono.then(Mono.fromRunnable(() -> request.setForceNameCacheRefresh(false)));
             }
 
@@ -62,7 +62,7 @@ public abstract class RxCollectionCache {
                 }
                 if (request.requestContext.resolvedCollectionRid == null) {
 
-                    Mono<DocumentCollection> collectionInfoRes = this.resolveByNameAsync(metaDataDiagnosticContext, request.getResourceAddress(), request.properties);
+                    Mono<DocumentCollection> collectionInfoRes = this.resolveByNameAsync(metaDataDiagnosticsContext, request.getResourceAddress(), request.properties);
 
                     return collectionInfoRes.flatMap(collection -> {
                         // TODO: how to async log this?
@@ -77,18 +77,18 @@ public abstract class RxCollectionCache {
 
                     });
                 } else {
-                    return this.resolveByRidAsync(metaDataDiagnosticContext, request.requestContext.resolvedCollectionRid, request.properties);
+                    return this.resolveByRidAsync(metaDataDiagnosticsContext, request.requestContext.resolvedCollectionRid, request.properties);
                 }
             });
         } else {
-            return resolveByPartitionKeyRangeIdentityAsync(metaDataDiagnosticContext, request.getPartitionKeyRangeIdentity(),request.properties)
+            return resolveByPartitionKeyRangeIdentityAsync(metaDataDiagnosticsContext, request.getPartitionKeyRangeIdentity(),request.properties)
                 .flatMap(collectionValueHolder -> {
 
                     if (collectionValueHolder.v != null) {
                         return Mono.just(collectionValueHolder);
                     }
 
-                    return this.resolveByRidAsync(metaDataDiagnosticContext, request.getResourceAddress(), request.properties);
+                    return this.resolveByRidAsync(metaDataDiagnosticsContext, request.getResourceAddress(), request.properties);
                 });
         }
     }
@@ -97,30 +97,30 @@ public abstract class RxCollectionCache {
      * This method is only used in retry policy as it doesn't have request handy.
      * @param resourceAddress
      */
-    public void refresh(MetaDataDiagnosticContext metaDataDiagnosticContext, String resourceAddress, Map<String, Object> properties) {
+    public void refresh(MetaDataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
         if (PathsHelper.isNameBased(resourceAddress)) {
             String resourceFullName = PathsHelper.getCollectionPath(resourceAddress);
 
             this.collectionInfoByNameCache.refresh(
                     resourceFullName,
                     () -> {
-                        Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticContext, resourceFullName, properties);
+                        Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticsContext, resourceFullName, properties);
                         return collectionObs.doOnSuccess(collection -> this.collectionInfoByIdCache.set(collection.getResourceId(), collection));
                     });
         }
     }
 
-    protected abstract Mono<DocumentCollection> getByRidAsync(MetaDataDiagnosticContext metaDataDiagnosticContext, String collectionRid, Map<String, Object> properties);
+    protected abstract Mono<DocumentCollection> getByRidAsync(MetaDataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties);
 
-    protected abstract Mono<DocumentCollection> getByNameAsync(MetaDataDiagnosticContext metaDataDiagnosticContext, String resourceAddress, Map<String, Object> properties);
+    protected abstract Mono<DocumentCollection> getByNameAsync(MetaDataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties);
 
-    private Mono<Utils.ValueHolder<DocumentCollection>> resolveByPartitionKeyRangeIdentityAsync(MetaDataDiagnosticContext metaDataDiagnosticContext,
+    private Mono<Utils.ValueHolder<DocumentCollection>> resolveByPartitionKeyRangeIdentityAsync(MetaDataDiagnosticsContext metaDataDiagnosticsContext,
                                                                                                 PartitionKeyRangeIdentity partitionKeyRangeIdentity,
                                                                                                 Map<String, Object> properties) {
         // if request is targeted at specific partition using x-ms-documentd-partitionkeyrangeid header,
         // which contains value "<collectionrid>,<partitionkeyrangeid>", then resolve to collection rid in this header.
         if (partitionKeyRangeIdentity != null && partitionKeyRangeIdentity.getCollectionRid() != null) {
-            return this.resolveByRidAsync(metaDataDiagnosticContext, partitionKeyRangeIdentity.getCollectionRid(), properties)
+            return this.resolveByRidAsync(metaDataDiagnosticsContext, partitionKeyRangeIdentity.getCollectionRid(), properties)
                     .onErrorResume(e -> {
                         Throwable unwrappedException = Exceptions.unwrap(e);
                         if (unwrappedException instanceof NotFoundException) {
@@ -136,7 +136,7 @@ public abstract class RxCollectionCache {
     }
 
     private Mono<Utils.ValueHolder<DocumentCollection>> resolveByRidAsync(
-            MetaDataDiagnosticContext metaDataDiagnosticContext,
+            MetaDataDiagnosticsContext metaDataDiagnosticsContext,
             String resourceId,
             Map<String, Object> properties) {
 
@@ -146,12 +146,12 @@ public abstract class RxCollectionCache {
         Mono<DocumentCollection> async = this.collectionInfoByIdCache.getAsync(
             collectionResourceId,
             null,
-            () -> this.getByRidAsync(metaDataDiagnosticContext, collectionResourceId, properties));
+            () -> this.getByRidAsync(metaDataDiagnosticsContext, collectionResourceId, properties));
         return async.map(Utils.ValueHolder::new);
     }
 
     private Mono<DocumentCollection> resolveByNameAsync(
-            MetaDataDiagnosticContext metaDataDiagnosticContext, String resourceAddress, Map<String, Object> properties) {
+        MetaDataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
 
         String resourceFullName = PathsHelper.getCollectionPath(resourceAddress);
 
@@ -159,12 +159,12 @@ public abstract class RxCollectionCache {
                 resourceFullName,
                 null,
                 () -> {
-                    Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticContext, resourceFullName, properties);
+                    Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticsContext, resourceFullName, properties);
                     return collectionObs.doOnSuccess(collection -> this.collectionInfoByIdCache.set(collection.getResourceId(), collection));
                 });
     }
 
-    private Mono<Void> refreshAsync(MetaDataDiagnosticContext metaDataDiagnosticContext, RxDocumentServiceRequest request) {
+    private Mono<Void> refreshAsync(MetaDataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {
         // TODO System.Diagnostics.Debug.Assert(request.IsNameBased);
 
         String resourceFullName = PathsHelper.getCollectionPath(request.getResourceAddress());
@@ -179,7 +179,7 @@ public abstract class RxCollectionCache {
                     resourceFullName,
                     obsoleteValue,
                     () -> {
-                        Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticContext, resourceFullName, request.properties);
+                        Mono<DocumentCollection> collectionObs = this.getByNameAsync(metaDataDiagnosticsContext, resourceFullName, request.properties);
                         return collectionObs.doOnSuccess(collection -> {
                             this.collectionInfoByIdCache.set(collection.getResourceId(), collection);
                         });
@@ -187,7 +187,7 @@ public abstract class RxCollectionCache {
         } else {
             // In case of ForceRefresh directive coming from client, there will be no ResolvedCollectionRid, so we
             // need to refresh unconditionally.
-            mono = Mono.fromRunnable(() -> this.refresh(metaDataDiagnosticContext, request.getResourceAddress(), request.properties));
+            mono = Mono.fromRunnable(() -> this.refresh(metaDataDiagnosticsContext, request.getResourceAddress(), request.properties));
         }
 
         return mono.doOnSuccess(aVoid -> request.requestContext.resolvedCollectionRid = null);

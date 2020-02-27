@@ -44,7 +44,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -62,6 +61,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -930,14 +930,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // have empty value for it and user doesn't need to specify it explicitly.
             partitionKeyInternal = PartitionKeyInternal.getEmpty();
         } else if (contentAsString != null) {
-            CosmosItemProperties cosmosItemProperties;
-            if (objectDoc instanceof CosmosItemProperties) {
-                cosmosItemProperties = (CosmosItemProperties) objectDoc;
-            } else {
-                cosmosItemProperties = new CosmosItemProperties(contentAsString);
-            }
+            Callable<PartitionKeyInternal> extractPartitionKeyCallable = () -> {
+                CosmosItemProperties cosmosItemProperties;
+                if (objectDoc instanceof CosmosItemProperties) {
+                    cosmosItemProperties = (CosmosItemProperties) objectDoc;
+                } else {
+                    cosmosItemProperties = new CosmosItemProperties(contentAsString);
+                }
 
-            partitionKeyInternal = extractPartitionKeyValueFromDocument(cosmosItemProperties, partitionKeyDefinition);
+                return extractPartitionKeyValueFromDocument(cosmosItemProperties, partitionKeyDefinition);
+            };
+            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
+            partitionKeyInternal = serializationDiagnosticsContext.getResource(extractPartitionKeyCallable, SerializationDiagnosticsContext.SerializationType.PartitionKeyFetchSerialization);
+
         } else {
             throw new UnsupportedOperationException("PartitionKey value must be supplied for this operation.");
         }

@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
-import com.azure.cosmos.implementation.MetaDataDiagnosticContext;
+import com.azure.cosmos.implementation.MetaDataDiagnosticsContext;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RetryPolicy;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -35,7 +35,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -522,7 +521,7 @@ public class DocumentProducerTest {
         RxPartitionKeyRangeCache cache = Mockito.mock(RxPartitionKeyRangeCache.class);
         doReturn(cache).when(client).getPartitionKeyRangeCache();
         doReturn(Mono.just(new Utils.ValueHolder<>(replacementRanges))).when(cache).
-                tryGetOverlappingRangesAsync(any(MetaDataDiagnosticContext.class), anyString(), any(Range.class), anyBoolean(), Matchers.anyMap());
+                tryGetOverlappingRangesAsync(any(MetaDataDiagnosticsContext.class), anyString(), any(Range.class), anyBoolean(), Matchers.anyMap());
         return client;
     }
 

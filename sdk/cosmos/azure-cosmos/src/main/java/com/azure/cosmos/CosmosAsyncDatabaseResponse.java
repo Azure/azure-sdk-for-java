@@ -4,7 +4,10 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.concurrent.Callable;
 
 public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabaseProperties> {
     private final CosmosAsyncDatabase database;
@@ -16,7 +19,12 @@ public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabasePr
             super.setProperties(null);
             database = null;
         } else {
-            CosmosDatabaseProperties props = new CosmosDatabaseProperties(bodyAsString, null);
+            Callable<CosmosDatabaseProperties> createDatabasePropertiesFunction = () -> {
+                return new CosmosDatabaseProperties(bodyAsString, null);
+            };
+
+            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getCosmosResponseDiagnostics());
+            CosmosDatabaseProperties props = serializationDiagnosticsContext.getResource(createDatabasePropertiesFunction, SerializationDiagnosticsContext.SerializationType.DatabaseSerialization);
             super.setProperties(props);
             database = new CosmosAsyncDatabase(props.getId(), client);
         }

@@ -9,12 +9,13 @@ import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.MetaDataDiagnosticContext;
+import com.azure.cosmos.implementation.MetaDataDiagnosticsContext;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -27,9 +28,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.apache.commons.lang3.tuple.Pair;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -435,8 +434,12 @@ public class BridgeInternal {
         cosmosResponseDiagnostics.clientSideRequestStatistics().recordRetryContext(request);
     }
 
-    public static MetaDataDiagnosticContext getMetaDataDiagnosticContext(CosmosResponseDiagnostics cosmosResponseDiagnostics){
-        return cosmosResponseDiagnostics.clientSideRequestStatistics().getMetaDataDiagnosticContext();
+    public static MetaDataDiagnosticsContext getMetaDataDiagnosticContext(CosmosResponseDiagnostics cosmosResponseDiagnostics){
+        return cosmosResponseDiagnostics.clientSideRequestStatistics().getMetaDataDiagnosticsContext();
+    }
+
+    public static SerializationDiagnosticsContext getSerializationDiagnosticsContext(CosmosResponseDiagnostics cosmosResponseDiagnostics){
+        return cosmosResponseDiagnostics.clientSideRequestStatistics().getSerializationDiagnosticsContext();
     }
 
     public static void recordGatewayResponse(CosmosResponseDiagnostics cosmosResponseDiagnostics,

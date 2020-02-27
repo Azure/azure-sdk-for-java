@@ -14,7 +14,7 @@ import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.JavaStreamUtils;
-import com.azure.cosmos.implementation.MetaDataDiagnosticContext.*;
+import com.azure.cosmos.implementation.MetaDataDiagnosticsContext.*;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Paths;
