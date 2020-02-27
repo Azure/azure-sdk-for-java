@@ -175,7 +175,7 @@ public class TestSuiteBase extends DocumentClientTest {
             FeedOptions options = new FeedOptions();
             options.setMaxDegreeOfParallelism(-1);
 
-            options.maxItemCount(100);
+            options.setMaxItemCount(100);
 
             logger.info("Truncating collection {} documents ...", collection.getId());
 
@@ -515,7 +515,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
     public static void deleteDocumentIfExists(AsyncDocumentClient client, String databaseId, String collectionId, String docId) {
         FeedOptions options = new FeedOptions();
-        options.partitionKey(new PartitionKey(docId));
+        options.setPartitionKey(new PartitionKey(docId));
         List<Document> res = client
                 .queryDocuments(TestUtils.getCollectionNameLink(databaseId, collectionId), String.format("SELECT * FROM root r where r.id = '%s'", docId), options)
                 .single().block().getResults();

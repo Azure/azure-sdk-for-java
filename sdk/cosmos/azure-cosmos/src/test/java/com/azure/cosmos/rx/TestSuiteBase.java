@@ -574,7 +574,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static void deleteDocumentIfExists(CosmosAsyncClient client, String databaseId, String collectionId, String docId) {
         FeedOptions options = new FeedOptions();
-        options.partitionKey(new PartitionKey(docId));
+        options.setPartitionKey(new PartitionKey(docId));
         CosmosAsyncContainer cosmosContainer = client.getDatabase(databaseId).getContainer(collectionId);
 
         List<CosmosItemProperties> res = cosmosContainer

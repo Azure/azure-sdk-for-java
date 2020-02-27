@@ -2834,11 +2834,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options = new FeedOptions();
         }
 
-        int maxPageSize = options.maxItemCount() != null ? options.maxItemCount() : -1;
+        int maxPageSize = options.getMaxItemCount() != null ? options.getMaxItemCount() : -1;
 
         final FeedOptions finalFeedOptions = options;
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setPartitionKey(options.partitionKey());
+        requestOptions.setPartitionKey(options.getPartitionKey());
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();
             if (continuationToken != null) {
@@ -2868,7 +2868,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options = new FeedOptions();
         }
 
-        int maxPageSize = options.maxItemCount() != null ? options.maxItemCount() : -1;
+        int maxPageSize = options.getMaxItemCount() != null ? options.getMaxItemCount() : -1;
         final FeedOptions finalFeedOptions = options;
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();

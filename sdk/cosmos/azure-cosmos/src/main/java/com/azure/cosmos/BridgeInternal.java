@@ -149,12 +149,12 @@ public class BridgeInternal {
 
         Map<String, String> headers = new HashMap<>();
 
-        if (options.maxItemCount() != null) {
-            headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, options.maxItemCount().toString());
+        if (options.getMaxItemCount() != null) {
+            headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, options.getMaxItemCount().toString());
         }
 
-        if (options.requestContinuation() != null) {
-            headers.put(HttpConstants.HttpHeaders.CONTINUATION, options.requestContinuation());
+        if (options.getRequestContinuation() != null) {
+            headers.put(HttpConstants.HttpHeaders.CONTINUATION, options.getRequestContinuation());
         }
 
         if (options != null) {
@@ -180,9 +180,9 @@ public class BridgeInternal {
                     Strings.toString(options.setResponseContinuationTokenLimitInKb()));
             }
 
-            if (options.populateQueryMetrics()) {
+            if (options.isPopulateQueryMetrics()) {
                 headers.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS,
-                    String.valueOf(options.populateQueryMetrics()));
+                    String.valueOf(options.isPopulateQueryMetrics()));
             }
         }
 
@@ -480,16 +480,16 @@ public class BridgeInternal {
     }
 
     public static void setFeedOptionsContinuationTokenAndMaxItemCount(FeedOptions feedOptions, String continuationToken, Integer maxItemCount) {
-        feedOptions.requestContinuation(continuationToken);
-        feedOptions.maxItemCount(maxItemCount);
+        feedOptions.setRequestContinuation(continuationToken);
+        feedOptions.setMaxItemCount(maxItemCount);
     }
 
     public static void setFeedOptionsContinuationToken(FeedOptions feedOptions, String continuationToken) {
-        feedOptions.requestContinuation(continuationToken);
+        feedOptions.setRequestContinuation(continuationToken);
     }
 
     public static void setFeedOptionsMaxItemCount(FeedOptions feedOptions, Integer maxItemCount) {
-        feedOptions.maxItemCount(maxItemCount);
+        feedOptions.setMaxItemCount(maxItemCount);
     }
 
     public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {

@@ -104,7 +104,7 @@ public class ConflictAPITest extends DocumentClientTest {
         // read all conflicts
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<FeedResponse<Conflict>> conflictReadFeedObservable = client
                 .readConflicts(getCollectionLink(), options);
@@ -134,7 +134,7 @@ public class ConflictAPITest extends DocumentClientTest {
     public void transformObservableToCompletableFuture() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<FeedResponse<Conflict>> conflictReadFeedObservable = client
                 .readConflicts(getCollectionLink(), options);
