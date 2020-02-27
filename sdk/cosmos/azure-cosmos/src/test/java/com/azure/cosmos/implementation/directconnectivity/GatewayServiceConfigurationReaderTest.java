@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.DatabaseAccount;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
@@ -16,30 +15,17 @@ import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.SpyClientUnderTestFactory;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
-import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.implementation.routing.LocationCache;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.ByteBufUtil;
-import io.reactivex.subscribers.TestSubscriber;
-import org.apache.commons.io.IOUtils;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -112,19 +98,5 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         assertThat((boolean) configurationReader.getQueryEngineConfiguration().get("enableSpatialIndexing")).isTrue();
         assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
         assertThat(configurationReader.getUserReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
-    }
-
-    public static void validateSuccess(Mono<DatabaseAccount> observable) {
-        TestSubscriber<DatabaseAccount> testSubscriber = new TestSubscriber<DatabaseAccount>();
-
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        DatabaseAccount databaseAccount = testSubscriber.values().get(0);
-        assertThat(BridgeInternal.getQueryEngineConfiuration(databaseAccount).size() > 0).isTrue();
-        assertThat(BridgeInternal.getReplicationPolicy(databaseAccount)).isNotNull();
-        assertThat(BridgeInternal.getSystemReplicationPolicy(databaseAccount)).isNotNull();
     }
 }
