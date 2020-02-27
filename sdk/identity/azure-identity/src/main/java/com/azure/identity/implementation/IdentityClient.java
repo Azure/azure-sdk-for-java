@@ -14,7 +14,6 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -147,8 +146,8 @@ public class IdentityClient {
             ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                    .build()))
-                       .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
+                   .build()))
+                   .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
                                ZoneOffset.UTC)));
 
         } catch (MalformedURLException e) {
