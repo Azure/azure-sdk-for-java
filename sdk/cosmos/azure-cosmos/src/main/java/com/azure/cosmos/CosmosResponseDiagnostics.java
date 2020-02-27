@@ -18,10 +18,6 @@ public class CosmosResponseDiagnostics {
     private static final Logger logger = LoggerFactory.getLogger(CosmosResponseDiagnostics.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    static {
-        objectMapper.registerModule(new AfterburnerModule());
-    }
-
     private ClientSideRequestStatistics clientSideRequestStatistics;
 
     CosmosResponseDiagnostics() {
