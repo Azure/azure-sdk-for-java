@@ -72,7 +72,7 @@ public final class SearchIndexClientBuilder {
     private String endpoint;
     private HttpClient httpClient;
     private HttpPipeline httpPipeline;
-    private HttpLogOptions httpLogOptions;
+    private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private Configuration configuration;
     private String indexName;
     private RetryPolicy retryPolicy;

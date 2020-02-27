@@ -70,7 +70,7 @@ public final class SearchServiceClientBuilder {
     private String endpoint;
     private HttpClient httpClient;
     private HttpPipeline httpPipeline;
-    private HttpLogOptions httpLogOptions;
+    private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private Configuration configuration;
     private RetryPolicy retryPolicy;
 
