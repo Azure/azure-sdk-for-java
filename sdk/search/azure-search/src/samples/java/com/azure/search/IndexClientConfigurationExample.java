@@ -49,7 +49,7 @@ public class IndexClientConfigurationExample {
             .endpoint(ENDPOINT)
             .credential(new SearchApiKeyCredential(API_KEY))
             .indexName("hotels")
-            .apiVersion(SearchServiceVersion.V2019_05_06)
+            .searchServiceVersion(SearchServiceVersion.V2019_05_06)
             .addPolicy(new RetryPolicy())
             .httpClient(
                 new NettyAsyncHttpClientBuilder()

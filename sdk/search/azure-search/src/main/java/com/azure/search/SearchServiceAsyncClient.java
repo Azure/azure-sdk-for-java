@@ -43,7 +43,7 @@ public final class SearchServiceAsyncClient {
     /**
      * Search REST API Version
      */
-    private final SearchServiceVersion apiVersion;
+    private final SearchServiceVersion searchServiceVersion;
 
     /**
      * The endpoint for the Azure Cognitive Search service.
@@ -65,11 +65,11 @@ public final class SearchServiceAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    SearchServiceAsyncClient(String endpoint, SearchServiceVersion apiVersion, HttpPipeline httpPipeline) {
+    SearchServiceAsyncClient(String endpoint, SearchServiceVersion searchServiceVersion, HttpPipeline httpPipeline) {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
 
-        if (apiVersion == null) {
+        if (searchServiceVersion == null) {
             throw logger.logExceptionAsError(new NullPointerException("Invalid apiVersion"));
         }
         if (httpPipeline == null) {
@@ -77,13 +77,13 @@ public final class SearchServiceAsyncClient {
         }
 
         this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
+        this.searchServiceVersion = searchServiceVersion;
         this.httpPipeline = httpPipeline;
 
         this.restClient = new SearchServiceRestClientBuilder()
             .searchServiceName(parts.serviceName)
             .searchDnsSuffix(parts.dnsSuffix)
-            .apiVersion(apiVersion.getVersion())
+            .apiVersion(searchServiceVersion.getVersion())
             .pipeline(httpPipeline)
             .build();
     }
@@ -105,16 +105,16 @@ public final class SearchServiceAsyncClient {
      * @return a {@link SearchIndexAsyncClient} created from the service client configuration
      */
     public SearchIndexAsyncClient getIndexClient(String indexName) {
-        return new SearchIndexAsyncClient(endpoint, indexName, apiVersion, httpPipeline);
+        return new SearchIndexAsyncClient(endpoint, indexName, searchServiceVersion, httpPipeline);
     }
 
     /**
-     * Gets Client Api Version.
+     * Gets search service version.
      *
-     * @return the apiVersion value.
+     * @return the search service version value.
      */
-    public SearchServiceVersion getApiVersion() {
-        return this.apiVersion;
+    public SearchServiceVersion getServiceVersion() {
+        return this.searchServiceVersion;
     }
 
     /**

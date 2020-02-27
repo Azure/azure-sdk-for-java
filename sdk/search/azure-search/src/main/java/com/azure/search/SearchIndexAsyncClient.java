@@ -45,7 +45,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Cognitive Search Asynchronous Client to query an index and upload, merge, or delete documents
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
-public class SearchIndexAsyncClient {
+public final class SearchIndexAsyncClient {
 
     /*
      * Representation of the Multi-Status HTTP response code.
@@ -60,7 +60,7 @@ public class SearchIndexAsyncClient {
     /**
      * Search REST API Version
      */
-    private final SearchServiceVersion apiVersion;
+    private final SearchServiceVersion searchServiceVersion;
 
     /**
      * The endpoint for the Azure Cognitive Search service.
@@ -90,16 +90,16 @@ public class SearchIndexAsyncClient {
     /**
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
      */
-    SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion apiVersion,
-        HttpPipeline httpPipeline) {
+    SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion searchServiceVersion,
+                           HttpPipeline httpPipeline) {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
 
         if (CoreUtils.isNullOrEmpty(indexName)) {
             throw logger.logExceptionAsError(new NullPointerException("Invalid indexName"));
         }
-        if (apiVersion == null) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid apiVersion"));
+        if (searchServiceVersion == null) {
+            throw logger.logExceptionAsError(new NullPointerException("Invalid search service version"));
         }
         if (httpPipeline == null) {
             throw logger.logExceptionAsError(new NullPointerException("Invalid httpPipeline"));
@@ -107,14 +107,14 @@ public class SearchIndexAsyncClient {
 
         this.endpoint = endpoint;
         this.indexName = indexName;
-        this.apiVersion = apiVersion;
+        this.searchServiceVersion = searchServiceVersion;
         this.httpPipeline = httpPipeline;
 
         restClient = new SearchIndexRestClientBuilder()
             .searchServiceName(parts.serviceName)
             .indexName(indexName)
             .searchDnsSuffix(parts.dnsSuffix)
-            .apiVersion(apiVersion.getVersion())
+            .apiVersion(searchServiceVersion.getVersion())
             .pipeline(httpPipeline)
             .serializer(SERIALIZER)
             .build();
@@ -341,8 +341,8 @@ public class SearchIndexAsyncClient {
      *
      * @return The version of the Search service the client is using.
      */
-    public SearchServiceVersion getApiVersion() {
-        return this.apiVersion;
+    public SearchServiceVersion getServiceVersion() {
+        return this.searchServiceVersion;
     }
 
     /**
