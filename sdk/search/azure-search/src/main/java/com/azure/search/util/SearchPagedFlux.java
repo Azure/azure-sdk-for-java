@@ -17,6 +17,11 @@ import java.util.function.Supplier;
  * element type is {@link SearchResult}, and the page type is {@link SearchPagedResponse}.
  */
 public final class SearchPagedFlux extends ContinuablePagedFluxCore<SearchRequest, SearchResult, SearchPagedResponse> {
+    /**
+     * Creates an instance of {@link SearchPagedFlux}.
+     *
+     * @param pageRetrieverProvider Supplied that handles retrieving {@link SearchPagedResponse SearchPagedResponses}.
+     */
     public SearchPagedFlux(
         Supplier<PageRetriever<SearchRequest, SearchPagedResponse>> pageRetrieverProvider) {
         super(pageRetrieverProvider);

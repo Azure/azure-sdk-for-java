@@ -15,6 +15,11 @@ import java.util.function.Supplier;
  * {@link AutocompletePagedResponse}.
  */
 public final class AutocompletePagedFlux extends PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> {
+    /**
+     * Creates an instance of {@link AutocompletePagedFlux} that retrieves a single page.
+     *
+     * @param firstPageRetriever Supplier that handles retrieving the first page.
+     */
     public AutocompletePagedFlux(Supplier<Mono<AutocompletePagedResponse>> firstPageRetriever) {
         super(firstPageRetriever);
     }

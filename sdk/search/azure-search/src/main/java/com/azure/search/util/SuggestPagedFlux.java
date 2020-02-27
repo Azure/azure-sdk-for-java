@@ -15,6 +15,11 @@ import java.util.function.Supplier;
  * SuggestPagedResponse}.
  */
 public final class SuggestPagedFlux extends PagedFluxBase<SuggestResult, SuggestPagedResponse> {
+    /**
+     * Creates an instance of {@link SuggestPagedFlux} that retrieves a single page.
+     *
+     * @param firstPageRetriever Supplier that handles retrieving the first page.
+     */
     public SuggestPagedFlux(Supplier<Mono<SuggestPagedResponse>> firstPageRetriever) {
         super(firstPageRetriever);
     }

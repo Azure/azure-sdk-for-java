@@ -3,7 +3,6 @@
 
 package com.azure.search.util;
 
-import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.search.AutocompletePagedResponse;
 import com.azure.search.models.AutocompleteItem;
@@ -14,11 +13,11 @@ import com.azure.search.models.AutocompleteItem;
  */
 public final class AutocompletePagedIterable extends PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> {
     /**
-     * Creates instance given {@link PagedFluxBase}.
+     * Creates instance given {@link AutocompletePagedIterable}.
      *
-     * @param pagedFluxBase to use as iterable
+     * @param pagedFluxBase The {@link AutocompletePagedFlux} that will be consumed as an iterable.
      */
-    public AutocompletePagedIterable(PagedFluxBase<AutocompleteItem, AutocompletePagedResponse> pagedFluxBase) {
+    public AutocompletePagedIterable(AutocompletePagedFlux pagedFluxBase) {
         super(pagedFluxBase);
     }
 }

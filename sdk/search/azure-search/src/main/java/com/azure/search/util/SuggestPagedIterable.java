@@ -3,7 +3,6 @@
 
 package com.azure.search.util;
 
-import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.search.SuggestPagedResponse;
 import com.azure.search.models.SuggestResult;
@@ -14,11 +13,11 @@ import com.azure.search.models.SuggestResult;
  */
 public final class SuggestPagedIterable extends PagedIterableBase<SuggestResult, SuggestPagedResponse> {
     /**
-     * Creates instance given {@link PagedFluxBase}.
+     * Creates instance given {@link SuggestPagedIterable}.
      *
-     * @param pagedFluxBase to use as iterable
+     * @param pagedFluxBase The {@link SuggestPagedIterable} that will be consumed as an iterable.
      */
-    public SuggestPagedIterable(PagedFluxBase<SuggestResult, SuggestPagedResponse> pagedFluxBase) {
+    public SuggestPagedIterable(SuggestPagedFlux pagedFluxBase) {
         super(pagedFluxBase);
     }
 }

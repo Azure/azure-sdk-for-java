@@ -3,7 +3,6 @@
 
 package com.azure.search.util;
 
-import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.search.SearchPagedResponse;
 import com.azure.search.models.SearchRequest;
 import com.azure.search.models.SearchResult;
@@ -13,7 +12,12 @@ import com.azure.search.models.SearchResult;
  * element type is {@link SearchResult}, and the page type is {@link SearchPagedResponse}.
  */
 public class SearchPagedIterable extends ContinuablePagedIterable<SearchRequest, SearchResult, SearchPagedResponse> {
-    public SearchPagedIterable(ContinuablePagedFlux<SearchRequest, SearchResult, SearchPagedResponse> pagedFlux) {
+    /**
+     * Creates an instance of {@link SearchPagedIterable}.
+     *
+     * @param pagedFlux The {@link SearchPagedFlux} that will be consumed as an iterable.
+     */
+    public SearchPagedIterable(SearchPagedFlux pagedFlux) {
         super(pagedFlux);
     }
 }

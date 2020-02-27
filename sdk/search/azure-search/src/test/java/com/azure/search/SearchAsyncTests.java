@@ -241,18 +241,17 @@ public class SearchAsyncTests extends SearchTestBase {
             .assertNext(res -> {
                 Iterator<SearchResult> iterator = res.getElements().iterator();
 
-                int count = 0;
+                int[] count = new int[] { 0 };
                 List<String> actualKeys = new ArrayList<>();
-                for (; iterator.hasNext(); ) {
-                    count++;
-                    SearchResult result = iterator.next();
+                res.getElements().forEach(result -> {
+                    count[0]++;
 
                     if (result.getDocument().containsKey("HotelId")) {
                         actualKeys.add(getSearchResultId(result, "HotelId"));
                     }
-                }
+                });
 
-                assertEquals(2, count);
+                assertEquals(2, count[0]);
                 assertEquals(Arrays.asList("1", "5"), actualKeys);
             }).verifyComplete();
     }
