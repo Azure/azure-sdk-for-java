@@ -6,6 +6,7 @@ package com.azure.storage.quickquery
 import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.quickquery.models.BlobQuickQuerySerialization
 import spock.lang.Unroll
 
 class BlobQuickQueryAPITest extends APISpec {
@@ -38,36 +39,89 @@ class BlobQuickQueryAPITest extends APISpec {
 
     }
 
-
     BlobQuickQueryClient qqClient
     BlobQuickQueryAsyncClient qqAsyncClient
 
     def setup() {
         qqClient = new BlobQuickQueryClientBuilder(bc).buildClient()
         qqAsyncClient = new BlobQuickQueryClientBuilder(bcAsync).buildAsyncClient()
-
-
     }
 
     def "Query min"() {
         setup:
         uploadSmallCsv('\n' as char, ',' as char, '\0' as char, '\0' as char, true)
 
+        ByteArrayOutputStream queryData = new ByteArrayOutputStream()
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+
+        when:
+        qqClient.parsedQueryWithResponseSample(queryData, "SELECT * from BlobStorage", null, null, null, null, null, null, null)
+
+        bc.download(downloadData)
+
+        then:
+        queryData.toByteArray() == downloadData.toByteArray()
+    }
+
+    def "Query empty file"() {
         when:
         qqClient.query(new ByteArrayOutputStream(), "SELECT * from BlobStorage")
 
         then:
         notThrown(BlobStorageException)
     }
+
+//    @Unroll
+//    def "Query input delimited"() {
+//        setup:
+//        ByteArrayOutputStream queryData = new ByteArrayOutputStream()
 //
-//    def "Query empty file"() {
-//        qqClient.query()
+//        uploadSmallCsv('\n' as char, ',' as char, '\0' as char, '\0' as char, true)
+//        when:
+//        qqClient.queryWithResponse(new ByteArrayOutputStream(), "SELECT * from BlobStorage")
+//
+//        then:
+//        notThrown(BlobStorageException)
+//
+//        where:
+//
 //    }
+
+//    @Unroll
+//    def "Query input json"() {
+//        setup:
+//        ByteArrayOutputStream queryData = new ByteArrayOutputStream()
 //
-//    def "Query input"() {
-//        qqClient.query()
+//        uploadSmallCsv('\n' as char, ',' as char, '\0' as char, '\0' as char, true)
+//        when:
+//        qqClient.queryWithResponse(new ByteArrayOutputStream(), "SELECT * from BlobStorage")
+//
+//        then:
+//        notThrown(BlobStorageException)
+//
+//        where:
+//
 //    }
-//
+
+    @Unroll
+    def "Query input output IA"() {
+        when:
+        qqClient.queryWithResponse(new ByteArrayOutputStream(), "SELECT * from BlobStorage", input, output, null, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        input                                                    | output                                                   || _
+        new MockSerialization().setRecordSeparator('\n' as char) | null                                                     || _
+        null                                                     | new MockSerialization().setRecordSeparator('\n' as char) || _
+
+    }
+
+    class MockSerialization extends BlobQuickQuerySerialization<MockSerialization> {
+
+    }
+
 //    def "Query input non fatal error"() {
 //        qqClient.query()
 //    }

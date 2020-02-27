@@ -115,7 +115,7 @@ public class BlobQuickQueryAsyncClient {
             .setInputSerialization(in)
             .setOutputSerialization(out);
 
-        return client.blobs().quickQueryWithRestResponseAsync(qr, null, null,
+        return client.blobs().quickQueryWithRestResponseAsync(null, null, qr, null, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
@@ -171,7 +171,7 @@ public class BlobQuickQueryAsyncClient {
             .setColumnSeparator(charToString(delimitedSerialization.getColumnSeparator()))
             .setEscapeChar(charToString(delimitedSerialization.getEscapeChar()))
             .setFieldQuote(charToString(delimitedSerialization.getFieldQuote()))
-            .setHasHeaders(Boolean.toString(delimitedSerialization.isHeadersPresent()))
+            .setHasHeaders(delimitedSerialization.isHeadersPresent())
             .setRecordSeparator(charToString(delimitedSerialization.getRecordSeparator()));
     }
 

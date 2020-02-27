@@ -9,12 +9,20 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobRequestConditions;
 
+import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.quickquery.models.BlobQuickQueryError;
+import com.azure.storage.quickquery.models.BlobQuickQueryErrorReceiver;
 import com.azure.storage.quickquery.models.BlobQuickQueryResponse;
 import com.azure.storage.quickquery.models.BlobQuickQuerySerialization;
+import org.apache.avro.file.DataFileReader;
+import org.apache.avro.file.SeekableByteArrayInput;
+import org.apache.avro.generic.GenericDatumReader;
+import org.apache.avro.generic.GenericRecord;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
@@ -96,83 +104,82 @@ public class BlobQuickQueryClient {
         return blockWithOptionalTimeout(download, timeout);
     }
 
-//    public BlobQuickQueryResponse parsedQueryWithResponseSample(OutputStream stream, String expression,
-//        BlobQuickQuerySerialization input, BlobQuickQuerySerialization output,
-//        BlobQuickQueryErrorReceiver nonFatalErrorReceiver, BlobRequestConditions requestConditions,
-//        ProgressReceiver progressReceiver, Duration timeout, Context context) throws RuntimeException {
-//        StorageImplUtils.assertNotNull("stream", stream);
-//        ByteArrayOutputStream avroStream = new ByteArrayOutputStream();
-//        Mono<BlobQuickQueryResponse> download = client
-//            .queryWithResponse(expression, input, output, requestConditions, context)
-//            .flatMap(response -> response.getValue().reduce(avroStream, (aStream, buffer) -> {
-//                try {
-//                    aStream.write(FluxUtil.byteBufferToArray(buffer));
-//                    return aStream;
-//                } catch (IOException ex) {
-//                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-//                }
-//            }).thenReturn(new BlobQuickQueryResponse(response)));
-//
-//        DataFileReader<GenericRecord> reader;
-//        try {
-//            reader = new DataFileReader<>(
-//                new SeekableByteArrayInput(avroStream.toByteArray()),
-//                new GenericDatumReader<>());
-//        } catch (IOException ex) {
-//            throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-//        }
-//        long totalBytes = 0;
-//
-//        endOfStream:
-//        while(reader.hasNext())
-//        {
-//            GenericRecord record = reader.next();
-//
-//            switch (record.getSchema().getName()) {
-//                case "resultData":
-//                    try {
-//                        stream.write(((ByteBuffer) record.get("data")).array());
-//                    } catch (IOException ex) {
-//                        throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-//                    }
-//                    break;
-//                case "end":
-//                    if (progressReceiver != null) {
-//                        progressReceiver.reportProgress(totalBytes);
-//                    }
-//                    break endOfStream;
-//                case "progress":
-//                    if (progressReceiver != null) {
-//                        progressReceiver.reportProgress((long) record.get("bytesScanned"));
-//                    }
-//                    if (totalBytes == 0) {
-//                        /* This is for the end record to update progress receiver. */
-//                        totalBytes = (long) record.get("totalBytes");
-//                    }
-//                    break;
-//                case "error":
-//                    if (nonFatalErrorReceiver != null) {
-//                        String description = record.get("description").toString();
-//                        Boolean fatal = (Boolean) record.get("fatal");
-//                        if (fatal) {
-//                            nonFatalErrorReceiver.reportError(
-//                                new BlobQuickQueryError(fatal, record.get("name").toString(),
-//                                    description, (Long) record.get("position")));
-//                        } else {
-//                            throw logger.logExceptionAsError(new UncheckedIOException(new IOException("Failed to "
-//                                + "parse error record from blob query response stream.")));
-//                        }
-//                    }
-//                    break;
-//                default:
-//                    throw logger.logExceptionAsError(new UncheckedIOException(new IOException("Unknown record type "
-//                        + record.getSchema().getName() + " in blob query response parsing."));
-//                    break;
-//            }
-//        }
-//
-//        return blockWithOptionalTimeout(download, timeout);
-//    }
+    public BlobQuickQueryResponse parsedQueryWithResponseSample(OutputStream stream, String expression,
+        BlobQuickQuerySerialization input, BlobQuickQuerySerialization output,
+        BlobQuickQueryErrorReceiver nonFatalErrorReceiver, BlobRequestConditions requestConditions,
+        ProgressReceiver progressReceiver, Duration timeout, Context context) throws RuntimeException {
+        StorageImplUtils.assertNotNull("stream", stream);
+        ByteArrayOutputStream avroStream = new ByteArrayOutputStream();
+        Mono<BlobQuickQueryResponse> download = client
+            .queryWithResponse(expression, input, output, requestConditions, context)
+            .flatMap(response -> response.getValue().reduce(avroStream, (aStream, buffer) -> {
+                try {
+                    aStream.write(FluxUtil.byteBufferToArray(buffer));
+                    return aStream;
+                } catch (IOException ex) {
+                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
+                }
+            }).thenReturn(new BlobQuickQueryResponse(response)));
+
+        DataFileReader<GenericRecord> reader;
+        try {
+            reader = new DataFileReader<>(
+                new SeekableByteArrayInput(avroStream.toByteArray()),
+                new GenericDatumReader<>());
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
+        }
+        long totalBytes = 0;
+
+        endOfStream:
+        while(reader.hasNext())
+        {
+            GenericRecord record = reader.next();
+
+            switch (record.getSchema().getName()) {
+                case "resultData":
+                    try {
+                        stream.write(((ByteBuffer) record.get("data")).array());
+                    } catch (IOException ex) {
+                        throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
+                    }
+                    break;
+                case "end":
+                    if (progressReceiver != null) {
+                        progressReceiver.reportProgress(totalBytes);
+                    }
+                    break endOfStream;
+                case "progress":
+                    if (progressReceiver != null) {
+                        progressReceiver.reportProgress((long) record.get("bytesScanned"));
+                    }
+                    if (totalBytes == 0) {
+                        /* This is for the end record to update progress receiver. */
+                        totalBytes = (long) record.get("totalBytes");
+                    }
+                    break;
+                case "error":
+                    if (nonFatalErrorReceiver != null) {
+                        String description = record.get("description").toString();
+                        Boolean fatal = (Boolean) record.get("fatal");
+                        if (fatal) {
+                            nonFatalErrorReceiver.reportError(
+                                new BlobQuickQueryError(fatal, record.get("name").toString(),
+                                    description, (Long) record.get("position")));
+                        } else {
+                            throw logger.logExceptionAsError(new UncheckedIOException(new IOException("Failed to "
+                                + "parse error record from blob query response stream.")));
+                        }
+                    }
+                    break;
+                default:
+                    throw logger.logExceptionAsError(new UncheckedIOException(new IOException("Unknown record type "
+                        + record.getSchema().getName() + " in blob query response parsing.")));
+            }
+        }
+
+        return blockWithOptionalTimeout(download, timeout);
+    }
 
 //    public static void main(String[] args) throws IOException {
 //        String accountName = "0cpxscnapsat09prde01f";

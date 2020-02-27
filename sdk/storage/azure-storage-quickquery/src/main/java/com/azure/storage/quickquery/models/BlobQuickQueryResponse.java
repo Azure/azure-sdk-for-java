@@ -4,7 +4,7 @@
 package com.azure.storage.quickquery.models;
 
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.storage.blob.implementation.models.BlobQuickQueryHeaders;
+import com.azure.storage.blob.models.BlobQuickQueryHeaders;
 
 /**
  * This class contains the response information return from the server when quick querying a blob.

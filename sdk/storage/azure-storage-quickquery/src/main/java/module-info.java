@@ -3,6 +3,8 @@
 
 module com.azure.storage.quickquery {
     requires transitive com.azure.storage.blob;
+    requires org.apache.avro;
 
     exports com.azure.storage.quickquery;
+
 }
