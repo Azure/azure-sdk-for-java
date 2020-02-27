@@ -77,10 +77,14 @@ class IntegrationAccountAssembliesImpl extends WrapperImpl<IntegrationAccountAss
     public Observable<AssemblyDefinition> getAsync(String resourceGroupName, String integrationAccountName, String assemblyArtifactName) {
         IntegrationAccountAssembliesInner client = this.inner();
         return client.getAsync(resourceGroupName, integrationAccountName, assemblyArtifactName)
-        .map(new Func1<AssemblyDefinitionInner, AssemblyDefinition>() {
+        .flatMap(new Func1<AssemblyDefinitionInner, Observable<AssemblyDefinition>>() {
             @Override
-            public AssemblyDefinition call(AssemblyDefinitionInner inner) {
-                return wrapModel(inner);
+            public Observable<AssemblyDefinition> call(AssemblyDefinitionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((AssemblyDefinition)wrapModel(inner));
+                }
             }
        });
     }

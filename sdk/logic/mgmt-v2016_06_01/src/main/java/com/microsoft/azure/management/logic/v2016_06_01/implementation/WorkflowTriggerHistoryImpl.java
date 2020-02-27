@@ -27,6 +27,7 @@ class WorkflowTriggerHistoryImpl extends IndexableRefreshableWrapperImpl<Workflo
     WorkflowTriggerHistoryImpl(WorkflowTriggerHistoryInner inner,  LogicManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.workflowName = IdParsingUtils.getValueFromIdByName(inner.id(), "workflows");
         this.triggerName = IdParsingUtils.getValueFromIdByName(inner.id(), "triggers");
