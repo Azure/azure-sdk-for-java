@@ -6,7 +6,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosConflictProperties;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -38,7 +38,7 @@ public class CosmosAsyncConflictTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.maxItemCount(requestPageSize);
 
-        CosmosContinuablePagedFlux<CosmosConflictProperties> conflictReadFeedFlux = createdCollection.readAllConflicts(options);
+        CosmosPagedFlux<CosmosConflictProperties> conflictReadFeedFlux = createdCollection.readAllConflicts(options);
 
         Iterator<FeedResponse<CosmosConflictProperties>> it = conflictReadFeedFlux.byPage().toIterable().iterator();
 

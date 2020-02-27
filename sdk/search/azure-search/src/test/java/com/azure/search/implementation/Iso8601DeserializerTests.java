@@ -6,7 +6,6 @@ package com.azure.search.implementation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -15,13 +14,15 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class Iso8601DeserializerTests {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @BeforeAll
     public static void setupClass() {
         SimpleModule module = new SimpleModule();
-        UntypedObjectDeserializer defaultDeserializer = new  UntypedObjectDeserializer(null, null);
+        UntypedObjectDeserializer defaultDeserializer = new UntypedObjectDeserializer(null, null);
         module.addDeserializer(Object.class, new Iso8601DateDeserializer(defaultDeserializer));
         MAPPER.registerModule(module);
     }
@@ -34,7 +35,7 @@ public class Iso8601DeserializerTests {
             10, 30, 0, 0, ZoneOffset.UTC);
         Object actual = MAPPER.readValue(input, Object.class);
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -46,7 +47,7 @@ public class Iso8601DeserializerTests {
         Map<?, ?> obj = MAPPER.readValue(input, Map.class);
         Object actual = obj.get("date");
 
-        Assert.assertEquals(expected, actual);
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -63,8 +64,8 @@ public class Iso8601DeserializerTests {
         Object actual1 = obj.get(0);
         Object actual2 = obj.get(1);
 
-        Assert.assertEquals(expected1, actual1);
-        Assert.assertEquals(expected2, actual2);
+        assertEquals(expected1, actual1);
+        assertEquals(expected2, actual2);
     }
 
     @Test
@@ -79,7 +80,7 @@ public class Iso8601DeserializerTests {
         Object actual1 = obj.get(0);
         Object actual2 = obj.get(1);
 
-        Assert.assertEquals(expected1, actual1);
-        Assert.assertEquals(String.class, actual2.getClass());
+        assertEquals(expected1, actual1);
+        assertEquals(String.class, actual2.getClass());
     }
 }

@@ -4,12 +4,9 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
@@ -39,7 +36,6 @@ import com.azure.search.models.TagScoringFunction;
 import com.azure.search.models.TagScoringParameters;
 import com.azure.search.models.TextWeights;
 import com.azure.search.test.environment.setup.AzureSearchResources;
-import com.azure.search.test.environment.setup.SearchIndexService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -47,13 +43,11 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.reactivestreams.Publisher;
-import org.unitils.reflectionassert.ReflectionAssert;
 import reactor.test.StepVerifier;
 
 import java.text.SimpleDateFormat;
@@ -68,12 +62,17 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 public abstract class SearchServiceTestBase extends TestBase {
 
     private static final String DEFAULT_DNS_SUFFIX = "search.windows.net";
     private static final String DOGFOOD_DNS_SUFFIX = "search-dogfood.windows-int.net";
 
     private static final String FAKE_DESCRIPTION = "Some data source";
+    private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
 
     // The connection string we use here, as well as table name and target index schema, use the USGS database
     // that we set up to support our code samples.
@@ -82,6 +81,17 @@ public abstract class SearchServiceTestBase extends TestBase {
     // and it has been enabled on the table with ALTER TABLE ... ENABLE CHANGE_TRACKING
     private static final String AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND =
         "Server=tcp:azs-playground.database.windows.net,1433;Database=usgs;User ID=reader;Password=EdrERBt3j6mZDP;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;"; // [SuppressMessage("Microsoft.Security", "CS001:SecretInline")]
+
+    private static final ObjectMapper OBJECT_MAPPER;
+
+    static {
+        OBJECT_MAPPER = new ObjectMapper();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        df.setTimeZone(TimeZone.getDefault());
+        OBJECT_MAPPER.setDateFormat(df);
+        OBJECT_MAPPER.registerModule(new JavaTimeModule());
+        OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     static final String HOTEL_INDEX_NAME = "hotels";
 
@@ -93,9 +103,6 @@ public abstract class SearchServiceTestBase extends TestBase {
     private String searchDnsSuffix;
     protected String endpoint;
     SearchApiKeyCredential searchApiKeyCredential;
-    SearchIndexService searchServiceHotelsIndex;
-
-    private ObjectMapper objectMapper;
 
     private static String testEnvironment;
     private static AzureSearchResources azureSearchResources;
@@ -106,32 +113,26 @@ public abstract class SearchServiceTestBase extends TestBase {
     @BeforeAll
     public static void beforeAll() {
         initializeAzureResources();
+        if (!playbackMode()) {
+            azureSearchResources.initialize();
+            azureSearchResources.createResourceGroup();
+        }
     }
 
     @AfterAll
     public static void afterAll() {
-        azureSearchResources.deleteResourceGroup();
     }
 
     @Override
     protected void beforeTest() {
         searchDnsSuffix = testEnvironment.equals("DOGFOOD") ? DOGFOOD_DNS_SUFFIX : DEFAULT_DNS_SUFFIX;
-        if (!interceptorManager.isPlaybackMode()) {
-            azureSearchResources.initialize();
-            azureSearchResources.createResourceGroup();
-            azureSearchResources.createService();
 
-            searchServiceName = azureSearchResources.getSearchServiceName();
+        if (!interceptorManager.isPlaybackMode()) {
+            azureSearchResources.createService(testResourceNamer);
             searchApiKeyCredential = new SearchApiKeyCredential(azureSearchResources.getSearchAdminKey());
         }
+        searchServiceName = azureSearchResources.getSearchServiceName();
         endpoint = String.format("https://%s.%s", searchServiceName, searchDnsSuffix);
-
-        objectMapper = new ObjectMapper();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        df.setTimeZone(TimeZone.getDefault());
-        objectMapper.setDateFormat(df);
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     @Override
@@ -155,20 +156,22 @@ public abstract class SearchServiceTestBase extends TestBase {
         SearchServiceClientBuilder builder = new SearchServiceClientBuilder()
             .endpoint(endpoint);
 
-        if (!interceptorManager.isPlaybackMode()) {
-            addPolicies(builder, policies);
-            builder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .credential(searchApiKeyCredential)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
-                .addPolicy(new HttpLoggingPolicy(
-                    new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-            return builder;
-        } else {
+        if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
             addPolicies(builder, policies);
+            return builder;
         }
+
+        addPolicies(builder, policies);
+        builder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+            .credential(searchApiKeyCredential);
+
+        if (!liveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
         return builder;
+
     }
 
     private void addPolicies(SearchServiceClientBuilder builder, List<HttpPipelinePolicy> policies) {
@@ -457,12 +460,10 @@ public abstract class SearchServiceTestBase extends TestBase {
                 .setSourceFields(Collections.singletonList("HotelName"))));
     }
 
-    DataSource createTestSqlDataSourceObject(
-        String dataSourceName,
-        DataDeletionDetectionPolicy deletionDetectionPolicy,
+    DataSource createTestSqlDataSourceObject(DataDeletionDetectionPolicy deletionDetectionPolicy,
         DataChangeDetectionPolicy changeDetectionPolicy) {
-        return DataSources.azureSql(
-            dataSourceName,
+        return DataSources.createFromAzureSql(
+            SearchServiceTestBase.SQL_DATASOURCE_NAME,
             AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND,
             "GeoNamesRI",
             FAKE_DESCRIPTION,
@@ -471,8 +472,8 @@ public abstract class SearchServiceTestBase extends TestBase {
         );
     }
 
-    DataSource createTestSqlDataSourceObject(String dataSourceName) {
-        return createTestSqlDataSourceObject(dataSourceName, null, null);
+    DataSource createTestSqlDataSourceObject() {
+        return createTestSqlDataSourceObject(null, null);
     }
 
     /**
@@ -485,14 +486,14 @@ public abstract class SearchServiceTestBase extends TestBase {
         if (!interceptorManager.isPlaybackMode()) {
 
             // First, we create a storage account
-            storageConnString = azureSearchResources.createStorageAccount();
+            storageConnString = azureSearchResources.createStorageAccount(testResourceNamer);
             // Next, we create the blobs container
             blobContainerDatasourceName =
-                azureSearchResources.createBlobContainer(storageConnString);
+                azureSearchResources.createBlobContainer(storageConnString, testResourceNamer);
         }
 
         // create the new data source object for this storage account and container
-        return DataSources.azureBlobStorage(
+        return DataSources.createFromAzureBlobStorage(
             BLOB_DATASOURCE_NAME,
             storageConnString,
             blobContainerDatasourceName,
@@ -511,21 +512,14 @@ public abstract class SearchServiceTestBase extends TestBase {
         String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
 
         testEnvironment = Configuration.getGlobalConfiguration().get("AZURE_TEST_ENVIRONMENT");
-        if (testEnvironment == null) {
-            testEnvironment = "AZURE";
-        } else {
-            testEnvironment = testEnvironment.toUpperCase(Locale.US);
-        }
+        testEnvironment = (testEnvironment == null) ? "AZURE" : testEnvironment.toUpperCase(Locale.US);
 
         AzureEnvironment environment = testEnvironment.equals("DOGFOOD") ? getDogfoodEnvironment() : AzureEnvironment.AZURE;
 
-        ApplicationTokenCredentials applicationTokenCredentials = new ApplicationTokenCredentials(
-            appId,
-            azureDomainId,
-            secret,
-            environment);
+        ApplicationTokenCredentials applicationTokenCredentials =
+            new ApplicationTokenCredentials(appId, azureDomainId, secret, environment);
 
-        azureSearchResources = new AzureSearchResources(applicationTokenCredentials, subscriptionId, Region.US_EAST);
+        azureSearchResources = new AzureSearchResources(applicationTokenCredentials, subscriptionId, Region.US_WEST2);
     }
 
     private static AzureEnvironment getDogfoodEnvironment() {
@@ -541,37 +535,27 @@ public abstract class SearchServiceTestBase extends TestBase {
     }
 
     protected SearchIndexClientBuilder getSearchIndexClientBuilder(String indexName) {
-        if (!interceptorManager.isPlaybackMode()) {
-            return new SearchIndexClientBuilder()
-                .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
-                .indexName(indexName)
-                .httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .credential(searchApiKeyCredential)
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
-                .addPolicy(new HttpLoggingPolicy(
-                    new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-        } else {
-            return new SearchIndexClientBuilder()
-                .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
-                .indexName(indexName)
-                .httpClient(interceptorManager.getPlaybackClient());
-        }
-    }
+        SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
+            .endpoint(String.format("https://%s.%s", searchServiceName, searchDnsSuffix))
+            .indexName(indexName);
 
-    protected void assertIndexesEqual(Index expected, Index actual) {
-        ReflectionAssert.assertLenientEquals(expected, actual);
+        if (interceptorManager.isPlaybackMode()) {
+            return builder.httpClient(interceptorManager.getPlaybackClient());
+        }
+
+        builder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
+            .credential(searchApiKeyCredential);
+
+        if (!liveMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
     }
 
     protected void waitForIndexing() {
-        // Wait 2 secs to allow index request to finish
-        if (!interceptorManager.isPlaybackMode()) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        // Wait 2 seconds to allow index request to finish.
+        sleepIfRunningAgainstService(2000);
     }
 
     /**
@@ -581,8 +565,8 @@ public abstract class SearchServiceTestBase extends TestBase {
      * @param <T> type
      * @return an object of the request type
      */
-    <T> T convertToType(Object document, Class<T> cls) {
-        return objectMapper.convertValue(document, cls);
+    static <T> T convertToType(Object document, Class<T> cls) {
+        return OBJECT_MAPPER.convertValue(document, cls);
     }
 
     void addFieldToIndex(Index index, Field field) {
@@ -597,43 +581,39 @@ public abstract class SearchServiceTestBase extends TestBase {
      * @return a RequestOptions object with ClientRequestId.
      */
     protected RequestOptions generateRequestOptions() {
-        return new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
+        return new RequestOptions().setClientRequestId(UUID.randomUUID());
     }
 
-    void assertHttpResponseException(
-        Runnable exceptionThrower, HttpResponseStatus expectedResponseStatus, String expectedMessage) {
+    void assertHttpResponseException(Runnable exceptionThrower, HttpResponseStatus expectedResponseStatus,
+        String expectedMessage) {
         try {
             exceptionThrower.run();
-            Assert.fail();
+            fail();
 
         } catch (Throwable ex) {
             verifyHttpResponseError(ex, expectedResponseStatus, expectedMessage);
         }
     }
 
-    void assertHttpResponseExceptionAsync(
-        Publisher<?> exceptionThrower, HttpResponseStatus expectedResponseStatus, String expectedMessage) {
-
-        StepVerifier
-            .create(exceptionThrower)
-            .verifyErrorSatisfies(error -> verifyHttpResponseError(
-                error, expectedResponseStatus, expectedMessage));
+    void assertHttpResponseExceptionAsync(Publisher<?> exceptionThrower) {
+        StepVerifier.create(exceptionThrower)
+            .verifyErrorSatisfies(error -> verifyHttpResponseError(error, HttpResponseStatus.BAD_REQUEST,
+                "Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' on type 'search.document'."));
     }
 
     private void verifyHttpResponseError(
         Throwable ex, HttpResponseStatus expectedResponseStatus, String expectedMessage) {
 
-        Assert.assertEquals(HttpResponseException.class, ex.getClass());
+        assertEquals(HttpResponseException.class, ex.getClass());
 
         if (expectedResponseStatus != null) {
-            Assert.assertEquals(
+            assertEquals(
                 expectedResponseStatus.code(),
                 ((HttpResponseException) ex).getResponse().getStatusCode());
         }
 
         if (expectedMessage != null) {
-            Assert.assertTrue(ex.getMessage().contains(expectedMessage));
+            assertTrue(ex.getMessage().contains(expectedMessage));
         }
     }
 
@@ -655,5 +635,27 @@ public abstract class SearchServiceTestBase extends TestBase {
         return new ServiceStatistics()
             .setCounters(serviceCounters)
             .setLimits(serviceLimits);
+    }
+
+    static boolean liveMode() {
+        return setupTestMode() == TestMode.LIVE;
+    }
+
+    static boolean playbackMode() {
+        return setupTestMode() == TestMode.PLAYBACK;
+    }
+
+    static TestMode setupTestMode() {
+        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
+
+        if (testMode != null) {
+            try {
+                return TestMode.valueOf(testMode.toUpperCase(Locale.US));
+            } catch (IllegalArgumentException ignore) {
+                return TestMode.PLAYBACK;
+            }
+        }
+
+        return TestMode.PLAYBACK;
     }
 }

@@ -5,10 +5,11 @@
 ## Build the benchmarking tool
 
 ```bash
-git clone https://github.com/Azure/azure-cosmosdb-java.git
-cd azure-cosmosdb-java
+git clone https://github.com/Azure/azure-sdk-for-java.git
+cd sdk/cosmos/
 
-mvn clean package -DskipTests
+mvn install -f ../../eng/code-quality-tools/pom.xml
+mvn clean package -f pom.service.xml -DskipTests -Dgpg.skip -Ppackage-assembly
 ```
 
 and then the package will be generated. 
@@ -16,7 +17,7 @@ and then the package will be generated.
 ## Run the WriteLatency workload
 
 ```bash
-java -jar benchmark/target/azure-cosmosdb-benchmark-2.4.1-SNAPSHOT-jar-with-dependencies.jar \
+java -jar azure-cosmos-benchmark/target/azure-cosmos-benchmark-4.0.1-beta.1-jar-with-dependencies.jar \
  -serviceEndpoint $endpoint -masterKey $masterkey \
  -databaseId $dbname -collectionId $colname \
  -consistencyLevel Eventual -concurrency 10 -numberOfOperations 1000000 \

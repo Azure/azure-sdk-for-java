@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.search;
 
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.Map;
  * <p>
  * If the schema is known, user can convert the properties to a specific object type
  */
-public class Document extends HashMap<String, Object> {
+public final class Document extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -23,12 +24,11 @@ public class Document extends HashMap<String, Object> {
     }
 
     /**
-     * Constructs a new {@code Document} with the same mappings as the
-     * specified {@code Map}.
+     * Constructs a new {@code Document} with the same mappings as the specified {@code Map}.
      *
-     * @param   m the map whose mappings are to be placed in this map
+     * @param propertyMap the map whose mappings are to be placed in this map
      */
-    public Document(Map<? extends String, ?> m) {
-        super(m);
+    public Document(Map<? extends String, ?> propertyMap) {
+        super(propertyMap);
     }
 }

@@ -257,8 +257,12 @@ public final class ResourceResponse<T extends Resource> {
         return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.CURRENT_RESOURCE_QUOTA_USAGE);
     }
 
+    public byte[] getBodyAsByteArray() {
+        return this.response.getResponseBodyAsByteArray();
+    }
+
     public String getBodyAsString() {
-        return this.response.getReponseBodyAsString();
+        return this.response.getResponseBodyAsString();
     }
 
     /**
