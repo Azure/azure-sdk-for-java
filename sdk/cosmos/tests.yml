@@ -217,12 +217,6 @@ jobs:
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'BoundedStaleness'
-        Consistent_Prefix_Https_E2E:
-          DisplayName: Consistent Prefix Single Region ReadMyWrites
-          OSVmImage: 'windows-2019'
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
-          DESIRED_CONSISTENCY: 'ConsistentPrefix'
         # 59m 58s, timed out
         Strong_Tcp_E2E:
           DisplayName: Single Region ReadMyWrites
@@ -236,12 +230,6 @@ jobs:
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Tcp"'
           DESIRED_CONSISTENCY: 'BoundedStaleness'
-        Consistent_Prefix_Tcp_E2E:
-          DisplayName: Consistent Prefix Single Region ReadMyWrites
-          OSVmImage: 'windows-2019'
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Tcp"'
-          DESIRED_CONSISTENCY: 'ConsistentPrefix'
         # 08m 50s, expect passed
         Strong_Https_Fast:
           DisplayName: Strong HTTP Fast
