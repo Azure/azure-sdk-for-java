@@ -134,13 +134,13 @@ public class IdentityClient {
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, command.toString());
             builder.redirectErrorStream(true);
-            Process p = builder.start();
+            Process processor = builder.start();
 
-            BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(processor.getInputStream()));
             String line;
             StringBuilder output = new StringBuilder();
             while (true) {
-                line = r.readLine();
+                line = reader.readLine();
                 if (line == null) {
                     break;
                 }
@@ -149,8 +149,9 @@ public class IdentityClient {
                 }
                 output.append(line);
             }
+            reader.close();
             String processOutput = output.toString();
-            if(p.exitValue() != 0){
+            if(processor.exitValue() != 0){
                 throw logger.logExceptionAsError(new ClientAuthenticationException(processOutput, null));
             }
             Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(processOutput, Map.class,
