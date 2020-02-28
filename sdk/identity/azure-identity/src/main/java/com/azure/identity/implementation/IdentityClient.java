@@ -25,7 +25,6 @@ import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
-import com.microsoft.aad.msal4j.IHttpClient;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
@@ -114,6 +113,10 @@ public class IdentityClient {
                     publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
                 } else if (options.getProxyOptions() != null) {
                     publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+                } else {
+                    //Http Client is null, proxy options are not set, use the default client and build the pipeline.
+                    httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient));
+                    publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
                 }
             }
             this.publicClientApplication = publicClientApplicationBuilder.build();
