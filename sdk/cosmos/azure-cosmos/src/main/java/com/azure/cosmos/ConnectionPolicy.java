@@ -26,7 +26,7 @@ public final class ConnectionPolicy {
     private int maxPoolSize;
     private int idleConnectionTimeoutInMillis;
     private String userAgentSuffix;
-    private RetryOptions retryOptions;
+    private ThrottlingRetryOptions throttlingRetryOptions;
     private boolean endpointDiscoveryEnabled = true;
     private List<String> preferredLocations;
     private boolean usingMultipleWriteLocations = true;
@@ -43,7 +43,7 @@ public final class ConnectionPolicy {
         this.maxPoolSize = DEFAULT_MAX_POOL_SIZE;
         this.mediaRequestTimeoutInMillis = ConnectionPolicy.DEFAULT_MEDIA_REQUEST_TIMEOUT_IN_MILLIS;
         this.requestTimeoutInMillis = ConnectionPolicy.DEFAULT_REQUEST_TIMEOUT_IN_MILLIS;
-        this.retryOptions = new RetryOptions();
+        this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.userAgentSuffix = "";
     }
 
@@ -170,8 +170,8 @@ public final class ConnectionPolicy {
      *
      * @return the RetryOptions instance.
      */
-    public RetryOptions getRetryOptions() {
-        return this.retryOptions;
+    public ThrottlingRetryOptions getThrottlingRetryOptions() {
+        return this.throttlingRetryOptions;
     }
 
     /**
@@ -182,16 +182,16 @@ public final class ConnectionPolicy {
      * default values for configuring the retry policies.  See RetryOptions class for
      * more details.
      *
-     * @param retryOptions the RetryOptions instance.
+     * @param throttlingRetryOptions the RetryOptions instance.
      * @return the ConnectionPolicy.
      * @throws IllegalArgumentException thrown if an error occurs
      */
-    public ConnectionPolicy setRetryOptions(RetryOptions retryOptions) {
-        if (retryOptions == null) {
+    public ConnectionPolicy setThrottlingRetryOptions(ThrottlingRetryOptions throttlingRetryOptions) {
+        if (throttlingRetryOptions == null) {
             throw new IllegalArgumentException("retryOptions value must not be null.");
         }
 
-        this.retryOptions = retryOptions;
+        this.throttlingRetryOptions = throttlingRetryOptions;
         return this;
     }
 
@@ -355,7 +355,7 @@ public final class ConnectionPolicy {
                    + ", maxPoolSize=" + maxPoolSize
                    + ", idleConnectionTimeoutInMillis=" + idleConnectionTimeoutInMillis
                    + ", userAgentSuffix='" + userAgentSuffix + '\''
-                   + ", retryOptions=" + retryOptions
+                   + ", retryOptions=" + throttlingRetryOptions
                    + ", enableEndpointDiscovery=" + endpointDiscoveryEnabled
                    + ", preferredLocations=" + preferredLocations
                    + ", usingMultipleWriteLocations=" + usingMultipleWriteLocations

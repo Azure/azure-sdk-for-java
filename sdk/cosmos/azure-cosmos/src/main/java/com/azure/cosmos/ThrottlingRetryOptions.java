@@ -6,7 +6,7 @@ package com.azure.cosmos;
 /**
  * Encapsulates retry options in the Azure Cosmos DB database service.
  */
-public class RetryOptions {
+public class ThrottlingRetryOptions {
     private int maxRetryAttemptsOnThrottledRequests;
     private int maxRetryWaitTimeInSeconds;
 
@@ -14,7 +14,7 @@ public class RetryOptions {
      * Creates a new instance of the RetryOptions class and initializes all
      * properties to default values.
      */
-    public RetryOptions() {
+    public ThrottlingRetryOptions() {
         this.maxRetryAttemptsOnThrottledRequests = 9;
         this.maxRetryWaitTimeInSeconds = 30;
     }
@@ -48,7 +48,7 @@ public class RetryOptions {
      * @return the RetryOptions.
      * @throws IllegalArgumentException thrown if an error occurs
      */
-    public RetryOptions setMaxRetryAttemptsOnThrottledRequests(int maxRetryAttemptsOnThrottledRequests) {
+    public ThrottlingRetryOptions setMaxRetryAttemptsOnThrottledRequests(int maxRetryAttemptsOnThrottledRequests) {
         if (maxRetryAttemptsOnThrottledRequests < 0) {
             throw new IllegalArgumentException("maxRetryAttemptsOnThrottledRequests value must be a positive integer.");
         }
@@ -82,7 +82,7 @@ public class RetryOptions {
      * @return the RetryOptions.
      * @throws IllegalArgumentException thrown if an error occurs
      */
-    public RetryOptions setMaxRetryWaitTimeInSeconds(int maxRetryWaitTimeInSeconds) {
+    public ThrottlingRetryOptions setMaxRetryWaitTimeInSeconds(int maxRetryWaitTimeInSeconds) {
         if (maxRetryWaitTimeInSeconds < 0 || maxRetryWaitTimeInSeconds > Integer.MAX_VALUE / 1000) {
             throw new IllegalArgumentException(
                 "value must be a positive integer between the range of 0 to " + Integer.MAX_VALUE / 1000);
