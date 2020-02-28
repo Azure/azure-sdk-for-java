@@ -58,7 +58,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * continuation token. To start from first page, use {@link #streamByPage()} instead.
      *
      * @param continuationToken The continuation token used to fetch the next page
-     * @return @return {@link Stream} of a pages
+     * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(C continuationToken) {
         return this.pagedFlux.byPage(continuationToken).toStream(this.batchSize);
@@ -73,7 +73,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @param preferredPageSize the preferred page size, service may or may not honor the page
      *                          size preference hence client MUST be prepared to handle pages
      *                          with different page size.
-     * @return @return {@link Stream} of a pages
+     * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(int preferredPageSize) {
         return this.pagedFlux.byPage(null, preferredPageSize).toStream(this.batchSize);
@@ -88,7 +88,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      *                          size preference hence client MUST be prepared to handle pages
      *                          with different page size.
      * @param continuationToken The continuation token used to fetch the next page
-     * @return @return {@link Stream} of a pages
+     * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(C continuationToken, int preferredPageSize) {
         return this.pagedFlux.byPage(continuationToken, preferredPageSize).toStream(this.batchSize);
@@ -109,7 +109,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * continuation token. To start from first page, use {@link #iterableByPage()} instead.
      *
      * @param continuationToken The continuation token used to fetch the next page
-     * @return @return {@link Iterable} of a pages
+     * @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(C continuationToken) {
         return this.pagedFlux.byPage(continuationToken).toIterable(this.batchSize);
@@ -124,7 +124,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @param preferredPageSize the preferred page size, service may or may not honor the page
      *                          size preference hence client MUST be prepared to handle pages
      *                          with different page size.
-     * @return @return {@link Iterable} of a pages
+     * @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(int preferredPageSize) {
         return this.pagedFlux.byPage(null, preferredPageSize).toIterable(this.batchSize);
@@ -139,7 +139,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      *                          size preference hence client MUST be prepared to handle pages
      *                          with different page size.
      * @param continuationToken The continuation token used to fetch the next page
-     * @return @return {@link Iterable} of a pages
+     * @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(C continuationToken, int preferredPageSize) {
         return this.pagedFlux.byPage(continuationToken, preferredPageSize).toIterable(this.batchSize);
