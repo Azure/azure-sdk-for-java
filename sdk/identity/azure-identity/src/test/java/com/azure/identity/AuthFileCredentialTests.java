@@ -20,7 +20,7 @@ import reactor.test.StepVerifier;
 public class AuthFileCredentialTests<T> {
 
      @Test
-     public void SdkAuthFileEnsureCredentialParsesCorrectly() throws Exception {
+     public void sdkAuthFileEnsureCredentialParsesCorrectly() throws Exception {
         // setup 
         String authFilePath = getClass().getResource("/authfile.json").getPath();
         AuthFileCredential credential = new AuthFileCredentialBuilder().filePath(authFilePath).build();
@@ -32,7 +32,7 @@ public class AuthFileCredentialTests<T> {
      }
 
     @Test
-    public void BadSdkAuthFilePathThrowsDuringGetToken()
+    public void badSdkAuthFilePathThrowsDuringGetToken()
     {
         // setup 
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");

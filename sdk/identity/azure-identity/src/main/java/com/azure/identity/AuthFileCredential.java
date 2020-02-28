@@ -36,12 +36,13 @@ import java.util.Objects;
 @Immutable
 public class AuthFileCredential implements TokenCredential {
     /* The file path value. */
-    private final String filepath;
     private final static ClientLogger logger = new ClientLogger(AuthFileCredential.class);
+    private final static  SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    private final String filepath;
+    private byte[] lock = new byte[0];
     private IdentityClientOptions identityClientOptions;
     TokenCredential credential;
-    private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
-
+    
     /**
      * Creates an instance of the SdkAuthFileCredential class based on information
      * in given SDK Auth file. If the file is not found or there are errors parsing
@@ -88,34 +89,40 @@ public class AuthFileCredential implements TokenCredential {
      */
     void ensureCredential() {
         if (credential == null) {
-            try {
-                credential = BuildCredentialForCredentialsFile(ParseCredentialsFile(filepath));
+            try {  
+                synchronized (lock){   
+                    if (credential == null) {           
+                        credential = buildCredentialForCredentialsFile(parseCredentialsFile(filepath));
+                    }
+                }
             } catch (Exception e) {
                 throw logger.logExceptionAsError(new RuntimeException("Error parsing SDK Auth File", e));
             }
         }
     }
 
-    private static Map<String, String> ParseCredentialsFile(String filePath) throws Exception
+    private static Map<String, String> parseCredentialsFile(String filePath) throws IOException 
     {
+        FileInputStream inputStream=null;
         File file = new File(filePath);
         if (!file.exists()) {
             throw logger.logExceptionAsError(new InvalidPathException(filePath,"Auth File doesn't exist"));
         }
         try {
-            FileInputStream inputStream = new FileInputStream(file);
+            inputStream = new FileInputStream(file);
             int length = inputStream.available();
             byte bytes[] = new byte[length];
             inputStream.read(bytes);
-            inputStream.close();
             String result = new String(bytes, StandardCharsets.UTF_8);
             return SERIALIZER_ADAPTER.deserialize(result,Map.class , SerializerEncoding.JSON);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new IllegalStateException(e));
+        }finally{
+            inputStream.close();
         }
     }
 
-    private TokenCredential BuildCredentialForCredentialsFile(Map<String, String> authData) throws Exception
+    private  TokenCredential buildCredentialForCredentialsFile(Map<String, String> authData) 
     {
         String clientId = authData.get("clientId");
         String clientSecret = authData.get("clientSecret");
@@ -124,7 +131,7 @@ public class AuthFileCredential implements TokenCredential {
 
         if (clientId == null || clientSecret == null || tenantId == null || activeDirectoryEndpointUrl == null)
         {
-            throw logger.logExceptionAsError(new ClientAuthenticationException("Malformed Azure SDK Auth file. The file should contain 'clientId', 'clientSecret', 'tenentId' and 'activeDirectoryEndpointUrl' values.",null));
+            throw logger.logExceptionAsError(new ClientAuthenticationException("Malformed Azure SDK Auth file. The file should contain 'clientId', 'clientSecret', 'tenantId' and 'activeDirectoryEndpointUrl' values.",null));
         }
 
         return new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions.setAuthorityHost(activeDirectoryEndpointUrl));

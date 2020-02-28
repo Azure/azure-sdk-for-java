@@ -3,10 +3,6 @@
 
 package com.azure.identity;
 
-import com.azure.identity.implementation.util.ValidationUtil;
-
-import java.util.HashMap;
-
 /**
  * Fluent credential builder for instantiating a {@link AuthFileCredential}.
  *
@@ -31,9 +27,6 @@ public class AuthFileCredentialBuilder extends CredentialBuilderBase<AuthFileCre
      * @return a {@link AuthFileCredential} with the current configurations.
      */
     public AuthFileCredential build() {
-        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("filepath", filepath);
-            }});
         return new AuthFileCredential(filepath, identityClientOptions);
     }
 }
