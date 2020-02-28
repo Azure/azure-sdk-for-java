@@ -564,14 +564,9 @@ public final class SearchIndexAsyncClient {
         try {
             return restClient.documents()
                 .indexWithRestResponseAsync(batch, context)
-                .handle((res, sink) -> {
-                    if (res.getStatusCode() == MULTI_STATUS_CODE) {
-                        IndexBatchException ex = new IndexBatchException(res.getValue());
-                        sink.error(ex);
-                    } else {
-                        sink.next(res);
-                    }
-                });
+                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE)
+                    ? Mono.error(new IndexBatchException(response.getValue()))
+                    : Mono.just(response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
