@@ -64,10 +64,14 @@ class ServiceEndpointPolicyDefinitionsImpl extends WrapperImpl<ServiceEndpointPo
     public Observable<ServiceEndpointPolicyDefinition> getAsync(String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName) {
         ServiceEndpointPolicyDefinitionsInner client = this.inner();
         return client.getAsync(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName)
-        .map(new Func1<ServiceEndpointPolicyDefinitionInner, ServiceEndpointPolicyDefinition>() {
+        .flatMap(new Func1<ServiceEndpointPolicyDefinitionInner, Observable<ServiceEndpointPolicyDefinition>>() {
             @Override
-            public ServiceEndpointPolicyDefinition call(ServiceEndpointPolicyDefinitionInner inner) {
-                return wrapModel(inner);
+            public Observable<ServiceEndpointPolicyDefinition> call(ServiceEndpointPolicyDefinitionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServiceEndpointPolicyDefinition)wrapModel(inner));
+                }
             }
        });
     }

@@ -91,7 +91,7 @@ public class VirtualNetworkGatewayInner extends Resource {
 
     /**
      * The reference of the address space resource which represents the custom
-     * routes address space specified by the the customer for virtual network
+     * routes address space specified by the customer for virtual network
      * gateway and VpnClient.
      */
     @JsonProperty(value = "properties.customRoutes")
@@ -304,7 +304,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the reference of the address space resource which represents the custom routes address space specified by the the customer for virtual network gateway and VpnClient.
+     * Get the reference of the address space resource which represents the custom routes address space specified by the customer for virtual network gateway and VpnClient.
      *
      * @return the customRoutes value
      */
@@ -313,7 +313,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the reference of the address space resource which represents the custom routes address space specified by the the customer for virtual network gateway and VpnClient.
+     * Set the reference of the address space resource which represents the custom routes address space specified by the customer for virtual network gateway and VpnClient.
      *
      * @param customRoutes the customRoutes value to set
      * @return the VirtualNetworkGatewayInner object itself.

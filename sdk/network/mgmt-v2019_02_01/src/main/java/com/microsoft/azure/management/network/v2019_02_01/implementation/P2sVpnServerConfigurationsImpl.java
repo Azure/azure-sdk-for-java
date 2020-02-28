@@ -64,10 +64,14 @@ class P2sVpnServerConfigurationsImpl extends WrapperImpl<P2sVpnServerConfigurati
     public Observable<P2SVpnServerConfiguration> getAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
         P2sVpnServerConfigurationsInner client = this.inner();
         return client.getAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName)
-        .map(new Func1<P2SVpnServerConfigurationInner, P2SVpnServerConfiguration>() {
+        .flatMap(new Func1<P2SVpnServerConfigurationInner, Observable<P2SVpnServerConfiguration>>() {
             @Override
-            public P2SVpnServerConfiguration call(P2SVpnServerConfigurationInner inner) {
-                return wrapModel(inner);
+            public Observable<P2SVpnServerConfiguration> call(P2SVpnServerConfigurationInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((P2SVpnServerConfiguration)wrapModel(inner));
+                }
             }
        });
     }
