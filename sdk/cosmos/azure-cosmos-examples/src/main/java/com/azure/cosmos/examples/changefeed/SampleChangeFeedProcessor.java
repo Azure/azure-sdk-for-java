@@ -43,33 +43,33 @@ public class SampleChangeFeedProcessor {
     private static boolean isWorkCompleted = false;
 
     public static void main (String[]args) {
-        System.out.println("BEGIN Sample");
+        logger.info("BEGIN Sample");
 
         try {
 
-            System.out.println("-->CREATE DocumentClient");
+            logger.info("-->CREATE DocumentClient");
             CosmosAsyncClient client = getCosmosClient();
 
-            System.out.println("-->CREATE sample's database: " + DATABASE_NAME);
+            logger.info("-->CREATE sample's database: " + DATABASE_NAME);
             CosmosAsyncDatabase cosmosDatabase = createNewDatabase(client, DATABASE_NAME);
 
-            System.out.println("-->CREATE container for documents: " + COLLECTION_NAME);
+            logger.info("-->CREATE container for documents: " + COLLECTION_NAME);
             CosmosAsyncContainer feedContainer = createNewCollection(client, DATABASE_NAME, COLLECTION_NAME);
 
-            System.out.println("-->CREATE container for lease: " + COLLECTION_NAME + "-leases");
+            logger.info("-->CREATE container for lease: " + COLLECTION_NAME + "-leases");
             CosmosAsyncContainer leaseContainer = createNewLeaseCollection(client, DATABASE_NAME, COLLECTION_NAME + "-leases");
 
             changeFeedProcessorInstance = getChangeFeedProcessor("SampleHost_1", feedContainer, leaseContainer);
-            System.out.println("Got here\n");
+            logger.info("Got here\n");
             changeFeedProcessorInstance.start()
                 .subscribeOn(Schedulers.elastic())
                 .doOnSuccess(aVoid -> {
-                    System.out.println("!doOnSuccess!\n");
+                    logger.info("!doOnSuccess!\n");
                     createNewDocuments(feedContainer, 10, Duration.ofSeconds(3));
                     isWorkCompleted = true;
                 })
                 .subscribe();
-            System.out.println("and here\n");
+            logger.info("and here\n");
 
             long remainingWork = WAIT_FOR_WORK;
             while (!isWorkCompleted && remainingWork > 0) {
@@ -85,7 +85,7 @@ public class SampleChangeFeedProcessor {
                 throw new RuntimeException("The change feed processor initialization and automatic create document feeding process did not complete in the expected time");
             }
 
-            System.out.println("-->DELETE sample's database: " + DATABASE_NAME);
+            logger.info("-->DELETE sample's database: " + DATABASE_NAME);
             deleteDatabase(cosmosDatabase);
 
             Thread.sleep(500);
@@ -94,8 +94,7 @@ public class SampleChangeFeedProcessor {
             e.printStackTrace();
         }
 
-        System.out.println("END Sample");
-        System.exit(0);
+        logger.info("END Sample");
     }
 
     public static ChangeFeedProcessor getChangeFeedProcessor(String hostName, CosmosAsyncContainer feedContainer, CosmosAsyncContainer leaseContainer) {
@@ -104,17 +103,17 @@ public class SampleChangeFeedProcessor {
             .setFeedContainer(feedContainer)
             .setLeaseContainer(leaseContainer)
             .setHandleChanges((List<JsonNode> docs) -> {
-                System.out.println("--->setHandleChanges() START");
+                logger.info("--->setHandleChanges() START");
 
                 for (JsonNode document : docs) {
                     try {
-                        System.out.println("---->DOCUMENT RECEIVED: " + OBJECT_MAPPER.writerWithDefaultPrettyPrinter()
+                        logger.info("---->DOCUMENT RECEIVED: " + OBJECT_MAPPER.writerWithDefaultPrettyPrinter()
                                                                             .writeValueAsString(document));
                     } catch (JsonProcessingException e) {
                         e.printStackTrace();
                     }
                 }
-                System.out.println("--->handleChanges() END");
+                logger.info("--->handleChanges() END");
 
             })
             .build();
@@ -223,7 +222,7 @@ public class SampleChangeFeedProcessor {
 
             containerClient.createItem(document).subscribe(doc -> {
                 try {
-                    System.out.println("---->DOCUMENT WRITE: " + OBJECT_MAPPER.writerWithDefaultPrettyPrinter()
+                    logger.info("---->DOCUMENT WRITE: " + OBJECT_MAPPER.writerWithDefaultPrettyPrinter()
                                                                      .writeValueAsString(doc));
                 } catch (JsonProcessingException e) {
                     logger.error("Failure in processing json [{}]", e.getMessage(), e);

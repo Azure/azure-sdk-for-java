@@ -4,10 +4,12 @@
 package com.azure.cosmos.examples.storedprocedure.sync;
 
 import com.azure.cosmos.*;
+import com.azure.cosmos.examples.changefeed.SampleChangeFeedProcessor;
 import com.azure.cosmos.examples.common.AccountSettings;
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.Iterator;
 
@@ -22,6 +24,8 @@ public class SampleStoredProcedure {
     private CosmosContainer container;
 
     private String sprocId;
+
+    protected static Logger logger = LoggerFactory.getLogger(SampleChangeFeedProcessor.class.getSimpleName());
 
     public void close() {
         client.close();
@@ -38,16 +42,15 @@ public class SampleStoredProcedure {
 
         try {
             p.sprocDemo();
-            System.out.println("Demo complete, please hold while resources are released");
+            logger.info("Demo complete, please hold while resources are released");
             p.shutdown();
-            System.out.println("Done.\n");
+            logger.info("Done.\n");
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println(String.format("Cosmos getStarted failed with %s", e));
+            logger.error(String.format("Cosmos getStarted failed with %s", e));
             p.close();
         } finally {
         }
-        System.exit(0);
     }
 
     //  </Main>
@@ -63,7 +66,7 @@ public class SampleStoredProcedure {
     }
 
     public void setUp() throws Exception{
-        System.out.println("Using Azure Cosmos DB endpoint: " + AccountSettings.HOST);
+        logger.info("Using Azure Cosmos DB endpoint: " + AccountSettings.HOST);
 
         ConnectionPolicy defaultPolicy = ConnectionPolicy.getDefaultPolicy();
         //  Setting the preferred location to Cosmos DB Account region
@@ -79,7 +82,7 @@ public class SampleStoredProcedure {
             .setConsistencyLevel(ConsistencyLevel.EVENTUAL)
             .buildClient();
 
-            System.out.println("Create database " + databaseName + " with container " + containerName + " if either does not already exist.\n");
+            logger.info("Create database " + databaseName + " with container " + containerName + " if either does not already exist.\n");
 
             database = client.createDatabaseIfNotExists(databaseName).getDatabase();
 
@@ -94,7 +97,7 @@ public class SampleStoredProcedure {
     }
 
     public void createStoredProcedure() throws Exception {
-        System.out.println("Creating stored procedure...\n");
+        logger.info("Creating stored procedure...\n");
 
         sprocId = UUID.randomUUID().toString();
         CosmosStoredProcedureProperties storedProcedureDef =  new CosmosStoredProcedureProperties(sprocId,"function() {var x = 11;}");
@@ -111,16 +114,15 @@ public class SampleStoredProcedure {
 
         Iterator<CosmosStoredProcedureProperties> feedResponseIterator = feedResponseIterable.iterator();
 
-//        System.out.println(String.format("\nListing stored procedures associated with container..."));
         while(feedResponseIterator.hasNext()) {
             CosmosStoredProcedureProperties storedProcedureProperties = feedResponseIterator.next();
-            System.out.println(String.format("Stored Procedure: %s\n",storedProcedureProperties));
+            logger.info(String.format("Stored Procedure: %s\n",storedProcedureProperties));
         }
-        System.out.println();
+        logger.info("\n");
     }
 
     public void executeStoredProcedure() throws Exception {
-        System.out.println(String.format("Executing stored procedure %s...\n\n",sprocId));
+        logger.info(String.format("Executing stored procedure %s...\n\n",sprocId));
 
         CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
         options.setPartitionKey(PartitionKey.NONE);
@@ -128,7 +130,7 @@ public class SampleStoredProcedure {
                                                          .getStoredProcedure(sprocId)
                                                          .execute(null, options);
 
-        System.out.println(String.format("Stored procedure %s returned %s (HTTP %d), at cost %.3f RU.\n",
+        logger.info(String.format("Stored procedure %s returned %s (HTTP %d), at cost %.3f RU.\n",
                                          sprocId,
                                          executeResponse.responseAsString(),
                                          executeResponse.getStatusCode(),
@@ -137,11 +139,11 @@ public class SampleStoredProcedure {
     }
 
     public void deleteStoredProcedure() throws Exception {
-        System.out.println("-Deleting stored procedure...\n");
+        logger.info("-Deleting stored procedure...\n");
         container.getScripts()
             .getStoredProcedure(sprocId)
             .delete();
-        System.out.println("-Closing client instance...\n");
+        logger.info("-Closing client instance...\n");
         client.close();
     }
 }

@@ -9,12 +9,13 @@
 package com.azure.cosmos.examples.storedprocedure.async;
 
 import com.azure.cosmos.*;
+import com.azure.cosmos.examples.changefeed.SampleChangeFeedProcessor;
 import com.azure.cosmos.examples.common.AccountSettings;
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Flux;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
@@ -29,6 +30,8 @@ public class SampleStoredProcedureAsync {
     private CosmosAsyncContainer container;
 
     private String sprocId;
+
+    protected static Logger logger = LoggerFactory.getLogger(SampleChangeFeedProcessor.class.getSimpleName());
 
     public void close() {
         client.close();
@@ -45,16 +48,15 @@ public class SampleStoredProcedureAsync {
 
         try {
             p.sprocDemo();
-            System.out.println("Demo complete, please hold while resources are released");
+            logger.info("Demo complete, please hold while resources are released");
             p.shutdown();
-            System.out.println("Done.\n");
+            logger.info("Done.\n");
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println(String.format("Cosmos getStarted failed with %s", e));
+            logger.error(String.format("Cosmos getStarted failed with %s", e));
             p.close();
         } finally {
         }
-        System.exit(0);
     }
 
     //  </Main>
@@ -70,7 +72,7 @@ public class SampleStoredProcedureAsync {
     }
 
     public void setUp() throws Exception{
-        System.out.println("Using Azure Cosmos DB endpoint: " + AccountSettings.HOST);
+        logger.info("Using Azure Cosmos DB endpoint: " + AccountSettings.HOST);
 
         ConnectionPolicy defaultPolicy = ConnectionPolicy.getDefaultPolicy();
         //  Setting the preferred location to Cosmos DB Account region
@@ -86,7 +88,7 @@ public class SampleStoredProcedureAsync {
             .setConsistencyLevel(ConsistencyLevel.EVENTUAL)
             .buildAsyncClient();
 
-            System.out.println("Create database " + databaseName + " with container " + containerName + " if either does not already exist.\n");
+            logger.info("Create database " + databaseName + " with container " + containerName + " if either does not already exist.\n");
 
             client.createDatabaseIfNotExists(databaseName).flatMap(databaseResponse -> {
                 database = databaseResponse.getDatabase();
@@ -107,7 +109,7 @@ public class SampleStoredProcedureAsync {
     }
 
     public void createStoredProcedure() throws Exception {
-        System.out.println("Creating stored procedure...\n");
+        logger.info("Creating stored procedure...\n");
 
         sprocId = UUID.randomUUID().toString();
         CosmosStoredProcedureProperties storedProcedureDef =  new CosmosStoredProcedureProperties(sprocId,"function() {var x = 11;}");
@@ -122,12 +124,10 @@ public class SampleStoredProcedureAsync {
         CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> fluxResponse =
                 container.getScripts().readAllStoredProcedures(feedOptions);
 
-//        System.out.println(String.format("\nListing stored procedures associated with container..."));
-
         final CountDownLatch completionLatch = new CountDownLatch(1);
 
         fluxResponse.flatMap(storedProcedureProperties -> {
-            System.out.println(String.format("Stored Procedure: %s\n",storedProcedureProperties.getId()));
+            logger.info(String.format("Stored Procedure: %s\n",storedProcedureProperties.getId()));
             return Mono.empty();
         }).subscribe(
             s -> {},
@@ -136,7 +136,7 @@ public class SampleStoredProcedureAsync {
                     //Client-specific errors
                     CosmosClientException cerr = (CosmosClientException)err;
                     cerr.printStackTrace();
-                    System.err.println(String.format("Read Item failed with %s\n", cerr));
+                    logger.error(String.format("Read Item failed with %s\n", cerr));
                 } else {
                     //General errors
                     err.printStackTrace();
@@ -151,7 +151,7 @@ public class SampleStoredProcedureAsync {
     }
 
     public void executeStoredProcedure() throws Exception {
-        System.out.println(String.format("Executing stored procedure %s...\n\n",sprocId));
+        logger.info(String.format("Executing stored procedure %s...\n\n",sprocId));
 
         CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
         options.setPartitionKey(PartitionKey.NONE);
@@ -160,7 +160,7 @@ public class SampleStoredProcedureAsync {
             .getStoredProcedure(sprocId)
             .execute(null, options)
             .flatMap(executeResponse -> {
-                System.out.println(String.format("Stored procedure %s returned %s (HTTP %d), at cost %.3f RU.\n",
+                logger.info(String.format("Stored procedure %s returned %s (HTTP %d), at cost %.3f RU.\n",
                     sprocId,
                     executeResponse.getResponseAsString(),
                     executeResponse.getStatusCode(),
@@ -171,11 +171,11 @@ public class SampleStoredProcedureAsync {
     }
 
     public void deleteStoredProcedure() throws Exception {
-        System.out.println("-Deleting stored procedure...\n");
+        logger.info("-Deleting stored procedure...\n");
         container.getScripts()
             .getStoredProcedure(sprocId)
             .delete().block();
-        System.out.println("-Closing client instance...\n");
+        logger.info("-Closing client instance...\n");
         client.close();
     }
 }
