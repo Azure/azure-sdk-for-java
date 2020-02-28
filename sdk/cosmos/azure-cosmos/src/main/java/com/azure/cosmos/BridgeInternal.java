@@ -512,4 +512,9 @@ public class BridgeInternal {
     public static int getHashCode(CosmosKeyCredential keyCredential) {
         return keyCredential.getKeyHashCode();
     }
+
+
+    public static String toLower(RequestVerb verb) {
+        return verb.toLowerCase();
+    }
 }
