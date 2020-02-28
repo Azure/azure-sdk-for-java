@@ -159,6 +159,19 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The TaskRunsInner object to access its operations.
+     */
+    private TaskRunsInner taskRuns;
+
+    /**
+     * Gets the TaskRunsInner object to access its operations.
+     * @return the TaskRunsInner object.
+     */
+    public TaskRunsInner taskRuns() {
+        return this.taskRuns;
+    }
+
+    /**
      * The TasksInner object to access its operations.
      */
     private TasksInner tasks;
@@ -208,6 +221,7 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.registries = new RegistriesInner(restClient().retrofit(), this);
         this.runs = new RunsInner(restClient().retrofit(), this);
+        this.taskRuns = new TaskRunsInner(restClient().retrofit(), this);
         this.tasks = new TasksInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
