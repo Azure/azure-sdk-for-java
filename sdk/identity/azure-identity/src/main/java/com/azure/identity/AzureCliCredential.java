@@ -30,7 +30,7 @@ public class AzureCliCredential implements TokenCredential {
         identityClient = new IdentityClientBuilder().identityClientOptions(identityClientOptions).build();   
 	}
 
-	@Override
+    @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithAzureCli(request);
     }
