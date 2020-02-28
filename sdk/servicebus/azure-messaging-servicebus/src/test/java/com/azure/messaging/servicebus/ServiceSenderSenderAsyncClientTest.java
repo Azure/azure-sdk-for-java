@@ -49,7 +49,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class QueueSenderAsyncClientTest {
+public class ServiceSenderSenderAsyncClientTest {
     private static final String NAMESPACE = "my-namespace";
     private static final String QUEUE_NAME = "my-queue-name";
 
@@ -67,7 +67,7 @@ public class QueueSenderAsyncClientTest {
     @Captor
     private ArgumentCaptor<List<org.apache.qpid.proton.message.Message>> messagesCaptor;
 
-    private final ClientLogger logger = new ClientLogger(QueueSenderAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(ServiceSenderSenderAsyncClient.class);
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
         .setDelay(Duration.ofMillis(500))
@@ -75,7 +75,7 @@ public class QueueSenderAsyncClientTest {
         .setTryTimeout(Duration.ofSeconds(10));
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-    private QueueSenderAsyncClient queueSenderAsyncClient;
+    private ServiceSenderSenderAsyncClient serviceSenderSenderAsyncClient;
     private ServiceBusConnectionProcessor connectionProcessor;
     private TracerProvider tracerProvider;
     private ConnectionOptions connectionOptions;
@@ -107,10 +107,10 @@ public class QueueSenderAsyncClientTest {
         connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
             new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getEntityPath(), connectionOptions.getRetry()));
-        queueSenderAsyncClient = new QueueSenderAsyncClient(QUEUE_NAME, connectionProcessor, retryOptions,
+        serviceSenderSenderAsyncClient = new ServiceSenderSenderAsyncClient(QUEUE_NAME, connectionProcessor, retryOptions,
             tracerProvider, messageSerializer);
 
-        when(sendLink.getLinkSize()).thenReturn(Mono.just(QueueSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceSenderSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
     }
 
     @AfterEach
@@ -142,7 +142,7 @@ public class QueueSenderAsyncClientTest {
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         // Act
-        StepVerifier.create(queueSenderAsyncClient.send(testData))
+        StepVerifier.create(serviceSenderSenderAsyncClient.send(testData))
             .verifyComplete();
 
         // Assert
@@ -170,7 +170,7 @@ public class QueueSenderAsyncClientTest {
         when(sendLink.send(any(org.apache.qpid.proton.message.Message.class))).thenReturn(Mono.empty());
 
         // Act
-        StepVerifier.create(queueSenderAsyncClient.send(testData))
+        StepVerifier.create(serviceSenderSenderAsyncClient.send(testData))
             .verifyComplete();
 
         // Assert

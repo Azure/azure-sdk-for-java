@@ -44,7 +44,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class QueueReceiverAsyncClientTest {
+public class ServiceBusReceiverAsyncClientTest {
 
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
     private static final String PAYLOAD = "hello";
@@ -53,7 +53,7 @@ public class QueueReceiverAsyncClientTest {
     private static final String NAMESPACE = "mynamespace-foo";
     private static final String QUEUE_NAME = "queue-name";
 
-    private final ClientLogger logger = new ClientLogger(QueueReceiverAsyncClientTest.class);
+    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(2);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
@@ -68,7 +68,7 @@ public class QueueReceiverAsyncClientTest {
     private TokenCredential tokenCredential;
 
     private MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
-    private QueueReceiverAsyncClient consumer;
+    private ServiceBusReceiverAsyncClient consumer;
     private ServiceBusConnectionProcessor connectionProcessor;
 
     @Mock
@@ -97,7 +97,7 @@ public class QueueReceiverAsyncClientTest {
             .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getEntityPath(), connectionOptions.getRetry()));
 
-        consumer = new QueueReceiverAsyncClient(NAMESPACE, QUEUE_NAME, connectionProcessor, tracerProvider,
+        consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, QUEUE_NAME, connectionProcessor, tracerProvider,
             messageSerializer, PREFETCH);
     }
 

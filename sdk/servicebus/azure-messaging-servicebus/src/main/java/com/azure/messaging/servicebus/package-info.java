@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing classes for creating {@link com.azure.messaging.servicebus.QueueSenderAsyncClient},
- * {@link com.azure.messaging.servicebus.QueueReceiverAsyncClient} to perform operations on Azure Service Bus.
+ * Package containing classes for creating {@link com.azure.messaging.servicebus.ServiceSenderSenderAsyncClient},
+ * {@link com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient} to perform operations on Azure Service Bus.
  */
 package com.azure.messaging.servicebus;

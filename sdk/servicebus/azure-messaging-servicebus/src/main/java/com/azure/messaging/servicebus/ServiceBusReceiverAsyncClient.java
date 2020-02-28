@@ -24,7 +24,6 @@ import java.time.Instant;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -34,13 +33,13 @@ import static com.azure.core.util.FluxUtil.fluxError;
  * An <b>asynchronous</b> receiver responsible for receiving {@link Message} from a specific Queue.
  *
  */
-@ServiceClient(builder = QueueClientBuilder.class, isAsync = true)
-public final class QueueReceiverAsyncClient implements Closeable {
+@ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
+public final class ServiceBusReceiverAsyncClient implements Closeable {
 
     private static final String RECEIVER_ENTITY_PATH_FORMAT = "%s";
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final ClientLogger logger = new ClientLogger(QueueReceiverAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
     private final String fullyQualifiedNamespace;
     private final String queueName;
     private final ServiceBusConnectionProcessor connectionProcessor;
@@ -54,9 +53,9 @@ public final class QueueReceiverAsyncClient implements Closeable {
      */
     private final AtomicReference<ServiceBusAsyncConsumer> openConsumer =  new AtomicReference<>();
 
-    QueueReceiverAsyncClient(String fullyQualifiedNamespace, String queueName,
-                             ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-                             MessageSerializer messageSerializer, int prefetchCount) {
+    ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String queueName,
+                                  ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
+                                  MessageSerializer messageSerializer, int prefetchCount) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.queueName = queueName;
         this.connectionProcessor = connectionProcessor;
@@ -167,11 +166,11 @@ public final class QueueReceiverAsyncClient implements Closeable {
      * Abandon {@link Message} with lock token and updated message property. This will make the message available
      * again for processing. Abandoning a message will increase the delivery count on the message.
      *
-     * @param lockToken to be used.
+     * @param receivedMessage to be used.
      * @param propertiesToModify Message properties to modify.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> abandon(UUID lockToken, Map<String, Object> propertiesToModify) {
+    public Mono<Void> abandon(ReceivedMessage receivedMessage, Map<String, Object> propertiesToModify) {
         //TODO(feature-to-implement)
         return null;
     }
@@ -180,10 +179,10 @@ public final class QueueReceiverAsyncClient implements Closeable {
      * Abandon {@link Message} with lock token. This will make the message available again for processing.
      * Abandoning a message will increase the delivery count on the message.
      *
-     * @param lockToken to be used.
+     * @param receivedMessage to be used.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> abandon(UUID lockToken) {
+    public Mono<Void> abandon(ReceivedMessage receivedMessage) {
         //TODO(feature-to-implement)
         return null;
     }
@@ -191,10 +190,10 @@ public final class QueueReceiverAsyncClient implements Closeable {
     /**
      * Completes a {@link Message} using its lock token. This will delete the message from the service.
      *
-     * @param lockToken to be used.
+     * @param receivedMessage to be used.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> complete(UUID lockToken) {
+    public Mono<Void> complete(ReceivedMessage receivedMessage) {
         //TODO(feature-to-implement)
         return null;
     }
@@ -203,11 +202,11 @@ public final class QueueReceiverAsyncClient implements Closeable {
      *  Defers a {@link Message} using its lock token with modified message property.
      *  This will move message into deferred subqueue.
      *
-     * @param lockToken to be used.
+     * @param receivedMessage to be used.
      * @param propertiesToModify Message properties to modify.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> defer(UUID lockToken, Map<String, Object> propertiesToModify) {
+    public Mono<Void> defer(ReceivedMessage receivedMessage, Map<String, Object> propertiesToModify) {
         //TODO(feature-to-implement)
         return null;
     }
@@ -215,10 +214,10 @@ public final class QueueReceiverAsyncClient implements Closeable {
     /**
      * Defers a {@link Message} using its lock token. This will move message into deferred subqueue.
      *
-     * @param lockToken to be used.
+     * @param receivedMessage to be used.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> defer(UUID lockToken) {
+    public Mono<Void> defer(ReceivedMessage receivedMessage) {
         //TODO(feature-to-implement)
         return null;
     }
@@ -226,10 +225,10 @@ public final class QueueReceiverAsyncClient implements Closeable {
     /**
      * Moves a {@link Message} to the deadletter sub-queue.
      *
-     * @param lockToken to be used.
+     * @param receivedMessage to be used.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> deadLetter(UUID lockToken) {
+    public Mono<Void> deadLetter(ReceivedMessage receivedMessage) {
         //TODO(feature-to-implement)
         return null;
     }
@@ -238,13 +237,14 @@ public final class QueueReceiverAsyncClient implements Closeable {
      * Moves a {@link Message} to the deadletter sub-queue with deadletter reason, error description
      * and modifided properties.
      *
-     * @param lockToken to be used.
+     * @param receivedMessage to be used.
      * @param deadLetterReason The deadletter reason.
      * @param deadLetterErrorDescription The deadletter error description.
      * @param propertiesToModify Message properties to modify.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> deadLetter(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription,
+    public Mono<Void> deadLetter(ReceivedMessage receivedMessage, String deadLetterReason,
+                                 String deadLetterErrorDescription,
                                  Map<String, Object> propertiesToModify) {
         //TODO(feature-to-implement)
         return null;
@@ -253,23 +253,24 @@ public final class QueueReceiverAsyncClient implements Closeable {
     /**
      * Moves a {@link Message} to the deadletter sub-queue with deadletter reason and error description.
      *
-     * @param lockToken to be used.
+     * @param receivedMessage to be used.
      * @param deadLetterReason The deadletter reason.
      * @param deadLetterErrorDescription The deadletter error description.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> deadLetter(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription) {
+    public Mono<Void> deadLetter(ReceivedMessage receivedMessage, String deadLetterReason,
+                                 String deadLetterErrorDescription) {
         //TODO(feature-to-implement)
         return null;
     }
 
     /**
      * Moves a {@link Message} to the deadletter sub-queue with modified message properties.
-     * @param lockToken to be used.
+     * @param receivedMessage to be used.
      * @param propertiesToModify Message properties to modify.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> deadLetter(UUID lockToken, Map<String, Object> propertiesToModify) {
+    public Mono<Void> deadLetter(ReceivedMessage receivedMessage, Map<String, Object> propertiesToModify) {
         //TODO(feature-to-implement)
         return null;
     }
@@ -281,10 +282,10 @@ public final class QueueReceiverAsyncClient implements Closeable {
      * the Queue creation (LockDuration). If processing of the message requires longer than this duration, the lock
      * needs to be renewed. For each renewal, the lock is reset to the entity's LockDuration value.
      *
-     * @param lockToken to be used.
+     * @param receivedMessage to be used.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Instant renewMessageLock(UUID lockToken) {
+    public Instant renewMessageLock(ReceivedMessage receivedMessage) {
         //TODO(feature-to-implement)
         return null;
     }
@@ -292,10 +293,10 @@ public final class QueueReceiverAsyncClient implements Closeable {
     /**
      * Receives a deferred {@link Message}. Deferred messages can only be received by using sequence number.
      *
-     * @param sequenceNumber The {@link Message#getSequenceNumber()}.
+     * @param sequenceNumber The {@link ReceivedMessage#getSequenceNumber()}.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Message> receiveDeferredMessage(long sequenceNumber) {
+    public Mono<ReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
         //TODO(feature-to-implement)
         return null;
     }

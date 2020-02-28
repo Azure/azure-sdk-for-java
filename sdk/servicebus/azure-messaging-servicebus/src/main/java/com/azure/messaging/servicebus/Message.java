@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
@@ -51,21 +50,17 @@ public class Message {
     private final Map<String, Object> properties;
     private final byte[] body;
     private final SystemProperties systemProperties;
-    private Context context;
-    private UUID lockToken;
     private String messageId;
+    private Context context;
     private String contentType;
     private String sessionId;
-    private long sequenceNumber;
 
 
     static {
         final Set<String> properties = new HashSet<>();
-        properties.add(PARTITION_KEY_ANNOTATION_NAME.getValue());
         properties.add(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
         properties.add(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
         properties.add(PUBLISHER_ANNOTATION_NAME.getValue());
-
         RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(properties);
     }
 
@@ -80,7 +75,6 @@ public class Message {
         this.context = Context.NONE;
         this.properties = new HashMap<>();
         this.systemProperties = new SystemProperties();
-        this.messageId = null;
     }
 
     /**
@@ -90,7 +84,7 @@ public class Message {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public Message(ByteBuffer body) {
-        this(Objects.requireNonNull(body, "'body' cannot be null.").array());
+        this(body.array());
     }
 
     /**
@@ -163,6 +157,24 @@ public class Message {
     }
 
     /**
+     * Creates a {@link Message} with the given {@code body}, system properties and context.
+     *
+     * @param body The data to set for this {@link Message}.
+     * @param systemProperties System properties set by message broker for this {@link Message}.
+     * @param context A specified key-value pair of type {@link Context}.
+     * @param sessionId The sesson id assigned to the message.
+     * @throws NullPointerException if {@code body}, {@code systemProperties}, {@code sessionId} or {@code context}
+     * is {@code null}.
+     */
+    public Message(byte[] body, Map<String, Object> systemProperties, Context context, String sessionId) {
+        this.body = Objects.requireNonNull(body, "'body' cannot be null.");
+        this.sessionId = Objects.requireNonNull(sessionId, "'sessonId' cannot be null.");
+        this.context = Objects.requireNonNull(context, "'context' cannot be null.");
+        this.systemProperties = new SystemProperties(Objects.requireNonNull(systemProperties,
+            "'systemProperties' cannot be null."));
+        this.properties = new HashMap<>();
+    }
+    /**
      * Gets the set of free-form {@link Message} properties which may be used for passing metadata associated with
      * the {@link Message}  during Service Bus operations. A common use-case for {@code properties()} is to associate
      * serialization hints for the {@link #getBody()} as an aid to consumers who wish to deserialize the binary data.
@@ -198,10 +210,31 @@ public class Message {
 
     /**
      * Sets the message id.
-     * @param messageId of the {@link Message}.
+     * @param messageId to be set.
+     * @return The updted {@link Message}.
      */
-    public void setMessageId(String messageId) {
+    public Message setMessageId(String messageId) {
         this.messageId = messageId;
+        return this;
+    }
+
+    /**
+     * Sets the session id.
+     * @param sessionId to be set.
+     * @return The updted {@link Message}.
+     */
+    public Message setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+        return this;
+    }
+
+
+    /**
+     *
+     * @return Session Id of the {@link Message}.
+     */
+    public String getSessionId() {
+        return sessionId;
     }
 
     /**
@@ -215,9 +248,12 @@ public class Message {
     /**
      * Sets the content type of the {@link Message}.
      * @param contentType of the message.
+     *
+     * @return The updted {@link Message}.
      */
-    public void setContentType(String contentType) {
+    public Message setContentType(String contentType) {
         this.contentType = contentType;
+        return this;
     }
 
     /**
@@ -294,29 +330,6 @@ public class Message {
     }
 
     /**
-     * Gets the unique number assigned to a message by Service Bus.
-     *
-     * The sequence number is a unique 64-bit integer assigned to a message as it is accepted and stored by the broker
-     * and functions as its true identifier. For partitioned entities, the topmost 16 bits reflect the
-     * partition identifier. Sequence numbers monotonically increase and are gapless. They roll over to 0 when
-     * the 48-64 bit range is exhausted. This property is read-only.
-     *
-     * @return sequence number of this message
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and Timestamps</a>
-     */
-    public long getSequenceNumber() {
-        return this.sequenceNumber;
-    }
-
-    /**
-     *
-     * @return The lockToken.
-     */
-    public UUID getLockToken() {
-        return lockToken;
-    }
-
-    /**
      * A collection of properties populated by Azure Service Bus service.
      */
     static class SystemProperties extends HashMap<String, Object> {
@@ -326,7 +339,6 @@ public class Message {
 
         SystemProperties() {
             super();
-
             partitionKey = null;
 
         }

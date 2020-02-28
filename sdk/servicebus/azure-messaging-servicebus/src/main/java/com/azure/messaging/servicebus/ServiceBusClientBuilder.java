@@ -42,10 +42,10 @@ import java.util.Objects;
 import java.util.ServiceLoader;
 
 /***
- * The builder to create {@link QueueReceiverAsyncClient} and {@link QueueSenderAsyncClient}.
+ * The builder to create {@link ServiceBusReceiverAsyncClient} and {@link ServiceSenderSenderAsyncClient}.
  */
-@ServiceClientBuilder(serviceClients = { QueueReceiverAsyncClient.class, QueueSenderAsyncClient.class})
-public final class QueueClientBuilder {
+@ServiceClientBuilder(serviceClients = { ServiceBusReceiverAsyncClient.class, ServiceSenderSenderAsyncClient.class})
+public final class ServiceBusClientBuilder {
 
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final AmqpRetryOptions DEFAULT_RETRY =
@@ -56,7 +56,7 @@ public final class QueueClientBuilder {
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
 
-    private final ClientLogger logger = new ClientLogger(QueueClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(ServiceBusClientBuilder.class);
 
     private ProxyOptions proxyOptions;
     private TokenCredential credentials;
@@ -72,16 +72,16 @@ public final class QueueClientBuilder {
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
      */
-    public QueueClientBuilder() {
+    public ServiceBusClientBuilder() {
         this.connectionId = StringUtil.getRandomString("MF");
     }
 
     /**
      *
      * @param connectionString to connect to Queue.
-     * @return The updated {@link QueueClientBuilder} object.
+     * @return The updated {@link ServiceBusClientBuilder} object.
      */
-    public QueueClientBuilder connectionString(String connectionString) {
+    public ServiceBusClientBuilder connectionString(String connectionString) {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         final TokenCredential tokenCredential;
         try {
@@ -101,29 +101,31 @@ public final class QueueClientBuilder {
      * @param fullyQualifiedNamespace for the Service Bus.
      * @param queueName The name of the queue.
      * @param credential {@link TokenCredential} to be used for authentication.
-     * @return The updated {@link QueueClientBuilder} object.
+     * @return The updated {@link ServiceBusClientBuilder} object.
      */
-    public QueueClientBuilder credential(String fullyQualifiedNamespace, String queueName, TokenCredential credential) {
+    public ServiceBusClientBuilder credential(String fullyQualifiedNamespace, String queueName,
+                                              TokenCredential credential) {
+
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.queueName = Objects.requireNonNull(queueName, "'entityPath' cannot be null.");
+        this.queueName = Objects.requireNonNull(queueName, "'queueName' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         } else if (CoreUtils.isNullOrEmpty(queueName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'entityPath' cannot be an empty string."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'queueName' cannot be an empty string."));
         }
         return this;
     }
 
     /**
-     * Creates an {@link QueueSenderAsyncClient} for transmitting {@link Message} to the Service Bus Queue.
+     * Creates an {@link ServiceSenderSenderAsyncClient} for transmitting {@link Message} to the Service Bus Queue.
      *
-     * @return A new {@link QueueSenderAsyncClient}.
+     * @return A new {@link ServiceSenderSenderAsyncClient}.
      */
-    QueueSenderAsyncClient buildAsyncSenderClient() {
+    ServiceSenderSenderAsyncClient buildAsyncSenderClient() {
         if (retryOptions == null) {
             retryOptions = DEFAULT_RETRY;
         }
@@ -141,16 +143,16 @@ public final class QueueClientBuilder {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new QueueSenderAsyncClient(queueName, connectionProcessor,  retryOptions, tracerProvider,
+        return new ServiceSenderSenderAsyncClient(queueName, connectionProcessor,  retryOptions, tracerProvider,
             messageSerializer);
     }
     /**
      * Creates an Service Bus Queue receiver responsible for reading {@link Message} from a specific Queue.
      *
      * @param prefetchCount The set of options to apply when creating the consumer.
-     * @return An new {@link QueueReceiverAsyncClient} that receives messages from the Queue.
+     * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from the Queue.
      */
-    QueueReceiverAsyncClient createAsyncReceiverClient(int prefetchCount) {
+    ServiceBusReceiverAsyncClient createAsyncReceiverClient(int prefetchCount) {
         if (retryOptions == null) {
             retryOptions = DEFAULT_RETRY;
         }
@@ -168,23 +170,23 @@ public final class QueueClientBuilder {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new QueueReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), queueName,
+        return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), queueName,
             connectionProcessor, tracerProvider, messageSerializer, prefetchCount);
     }
 
-    QueueReceiverAsyncClient createAsyncReceiverClient(ReceiveMode receiveMode, int prefetchCount) {
+    ServiceBusReceiverAsyncClient createAsyncReceiverClient(ReceiveMode receiveMode, int prefetchCount) {
         return createAsyncReceiverClient(prefetchCount);
     }
 
     /**
-     * Sets the proxy configuration to use for {@link QueueSenderAsyncClient}. When a proxy is configured, {@link
-     * AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
+     * Sets the proxy configuration to use for {@link ServiceSenderSenderAsyncClient}.
+     * When a proxy is configured, {@link AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
      * @param proxyOptions The proxy configuration to use.
      *
-     * @return The updated {@link QueueClientBuilder} object.
+     * @return The updated {@link ServiceBusClientBuilder} object.
      */
-    public QueueClientBuilder proxyOptions(ProxyOptions proxyOptions) {
+    public ServiceBusClientBuilder proxyOptions(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
     }
@@ -193,9 +195,9 @@ public final class QueueClientBuilder {
      * Specify connection string and  queue name for connection to Queue.
      * @param connectionString to connect to service bus resource.
      * @param queueName The name of the queue.
-     * @return The {@link QueueClientBuilder}.
+     * @return The {@link ServiceBusClientBuilder}.
      */
-    public QueueClientBuilder connectionString(String connectionString, String queueName) {
+    public ServiceBusClientBuilder connectionString(String connectionString, String queueName) {
         this.queueName = queueName;
         return connectionString(connectionString);
     }
@@ -203,9 +205,9 @@ public final class QueueClientBuilder {
     /**
      *
      * @param queueName The name of the queue.
-     * @return The {@link QueueClientBuilder}.
+     * @return The {@link ServiceBusClientBuilder}.
      */
-    public QueueClientBuilder queueName(String queueName) {
+    public ServiceBusClientBuilder queueName(String queueName) {
         this.queueName = queueName;
         return this;
     }
@@ -213,18 +215,18 @@ public final class QueueClientBuilder {
     /**
      *
      * @param retryPolicy to recover from Connection.
-     * @return The {@link QueueClientBuilder}.
+     * @return The {@link ServiceBusClientBuilder}.
      */
-    public QueueClientBuilder retryPolicy(AmqpRetryPolicy retryPolicy) {
+    public ServiceBusClientBuilder retryPolicy(AmqpRetryPolicy retryPolicy) {
         return this;
     }
 
     /**
      *
      * @param transportType to use.
-     * @return The {@link QueueClientBuilder}.
+     * @return The {@link ServiceBusClientBuilder}.
      */
-    public QueueClientBuilder transportType(AmqpTransportType transportType) {
+    public ServiceBusClientBuilder transportType(AmqpTransportType transportType) {
         this.transport = transportType;
         return this;
     }
@@ -232,9 +234,9 @@ public final class QueueClientBuilder {
     /** package- private method
      *
      * @param scheduler to be used.
-     * @return The {@link QueueClientBuilder}.
+     * @return The {@link ServiceBusClientBuilder}.
      */
-    QueueClientBuilder scheduler(Scheduler scheduler) {
+    ServiceBusClientBuilder scheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
         return this;
 
@@ -267,9 +269,9 @@ public final class QueueClientBuilder {
     /**
      *
      * @param retryOptions to manage AMQP connection.
-     * @return The {@link QueueClientBuilder}.
+     * @return The {@link ServiceBusClientBuilder}.
      */
-    public QueueClientBuilder retry(AmqpRetryOptions retryOptions) {
+    public ServiceBusClientBuilder retry(AmqpRetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }

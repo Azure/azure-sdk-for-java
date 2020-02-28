@@ -46,7 +46,7 @@ public class ServiceBusMessageSerializerTest {
     @Test
     public void cannotDeserializeObject() {
         final org.apache.qpid.proton.message.Message message = getMessage("hello-world".getBytes(UTF_8));
-        assertThrows(IllegalArgumentException.class, () -> serializer.deserialize(message, QueueReceiverAsyncClient.class));
+        assertThrows(IllegalArgumentException.class, () -> serializer.deserialize(message, ServiceBusReceiverAsyncClient.class));
     }
 
     /**

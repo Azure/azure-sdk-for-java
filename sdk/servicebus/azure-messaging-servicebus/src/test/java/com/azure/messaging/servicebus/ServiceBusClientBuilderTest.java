@@ -17,7 +17,7 @@ import java.util.Locale;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class QueueClientBuilderTest {
+public class ServiceBusClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
     private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net/";
     private static final String ENDPOINT_FORMAT = "sb://%s.%s";
@@ -36,15 +36,15 @@ public class QueueClientBuilderTest {
     @Test
     public void missingConnectionString() {
         assertThrows(IllegalArgumentException.class, () -> {
-            final QueueClientBuilder builder = new QueueClientBuilder();
+            final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
             builder.buildAsyncSenderClient();
         });
     }
 
     @Test
     public void defaultProxyConfigurationBuilder() {
-        final QueueClientBuilder builder = new QueueClientBuilder();
-        final QueueSenderAsyncClient client = builder.connectionString(CORRECT_CONNECTION_STRING)
+        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
+        final ServiceSenderSenderAsyncClient client = builder.connectionString(CORRECT_CONNECTION_STRING)
             .buildAsyncSenderClient();
 
         assertNotNull(client);
@@ -57,7 +57,7 @@ public class QueueClientBuilderTest {
             null, null);
 
         // Act
-        final QueueClientBuilder builder = new QueueClientBuilder()
+        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
             .connectionString(CORRECT_CONNECTION_STRING)
             .proxyOptions(proxyConfig)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS);
@@ -74,7 +74,7 @@ public class QueueClientBuilderTest {
                 null, null);
 
             // Act
-            final QueueClientBuilder builder = new QueueClientBuilder()
+            final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
                 .connectionString(CORRECT_CONNECTION_STRING)
                 .proxyOptions(proxyConfig);
 
