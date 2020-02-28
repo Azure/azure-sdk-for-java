@@ -25,6 +25,7 @@ import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotRe
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesResponse;
 import com.azure.storage.file.share.implementation.models.SharesGetStatisticsResponse;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
+import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
@@ -187,7 +188,8 @@ public class ShareAsyncClient {
         return this.getPropertiesWithResponse(context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
             .onErrorResume(t ->
-                    t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404,
+                    t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404
+                && ((ShareStorageException) t).getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND,
                 t -> {
                     HttpResponse response = ((ShareStorageException) t).getResponse();
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),

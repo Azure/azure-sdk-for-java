@@ -44,6 +44,7 @@ import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
+import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
@@ -194,10 +195,7 @@ public class ShareFileAsyncClient {
     Mono<Response<Boolean>> existsWithResponse(Context context) {
         return this.getPropertiesWithResponse(null, context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
-            .onErrorResume(t ->
-                    (t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 404)
-                || (t instanceof HttpResponseException && ((HttpResponseException) t).getResponse().getStatusCode()
-                        == 404),
+            .onErrorResume(this::checkDoesNotExistStatusCode,
                 t -> {
                     HttpResponse response = t instanceof ShareStorageException
                         ? ((ShareStorageException) t).getResponse()
@@ -205,6 +203,23 @@ public class ShareFileAsyncClient {
                     return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), false));
                 });
+    }
+
+    private boolean checkDoesNotExistStatusCode(Throwable t) {
+            // ShareStorageException
+        return (t instanceof ShareStorageException
+            && ((ShareStorageException) t).getStatusCode() == 404
+            && (((ShareStorageException) t).getErrorCode() == ShareErrorCode.RESOURCE_NOT_FOUND
+            || ((ShareStorageException) t).getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND))
+
+            /* HttpResponseException - file get properties is a head request so a body is not returned. Error
+             conversion logic does not properly handle errors that don't return XML. */
+            || (t instanceof HttpResponseException
+            && ((HttpResponseException) t).getResponse().getStatusCode() == 404
+            && (((HttpResponseException) t).getResponse().getHeaderValue("x-ms-error-code")
+            .equals(ShareErrorCode.RESOURCE_NOT_FOUND.toString())
+            || (((HttpResponseException) t).getResponse().getHeaderValue("x-ms-error-code")
+            .equals(ShareErrorCode.SHARE_NOT_FOUND.toString()))));
     }
 
     /**
