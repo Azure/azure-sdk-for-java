@@ -3,30 +3,50 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.implementation.MessageSerializer;
-
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.Messages;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.Decimal128;
+import org.apache.qpid.proton.amqp.Decimal32;
+import org.apache.qpid.proton.amqp.Decimal64;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.UnsignedByte;
+import org.apache.qpid.proton.amqp.UnsignedInteger;
+import org.apache.qpid.proton.amqp.UnsignedLong;
+import org.apache.qpid.proton.amqp.UnsignedShort;
+import org.apache.qpid.proton.amqp.messaging.AmqpSequence;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.amqp.messaging.Properties;
 import org.apache.qpid.proton.amqp.messaging.Section;
+import org.apache.qpid.proton.amqp.transaction.Declare;
+import org.apache.qpid.proton.amqp.transaction.Discharge;
 
+import java.lang.reflect.Array;
+import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
+/**
+ * Deserializes and serializes messages to and from Azure Service Bus.
+ */
 class ServiceBusMessageSerializer implements MessageSerializer {
-    // Well-known keys from the management service responses and requests.
-    public static final String MANAGEMENT_ENTITY_NAME_KEY = "name";
-    public static final String MANAGEMENT_RESULT_CREATED_AT = "created_at";
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+    private static final String ENQUEUED_TIME_UTC_NAME= "x-opt-enqueued-time";
+    private static final String SCHEDULED_ENQUEUE_TIME_NAME = "x-opt-scheduled-enqueue-time";
+    private static final String SEQUENCE_NUMBER_NAME = "x-opt-sequence-number";
+    private static final String LOCKED_UNTIL_NAME = "x-opt-locked-until";
+    private static final String PARTITION_KEY_NAME = "x-opt-partition-key";
+    private static final String VIA_PARTITION_KEY_NAME = "x-opt-via-partition-key";
+    private static final String DEAD_LETTER_SOURCE_NAME = "x-opt-deadletter-source";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
 
@@ -87,16 +107,48 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                 "Cannot serialize object that is not EventData. Clazz: " + object.getClass()));
         }
 
-        final ServiceBusMessage serviceBusMessage = (ServiceBusMessage) object;
+        final ServiceBusMessage brokeredMessage = (ServiceBusMessage) object;
         final org.apache.qpid.proton.message.Message amqpMessage = Proton.message();
-
-        if (serviceBusMessage.getProperties() != null && !serviceBusMessage.getProperties().isEmpty()) {
-            amqpMessage.setApplicationProperties(new ApplicationProperties(serviceBusMessage.getProperties()));
+        final byte[] body = brokeredMessage.getBody();
+        if (body != null) {
+            //TODO (conniey): support AMQP sequence and AMQP value.
+            amqpMessage.setBody(new Data(new Binary(body)));
         }
 
-        setSystemProperties(serviceBusMessage, amqpMessage);
+        if (brokeredMessage.getProperties() != null) {
+            amqpMessage.setApplicationProperties(new ApplicationProperties(brokeredMessage.getProperties()));
+        }
 
-        amqpMessage.setBody(new Data(new Binary(serviceBusMessage.getBody())));
+        if (brokeredMessage.getTimeToLive() != null) {
+            amqpMessage.setTtl(brokeredMessage.getTimeToLive().toMillis());
+        }
+
+        amqpMessage.setMessageId(brokeredMessage.getMessageId());
+        amqpMessage.setContentType(brokeredMessage.getContentType());
+        amqpMessage.setCorrelationId(brokeredMessage.getCorrelationId());
+        amqpMessage.setSubject(brokeredMessage.getLabel());
+        amqpMessage.getProperties().setTo(brokeredMessage.getTo());
+        amqpMessage.setReplyTo(brokeredMessage.getReplyTo());
+        amqpMessage.setReplyToGroupId(brokeredMessage.getReplyToSessionId());
+        amqpMessage.setGroupId(brokeredMessage.getSessionId());
+
+        final Map<Symbol, Object> messageAnnotationsMap = new HashMap<>();
+        if (brokeredMessage.getScheduledEnqueueTime() != null) {
+            messageAnnotationsMap.put(Symbol.valueOf(SCHEDULED_ENQUEUE_TIME_NAME),
+                Date.from(brokeredMessage.getScheduledEnqueueTime()));
+        }
+
+        final String partitionKey = brokeredMessage.getPartitionKey();
+        if (partitionKey != null && !partitionKey.isEmpty()) {
+            messageAnnotationsMap.put(Symbol.valueOf(PARTITION_KEY_NAME), brokeredMessage.getPartitionKey());
+        }
+
+        final String viaPartitionKey = brokeredMessage.getViaPartitionKey();
+        if (viaPartitionKey != null && !viaPartitionKey.isEmpty()) {
+            messageAnnotationsMap.put(Symbol.valueOf(VIA_PARTITION_KEY_NAME), viaPartitionKey);
+        }
+
+        amqpMessage.setMessageAnnotations(new MessageAnnotations(messageAnnotationsMap));
 
         return amqpMessage;
     }
@@ -115,159 +167,132 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
     }
 
-    private ServiceBusMessage deserializeMessage(org.apache.qpid.proton.message.Message message) {
-        final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
-        final HashMap<String, Object> receiveProperties = new HashMap<>();
-
-        for (Map.Entry<Symbol, Object> annotation : messageAnnotations.entrySet()) {
-            receiveProperties.put(annotation.getKey().toString(), annotation.getValue());
-        }
-
-        if (message.getProperties() != null) {
-            addMapEntry(receiveProperties, AmqpMessageConstant.MESSAGE_ID, message.getMessageId());
-            addMapEntry(receiveProperties, AmqpMessageConstant.USER_ID, message.getUserId());
-            addMapEntry(receiveProperties, AmqpMessageConstant.TO, message.getAddress());
-            addMapEntry(receiveProperties, AmqpMessageConstant.SUBJECT, message.getSubject());
-            addMapEntry(receiveProperties, AmqpMessageConstant.REPLY_TO, message.getReplyTo());
-            addMapEntry(receiveProperties, AmqpMessageConstant.CORRELATION_ID, message.getCorrelationId());
-            addMapEntry(receiveProperties, AmqpMessageConstant.CONTENT_TYPE, message.getContentType());
-            addMapEntry(receiveProperties, AmqpMessageConstant.CONTENT_ENCODING, message.getContentEncoding());
-            addMapEntry(receiveProperties, AmqpMessageConstant.ABSOLUTE_EXPIRY_TIME, message.getExpiryTime());
-            addMapEntry(receiveProperties, AmqpMessageConstant.CREATION_TIME, message.getCreationTime());
-            addMapEntry(receiveProperties, AmqpMessageConstant.GROUP_ID, message.getGroupId());
-            addMapEntry(receiveProperties, AmqpMessageConstant.GROUP_SEQUENCE, message.getGroupSequence());
-            addMapEntry(receiveProperties, AmqpMessageConstant.REPLY_TO_GROUP_ID, message.getReplyToGroupId());
-        }
-
-        final Section bodySection = message.getBody();
-        byte[] body;
-        if (bodySection instanceof Data) {
-            Data bodyData = (Data) bodySection;
-            body = bodyData.getValue().getArray();
-        } else {
-            logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE,
-                bodySection != null ? bodySection.getType() : "null"));
-
-            body = new byte[0];
-        }
-
-        final ServiceBusMessage serviceBusMessage = new ServiceBusMessage(body, receiveProperties, Context.NONE);
-        final Map<String, Object> properties = message.getApplicationProperties() == null
-            ? new HashMap<>()
-            : message.getApplicationProperties().getValue();
-
-        properties.forEach((key, value) -> serviceBusMessage.getProperties().put(key, value));
-
-        message.clear();
-        return serviceBusMessage;
-    }
-
-    /*
-     * Sets AMQP protocol header values on the AMQP message.
-     */
-    private static void setSystemProperties(ServiceBusMessage eventData,
-                                            org.apache.qpid.proton.message.Message message) {
-        if (eventData.getSystemProperties() == null || eventData.getSystemProperties().isEmpty()) {
-            return;
-        }
-
-        eventData.getSystemProperties().forEach((key, value) -> {
-            if (ServiceBusMessage.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
-                return;
-            }
-
-            final AmqpMessageConstant constant = AmqpMessageConstant.fromString(key);
-
-            if (constant != null) {
-                switch (constant) {
-                    case MESSAGE_ID:
-                        message.setMessageId(value);
-                        break;
-                    case USER_ID:
-                        message.setUserId((byte[]) value);
-                        break;
-                    case TO:
-                        message.setAddress((String) value);
-                        break;
-                    case SUBJECT:
-                        message.setSubject((String) value);
-                        break;
-                    case REPLY_TO:
-                        message.setReplyTo((String) value);
-                        break;
-                    case CORRELATION_ID:
-                        message.setCorrelationId(value);
-                        break;
-                    case CONTENT_TYPE:
-                        message.setContentType((String) value);
-                        break;
-                    case CONTENT_ENCODING:
-                        message.setContentEncoding((String) value);
-                        break;
-                    case ABSOLUTE_EXPIRY_TIME:
-                        message.setExpiryTime((long) value);
-                        break;
-                    case CREATION_TIME:
-                        message.setCreationTime((long) value);
-                        break;
-                    case GROUP_ID:
-                        message.setGroupId((String) value);
-                        break;
-                    case GROUP_SEQUENCE:
-                        message.setGroupSequence((long) value);
-                        break;
-                    case REPLY_TO_GROUP_ID:
-                        message.setReplyToGroupId((String) value);
-                        break;
-                    default:
-                        throw new IllegalArgumentException(
-                            String.format(
-                                "Property is not a recognized reserved property name: %s",
-                                key));
-                }
+    private ServiceBusReceivedMessage deserializeMessage(org.apache.qpid.proton.message.Message amqpMessage) {
+        final ServiceBusReceivedMessage brokeredMessage;
+        final Section body = amqpMessage.getBody();
+        if (body != null) {
+            //TODO (conniey): Support other AMQP types like AmqpValue and AmqpSequence.
+            if (body instanceof Data) {
+                final Binary messageData = ((Data) body).getValue();
+                brokeredMessage = new ServiceBusReceivedMessage(messageData.getArray());
             } else {
-                final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
-                    ? new MessageAnnotations(new HashMap<>())
-                    : message.getMessageAnnotations();
-                messageAnnotations.getValue().put(Symbol.getSymbol(key), value);
-                message.setMessageAnnotations(messageAnnotations);
+                logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, body.getType()));
+                brokeredMessage = new ServiceBusReceivedMessage(EMPTY_BYTE_ARRAY);
             }
-        });
+        } else {
+            logger.warning(String.format(Messages.MESSAGE_NOT_OF_TYPE, "null"));
+            brokeredMessage = new ServiceBusReceivedMessage(EMPTY_BYTE_ARRAY);
+        }
+
+        // Application properties
+        ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
+        if (applicationProperties != null) {
+            brokeredMessage.getProperties().putAll(applicationProperties.getValue());
+        }
+
+        // Header
+        brokeredMessage.setTimeToLive(Duration.ofMillis(amqpMessage.getTtl()));
+        brokeredMessage.setDeliveryCount(amqpMessage.getDeliveryCount());
+
+        // Properties
+        final Object messageId = amqpMessage.getMessageId();
+        if (messageId != null) {
+            brokeredMessage.setMessageId(messageId.toString());
+        }
+
+        brokeredMessage.setContentType(amqpMessage.getContentType());
+        final Object correlationId = amqpMessage.getCorrelationId();
+        if (correlationId != null) {
+            brokeredMessage.setCorrelationId(correlationId.toString());
+        }
+
+        final Properties properties = amqpMessage.getProperties();
+        if (properties != null) {
+            brokeredMessage.setTo(properties.getTo());
+        }
+
+        brokeredMessage.setLabel(amqpMessage.getSubject());
+        brokeredMessage.setReplyTo(amqpMessage.getReplyTo());
+        brokeredMessage.setReplyToSessionId(amqpMessage.getReplyToGroupId());
+        brokeredMessage.setSessionId(amqpMessage.getGroupId());
+
+        // Message Annotations
+        final MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
+        if (messageAnnotations != null) {
+            Map<Symbol, Object> messageAnnotationsMap = messageAnnotations.getValue();
+            if (messageAnnotationsMap != null) {
+                for (Map.Entry<Symbol, Object> entry : messageAnnotationsMap.entrySet()) {
+                    final String key = entry.getKey().toString();
+                    final Object value = entry.getValue();
+
+                    switch (key) {
+                        case ENQUEUED_TIME_UTC_NAME:
+                            brokeredMessage.setEnqueuedTime(((Date) value).toInstant());
+                            break;
+                        case SCHEDULED_ENQUEUE_TIME_NAME:
+                            brokeredMessage.setScheduledEnqueueTime(((Date) value).toInstant());
+                            break;
+                        case SEQUENCE_NUMBER_NAME:
+                            brokeredMessage.setSequenceNumber((long) value);
+                            break;
+                        case LOCKED_UNTIL_NAME:
+                            brokeredMessage.setLockedUntil(((Date) value).toInstant());
+                            break;
+                        case PARTITION_KEY_NAME:
+                            brokeredMessage.setPartitionKey((String) value);
+                            break;
+                        case VIA_PARTITION_KEY_NAME:
+                            brokeredMessage.setViaPartitionKey((String) value);
+                            break;
+                        case DEAD_LETTER_SOURCE_NAME:
+                            brokeredMessage.setDeadLetterSource((String) value);
+                            break;
+                        default:
+                            logger.info("Unrecognised key: {}, value: {}", key, value);
+                            break;
+                    }
+                }
+            }
+        }
+
+        //TODO (conniey): Set delivery tag and lock token.
+
+        // if (deliveryTag != null && deliveryTag.length == LOCK_TOKEN_SIZE) {
+        //     UUID lockToken = Util.convertDotNetBytesToUUID(deliveryTag);
+        //     brokeredMessage.setLockToken(lockToken);
+        // } else {
+        //     brokeredMessage.setLockToken(ZERO_LOCK_TOKEN);
+        // }
+        // brokeredMessage.setDeliveryTag(deliveryTag);
+
+        return brokeredMessage;
     }
 
     private static int getPayloadSize(org.apache.qpid.proton.message.Message msg) {
-
         if (msg == null || msg.getBody() == null) {
             return 0;
         }
 
-        if (msg.getBody() instanceof Data) {
-            final Data payloadSection = (Data) msg.getBody();
-            if (payloadSection == null) {
-                return 0;
-            }
-
+        final Section bodySection = msg.getBody();
+        if (bodySection instanceof AmqpValue) {
+            return sizeof(((AmqpValue) bodySection).getValue());
+        } else if (bodySection instanceof AmqpSequence) {
+            return sizeof(((AmqpSequence) bodySection).getValue());
+        } else if (bodySection instanceof Data) {
+            final Data payloadSection = (Data) bodySection;
             final Binary payloadBytes = payloadSection.getValue();
-            if (payloadBytes == null) {
-                return 0;
-            }
-
-            return payloadBytes.getLength();
+            return sizeof(payloadBytes);
+        } else {
+            return 0;
         }
-
-        if (msg.getBody() instanceof AmqpValue) {
-            final AmqpValue amqpValue = (AmqpValue) msg.getBody();
-            if (amqpValue == null) {
-                return 0;
-            }
-
-            return amqpValue.getValue().toString().length() * 2;
-        }
-
-        return 0;
     }
 
+    @SuppressWarnings("rawtypes")
     private static int sizeof(Object obj) {
+        if (obj == null) {
+            return 0;
+        }
+
         if (obj instanceof String) {
             return obj.toString().length() << 1;
         }
@@ -276,20 +301,28 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             return ((Symbol) obj).length() << 1;
         }
 
-        if (obj instanceof Integer) {
+        if (obj instanceof Byte || obj instanceof UnsignedByte) {
+            return Byte.BYTES;
+        }
+
+        if (obj instanceof Integer || obj instanceof UnsignedInteger) {
             return Integer.BYTES;
         }
 
-        if (obj instanceof Long) {
+        if (obj instanceof Long || obj instanceof UnsignedLong || obj instanceof Date) {
             return Long.BYTES;
         }
 
-        if (obj instanceof Short) {
+        if (obj instanceof Short || obj instanceof UnsignedShort) {
             return Short.BYTES;
         }
 
+        if (obj instanceof Boolean) {
+            return 1;
+        }
+
         if (obj instanceof Character) {
-            return Character.BYTES;
+            return 4;
         }
 
         if (obj instanceof Float) {
@@ -300,19 +333,74 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             return Double.BYTES;
         }
 
-        if (obj instanceof Date) {
-            return 32;
+        if (obj instanceof UUID) {
+            // UUID is internally represented as 16 bytes. But how does ProtonJ encode it? To be safe..we can treat it as a string of 36 chars = 72 bytes.
+            //return 72;
+            return 16;
         }
 
-        throw new IllegalArgumentException(String.format(Messages.ENCODING_TYPE_NOT_SUPPORTED,
-            obj.getClass()));
-    }
-
-    private static void addMapEntry(Map<String, Object> map, AmqpMessageConstant key, Object content) {
-        if (content == null) {
-            return;
+        if (obj instanceof Decimal32) {
+            return 4;
         }
 
-        map.put(key.getValue(), content);
+        if (obj instanceof Decimal64) {
+            return 8;
+        }
+
+        if (obj instanceof Decimal128) {
+            return 16;
+        }
+
+        if (obj instanceof Binary) {
+            return ((Binary) obj).getLength();
+        }
+
+        if (obj instanceof Declare) {
+            // Empty declare command takes up 7 bytes.
+            return 7;
+        }
+
+        if (obj instanceof Discharge) {
+            Discharge discharge = (Discharge) obj;
+            return 12 + discharge.getTxnId().getLength();
+        }
+
+        if (obj instanceof Map) {
+            // Size and Count each take a max of 4 bytes
+            int size = 8;
+            Map map = (Map) obj;
+            for (Object value : map.keySet()) {
+                size += sizeof(value);
+            }
+
+            for (Object value : map.values()) {
+                size += sizeof(value);
+            }
+
+            return size;
+        }
+
+        if (obj instanceof Iterable) {
+            // Size and Count each take a max of 4 bytes
+            int size = 8;
+            for (Object innerObject : (Iterable) obj) {
+                size += sizeof(innerObject);
+            }
+
+            return size;
+        }
+
+        if (obj.getClass().isArray()) {
+            // Size and Count each take a max of 4 bytes
+            int size = 8;
+            int length = Array.getLength(obj);
+            for (int i = 0; i < length; i++) {
+                size += sizeof(Array.get(obj, i));
+            }
+
+            return size;
+        }
+
+        throw new IllegalArgumentException(String.format(Locale.US, "Encoding Type: %s is not supported", obj.getClass()));
     }
 }

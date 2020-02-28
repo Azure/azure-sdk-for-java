@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
@@ -35,8 +34,8 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
  * A class for aggregating {@link ServiceBusMessage} into a single, size-limited, batch. It is treated as
  * a single message when sent to the Azure Service Bus service.
  */
-final class MessageBatch {
-    private final ClientLogger logger = new ClientLogger(MessageBatch.class);
+final class ServiceBusMessageBatch {
+    private final ClientLogger logger = new ClientLogger(ServiceBusMessageBatch.class);
     private final Object lock = new Object();
     private final int maxMessageSize;
     private final ErrorContextProvider contextProvider;
@@ -45,7 +44,7 @@ final class MessageBatch {
     private int sizeInBytes;
     private final TracerProvider tracerProvider;
 
-    MessageBatch(int maxMessageSize, ErrorContextProvider contextProvider,
+    ServiceBusMessageBatch(int maxMessageSize, ErrorContextProvider contextProvider,
                  TracerProvider tracerProvider) {
         this.maxMessageSize = maxMessageSize;
 
@@ -66,18 +65,18 @@ final class MessageBatch {
     }
 
     /**
-     * Gets the maximum size, in bytes, of the {@link MessageBatch}.
+     * Gets the maximum size, in bytes, of the {@link ServiceBusMessageBatch}.
      *
-     * @return The maximum size, in bytes, of the {@link MessageBatch}.
+     * @return The maximum size, in bytes, of the {@link ServiceBusMessageBatch}.
      */
     int getMaxSizeInBytes() {
         return maxMessageSize;
     }
 
     /**
-     * Gets the size of the {@link MessageBatch} in bytes.
+     * Gets the size of the {@link ServiceBusMessageBatch} in bytes.
      *
-     * @return the size of the {@link MessageBatch} in bytes.
+     * @return the size of the {@link ServiceBusMessageBatch} in bytes.
      */
     int getSizeInBytes() {
         return this.sizeInBytes;
@@ -90,7 +89,7 @@ final class MessageBatch {
      * @return {@code true} if the message could be added to the batch; {@code false} if the event was too large
      * to fit in the batch.
      * @throws IllegalArgumentException if {@code message} is {@code null}.
-     * @throws AmqpException if {@code message} is larger than the maximum size of the {@link MessageBatch}.
+     * @throws AmqpException if {@code message} is larger than the maximum size of the {@link ServiceBusMessageBatch}.
      */
     boolean tryAdd(final ServiceBusMessage serviceBusMessage) {
         if (serviceBusMessage == null) {
