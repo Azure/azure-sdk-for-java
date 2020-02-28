@@ -88,7 +88,7 @@ public final class ReceivedMessage extends Message {
      * @return The lockToken for this message.
      */
     public UUID getLockToken() {
-        return null;
+        return this.lockToken;
     }
 
     /**
@@ -112,7 +112,7 @@ public final class ReceivedMessage extends Message {
      *     Hubs service.
      */
     public long getSequenceNumber() {
-        return 0;
+        return this.sequenceNumber;
     }
 
     /**
@@ -137,7 +137,7 @@ public final class ReceivedMessage extends Message {
      * @return The updated {@link ReceivedMessage}.
 
      */
-    public ReceivedMessage setLockToken(UUID lockToken){
+    public ReceivedMessage setLockToken(UUID lockToken) {
         this.lockToken = lockToken;
         return this;
     }
@@ -148,7 +148,7 @@ public final class ReceivedMessage extends Message {
      * @return The updated {@link ReceivedMessage}.
 
      */
-    public ReceivedMessage setSequenceNumber(long sequenceNumber){
+    public ReceivedMessage setSequenceNumber(long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
         return this;
     }

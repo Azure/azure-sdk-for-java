@@ -279,30 +279,7 @@ public class Message {
     public String getBodyAsString() {
         return new String(body, UTF_8);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Message message = (Message) o;
-        return Arrays.equals(body, message.body);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(body);
-    }
+    
 
     /**
      * A specified key-value pair of type {@link Context} to set additional information on the {@link Message}.
