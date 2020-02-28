@@ -40,7 +40,7 @@ public class RollingUpgradeProgressInfo {
     private Integer pendingInstanceCount;
 
     /**
-     * Get the successfulInstanceCount value.
+     * Get the number of instances that have been successfully upgraded.
      *
      * @return the successfulInstanceCount value
      */
@@ -49,7 +49,7 @@ public class RollingUpgradeProgressInfo {
     }
 
     /**
-     * Get the failedInstanceCount value.
+     * Get the number of instances that have failed to be upgraded successfully.
      *
      * @return the failedInstanceCount value
      */
@@ -58,7 +58,7 @@ public class RollingUpgradeProgressInfo {
     }
 
     /**
-     * Get the inProgressInstanceCount value.
+     * Get the number of instances that are currently being upgraded.
      *
      * @return the inProgressInstanceCount value
      */
@@ -67,7 +67,7 @@ public class RollingUpgradeProgressInfo {
     }
 
     /**
-     * Get the pendingInstanceCount value.
+     * Get the number of instances that have not yet begun to be upgraded.
      *
      * @return the pendingInstanceCount value
      */
