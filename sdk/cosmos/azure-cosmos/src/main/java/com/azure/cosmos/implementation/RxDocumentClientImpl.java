@@ -16,12 +16,13 @@ import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.Permission;
 import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.SqlParameter;
 import com.azure.cosmos.SqlParameterList;
-import com.azure.cosmos.TokenResolver;
+import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -92,7 +93,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final Configs configs;
     private final boolean connectionSharingAcrossClientsEnabled;
     private CosmosKeyCredential cosmosKeyCredential;
-    private TokenResolver tokenResolver;
+    private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private SessionContainer sessionContainer;
     private String firstResourceTokenFromPermissionFeed = StringUtils.EMPTY;
     private RxClientCollectionCache collectionCache;
@@ -131,12 +132,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 ConnectionPolicy connectionPolicy,
                                 ConsistencyLevel consistencyLevel,
                                 Configs configs,
-                                TokenResolver tokenResolver,
+                                CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver,
                                 CosmosKeyCredential cosmosKeyCredential,
                                 boolean sessionCapturingOverride,
                                 boolean connectionSharingAcrossClientsEnabled) {
         this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled);
-        this.tokenResolver = tokenResolver;
+        this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
     private RxDocumentClientImpl(URI serviceEndpoint,
@@ -257,7 +258,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // this.globalEndpointManager.init() must have been already called
         // hence asserting it
         assert(databaseAccount != null);
-        this.useMultipleWriteLocations = this.connectionPolicy.getUsingMultipleWriteLocations() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
+        this.useMultipleWriteLocations = this.connectionPolicy.isUsingMultipleWriteLocations() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
 
         // TODO: add support for openAsync
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
@@ -987,7 +988,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private void populateHeaders(RxDocumentServiceRequest request, RequestVerb httpMethod) {
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null
-            || this.tokenResolver != null || this.cosmosKeyCredential != null) {
+            || this.cosmosAuthorizationTokenResolver != null || this.cosmosKeyCredential != null) {
             String resourceName = request.getResourceAddress();
 
             String authorization = this.getUserAuthorizationToken(
@@ -1019,8 +1020,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                             AuthorizationTokenType tokenType,
                                             Map<String, Object> properties) {
 
-        if (this.tokenResolver != null) {
-            return this.tokenResolver.getAuthorizationToken(requestVerb, resourceName, this.resolveCosmosResourceType(resourceType),
+        if (this.cosmosAuthorizationTokenResolver != null) {
+            return this.cosmosAuthorizationTokenResolver.getAuthorizationToken(requestVerb, resourceName, this.resolveCosmosResourceType(resourceType),
                     properties != null ? Collections.unmodifiableMap(properties) : null);
         } else if (cosmosKeyCredential != null) {
             return this.authorizationTokenProvider.generateKeyAuthorizationSignature(requestVerb, resourceName,
@@ -2947,7 +2948,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 logger.warn(message);
             }).map(rsp -> rsp.getResource(DatabaseAccount.class))
                     .doOnNext(databaseAccount -> {
-                        this.useMultipleWriteLocations = this.connectionPolicy.getUsingMultipleWriteLocations()
+                        this.useMultipleWriteLocations = this.connectionPolicy.isUsingMultipleWriteLocations()
                                 && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
                     });
         });

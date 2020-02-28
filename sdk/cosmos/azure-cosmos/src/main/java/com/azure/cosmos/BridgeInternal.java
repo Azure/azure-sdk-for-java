@@ -127,7 +127,7 @@ public class BridgeInternal {
         String ifNoneMatchValue = null;
         if (options.getRequestContinuation() != null) {
             ifNoneMatchValue = options.getRequestContinuation();
-        } else if (!options.getStartFromBeginning()) {
+        } else if (!options.isStartFromBeginning()) {
             ifNoneMatchValue = "*";
         }
         // On REST level, change feed is using IF_NONE_MATCH/ETag instead of
@@ -162,13 +162,13 @@ public class BridgeInternal {
                 headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, options.getSessionToken());
             }
 
-            if (options.getEnableScanInQuery() != null) {
-                headers.put(HttpConstants.HttpHeaders.ENABLE_SCAN_IN_QUERY, options.getEnableScanInQuery().toString());
+            if (options.isScanInQueryEnabled() != null) {
+                headers.put(HttpConstants.HttpHeaders.ENABLE_SCAN_IN_QUERY, options.isScanInQueryEnabled().toString());
             }
 
-            if (options.getEmitVerboseTracesInQuery() != null) {
+            if (options.isEmitVerboseTracesInQuery() != null) {
                 headers.put(HttpConstants.HttpHeaders.EMIT_VERBOSE_TRACES_IN_QUERY,
-                    options.getEmitVerboseTracesInQuery().toString());
+                    options.isEmitVerboseTracesInQuery().toString());
             }
 
             if (options.getMaxDegreeOfParallelism() != 0) {
@@ -239,7 +239,7 @@ public class BridgeInternal {
     }
 
     public static boolean getUseMultipleWriteLocations(ConnectionPolicy policy) {
-        return policy.getUsingMultipleWriteLocations();
+        return policy.isUsingMultipleWriteLocations();
     }
 
     public static void setUseMultipleWriteLocations(ConnectionPolicy policy, boolean value) {
@@ -506,5 +506,19 @@ public class BridgeInternal {
 
     public static Object getPartitionKeyObject(PartitionKey right) {
         return right.getKeyObject();
+    }
+
+
+    public static int getHashCode(CosmosKeyCredential keyCredential) {
+        return keyCredential.getKeyHashCode();
+    }
+
+
+    public static String toLower(RequestVerb verb) {
+        return verb.toLowerCase();
+    }
+
+    public static String getLink(CosmosAsyncContainer cosmosAsyncContainer) {
+        return cosmosAsyncContainer.getLink();
     }
 }

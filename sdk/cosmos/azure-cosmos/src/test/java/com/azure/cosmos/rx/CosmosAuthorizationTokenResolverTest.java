@@ -15,7 +15,7 @@ import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.PermissionMode;
 import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.Resource;
-import com.azure.cosmos.TokenResolver;
+import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
@@ -23,7 +23,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.Permission;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceResponseValidator;
@@ -37,7 +37,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -51,7 +50,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TokenResolverTest extends TestSuiteBase {
+public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
 
     private class UserClass {
         public String userName;
@@ -75,7 +74,7 @@ public class TokenResolverTest extends TestSuiteBase {
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuilders")
-    public TokenResolverTest(AsyncDocumentClient.Builder clientBuilder) {
+    public CosmosAuthorizationTokenResolverTest(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
     }
 
@@ -505,7 +504,7 @@ public class TokenResolverTest extends TestSuiteBase {
         return permission;
     }
 
-    private TokenResolver getTokenResolver(PermissionMode permissionMode) {
+    private CosmosAuthorizationTokenResolver getTokenResolver(PermissionMode permissionMode) {
         return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
             if(resourceType.equals(CosmosResourceType.System)) {
                 return readPermission.getToken();
@@ -519,7 +518,7 @@ public class TokenResolverTest extends TestSuiteBase {
         };
     }
 
-    private TokenResolver getBadTokenResolver() {
+    private CosmosAuthorizationTokenResolver getBadTokenResolver() {
         return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
             if (resourceType == CosmosResourceType.System) {
                 return readPermission.getToken();
@@ -531,7 +530,7 @@ public class TokenResolverTest extends TestSuiteBase {
         };
     }
 
-    private TokenResolver getTokenResolverWithBlockList(PermissionMode permissionMode,  String field, UserClass blockListedUser, String errorMessage) {
+    private CosmosAuthorizationTokenResolver getTokenResolverWithBlockList(PermissionMode permissionMode, String field, UserClass blockListedUser, String errorMessage) {
         return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
             UserClass currentUser = null;
             if (properties != null && properties.get(field) != null) {

@@ -444,12 +444,12 @@ public class CosmosAsyncDatabase {
      * response with the created user. In case of failure the {@link Mono} will
      * error.
      *
-     * @param settings the cosmos user properties
+     * @param userProperties the cosmos user properties
      * @return an {@link Mono} containing the single resource response with the
      * created cosmos user or an error.
      */
-    public Mono<CosmosAsyncUserResponse> createUser(CosmosUserProperties settings) {
-        return getDocClientWrapper().createUser(this.getLink(), settings.getV2User(), null)
+    public Mono<CosmosAsyncUserResponse> createUser(CosmosUserProperties userProperties) {
+        return getDocClientWrapper().createUser(this.getLink(), userProperties.getV2User(), null)
                    .map(response -> new CosmosAsyncUserResponse(response, this)).single();
     }
 
@@ -461,12 +461,12 @@ public class CosmosAsyncDatabase {
      * resource response with the created user. In case of failure the {@link Mono}
      * will error.
      *
-     * @param settings the cosmos user properties
+     * @param userProperties the cosmos user properties
      * @return an {@link Mono} containing the single resource response with the
      * upserted user or an error.
      */
-    public Mono<CosmosAsyncUserResponse> upsertUser(CosmosUserProperties settings) {
-        return getDocClientWrapper().upsertUser(this.getLink(), settings.getV2User(), null)
+    public Mono<CosmosAsyncUserResponse> upsertUser(CosmosUserProperties userProperties) {
+        return getDocClientWrapper().upsertUser(this.getLink(), userProperties.getV2User(), null)
                    .map(response -> new CosmosAsyncUserResponse(response, this)).single();
     }
 

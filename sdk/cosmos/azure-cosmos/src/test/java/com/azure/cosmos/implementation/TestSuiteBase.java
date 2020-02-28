@@ -19,7 +19,7 @@ import com.azure.cosmos.IndexingPolicy;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.Resource;
-import com.azure.cosmos.RetryOptions;
+import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
@@ -909,9 +909,9 @@ public class TestSuiteBase extends DocumentClientTest {
     static protected Builder createGatewayHouseKeepingDocumentClient() {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-        RetryOptions options = new RetryOptions();
+        ThrottlingRetryOptions options = new ThrottlingRetryOptions();
         options.setMaxRetryWaitTimeInSeconds(SUITE_SETUP_TIMEOUT);
-        connectionPolicy.setRetryOptions(options);
+        connectionPolicy.setThrottlingRetryOptions(options);
         return new Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)

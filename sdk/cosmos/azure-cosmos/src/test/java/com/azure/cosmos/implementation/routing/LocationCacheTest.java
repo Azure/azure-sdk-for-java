@@ -145,7 +145,7 @@ public class LocationCacheTest {
         this.cache.onDatabaseAccountRead(this.databaseAccount);
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setEnableEndpointDiscovery(enableEndpointDiscovery);
+        connectionPolicy.setEndpointDiscoveryEnabled(enableEndpointDiscovery);
         BridgeInternal.setUseMultipleWriteLocations(connectionPolicy, useMultipleWriteLocations);
         connectionPolicy.setPreferredLocations(this.preferredLocations);
 

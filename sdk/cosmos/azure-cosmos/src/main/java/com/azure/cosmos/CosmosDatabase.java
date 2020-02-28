@@ -335,23 +335,23 @@ public class CosmosDatabase {
     /**
      * Create user cosmos sync user response.
      *
-     * @param settings the settings
+     * @param userProperties the settings
      * @return the cosmos sync user response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserResponse createUser(CosmosUserProperties settings) throws CosmosClientException {
-        return mapUserResponseAndBlock(databaseWrapper.createUser(settings));
+    public CosmosUserResponse createUser(CosmosUserProperties userProperties) throws CosmosClientException {
+        return mapUserResponseAndBlock(databaseWrapper.createUser(userProperties));
     }
 
     /**
      * Upsert user cosmos sync user response.
      *
-     * @param settings the settings
+     * @param userProperties the settings
      * @return the cosmos sync user response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserResponse upsertUser(CosmosUserProperties settings) throws CosmosClientException {
-        return mapUserResponseAndBlock(databaseWrapper.upsertUser(settings));
+    public CosmosUserResponse upsertUser(CosmosUserProperties userProperties) throws CosmosClientException {
+        return mapUserResponseAndBlock(databaseWrapper.upsertUser(userProperties));
     }
 
     /**

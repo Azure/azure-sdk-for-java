@@ -4,7 +4,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
-import com.azure.cosmos.implementation.Permission;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;

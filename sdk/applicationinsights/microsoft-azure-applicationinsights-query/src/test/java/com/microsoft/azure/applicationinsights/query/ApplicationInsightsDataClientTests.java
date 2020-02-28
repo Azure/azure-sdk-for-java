@@ -1,30 +1,25 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- *
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.applicationinsights.query;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.applicationinsights.query.implementation.ApplicationInsightsDataClientImpl;
-import com.microsoft.azure.applicationinsights.query.models.QueryBody;
+import com.microsoft.azure.applicationinsights.query.models.EventType;
+import com.microsoft.azure.applicationinsights.query.models.EventsResults;
 import com.microsoft.azure.applicationinsights.query.models.MetricId;
-import com.microsoft.azure.applicationinsights.query.models.MetricsResult;
-import com.microsoft.azure.applicationinsights.query.models.MetricsResultsItem;
 import com.microsoft.azure.applicationinsights.query.models.MetricsPostBodySchema;
 import com.microsoft.azure.applicationinsights.query.models.MetricsPostBodySchemaParameters;
-import com.microsoft.azure.applicationinsights.query.models.EventType;
-import com.microsoft.azure.applicationinsights.query.models.EventsResult;
-import com.microsoft.azure.applicationinsights.query.models.EventsResults;
+import com.microsoft.azure.applicationinsights.query.models.MetricsResult;
+import com.microsoft.azure.applicationinsights.query.models.MetricsResultsItem;
+import com.microsoft.azure.applicationinsights.query.models.QueryBody;
 import com.microsoft.azure.applicationinsights.query.models.QueryResults;
-import com.microsoft.azure.arm.core.TestBase;
 import com.microsoft.rest.RestClient;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ApplicationInsightsDataClientTests extends TestBase {
     protected static ApplicationInsightsDataClientImpl applicationInsightsClient;
@@ -42,7 +37,6 @@ public class ApplicationInsightsDataClientTests extends TestBase {
 
     @Override
     protected void cleanUpResources() {
-        return;
     }
 
     @Test
@@ -60,7 +54,7 @@ public class ApplicationInsightsDataClientTests extends TestBase {
         Assert.assertNull(queryResults.tables().get(0).rows().get(0).get(6));
     }
 
-    @Test 
+    @Test
     public void canGetMetric() {
         MetricsResult metricResult = applicationInsightsClient.metrics().get(appId, MetricId.AVAILABILITY_RESULTSAVAILABILITY_PERCENTAGE);
         // Validate properties
@@ -69,7 +63,7 @@ public class ApplicationInsightsDataClientTests extends TestBase {
         Assert.assertTrue(metricResult.value().start() instanceof DateTime);
     }
 
-    @Test 
+    @Test
     public void canGetMultipleMetrics() {
         List<MetricsPostBodySchema> parameters = new ArrayList<MetricsPostBodySchema>();
         parameters.add(new MetricsPostBodySchema().withId("1").withParameters(new MetricsPostBodySchemaParameters().withMetricId(MetricId.AVAILABILITY_RESULTSAVAILABILITY_PERCENTAGE)));
@@ -84,22 +78,22 @@ public class ApplicationInsightsDataClientTests extends TestBase {
         Assert.assertNotNull(metricResult.get(0).body().value().start());
         Assert.assertTrue(metricResult.get(0).body().value().start() instanceof DateTime);
     }
-    
 
-    @Test 
+
+    @Test
     public void canGetMetricsMetadata() {
         Object metadata = applicationInsightsClient.metrics().getMetadata(appId);
         // Sanity check
         Assert.assertNotNull(metadata);
     }
 
-    @Test 
+    @Test
     public void canGetEventsByType() {
         EventsResults eventsResult = applicationInsightsClient.events().getByType(appId, EventType.AVAILABILITY_RESULTS);
         Assert.assertNotNull(eventsResult.value().get(0).id());
     }
 
-    @Test 
+    @Test
     public void canGetEvent() {
         String eventId = "e313e0a0-9c1f-11e8-9f6d-3b25765db004";
         EventsResults eventsResult = applicationInsightsClient.events().get(appId, EventType.AVAILABILITY_RESULTS, eventId);

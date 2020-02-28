@@ -38,7 +38,7 @@ public class UniqueKey extends JsonSerializable {
      *
      * @return the unique paths.
      */
-    public Collection<String> getPaths() {
+    public List<String> getPaths() {
         if (this.paths == null) {
             this.paths = super.getList(Constants.Properties.PATHS, String.class);
 

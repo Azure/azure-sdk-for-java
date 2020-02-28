@@ -140,8 +140,9 @@ public final class IndexingPolicy extends JsonSerializable {
         return this.includedPaths;
     }
 
-    public void setIncludedPaths(List<IncludedPath> includedPaths) {
+    public IndexingPolicy setIncludedPaths(List<IncludedPath> includedPaths) {
         this.includedPaths = includedPaths;
+        return this;
     }
 
     /**
