@@ -20,8 +20,8 @@ public PollerFlux<OperationResult, PredefinedFormResult> beginSupervisedAnalyzeF
 
 // List custom Models
 public PagedFlux<ModelInfo> listModels() {}
-public ModelSummary getModelListSummary() {}
-public Response<ModelSummary> getModelListSummaryWithResponse() {}
+public Mono<ModelSummary> getModelListSummary() {}
+public Mono<Response<ModelListSummary>> getModelListSummaryWithResponse() {}
 
 // Delete model
 public Mono<Void> delete(String modelId) { }
