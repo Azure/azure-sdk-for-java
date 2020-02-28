@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.azure.core.util.FluxUtil.fluxError;
 
 /**
- * An <b>asynchronous</b> receiver responsible for receiving {@link Message} from a specific Queue.
+ * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusMessage} from a specific Queue.
  *
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
@@ -84,11 +84,11 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Receives a stream of {@link Message} with default server wait time.
+     * Receives a stream of {@link ServiceBusMessage} with default server wait time.
      *
      * @return A stream of messages from Queue.
      */
-    public Flux<Message> receive() {
+    public Flux<ServiceBusMessage> receive() {
         return receive(defaultReceiveMode);
     }
 
@@ -101,7 +101,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      *
      * @throws NullPointerException if {@code receiveMode} is null.
      */
-    public Flux<Message> receive(ReceiveMode receiveMode) {
+    public Flux<ServiceBusMessage> receive(ReceiveMode receiveMode) {
         if (Objects.isNull(receiveMode)) {
             return fluxError(logger, new NullPointerException("'receiveMode' cannot be null."));
         }
@@ -126,7 +126,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
 
     }
 
-    private Flux<Message> createConsumer(String linkName, ReceiveMode receiveMode) {
+    private Flux<ServiceBusMessage> createConsumer(String linkName, ReceiveMode receiveMode) {
         if (openConsumer.get() == null) {
             logger.info("{}: Creating receive consumer.", linkName);
             openConsumer.set(createServiceBusConsumer(linkName, receiveMode));
@@ -163,78 +163,78 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Abandon {@link Message} with lock token and updated message property. This will make the message available
-     * again for processing. Abandoning a message will increase the delivery count on the message.
+     * Abandon {@link ServiceBusMessage} with lock token and updated message property. This will make the message
+     * available again for processing. Abandoning a message will increase the delivery count on the message.
      *
      * @param receivedMessage to be used.
      * @param propertiesToModify Message properties to modify.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> abandon(ReceivedMessage receivedMessage, Map<String, Object> propertiesToModify) {
+    public Mono<Void> abandon(ServiceBusReceivedMessage receivedMessage, Map<String, Object> propertiesToModify) {
         //TODO(feature-to-implement)
         return null;
     }
 
     /**
-     * Abandon {@link Message} with lock token. This will make the message available again for processing.
+     * Abandon {@link ServiceBusMessage} with lock token. This will make the message available again for processing.
      * Abandoning a message will increase the delivery count on the message.
      *
      * @param receivedMessage to be used.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> abandon(ReceivedMessage receivedMessage) {
+    public Mono<Void> abandon(ServiceBusReceivedMessage receivedMessage) {
         //TODO(feature-to-implement)
         return null;
     }
 
     /**
-     * Completes a {@link Message} using its lock token. This will delete the message from the service.
+     * Completes a {@link ServiceBusMessage} using its lock token. This will delete the message from the service.
      *
      * @param receivedMessage to be used.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> complete(ReceivedMessage receivedMessage) {
+    public Mono<Void> complete(ServiceBusReceivedMessage receivedMessage) {
         //TODO(feature-to-implement)
         return null;
     }
 
     /**
-     *  Defers a {@link Message} using its lock token with modified message property.
+     *  Defers a {@link ServiceBusMessage} using its lock token with modified message property.
      *  This will move message into deferred subqueue.
      *
      * @param receivedMessage to be used.
      * @param propertiesToModify Message properties to modify.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> defer(ReceivedMessage receivedMessage, Map<String, Object> propertiesToModify) {
+    public Mono<Void> defer(ServiceBusReceivedMessage receivedMessage, Map<String, Object> propertiesToModify) {
         //TODO(feature-to-implement)
         return null;
     }
 
     /**
-     * Defers a {@link Message} using its lock token. This will move message into deferred subqueue.
+     * Defers a {@link ServiceBusMessage} using its lock token. This will move message into deferred subqueue.
      *
      * @param receivedMessage to be used.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> defer(ReceivedMessage receivedMessage) {
+    public Mono<Void> defer(ServiceBusReceivedMessage receivedMessage) {
         //TODO(feature-to-implement)
         return null;
     }
 
     /**
-     * Moves a {@link Message} to the deadletter sub-queue.
+     * Moves a {@link ServiceBusMessage} to the deadletter sub-queue.
      *
      * @param receivedMessage to be used.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> deadLetter(ReceivedMessage receivedMessage) {
+    public Mono<Void> deadLetter(ServiceBusReceivedMessage receivedMessage) {
         //TODO(feature-to-implement)
         return null;
     }
 
     /**
-     * Moves a {@link Message} to the deadletter sub-queue with deadletter reason, error description
+     * Moves a {@link ServiceBusMessage} to the deadletter sub-queue with deadletter reason, error description
      * and modifided properties.
      *
      * @param receivedMessage to be used.
@@ -243,7 +243,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @param propertiesToModify Message properties to modify.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> deadLetter(ReceivedMessage receivedMessage, String deadLetterReason,
+    public Mono<Void> deadLetter(ServiceBusReceivedMessage receivedMessage, String deadLetterReason,
                                  String deadLetterErrorDescription,
                                  Map<String, Object> propertiesToModify) {
         //TODO(feature-to-implement)
@@ -251,26 +251,26 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Moves a {@link Message} to the deadletter sub-queue with deadletter reason and error description.
+     * Moves a {@link ServiceBusMessage} to the deadletter sub-queue with deadletter reason and error description.
      *
      * @param receivedMessage to be used.
      * @param deadLetterReason The deadletter reason.
      * @param deadLetterErrorDescription The deadletter error description.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> deadLetter(ReceivedMessage receivedMessage, String deadLetterReason,
+    public Mono<Void> deadLetter(ServiceBusReceivedMessage receivedMessage, String deadLetterReason,
                                  String deadLetterErrorDescription) {
         //TODO(feature-to-implement)
         return null;
     }
 
     /**
-     * Moves a {@link Message} to the deadletter sub-queue with modified message properties.
+     * Moves a {@link ServiceBusMessage} to the deadletter sub-queue with modified message properties.
      * @param receivedMessage to be used.
      * @param propertiesToModify Message properties to modify.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> deadLetter(ReceivedMessage receivedMessage, Map<String, Object> propertiesToModify) {
+    public Mono<Void> deadLetter(ServiceBusReceivedMessage receivedMessage, Map<String, Object> propertiesToModify) {
         //TODO(feature-to-implement)
         return null;
     }
@@ -285,19 +285,64 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @param receivedMessage to be used.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Instant renewMessageLock(ReceivedMessage receivedMessage) {
+    public Instant renewMessageLock(ServiceBusReceivedMessage receivedMessage) {
         //TODO(feature-to-implement)
         return null;
     }
 
     /**
-     * Receives a deferred {@link Message}. Deferred messages can only be received by using sequence number.
+     * Receives a deferred {@link ServiceBusMessage}. Deferred messages can only be received by using sequence number.
      *
-     * @param sequenceNumber The {@link ReceivedMessage#getSequenceNumber()}.
+     * @param sequenceNumber The {@link ServiceBusReceivedMessage#getSequenceNumber()}.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<ReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
+    public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
         //TODO(feature-to-implement)
+        return null;
+    }
+
+    /**
+     * Peek single message on Service Bus Queue or Subscriber.
+     * @return Single {@link ServiceBusReceivedMessage} .
+     */
+    public Mono<ServiceBusReceivedMessage> peek() {
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode())
+            .flatMap(serviceBusManagementNode -> {
+                return serviceBusManagementNode.peek(1).last();
+            });
+    }
+
+    /**
+     * Peek single message on Service Bus Queue or Subscriber.
+     * @param fromSequenceNumber to peek message from.
+     * @return Single {@link ServiceBusReceivedMessage} .
+
+     */
+    public Mono<ServiceBusReceivedMessage> peek(int fromSequenceNumber) {
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode())
+            .flatMap(serviceBusManagementNode -> {
+                return serviceBusManagementNode.peek(1, fromSequenceNumber).last();
+            });
+    }
+
+    /**
+     *
+     * @param maxMessages to peek.
+     * @return Flux of {@link ServiceBusReceivedMessage}.
+     */
+    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
+        return null;
+    }
+
+    /**
+     *
+     * @param maxMessages to peek.
+     * @param fromSequenceNumber to peek message from.
+     * @return Flux of {@link ServiceBusReceivedMessage}.
+     */
+    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber) {
         return null;
     }
 

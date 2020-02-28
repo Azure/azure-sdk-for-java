@@ -29,13 +29,17 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ServiceBusReactorAmqpConnection extends ReactorConnection implements ServiceBusAmqpConnection {
 
+    private static final String MANAGEMENT_SESSION_NAME = "mgmt-session";
+    private static final String MANAGEMENT_LINK_NAME = "mgmt";
+    private static final String MANAGEMENT_ADDRESS = "$management";
+
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorAmqpConnection.class);
     /**
      * Keeps track of the opened send links. Links are key'd by their entityPath. The send link for allowing the service
      * load balance messages is the eventHubName.
      */
     private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
-
+    private final Mono<ServiceBusManagementNode> managementChannelMono;
     private final String connectionId;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
@@ -65,7 +69,24 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         this.tokenManagerProvider = tokenManagerProvider;
         this.retryOptions = connectionOptions.getRetry();
         this.messageSerializer = messageSerializer;
+        this.managementChannelMono = getReactorConnection().then(
+            Mono.fromCallable(() -> {
+                return (ServiceBusManagementNode) new ManagementChannel(
+                    createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
+                    connectionOptions.getEntityPath(), connectionOptions.getTokenCredential(),
+                    this.tokenManagerProvider, this.messageSerializer, connectionOptions.getScheduler());
+            }))
+            .cache();
+    }
 
+    @Override
+    public Mono<ServiceBusManagementNode> getManagementNode() {
+        if (isDisposed()) {
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "connectionId[%s]: Connection is disposed. Cannot get management instance", connectionId))));
+        }
+
+        return managementChannelMono;
     }
 
     /**

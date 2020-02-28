@@ -70,24 +70,24 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
     /**
      * Creates the AMQP message represented by this {@code object}. Currently, only supports serializing
-     * {@link Message}.
+     * {@link ServiceBusMessage}.
      *
      * @param object Concrete object to deserialize.
      *
      * @return A new AMQP message for this {@code object}.
      *
-     * @throws IllegalArgumentException if {@code object} is not an instance of {@link Message}.
+     * @throws IllegalArgumentException if {@code object} is not an instance of {@link ServiceBusMessage}.
      */
     @Override
     public <T> org.apache.qpid.proton.message.Message serialize(T object) {
         Objects.requireNonNull(object, "'object' to serialize cannot be null.");
 
-        if (!(object instanceof Message)) {
+        if (!(object instanceof ServiceBusMessage)) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Cannot serialize object that is not EventData. Clazz: " + object.getClass()));
         }
 
-        final Message serviceBusMessage = (Message) object;
+        final ServiceBusMessage serviceBusMessage = (ServiceBusMessage) object;
         final org.apache.qpid.proton.message.Message amqpMessage = Proton.message();
 
         if (serviceBusMessage.getProperties() != null && !serviceBusMessage.getProperties().isEmpty()) {
@@ -107,7 +107,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         Objects.requireNonNull(message, "'message' cannot be null.");
         Objects.requireNonNull(clazz, "'clazz' cannot be null.");
 
-        if (clazz == Message.class) {
+        if (clazz == ServiceBusMessage.class) {
             return (T) deserializeMessage(message);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -115,7 +115,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
     }
 
-    private Message deserializeMessage(org.apache.qpid.proton.message.Message message) {
+    private ServiceBusMessage deserializeMessage(org.apache.qpid.proton.message.Message message) {
         final Map<Symbol, Object> messageAnnotations = message.getMessageAnnotations().getValue();
         final HashMap<String, Object> receiveProperties = new HashMap<>();
 
@@ -151,27 +151,28 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             body = new byte[0];
         }
 
-        final Message sbMessage = new Message(body, receiveProperties, Context.NONE);
+        final ServiceBusMessage serviceBusMessage = new ServiceBusMessage(body, receiveProperties, Context.NONE);
         final Map<String, Object> properties = message.getApplicationProperties() == null
             ? new HashMap<>()
             : message.getApplicationProperties().getValue();
 
-        properties.forEach((key, value) -> sbMessage.getProperties().put(key, value));
+        properties.forEach((key, value) -> serviceBusMessage.getProperties().put(key, value));
 
         message.clear();
-        return sbMessage;
+        return serviceBusMessage;
     }
 
     /*
      * Sets AMQP protocol header values on the AMQP message.
      */
-    private static void setSystemProperties(Message eventData, org.apache.qpid.proton.message.Message message) {
+    private static void setSystemProperties(ServiceBusMessage eventData,
+                                            org.apache.qpid.proton.message.Message message) {
         if (eventData.getSystemProperties() == null || eventData.getSystemProperties().isEmpty()) {
             return;
         }
 
         eventData.getSystemProperties().forEach((key, value) -> {
-            if (Message.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
+            if (ServiceBusMessage.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
                 return;
             }
 

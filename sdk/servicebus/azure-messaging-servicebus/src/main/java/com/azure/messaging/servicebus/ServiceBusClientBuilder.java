@@ -58,6 +58,7 @@ public final class ServiceBusClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(ServiceBusClientBuilder.class);
 
+    private ServiceBusReceiveMessageOptions serviceBusReceiveMessageOptions;
     private ProxyOptions proxyOptions;
     private TokenCredential credentials;
     private Configuration configuration;
@@ -65,7 +66,7 @@ public final class ServiceBusClientBuilder {
     private Scheduler scheduler;
     private AmqpTransportType transport = AmqpTransportType.AMQP;
     private String fullyQualifiedNamespace;
-    private String queueName;
+    private String serviceBusResourceName;
     private ServiceBusConnectionProcessor serviceBusConnectionProcessor;
     private final String connectionId;
 
@@ -78,11 +79,11 @@ public final class ServiceBusClientBuilder {
 
     /**
      *
-     * @param connectionString to connect to Queue.
+     * @param connectionStringWithResourceName to connect to Queue.
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
-    public ServiceBusClientBuilder connectionString(String connectionString) {
-        final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+    public ServiceBusClientBuilder connectionString(String connectionStringWithResourceName) {
+        final ConnectionStringProperties properties = new ConnectionStringProperties(connectionStringWithResourceName);
         final TokenCredential tokenCredential;
         try {
             tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
@@ -92,36 +93,39 @@ public final class ServiceBusClientBuilder {
                 new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
         }
         this.fullyQualifiedNamespace = properties.getEndpoint().getHost();
-        this.queueName = properties.getEntityPath();
+        this.serviceBusResourceName = properties.getEntityPath();
         return credential(properties.getEndpoint().getHost(), properties.getEntityPath(), tokenCredential);
     }
 
     /**
      *
      * @param fullyQualifiedNamespace for the Service Bus.
-     * @param queueName The name of the queue.
+     * @param topicOrQueueName The name of the queue.
      * @param credential {@link TokenCredential} to be used for authentication.
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
-    public ServiceBusClientBuilder credential(String fullyQualifiedNamespace, String queueName,
+    public ServiceBusClientBuilder credential(String fullyQualifiedNamespace, String topicOrQueueName,
                                               TokenCredential credential) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.queueName = Objects.requireNonNull(queueName, "'queueName' cannot be null.");
+        this.serviceBusResourceName = Objects.requireNonNull(
+            topicOrQueueName, "'topicOrQueueName' cannot be null.");
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
-        } else if (CoreUtils.isNullOrEmpty(queueName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'queueName' cannot be an empty string."));
+        } else if (CoreUtils.isNullOrEmpty(topicOrQueueName)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'topicOrQueueName' cannot be an empty string."));
         }
         return this;
     }
 
     /**
-     * Creates an {@link ServiceSenderSenderAsyncClient} for transmitting {@link Message} to the Service Bus Queue.
+     * Creates an {@link ServiceSenderSenderAsyncClient} for transmitting {@link ServiceBusMessage}
+     * to the Service Bus Queue.
      *
      * @return A new {@link ServiceSenderSenderAsyncClient}.
      */
@@ -143,16 +147,15 @@ public final class ServiceBusClientBuilder {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new ServiceSenderSenderAsyncClient(queueName, connectionProcessor,  retryOptions, tracerProvider,
-            messageSerializer);
+        return new ServiceSenderSenderAsyncClient(serviceBusResourceName, connectionProcessor,
+            retryOptions, tracerProvider, messageSerializer);
     }
     /**
-     * Creates an Service Bus Queue receiver responsible for reading {@link Message} from a specific Queue.
+     * Creates an Service Bus Queue receiver responsible for reading {@link ServiceBusMessage} from a specific Queue.
      *
-     * @param prefetchCount The set of options to apply when creating the consumer.
      * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from the Queue.
      */
-    ServiceBusReceiverAsyncClient createAsyncReceiverClient(int prefetchCount) {
+    ServiceBusReceiverAsyncClient buildAsyncReceiverClient() {
         if (retryOptions == null) {
             retryOptions = DEFAULT_RETRY;
         }
@@ -170,12 +173,9 @@ public final class ServiceBusClientBuilder {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), queueName,
-            connectionProcessor, tracerProvider, messageSerializer, prefetchCount);
-    }
-
-    ServiceBusReceiverAsyncClient createAsyncReceiverClient(ReceiveMode receiveMode, int prefetchCount) {
-        return createAsyncReceiverClient(prefetchCount);
+        return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
+            serviceBusResourceName, connectionProcessor, tracerProvider, messageSerializer,
+            serviceBusReceiveMessageOptions.getPrefetchCount());
     }
 
     /**
@@ -194,23 +194,14 @@ public final class ServiceBusClientBuilder {
     /**
      * Specify connection string and  queue name for connection to Queue.
      * @param connectionString to connect to service bus resource.
-     * @param queueName The name of the queue.
+     * @param topicOrQueueName The name of the queue.
      * @return The {@link ServiceBusClientBuilder}.
      */
-    public ServiceBusClientBuilder connectionString(String connectionString, String queueName) {
-        this.queueName = queueName;
+    public ServiceBusClientBuilder connectionString(String connectionString, String topicOrQueueName) {
+        this.serviceBusResourceName = topicOrQueueName;
         return connectionString(connectionString);
     }
 
-    /**
-     *
-     * @param queueName The name of the queue.
-     * @return The {@link ServiceBusClientBuilder}.
-     */
-    public ServiceBusClientBuilder queueName(String queueName) {
-        this.queueName = queueName;
-        return this;
-    }
 
     /**
      *
@@ -221,6 +212,15 @@ public final class ServiceBusClientBuilder {
         return this;
     }
 
+    /**
+     * This is valid for receiving messages only.
+     * @param receiveMessageOptions for receiving.
+     * @return The {@link ServiceBusClientBuilder}.
+     */
+    public ServiceBusClientBuilder receiveMessageOptions(ServiceBusReceiveMessageOptions receiveMessageOptions) {
+        this.serviceBusReceiveMessageOptions = receiveMessageOptions;
+        return this;
+    }
     /**
      *
      * @param transportType to use.
@@ -308,7 +308,7 @@ public final class ServiceBusClientBuilder {
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        return new ConnectionOptions(fullyQualifiedNamespace, queueName, credentials, authorizationType,
+        return new ConnectionOptions(fullyQualifiedNamespace, serviceBusResourceName, credentials, authorizationType,
             transport, retryOptions, proxyOptions, scheduler);
     }
 

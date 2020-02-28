@@ -23,10 +23,11 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * The data structure encapsulating the message being sent-to and received-from Service Bus.
- * Each Service Bus entity can be visualized as a stream of {@link Message}.
+ * Each Service Bus entity can be visualized as a stream of {@link ServiceBusMessage}.
  *
  * <p>
- * Here's how AMQP message sections map to {@link Message}. For reference, the specification can be found here:
+ * Here's how AMQP message sections map to {@link ServiceBusMessage}. For reference, the specification
+ * can be found here:
  * <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf">AMQP 1.0 specification</a>
  *
  * <ol>
@@ -35,13 +36,13 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * </ol>
  *
  * <p>
- * Serializing a received {@link Message} with AMQP sections other than ApplicationProperties (with primitive Java
- * types) and Data section is not supported.
+ * Serializing a received {@link ServiceBusMessage} with AMQP sections other than ApplicationProperties
+ * (with primitive Java types) and Data section is not supported.
  * </p>
  *
  * @see MessageBatch
  */
-public class Message {
+public class ServiceBusMessage {
     /*
      * These are properties owned by the service and set when a message is received.
      */
@@ -65,12 +66,12 @@ public class Message {
     }
 
     /**
-     * Creates a {@link Message} containing the {@code body}.
+     * Creates a {@link ServiceBusMessage} containing the {@code body}.
      *
-     * @param body The data to set for this {@link Message}.
+     * @param body The data to set for this {@link ServiceBusMessage}.
      * @throws NullPointerException if {@code body} is {@code null}.
      */
-    public Message(byte[] body) {
+    public ServiceBusMessage(byte[] body) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
         this.properties = new HashMap<>();
@@ -78,22 +79,22 @@ public class Message {
     }
 
     /**
-     * Creates a {@link Message} containing the {@code body}.
+     * Creates a {@link ServiceBusMessage} containing the {@code body}.
      *
-     * @param body The data to set for this {@link Message}.
+     * @param body The data to set for this {@link ServiceBusMessage}.
      * @throws NullPointerException if {@code body} is {@code null}.
      */
-    public Message(ByteBuffer body) {
+    public ServiceBusMessage(ByteBuffer body) {
         this(body.array());
     }
 
     /**
-     * Creates a {@link Message} by encoding the {@code body} using UTF-8 charset.
+     * Creates a {@link ServiceBusMessage} by encoding the {@code body} using UTF-8 charset.
      *
-     * @param body The string that will be UTF-8 encoded to create a {@link Message}.
+     * @param body The string that will be UTF-8 encoded to create a {@link ServiceBusMessage}.
      * @throws NullPointerException if {@code body} is {@code null}.
      */
-    public Message(String body) {
+    public ServiceBusMessage(String body) {
         this(Objects.requireNonNull(body, "'body' cannot be null.").getBytes(UTF_8));
     }
 
@@ -103,7 +104,7 @@ public class Message {
      * @param body body of the message
      * @param contentType body type of the message
      */
-    public Message(String body, String contentType) {
+    public ServiceBusMessage(String body, String contentType) {
         this(body.getBytes(DEFAULT_CHAR_SET), contentType);
     }
 
@@ -112,7 +113,7 @@ public class Message {
      * @param body body of the message
      * @param contentType content type of the message
      */
-    public Message(byte[] body, String contentType) {
+    public ServiceBusMessage(byte[] body, String contentType) {
         this(body);
         this.contentType = contentType;
     }
@@ -120,35 +121,35 @@ public class Message {
     /**
      * Creates a message from a string. For backward compatibility reasons, the string is converted to a byte array.
      *
-     * @param messageId id of the {@link Message}.
-     * @param body body of the {@link Message}.
-     * @param contentType content type of the {@link Message}.
+     * @param messageId id of the {@link ServiceBusMessage}.
+     * @param body body of the {@link ServiceBusMessage}.
+     * @param contentType content type of the {@link ServiceBusMessage}.
      */
-    public Message(String messageId, String body, String contentType) {
+    public ServiceBusMessage(String messageId, String body, String contentType) {
         this(messageId, body.getBytes(DEFAULT_CHAR_SET), contentType);
     }
 
     /**
-     * Creates a {@link Message} from a byte array.
+     * Creates a {@link ServiceBusMessage} from a byte array.
      *
-     * @param messageId id of the {@link Message}.
-     * @param body body of the {@link Message}.
-     * @param contentType content type of the {@link Message}.
+     * @param messageId id of the {@link ServiceBusMessage}.
+     * @param body body of the {@link ServiceBusMessage}.
+     * @param contentType content type of the {@link ServiceBusMessage}.
      */
-    public Message(String messageId, byte[] body, String contentType) {
+    public ServiceBusMessage(String messageId, byte[] body, String contentType) {
         this(body, contentType);
         this.messageId = messageId;
     }
 
     /**
-     * Creates a {@link Message} with the given {@code body}, system properties and context.
+     * Creates a {@link ServiceBusMessage} with the given {@code body}, system properties and context.
      *
-     * @param body The data to set for this {@link Message}.
-     * @param systemProperties System properties set by message broker for this {@link Message}.
+     * @param body The data to set for this {@link ServiceBusMessage}.
+     * @param systemProperties System properties set by message broker for this {@link ServiceBusMessage}.
      * @param context A specified key-value pair of type {@link Context}.
      * @throws NullPointerException if {@code body}, {@code systemProperties}, or {@code context} is {@code null}.
      */
-    public Message(byte[] body, Map<String, Object> systemProperties, Context context) {
+    public ServiceBusMessage(byte[] body, Map<String, Object> systemProperties, Context context) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
         this.systemProperties = new SystemProperties(Objects.requireNonNull(systemProperties,
@@ -157,16 +158,16 @@ public class Message {
     }
 
     /**
-     * Creates a {@link Message} with the given {@code body}, system properties and context.
+     * Creates a {@link ServiceBusMessage} with the given {@code body}, system properties and context.
      *
-     * @param body The data to set for this {@link Message}.
-     * @param systemProperties System properties set by message broker for this {@link Message}.
+     * @param body The data to set for this {@link ServiceBusMessage}.
+     * @param systemProperties System properties set by message broker for this {@link ServiceBusMessage}.
      * @param context A specified key-value pair of type {@link Context}.
      * @param sessionId The sesson id assigned to the message.
      * @throws NullPointerException if {@code body}, {@code systemProperties}, {@code sessionId} or {@code context}
      * is {@code null}.
      */
-    public Message(byte[] body, Map<String, Object> systemProperties, Context context, String sessionId) {
+    public ServiceBusMessage(byte[] body, Map<String, Object> systemProperties, Context context, String sessionId) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.sessionId = Objects.requireNonNull(sessionId, "'sessonId' cannot be null.");
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
@@ -175,15 +176,16 @@ public class Message {
         this.properties = new HashMap<>();
     }
     /**
-     * Gets the set of free-form {@link Message} properties which may be used for passing metadata associated with
-     * the {@link Message}  during Service Bus operations. A common use-case for {@code properties()} is to associate
-     * serialization hints for the {@link #getBody()} as an aid to consumers who wish to deserialize the binary data.
+     * Gets the set of free-form {@link ServiceBusMessage} properties which may be used for passing metadata
+     * associated with the {@link ServiceBusMessage}  during Service Bus operations. A common use-case for
+     * {@code properties()} is to associate serialization hints for the {@link #getBody()} as an aid to consumers
+     * who wish to deserialize the binary data.
      *
      * <p><strong>Adding serialization hint using {@code getProperties()}</strong></p>
      * <p>In the sample, the type of telemetry is indicated by adding an application property
      * with key "messageType".</p>
      *
-     * @return Application properties associated with this {@link Message}.
+     * @return Application properties associated with this {@link ServiceBusMessage}.
      */
     public Map<String, Object> getProperties() {
         return properties;
@@ -191,10 +193,10 @@ public class Message {
 
     /**
      * Properties that are populated by Service Bus. As these are populated by the Service Bus, they are
-     * only present on a <b>received</b> {@link Message}.
+     * only present on a <b>received</b> {@link ServiceBusMessage}.
      *
-     * @return An encapsulation of all system properties appended by Service Bus into {@link Message}. {@code null} if
-     * the {@link Message} is not received from the Service Bus service.
+     * @return An encapsulation of all system properties appended by Service Bus into {@link ServiceBusMessage}.
+     * {@code null} if the {@link ServiceBusMessage} is not received from the Service Bus service.
      */
     public Map<String, Object> getSystemProperties() {
         return systemProperties;
@@ -202,7 +204,7 @@ public class Message {
 
     /**
      *
-     * @return Id of the {@link Message}.
+     * @return Id of the {@link ServiceBusMessage}.
      */
     public String getMessageId() {
         return messageId;
@@ -211,9 +213,9 @@ public class Message {
     /**
      * Sets the message id.
      * @param messageId to be set.
-     * @return The updted {@link Message}.
+     * @return The updted {@link ServiceBusMessage}.
      */
-    public Message setMessageId(String messageId) {
+    public ServiceBusMessage setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -221,9 +223,9 @@ public class Message {
     /**
      * Sets the session id.
      * @param sessionId to be set.
-     * @return The updted {@link Message}.
+     * @return The updted {@link ServiceBusMessage}.
      */
-    public Message setSessionId(String sessionId) {
+    public ServiceBusMessage setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
     }
@@ -231,7 +233,7 @@ public class Message {
 
     /**
      *
-     * @return Session Id of the {@link Message}.
+     * @return Session Id of the {@link ServiceBusMessage}.
      */
     public String getSessionId() {
         return sessionId;
@@ -239,19 +241,19 @@ public class Message {
 
     /**
      *
-     * @return the contentType of the {@link Message}.
+     * @return the contentType of the {@link ServiceBusMessage}.
      */
     public String getContentType() {
         return contentType;
     }
 
     /**
-     * Sets the content type of the {@link Message}.
+     * Sets the content type of the {@link ServiceBusMessage}.
      * @param contentType of the message.
      *
-     * @return The updted {@link Message}.
+     * @return The updted {@link ServiceBusMessage}.
      */
-    public Message setContentType(String contentType) {
+    public ServiceBusMessage setContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -279,12 +281,13 @@ public class Message {
     public String getBodyAsString() {
         return new String(body, UTF_8);
     }
-    
+
 
     /**
-     * A specified key-value pair of type {@link Context} to set additional information on the {@link Message}.
+     * A specified key-value pair of type {@link Context} to set additional information
+     * on the {@link ServiceBusMessage}.
      *
-     * @return the {@link Context} object set on the {@link Message}.
+     * @return the {@link Context} object set on the {@link ServiceBusMessage}.
      */
     Context getContext() {
         return context;
@@ -296,9 +299,9 @@ public class Message {
      * @param key The key for this context object
      * @param value The value for this context object.
      * @throws NullPointerException if {@code key} or {@code value} is null.
-     * @return The updated {@link Message}.
+     * @return The updated {@link ServiceBusMessage}.
      */
-    public Message addContext(String key, Object value) {
+    public ServiceBusMessage addContext(String key, Object value) {
         Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
         Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
         this.context = context.addData(key, value);

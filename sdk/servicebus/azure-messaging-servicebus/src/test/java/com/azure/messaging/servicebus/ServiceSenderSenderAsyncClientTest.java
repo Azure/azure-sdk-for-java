@@ -130,8 +130,8 @@ public class ServiceSenderSenderAsyncClientTest {
         // Arrange
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final Flux<com.azure.messaging.servicebus.Message> testData = Flux.range(0, count).flatMap(number -> {
-            final com.azure.messaging.servicebus.Message data = new com.azure.messaging.servicebus.Message(contents);
+        final Flux<ServiceBusMessage> testData = Flux.range(0, count).flatMap(number -> {
+            final ServiceBusMessage data = new ServiceBusMessage(contents);
             return Flux.just(data);
         });
         //final SendOptions options = new SendOptions();
@@ -160,8 +160,8 @@ public class ServiceSenderSenderAsyncClientTest {
     @Test
     void sendSingleMessage() {
         // Arrange
-        final com.azure.messaging.servicebus.Message testData =
-            new com.azure.messaging.servicebus.Message(TEST_CONTENTS.getBytes(UTF_8));
+        final ServiceBusMessage testData =
+            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
         when(connection.createSendLink(eq(QUEUE_NAME), eq(QUEUE_NAME), eq(retryOptions)))

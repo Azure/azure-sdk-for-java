@@ -37,7 +37,7 @@ public class TestUtils {
     public static final String MESSAGE_TRACKING_ID = "message-tracking-id";
 
     static {
-        APPLICATION_PROPERTIES.put("test-name", com.azure.messaging.servicebus.Message.class.getName());
+        APPLICATION_PROPERTIES.put("test-name", ServiceBusMessage.class.getName());
         APPLICATION_PROPERTIES.put("a-number", 10L);
     }
 

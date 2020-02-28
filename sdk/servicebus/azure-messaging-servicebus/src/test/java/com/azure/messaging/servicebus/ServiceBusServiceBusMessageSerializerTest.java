@@ -14,12 +14,12 @@ import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ServiceBusMessageSerializerTest {
+public class ServiceBusServiceBusMessageSerializerTest {
     private final ServiceBusMessageSerializer serializer = new ServiceBusMessageSerializer();
 
     @Test
     public void deserializeMessageNotNull() {
-        assertThrows(NullPointerException.class, () -> serializer.deserialize(null, Message.class));
+        assertThrows(NullPointerException.class, () -> serializer.deserialize(null, ServiceBusMessage.class));
     }
     @Test
     public void deserializeClassNotNull() {
@@ -50,7 +50,7 @@ public class ServiceBusMessageSerializerTest {
     }
 
     /**
-     * Verify that we can deserialize a proton-j message with all the correct contents to {@link Message}.
+     * Verify that we can deserialize a proton-j message with all the correct contents to {@link ServiceBusMessage}.
      */
     @Test
     public void deserializeMessage() {
@@ -61,7 +61,7 @@ public class ServiceBusMessageSerializerTest {
         final org.apache.qpid.proton.message.Message message = getMessage(payloadBytes);
 
         // Act
-        final Message serviceBusMessage = serializer.deserialize(message, Message.class);
+        final ServiceBusMessage serviceBusMessage = serializer.deserialize(message, ServiceBusMessage.class);
 
         // Assert
         // Verifying all our system properties were properly deserialized.

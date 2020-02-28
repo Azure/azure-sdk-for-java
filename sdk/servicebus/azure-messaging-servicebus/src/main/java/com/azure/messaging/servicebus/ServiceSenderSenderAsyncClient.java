@@ -88,23 +88,23 @@ public final class ServiceSenderSenderAsyncClient implements Closeable {
 
     /**
      *
-     * @param message to be sent to Service Bus Queue.
+     * @param serviceBusMessage to be sent to Service Bus Queue.
      * @param sessionId the session id to associate with the message.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> send(Message message, String sessionId) {
+    public Mono<Void> send(ServiceBusMessage serviceBusMessage, String sessionId) {
         //TODO(sessionid) Implement session id feature
-        return send(Flux.just(message));
+        return send(Flux.just(serviceBusMessage));
     }
 
     /**
      *
-     * @param message to be sent Service Bus Queue.
+     * @param serviceBusMessage to be sent Service Bus Queue.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> send(Message message) {
-        Objects.requireNonNull(message, "'message' cannot be null.");
-        return send(Flux.just(message));
+    public Mono<Void> send(ServiceBusMessage serviceBusMessage) {
+        Objects.requireNonNull(serviceBusMessage, "'message' cannot be null.");
+        return send(Flux.just(serviceBusMessage));
     }
 
     /**
@@ -115,13 +115,13 @@ public final class ServiceSenderSenderAsyncClient implements Closeable {
      * @param messages to send to the Service Bus Queue..
      * @return A {@link Mono} that completes when all messages are pushed to the service.
      */
-    public Mono<Void> send(Flux<Message> messages) {
+    public Mono<Void> send(Flux<ServiceBusMessage> messages) {
         Objects.requireNonNull(messages, "'messages' cannot be null.");
 
         return sendInternal(messages);
     }
 
-    private Mono<Void> sendInternal(Flux<Message> messages) {
+    private Mono<Void> sendInternal(Flux<ServiceBusMessage> messages) {
         return getSendLink()
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
@@ -148,11 +148,11 @@ public final class ServiceSenderSenderAsyncClient implements Closeable {
      * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
-     * @param message to be sent to the Service Bus Queue.
+     * @param serviceBusMessage to be sent to the Service Bus Queue.
      * @param scheduledEnqueueTimeUtc Declares at which time the message should appear on the Service Bus Queue.
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
      */
-    public Mono<Long> schedule(Message message, Instant scheduledEnqueueTimeUtc) {
+    public Mono<Long> schedule(ServiceBusMessage serviceBusMessage, Instant scheduledEnqueueTimeUtc) {
         //TODO(feature-to-implement)
         return null;
     }
@@ -188,7 +188,7 @@ public final class ServiceSenderSenderAsyncClient implements Closeable {
             ? new AtomicReference<>(Context.NONE)
             : null;
 
-        if (batch.getMessageList().isEmpty()) {
+        if (batch.getServiceBusMessageList().isEmpty()) {
             logger.info("Cannot send an EventBatch that is empty.");
             return Mono.empty();
         }
@@ -198,8 +198,8 @@ public final class ServiceSenderSenderAsyncClient implements Closeable {
         Context sharedContext = null;
         final List<org.apache.qpid.proton.message.Message> messages = new ArrayList<>();
 
-        for (int i = 0; i < batch.getMessageList().size(); i++) {
-            final Message event = batch.getMessageList().get(i);
+        for (int i = 0; i < batch.getServiceBusMessageList().size(); i++) {
+            final ServiceBusMessage event = batch.getServiceBusMessageList().get(i);
             if (isTracingEnabled) {
                 parentContext.set(event.getContext());
                 if (i == 0) {
@@ -253,7 +253,8 @@ public final class ServiceSenderSenderAsyncClient implements Closeable {
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
     }
 
-    private static class AmqpMessageCollector implements Collector<Message, List<MessageBatch>, List<MessageBatch>> {
+    private static class AmqpMessageCollector implements Collector<ServiceBusMessage, List<MessageBatch>,
+        List<MessageBatch>> {
         private final int maxMessageSize;
         private final Integer maxNumberOfBatches;
         private final ErrorContextProvider contextProvider;
@@ -280,7 +281,7 @@ public final class ServiceSenderSenderAsyncClient implements Closeable {
         }
 
         @Override
-        public BiConsumer<List<MessageBatch>, Message> accumulator() {
+        public BiConsumer<List<MessageBatch>, ServiceBusMessage> accumulator() {
             return (list, event) -> {
                 MessageBatch batch = currentBatch;
                 if (batch.tryAdd(event)) {

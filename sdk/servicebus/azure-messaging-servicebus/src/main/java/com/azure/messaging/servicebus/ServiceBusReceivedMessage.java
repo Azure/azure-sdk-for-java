@@ -16,18 +16,16 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /***
  * This class represent the received Message.
  */
-
-
-public final class ReceivedMessage extends Message {
+public final class ServiceBusReceivedMessage extends ServiceBusMessage {
 
     private UUID lockToken;
     private long sequenceNumber;
 
-    ReceivedMessage(byte[] body) {
+    ServiceBusReceivedMessage(byte[] body) {
         super(body);
     }
 
-    ReceivedMessage(byte[] body, String sessionId) {
+    ServiceBusReceivedMessage(byte[] body, String sessionId) {
         super(body, sessionId);
     }
 
@@ -37,10 +35,10 @@ public final class ReceivedMessage extends Message {
      * @param body The data to set for this event.
      * @throws NullPointerException if {@code body} is {@code null}.
      */
-    ReceivedMessage(ByteBuffer body) {
+    ServiceBusReceivedMessage(ByteBuffer body) {
         super(Objects.requireNonNull(body, "'body' cannot be null.").array());
     }
-    ReceivedMessage(ByteBuffer body, String sessionId) {
+    ServiceBusReceivedMessage(ByteBuffer body, String sessionId) {
         this(Objects.requireNonNull(body, "'body' cannot be null.").array());
 
     }
@@ -51,10 +49,10 @@ public final class ReceivedMessage extends Message {
      * @param body The string that will be UTF-8 encoded to create an event.
      * @throws NullPointerException if {@code body} is {@code null}.
      */
-    ReceivedMessage(String body) {
+    ServiceBusReceivedMessage(String body) {
         this(Objects.requireNonNull(body, "'body' cannot be null.").getBytes(UTF_8));
     }
-    ReceivedMessage(String body, String sessionId) {
+    ServiceBusReceivedMessage(String body, String sessionId) {
         super(body, sessionId);
 
     }
@@ -67,11 +65,11 @@ public final class ReceivedMessage extends Message {
      * @param context A specified key-value pair of type {@link Context}.
      * @throws NullPointerException if {@code body}, {@code systemProperties}, or {@code context} is {@code null}.
      */
-    ReceivedMessage(byte[] body, SystemProperties systemProperties, Context context) {
+    ServiceBusReceivedMessage(byte[] body, SystemProperties systemProperties, Context context) {
         super(body, systemProperties, context);
     }
 
-    ReceivedMessage(byte[] body, Map<String, Object> systemProperties, Context context, String sessionId) {
+    ServiceBusReceivedMessage(byte[] body, Map<String, Object> systemProperties, Context context, String sessionId) {
         super(body, systemProperties, context, sessionId);
     }
 
@@ -93,10 +91,10 @@ public final class ReceivedMessage extends Message {
 
     /**
      * Gets the instant, in UTC, of when the event was enqueued in the Event Hub partition. This is only present on a
-     * <b>received</b> {@link Message}.
+     * <b>received</b> {@link ServiceBusMessage}.
      *
-     * @return The instant, in UTC, this was enqueued in the Event Hub partition. {@code null} if the {@link Message}
-     *     was not received from Event Hubs service.
+     * @return The instant, in UTC, this was enqueued in the Event Hub partition.
+     *  {@code null} if the {@link ServiceBusMessage} was not received from Event Hubs service.
      */
     public Instant getEnqueuedTime() {
         return null;
@@ -106,10 +104,10 @@ public final class ReceivedMessage extends Message {
     /**
      * Gets the sequence number assigned to the event when it was enqueued in the associated Event Hub partition. This
      * is unique for every message received in the Event Hub partition. This is only present on a <b>received</b>
-     * {@link Message}.
+     * {@link ServiceBusMessage}.
      *
-     * @return The sequence number for this event. {@code null} if the {@link Message} was not received from Event
-     *     Hubs service.
+     * @return The sequence number for this event. {@code null} if the {@link ServiceBusMessage}
+     * was not received from Event Hubs service.
      */
     public long getSequenceNumber() {
         return this.sequenceNumber;
@@ -134,10 +132,10 @@ public final class ReceivedMessage extends Message {
     /**
      *
      * @param lockToken to be set
-     * @return The updated {@link ReceivedMessage}.
+     * @return The updated {@link ServiceBusReceivedMessage}.
 
      */
-    public ReceivedMessage setLockToken(UUID lockToken) {
+    public ServiceBusReceivedMessage setLockToken(UUID lockToken) {
         this.lockToken = lockToken;
         return this;
     }
@@ -145,10 +143,10 @@ public final class ReceivedMessage extends Message {
     /**
      *
      * @param sequenceNumber to be set
-     * @return The updated {@link ReceivedMessage}.
+     * @return The updated {@link ServiceBusReceivedMessage}.
 
      */
-    public ReceivedMessage setSequenceNumber(long sequenceNumber) {
+    public ServiceBusReceivedMessage setSequenceNumber(long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
         return this;
     }
