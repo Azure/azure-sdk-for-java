@@ -25,6 +25,7 @@ import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IHttpClient;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
@@ -69,7 +70,7 @@ public class IdentityClient {
     private final PublicClientApplication publicClientApplication;
     private final String tenantId;
     private final String clientId;
-    private HttpPipeline httpPipeline;
+    private HttpPipelineAdapter httpPipelineAdapter;
 
     /**
      * Creates an IdentityClient with the given options.
@@ -88,7 +89,6 @@ public class IdentityClient {
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.options = options;
-        httpPipeline = options.getHttpPipeline();
         if (clientId == null) {
             this.publicClientApplication = null;
         } else {
@@ -102,13 +102,16 @@ public class IdentityClient {
 
             // If user supplies the pipeline, then it should override all other properties
             // as they should directly be set on the pipeline.
+            HttpPipeline httpPipeline = options.getHttpPipeline();
             if (httpPipeline != null) {
-                publicClientApplicationBuilder.httpClient(new HttpPipelineAdapter(httpPipeline));
+                httpPipelineAdapter = new HttpPipelineAdapter(httpPipeline);
+                publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
             } else {
                 // If http client is set on the credential, then it should override the proxy options if any configured.
-                if (options.getHttpClient() != null) {
-                    httpPipeline = setupPipeline(options.getHttpClient());
-                    publicClientApplicationBuilder.httpClient(new HttpPipelineAdapter(httpPipeline));
+                HttpClient httpClient = options.getHttpClient();
+                if (httpClient != null) {
+                    httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient));
+                    publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
                 } else if (options.getProxyOptions() != null) {
                     publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
                 }
@@ -132,8 +135,8 @@ public class IdentityClient {
                     .authority(authorityUrl);
 
             // If http pipeline is available, then it should override the proxy options if any configured.
-            if (httpPipeline != null) {
-                applicationBuilder.httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
+            if (httpPipelineAdapter != null) {
+                applicationBuilder.httpClient(httpPipelineAdapter);
             } else if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
@@ -180,8 +183,8 @@ public class IdentityClient {
                             .authority(authorityUrl);
 
             // If http pipeline is available, then it should override the proxy options if any configured.
-            if (httpPipeline != null) {
-                applicationBuilder.httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
+            if (httpPipelineAdapter != null) {
+                applicationBuilder.httpClient(httpPipelineAdapter);
             } else if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
@@ -211,8 +214,8 @@ public class IdentityClient {
                         .authority(authorityUrl);
 
             // If http pipeline is available, then it should override the proxy options if any configured.
-            if (httpPipeline != null) {
-                applicationBuilder.httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
+            if (httpPipelineAdapter != null) {
+                applicationBuilder.httpClient(httpPipelineAdapter);
             } else if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
