@@ -13,7 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public interface StoreResponseValidator {
-    
+
     void validate(StoreResponse storeResponse);
 
     public static Builder create() {
@@ -83,7 +83,7 @@ public interface StoreResponseValidator {
             return this;
         }
 
-        public Builder withContent(String content) {
+        public Builder withContent(byte[] content) {
 
             validators.add(new StoreResponseValidator() {
                 @Override

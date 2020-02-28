@@ -213,7 +213,6 @@ implements IDocumentQueryExecutionContext<T> {
             SqlQuerySpec querySpec) {
         RxDocumentServiceRequest executeQueryRequest;
 
-        String queryText;
         switch (this.client.getQueryCompatibilityMode()) {
         case SqlQuery:
             SqlParameterList params = querySpec.getParameters();
@@ -227,7 +226,7 @@ implements IDocumentQueryExecutionContext<T> {
                     requestHeaders);
 
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.JSON);
-            queryText = querySpec.getQueryText();
+            executeQueryRequest.setContentBytes(Utils.getUTF8Bytes(querySpec.getQueryText()));
             break;
 
         case Default:
@@ -239,16 +238,8 @@ implements IDocumentQueryExecutionContext<T> {
                     requestHeaders);
 
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
-            queryText = querySpec.toJson();
+            executeQueryRequest.setByteBuffer(querySpec.serializeJsonToByteBuffer());
             break;
-        }
-
-        try {
-            executeQueryRequest.setContentBytes(queryText.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            // TODO: exception should be handled differently
-            e.printStackTrace();
         }
 
         return executeQueryRequest;

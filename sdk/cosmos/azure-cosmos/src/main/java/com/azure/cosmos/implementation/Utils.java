@@ -65,6 +65,18 @@ public class Utils {
         Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
     }
 
+    public static byte[] getUTF8BytesOrNull(String str) {
+        if (str == null) {
+            return null;
+        }
+
+        try {
+            return str.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static byte[] getUTF8Bytes(String str) {
         try {
             return str.getBytes("UTF-8");
@@ -567,7 +579,7 @@ public class Utils {
         return bytes == null || bytes.length == 0;
     }
 
-    public static String utf8StringFrom(byte[] bytes) {
+    public static String utf8StringFromOrNull(byte[] bytes) {
         if (bytes == null) {
             return null;
         }
@@ -595,7 +607,7 @@ public class Utils {
             if (val > 127) {
                 if (sb == null) {
                     sb = new StringBuilder(partitionKeyJson.length());
-                    sb.append(partitionKeyJson.substring(0, i));
+                    sb.append(partitionKeyJson, 0, i);
                 }
                 sb.append("\\u").append(String.format("%04X", val));
             } else {
