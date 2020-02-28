@@ -34,7 +34,7 @@ public class UniqueKeyPolicy extends JsonSerializable {
      *
      * @return the unique keys.
      */
-    public List<UniqueKey> setUniqueKeys() {
+    public List<UniqueKey> getUniqueKeys() {
         if (this.uniqueKeys == null) {
             this.uniqueKeys = super.getList(Constants.Properties.UNIQUE_KEYS, UniqueKey.class);
             if (this.uniqueKeys == null) {
@@ -43,7 +43,6 @@ public class UniqueKeyPolicy extends JsonSerializable {
         }
         return this.uniqueKeys;
     }
-
 
     /**
      * Unique keys unique key policy.

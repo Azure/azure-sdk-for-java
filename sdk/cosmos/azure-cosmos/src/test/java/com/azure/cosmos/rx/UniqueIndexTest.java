@@ -200,10 +200,10 @@ public class UniqueIndexTest extends TestSuiteBase {
         CosmosContainerProperties collection = createdCollection.read().block().getProperties();
 
         assertThat(collection.getUniqueKeyPolicy()).isNotNull();
-        assertThat(collection.getUniqueKeyPolicy().setUniqueKeys()).isNotNull();
-        assertThat(collection.getUniqueKeyPolicy().setUniqueKeys())
-                .hasSameSizeAs(collectionDefinition.getUniqueKeyPolicy().setUniqueKeys());
-        assertThat(collection.getUniqueKeyPolicy().setUniqueKeys()
+        assertThat(collection.getUniqueKeyPolicy().getUniqueKeys()).isNotNull();
+        assertThat(collection.getUniqueKeyPolicy().getUniqueKeys())
+                .hasSameSizeAs(collectionDefinition.getUniqueKeyPolicy().getUniqueKeys());
+        assertThat(collection.getUniqueKeyPolicy().getUniqueKeys()
                 .stream().map(ui -> ui.getPaths()).collect(Collectors.toList()))
                 .containsExactlyElementsOf(
                         ImmutableList.of(ImmutableList.of("/name", "/description")));

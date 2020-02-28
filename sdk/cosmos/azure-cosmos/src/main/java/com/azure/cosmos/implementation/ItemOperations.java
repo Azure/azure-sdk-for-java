@@ -1,20 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.CosmosContainer;
+import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.PartitionKey;
 import org.apache.commons.lang3.tuple.Pair;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-/**
- * Note: although this class is public it is not part of our public API and may change in future.
- */
 final public class ItemOperations {
 
     /**
-     * Note: although this method is public, it is not part of public API and may change in future.
+     * Note: although this method is public, this API may change in future.
      * <p>
      * Reads many documents.
      *
@@ -27,11 +31,11 @@ final public class ItemOperations {
     public static <T> FeedResponse<T> readMany(CosmosContainer container,
                                                List<Pair<String, PartitionKey>> itemKeyList,
                                                Class<T> classType) {
-        return readManyAsync(container.asyncContainer, itemKeyList, classType).block();
+        return readManyAsync(CosmosBridgeInternal.getCosmosAsyncContainer(container), itemKeyList, classType).block();
     }
 
     /**
-     * Note: although this method is public, it is not part of public API and may change in future.
+     * Note: although this method is public, this API may change in future.
      * <p>
      * Reads many documents.
      *
@@ -55,9 +59,9 @@ final public class ItemOperations {
                                                       List<Pair<String, PartitionKey>> itemKeyList,
                                                       FeedOptions options,
                                                       Class<T> classType) {
-        return container.getDatabase()
-            .getDocClientWrapper()
-            .readMany(itemKeyList, container.getLink(), options, classType);
+
+        return CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase())
+            .readMany(itemKeyList, BridgeInternal.getLink(container), options, classType);
     }
 
     private ItemOperations() {}

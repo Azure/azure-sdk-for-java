@@ -517,4 +517,8 @@ public class BridgeInternal {
     public static String toLower(RequestVerb verb) {
         return verb.toLowerCase();
     }
+
+    public static String getLink(CosmosAsyncContainer cosmosAsyncContainer) {
+        return cosmosAsyncContainer.getLink();
+    }
 }

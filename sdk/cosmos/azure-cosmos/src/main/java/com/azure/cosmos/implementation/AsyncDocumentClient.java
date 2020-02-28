@@ -196,7 +196,7 @@ public interface AsyncDocumentClient {
                                                                    connectionPolicy,
                                                                    desiredConsistencyLevel,
                                                                    configs,
-                cosmosAuthorizationTokenResolver,
+                                                                   cosmosAuthorizationTokenResolver,
                                                                    cosmosKeyCredential,
                                                                    sessionCapturingOverride,
                                                                    transportClientSharing);
