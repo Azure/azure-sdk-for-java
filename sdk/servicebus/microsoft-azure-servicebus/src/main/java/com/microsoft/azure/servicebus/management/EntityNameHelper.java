@@ -3,6 +3,10 @@
 
 package com.microsoft.azure.servicebus.management;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+
 /**
  * This class can be used to format the path for different Service Bus entity types.
  */
@@ -78,6 +82,15 @@ public class EntityNameHelper {
 
     static void checkValidRuleName(String ruleName) {
         checkValidEntityName(ruleName, ManagementClientConstants.RULE_NAME_MAX_LENGTH, false);
+    }
+    
+    static String normalizeForwardToAddress(String forwardTo, URI baseAddress) {
+        try {
+            new URL(forwardTo);
+            return forwardTo;
+        } catch (MalformedURLException e) {
+            return baseAddress.resolve(forwardTo).toString();
+        }
     }
 
     private static void checkValidEntityName(String entityName, int maxEntityNameLength, boolean allowSeparator) {

@@ -258,7 +258,8 @@ public final class DocumentCollection extends Resource {
                 "/" + super.getString(Constants.Properties.CONFLICTS_LINK);
     }
 
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
+        super.populatePropertyBag();
         if (this.indexingPolicy == null) {
             this.getIndexingPolicy();
         }

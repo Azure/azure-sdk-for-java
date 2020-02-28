@@ -61,7 +61,8 @@ public class UniqueKeyPolicy extends JsonSerializable {
     }
 
     @Override
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
+        super.populatePropertyBag();
         if (this.uniqueKeys != null) {
             for (UniqueKey uniqueKey : uniqueKeys) {
                 uniqueKey.populatePropertyBag();

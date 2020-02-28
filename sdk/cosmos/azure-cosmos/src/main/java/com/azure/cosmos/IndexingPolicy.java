@@ -232,7 +232,7 @@ public final class IndexingPolicy extends JsonSerializable {
     }
 
     @Override
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
         super.populatePropertyBag();
         // If indexing mode is not 'none' and not paths are set, set them to the defaults
         if (this.getIndexingMode() != IndexingMode.NONE && this.getIncludedPaths().size() == 0

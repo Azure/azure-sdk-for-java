@@ -66,7 +66,8 @@ public class UniqueKey extends JsonSerializable {
     }
 
     @Override
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
+        super.populatePropertyBag();
         if (paths != null) {
             super.set(Constants.Properties.PATHS, paths);
         }

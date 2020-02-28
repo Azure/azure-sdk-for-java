@@ -133,7 +133,7 @@ public class JsonSerializable {
         return logger;
     }
 
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
     }
 
     /**
@@ -551,6 +551,7 @@ public class JsonSerializable {
     }
 
     public ByteBuffer serializeJsonToByteBuffer() {
+        this.populatePropertyBag();
         return Utils.serializeJsonToByteBuffer(getMapper(), propertyBag);
     }
 
