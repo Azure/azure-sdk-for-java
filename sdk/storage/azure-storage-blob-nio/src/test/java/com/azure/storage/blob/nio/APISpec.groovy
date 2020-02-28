@@ -358,6 +358,10 @@ class APISpec extends Specification {
     Map<String, Object> initializeConfigMap() {
         def config = [:]
         config[AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT] = getHttpClient()
+        if (testMode == TestMode.RECORD) {
+            config[AzureFileSystem.AZURE_STORAGE_HTTP_POLICIES] =
+                [interceptorManager.getRecordPolicy()] as HttpPipelinePolicy[]
+        }
         config[AzureFileSystem.AZURE_STORAGE_USE_HTTPS] = defaultEndpointTemplate.startsWith("https")
         return config as Map<String, Object>
     }
