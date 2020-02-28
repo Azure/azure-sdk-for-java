@@ -15,9 +15,9 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
-import java.util.List;
 import rx.Observable;
+
+import java.util.List;
 
 /**
  * The interface for EventGridClient class.
@@ -115,7 +115,7 @@ public interface EventGridClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> publishEventsAsync(String topicHostname, List<EventGridEvent> events, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> publishEventsAsync(String topicHostname, List<EventGridEvent> events, ServiceCallback<Void> serviceCallback);
 
     /**
      * Publishes a batch of events to an Azure Event Grid topic.
