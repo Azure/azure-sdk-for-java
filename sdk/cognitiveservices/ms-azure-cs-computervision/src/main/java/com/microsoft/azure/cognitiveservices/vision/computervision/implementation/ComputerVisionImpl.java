@@ -784,6 +784,55 @@ public class ComputerVisionImpl implements ComputerVision {
                 .build(response);
     }
 
+    @Override
+    public ComputerVisionTagImageInStreamParameters tagImageInStream() {
+        return new ComputerVisionTagImageInStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionTagImageInStreamDefinition.
+     */
+    class ComputerVisionTagImageInStreamParameters implements ComputerVisionTagImageInStreamDefinition {
+        private ComputerVisionImpl parent;
+        private byte[] image;
+        private String language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionTagImageInStreamParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionTagImageInStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionTagImageInStreamParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public TagResult execute() {
+        return tagImageInStreamWithServiceResponseAsync(image, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<TagResult> executeAsync() {
+            return tagImageInStreamWithServiceResponseAsync(image, language).map(new Func1<ServiceResponse<TagResult>, TagResult>() {
+                @Override
+                public TagResult call(ServiceResponse<TagResult> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
@@ -900,6 +949,62 @@ public class ComputerVisionImpl implements ComputerVision {
                 .register(200, new TypeToken<OcrResult>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ComputerVisionRecognizePrintedTextInStreamParameters recognizePrintedTextInStream() {
+        return new ComputerVisionRecognizePrintedTextInStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionRecognizePrintedTextInStreamDefinition.
+     */
+    class ComputerVisionRecognizePrintedTextInStreamParameters implements ComputerVisionRecognizePrintedTextInStreamDefinition {
+        private ComputerVisionImpl parent;
+        private boolean detectOrientation;
+        private byte[] image;
+        private OcrLanguages language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionRecognizePrintedTextInStreamParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionRecognizePrintedTextInStreamParameters withDetectOrientation(boolean detectOrientation) {
+            this.detectOrientation = detectOrientation;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionRecognizePrintedTextInStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionRecognizePrintedTextInStreamParameters withLanguage(OcrLanguages language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public OcrResult execute() {
+        return recognizePrintedTextInStreamWithServiceResponseAsync(detectOrientation, image, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OcrResult> executeAsync() {
+            return recognizePrintedTextInStreamWithServiceResponseAsync(detectOrientation, image, language).map(new Func1<ServiceResponse<OcrResult>, OcrResult>() {
+                @Override
+                public OcrResult call(ServiceResponse<OcrResult> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -1031,6 +1136,62 @@ public class ComputerVisionImpl implements ComputerVision {
                 .build(response);
     }
 
+    @Override
+    public ComputerVisionAnalyzeImageByDomainInStreamParameters analyzeImageByDomainInStream() {
+        return new ComputerVisionAnalyzeImageByDomainInStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionAnalyzeImageByDomainInStreamDefinition.
+     */
+    class ComputerVisionAnalyzeImageByDomainInStreamParameters implements ComputerVisionAnalyzeImageByDomainInStreamDefinition {
+        private ComputerVisionImpl parent;
+        private String model;
+        private byte[] image;
+        private String language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionAnalyzeImageByDomainInStreamParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageByDomainInStreamParameters withModel(String model) {
+            this.model = model;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageByDomainInStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageByDomainInStreamParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public DomainModelResults execute() {
+        return analyzeImageByDomainInStreamWithServiceResponseAsync(model, image, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<DomainModelResults> executeAsync() {
+            return analyzeImageByDomainInStreamWithServiceResponseAsync(model, image, language).map(new Func1<ServiceResponse<DomainModelResults>, DomainModelResults>() {
+                @Override
+                public DomainModelResults call(ServiceResponse<DomainModelResults> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
@@ -1152,6 +1313,69 @@ public class ComputerVisionImpl implements ComputerVision {
                 .register(200, new TypeToken<InputStream>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
+    }
+
+    @Override
+    public ComputerVisionGenerateThumbnailInStreamParameters generateThumbnailInStream() {
+        return new ComputerVisionGenerateThumbnailInStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionGenerateThumbnailInStreamDefinition.
+     */
+    class ComputerVisionGenerateThumbnailInStreamParameters implements ComputerVisionGenerateThumbnailInStreamDefinition {
+        private ComputerVisionImpl parent;
+        private int width;
+        private int height;
+        private byte[] image;
+        private Boolean smartCropping;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionGenerateThumbnailInStreamParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailInStreamParameters withWidth(int width) {
+            this.width = width;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailInStreamParameters withHeight(int height) {
+            this.height = height;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailInStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailInStreamParameters withSmartCropping(Boolean smartCropping) {
+            this.smartCropping = smartCropping;
+            return this;
+        }
+
+        @Override
+        public InputStream execute() {
+        return generateThumbnailInStreamWithServiceResponseAsync(width, height, image, smartCropping).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<InputStream> executeAsync() {
+            return generateThumbnailInStreamWithServiceResponseAsync(width, height, image, smartCropping).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+                @Override
+                public InputStream call(ServiceResponse<InputStream> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -1357,6 +1581,69 @@ public class ComputerVisionImpl implements ComputerVision {
                 .register(200, new TypeToken<ImageDescription>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ComputerVisionDescribeImageInStreamParameters describeImageInStream() {
+        return new ComputerVisionDescribeImageInStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionDescribeImageInStreamDefinition.
+     */
+    class ComputerVisionDescribeImageInStreamParameters implements ComputerVisionDescribeImageInStreamDefinition {
+        private ComputerVisionImpl parent;
+        private byte[] image;
+        private Integer maxCandidates;
+        private String language;
+        private List<DescriptionExclude> descriptionExclude;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionDescribeImageInStreamParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionDescribeImageInStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionDescribeImageInStreamParameters withMaxCandidates(Integer maxCandidates) {
+            this.maxCandidates = maxCandidates;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionDescribeImageInStreamParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionDescribeImageInStreamParameters withDescriptionExclude(List<DescriptionExclude> descriptionExclude) {
+            this.descriptionExclude = descriptionExclude;
+            return this;
+        }
+
+        @Override
+        public ImageDescription execute() {
+        return describeImageInStreamWithServiceResponseAsync(image, maxCandidates, language, descriptionExclude).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImageDescription> executeAsync() {
+            return describeImageInStreamWithServiceResponseAsync(image, maxCandidates, language, descriptionExclude).map(new Func1<ServiceResponse<ImageDescription>, ImageDescription>() {
+                @Override
+                public ImageDescription call(ServiceResponse<ImageDescription> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -1570,6 +1857,76 @@ public class ComputerVisionImpl implements ComputerVision {
                 .build(response);
     }
 
+    @Override
+    public ComputerVisionAnalyzeImageInStreamParameters analyzeImageInStream() {
+        return new ComputerVisionAnalyzeImageInStreamParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionAnalyzeImageInStreamDefinition.
+     */
+    class ComputerVisionAnalyzeImageInStreamParameters implements ComputerVisionAnalyzeImageInStreamDefinition {
+        private ComputerVisionImpl parent;
+        private byte[] image;
+        private List<VisualFeatureTypes> visualFeatures;
+        private List<Details> details;
+        private String language;
+        private List<DescriptionExclude> descriptionExclude;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionAnalyzeImageInStreamParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageInStreamParameters withImage(byte[] image) {
+            this.image = image;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageInStreamParameters withVisualFeatures(List<VisualFeatureTypes> visualFeatures) {
+            this.visualFeatures = visualFeatures;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageInStreamParameters withDetails(List<Details> details) {
+            this.details = details;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageInStreamParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageInStreamParameters withDescriptionExclude(List<DescriptionExclude> descriptionExclude) {
+            this.descriptionExclude = descriptionExclude;
+            return this;
+        }
+
+        @Override
+        public ImageAnalysis execute() {
+        return analyzeImageInStreamWithServiceResponseAsync(image, visualFeatures, details, language, descriptionExclude).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImageAnalysis> executeAsync() {
+            return analyzeImageInStreamWithServiceResponseAsync(image, visualFeatures, details, language, descriptionExclude).map(new Func1<ServiceResponse<ImageAnalysis>, ImageAnalysis>() {
+                @Override
+                public ImageAnalysis call(ServiceResponse<ImageAnalysis> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
     /**
      * This operation returns a bounding box around the most important area of the image.
      A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
@@ -1781,6 +2138,69 @@ public class ComputerVisionImpl implements ComputerVision {
                 .build(response);
     }
 
+    @Override
+    public ComputerVisionGenerateThumbnailParameters generateThumbnail() {
+        return new ComputerVisionGenerateThumbnailParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionGenerateThumbnailDefinition.
+     */
+    class ComputerVisionGenerateThumbnailParameters implements ComputerVisionGenerateThumbnailDefinition {
+        private ComputerVisionImpl parent;
+        private int width;
+        private int height;
+        private String url;
+        private Boolean smartCropping;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionGenerateThumbnailParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailParameters withWidth(int width) {
+            this.width = width;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailParameters withHeight(int height) {
+            this.height = height;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionGenerateThumbnailParameters withSmartCropping(Boolean smartCropping) {
+            this.smartCropping = smartCropping;
+            return this;
+        }
+
+        @Override
+        public InputStream execute() {
+        return generateThumbnailWithServiceResponseAsync(width, height, url, smartCropping).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<InputStream> executeAsync() {
+            return generateThumbnailWithServiceResponseAsync(width, height, url, smartCropping).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+                @Override
+                public InputStream call(ServiceResponse<InputStream> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "ascomycete" may be accompanied by the hint "fungus".
@@ -1893,6 +2313,55 @@ public class ComputerVisionImpl implements ComputerVision {
                 .register(200, new TypeToken<TagResult>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ComputerVisionTagImageParameters tagImage() {
+        return new ComputerVisionTagImageParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionTagImageDefinition.
+     */
+    class ComputerVisionTagImageParameters implements ComputerVisionTagImageDefinition {
+        private ComputerVisionImpl parent;
+        private String url;
+        private String language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionTagImageParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionTagImageParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionTagImageParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public TagResult execute() {
+        return tagImageWithServiceResponseAsync(url, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<TagResult> executeAsync() {
+            return tagImageWithServiceResponseAsync(url, language).map(new Func1<ServiceResponse<TagResult>, TagResult>() {
+                @Override
+                public TagResult call(ServiceResponse<TagResult> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -2012,6 +2481,62 @@ public class ComputerVisionImpl implements ComputerVision {
                 .register(200, new TypeToken<OcrResult>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ComputerVisionRecognizePrintedTextParameters recognizePrintedText() {
+        return new ComputerVisionRecognizePrintedTextParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionRecognizePrintedTextDefinition.
+     */
+    class ComputerVisionRecognizePrintedTextParameters implements ComputerVisionRecognizePrintedTextDefinition {
+        private ComputerVisionImpl parent;
+        private boolean detectOrientation;
+        private String url;
+        private OcrLanguages language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionRecognizePrintedTextParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionRecognizePrintedTextParameters withDetectOrientation(boolean detectOrientation) {
+            this.detectOrientation = detectOrientation;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionRecognizePrintedTextParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionRecognizePrintedTextParameters withLanguage(OcrLanguages language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public OcrResult execute() {
+        return recognizePrintedTextWithServiceResponseAsync(detectOrientation, url, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OcrResult> executeAsync() {
+            return recognizePrintedTextWithServiceResponseAsync(detectOrientation, url, language).map(new Func1<ServiceResponse<OcrResult>, OcrResult>() {
+                @Override
+                public OcrResult call(ServiceResponse<OcrResult> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -2142,6 +2667,62 @@ public class ComputerVisionImpl implements ComputerVision {
                 .register(200, new TypeToken<DomainModelResults>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ComputerVisionAnalyzeImageByDomainParameters analyzeImageByDomain() {
+        return new ComputerVisionAnalyzeImageByDomainParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionAnalyzeImageByDomainDefinition.
+     */
+    class ComputerVisionAnalyzeImageByDomainParameters implements ComputerVisionAnalyzeImageByDomainDefinition {
+        private ComputerVisionImpl parent;
+        private String model;
+        private String url;
+        private String language;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionAnalyzeImageByDomainParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageByDomainParameters withModel(String model) {
+            this.model = model;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageByDomainParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageByDomainParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public DomainModelResults execute() {
+        return analyzeImageByDomainWithServiceResponseAsync(model, url, language).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<DomainModelResults> executeAsync() {
+            return analyzeImageByDomainWithServiceResponseAsync(model, url, language).map(new Func1<ServiceResponse<DomainModelResults>, DomainModelResults>() {
+                @Override
+                public DomainModelResults call(ServiceResponse<DomainModelResults> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -2425,6 +3006,69 @@ public class ComputerVisionImpl implements ComputerVision {
                 .build(response);
     }
 
+    @Override
+    public ComputerVisionDescribeImageParameters describeImage() {
+        return new ComputerVisionDescribeImageParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionDescribeImageDefinition.
+     */
+    class ComputerVisionDescribeImageParameters implements ComputerVisionDescribeImageDefinition {
+        private ComputerVisionImpl parent;
+        private String url;
+        private Integer maxCandidates;
+        private String language;
+        private List<DescriptionExclude> descriptionExclude;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionDescribeImageParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionDescribeImageParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionDescribeImageParameters withMaxCandidates(Integer maxCandidates) {
+            this.maxCandidates = maxCandidates;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionDescribeImageParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionDescribeImageParameters withDescriptionExclude(List<DescriptionExclude> descriptionExclude) {
+            this.descriptionExclude = descriptionExclude;
+            return this;
+        }
+
+        @Override
+        public ImageDescription execute() {
+        return describeImageWithServiceResponseAsync(url, maxCandidates, language, descriptionExclude).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImageDescription> executeAsync() {
+            return describeImageWithServiceResponseAsync(url, maxCandidates, language, descriptionExclude).map(new Func1<ServiceResponse<ImageDescription>, ImageDescription>() {
+                @Override
+                public ImageDescription call(ServiceResponse<ImageDescription> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
@@ -2549,6 +3193,76 @@ public class ComputerVisionImpl implements ComputerVision {
                 .register(200, new TypeToken<ImageAnalysis>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public ComputerVisionAnalyzeImageParameters analyzeImage() {
+        return new ComputerVisionAnalyzeImageParameters(this);
+    }
+
+    /**
+     * Internal class implementing ComputerVisionAnalyzeImageDefinition.
+     */
+    class ComputerVisionAnalyzeImageParameters implements ComputerVisionAnalyzeImageDefinition {
+        private ComputerVisionImpl parent;
+        private String url;
+        private List<VisualFeatureTypes> visualFeatures;
+        private List<Details> details;
+        private String language;
+        private List<DescriptionExclude> descriptionExclude;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ComputerVisionAnalyzeImageParameters(ComputerVisionImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageParameters withUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageParameters withVisualFeatures(List<VisualFeatureTypes> visualFeatures) {
+            this.visualFeatures = visualFeatures;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageParameters withDetails(List<Details> details) {
+            this.details = details;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageParameters withLanguage(String language) {
+            this.language = language;
+            return this;
+        }
+
+        @Override
+        public ComputerVisionAnalyzeImageParameters withDescriptionExclude(List<DescriptionExclude> descriptionExclude) {
+            this.descriptionExclude = descriptionExclude;
+            return this;
+        }
+
+        @Override
+        public ImageAnalysis execute() {
+        return analyzeImageWithServiceResponseAsync(url, visualFeatures, details, language, descriptionExclude).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<ImageAnalysis> executeAsync() {
+            return analyzeImageWithServiceResponseAsync(url, visualFeatures, details, language, descriptionExclude).map(new Func1<ServiceResponse<ImageAnalysis>, ImageAnalysis>() {
+                @Override
+                public ImageAnalysis call(ServiceResponse<ImageAnalysis> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 }
