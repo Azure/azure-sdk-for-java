@@ -53,7 +53,7 @@ public class SessionContainerTest {
         }
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.ReadFeed, ResourceType.DocumentCollection,
-                "dbs/db1/colls/collName_1", IOUtils.toInputStream("content1", "UTF-8"), new HashMap<>());
+                "dbs/db1/colls/collName_1", Utils.getUTF8Bytes("content1"), new HashMap<>());
 
         ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_1");
         assertThat(sessionToken.getLSN()).isEqualTo(1);
@@ -80,7 +80,7 @@ public class SessionContainerTest {
         SessionContainer sessionContainer = new SessionContainer("127.0.0.1");
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document,
-                collectionName + "/docs", IOUtils.toInputStream("content1", "UTF-8"), new HashMap<>());
+                collectionName + "/docs",  Utils.getUTF8Bytes("content1"), new HashMap<>());
 
         Map<String, String> respHeaders = new HashMap<>();
         RxDocumentServiceResponse resp = Mockito.mock(RxDocumentServiceResponse.class);
@@ -100,7 +100,7 @@ public class SessionContainerTest {
         assertThat(collectionResourceIdToSessionTokens.get(collectionRidAsLong).get(partitionKeyRangeId).convertToString()).isEqualTo(sessionToken);
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document,
-                collectionName + "/docs", IOUtils.toInputStream("", "UTF-8"), new HashMap<>());
+                collectionName + "/docs",  Utils.getUTF8Bytes(""), new HashMap<>());
 
         ISessionToken resolvedSessionToken = sessionContainer.resolvePartitionLocalSessionToken(request2, partitionKeyRangeId);
         assertThat(resolvedSessionToken.convertToString()).isEqualTo(sessionToken);
@@ -120,7 +120,7 @@ public class SessionContainerTest {
         SessionContainer sessionContainer = new SessionContainer("127.0.0.1");
 
         RxDocumentServiceRequest request1 = RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document,
-                collectionName + "/docs", IOUtils.toInputStream("content1", "UTF-8"), new HashMap<>());
+                collectionName + "/docs",  Utils.getUTF8Bytes("content1"), new HashMap<>());
 
         RxDocumentServiceResponse resp = Mockito.mock(RxDocumentServiceResponse.class);
         Mockito.doReturn(respHeaders).when(resp).getResponseHeaders();
@@ -137,7 +137,7 @@ public class SessionContainerTest {
         sessionContainer.setSessionToken(request1, resp.getResponseHeaders());
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document,
-                collectionName + "/docs", IOUtils.toInputStream("", "UTF-8"), new HashMap<>());
+                collectionName + "/docs", Utils.getUTF8Bytes(""), new HashMap<>());
 
         ISessionToken resolvedSessionToken = sessionContainer.resolvePartitionLocalSessionToken(request2, partitionKeyRangeId);
         assertThat(resolvedSessionToken.convertToString()).isEqualTo(expectedMergedSessionToken);
@@ -635,7 +635,7 @@ public class SessionContainerTest {
         }
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.ReadFeed, ResourceType.DocumentCollection,
-            "dbs/db1/colls/collName_1", IOUtils.toInputStream("content1", "UTF-8"), new HashMap<>());
+            "dbs/db1/colls/collName_1",  Utils.getUTF8Bytes("content1"), new HashMap<>());
 
         ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_1");
         assertThat(sessionToken).isNull();

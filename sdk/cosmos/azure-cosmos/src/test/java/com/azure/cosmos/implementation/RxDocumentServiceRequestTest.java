@@ -159,13 +159,13 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.getResourceId()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
         assertThat(request.getContentAsByteArray()).isEqualTo(document.toJson().getBytes(StandardCharsets.UTF_8));
 
-        Flux<byte[]> inputStream = Flux.just(document.toJson().getBytes(StandardCharsets.UTF_8));
-        request = RxDocumentServiceRequest.create(operationType, ResourceType.Document, documentUrlWithId, inputStream,
+        byte[] bytes = document.toJson().getBytes(StandardCharsets.UTF_8);
+        request = RxDocumentServiceRequest.create(operationType, ResourceType.Document, documentUrlWithId, bytes,
                 new HashedMap<String, String>(), AuthorizationTokenType.SecondaryMasterKey);
         assertThat(request.authorizationTokenType).isEqualTo(AuthorizationTokenType.SecondaryMasterKey);
         assertThat(request.getResourceAddress()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
         assertThat(request.getResourceId()).isEqualTo("IXYFAOHEBPMBAAAAAAAAAA==");
-        assertThat(request.getContentObservable()).isEqualTo(inputStream);
+        assertThat(request.getContentAsByteArray()).isEqualTo(bytes);
 
         // Creating one request without giving AuthorizationTokenType , it should take
         // PrimaryMasterKey by default
@@ -201,11 +201,11 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.getResourceId()).isNull();
 
         Document document = getDocumentDefinition();
-        Flux<byte[]> inputStream = Flux.just(document.toJson().getBytes(StandardCharsets.UTF_8));
+        byte[] bytes = document.toJson().getBytes(StandardCharsets.UTF_8);
         request = RxDocumentServiceRequest.create(operationType,
                                                   ResourceType.Document,
                                                   documentUrlWithName,
-                                                  inputStream,
+                                                  bytes,
                                                   new HashedMap<String, String>(),
                                                   AuthorizationTokenType.SecondaryMasterKey);
 
@@ -213,7 +213,7 @@ public class RxDocumentServiceRequestTest {
         assertThat(request.getResourceAddress())
                 .isEqualTo(StringUtils.removeEnd(StringUtils.removeStart(documentUrlWithName, Paths.ROOT), Paths.ROOT));
         assertThat(request.getResourceId()).isNull();
-        assertThat(request.getContentObservable()).isEqualTo(inputStream);
+        assertThat(request.getContentAsByteArray()).isEqualTo(bytes);
 
         // Creating one request without giving AuthorizationTokenType , it should take
         // PrimaryMasterKey by default
