@@ -36,7 +36,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Utils.getUTF8BytesOrNull;
-import static com.azure.cosmos.implementation.Utils.utf8StringFromOrNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RetryContextOnDiagnosticTest extends TestSuiteBase {
@@ -57,7 +56,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeRetry(callbackMethod, retryPolicy);
         StoreResponse response = validateSuccess(monoResponse);
 
-        assertThat(utf8StringFromOrNull(response.getResponseBody())).isEqualTo(getUTF8BytesOrNull(responseText));
+        assertThat(response.getResponseBody()).isEqualTo(getUTF8BytesOrNull(responseText));
         assertThat(retryPolicy.getRetryCount()).isEqualTo(5);
         assertThat(retryPolicy.getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryCount());
     }
