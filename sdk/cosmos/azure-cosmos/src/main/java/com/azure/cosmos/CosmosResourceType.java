@@ -27,8 +27,4 @@ public enum CosmosResourceType {
     CosmosResourceType(int value) {
         this.value = value;
     }
-
-    public int value() {
-        return this.value;
-    }
 }

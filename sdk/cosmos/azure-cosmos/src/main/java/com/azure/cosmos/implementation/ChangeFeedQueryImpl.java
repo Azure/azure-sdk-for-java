@@ -65,7 +65,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
             canUseStartFromBeginning = false;
         }
 
-        if (canUseStartFromBeginning && !changeFeedOptions.getStartFromBeginning()) {
+        if (canUseStartFromBeginning && !changeFeedOptions.isStartFromBeginning()) {
             initialNextIfNoneMatch = IfNonMatchAllHeaderValue;
         }
 

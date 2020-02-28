@@ -7,25 +7,18 @@ import com.azure.core.annotation.ServiceClient;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
+
 /**
  * Provides a client-side logical representation of the Azure Cosmos database service.
  * SyncClient is used to perform operations in a synchronous way
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
-public class CosmosClient implements AutoCloseable {
+public class CosmosClient implements Closeable {
     private final CosmosAsyncClient asyncClientWrapper;
 
     CosmosClient(CosmosClientBuilder builder) {
         this.asyncClientWrapper = builder.buildAsyncClient();
-    }
-
-    /**
-     * Instantiate the cosmos client builder to build cosmos client
-     *
-     * @return {@link CosmosClientBuilder}
-     */
-    public static CosmosClientBuilder cosmosClientBuilder() {
-        return new CosmosClientBuilder();
     }
 
     /**

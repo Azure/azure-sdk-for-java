@@ -102,7 +102,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
         FeedOptions feedOptions, String collectionRid, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
-        
+
         List<PartitionKeyRange> ranges = new ArrayList<>();
         ranges.addAll(rangeQueryMap.keySet());
 
@@ -124,7 +124,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                                 activityId, collectionRid);
         return Flux.just(context);
     }
-    
+
 
     private void initialize(
             String collectionRid,
@@ -259,7 +259,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             // results.
             return source.filter(documentProducerFeedResponse -> {
                 if (documentProducerFeedResponse.pageResult.getResults().isEmpty()
-                        && !this.feedOptions.isAllowEmptyPages()) {
+                        && !this.feedOptions.isEmptyPagesAllowed()) {
                     // filter empty pages and accumulate charge
                     tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                     return false;

@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CompositePath;
 import com.azure.cosmos.IndexingMode;
+import com.azure.cosmos.Permission;
 import com.azure.cosmos.PermissionMode;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SpatialSpec;
@@ -136,7 +137,7 @@ public interface ResourceResponseValidator<T extends Resource> {
             });
             return this;
         }
-        
+
         public Builder<T> withPermissionResourceLink(String link) {
             validators.add(new ResourceResponseValidator<Permission>() {
 
@@ -147,7 +148,7 @@ public interface ResourceResponseValidator<T extends Resource> {
             });
             return this;
         }
-        
+
         public Builder<T> indexingMode(IndexingMode mode) {
             validators.add(new ResourceResponseValidator<DocumentCollection>() {
 
@@ -171,7 +172,7 @@ public interface ResourceResponseValidator<T extends Resource> {
             });
             return this;
         }
-        
+
         public Builder<T> withUserDefinedFunctionBody(String functionBody) {
             validators.add(new ResourceResponseValidator<UserDefinedFunction>() {
 
@@ -183,7 +184,7 @@ public interface ResourceResponseValidator<T extends Resource> {
             return this;
         }
 
-        
+
         public Builder<T> withTriggerBody(String functionBody) {
             validators.add(new ResourceResponseValidator<Trigger>() {
 
@@ -264,29 +265,29 @@ public interface ResourceResponseValidator<T extends Resource> {
                     Iterator<List<CompositePath>> compositeIndexesReadIterator = resourceResponse.getResource()
                             .getIndexingPolicy().getCompositeIndexes().iterator();
                     Iterator<ArrayList<CompositePath>> compositeIndexesWrittenIterator = compositeIndexesWritten.iterator();
-                    
+
                     ArrayList<String> readIndexesStrings = new ArrayList<String>();
                     ArrayList<String> writtenIndexesStrings = new ArrayList<String>();
-                    
+
                     while (compositeIndexesReadIterator.hasNext() && compositeIndexesWrittenIterator.hasNext()) {
                         Iterator<CompositePath> compositeIndexReadIterator = compositeIndexesReadIterator.next().iterator();
                         Iterator<CompositePath> compositeIndexWrittenIterator = compositeIndexesWrittenIterator.next().iterator();
 
                         StringBuilder readIndexesString = new StringBuilder();
                         StringBuilder writtenIndexesString = new StringBuilder();
-                        
+
                         while (compositeIndexReadIterator.hasNext() && compositeIndexWrittenIterator.hasNext()) {
                             CompositePath compositePathRead = compositeIndexReadIterator.next();
                             CompositePath compositePathWritten = compositeIndexWrittenIterator.next();
-                            
+
                             readIndexesString.append(compositePathRead.getPath() + ":" + compositePathRead.getOrder() + ";");
                             writtenIndexesString.append(compositePathWritten.getPath() + ":" + compositePathRead.getOrder() + ";");
                         }
-                        
+
                         readIndexesStrings.add(readIndexesString.toString());
                         writtenIndexesStrings.add(writtenIndexesString.toString());
                     }
-                    
+
                     assertThat(readIndexesStrings).containsExactlyInAnyOrderElementsOf(writtenIndexesStrings);
                 }
             });
@@ -314,7 +315,7 @@ public interface ResourceResponseValidator<T extends Resource> {
 
                         ArrayList<SpatialType> readSpatialTypes = new ArrayList<SpatialType>();
                         ArrayList<SpatialType> writtenSpatialTypes = new ArrayList<SpatialType>();
-                        
+
                         Iterator<SpatialType> spatialTypesReadIterator = spatialSpecRead.getSpatialTypes().iterator();
                         Iterator<SpatialType> spatialTypesWrittenIterator = spatialSpecWritten.getSpatialTypes().iterator();
 
@@ -322,11 +323,11 @@ public interface ResourceResponseValidator<T extends Resource> {
                             readSpatialTypes.add(spatialTypesReadIterator.next());
                             writtenSpatialTypes.add(spatialTypesWrittenIterator.next());
                         }
-                        
+
                         readIndexMap.put(readPath, readSpatialTypes);
                         writtenIndexMap.put(writtenPath, writtenSpatialTypes);
                     }
-                    
+
                     for (Entry<String, ArrayList<SpatialType>> entry : readIndexMap.entrySet()) {
                         assertThat(entry.getValue())
                         .containsExactlyInAnyOrderElementsOf(writtenIndexMap.get(entry.getKey()));

@@ -18,8 +18,8 @@ public class CosmosAsyncItemResponse<T> {
     private final ResourceResponse<Document> resourceResponse;
     private CosmosItemProperties props;
 
-    CosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> klass) {
-        this.itemClassType = klass;
+    CosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
+        this.itemClassType = classType;
         this.responseBodyAsByteArray = response.getBodyAsByteArray();
         this.resourceResponse = response;
     }

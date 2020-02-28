@@ -18,7 +18,6 @@ import reactor.core.publisher.Flux;
 
 import java.lang.reflect.Field;
 import java.net.URI;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -130,7 +129,7 @@ public class GlobalEndPointManagerTest {
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void refreshLocationAsyncForConnectivityIssueWithPreferredLocation() throws Exception {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setEnableEndpointDiscovery(true);
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
         List<String> preferredLocation = new ArrayList<>();
         preferredLocation.add("East US");
         preferredLocation.add("East Asia");
@@ -221,7 +220,7 @@ public class GlobalEndPointManagerTest {
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void backgroundRefreshForMultiMaster() throws Exception {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setEnableEndpointDiscovery(true);
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
         connectionPolicy.setUsingMultipleWriteLocations(true);
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson4);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
@@ -239,7 +238,7 @@ public class GlobalEndPointManagerTest {
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void startRefreshLocationTimerAsync() throws Exception {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setEnableEndpointDiscovery(true);
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
         connectionPolicy.setUsingMultipleWriteLocations(true);
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson1);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
@@ -330,7 +329,7 @@ public class GlobalEndPointManagerTest {
 
     private GlobalEndpointManager getGlobalEndPointManager() throws Exception {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setEnableEndpointDiscovery(true);
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
         connectionPolicy.setUsingMultipleWriteLocations(true); // currently without this proper, background refresh will not work
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson1);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));

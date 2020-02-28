@@ -72,7 +72,7 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory {
             .withPartitionKeyRangeId(lease.getLeaseToken())
             .withFeedPollDelay(this.changeFeedProcessorOptions.getFeedPollDelay())
             .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount())
-            .withStartFromBeginning(this.changeFeedProcessorOptions.getStartFromBeginning())
+            .withStartFromBeginning(this.changeFeedProcessorOptions.isStartFromBeginning())
             .withStartTime(this.changeFeedProcessorOptions.getStartTime());  // .getSessionToken(this.changeFeedProcessorOptions.getSessionToken());
 
         PartitionCheckpointer checkpointer = new PartitionCheckpointerImpl(this.leaseCheckpointer, lease);
