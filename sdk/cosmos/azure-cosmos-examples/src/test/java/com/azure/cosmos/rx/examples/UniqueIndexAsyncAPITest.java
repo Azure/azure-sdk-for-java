@@ -45,7 +45,7 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.setPaths(ImmutableList.of("/name", "/field"));
-        uniqueKeyPolicy.uniqueKeys(Lists.newArrayList(uniqueKey));
+        uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
