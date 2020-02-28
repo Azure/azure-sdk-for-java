@@ -54,10 +54,14 @@ class NetworkInterfaceIPConfigurationsImpl extends WrapperImpl<NetworkInterfaceI
     public Observable<NetworkInterfaceNetworkInterfaceIPConfiguration> getAsync(String resourceGroupName, String networkInterfaceName, String ipConfigurationName) {
         NetworkInterfaceIPConfigurationsInner client = this.inner();
         return client.getAsync(resourceGroupName, networkInterfaceName, ipConfigurationName)
-        .map(new Func1<NetworkInterfaceIPConfigurationInner, NetworkInterfaceNetworkInterfaceIPConfiguration>() {
+        .flatMap(new Func1<NetworkInterfaceIPConfigurationInner, Observable<NetworkInterfaceNetworkInterfaceIPConfiguration>>() {
             @Override
-            public NetworkInterfaceNetworkInterfaceIPConfiguration call(NetworkInterfaceIPConfigurationInner inner) {
-                return wrapModel(inner);
+            public Observable<NetworkInterfaceNetworkInterfaceIPConfiguration> call(NetworkInterfaceIPConfigurationInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((NetworkInterfaceNetworkInterfaceIPConfiguration)wrapModel(inner));
+                }
             }
        });
     }
