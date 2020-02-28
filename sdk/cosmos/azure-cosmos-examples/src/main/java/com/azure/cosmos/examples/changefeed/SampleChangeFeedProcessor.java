@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.List;
@@ -31,7 +32,7 @@ import java.util.List;
  */
 public class SampleChangeFeedProcessor {
 
-    public static int WAIT_FOR_WORK = 60;
+    public static int WAIT_FOR_WORK = 60000;
     public static final String DATABASE_NAME = "db_" + RandomStringUtils.randomAlphabetic(7);
     public static final String COLLECTION_NAME = "coll_" + RandomStringUtils.randomAlphabetic(7);
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
@@ -59,11 +60,16 @@ public class SampleChangeFeedProcessor {
             CosmosAsyncContainer leaseContainer = createNewLeaseCollection(client, DATABASE_NAME, COLLECTION_NAME + "-leases");
 
             changeFeedProcessorInstance = getChangeFeedProcessor("SampleHost_1", feedContainer, leaseContainer);
-
-            changeFeedProcessorInstance.start().subscribe(aVoid -> {
-                createNewDocuments(feedContainer, 10, Duration.ofSeconds(3));
-                isWorkCompleted = true;
-            });
+            System.out.println("Got here\n");
+            changeFeedProcessorInstance.start()
+                .subscribeOn(Schedulers.elastic())
+                .doOnSuccess(aVoid -> {
+                    System.out.println("!doOnSuccess!\n");
+                    createNewDocuments(feedContainer, 10, Duration.ofSeconds(3));
+                    isWorkCompleted = true;
+                })
+                .subscribe();
+            System.out.println("and here\n");
 
             long remainingWork = WAIT_FOR_WORK;
             while (!isWorkCompleted && remainingWork > 0) {
@@ -73,7 +79,7 @@ public class SampleChangeFeedProcessor {
 
             if (isWorkCompleted) {
                 if (changeFeedProcessorInstance != null) {
-                    changeFeedProcessorInstance.stop().subscribe().wait(10000);
+                    changeFeedProcessorInstance.stop().subscribe();
                 }
             } else {
                 throw new RuntimeException("The change feed processor initialization and automatic create document feeding process did not complete in the expected time");
