@@ -1,5 +1,8 @@
 # Release History
 
+## 12.5.0-beta.1 (Unreleased)
+
+
 ## 12.4.0 (2020-02-12)
 - Added support for upload via OutputStream by adding EncryptedBlobClient.getOutputStream methods
 

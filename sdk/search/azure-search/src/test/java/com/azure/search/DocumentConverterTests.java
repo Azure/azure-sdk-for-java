@@ -7,17 +7,20 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.implementation.SerializationUtil;
 import com.azure.search.models.GeoPoint;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Functional tests that ensure expected behavior of deserializing a document.
@@ -56,90 +59,66 @@ public class DocumentConverterTests {
     @Test
     public void annotationsAreExcludedFromDocument() {
         String json = "{ \"@search.score\": 3.14, \"field1\": \"value1\", \"field2\": 123, \"@search.someOtherAnnotation\": { \"a\": \"b\" }, \"field3\": 2.78 }";
-        Document expectedDoc = new Document() {
-            {
-                put("field1", "value1");
-                put("field2", 123);
-                put("field3", 2.78);
-            }
-        };
+        Document expectedDoc = new Document();
+        expectedDoc.put("field1", "value1");
+        expectedDoc.put("field2", 123);
+        expectedDoc.put("field3", 2.78);
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
     public void canReadNullValues() {
         String json = "{\"field1\": null,\"field2\": [ \"hello\", null ], \"field3\": [ null, 123, null ], \"field4\": [ null, { \"name\": \"Bob\" } ]}";
-        Document expectedDoc = new Document() {
-            {
-                put("field1", null);
-                put("field2", Arrays.asList("hello", null));
-                put("field3", Arrays.asList(null, 123, null));
-                put("field4", Arrays.asList(null, new Document() {
-                    {
-                        put("name", "Bob");
-                    }
-                }));
-            }
-        };
+        Document expectedDoc = new Document();
+        expectedDoc.put("field1", null);
+        expectedDoc.put("field2", Arrays.asList("hello", null));
+        expectedDoc.put("field3", Arrays.asList(null, 123, null));
+        expectedDoc.put("field4", Arrays.asList(null, new Document(Collections.singletonMap("name", "Bob"))));
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
     public void canReadPrimitiveTypes() {
-        Map<String, Object> values = new HashMap<String, Object>() {
-            {
-                put("123", 123);
-                put("9999999999999", 9_999_999_999_999L);
-                put("3.14", 3.14);
-                put("\"hello\"", "hello");
-                put("true", true);
-                put("false", false);
-            }
-        };
+        Map<String, Object> values = new HashMap<>();
+        values.put("123", 123);
+        values.put("9999999999999", 9_999_999_999_999L);
+        values.put("3.14", 3.14);
+        values.put("\"hello\"", "hello");
+        values.put("true", true);
+        values.put("false", false);
 
         for (Map.Entry<String, Object> entry : values.entrySet()) {
             String jsonValue = entry.getKey();
             Object expectedObject = entry.getValue();
             String json = "{\"field\" :".concat(jsonValue).concat("}");
-            Document expectedDoc = new Document() {
-                {
-                    put("field", expectedObject);
-                }
-            };
+            Document expectedDoc = new Document(Collections.singletonMap("field", expectedObject));
 
             Document actualDoc = deserialize(json);
-            Assert.assertEquals(expectedDoc, actualDoc);
+            assertEquals(expectedDoc, actualDoc);
         }
     }
 
     @Test
     public void canReadArraysOfPrimitiveTypes() {
-        Map<String, Object> values = new HashMap<String, Object>() {
-            {
-                put("[\"hello\", \"goodbye\"]", Arrays.asList("hello", "goodbye"));
-                put("[123, 456]", Arrays.asList(123, 456));
-                put("[9999999999999, -12]", Arrays.asList(9_999_999_999_999L, -12));
-                put("[3.14, 2.78]", Arrays.asList(3.14, 2.78));
-                put("[true, false]", Arrays.asList(true, false));
-            }
-        };
+        Map<String, Object> values = new HashMap<>();
+        values.put("[\"hello\", \"goodbye\"]", Arrays.asList("hello", "goodbye"));
+        values.put("[123, 456]", Arrays.asList(123, 456));
+        values.put("[9999999999999, -12]", Arrays.asList(9_999_999_999_999L, -12));
+        values.put("[3.14, 2.78]", Arrays.asList(3.14, 2.78));
+        values.put("[true, false]", Arrays.asList(true, false));
 
         for (Map.Entry<String, Object> entry : values.entrySet()) {
             String jsonArray = entry.getKey();
             Object expectedArray = entry.getValue();
             String json = "{\"field\" :".concat(jsonArray).concat("}");
-            Document expectedDoc = new Document() {
-                {
-                    put("field", expectedArray);
-                }
-            };
+            Document expectedDoc = new Document(Collections.singletonMap("field", expectedArray));
 
             Document actualDoc = deserialize(json);
-            Assert.assertEquals(expectedDoc, actualDoc);
+            assertEquals(expectedDoc, actualDoc);
         }
     }
 
@@ -147,146 +126,148 @@ public class DocumentConverterTests {
     @Test
     public void canReadGeoPoint() {
         String json = "{ \"field\": { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581] } }";
-        Document expectedDoc = new Document() {
-            {
-                put("field", GeoPoint.create(47.678581, -122.131577));
-            }
-        };
+        Document expectedDoc = new Document(Collections.singletonMap("field", GeoPoint.create(47.678581, -122.131577)));
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
     public void canReadGeoPointCollection() {
         String json = "{ \"field\": [{ \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581] }, { \"type\": \"Point\", \"coordinates\": [-121, 49] }]}";
-        Document expectedDoc = new Document() {
-            {
-                put("field", Arrays.asList(
-                    GeoPoint.create(47.678581, -122.131577),
-                    GeoPoint.create(49, -121))
-                );
-            }
-        };
+        Document expectedDoc = new Document(Collections.singletonMap("field",
+            Arrays.asList(GeoPoint.create(47.678581, -122.131577), GeoPoint.create(49, -121))));
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
     public void canReadComplexObject() {
         String json = "{\"name\" : \"Boots\", \"details\": {\"sku\" : 123, \"seasons\" : [\"fall\", \"winter\"]}}";
-        Document expectedDoc = new Document() {
-            {
-                put("name", "Boots");
-                put("details", new Document() {
-                    {
-                        put("sku", 123);
-                        put("seasons", Arrays.asList("fall", "winter"));
-                    }
-                });
-            }
-        };
+        Document innerDoc = new Document();
+        innerDoc.put("sku", 123);
+        innerDoc.put("seasons", Arrays.asList("fall", "winter"));
+
+        Document expectedDoc = new Document();
+        expectedDoc.put("name", "Boots");
+        expectedDoc.put("details", innerDoc);
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
     public void canReadComplexCollection() {
         String json = "{\"stores\" : [{\"name\" : \"North\", \"address\" : {\"city\" : \"Vancouver\", \"country\": \"Canada\"}, \"location\": {\"type\" : \"Point\", \"coordinates\": [-121, 49]}},{\"name\" : \"South\", \"address\" : {\"city\": \"Seattle\", \"country\" : \"USA\"}, \"location\" : {\"type\" : \"Point\", \"coordinates\": [-122.5, 47.6]}}]}";
-        Document expectedDoc = new Document() {
-            {
-                put("stores", Arrays.asList(
-                    new Document() {
-                        {
-                            put("name", "North");
-                            put("address", new Document() {
-                                    {
-                                        put("city", "Vancouver");
-                                        put("country", "Canada");
-                                    }
-                                }
-                            );
-                            put("location", new Document() {
-                                    {
-                                        put("type", "Point");
-                                        put("coordinates", Arrays.asList(-121, 49));
-                                    }
-                                }
-                            );
-                        }
-                    },
-                    new Document() {
-                        {
-                            put("name", "South");
-                            put("address", new Document() {
-                                {
-                                    put("city", "Seattle");
-                                    put("country", "USA");
-                                }
-                            });
-                            put("location", new Document() {
-                                {
-                                    put("type", "Point");
-                                    put("coordinates", Arrays.asList(-122.5, 47.6));
-                                }
-                            });
-                        }
-                    }
-                ));
-            }
-        };
+
+        Document storeAddress1 = new Document();
+        storeAddress1.put("city", "Vancouver");
+        storeAddress1.put("country", "Canada");
+
+        Document storeLocation1 = new Document();
+        storeLocation1.put("type", "Point");
+        storeLocation1.put("coordinates", Arrays.asList(-121, 49));
+
+        Document store1 = new Document();
+        store1.put("name", "North");
+        store1.put("address", storeAddress1);
+        store1.put("location", storeLocation1);
+
+        Document storeAddress2 = new Document();
+        storeAddress2.put("city", "Seattle");
+        storeAddress2.put("country", "USA");
+
+        Document storeLocation2 = new Document();
+        storeLocation2.put("type", "Point");
+        storeLocation2.put("coordinates", Arrays.asList(-122.5, 47.6));
+
+        Document store2 = new Document();
+        store2.put("name", "South");
+        store2.put("address", storeAddress2);
+        store2.put("location", storeLocation2);
+
+        Document expectedDoc = new Document(Collections.singletonMap("stores", Arrays.asList(store1, store2)));
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
+    }
+
+    @Test
+    public void canReadArraysOfMixedTypes() {
+        // Azure Cognitive Search won't return payloads like this; This test is only for pinning purposes.
+        String json = "{\"field\": [\"hello\", 123, 3.14, { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581] }, { \"name\": \"Arthur\", \"quest\": null }] }";
+
+        GeoPoint point = GeoPoint.create(47.678581, -122.131577);
+        Document innerDoc = new Document();
+        innerDoc.put("name", "Arthur");
+        innerDoc.put("quest", null);
+        List<Object> value = Arrays.asList("hello", 123, 3.14, point, innerDoc);
+
+        Document expectedDoc = new Document();
+        expectedDoc.put("field", value);
+
+        Document actualDoc = deserialize(json);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
     public void dateTimeStringsAreReadAsDateTime() {
         String json = "{\"field1\":\"".concat(testDateString).concat("\",\"field2\" : [\"").concat(testDateString).concat("\", \"").concat(testDateString).concat("\"]}");
-        Document expectedDoc = new Document() {
-            {
-                put("field1", testDate);
-                put("field2", Arrays.asList(testDate, testDate));
-            }
-        };
+        Document expectedDoc = new Document();
+        expectedDoc.put("field1", testDate);
+        expectedDoc.put("field2", Arrays.asList(testDate, testDate));
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
+    }
+
+    @Test
+    public void emptyArraysReadAsObjectArrays() {
+        String json = "{ \"field\": [] }";
+
+        // With no elements, we can't tell what type of collection it is, so we default to object.
+        Document expectedDoc = new Document();
+        expectedDoc.put("field", new ArrayList<>());
+
+        Document actualDoc = deserialize(json);
+        assertEquals(expectedDoc, actualDoc);
+    }
+
+    @Test
+    public void arraysWithOnlyNullsReadAsStringArrays() {
+        String json = "{ \"field\": [null, null] }";
+
+        // With only null elements, we can't tell what type of collection it is. For backward compatibility, we assume type string.
+        // This shouldn't happen in practice anyway since Azure Cognitive Search generally doesn't allow nulls in collections.
+        Document expectedDoc = new Document();
+        List<String> emptyStringList = Arrays.asList(null, null);
+        expectedDoc.put("field", emptyStringList);
+
+        Document actualDoc = deserialize(json);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
     public void specialDoublesAreReadAsStrings() {
         String json = "{\"field1\" : \"NaN\", \"field2\": \"INF\", \"field3\": \"-INF\", \"field4\": [\"NaN\", \"INF\", \"-INF\"], \"field5\": {\"value\":\"-INF\"}}";
-        Document expectedDoc = new Document() {
-            {
-                put("field1", "NaN");
-                put("field2", "INF");
-                put("field3", "-INF");
-                put("field4", Arrays.asList("NaN", "INF", "-INF"));
-                put("field5", new Document() {
-                    {
-                        put("value", "-INF");
-                    }
-                });
-            }
-        };
+        Document expectedDoc = new Document();
+        expectedDoc.put("field1", "NaN");
+        expectedDoc.put("field2", "INF");
+        expectedDoc.put("field3", "-INF");
+        expectedDoc.put("field4", Arrays.asList("NaN", "INF", "-INF"));
+        expectedDoc.put("field5", new Document(Collections.singletonMap("value", "-INF")));
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 
     @Test
     public void dateTimeStringsInArraysAreReadAsDateTime() {
         String json = "{ \"field\": [ \"hello\", \"".concat(testDateString).concat("\", \"123\" ] }}");
-        Document expectedDoc = new Document() {
-            {
-                put("field", Arrays.asList("hello", testDate, "123"));
-            }
-        };
+        Document expectedDoc = new Document(Collections.singletonMap("field", Arrays.asList("hello", testDate, "123")));
 
         Document actualDoc = deserialize(json);
-        Assert.assertEquals(expectedDoc, actualDoc);
+        assertEquals(expectedDoc, actualDoc);
     }
 }
