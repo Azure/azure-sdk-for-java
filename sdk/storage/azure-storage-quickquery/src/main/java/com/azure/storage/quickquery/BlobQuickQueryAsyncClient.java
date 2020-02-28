@@ -18,15 +18,23 @@ import com.azure.storage.blob.implementation.models.QuickQuerySerialization;
 import com.azure.storage.blob.implementation.models.QuickQueryType;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.ProgressReporter;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.UploadBufferPool;
+import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.quickquery.models.BlobQuickQueryAsyncResponse;
 import com.azure.storage.quickquery.models.BlobQuickQueryDelimitedSerialization;
 import com.azure.storage.quickquery.models.BlobQuickQueryJsonSerialization;
 import com.azure.storage.quickquery.models.BlobQuickQuerySerialization;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuples;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
+import static com.azure.core.util.FluxUtil.byteBufferToArray;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 

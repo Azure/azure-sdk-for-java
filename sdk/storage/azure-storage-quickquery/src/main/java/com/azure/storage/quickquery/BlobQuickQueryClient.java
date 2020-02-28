@@ -4,11 +4,13 @@
 package com.azure.storage.quickquery;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobRequestConditions;
 
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.quickquery.models.BlobQuickQueryError;
@@ -21,10 +23,14 @@ import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericRecord;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PipedInputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
@@ -50,6 +56,31 @@ public class BlobQuickQueryClient {
      */
     BlobQuickQueryClient(BlobQuickQueryAsyncClient client) {
         this.client = client;
+    }
+
+    /**
+     * Opens a blob input stream to query the blob.
+     */
+    public final BlobQuickQueryInputStream openInputStream(String expression) {
+
+        return openInputStream(expression, null, null, null, null, null);
+    }
+
+    /**
+     * Opens a blob input stream to query the blob.
+     */
+    public final BlobQuickQueryInputStream openInputStream(String expression, BlobQuickQuerySerialization input,
+        BlobQuickQuerySerialization output, BlobRequestConditions requestConditions,
+        BlobQuickQueryErrorReceiver nonFatalErrorReceiver, ProgressReceiver progressReceiver) {
+
+        PipedInputStream in = new PipedInputStream();
+
+        client.queryWithResponse(expression, input, output, requestConditions)
+            .flatMapMany(ResponseBase::getValue)
+            .subscribeOn(Schedulers.elastic())
+            .subscribe(new PipedStreamSubscriber(in, logger));
+
+        return new BlobQuickQueryInputStream(in, nonFatalErrorReceiver, progressReceiver, logger);
     }
 
     /**

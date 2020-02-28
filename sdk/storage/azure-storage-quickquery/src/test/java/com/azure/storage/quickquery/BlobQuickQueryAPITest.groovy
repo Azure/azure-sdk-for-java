@@ -3,24 +3,33 @@
 
 package com.azure.storage.quickquery
 
-import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.common.implementation.Constants
+import com.azure.storage.quickquery.models.BlobQuickQueryDelimitedSerialization
+import com.azure.storage.quickquery.models.BlobQuickQueryError
+import com.azure.storage.quickquery.models.BlobQuickQueryErrorReceiver
 import com.azure.storage.quickquery.models.BlobQuickQuerySerialization
 import spock.lang.Unroll
 
 class BlobQuickQueryAPITest extends APISpec {
 
     // Generates and uploads a small 1KB CSV file
-    def uploadSmallCsv(char recordSeparator, char columnSeparator, char fieldQuote, char escapeChar, boolean headersPresent) {
-        byte[] headers = ("rn1,rn2,rn3,rn4" + recordSeparator).getBytes()
-        byte[] csvData = ("100" + columnSeparator + "200" + columnSeparator + "300" + columnSeparator + "400" +
-            recordSeparator + "300" + columnSeparator + "400" + columnSeparator + "500" + columnSeparator + "600" +
-            recordSeparator).getBytes()
+    def uploadSmallCsv(BlobQuickQueryDelimitedSerialization ser, boolean nonFatalError) {
+        byte[] headers = ("rn1,rn2,rn3,rn4" + ser.getRecordSeparator()).getBytes()
+        char randomColSep = '.'
+        if (nonFatalError) {
+            if (ser.getColumnSeparator() == randomColSep) {
+                randomColSep = ','
+            }
+        }
+        byte[] csvData = ("100" + ser.getColumnSeparator() + "200" + ser.getColumnSeparator() + "300" + ser.getColumnSeparator() + "400" +
+            ser.getRecordSeparator() + "300" + ser.getColumnSeparator() + "400" + randomColSep + "500" + ser.getColumnSeparator() + "600" +
+            ser.getRecordSeparator()).getBytes()
 
-        int headerLength = headersPresent ? headers.length : 0
+        int headerLength = ser.isHeadersPresent() ? headers.length : 0
         byte[] data = new byte[headerLength + csvData.length * 32]
-        if (headersPresent) {
+        if (ser.isHeadersPresent()) {
             System.arraycopy(headers, 0, data, 0, headers.length)
         }
 
@@ -49,7 +58,13 @@ class BlobQuickQueryAPITest extends APISpec {
 
     def "Query min"() {
         setup:
-        uploadSmallCsv('\n' as char, ',' as char, '\0' as char, '\0' as char, true)
+        BlobQuickQueryDelimitedSerialization ser = new BlobQuickQueryDelimitedSerialization()
+        .setRecordSeparator('\n')
+        .setColumnSeparator(',')
+        .setEscapeChar('\0')
+        .setFieldQuote('\0')
+        .setHeadersPresent(true)
+        uploadSmallCsv(ser)
 
         ByteArrayOutputStream queryData = new ByteArrayOutputStream()
         ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
@@ -71,21 +86,59 @@ class BlobQuickQueryAPITest extends APISpec {
         notThrown(BlobStorageException)
     }
 
-//    @Unroll
-//    def "Query input delimited"() {
-//        setup:
-//        ByteArrayOutputStream queryData = new ByteArrayOutputStream()
-//
-//        uploadSmallCsv('\n' as char, ',' as char, '\0' as char, '\0' as char, true)
-//        when:
-//        qqClient.queryWithResponse(new ByteArrayOutputStream(), "SELECT * from BlobStorage")
-//
-//        then:
-//        notThrown(BlobStorageException)
-//
-//        where:
-//
-//    }
+    def "Query input stream min"() {
+        setup:
+        BlobQuickQueryDelimitedSerialization ser = new BlobQuickQueryDelimitedSerialization()
+            .setRecordSeparator('\n')
+            .setColumnSeparator(',')
+            .setEscapeChar('\0')
+            .setFieldQuote('\0')
+            .setHeadersPresent(true)
+        uploadSmallCsv(ser)
+
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+
+        when:
+        InputStream qqStream = qqClient.openInputStream("SELECT * from BlobStorage")
+
+        bc.download(downloadData)
+
+        byte[] queryData = new byte[downloadData.toByteArray().length]
+
+        qqStream.read(queryData, 0, downloadData.toByteArray().length)
+
+        qqStream.close()
+
+        then:
+        queryData == downloadData.toByteArray()
+    }
+
+    @Unroll
+    def "Query input delimited"() {
+        setup:
+        BlobQuickQueryDelimitedSerialization ser = new BlobQuickQueryDelimitedSerialization()
+            .setRecordSeparator(recordSeparator)
+            .setColumnSeparator(columnSeparator)
+            .setEscapeChar(fieldQuote)
+            .setFieldQuote(escapeChar)
+            .setHeadersPresent(headersPresent)
+        uploadSmallCsv(ser)
+
+        when:
+        InputStream qqStream = qqClient.openInputStream("SELECT * from BlobStorage", ser, ser, null, null, null)
+
+        qqStream.read(new byte[10], 0, 10)
+
+        qqStream.close()
+
+        then:
+        notThrown(BlobStorageException)
+
+        where:
+        recordSeparator | columnSeparator | fieldQuote    | escapeChar      | headersPresent
+        '\n' as char    | ',' as char     | '\0' as char  | '\0' as char    | true
+        '\n' as char    | '.' as char     | '\0' as char  | '\0' as char    | false
+    }
 
 //    @Unroll
 //    def "Query input json"() {
@@ -106,7 +159,7 @@ class BlobQuickQueryAPITest extends APISpec {
     @Unroll
     def "Query input output IA"() {
         when:
-        qqClient.queryWithResponse(new ByteArrayOutputStream(), "SELECT * from BlobStorage", input, output, null, null, null)
+        qqClient.openInputStream("SELECT * from BlobStorage", input, output, null, null, null)
 
         then:
         thrown(IllegalArgumentException)
@@ -119,12 +172,46 @@ class BlobQuickQueryAPITest extends APISpec {
     }
 
     class MockSerialization extends BlobQuickQuerySerialization<MockSerialization> {
-
     }
 
-//    def "Query input non fatal error"() {
-//        qqClient.query()
-//    }
+    def "Query input non fatal error"() {
+        setup:
+        BlobQuickQueryDelimitedSerialization base = new BlobQuickQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(true)
+
+        uploadSmallCsv(base.setColumnSeparator('.' as char), true)
+
+        when:
+        InputStream qqStream = qqClient.openInputStream("SELECT _2 from BlobStorage WHERE _1 > 250;",
+            base.setColumnSeparator(',' as char), base.setColumnSeparator(',' as char), null,
+            new MockErrorReceiver("InvalidTypeConversion"), null)
+
+
+        qqStream.read(new byte[Constants.KB], 0, Constants.KB)
+
+        qqStream.close()
+
+        then:
+        notThrown(BlobStorageException)
+    }
+
+    class MockErrorReceiver implements BlobQuickQueryErrorReceiver {
+
+        String expectedType
+
+        MockErrorReceiver(String expectedType) {
+            this.expectedType = expectedType
+        }
+
+        @Override
+        void reportError(BlobQuickQueryError nonFatalError) {
+            assert !nonFatalError.isFatal()
+            assert nonFatalError.getName() == expectedType
+        }
+    }
 //
 //    def "Query output"() {
 //        qqClient.query()
@@ -157,10 +244,14 @@ class BlobQuickQueryAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        def response = qqClient.queryWithResponse(new ByteArrayOutputStream(), "SELECT *", null, null, bac, null, null)
+        InputStream stream = qqClient.openInputStream("SELECT * from BlobStorage", null, null, bac, null, null)
+
+        stream.read()
+
+        stream.close()
 
         then:
-        response.getStatusCode() == 200
+        notThrown(BlobStorageException)
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID
@@ -184,7 +275,7 @@ class BlobQuickQueryAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         when:
-        qqClient.queryWithResponse(new ByteArrayOutputStream(), "SELECT *", null, null, bac, null, null)
+        qqClient.openInputStream("SELECT * from BlobStorage", null, null, bac, null, null).read()
 
         then:
         thrown(BlobStorageException)

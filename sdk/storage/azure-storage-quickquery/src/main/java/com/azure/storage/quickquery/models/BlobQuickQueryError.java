@@ -32,4 +32,12 @@ public class BlobQuickQueryError {
     public long getPosition() {
         return position;
     }
+
+    @Override
+    public String toString() {
+        return String.format("BlobQueryError. Is Fatal = %b, Error Name = %s, Error Description = %s, Error Position "
+            + "(in source data blob) = %d.", this.fatal, this.name,this.description ,this.position);
+    }
+
 }
+
