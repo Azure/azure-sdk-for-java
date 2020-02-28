@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.RetryOptions;
+import com.azure.cosmos.ThrottlingRetryOptions;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
@@ -19,11 +19,11 @@ public class ClientRetryPolicyTest {
 
     @Test(groups = "unit")
     public void networkFailureOnRead() throws Exception {
-        RetryOptions retryOptions = new RetryOptions();
+        ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
         Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
-        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, retryOptions);
+        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, throttlingRetryOptions);
 
         Exception exception = ReadTimeoutException.INSTANCE;
 
@@ -49,11 +49,11 @@ public class ClientRetryPolicyTest {
 
     @Test(groups = "unit")
     public void networkFailureOnWrite() throws Exception {
-        RetryOptions retryOptions = new RetryOptions();
+        ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
         Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
-        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, retryOptions);
+        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, throttlingRetryOptions);
 
         Exception exception = ReadTimeoutException.INSTANCE;
 
@@ -76,11 +76,11 @@ public class ClientRetryPolicyTest {
 
     @Test(groups = "unit")
     public void networkFailureOnUpsert() throws Exception {
-        RetryOptions retryOptions = new RetryOptions();
+        ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
         Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
-        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, retryOptions);
+        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, throttlingRetryOptions);
 
         Exception exception = ReadTimeoutException.INSTANCE;
 
@@ -103,11 +103,11 @@ public class ClientRetryPolicyTest {
 
     @Test(groups = "unit")
     public void networkFailureOnDelete() throws Exception {
-        RetryOptions retryOptions = new RetryOptions();
+        ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
         Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
-        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, retryOptions);
+        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, throttlingRetryOptions);
 
         Exception exception = ReadTimeoutException.INSTANCE;
 
@@ -130,11 +130,11 @@ public class ClientRetryPolicyTest {
 
     @Test(groups = "unit")
     public void onBeforeSendRequestNotInvoked() {
-        RetryOptions retryOptions = new RetryOptions();
+        ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
 
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
-        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, retryOptions);
+        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(endpointManager, true, throttlingRetryOptions);
 
         Exception exception = ReadTimeoutException.INSTANCE;
 

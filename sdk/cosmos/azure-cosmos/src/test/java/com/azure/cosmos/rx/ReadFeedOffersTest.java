@@ -48,11 +48,11 @@ public class ReadFeedOffersTest extends TestSuiteBase {
     public void readOffers() throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
+        options.setMaxItemCount(2);
 
         Flux<FeedResponse<Offer>> feedObservable = client.readOffers(options);
 
-        int expectedPageSize = (allOffers.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (allOffers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
                 .totalSize(allOffers.size())

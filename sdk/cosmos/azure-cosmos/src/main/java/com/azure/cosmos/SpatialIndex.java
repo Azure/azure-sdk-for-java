@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Represents a spatial index in the Azure Cosmos DB database service.
  */
-final class SpatialIndex extends Index {
+public final class SpatialIndex extends Index {
 
     /**
      * Initializes a new instance of the SpatialIndex class.

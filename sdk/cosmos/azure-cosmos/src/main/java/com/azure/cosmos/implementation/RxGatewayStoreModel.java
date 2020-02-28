@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.lang3.StringUtils;
@@ -80,7 +79,7 @@ class RxGatewayStoreModel implements RxStoreModel {
         this.sessionContainer = sessionContainer;
     }
 
-    private Mono<RxDocumentServiceResponse> doCreate(RxDocumentServiceRequest request) {
+    private Mono<RxDocumentServiceResponse> create(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.POST);
     }
 
@@ -149,9 +148,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             Flux<ByteBuf> byteBufObservable = Flux.empty();
 
-            if (request.getContentObservable() != null) {
-                byteBufObservable = request.getContentObservable().map(Unpooled::wrappedBuffer);
-            } else if (request.getContentAsByteBufFlux() != null){
+            if (request.getContentAsByteBufFlux() != null){
                 byteBufObservable = request.getContentAsByteBufFlux();
             }
 
@@ -221,7 +218,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     private String ensureSlashPrefixed(String path) {
         if (path == null) {
-            return path;
+            return null;
         }
 
         if (path.startsWith("/")) {
@@ -243,7 +240,7 @@ class RxGatewayStoreModel implements RxStoreModel {
      * @return {@link Mono}
      */
     private Mono<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<HttpResponse> httpResponseMono,
-                                                                            RxDocumentServiceRequest request) {
+                                                                      RxDocumentServiceRequest request) {
 
         return httpResponseMono.flatMap(httpResponse ->  {
 
@@ -317,7 +314,10 @@ class RxGatewayStoreModel implements RxStoreModel {
                    });
     }
 
-    private void validateOrThrow(RxDocumentServiceRequest request, HttpResponseStatus status, HttpHeaders headers, byte[] bodyAsBytes) throws CosmosClientException {
+    private void validateOrThrow(RxDocumentServiceRequest request,
+                                 HttpResponseStatus status,
+                                 HttpHeaders headers,
+                                 byte[] bodyAsBytes) throws CosmosClientException {
 
         int statusCode = status.code();
 
@@ -342,7 +342,7 @@ class RxGatewayStoreModel implements RxStoreModel {
     private Mono<RxDocumentServiceResponse> invokeAsyncInternal(RxDocumentServiceRequest request)  {
         switch (request.getOperationType()) {
             case Create:
-                return this.doCreate(request);
+                return this.create(request);
             case Upsert:
                 return this.upsert(request);
             case Delete:

@@ -36,7 +36,7 @@ public class CosmosAsyncConflictTest extends TestSuiteBase {
 
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         CosmosPagedFlux<CosmosConflictProperties> conflictReadFeedFlux = createdCollection.readAllConflicts(options);
 

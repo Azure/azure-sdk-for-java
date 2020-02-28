@@ -41,7 +41,7 @@ import com.azure.cosmos.IndexingPolicy;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.Resource;
-import com.azure.cosmos.RetryOptions;
+import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.FailureValidator;
@@ -574,7 +574,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static void deleteDocumentIfExists(CosmosAsyncClient client, String databaseId, String collectionId, String docId) {
         FeedOptions options = new FeedOptions();
-        options.partitionKey(new PartitionKey(docId));
+        options.setPartitionKey(new PartitionKey(docId));
         CosmosAsyncContainer cosmosContainer = client.getDatabase(databaseId).getContainer(collectionId);
 
         List<CosmosItemProperties> res = cosmosContainer
@@ -1019,10 +1019,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     static protected CosmosClientBuilder createGatewayHouseKeepingDocumentClient() {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-        RetryOptions options = new RetryOptions();
+        ThrottlingRetryOptions options = new ThrottlingRetryOptions();
         options.setMaxRetryWaitTimeInSeconds(SUITE_SETUP_TIMEOUT);
-        connectionPolicy.setRetryOptions(options);
-        return CosmosAsyncClient.cosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
+        connectionPolicy.setThrottlingRetryOptions(options);
+        return new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
             .setCosmosKeyCredential(cosmosKeyCredential)
             .setConnectionPolicy(connectionPolicy)
             .setConsistencyLevel(ConsistencyLevel.SESSION);
@@ -1033,7 +1033,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         connectionPolicy.setUsingMultipleWriteLocations(multiMasterEnabled);
         connectionPolicy.setPreferredLocations(preferredLocations);
-        return CosmosAsyncClient.cosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
+        return new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
             .setCosmosKeyCredential(cosmosKeyCredential)
             .setConnectionPolicy(connectionPolicy)
             .setConsistencyLevel(consistencyLevel);
@@ -1061,7 +1061,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         Configs configs = spy(new Configs());
         doAnswer((Answer<Protocol>)invocation -> protocol).when(configs).getProtocol();
 
-        CosmosClientBuilder builder = CosmosAsyncClient.cosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
+        CosmosClientBuilder builder = new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
             .setCosmosKeyCredential(cosmosKeyCredential)
             .setConnectionPolicy(connectionPolicy)
             .setConsistencyLevel(consistencyLevel);
@@ -1090,7 +1090,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             .setConsistencyLevel(builder.getConsistencyLevel())
             .setCosmosKeyCredential(builder.getCosmosKeyCredential())
             .setPermissions(builder.getPermissions())
-            .setTokenResolver(builder.getTokenResolver())
+            .setCosmosAuthorizationTokenResolver(builder.getCosmosAuthorizationTokenResolver())
             .setResourceToken(builder.getResourceToken());
 
         return copy;

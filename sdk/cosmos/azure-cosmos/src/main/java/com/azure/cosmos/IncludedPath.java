@@ -107,7 +107,8 @@ public class IncludedPath extends JsonSerializable {
     }
 
     @Override
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
+        super.populatePropertyBag();
         if (this.indexes != null) {
             for (Index index : this.indexes) {
                 index.populatePropertyBag();

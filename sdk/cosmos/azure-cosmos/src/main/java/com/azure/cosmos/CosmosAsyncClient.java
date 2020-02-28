@@ -7,12 +7,12 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -25,7 +25,7 @@ import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxIt
 @ServiceClient(
     builder = CosmosClientBuilder.class,
     isAsync = true)
-public class CosmosAsyncClient implements AutoCloseable {
+public class CosmosAsyncClient implements Closeable {
 
     // Async document client wrapper
     private final Configs configs;
@@ -35,7 +35,7 @@ public class CosmosAsyncClient implements AutoCloseable {
     private final ConnectionPolicy connectionPolicy;
     private final ConsistencyLevel desiredConsistencyLevel;
     private final List<Permission> permissions;
-    private final TokenResolver tokenResolver;
+    private final CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private final CosmosKeyCredential cosmosKeyCredential;
     private final boolean sessionCapturingOverride;
     private final boolean enableTransportClientSharing;
@@ -47,7 +47,7 @@ public class CosmosAsyncClient implements AutoCloseable {
         this.connectionPolicy = builder.getConnectionPolicy();
         this.desiredConsistencyLevel = builder.getConsistencyLevel();
         this.permissions = builder.getPermissions();
-        this.tokenResolver = builder.getTokenResolver();
+        this.cosmosAuthorizationTokenResolver = builder.getCosmosAuthorizationTokenResolver();
         this.cosmosKeyCredential = builder.getCosmosKeyCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionReuseAcrossClientsEnabled();
@@ -58,19 +58,10 @@ public class CosmosAsyncClient implements AutoCloseable {
                                        .withConsistencyLevel(this.desiredConsistencyLevel)
                                        .withSessionCapturingOverride(this.sessionCapturingOverride)
                                        .withConfigs(this.configs)
-                                       .withTokenResolver(this.tokenResolver)
+                                       .withTokenResolver(this.cosmosAuthorizationTokenResolver)
                                        .withCosmosKeyCredential(this.cosmosKeyCredential)
                                        .withTransportClientSharing(this.enableTransportClientSharing)
                                        .build();
-    }
-
-    /**
-     * Instantiate the cosmos client builder to build cosmos client
-     *
-     * @return {@link CosmosClientBuilder}
-     */
-    public static CosmosClientBuilder cosmosClientBuilder() {
-        return new CosmosClientBuilder();
     }
 
     AsyncDocumentClient getContextClient() {
@@ -149,8 +140,8 @@ public class CosmosAsyncClient implements AutoCloseable {
      *
      * @return the token resolver
      */
-    TokenResolver getTokenResolver() {
-        return tokenResolver;
+    CosmosAuthorizationTokenResolver getCosmosAuthorizationTokenResolver() {
+        return cosmosAuthorizationTokenResolver;
     }
 
     /**

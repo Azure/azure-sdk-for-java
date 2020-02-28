@@ -12,6 +12,7 @@ import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.fasterxml.uuid.EthernetAddress;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.TimeBasedGenerator;
+import io.netty.buffer.ByteBuf;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -579,10 +580,10 @@ public class Utils {
             return;
         }
         if (pagedFluxOptions.getRequestContinuation() != null) {
-            feedOptions.requestContinuation(pagedFluxOptions.getRequestContinuation());
+            feedOptions.setRequestContinuation(pagedFluxOptions.getRequestContinuation());
         }
         if (pagedFluxOptions.getMaxItemCount() != null) {
-            feedOptions.maxItemCount(pagedFluxOptions.getMaxItemCount());
+            feedOptions.setMaxItemCount(pagedFluxOptions.getMaxItemCount());
         }
     }
 
@@ -610,5 +611,11 @@ public class Utils {
         } else {
             return sb.toString();
         }
+    }
+
+    static byte[] toByteArray(ByteBuf buf) {
+        byte[] bytes = new byte[buf.readableBytes()];
+        buf.readBytes(bytes);
+        return bytes;
     }
 }

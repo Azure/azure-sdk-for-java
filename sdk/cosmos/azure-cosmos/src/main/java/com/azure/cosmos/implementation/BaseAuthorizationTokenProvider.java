@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
@@ -129,7 +130,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         // Skipping lower casing of resourceId since it may now contain "ID" of the resource as part of the FullName
         StringBuilder body = new StringBuilder();
-        body.append(verb.toLowerCase())
+        body.append(BridgeInternal.toLower(verb))
                 .append('\n')
                 .append(resourceSegment)
                 .append('\n')
@@ -245,7 +246,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
     }
 
     private Mac getMacInstance() {
-        int masterKeyLatestHashCode = this.cosmosKeyCredential.getKeyHashCode();
+        int masterKeyLatestHashCode = BridgeInternal.getHashCode(this.cosmosKeyCredential);
 
         //  Master key has changed, or this is the first time we are getting mac instance
         if (masterKeyLatestHashCode != this.masterKeyHashCode) {
@@ -288,7 +289,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         }
 
         StringBuilder payload = new StringBuilder();
-        payload.append(verb.toLowerCase())
+        payload.append(BridgeInternal.toLower(verb))
                 .append('\n')
                 .append(resourceType.toLowerCase())
                 .append('\n')

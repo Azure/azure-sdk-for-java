@@ -211,6 +211,12 @@ jobs:
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Strong'
+        Bounded_Staleness_Https_E2E:
+          DisplayName: Bounded Staleness Single Region ReadMyWrites
+          OSVmImage: 'windows-2019'
+          ProfileFlag: '-Pe2e'
+          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+          DESIRED_CONSISTENCY: 'BoundedStaleness'
         # 59m 58s, timed out
         Strong_Tcp_E2E:
           DisplayName: Single Region ReadMyWrites
@@ -218,6 +224,12 @@ jobs:
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
           DESIRED_CONSISTENCY: 'Strong'
+        Bounded_Staleness_Tcp_E2E:
+          DisplayName: Bounded Staleness Single Region ReadMyWrites
+          OSVmImage: 'windows-2019'
+          ProfileFlag: '-Pe2e'
+          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Tcp"'
+          DESIRED_CONSISTENCY: 'BoundedStaleness'
         # 08m 50s, expect passed
         Strong_Https_Fast:
           DisplayName: Strong HTTP Fast

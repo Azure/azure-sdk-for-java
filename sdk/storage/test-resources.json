@@ -25,6 +25,7 @@
         "secondaryAccountName": "[concat('sec', parameters('baseName'))]",
         "premiumAccountName": "[concat('prem', parameters('baseName'))]",
         "dataLakeAccountName": "[concat('dtlk', parameters('baseName'))]",
+        "premiumFileAccountName": "[concat('premf', parameters('baseName'))]",
         "location": "[resourceGroup().location]"
     },
     "resources": [
@@ -180,6 +181,34 @@
                 },
                 "accessTier": "Hot"
             }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "[variables('storageApiVersion')]",
+            "name": "[variables('premiumFileAccountName')]",
+            "location": "[variables('location')]",
+            "sku": {
+                "name": "Premium_LRS",
+                "tier": "Premium"
+            },
+            "kind": "FileStorage",
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            }
         }
     ],
     "outputs": {
@@ -226,6 +255,14 @@
         "AZURE_STORAGE_FILE_ENDPOINT": {
             "type": "string",
             "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).primaryEndpoints.file]"
+        },
+        "PREMIUM_STORAGE_FILE_ACCOUNT_NAME": {
+            "type": "string",
+            "value": "[variables('premiumFileAccountName')]"
+        },
+        "PREMIUM_STORAGE_FILE_ACCOUNT_KEY": {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('premiumFileAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
         "AZURE_STORAGE_QUEUE_ACCOUNT_NAME": {
             "type": "string",
