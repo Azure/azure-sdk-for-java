@@ -22,7 +22,7 @@ public class StoreResponseTest {
         StoreResponse sp = new StoreResponse(200, new ArrayList<>(headerMap.entrySet()), getUTF8BytesOrNull(content));
 
         assertThat(sp.getStatus()).isEqualTo(200);
-        assertThat(sp.getResponseBody()).isEqualTo(content);
+        assertThat(sp.getResponseBody()).isEqualTo(getUTF8BytesOrNull(content));
         assertThat(sp.getHeaderValue("key1")).isEqualTo("value1");
     }
 }
