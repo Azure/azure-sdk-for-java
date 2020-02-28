@@ -107,7 +107,7 @@ public class IdentityClient {
     }
 
     /**
-     * Asynchronously acquire a token from Active Directory with Aure CLI.
+     * Asynchronously acquire a token from Active Directory with Azure CLI.
      *
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
