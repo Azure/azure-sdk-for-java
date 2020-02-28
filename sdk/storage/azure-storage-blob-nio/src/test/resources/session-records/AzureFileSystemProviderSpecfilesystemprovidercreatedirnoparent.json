@@ -1,0 +1,63 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://xclientdev2.blob.core.windows.net?prefix=jtcfilesystemprovidercreatedirnoparent&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "8aa6ccc8-522a-408d-a70b-09cf9b15a74f"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "d1bfca91-401e-0093-2037-ec8756000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcfilesystemprovidercreatedirnoparent</Prefix><Containers><Container><Name>jtcfilesystemprovidercreatedirnoparent188524e5c35bd09</Name><Properties><Last-Modified>Wed, 26 Feb 2020 00:00:48 GMT</Last-Modified><Etag>\"0x8D7BA4EEF93131E\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtcfilesystemprovidercreatedirnoparent225536ff99278f5</Name><Properties><Last-Modified>Wed, 26 Feb 2020 00:00:48 GMT</Last-Modified><Etag>\"0x8D7BA4EEF9CB260\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Wed, 26 Feb 2020 00:00:48 GMT",
+      "x-ms-client-request-id" : "8aa6ccc8-522a-408d-a70b-09cf9b15a74f",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemprovidercreatedirnoparent188524e5c35bd09?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "cf953bba-8344-406c-9ddc-16be4aa01b14"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "d1bfca97-401e-0093-2437-ec8756000000",
+      "Date" : "Wed, 26 Feb 2020 00:00:48 GMT",
+      "x-ms-client-request-id" : "cf953bba-8344-406c-9ddc-16be4aa01b14"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemprovidercreatedirnoparent225536ff99278f5?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "d5ab481f-1dcb-46b5-98a6-312ed5531276"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "d1bfca9e-401e-0093-2937-ec8756000000",
+      "Date" : "Wed, 26 Feb 2020 00:00:48 GMT",
+      "x-ms-client-request-id" : "d5ab481f-1dcb-46b5-98a6-312ed5531276"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcfilesystemprovidercreatedirnoparent046330198aee91d", "jtcfilesystemprovidercreatedirnoparent188524e5c35bd09", "jtcfilesystemprovidercreatedirnoparent225536ff99278f5", "javablobfilesystemprovidercreatedirnoparent3398645c51a3c", "javablobfilesystemprovidercreatedirnoparent4978640c07bf4" ]
+}

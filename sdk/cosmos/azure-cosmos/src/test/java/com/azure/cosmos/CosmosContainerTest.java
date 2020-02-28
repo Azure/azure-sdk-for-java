@@ -209,12 +209,12 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
-        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator = createdDatabase.readAllContainers();
+        CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator = createdDatabase.readAllContainers();
         // Very basic validation
         assertThat(feedResponseIterator.iterator().hasNext()).isTrue();
 
         FeedOptions feedOptions = new FeedOptions();
-        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator1 = createdDatabase.readAllContainers(feedOptions);
+        CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator1 = createdDatabase.readAllContainers(feedOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
     }
 
@@ -229,21 +229,21 @@ public class CosmosContainerTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", collectionName);
         FeedOptions feedOptions = new FeedOptions();
 
-        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator = createdDatabase.queryContainers(query);
+        CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator = createdDatabase.queryContainers(query);
         // Very basic validation
         assertThat(feedResponseIterator.iterator().hasNext()).isTrue();
 
-        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator1 =
+        CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator1 =
             createdDatabase.queryContainers(query, feedOptions);
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator2 =
+        CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator2 =
             createdDatabase.queryContainers(querySpec);
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
 
-        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator3 =
+        CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator3 =
             createdDatabase.queryContainers(querySpec, feedOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }

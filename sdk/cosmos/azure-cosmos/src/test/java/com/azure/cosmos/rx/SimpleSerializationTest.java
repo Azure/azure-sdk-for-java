@@ -62,7 +62,7 @@ public class SimpleSerializationTest extends TestSuiteBase {
             createdCollection.createItem(testObject).block();
             Assert.fail();
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage()).contains("Can't serialize the object into the json string");
+            assertThat(e.getMessage()).contains("Failed to serialize the object into json");
             assertThat(e.getCause()).isInstanceOf(JsonMappingException.class);
             assertThat(e.getCause().getMessage()).contains("bad");
         }

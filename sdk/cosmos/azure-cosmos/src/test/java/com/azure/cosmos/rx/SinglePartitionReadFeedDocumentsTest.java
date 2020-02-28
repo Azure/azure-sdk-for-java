@@ -5,7 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -37,7 +37,7 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
         final FeedOptions options = new FeedOptions();
 
         int maxItemCount = 2;
-        final CosmosContinuablePagedFlux<CosmosItemProperties> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        final CosmosPagedFlux<CosmosItemProperties> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
         final int expectedPageSize = (createdDocuments.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()

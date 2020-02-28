@@ -2,6 +2,7 @@
   "$schema": "https://openapistorageprod.blob.core.windows.net/sdkautomation/prod/schemas/swagger_to_sdk_config.schema.json",
   "meta": {
     "autorest_options": {
+      "version": "previous",
       "java": "",
       "verbose": "",
       "sdkrel:azure-libraries-for-java-folder": ".",

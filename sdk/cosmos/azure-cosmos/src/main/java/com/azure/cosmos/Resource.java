@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 
+import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -83,6 +84,25 @@ public class Resource extends JsonSerializable {
     protected Resource(String jsonString) {
         super(jsonString);
     }
+
+    /**
+     * Constructor.
+     *
+     * @param byteBuffer {@link ByteBuffer} encoding of the json string that represents the resource.
+     */
+    protected Resource(ByteBuffer byteBuffer) {
+        super(byteBuffer);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param bytes byte[] encoding of the json string that represents the resource.
+     */
+    protected Resource(byte[] bytes) {
+        super(bytes);
+    }
+
 
     /**
      * Gets the name of the resource.

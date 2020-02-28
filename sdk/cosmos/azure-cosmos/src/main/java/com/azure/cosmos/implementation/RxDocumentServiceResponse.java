@@ -84,12 +84,16 @@ public class RxDocumentServiceResponse {
         return this.headersMap;
     }
 
-    public String getReponseBodyAsString() {
-        return this.storeResponse.getResponseBody();
+    public byte[] getResponseBodyAsByteArray() {
+        return this.storeResponse.getResponseBodyAsByteArray();
+    }
+
+    public String getResponseBodyAsString() {
+        return Utils.utf8StringFrom(this.getResponseBodyAsByteArray());
     }
 
     public <T extends Resource> T getResource(Class<T> c) {
-        String responseBody = this.getReponseBodyAsString();
+        String responseBody = this.getResponseBodyAsString();
         if (StringUtils.isEmpty(responseBody))
             return null;
 
@@ -108,7 +112,7 @@ public class RxDocumentServiceResponse {
     }
 
     public <T extends Resource> List<T> getQueryResponse(Class<T> c) {
-        String responseBody = this.getReponseBodyAsString();
+        String responseBody = this.getResponseBodyAsString();
         if (responseBody == null) {
             return new ArrayList<T>();
         }

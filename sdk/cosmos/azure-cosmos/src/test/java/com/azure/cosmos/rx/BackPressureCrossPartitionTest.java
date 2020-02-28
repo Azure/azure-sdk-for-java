@@ -11,7 +11,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.DataType;
 import com.azure.cosmos.FeedOptions;
@@ -118,7 +118,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     public void queryPages(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(2);
-        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
@@ -162,7 +162,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     public void queryItems(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(2);
-        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();

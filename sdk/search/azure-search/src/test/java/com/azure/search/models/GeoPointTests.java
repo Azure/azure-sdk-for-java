@@ -10,7 +10,6 @@ import com.azure.search.SearchIndexClientTestBase;
 import com.azure.search.SearchPagedResponse;
 import com.azure.search.implementation.SerializationUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStreamReader;
@@ -21,6 +20,10 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GeoPointTests extends SearchIndexClientTestBase {
 
@@ -53,13 +56,13 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         SearchOptions searchOptions = new SearchOptions().setFilter("HotelId eq '1'");
         PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("Location",
             searchOptions, new RequestOptions(), Context.NONE);
-        Assert.assertNotNull(results);
+        assertNotNull(results);
 
         GeoPoint geoPointObj = (GeoPoint) getSearchResults(results).get(0).get("Location");
-        Assert.assertNotNull(geoPointObj);
+        assertNotNull(geoPointObj);
 
         GeoPoint expected = GeoPoint.create(47.678581, -122.131577);
-        Assert.assertEquals(expected, geoPointObj);
+        assertEquals(expected, geoPointObj);
     }
 
     @Test
@@ -84,7 +87,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
                     .setType(DataType.EDM_GEOGRAPHY_POINT)
                     .setFilterable(true)
                     .setSortable(true)
-                ));
+            ));
 
         setupIndex(index);
         client = getSearchIndexClientBuilder(index.getName()).buildClient();
@@ -98,8 +101,8 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         docs.add(doc);
         IndexDocumentsResult indexResult = client.uploadDocuments(docs);
 
-        Assert.assertNotNull(indexResult);
-        Assert.assertTrue(indexResult.getResults().get(0).isSucceeded());
+        assertNotNull(indexResult);
+        assertTrue(indexResult.getResults().get(0).isSucceeded());
     }
 
     private List<Map<String, Object>> getSearchResults(PagedIterableBase<SearchResult, SearchPagedResponse> results) {
@@ -107,7 +110,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         List<Map<String, Object>> searchResults = new ArrayList<>();
         while (iterator.hasNext()) {
             SearchPagedResponse result = iterator.next();
-            Assert.assertNotNull(result.getItems());
+            assertNotNull(result.getItems());
             result.getItems().forEach(item -> searchResults.add(item.getDocument()));
         }
 

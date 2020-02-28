@@ -28,6 +28,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -62,9 +63,9 @@ class ClientSideRequestStatistics {
         this.responseStatisticsList = new ArrayList<>();
         this.supplementalResponseStatisticsList = new ArrayList<>();
         this.addressResolutionStatistics = new HashMap<>();
-        this.contactedReplicas = new ArrayList<>();
-        this.failedReplicas = new HashSet<>();
-        this.regionsContacted = new HashSet<>();
+        this.contactedReplicas = Collections.synchronizedList(new ArrayList<>());
+        this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
+        this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
         this.connectionMode = ConnectionMode.DIRECT;
         this.retryContext = retryContext;
     }
@@ -183,7 +184,7 @@ class ClientSideRequestStatistics {
     }
 
     void setContactedReplicas(List<URI> contactedReplicas) {
-        this.contactedReplicas = contactedReplicas;
+        this.contactedReplicas = Collections.synchronizedList(contactedReplicas);
     }
 
     Set<URI> getFailedReplicas() {
@@ -191,7 +192,7 @@ class ClientSideRequestStatistics {
     }
 
     void setFailedReplicas(Set<URI> failedReplicas) {
-        this.failedReplicas = failedReplicas;
+        this.failedReplicas = Collections.synchronizedSet(failedReplicas);
     }
 
     Set<URI> getRegionsContacted() {
@@ -199,7 +200,7 @@ class ClientSideRequestStatistics {
     }
 
     void setRegionsContacted(Set<URI> regionsContacted) {
-        this.regionsContacted = regionsContacted;
+        this.regionsContacted = Collections.synchronizedSet(regionsContacted);
     }
 
     private static String formatDateTime(ZonedDateTime dateTime) {

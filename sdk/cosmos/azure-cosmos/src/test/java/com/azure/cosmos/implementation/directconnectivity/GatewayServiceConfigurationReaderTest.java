@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.SpyClientUnderTestFactory;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -147,7 +148,8 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
                 .when(httpResponse).body();
         Mockito.doReturn(Mono.just(databaseAccountJson))
                 .when(httpResponse).bodyAsString();
-
+        Mockito.doReturn(Mono.just(Utils.getUTF8Bytes(databaseAccountJson)))
+            .when(httpResponse).bodyAsByteArray();
         Mockito.doReturn(new HttpHeaders()).when(httpResponse).headers();
         return httpResponse;
     }

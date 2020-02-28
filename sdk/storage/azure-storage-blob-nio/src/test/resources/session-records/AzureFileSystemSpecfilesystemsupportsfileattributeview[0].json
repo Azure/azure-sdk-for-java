@@ -1,0 +1,63 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://xclientdev2.blob.core.windows.net?prefix=jtcfilesystemsupportsfileattributeview&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "5868dcb2-cfa7-4ace-86c6-8cd82f8b9989"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "bde6be1c-b01e-00af-3b94-d8338d000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcfilesystemsupportsfileattributeview</Prefix><Containers><Container><Name>jtcfilesystemsupportsfileattributeview176077eca1718df</Name><Properties><Last-Modified>Sat, 01 Feb 2020 00:16:53 GMT</Last-Modified><Etag>\"0x8D7A6AC0A1C07F0\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtcfilesystemsupportsfileattributeview2873052b9a4ac9b</Name><Properties><Last-Modified>Sat, 01 Feb 2020 00:16:53 GMT</Last-Modified><Etag>\"0x8D7A6AC0A327B82\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Sat, 01 Feb 2020 00:16:52 GMT",
+      "x-ms-client-request-id" : "5868dcb2-cfa7-4ace-86c6-8cd82f8b9989",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemsupportsfileattributeview176077eca1718df?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "750a92e6-76c1-40b7-8859-baea06f84b5e"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "bde6be3d-b01e-00af-5494-d8338d000000",
+      "Date" : "Sat, 01 Feb 2020 00:16:52 GMT",
+      "x-ms-client-request-id" : "750a92e6-76c1-40b7-8859-baea06f84b5e"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemsupportsfileattributeview2873052b9a4ac9b?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.4.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "df88abc6-71bd-4a1c-a46d-3a20ca4aedfe"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "bde6be49-b01e-00af-5d94-d8338d000000",
+      "Date" : "Sat, 01 Feb 2020 00:16:52 GMT",
+      "x-ms-client-request-id" : "df88abc6-71bd-4a1c-a46d-3a20ca4aedfe"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcfilesystemsupportsfileattributeview01303489dfc64d2", "jtcfilesystemsupportsfileattributeview176077eca1718df", "jtcfilesystemsupportsfileattributeview2873052b9a4ac9b" ]
+}

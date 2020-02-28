@@ -12,6 +12,8 @@ import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.SharedTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
+import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -147,7 +149,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
 
         FeedOptions feedOptions = new FeedOptions();
 
-        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator3 =
+        CosmosPagedIterable<CosmosItemProperties> feedResponseIterator3 =
                 container1.readAllItems(feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
@@ -161,13 +163,13 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator1 =
+        CosmosPagedIterable<CosmosItemProperties> feedResponseIterator1 =
                 container1.queryItems(query, feedOptions, CosmosItemProperties.class);
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator3 =
+        CosmosPagedIterable<CosmosItemProperties> feedResponseIterator3 =
                 container1.queryItems(querySpec, feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
@@ -194,7 +196,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         int initialDocumentCount = 3;
         int finalDocumentCount = 0;
 
-        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator1 =
+        CosmosPagedIterable<CosmosItemProperties> feedResponseIterator1 =
             container1.queryItems(query, feedOptions, CosmosItemProperties.class);
 
         do {
@@ -249,8 +251,18 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
 
         TransportClient transportClient2 = ReflectionUtils.getTransportClient(client2);
         assertThat(transportClient2).isSameAs(transportClient1);
+    }
 
-        assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void gatewayHttpClientReferenceValidation() {
+        HttpClient httpClient = ReflectionUtils.getGatewayHttpClient(client);
+        assertThat(httpClient).isNotInstanceOf(SharedGatewayHttpClient.class);
+
+        HttpClient httpClient1 = ReflectionUtils.getGatewayHttpClient(client1);
+        assertThat(httpClient1).isInstanceOf(SharedGatewayHttpClient.class);
+
+        HttpClient httpClient2 = ReflectionUtils.getGatewayHttpClient(client2);
+        assertThat(httpClient2).isSameAs(httpClient1);
     }
 
     private boolean ifDirectMode() {

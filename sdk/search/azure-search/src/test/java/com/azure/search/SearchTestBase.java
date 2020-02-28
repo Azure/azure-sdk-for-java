@@ -15,7 +15,6 @@ import com.azure.search.models.SearchResult;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.ValueFacetResult;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.unitils.reflectionassert.ReflectionComparatorMode;
 
@@ -32,6 +31,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 /**
@@ -98,27 +101,27 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     }
 
     void assertRangeFacets(List<RangeFacetResult> baseRateFacets, List<RangeFacetResult> lastRenovationDateFacets) {
-        Assert.assertNull(baseRateFacets.get(0).getFrom());
-        Assert.assertEquals(5.0, baseRateFacets.get(0).getTo());
-        Assert.assertEquals(5.0, baseRateFacets.get(1).getFrom());
-        Assert.assertEquals(8.0, baseRateFacets.get(1).getTo());
-        Assert.assertEquals(8.0, baseRateFacets.get(2).getFrom());
-        Assert.assertEquals(10.0, baseRateFacets.get(2).getTo());
-        Assert.assertEquals(10.0, baseRateFacets.get(3).getFrom());
-        Assert.assertNull(baseRateFacets.get(3).getTo());
+        assertNull(baseRateFacets.get(0).getFrom());
+        assertEquals(5.0, baseRateFacets.get(0).getTo());
+        assertEquals(5.0, baseRateFacets.get(1).getFrom());
+        assertEquals(8.0, baseRateFacets.get(1).getTo());
+        assertEquals(8.0, baseRateFacets.get(2).getFrom());
+        assertEquals(10.0, baseRateFacets.get(2).getTo());
+        assertEquals(10.0, baseRateFacets.get(3).getFrom());
+        assertNull(baseRateFacets.get(3).getTo());
 
-        Assert.assertEquals(1, baseRateFacets.get(0).getCount().intValue());
-        Assert.assertEquals(1, baseRateFacets.get(1).getCount().intValue());
-        Assert.assertEquals(1, baseRateFacets.get(2).getCount().intValue());
-        Assert.assertEquals(0, baseRateFacets.get(3).getCount().intValue());
+        assertEquals(1, baseRateFacets.get(0).getCount().intValue());
+        assertEquals(1, baseRateFacets.get(1).getCount().intValue());
+        assertEquals(1, baseRateFacets.get(2).getCount().intValue());
+        assertEquals(0, baseRateFacets.get(3).getCount().intValue());
 
-        Assert.assertNull(lastRenovationDateFacets.get(0).getFrom());
-        Assert.assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(0).getTo());
-        Assert.assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(1).getFrom());
-        Assert.assertNull(lastRenovationDateFacets.get(1).getTo());
+        assertNull(lastRenovationDateFacets.get(0).getFrom());
+        assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(0).getTo());
+        assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(1).getFrom());
+        assertNull(lastRenovationDateFacets.get(1).getTo());
 
-        Assert.assertEquals(5, lastRenovationDateFacets.get(0).getCount().intValue());
-        Assert.assertEquals(2, lastRenovationDateFacets.get(1).getCount().intValue());
+        assertEquals(5, lastRenovationDateFacets.get(0).getCount().intValue());
+        assertEquals(2, lastRenovationDateFacets.get(1).getCount().intValue());
     }
 
     List<RangeFacetResult> getRangeFacetsForField(
@@ -137,26 +140,26 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
 
     private List<FacetResult> getFacetsForField(
         Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
-        Assert.assertTrue(facets.containsKey(expectedField));
+        assertTrue(facets.containsKey(expectedField));
         List<FacetResult> results = facets.get(expectedField);
-        Assert.assertEquals(expectedCount, results.size());
+        assertEquals(expectedCount, results.size());
         return results;
     }
 
     void assertContainHotelIds(List<Map<String, Object>> expected, List<SearchResult> actual) {
-        Assert.assertNotNull(actual);
+        assertNotNull(actual);
         List<String> actualKeys = actual.stream().filter(item -> item.getDocument().containsKey("HotelId"))
             .map(item -> (String) item.getDocument().get("HotelId")).collect(Collectors.toList());
         List<String> expectedKeys = expected.stream().filter(item -> item.containsKey("HotelId"))
             .map(item -> (String) item.get("HotelId")).collect(Collectors.toList());
-        Assert.assertEquals(expectedKeys, actualKeys);
+        assertEquals(expectedKeys, actualKeys);
     }
 
     void assertValueFacetsEqual(List<ValueFacetResult> actualFacets, ArrayList<ValueFacetResult> expectedFacets) {
-        Assert.assertEquals(expectedFacets.size(), actualFacets.size());
+        assertEquals(expectedFacets.size(), actualFacets.size());
         for (int i = 0; i < actualFacets.size(); i++) {
-            Assert.assertEquals(expectedFacets.get(i).getCount(), actualFacets.get(i).getCount());
-            Assert.assertEquals(expectedFacets.get(i).getValue(), actualFacets.get(i).getValue());
+            assertEquals(expectedFacets.get(i).getCount(), actualFacets.get(i).getCount());
+            assertEquals(expectedFacets.get(i).getValue(), actualFacets.get(i).getValue());
         }
     }
 
@@ -207,10 +210,10 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     }
 
     void assertListEqualHotelIds(List<String> expected, List<SearchResult> actual) {
-        Assert.assertNotNull(actual);
+        assertNotNull(actual);
         List<String> actualKeys = actual.stream().filter(item -> item.getDocument().containsKey("HotelId"))
             .map(item -> (String) item.getDocument().get("HotelId")).collect(Collectors.toList());
-        Assert.assertEquals(expected, actualKeys);
+        assertEquals(expected, actualKeys);
     }
 
     String createIndexWithNonNullableTypes() {
@@ -257,10 +260,19 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
                         new Field()
                             .setName("Count")
                             .setType(DataType.EDM_INT32)
-                            .setFilterable(true)
-                    ))
-                )
-            );
+                            .setFilterable(true))),
+                new Field()
+                    .setName("Buckets")
+                    .setType(DataType.Collection(DataType.EDM_COMPLEX_TYPE))
+                    .setFields(Arrays.asList(
+                        new Field()
+                            .setName("BucketName")
+                            .setType(DataType.EDM_STRING)
+                            .setFilterable(true),
+                        new Field()
+                            .setName("Count")
+                            .setType(DataType.EDM_INT32)
+                            .setFilterable(true)))));
 
         setupIndex(index);
 
