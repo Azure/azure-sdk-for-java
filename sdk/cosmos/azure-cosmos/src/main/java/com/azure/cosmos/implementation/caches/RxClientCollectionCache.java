@@ -106,7 +106,7 @@ public class RxClientCollectionCache extends RxCollectionCache {
                 ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
                 MetaDataDiagnosticsContext.MetaDataDiagnostic metaDataDiagnostic  = new MetaDataDiagnosticsContext.MetaDataDiagnostic(addressCallStartTime,
                     addressCallEndTime,
-                    MetaDataDiagnosticsContext.MetaDataEnum.CollectionLookUp);
+                    MetaDataDiagnosticsContext.MetaDataEnum.ContainerLookUp);
                 metaDataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
             }
 

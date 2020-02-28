@@ -62,7 +62,7 @@ public class MetaDataDiagnosticsContext {
         }
     }
     public enum  MetaDataEnum{
-        CollectionLookUp,
+        ContainerLookUp,
         PartitionKeyRangeLookUp,
         ServerAddressLookup,
         MasterAddressLookUp

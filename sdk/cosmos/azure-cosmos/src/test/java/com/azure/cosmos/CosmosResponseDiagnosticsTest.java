@@ -59,23 +59,23 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"simple"})
     public void gatewayDiagnostics() throws CosmosClientException {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
-        CosmosItemResponse<CosmosItemProperties> createResponse = container.createItem(cosmosItemProperties);
+        CosmosItemResponse<CosmosItemProperties> createResponse = this.container.createItem(cosmosItemProperties);
         String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
         assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
         assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
         assertThat(diagnostics).contains("\"operationType\":\"Create\"");
+        assertThat(diagnostics).contains("\"metaDataName\":\"ContainerLookUp\"");
+        assertThat(diagnostics).contains("\"serializationType\":\"PartitionKeyFetchSerialization\"");
         assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
         validateTransportRequestTimelineGateway(diagnostics);
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, priority = 1)
     public void gatewayDiagnosticsOnException() throws CosmosClientException {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = null;
         try {
             createResponse = this.container.createItem(cosmosItemProperties);
-            CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
-            cosmosItemRequestOptions.setPartitionKey(new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<CosmosItemProperties> readResponse =
                 this.container.readItem(createResponse.getProperties().getId(),
                     new PartitionKey("wrongPartitionKey"),
@@ -116,19 +116,21 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
         assertThat(diagnostics).contains("\"gatewayStatistics\":null");
         assertThat(diagnostics).contains("addressResolutionStatistics");
+        assertThat(diagnostics).contains("\"metaDataName\":\"ContainerLookUp\"");
+        assertThat(diagnostics).contains("\"metaDataName\":\"PartitionKeyRangeLookUp\"");
+        assertThat(diagnostics).contains("\"metaDataName\":\"ServerAddressLookup\"");
+        assertThat(diagnostics).contains("\"serializationType\":\"PartitionKeyFetchSerialization\"");
         assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
         validateTransportRequestTimelineDirect(diagnostics);
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"simple"}, priority = 1)
     public void directDiagnosticsOnException() throws CosmosClientException {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = null;
         try {
             createResponse = this.container.createItem(cosmosItemProperties);
-            CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
-            cosmosItemRequestOptions.setPartitionKey(new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<CosmosItemProperties> readResponse =
                 cosmosContainer.readItem(createResponse.getProperties().getId(),
                     new PartitionKey("wrongPartitionKey"),
@@ -176,6 +178,43 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         assertThat(supplementalResponseStatisticsListNode.size()).isEqualTo(7);
     }
 
+    @Test(groups = {"simple"})
+    public void serializationOnVariousScenarios() throws CosmosClientException {
+        //checking database serialization
+        CosmosDatabaseResponse cosmosDatabase = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).read();
+        String diagnostics = cosmosDatabase.getCosmosResponseDiagnostics().toString();
+        assertThat(diagnostics).contains("\"serializationType\":\"DatabaseSerialization\"");
+
+        //checking container serialization
+        CosmosContainerResponse containerResponse = this.container.read();
+        diagnostics = containerResponse.getCosmosResponseDiagnostics().toString();
+        assertThat(diagnostics).contains("\"serializationType\":\"ContainerSerialization\"");
+        TestItem testItem = new TestItem();
+        testItem.id = "TestId";
+        testItem.mypk = "TestPk";
+
+        //checking partitionKeyFetch serialization
+        CosmosItemResponse<TestItem> itemResponse = this.container.createItem(testItem);
+        diagnostics = itemResponse.getCosmosResponseDiagnostics().toString();
+        assertThat(diagnostics).contains("\"serializationType\":\"PartitionKeyFetchSerialization\"");
+        testItem.id = "TestId2";
+        testItem.mypk = "TestPk";
+        itemResponse = this.container.createItem(testItem, new PartitionKey("TestPk"), null);
+        diagnostics = itemResponse.getCosmosResponseDiagnostics().toString();
+        assertThat(diagnostics).doesNotContain("\"serializationType\":\"PartitionKeyFetchSerialization\"");
+        assertThat(diagnostics).doesNotContain("\"serializationType\":\"ItemSerialization\"");
+
+        //checking item serialization
+        TestItem readTestItem = itemResponse.getResource();
+        diagnostics = itemResponse.getCosmosResponseDiagnostics().toString();
+        assertThat(diagnostics).contains("\"serializationType\":\"ItemSerialization\"");
+
+        CosmosItemResponse<CosmosItemProperties> readItemResponse = this.container.readItem(testItem.id, new PartitionKey(testItem.mypk), null, CosmosItemProperties.class);
+        CosmosItemProperties properties = readItemResponse.getResource();
+        diagnostics = readItemResponse.getCosmosResponseDiagnostics().toString();
+        assertThat(diagnostics).contains("\"serializationType\":\"ItemSerialization\"");
+    }
+
     private CosmosItemProperties getCosmosItemProperties() {
         CosmosItemProperties cosmosItemProperties = new CosmosItemProperties();
         cosmosItemProperties.setId(UUID.randomUUID().toString());
@@ -210,5 +249,13 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"eventName\":\"transitTime\"");
         assertThat(diagnostics).contains("\"eventName\":\"received\"");
         assertThat(diagnostics).contains("\"eventName\":\"completed\"");
+    }
+
+    public static class TestItem {
+        public String id;
+        public String mypk;
+
+        public TestItem() {
+        }
     }
 }

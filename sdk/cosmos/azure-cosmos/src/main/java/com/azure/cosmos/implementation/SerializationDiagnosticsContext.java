@@ -83,7 +83,7 @@ public class SerializationDiagnosticsContext {
     }
     public enum  SerializationType{
         DatabaseSerialization,
-        CollectionSerialization,
+        ContainerSerialization,
         ItemSerialization,
         PartitionKeyFetchSerialization
     }
