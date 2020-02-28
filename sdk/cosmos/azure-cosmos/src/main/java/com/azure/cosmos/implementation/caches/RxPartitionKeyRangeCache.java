@@ -225,7 +225,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
             FeedOptions feedOptions = new FeedOptions();
             if (properties != null) {
-                feedOptions.properties(properties);
+                feedOptions.setProperties(properties);
             }
             ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
             return client.readPartitionKeyRanges(coll.getSelfLink(), feedOptions)

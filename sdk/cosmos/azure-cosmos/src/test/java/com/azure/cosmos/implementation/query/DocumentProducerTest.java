@@ -63,7 +63,7 @@ import static org.mockito.Mockito.times;
 
 public class DocumentProducerTest {
     private final static Logger logger = LoggerFactory.getLogger(DocumentProducerTest.class);
-    private static final long TIMEOUT = 20000;
+    private static final long TIMEOUT = 30000;
     private final static String OrderByPayloadFieldName = "payload";
     private final static String OrderByItemsFieldName = "orderByItems";
 
@@ -439,6 +439,7 @@ public class DocumentProducerTest {
     private CosmosClientException mockThrottlingException(long retriesAfter) {
         CosmosClientException throttleException = mock(CosmosClientException.class);
         doReturn(429).when(throttleException).getStatusCode();
+        doReturn(new StackTraceElement[0]).when(throttleException).getStackTrace();
         doReturn(retriesAfter).when(throttleException).getRetryAfterInMilliseconds();
         return throttleException;
     }

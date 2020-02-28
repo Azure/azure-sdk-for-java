@@ -12,13 +12,13 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.MetaDataDiagnosticsContext;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -31,6 +31,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Flux;
 
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -57,6 +58,14 @@ public class BridgeInternal {
 
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
         return Document.FromObject(document, mapper);
+    }
+
+    public static ByteBuffer serializeJsonToByteBuffer(Document document, ObjectMapper mapper) {
+        return document.serializeJsonToByteBuffer();
+    }
+
+    public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
+        return CosmosItemProperties.serializeJsonToByteBuffer(document, mapper);
     }
 
     public static void monitorTelemetry(MeterRegistry registry) {
@@ -142,12 +151,12 @@ public class BridgeInternal {
 
         Map<String, String> headers = new HashMap<>();
 
-        if (options.maxItemCount() != null) {
-            headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, options.maxItemCount().toString());
+        if (options.getMaxItemCount() != null) {
+            headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, options.getMaxItemCount().toString());
         }
 
-        if (options.requestContinuation() != null) {
-            headers.put(HttpConstants.HttpHeaders.CONTINUATION, options.requestContinuation());
+        if (options.getRequestContinuation() != null) {
+            headers.put(HttpConstants.HttpHeaders.CONTINUATION, options.getRequestContinuation());
         }
 
         if (options != null) {
@@ -173,9 +182,9 @@ public class BridgeInternal {
                     Strings.toString(options.setResponseContinuationTokenLimitInKb()));
             }
 
-            if (options.populateQueryMetrics()) {
+            if (options.isPopulateQueryMetrics()) {
                 headers.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS,
-                    String.valueOf(options.populateQueryMetrics()));
+                    String.valueOf(options.isPopulateQueryMetrics()));
             }
         }
 
@@ -481,20 +490,20 @@ public class BridgeInternal {
     }
 
     public static void setFeedOptionsContinuationTokenAndMaxItemCount(FeedOptions feedOptions, String continuationToken, Integer maxItemCount) {
-        feedOptions.requestContinuation(continuationToken);
-        feedOptions.maxItemCount(maxItemCount);
+        feedOptions.setRequestContinuation(continuationToken);
+        feedOptions.setMaxItemCount(maxItemCount);
     }
 
     public static void setFeedOptionsContinuationToken(FeedOptions feedOptions, String continuationToken) {
-        feedOptions.requestContinuation(continuationToken);
+        feedOptions.setRequestContinuation(continuationToken);
     }
 
     public static void setFeedOptionsMaxItemCount(FeedOptions feedOptions, Integer maxItemCount) {
-        feedOptions.maxItemCount(maxItemCount);
+        feedOptions.setMaxItemCount(maxItemCount);
     }
 
-    public static <T> CosmosContinuablePagedFlux<T> createCosmosContinuablePagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
-        return new CosmosContinuablePagedFlux<>(pagedFluxOptionsFluxFunction);
+    public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
+        return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction);
     }
 
     public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {

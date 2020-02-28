@@ -25,7 +25,7 @@ import java.util.List;
  * Cognitive Search Synchronous Client to query an index and upload, merge, or delete documents
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class)
-public class SearchIndexClient {
+public final class SearchIndexClient {
 
     private final SearchIndexAsyncClient asyncClient;
 
@@ -231,8 +231,8 @@ public class SearchIndexClient {
      *
      * @return The version of the Search service the client is using.
      */
-    public SearchServiceVersion getApiVersion() {
-        return asyncClient.getApiVersion();
+    public SearchServiceVersion getServiceVersion() {
+        return asyncClient.getServiceVersion();
     }
 
     /**

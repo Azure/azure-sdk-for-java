@@ -15,6 +15,7 @@ import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.TestConfigurations;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -103,7 +104,7 @@ public class ConflictAPITest extends DocumentClientTest {
         // read all conflicts
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<FeedResponse<Conflict>> conflictReadFeedObservable = client
                 .readConflicts(getCollectionLink(), options);
@@ -133,7 +134,7 @@ public class ConflictAPITest extends DocumentClientTest {
     public void transformObservableToCompletableFuture() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<FeedResponse<Conflict>> conflictReadFeedObservable = client
                 .readConflicts(getCollectionLink(), options);

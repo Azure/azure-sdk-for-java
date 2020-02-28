@@ -57,7 +57,7 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
                     this.clientCollectionCache.refresh(
                         BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
                         collectionLink,
-                        this.feedOptions.properties());
+                        this.feedOptions.getProperties());
                 } else {
                     this.clientCollectionCache.refresh(
                         BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),

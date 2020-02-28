@@ -15,14 +15,14 @@ import java.util.concurrent.Callable;
 
 public class CosmosAsyncItemResponse<T> {
     private final Class<T> itemClassType;
-    private final String responseBodyString;
+    private final byte[] responseBodyAsByteArray;
     private T item;
     private final ResourceResponse<Document> resourceResponse;
     private CosmosItemProperties props;
 
     CosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> klass) {
         this.itemClassType = klass;
-        this.responseBodyString = response.getBodyAsString();
+        this.responseBodyAsByteArray = response.getBodyAsByteArray();
         this.resourceResponse = response;
     }
 
@@ -47,9 +47,9 @@ public class CosmosAsyncItemResponse<T> {
 
         if (item == null) {
             synchronized (this) {
-                if (item == null && !StringUtils.isEmpty(responseBodyString)) {
+                if (item == null && !Utils.isEmpty(responseBodyAsByteArray)) {
                     Callable<T> createTypedItemFunction = () -> {
-                        return Utils.parse(responseBodyString, itemClassType);
+                        return Utils.parse(responseBodyAsByteArray, itemClassType);
                     };
                     item = serializationDiagnosticsContext.getResource(createTypedItemFunction, SerializationDiagnosticsContext.SerializationType.ItemSerialization);
                 }
@@ -70,10 +70,10 @@ public class CosmosAsyncItemResponse<T> {
 
     private void ensureCosmosItemPropertiesInitialized() {
         synchronized (this) {
-            if (StringUtils.isEmpty(responseBodyString)) {
+            if (Utils.isEmpty(responseBodyAsByteArray)) {
                 props = null;
             } else {
-                props = new CosmosItemProperties(responseBodyString);
+                props = new CosmosItemProperties(responseBodyAsByteArray);
             }
 
         }

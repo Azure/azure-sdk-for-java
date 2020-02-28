@@ -64,7 +64,7 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
                     // AuthorizationTokenType.PrimaryMasterKey)
                     );
             if (this.feedOptions != null) {
-                request.properties = this.feedOptions.properties();
+                request.properties = this.feedOptions.getProperties();
             }
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(
                 BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),

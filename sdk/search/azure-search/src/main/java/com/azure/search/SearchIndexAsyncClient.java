@@ -46,7 +46,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Cognitive Search Asynchronous Client to query an index and upload, merge, or delete documents
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
-public class SearchIndexAsyncClient {
+public final class SearchIndexAsyncClient {
 
     /*
      * Representation of the Multi-Status HTTP response code.
@@ -61,7 +61,7 @@ public class SearchIndexAsyncClient {
     /**
      * Search REST API Version
      */
-    private final SearchServiceVersion apiVersion;
+    private final SearchServiceVersion searchServiceVersion;
 
     /**
      * The endpoint for the Azure Cognitive Search service.
@@ -91,31 +91,20 @@ public class SearchIndexAsyncClient {
     /**
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
      */
-    SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion apiVersion,
+    SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion searchServiceVersion,
         HttpPipeline httpPipeline) {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
-
-        if (CoreUtils.isNullOrEmpty(indexName)) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid indexName"));
-        }
-        if (apiVersion == null) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid apiVersion"));
-        }
-        if (httpPipeline == null) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid httpPipeline"));
-        }
-
         this.endpoint = endpoint;
         this.indexName = indexName;
-        this.apiVersion = apiVersion;
+        this.searchServiceVersion = searchServiceVersion;
         this.httpPipeline = httpPipeline;
 
         restClient = new SearchIndexRestClientBuilder()
             .searchServiceName(parts.serviceName)
             .indexName(indexName)
             .searchDnsSuffix(parts.dnsSuffix)
-            .apiVersion(apiVersion.getVersion())
+            .apiVersion(searchServiceVersion.getVersion())
             .pipeline(httpPipeline)
             .serializer(SERIALIZER)
             .build();
@@ -185,11 +174,11 @@ public class SearchIndexAsyncClient {
      * Merges a collection of documents with existing documents in the target index.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
-     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended
-     * that you always declare primitive-typed properties with their class equivalents (for example, an integer
-     * property should be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
+     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
+     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
+     * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged
      * @return document index result
@@ -209,11 +198,11 @@ public class SearchIndexAsyncClient {
      * Merges a collection of documents with existing documents in the target index.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
-     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended
-     * that you always declare primitive-typed properties with their class equivalents (for example, an integer
-     * property should be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
+     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
+     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
+     * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged
      * @return response containing the document index result.
@@ -242,11 +231,11 @@ public class SearchIndexAsyncClient {
      * not exist, it behaves like upload with a new document.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
-     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended
-     * that you always declare primitive-typed properties with their class equivalents (for example, an integer
-     * property should be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
+     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
+     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
+     * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
@@ -267,11 +256,11 @@ public class SearchIndexAsyncClient {
      * not exist, it behaves like upload with a new document.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
-     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended
-     * that you always declare primitive-typed properties with their class equivalents (for example, an integer
-     * property should be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
+     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
+     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
+     * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
@@ -342,8 +331,8 @@ public class SearchIndexAsyncClient {
      *
      * @return The version of the Search service the client is using.
      */
-    public SearchServiceVersion getApiVersion() {
-        return this.apiVersion;
+    public SearchServiceVersion getServiceVersion() {
+        return this.searchServiceVersion;
     }
 
     /**

@@ -4,18 +4,16 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabaseProperties;
 import com.azure.cosmos.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -41,7 +39,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
 
-        CosmosContinuablePagedFlux<CosmosDatabaseProperties> feedObservable = client.readAllDatabases(options);
+        CosmosPagedFlux<CosmosDatabaseProperties> feedObservable = client.readAllDatabases(options);
 
         int expectedPageSize = (allDatabases.size() + maxItemCount - 1) / maxItemCount;
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()

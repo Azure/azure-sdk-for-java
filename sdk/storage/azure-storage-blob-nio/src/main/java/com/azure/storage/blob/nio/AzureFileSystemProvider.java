@@ -5,16 +5,24 @@ package com.azure.storage.blob.nio;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.nio.implementation.util.Utility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.AccessMode;
 import java.nio.file.CopyOption;
 import java.nio.file.DirectoryStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileStore;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystemAlreadyExistsException;
@@ -26,6 +34,10 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.spi.FileSystemProvider;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -97,7 +109,16 @@ import java.util.concurrent.ConcurrentMap;
 public final class AzureFileSystemProvider extends FileSystemProvider {
     private final ClientLogger logger = new ClientLogger(AzureFileSystemProvider.class);
 
+    public static final String CONTENT_TYPE = "Content-Type";
+    public static final String CONTENT_DISPOSITION = "Content-Disposition";
+    public static final String CONTENT_LANGUAGE = "Content-Language";
+    public static final String CONTENT_ENCODING = "Content-Encoding";
+    public static final String CONTENT_MD5 = "Content-MD5";
+    public static final String CACHE_CONTROL = "Cache-Control";
+
     private static final String ACCOUNT_QUERY_KEY = "account";
+
+    static final String DIR_METADATA_MARKER = "is_hdi_folder";
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
@@ -181,11 +202,118 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
+     * The existence of a directory in the {@code AzureFileSystem} is defined on two levels. <i>Weak existence</i> is
+     * defined by the presence of a non-zero number of blobs prefixed with the directory's path. This concept is also
+     * known as a  <i>virtual directory</i> and enables the file system to work with containers that were pre-loaded
+     * with data by another source but need to be accessed by this file system. <i>Strong existence</i> is defined as
+     * the presence of an actual storage resource at the given path, which in the case of directories, is a zero-length
+     * blob whose name is the directory path with a particular metadata field indicating the blob's status as a
+     * directory. This is also known as a <i>concrete directory</i>. Directories created by this file system will
+     * strongly exist. Operations targeting directories themselves as the object (e.g. setting properties) will target
+     * marker blobs underlying concrete directories. Other operations (e.g. listing) will operate on the blob-name
+     * prefix.
+     * <p>
+     * This method fulfills the nio contract of: "The check for the existence of the file and the creation of the
+     * directory if it does not exist are a single operation that is atomic with respect to all other filesystem
+     * activities that might affect the directory." More specifically, this method will atomically check for <i>strong
+     * existence</i> of another file or directory at the given path and fail if one is present. On the other hand, we
+     * only check for <i>weak existence</i> of the parent to determine if the given path is valid. Additionally, the
+     * action of checking whether the parent exists, is <i>not</i> atomic with the creation of the directory. Note that
+     * while it is possible that the parent may be deleted between when the parent is determined to exist and the
+     * creation of the child, the creation of the child will always ensure the existence of a virtual parent, so the
+     * child will never be left floating and unreachable. The different checks on parent and child is due to limitations
+     * in the Storage service API.
+     * <p>
+     * There may be some unintuitive behavior when working with directories in this file system, particularly virtual
+     * directories(usually those not created by this file system). A virtual directory will disappear as soon as all its
+     * children have been deleted. Furthermore, if a directory with the given path weakly exists at the time of calling
+     * this method, this method will still return success and create a concrete directory at the target location.
+     * In other words, it is possible to "double create" a directory if it first weakly exists and then is strongly
+     * created. This is both because it is impossible to atomically check if a virtual directory exists while creating a
+     * concrete directory and because such behavior will have minimal side effects--no files will be overwritten and the
+     * directory will still be available for writing as intended, though it may not be empty.
+     * <p>
+     * This method will attempt to extract standard HTTP content headers from the list of file attributes to set them
+     * as blob headers. All other attributes will be set as blob metadata. The value of every attribute will be
+     * converted to a {@code String} with the exception of the Content-MD5 attribute which expects a {@code byte[]}.
+     * When extracting the content headers, the following strings will be used for comparison (constants for these
+     * values can be found on this type):
+     * <ul>
+     *     <li>{@code Content-Type}</li>
+     *     <li>{@code Content-Disposition}</li>
+     *     <li>{@code Content-Language}</li>
+     *     <li>{@code Content-Encoding}</li>
+     *     <li>{@code Content-MD5}</li>
+     *     <li>{@code Cache-Control}</li>
+     * </ul>
+     * Note that these properties also have a particular semantic in that if one is specified, all are updated. In other
+     * words, if any of the above is set, all those that are not set will be cleared. See the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a> for more
+     * information.
+     *
      * {@inheritDoc}
      */
     @Override
     public void createDirectory(Path path, FileAttribute<?>... fileAttributes) throws IOException {
+        if (!(path instanceof AzurePath)) {
+            throw Utility.logError(logger, new IllegalArgumentException("This provider cannot operate on subtypes of "
+                + "Path other than AzurePath"));
+        }
+        fileAttributes = fileAttributes == null ? new FileAttribute<?>[0] : fileAttributes;
 
+        // Get the destination for the directory and it's parent container.
+        BlobClient client = ((AzurePath) path).toBlobClient();
+        BlobContainerClient containerClient = ((AzureFileSystem) path.getFileSystem()).getBlobServiceClient()
+            .getBlobContainerClient(client.getContainerName());
+
+        // Determine the path for the parent directory blob. This is the parent path without the root.
+        Path root = path.getRoot();
+        if (root != null && root.equals(path)) {
+            throw Utility.logError(logger, new IOException("Creating a root directory is not supported."));
+        }
+        Path prefix = root == null ? path.getParent() : root.relativize(path).getParent();
+
+        // Check if parent exists. If it does, atomically check if a file already exists and create a new dir if not.
+        if (checkParentDirectoryExists(containerClient, prefix)) {
+            try {
+                List<FileAttribute<?>> attributeList = new ArrayList<>(Arrays.asList(fileAttributes));
+                BlobHttpHeaders headers = Utility.extractHttpHeaders(attributeList, logger);
+                Map<String, String> metadata = Utility.convertAttributesToMetadata(attributeList);
+                metadata = prepareMetadataForDirectory(metadata);
+                client.getAppendBlobClient().createWithResponse(headers, metadata,
+                    new BlobRequestConditions().setIfNoneMatch("*"), null, null);
+            } catch (BlobStorageException e) {
+                if (e.getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
+                    throw Utility.logError(logger, new FileAlreadyExistsException(path.toString()));
+                } else {
+                    throw Utility.logError(logger, new IOException("An error occured when creating the directory", e));
+                }
+            }
+        } else {
+            throw Utility.logError(logger, new IOException("Parent directory does not exist for path: "
+                + path.toString()));
+        }
+    }
+
+    /**
+     * If the prefix is null, that means we are in the root dir for the container, which always exists. If there is a
+     * blob with this prefix, it means at least the directory exists. Note that blob names that match the prefix
+     * exactly are returned in listing operations.
+     *
+     * We do not check for the actual marker blob as parents need only weakly exist.
+     */
+    boolean checkParentDirectoryExists(BlobContainerClient containerClient, Path prefix) {
+        return prefix == null
+            || containerClient.listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR,
+            new ListBlobsOptions().setPrefix(prefix.toString()).setMaxResultsPerPage(1), null).iterator().hasNext();
+    }
+
+    Map<String, String> prepareMetadataForDirectory(Map<String, String> metadata) {
+        if (metadata == null) {
+            metadata = new HashMap<>();
+        }
+        metadata.put(DIR_METADATA_MARKER, "true");
+        return metadata;
     }
 
     /**

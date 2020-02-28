@@ -54,6 +54,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -73,7 +74,7 @@ import static com.azure.cosmos.BridgeInternal.toDatabaseAccount;
 import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
 import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
-import static com.azure.cosmos.implementation.CosmosItemProperties.toJsonString;
+import static com.azure.cosmos.BridgeInternal.serializeJsonToByteBuffer;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -251,29 +252,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private void initializeGatewayConfigurationReader() {
-        String resourceToken;
-        if(this.tokenResolver != null) {
-            resourceToken = this.tokenResolver.getAuthorizationToken(RequestVerb.GET, "", CosmosResourceType.System, null);
-        } else if(!this.hasAuthKeyResourceToken && this.authorizationTokenProvider == null) {
-            resourceToken = this.firstResourceTokenFromPermissionFeed;
-        } else {
-            assert  this.masterKeyOrResourceToken != null || this.cosmosKeyCredential != null;
-            resourceToken = this.masterKeyOrResourceToken;
-        }
-
-        this.gatewayConfigurationReader = new GatewayServiceConfigurationReader(this.serviceEndpoint,
-                this.hasAuthKeyResourceToken,
-                resourceToken,
-                this.connectionPolicy,
-                this.authorizationTokenProvider,
-                this.reactorHttpClient);
-
-        DatabaseAccount databaseAccount = this.gatewayConfigurationReader.initializeReaderAsync().block();
+        this.gatewayConfigurationReader = new GatewayServiceConfigurationReader(this.globalEndpointManager);
+        DatabaseAccount databaseAccount = this.globalEndpointManager.getLatestDatabaseAccount();
+        //Database account should not be null here,
+        // this.globalEndpointManager.init() must have been already called
+        // hence asserting it
+        assert(databaseAccount != null);
         this.useMultipleWriteLocations = this.connectionPolicy.getUsingMultipleWriteLocations() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
 
         // TODO: add support for openAsync
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
-        this.globalEndpointManager.refreshLocationAsync(databaseAccount, false).block();
     }
 
     public void init() {
@@ -895,32 +883,32 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request,
-                                                                      String contentAsString,
+                                                                      ByteBuffer contentAsByteBuffer,
                                                                       Document document,
                                                                       RequestOptions options) {
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
         return collectionObs
                 .map(collectionValueHolder -> {
-                    addPartitionKeyInformation(request, contentAsString, document, options, collectionValueHolder.v);
+                    addPartitionKeyInformation(request, contentAsByteBuffer, document, options, collectionValueHolder.v);
                     return request;
                 });
     }
 
     private Mono<RxDocumentServiceRequest> addPartitionKeyInformation(RxDocumentServiceRequest request,
-                                                                      String contentAsString,
+                                                                      ByteBuffer contentAsByteBuffer,
                                                                       Object document,
                                                                       RequestOptions options,
                                                                       Mono<Utils.ValueHolder<DocumentCollection>> collectionObs) {
 
         return collectionObs.map(collectionValueHolder -> {
-            addPartitionKeyInformation(request, contentAsString, document, options, collectionValueHolder.v);
+            addPartitionKeyInformation(request, contentAsByteBuffer, document, options, collectionValueHolder.v);
             return request;
         });
     }
 
     private void addPartitionKeyInformation(RxDocumentServiceRequest request,
-                                            String contentAsString,
+                                            ByteBuffer contentAsByteBuffer,
                                             Object objectDoc, RequestOptions options,
                                             DocumentCollection collection) {
         PartitionKeyDefinition partitionKeyDefinition = collection.getPartitionKey();
@@ -934,20 +922,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // For backward compatibility, if collection doesn't have partition key defined, we assume all documents
             // have empty value for it and user doesn't need to specify it explicitly.
             partitionKeyInternal = PartitionKeyInternal.getEmpty();
-        } else if (contentAsString != null) {
+        } else if (contentAsByteBuffer != null) {
             Callable<PartitionKeyInternal> extractPartitionKeyCallable = () -> {
                 CosmosItemProperties cosmosItemProperties;
                 if (objectDoc instanceof CosmosItemProperties) {
                     cosmosItemProperties = (CosmosItemProperties) objectDoc;
                 } else {
-                    cosmosItemProperties = new CosmosItemProperties(contentAsString);
+                    contentAsByteBuffer.rewind();
+                    cosmosItemProperties = new CosmosItemProperties(contentAsByteBuffer);
                 }
 
                 return extractPartitionKeyValueFromDocument(cosmosItemProperties, partitionKeyDefinition);
             };
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
             partitionKeyInternal = serializationDiagnosticsContext.getResource(extractPartitionKeyCallable, SerializationDiagnosticsContext.SerializationType.PartitionKeyFetchSerialization);
-
         } else {
             throw new UnsupportedOperationException("PartitionKey value must be supplied for this operation.");
         }
@@ -993,7 +981,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("document");
         }
 
-        String content = toJsonString(document, mapper);
+        ByteBuffer content = serializeJsonToByteBuffer(document, mapper);
 
         String path = Utils.joinPath(documentCollectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         Map<String, String> requestHeaders = this.getRequestHeaders(options);
@@ -1253,7 +1241,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         final String path = Utils.joinPath(documentLink, null);
         final Map<String, String> requestHeaders = getRequestHeaders(options);
 
-        String content = toJsonString(document, mapper);
+        ByteBuffer content = serializeJsonToByteBuffer(document, mapper);
 
         final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
             ResourceType.Document, path, requestHeaders, options, content);
@@ -2853,11 +2841,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options = new FeedOptions();
         }
 
-        int maxPageSize = options.maxItemCount() != null ? options.maxItemCount() : -1;
+        int maxPageSize = options.getMaxItemCount() != null ? options.getMaxItemCount() : -1;
 
         final FeedOptions finalFeedOptions = options;
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setPartitionKey(options.partitionKey());
+        requestOptions.setPartitionKey(options.getPartitionKey());
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();
             if (continuationToken != null) {
@@ -2887,7 +2875,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options = new FeedOptions();
         }
 
-        int maxPageSize = options.maxItemCount() != null ? options.maxItemCount() : -1;
+        int maxPageSize = options.getMaxItemCount() != null ? options.getMaxItemCount() : -1;
         final FeedOptions finalFeedOptions = options;
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();

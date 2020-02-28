@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +21,9 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -68,6 +71,14 @@ public class JsonSerializable {
      */
     JsonSerializable(ObjectNode objectNode) {
         this.propertyBag = objectNode;
+    }
+
+    protected JsonSerializable(ByteBuffer byteBuffer) {
+        this.propertyBag = fromJson(byteBuffer);
+    }
+
+    protected JsonSerializable(byte[] bytes) {
+        this.propertyBag = fromJson(bytes);
     }
 
     private static void checkForValidPOJO(Class<?> c) {
@@ -126,7 +137,7 @@ public class JsonSerializable {
     }
 
     /**
-     * Returns the propertybag(JSONObject) in a hashMap
+     * Returns the propertybag(JsonNode) in a hashMap
      *
      * @return the HashMap.
      */
@@ -207,7 +218,7 @@ public class JsonSerializable {
                 targetArray.add(castedValue.propertyBag != null ? castedValue.propertyBag
                                     : this.getMapper().createObjectNode());
             } else {
-                // POJO, JSONObject, NUMBER (includes Int, Float, Double etc),
+                // POJO, JsonNode, NUMBER (includes Int, Float, Double etc),
                 // Boolean, and STRING.
                 targetArray.add(this.getMapper().valueToTree(childValue));
             }
@@ -446,10 +457,10 @@ public class JsonSerializable {
     }
 
     /**
-     * Gets a JSONObject.
+     * Gets a ObjectNode.
      *
      * @param propertyName the property to get.
-     * @return the JSONObject.
+     * @return the ObjectNode.
      */
     ObjectNode getObject(String propertyName) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
@@ -460,10 +471,10 @@ public class JsonSerializable {
     }
 
     /**
-     * Gets a JSONObject collection.
+     * Gets a ObjectNode collection.
      *
      * @param propertyName the property to get.
-     * @return the JSONObject collection.
+     * @return the ObjectNode collection.
      */
     Collection<ObjectNode> getCollection(String propertyName) {
         Collection<ObjectNode> result = null;
@@ -513,6 +524,15 @@ public class JsonSerializable {
         return null;
     }
 
+    private ObjectNode fromJson(byte[] bytes) {
+        try {
+            return (ObjectNode) getMapper().readTree(bytes);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(
+                String.format("Unable to parse JSON %s", Arrays.toString(bytes)), e);
+        }
+    }
+
     private ObjectNode fromJson(String json) {
         try {
             return (ObjectNode) getMapper().readTree(json);
@@ -520,6 +540,18 @@ public class JsonSerializable {
             throw new IllegalArgumentException(
                 String.format("Unable to parse JSON %s", json), e);
         }
+    }
+
+    private ObjectNode fromJson(ByteBuffer json) {
+        try {
+            return (ObjectNode) getMapper().readTree(new ByteBufferBackedInputStream(json));
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Unable to parse JSON from ByteBuffer", e);
+        }
+    }
+
+    public ByteBuffer serializeJsonToByteBuffer() {
+        return Utils.serializeJsonToByteBuffer(getMapper(), propertyBag);
     }
 
     private String toJson(Object object) {
@@ -539,10 +571,10 @@ public class JsonSerializable {
     }
 
     /**
-     * Converts to an Object (only POJOs and JSONObject are supported).
+     * Converts to an Object (only POJOs and JsonNode are supported).
      *
      * @param <T> the type of the object.
-     * @param c the class of the object, either a POJO class or JSONObject. If c is a POJO class, it must be a member
+     * @param c the class of the object, either a POJO class or JsonNode. If c is a POJO class, it must be a member
      * (and not an anonymous or local) and a static one.
      * @return the POJO.
      * @throws IllegalArgumentException thrown if an error occurs
@@ -566,11 +598,11 @@ public class JsonSerializable {
             }
         }
         if (JsonNode.class.isAssignableFrom(c) || ObjectNode.class.isAssignableFrom(c)) {
-            // JSONObject
+            // JsonNode
             if( JsonNode.class != c) {
                 if (ObjectNode.class != c) {
                     throw new IllegalArgumentException(
-                        "We support JSONObject but not its sub-classes.");
+                        "We support JsonNode but not its sub-classes.");
                 }
             }
             return c.cast(this.propertyBag);

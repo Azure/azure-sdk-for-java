@@ -217,7 +217,7 @@ public final class FeedOptions {
      *
      * @return the max number of items.
      */
-    public Integer maxItemCount() {
+    public Integer getMaxItemCount() {
         return this.maxItemCount;
     }
 
@@ -228,7 +228,7 @@ public final class FeedOptions {
      * @param maxItemCount the max number of items.
      * @return the FeedOptionsBase.
      */
-    public FeedOptions maxItemCount(Integer maxItemCount) {
+    public FeedOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
     }
@@ -238,7 +238,7 @@ public final class FeedOptions {
      *
      * @return the request continuation.
      */
-    public String requestContinuation() {
+    public String getRequestContinuation() {
         return this.requestContinuation;
     }
 
@@ -248,7 +248,7 @@ public final class FeedOptions {
      * @param requestContinuation the request continuation.
      * @return the FeedOptionsBase.
      */
-    public FeedOptions requestContinuation(String requestContinuation) {
+    public FeedOptions setRequestContinuation(String requestContinuation) {
         this.requestContinuation = requestContinuation;
         return this;
     }
@@ -259,7 +259,7 @@ public final class FeedOptions {
      *
      * @return the partition key.
      */
-    public PartitionKey partitionKey() {
+    public PartitionKey getPartitionKey() {
         return this.partitionkey;
     }
 
@@ -270,7 +270,7 @@ public final class FeedOptions {
      * @param partitionkey the partition key value.
      * @return the FeedOptionsBase.
      */
-    public FeedOptions partitionKey(PartitionKey partitionkey) {
+    public FeedOptions setPartitionKey(PartitionKey partitionkey) {
         this.partitionkey = partitionkey;
         return this;
     }
@@ -280,7 +280,7 @@ public final class FeedOptions {
      *
      * @return whether to enable populate query metrics
      */
-    public boolean populateQueryMetrics() {
+    public boolean isPopulateQueryMetrics() {
         return populateQueryMetrics;
     }
 
@@ -290,7 +290,7 @@ public final class FeedOptions {
      * @param populateQueryMetrics whether to enable or disable query metrics
      * @return the FeedOptionsBase.
      */
-    public FeedOptions populateQueryMetrics(boolean populateQueryMetrics) {
+    public FeedOptions setPopulateQueryMetrics(boolean populateQueryMetrics) {
         this.populateQueryMetrics = populateQueryMetrics;
         return this;
     }
@@ -300,7 +300,7 @@ public final class FeedOptions {
      *
      * @return Map of request options properties
      */
-    public Map<String, Object> properties() {
+    public Map<String, Object> getProperties() {
         return properties;
     }
 
@@ -310,7 +310,7 @@ public final class FeedOptions {
      * @param properties the properties.
      * @return the FeedOptionsBase.
      */
-    public FeedOptions properties(Map<String, Object> properties) {
+    public FeedOptions setProperties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
     }
@@ -320,7 +320,7 @@ public final class FeedOptions {
      *
      * @return whether to enable allow empty pages or not
      */
-    public boolean getAllowEmptyPages() {
+    public boolean isAllowEmptyPages() {
         return allowEmptyPages;
     }
 
