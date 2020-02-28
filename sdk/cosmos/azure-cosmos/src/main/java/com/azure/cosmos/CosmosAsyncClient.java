@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Exceptions;

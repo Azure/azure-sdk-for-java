@@ -3,7 +3,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.Permission;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class CosmosPermissionProperties extends Resource {
 
-    public static List<CosmosPermissionProperties> getFromV2Results(List<Permission> results) {
+    static List<CosmosPermissionProperties> getFromV2Results(List<Permission> results) {
         return results.stream().map(permission -> new CosmosPermissionProperties(permission.toJson()))
                    .collect(Collectors.toList());
     }

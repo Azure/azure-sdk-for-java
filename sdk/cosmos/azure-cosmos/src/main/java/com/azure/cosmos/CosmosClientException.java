@@ -277,7 +277,7 @@ public class CosmosClientException extends RuntimeException {
         return null;
     }
 
-    public void setResourceAddress(String resourceAddress) {
+    void setResourceAddress(String resourceAddress) {
         this.resourceAddress = resourceAddress;
     }
 }

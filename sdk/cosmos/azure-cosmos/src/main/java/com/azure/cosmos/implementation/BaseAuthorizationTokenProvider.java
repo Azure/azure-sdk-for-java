@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
@@ -245,7 +246,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
     }
 
     private Mac getMacInstance() {
-        int masterKeyLatestHashCode = this.cosmosKeyCredential.getKeyHashCode();
+        int masterKeyLatestHashCode = BridgeInternal.getHashCode(this.cosmosKeyCredential);
 
         //  Master key has changed, or this is the first time we are getting mac instance
         if (masterKeyLatestHashCode != this.masterKeyHashCode) {

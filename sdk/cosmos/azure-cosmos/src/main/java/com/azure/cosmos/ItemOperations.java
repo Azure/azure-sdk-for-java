@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Note: although this class is public it is not part of our public API and may change in future.
  */
-public class ItemOperations {
+final public class ItemOperations {
 
     /**
      * Note: although this method is public, it is not part of public API and may change in future.
@@ -59,4 +59,6 @@ public class ItemOperations {
             .getDocClientWrapper()
             .readMany(itemKeyList, container.getLink(), options, classType);
     }
+
+    private ItemOperations() {}
 }

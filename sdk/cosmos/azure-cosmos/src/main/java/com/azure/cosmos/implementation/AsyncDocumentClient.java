@@ -10,6 +10,7 @@ import com.azure.cosmos.DatabaseAccount;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.Permission;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.TokenResolver;
 import org.apache.commons.lang3.StringUtils;
