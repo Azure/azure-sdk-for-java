@@ -22,7 +22,7 @@ import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.SqlParameter;
 import com.azure.cosmos.SqlParameterList;
-import com.azure.cosmos.TokenResolver;
+import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -93,7 +93,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final Configs configs;
     private final boolean connectionSharingAcrossClientsEnabled;
     private CosmosKeyCredential cosmosKeyCredential;
-    private TokenResolver tokenResolver;
+    private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private SessionContainer sessionContainer;
     private String firstResourceTokenFromPermissionFeed = StringUtils.EMPTY;
     private RxClientCollectionCache collectionCache;
@@ -132,12 +132,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 ConnectionPolicy connectionPolicy,
                                 ConsistencyLevel consistencyLevel,
                                 Configs configs,
-                                TokenResolver tokenResolver,
+                                CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver,
                                 CosmosKeyCredential cosmosKeyCredential,
                                 boolean sessionCapturingOverride,
                                 boolean connectionSharingAcrossClientsEnabled) {
         this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled);
-        this.tokenResolver = tokenResolver;
+        this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
     private RxDocumentClientImpl(URI serviceEndpoint,
@@ -988,7 +988,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private void populateHeaders(RxDocumentServiceRequest request, RequestVerb httpMethod) {
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null
-            || this.tokenResolver != null || this.cosmosKeyCredential != null) {
+            || this.cosmosAuthorizationTokenResolver != null || this.cosmosKeyCredential != null) {
             String resourceName = request.getResourceAddress();
 
             String authorization = this.getUserAuthorizationToken(
@@ -1020,8 +1020,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                             AuthorizationTokenType tokenType,
                                             Map<String, Object> properties) {
 
-        if (this.tokenResolver != null) {
-            return this.tokenResolver.getAuthorizationToken(requestVerb, resourceName, this.resolveCosmosResourceType(resourceType),
+        if (this.cosmosAuthorizationTokenResolver != null) {
+            return this.cosmosAuthorizationTokenResolver.getAuthorizationToken(requestVerb, resourceName, this.resolveCosmosResourceType(resourceType),
                     properties != null ? Collections.unmodifiableMap(properties) : null);
         } else if (cosmosKeyCredential != null) {
             return this.authorizationTokenProvider.generateKeyAuthorizationSignature(requestVerb, resourceName,

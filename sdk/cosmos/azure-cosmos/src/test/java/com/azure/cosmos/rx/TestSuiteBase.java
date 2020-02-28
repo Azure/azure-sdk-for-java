@@ -1090,7 +1090,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             .setConsistencyLevel(builder.getConsistencyLevel())
             .setCosmosKeyCredential(builder.getCosmosKeyCredential())
             .setPermissions(builder.getPermissions())
-            .setTokenResolver(builder.getTokenResolver())
+            .setCosmosAuthorizationTokenResolver(builder.getCosmosAuthorizationTokenResolver())
             .setResourceToken(builder.getResourceToken());
 
         return copy;

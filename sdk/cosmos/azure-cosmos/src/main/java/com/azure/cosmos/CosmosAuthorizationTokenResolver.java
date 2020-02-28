@@ -14,7 +14,7 @@ import java.util.Map;
  * with different resource permissions.
  */
 @FunctionalInterface
-public interface TokenResolver {
+public interface CosmosAuthorizationTokenResolver {
 
     /**
      * This method will consume the request information and based on that it will generate the authorization token.

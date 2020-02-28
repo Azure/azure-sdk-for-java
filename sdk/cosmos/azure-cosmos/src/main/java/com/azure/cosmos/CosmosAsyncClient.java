@@ -35,7 +35,7 @@ public class CosmosAsyncClient implements Closeable {
     private final ConnectionPolicy connectionPolicy;
     private final ConsistencyLevel desiredConsistencyLevel;
     private final List<Permission> permissions;
-    private final TokenResolver tokenResolver;
+    private final CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private final CosmosKeyCredential cosmosKeyCredential;
     private final boolean sessionCapturingOverride;
     private final boolean enableTransportClientSharing;
@@ -47,7 +47,7 @@ public class CosmosAsyncClient implements Closeable {
         this.connectionPolicy = builder.getConnectionPolicy();
         this.desiredConsistencyLevel = builder.getConsistencyLevel();
         this.permissions = builder.getPermissions();
-        this.tokenResolver = builder.getTokenResolver();
+        this.cosmosAuthorizationTokenResolver = builder.getCosmosAuthorizationTokenResolver();
         this.cosmosKeyCredential = builder.getCosmosKeyCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionReuseAcrossClientsEnabled();
@@ -58,7 +58,7 @@ public class CosmosAsyncClient implements Closeable {
                                        .withConsistencyLevel(this.desiredConsistencyLevel)
                                        .withSessionCapturingOverride(this.sessionCapturingOverride)
                                        .withConfigs(this.configs)
-                                       .withTokenResolver(this.tokenResolver)
+                                       .withTokenResolver(this.cosmosAuthorizationTokenResolver)
                                        .withCosmosKeyCredential(this.cosmosKeyCredential)
                                        .withTransportClientSharing(this.enableTransportClientSharing)
                                        .build();
@@ -140,8 +140,8 @@ public class CosmosAsyncClient implements Closeable {
      *
      * @return the token resolver
      */
-    TokenResolver getTokenResolver() {
-        return tokenResolver;
+    CosmosAuthorizationTokenResolver getCosmosAuthorizationTokenResolver() {
+        return cosmosAuthorizationTokenResolver;
     }
 
     /**

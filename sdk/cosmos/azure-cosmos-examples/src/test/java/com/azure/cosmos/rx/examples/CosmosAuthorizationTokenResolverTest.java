@@ -19,7 +19,7 @@ import com.azure.cosmos.Permission;
 import com.azure.cosmos.PermissionMode;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
-import com.azure.cosmos.TokenResolver;
+import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.User;
 import com.google.common.collect.ImmutableMap;
@@ -40,7 +40,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 
-public class TokenResolverTest extends DocumentClientTest {
+public class CosmosAuthorizationTokenResolverTest extends DocumentClientTest {
 
     private final static int TIMEOUT = 180000;
     private final static String USER_ID = "userId";
@@ -266,7 +266,7 @@ public class TokenResolverTest extends DocumentClientTest {
      * For Reading DatabaseAccount on client initialization, use any User's token.
      * For subsequent Reads, get the correct read only token based on 'userId'.
      */
-    private TokenResolver getTokenResolverForRead() {
+    private CosmosAuthorizationTokenResolver getTokenResolverForRead() {
         return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
             if (resourceType.equals(CosmosResourceType.System)) {
                 //Choose any token it should have the read access on database account
@@ -284,7 +284,7 @@ public class TokenResolverTest extends DocumentClientTest {
      * For Reading DatabaseAccount on client initialization, use any User's token.
      * For subsequent Reads/Writes, get the correct read/write token based on 'userId'.
      */
-    private TokenResolver getTokenResolverForReadWrite() {
+    private CosmosAuthorizationTokenResolver getTokenResolverForReadWrite() {
         return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
             if (resourceType.equals(CosmosResourceType.System)) {
                 //Choose any token it should have the read access on database account
@@ -304,7 +304,7 @@ public class TokenResolverTest extends DocumentClientTest {
      * only if user is not block listed. In this scenario, the block listed user id
      * is compared to the current user's id, passed into the item for the request.
      */
-    private TokenResolver getTokenResolverWithBlockList(String blockListedUserId, String errorMessage) {
+    private CosmosAuthorizationTokenResolver getTokenResolverWithBlockList(String blockListedUserId, String errorMessage) {
         return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object> properties) -> {
             if (resourceType == CosmosResourceType.System) {
                 return userToReadWriteResourceTokenMap.values().iterator().next();
