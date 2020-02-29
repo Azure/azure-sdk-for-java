@@ -1,25 +1,79 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcazurepath1?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e529247e-50b2-48a6-92e8-73129e159bd6"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "x-ms-deny-encryption-scope-override" : "false",
+      "Last-Modified" : "Sat, 29 Feb 2020 01:18:44 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Sat, 29 Feb 2020 01:18:44 GMT",
+      "x-ms-has-legal-hold" : "false",
+      "x-ms-default-encryption-scope" : "$account-encryption-key",
+      "ETag" : "0x8D7BCB551C2D409",
+      "x-ms-has-immutability-policy" : "false",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "a932acf2-701e-011c-6d9e-ee8f5f000000",
+      "x-ms-client-request-id" : "e529247e-50b2-48a6-92e8-73129e159bd6"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcazurepath2?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "44e9f57d-e88b-4f9a-afd1-f27d34bd2bcc"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "x-ms-deny-encryption-scope-override" : "false",
+      "Last-Modified" : "Sat, 29 Feb 2020 01:18:44 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Sat, 29 Feb 2020 01:18:44 GMT",
+      "x-ms-has-legal-hold" : "false",
+      "x-ms-default-encryption-scope" : "$account-encryption-key",
+      "ETag" : "0x8D7BCB551D3A101",
+      "x-ms-has-immutability-policy" : "false",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "a932acf9-701e-011c-739e-ee8f5f000000",
+      "x-ms-client-request-id" : "44e9f57d-e88b-4f9a-afd1-f27d34bd2bcc"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
     "Uri" : "http://xclientdev2.blob.core.windows.net?prefix=jtcpathgetfilenamegetparentgetnamecount&comp=list",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "571f38b9-3997-48d8-874a-6858a33b253d"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "4fd2e2c5-447f-4de7-a403-b10ea1d0ea33"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "d065b522-101e-00a9-623b-d2c4f5000000",
+      "x-ms-request-id" : "a932acfe-701e-011c-789e-ee8f5f000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcpathgetfilenamegetparentgetnamecount</Prefix><Containers /><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 23 Jan 2020 22:19:21 GMT",
-      "x-ms-client-request-id" : "571f38b9-3997-48d8-874a-6858a33b253d",
+      "Date" : "Sat, 29 Feb 2020 01:18:44 GMT",
+      "x-ms-client-request-id" : "4fd2e2c5-447f-4de7-a403-b10ea1d0ea33",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcpathgetfilenamegetparentgetnamecount063066814e9673c" ]
+  "variables" : [ "jtcpathgetfilenamegetparentgetnamecount054637f408dadb2" ]
 }

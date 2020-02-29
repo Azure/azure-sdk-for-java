@@ -14,6 +14,7 @@ import java.nio.file.FileSystemAlreadyExistsException
 import java.nio.file.FileSystemNotFoundException
 import java.nio.file.StandardCopyOption
 import java.nio.file.attribute.FileAttribute
+import java.security.MessageDigest
 
 class AzureFileSystemProviderSpec extends APISpec {
     def config = new HashMap<String, String>()
@@ -126,7 +127,7 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
-        def rootName = getNonDefaultDir(fs)
+        def rootName = getNonDefaultRootDir(fs)
         def parent = getPathWithDepth(depth)
         def dirName = generateBlobName()
         def dirPathStr = parent + dirName
@@ -149,8 +150,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         fs.provider().createDirectory(dirPath)
 
         then:
-        dirClient.getPropertiesWithResponse(null, null, null).getValue().getMetadata()
-            .containsKey(AzureFileSystemProvider.DIR_METADATA_MARKER)
+        checkBlobIsDir(dirClient)
 
         where:
         depth | _
@@ -164,13 +164,13 @@ class AzureFileSystemProviderSpec extends APISpec {
         def fs = createFS(config)
         def fileName = generateBlobName()
         def containerClient = rootNameToContainerClient(getDefaultDir(fs))
-        AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
+        def blobClient = containerClient.getBlobClient(fileName)
 
         when: "Relative paths are resolved against the default directory"
         fs.provider().createDirectory(fs.getPath(fileName))
 
         then:
-        blobClient.getProperties().getMetadata().containsKey(AzureFileSystemProvider.DIR_METADATA_MARKER)
+        checkBlobIsDir(blobClient)
     }
 
     def "FileSystemProvider createDir file already exists"() {
@@ -193,10 +193,10 @@ class AzureFileSystemProviderSpec extends APISpec {
         def fs = createFS(config)
         def fileName = generateBlobName()
         def containerClient = rootNameToContainerClient(getDefaultDir(fs))
-        AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
+        def blobClient = containerClient.getBlobClient(fileName).getBlockBlobClient()
 
         when:
-        blobClient.createWithResponse(null, [(AzureFileSystemProvider.DIR_METADATA_MARKER): "true"], null, null, null)
+        putDirectoryBlob(blobClient)
         fs.provider().createDirectory(fs.getPath(fileName))
 
         then:
@@ -209,7 +209,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         def fileName = generateBlobName()
         def childName = generateBlobName()
         def containerClient = rootNameToContainerClient(getDefaultDir(fs))
-        AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
+        def blobClient = containerClient.getBlobClient(fileName)
 
         when:
         AppendBlobClient blobClient2 = containerClient.getBlobClient(fileName + fs.getSeparator() + childName)
@@ -220,7 +220,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         then:
         notThrown(FileAlreadyExistsException)
         blobClient.exists() // We will turn the directory from virtual to concrete
-        blobClient.getProperties().getMetadata().containsKey(AzureFileSystemProvider.DIR_METADATA_MARKER)
+        checkBlobIsDir(blobClient)
     }
 
     def "FileSystemProvider createDir root"() {
@@ -265,7 +265,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         def fileName = generateBlobName()
         def containerClient = rootNameToContainerClient(getDefaultDir(fs))
         AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
-        def contentMd5 = getRandomByteArray(10)
+        def contentMd5 = MessageDigest.getInstance("MD5").digest(new byte[0])
         FileAttribute<?>[] attributes = [new TestFileAttribute<String>("fizz", "buzz"),
                                          new TestFileAttribute<String>("foo", "bar"),
                                          new TestFileAttribute<String>("Content-Type", "myType"),
@@ -349,8 +349,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         } else {
             // Check that the destination directory is concrete.
             assert destinationClient.exists()
-            assert destinationClient.getProperties().getMetadata()
-                .containsKey(AzureFileSystemProvider.DIR_METADATA_MARKER)
+            assert checkBlobIsDir(destinationClient)
             if (!sourceEmpty) {
                 // Check that source child still exists and was not copied to the destination.
                 assert sourceChildClient.exists()
@@ -374,7 +373,7 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
-        def rootName = getNonDefaultDir(fs)
+        def rootName = getNonDefaultRootDir(fs)
         def sourcePath = (AzurePath)fs.getPath(rootName, generateBlobName())
         def destPath = (AzurePath)fs.getPath(rootName, generateBlobName())
 
@@ -417,7 +416,7 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
-        def rootName = getNonDefaultDir(fs)
+        def rootName = getNonDefaultRootDir(fs)
         def sourcePath = (AzurePath) fs.getPath(rootName, generateBlobName())
         def destPath = (AzurePath) fs.getPath(rootName, generateBlobName())
 
@@ -457,7 +456,7 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
-        def rootName = getNonDefaultDir(fs)
+        def rootName = getNonDefaultRootDir(fs)
         def sourcePath = (AzurePath) fs.getPath(rootName, generateBlobName())
         def destPath = (AzurePath) fs.getPath(rootName, generateBlobName())
 
@@ -500,7 +499,7 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
-        def rootName = getNonDefaultDir(fs)
+        def rootName = getNonDefaultRootDir(fs)
         def sourcePath = fs.getPath(rootName, generateBlobName())
         def destPath = fs.getPath(rootName, generateBlobName())
 
@@ -524,7 +523,7 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
-        def rootName = getNonDefaultDir(fs)
+        def rootName = getNonDefaultRootDir(fs)
         def sourcePath = (AzurePath) fs.getPath(rootName, getPathWithDepth(sourceDepth), generateBlobName())
 
         def destParent = getPathWithDepth(destDepth)
@@ -537,8 +536,7 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Create resources as necessary
         sourceClient.upload(defaultInputStream.get(), defaultDataSize)
-        destParentClient.getBlockBlobClient().commitBlockListWithResponse(Collections.emptyList(), null,
-            [(AzureFileSystemProvider.DIR_METADATA_MARKER): "true"], null, null, null, null)
+        putDirectoryBlob(destParentClient.getBlockBlobClient())
 
         when:
         fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
@@ -567,7 +565,7 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
-        def rootName = getNonDefaultDir(fs)
+        def rootName = getNonDefaultRootDir(fs)
         def sourcePath = (AzurePath) fs.getPath(rootName, generateBlobName())
         def destPath = (AzurePath) fs.getPath(rootName, generateBlobName(), generateBlobName())
 
@@ -648,7 +646,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         def fs = createFS(config)
 
         // Generate resource names.
-        def sourceRootName = getNonDefaultDir(fs)
+        def sourceRootName = getNonDefaultRootDir(fs)
         def destRootName = getDefaultDir(fs)
         def sourcePath = (AzurePath) fs.getPath(sourceRootName, generateBlobName())
         def destPath = (AzurePath) fs.getPath(destRootName, generateBlobName())
@@ -700,7 +698,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         // Generate resource names.
         // In root1, the resource will be in the root. In root2, the resource will be several levels deep. Also
         // root1 will be non-default directory and root2 is default directory.
-        def container1 = rootNameToContainerName(getNonDefaultDir(fs))
+        def container1 = rootNameToContainerName(getNonDefaultRootDir(fs))
         def parentPath1 = (AzurePath) fs.getPath(container1, generateBlobName())
         def parentPath2 = (AzurePath) fs.getPath(getPathWithDepth(3), generateBlobName())
 
@@ -711,21 +709,16 @@ class AzureFileSystemProviderSpec extends APISpec {
         def childClient2 = ((AzurePath) parentPath2.resolve(generateBlobName())).toBlobClient()
 
         // Create resources as necessary
-        def dirMetadata = [(AzureFileSystemProvider.DIR_METADATA_MARKER):"true"]
         if (status == DirectoryStatus.NOT_A_DIRECTORY) {
             blobClient1.upload(defaultInputStream.get(), defaultDataSize)
             blobClient2.upload(defaultInputStream.get(), defaultDataSize)
         } else if (status == DirectoryStatus.EMPTY) {
-            blobClient1.getBlockBlobClient().commitBlockListWithResponse(Collections.emptyList(), null,
-                dirMetadata, null, null, null, null)
-            blobClient2.getBlockBlobClient().commitBlockListWithResponse(Collections.emptyList(), null,
-                dirMetadata, null, null, null, null)
+            putDirectoryBlob(blobClient1.getBlockBlobClient())
+            putDirectoryBlob(blobClient2.getBlockBlobClient())
         } else if (status == DirectoryStatus.NOT_EMPTY) {
             if (!isVirtual) {
-                blobClient1.getBlockBlobClient().commitBlockListWithResponse(Collections.emptyList(), null,
-                    dirMetadata, null, null, null, null)
-                blobClient2.getBlockBlobClient().commitBlockListWithResponse(Collections.emptyList(), null,
-                    dirMetadata, null, null, null, null)
+                putDirectoryBlob(blobClient1.getBlockBlobClient())
+                putDirectoryBlob(blobClient2.getBlockBlobClient())
             }
             childClient1.upload(defaultInputStream.get(), defaultDataSize)
             childClient2.upload(defaultInputStream.get(), defaultDataSize)
@@ -784,8 +777,8 @@ class AzureFileSystemProviderSpec extends APISpec {
         def containerClient = rootNameToContainerClient(getDefaultDir(fs))
 
         when:
-        AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
-        blobClient.createWithResponse(null, [(AzureFileSystemProvider.DIR_METADATA_MARKER): "true"], null, null, null)
+        def blobClient = containerClient.getBlobClient(fileName).getBlockBlobClient()
+        putDirectoryBlob(blobClient)
 
         then:
         ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(fs.getPath(fileName, "bar"))
@@ -805,7 +798,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         // Checks for a bug where we would check the wrong root container for existence on a path with depth > 1
         setup:
         def fs = createFS(config)
-        def rootName = getNonDefaultDir(fs)
+        def rootName = getNonDefaultRootDir(fs)
         def containerClient = rootNameToContainerClient(rootName)
 
         when:

@@ -25,6 +25,7 @@ import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.ListBlobContainersOptions
+import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import reactor.core.publisher.Flux
@@ -38,6 +39,7 @@ import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileSystem
+import java.nio.file.Path
 import java.nio.file.attribute.FileAttribute
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -79,7 +81,7 @@ class APISpec extends Specification {
 
     String blobPrefix = "javablob"
 
-    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
+    public static final String defaultEndpointTemplate = "http://%s.blob.core.windows.net/"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
@@ -494,12 +496,17 @@ class APISpec extends Specification {
         return primaryBlobServiceClient.getBlobContainerClient(rootNameToContainerName(root))
     }
 
-    def getNonDefaultDir(FileSystem fs) {
-        return fs.getRootDirectories().last().toString()
+    def getNonDefaultRootDir(FileSystem fs) {
+        for (Path dir : fs.getRootDirectories()) {
+            if (!dir.equals(((AzureFileSystem) fs).getDefaultDirectory())) {
+                return dir.toString()
+            }
+        }
+        throw new Exception("File system only contains the default directory");
     }
 
     def getDefaultDir(FileSystem fs) {
-        return fs.getRootDirectories().first().toString()
+        return ((AzureFileSystem) fs).getDefaultDirectory().toString()
     }
 
     def getPathWithDepth(int depth) {
@@ -508,6 +515,16 @@ class APISpec extends Specification {
             pathStr += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
         }
         return pathStr
+    }
+
+    def putDirectoryBlob(BlockBlobClient blobClient) {
+        blobClient.commitBlockListWithResponse(Collections.emptyList(), null,
+            [(AzureFileSystemProvider.DIR_METADATA_MARKER): "true"], null, null, null, null)
+    }
+
+    def checkBlobIsDir(BlobClient blobClient) {
+        return blobClient.getPropertiesWithResponse(null, null, null).getValue().getMetadata()
+            .containsKey(AzureFileSystemProvider.DIR_METADATA_MARKER)
     }
 
     static class TestFileAttribute<T> implements  FileAttribute<T> {
