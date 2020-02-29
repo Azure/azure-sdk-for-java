@@ -32,14 +32,6 @@ class SnippetDict:
   def finalize_snippet(self, key):
     return self.snippet_dict.pop(key)
 
-
-
-
-# def update_snippet_dict(snippet_dict, key, line):
-
-#   if key in snippet_dict:
-#     snippet_dict,
-
 def get_snippets_from_file(file):
   finished_snippets = {}
   running_dict = SnippetDict()
@@ -74,10 +66,13 @@ def get_snippets_from_file(file):
 if __name__ == "__main__":
 
   # walk the codebase, find all java files
-  files = [source_file for source_file in glob.glob('**/*.java', recursive=True) if "snippet" in source_file.lower()]
+  all_files = glob.glob('**/*.java', recursive=True)
+  snippet_files = [source_file for source_file in all_files if "snippet" in source_file.lower()]
+  snippets = {}
 
-  for file in files:
+  for file in snippet_files:
     snippet_dict = get_snippets_from_file(file)
-    for key in snippet_dict:
-      print(key)
-      print("\n".join([line.rstrip() for line in snippet_dict[key]]))
+    snippets.update(snippet_dict)
+
+
+  # walk across all the lines looking for @codesnippet
