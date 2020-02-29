@@ -1,65 +1,47 @@
 {
   "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemcreatefailcontainercheck0156565f3a2044da?restype=container",
+    "Method" : "GET",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemcreatefailcontainercheck19356674ec3e8031?restype=container&sv=2019-07-07&ss=b&srt=c&se=2020-03-02T01%3A18%3A19Z&sp=d&sig=REDACTED",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "1c41cdfe-079f-4802-b81f-20e0100465f5"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "9dae23de-4a1b-4bf8-a5a1-33b0dec2b311"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D79AC65F9AD823",
-      "Last-Modified" : "Thu, 16 Jan 2020 20:55:09 GMT",
+      "x-ms-error-code" : "AuthorizationPermissionMismatch",
       "retry-after" : "0",
-      "Content-Length" : "0",
-      "StatusCode" : "201",
-      "x-ms-request-id" : "577570b7-201e-00ee-63af-cc1b9e000000",
-      "Date" : "Thu, 16 Jan 2020 20:55:08 GMT",
-      "x-ms-client-request-id" : "1c41cdfe-079f-4802-b81f-20e0100465f5"
+      "Content-Length" : "279",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "a932877b-701e-011c-569e-ee8f5f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthorizationPermissionMismatch</Code><Message>This request is not authorized to perform this operation using this permission.\nRequestId:a932877b-701e-011c-569e-ee8f5f000000\nTime:2020-02-29T01:18:19.2479318Z</Message></Error>",
+      "Date" : "Sat, 29 Feb 2020 01:18:18 GMT",
+      "x-ms-client-request-id" : "9dae23de-4a1b-4bf8-a5a1-33b0dec2b311",
+      "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
     "Uri" : "http://xclientdev2.blob.core.windows.net?prefix=jtcfilesystemcreatefailcontainercheck&comp=list",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "167fd22e-cb1b-48ed-b0a7-bc06d6df90ff"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "bf7bad54-01aa-4509-a331-1679544c4f87"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "577570cc-201e-00ee-74af-cc1b9e000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcfilesystemcreatefailcontainercheck</Prefix><Containers><Container><Name>jtcfilesystemcreatefailcontainercheck0156565f3a2044da</Name><Properties><Last-Modified>Thu, 16 Jan 2020 20:55:09 GMT</Last-Modified><Etag>\"0x8D79AC65F9AD823\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 16 Jan 2020 20:55:08 GMT",
-      "x-ms-client-request-id" : "167fd22e-cb1b-48ed-b0a7-bc06d6df90ff",
+      "x-ms-request-id" : "a9328788-701e-011c-639e-ee8f5f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcfilesystemcreatefailcontainercheck</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "Date" : "Sat, 29 Feb 2020 01:18:18 GMT",
+      "x-ms-client-request-id" : "bf7bad54-01aa-4509-a331-1679544c4f87",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemcreatefailcontainercheck0156565f3a2044da?restype=container",
-    "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.2.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "e0f485c8-33d4-40ba-a673-fed4227fd8aa"
-    },
-    "Response" : {
-      "x-ms-version" : "2019-02-02",
-      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "retry-after" : "0",
-      "Content-Length" : "0",
-      "StatusCode" : "202",
-      "x-ms-request-id" : "577570d4-201e-00ee-7aaf-cc1b9e000000",
-      "Date" : "Thu, 16 Jan 2020 20:55:09 GMT",
-      "x-ms-client-request-id" : "e0f485c8-33d4-40ba-a673-fed4227fd8aa"
-    },
-    "Exception" : null
   } ],
-  "variables" : [ "jtcfilesystemcreatefailcontainercheck0156565f3a2044da", "jtcfilesystemcreatefailcontainercheck149938161af34b2b" ]
+  "variables" : [ "jtcfilesystemcreatefailcontainercheck070882f664fd9a45", "jtcfilesystemcreatefailcontainercheck19356674ec3e8031" ]
 }
