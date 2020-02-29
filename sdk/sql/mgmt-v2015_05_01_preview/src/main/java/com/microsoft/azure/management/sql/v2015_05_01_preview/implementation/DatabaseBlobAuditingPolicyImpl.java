@@ -103,6 +103,11 @@ class DatabaseBlobAuditingPolicyImpl extends CreatableUpdatableImpl<DatabaseBlob
     }
 
     @Override
+    public Integer queueDelayMs() {
+        return this.inner().queueDelayMs();
+    }
+
+    @Override
     public Integer retentionDays() {
         return this.inner().retentionDays();
     }
@@ -161,6 +166,12 @@ class DatabaseBlobAuditingPolicyImpl extends CreatableUpdatableImpl<DatabaseBlob
     @Override
     public DatabaseBlobAuditingPolicyImpl withIsStorageSecondaryKeyInUse(Boolean isStorageSecondaryKeyInUse) {
         this.inner().withIsStorageSecondaryKeyInUse(isStorageSecondaryKeyInUse);
+        return this;
+    }
+
+    @Override
+    public DatabaseBlobAuditingPolicyImpl withQueueDelayMs(Integer queueDelayMs) {
+        this.inner().withQueueDelayMs(queueDelayMs);
         return this;
     }
 
