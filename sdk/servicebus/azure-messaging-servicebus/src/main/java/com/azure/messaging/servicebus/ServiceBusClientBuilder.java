@@ -25,12 +25,12 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
+import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
-
+import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -59,6 +59,7 @@ public final class ServiceBusClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(ServiceBusClientBuilder.class);
 
+    private ReceiveMessageOptions receiveMessageOptions = new ReceiveMessageOptions();
     private ProxyOptions proxyOptions;
     private TokenCredential credentials;
     private Configuration configuration;
@@ -70,14 +71,11 @@ public final class ServiceBusClientBuilder {
     private ServiceBusConnectionProcessor serviceBusConnectionProcessor;
     private final String connectionId;
 
-    private ServiceBusReceiveMessageOptions sbReceiveMessageOptions;
-
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
      */
     public ServiceBusClientBuilder() {
         this.connectionId = StringUtil.getRandomString("MF");
-        sbReceiveMessageOptions = new ServiceBusReceiveMessageOptions();
     }
 
     /**
@@ -173,12 +171,10 @@ public final class ServiceBusClientBuilder {
         }
 
         final ServiceBusConnectionProcessor connectionProcessor = createConnectionProcessor(messageSerializer);
-
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
-            serviceBusResourceName, connectionProcessor, tracerProvider, messageSerializer,
-            sbReceiveMessageOptions.getPrefetchCount());
+            serviceBusResourceName, connectionProcessor, tracerProvider, messageSerializer, receiveMessageOptions);
     }
 
     /**
@@ -219,8 +215,8 @@ public final class ServiceBusClientBuilder {
      * @param receiveMessageOptions for receiving.
      * @return The {@link ServiceBusClientBuilder}.
      */
-    public ServiceBusClientBuilder receiveMessageOptions(ServiceBusReceiveMessageOptions receiveMessageOptions) {
-        this.sbReceiveMessageOptions = receiveMessageOptions;
+    public ServiceBusClientBuilder receiveMessageOptions(ReceiveMessageOptions receiveMessageOptions) {
+        this.receiveMessageOptions = receiveMessageOptions;
         return this;
     }
 

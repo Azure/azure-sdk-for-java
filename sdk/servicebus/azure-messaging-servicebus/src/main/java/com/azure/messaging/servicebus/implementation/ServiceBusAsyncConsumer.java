@@ -4,14 +4,14 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
-
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 
 /**
  * A package-private consumer responsible for reading {@link ServiceBusMessage} from a specific Service Bus.
@@ -21,24 +21,19 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor;
     private final MessageSerializer messageSerializer;
-    private final String fullyQualifiedNamespace;
-    private final String queueName;
-    private final EmitterProcessor<ServiceBusReceivedMessage> emitterProcessor;
+    private final ServiceBusMessageProcessor processor;
 
     public ServiceBusAsyncConsumer(ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
-                            MessageSerializer messageSerializer, String fullyQualifiedNamespace, String queueName) {
+        MessageSerializer messageSerializer, boolean isAutoComplete,
+        Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction) {
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
-        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
-        this.queueName = queueName;
-
-        this.emitterProcessor = amqpReceiveLinkProcessor
-            .map(message -> onMessageReceived(message))
-            .doOnNext(receivedMessage -> {
-                // Keep track of the last position so if the link goes down, we don't start from the original location.
-                final long sequenceNumber = receivedMessage.getSequenceNumber();
+        this.processor = amqpReceiveLinkProcessor
+            .doOnSubscribe(e -> {
+                logger.info("There was a subscription.");
             })
-            .subscribeWith(EmitterProcessor.create(false));
+            .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
+            .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, completeFunction));
     }
 
     /**
@@ -47,7 +42,7 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
     @Override
     public void close() {
         if (!isDisposed.getAndSet(true)) {
-            emitterProcessor.onComplete();
+            processor.onComplete();
             amqpReceiveLinkProcessor.cancel();
         }
     }
@@ -58,20 +53,6 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
      * @return A stream of events received from the partition.
      */
     public Flux<ServiceBusReceivedMessage> receive() {
-        return emitterProcessor;
-    }
-
-    /**
-     * On each message received from the service, it will try to:
-     * <ol>
-     * <li>Deserialize the message into an {@link ServiceBusMessage}.</li>
-     * </ol>
-     *
-     * @param message AMQP message to deserialize.
-     *
-     * @return The deserialized {@link ServiceBusMessage} with partition information.
-     */
-    private ServiceBusReceivedMessage onMessageReceived(org.apache.qpid.proton.message.Message message) {
-        return messageSerializer.deserialize(message, ServiceBusReceivedMessage.class);
+        return processor;
     }
 }

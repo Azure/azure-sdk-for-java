@@ -8,7 +8,7 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.ReactorSession;
-import com.azure.messaging.servicebus.ReceiveMode;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;

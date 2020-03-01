@@ -13,12 +13,14 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
+import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -40,21 +42,19 @@ import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ServiceBusReceiverAsyncClientTest {
-
-    private static final Duration TIMEOUT = Duration.ofSeconds(30);
     private static final String PAYLOAD = "hello";
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
     private static final int PREFETCH = 5;
-    private static final String NAMESPACE = "mynamespace-foo";
-    private static final String QUEUE_NAME = "queue-name";
+    private static final String NAMESPACE = "my-namespace-foo";
+    private static final String ENTITY_NAME = "queue-name";
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
-    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(2);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
@@ -66,13 +66,22 @@ public class ServiceBusReceiverAsyncClientTest {
     private ServiceBusAmqpConnection connection;
     @Mock
     private TokenCredential tokenCredential;
-
-    private MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
-    private ServiceBusReceiverAsyncClient consumer;
-    private ServiceBusConnectionProcessor connectionProcessor;
-
+    @Mock
+    private MessageSerializer messageSerializer;
     @Mock
     private TracerProvider tracerProvider;
+
+    private ServiceBusReceiverAsyncClient consumer;
+
+    @BeforeAll
+    static void beforeAll() {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
+    }
+
+    @AfterAll
+    static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
 
     @BeforeEach
     void setup() {
@@ -83,7 +92,12 @@ public class ServiceBusReceiverAsyncClientTest {
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
 
-        ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, QUEUE_NAME, tokenCredential,
+        when(messageSerializer.deserialize(any(), argThat(ServiceBusReceivedMessage.class::equals)))
+            .thenAnswer(invocation -> {
+                return mock(ServiceBusReceivedMessage.class);
+            });
+
+        ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, ENTITY_NAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
 
@@ -93,24 +107,19 @@ public class ServiceBusReceiverAsyncClientTest {
         when(connection.createReceiveLink(anyString(), anyString(),
             any(ReceiveMode.class))).thenReturn(Mono.just(amqpReceiveLink));
 
-        connectionProcessor = Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
+        ServiceBusConnectionProcessor connectionProcessor = Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
             .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getEntityPath(), connectionOptions.getRetry()));
 
-        consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, QUEUE_NAME, connectionProcessor, tracerProvider,
-            messageSerializer, PREFETCH);
+        ReceiveMessageOptions receiveOptions = new ReceiveMessageOptions().setPrefetchCount(PREFETCH);
+        consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_NAME, connectionProcessor, tracerProvider,
+            messageSerializer, receiveOptions);
     }
 
     @AfterEach
     void teardown() {
         Mockito.framework().clearInlineMocks();
         consumer.close();
-    }
-
-
-    @AfterAll
-    public static void dispose() {
-        //EXECUTOR_SERVICE.shutdown();
     }
 
     /**
@@ -138,14 +147,8 @@ public class ServiceBusReceiverAsyncClientTest {
         Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");
 
         for (int i = 0; i < numberOfEvents; i++) {
-            Message message =  getMessage(PAYLOAD_BYTES, messageTrackingUUID, map);
+            Message message = getMessage(PAYLOAD_BYTES, messageTrackingUUID, map);
             sink.next(message);
         }
     }
-
-
-
-
-
-
 }

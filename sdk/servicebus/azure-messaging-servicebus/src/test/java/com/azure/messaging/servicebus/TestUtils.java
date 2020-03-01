@@ -12,15 +12,23 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class TestUtils {
 
@@ -35,6 +43,8 @@ public class TestUtils {
 
     // An application property key used to identify that the request belongs to a test set.
     public static final String MESSAGE_TRACKING_ID = "message-tracking-id";
+    // An application property key to identify where in the stream this message was created.
+    public static final String MESSAGE_POSITION_ID = "message-position";
 
     static {
         APPLICATION_PROPERTIES.put("test-name", ServiceBusMessage.class.getName());
@@ -44,7 +54,6 @@ public class TestUtils {
     static Symbol getSymbol(AmqpMessageConstant messageConstant) {
         return Symbol.getSymbol(messageConstant.getValue());
     }
-
 
     /**
      * Creates a message with the required system properties set.
@@ -99,5 +108,57 @@ public class TestUtils {
      */
     static Message getMessage(byte[] contents, String messageTrackingValue) {
         return getMessage(contents, messageTrackingValue, Collections.emptyMap());
+    }
+
+    /**
+     * Gets a set of messages with {@link #MESSAGE_TRACKING_ID} as a unique identifier for that service bus message.
+     *
+     * @param numberOfEvents Number of events to create.
+     * @param messageTrackingValue An identifier for the set of messages.
+     *
+     * @return A list of messages.
+     */
+    public static List<ServiceBusMessage> getServiceBusMessages(int numberOfEvents, String messageTrackingValue) {
+        return IntStream.range(0, numberOfEvents)
+            .mapToObj(number -> getServiceBusMessage("Event " + number, messageTrackingValue, number))
+            .collect(Collectors.toList());
+    }
+
+    public static ServiceBusMessage getServiceBusMessage(String body, String messageTrackingValue, int position) {
+        final ServiceBusMessage message = new ServiceBusMessage(body.getBytes(UTF_8));
+        message.getProperties().put(MESSAGE_TRACKING_ID, messageTrackingValue);
+        message.getProperties().put(MESSAGE_POSITION_ID, position);
+        return message;
+    }
+
+    /**
+     * Given a set of messages, will create a FluxSink that emits them. When there are no more messages to emit, a
+     * completion signal is emitted.
+     *
+     * @param messages Messages to emit.
+     *
+     * @return A flux of messages.
+     */
+    public static Flux<ServiceBusReceivedMessage> createMessageSink(ServiceBusReceivedMessage... messages) {
+        final ConcurrentLinkedDeque<ServiceBusReceivedMessage> queue = new ConcurrentLinkedDeque<>(
+            Arrays.asList(messages));
+
+        return Flux.create(emitter -> {
+            emitter.onRequest(request -> {
+                if (queue.isEmpty()) {
+                    return;
+                }
+
+                for (int i = 0; i < request; i++) {
+                    final ServiceBusReceivedMessage message = queue.poll();
+                    if (message == null) {
+                        emitter.complete();
+                        return;
+                    }
+
+                    emitter.next(message);
+                }
+            });
+        }, FluxSink.OverflowStrategy.BUFFER);
     }
 }

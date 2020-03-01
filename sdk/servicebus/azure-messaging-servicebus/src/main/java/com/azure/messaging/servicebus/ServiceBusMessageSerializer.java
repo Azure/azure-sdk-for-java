@@ -123,6 +123,10 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             amqpMessage.setTtl(brokeredMessage.getTimeToLive().toMillis());
         }
 
+        if (amqpMessage.getProperties() == null) {
+            amqpMessage.setProperties(new Properties());
+        }
+
         amqpMessage.setMessageId(brokeredMessage.getMessageId());
         amqpMessage.setContentType(brokeredMessage.getContentType());
         amqpMessage.setCorrelationId(brokeredMessage.getCorrelationId());
@@ -163,7 +167,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             return (T) deserializeMessage(message);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Deserialization only supports ServiceBusProperties."));
+                "Deserialization only supports ServiceBusReceivedMessage."));
         }
     }
 
@@ -255,7 +259,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             }
         }
 
-        //TODO (conniey): Set delivery tag and lock token.
+        // TODO (conniey): Set delivery tag and lock token. .NET does not expose delivery tag. Do we need it?
 
         // if (deliveryTag != null && deliveryTag.length == LOCK_TOKEN_SIZE) {
         //     UUID lockToken = Util.convertDotNetBytesToUUID(deliveryTag);

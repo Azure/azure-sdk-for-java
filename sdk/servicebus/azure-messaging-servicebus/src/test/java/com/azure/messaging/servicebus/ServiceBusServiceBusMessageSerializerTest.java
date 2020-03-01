@@ -8,8 +8,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.messaging.servicebus.TestUtils.APPLICATION_PROPERTIES;
+import static com.azure.messaging.servicebus.TestUtils.SEQUENCE_NUMBER;
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ServiceBusServiceBusMessageSerializerTest {
@@ -53,25 +56,49 @@ public class ServiceBusServiceBusMessageSerializerTest {
     @Test
     public void deserializeMessage() {
         // Arrange
-        String payload = "hello-world";
-        byte[] payloadBytes = payload.getBytes(UTF_8);
+        final String payload = "hello-world";
+        final byte[] payloadBytes = payload.getBytes(UTF_8);
 
         final org.apache.qpid.proton.message.Message message = getMessage(payloadBytes);
+        message.setAddress("a-to-address");
+        message.setContentType("some-content-type");
+        message.setCorrelationId("correlation-id-test");
+        message.setDeliveryCount(10);
+        message.setTtl(1045);
+        message.setMessageId("a-test-message-id");
+        message.setSubject("this is a label");
+        message.getProperties().setTo("this is a to property");
+        message.setReplyTo("reply-to-property");
+        message.setReplyToGroupId("reply-to-session-id-property");
+        message.setGroupId("session-id-as-a-group-id");
 
         // Act
-        final ServiceBusMessage serviceBusMessage = serializer.deserialize(message, ServiceBusMessage.class);
+        final ServiceBusReceivedMessage serviceBusMessage = serializer.deserialize(message, ServiceBusReceivedMessage.class);
 
         // Assert
         // Verifying all our system properties were properly deserialized.
+        assertNotNull(serviceBusMessage.getEnqueuedTime());
+        assertEquals(SEQUENCE_NUMBER, serviceBusMessage.getSequenceNumber());
+
+        // Verifying that all our properties are set.
+        assertEquals(message.getTtl(), serviceBusMessage.getTimeToLive().toMillis());
+        assertEquals(message.getSubject(), serviceBusMessage.getLabel());
+        assertEquals(message.getReplyTo(), serviceBusMessage.getReplyTo());
+        assertEquals(message.getDeliveryCount(), serviceBusMessage.getDeliveryCount());
+        assertEquals(message.getProperties().getTo(), serviceBusMessage.getTo());
+        assertEquals(message.getReplyToGroupId(), serviceBusMessage.getReplyToSessionId());
+        assertEquals(message.getGroupId(), serviceBusMessage.getSessionId());
+        assertEquals(message.getContentType(), serviceBusMessage.getContentType());
+        assertEquals(message.getCorrelationId(), serviceBusMessage.getCorrelationId());
 
         // Verifying our application properties are the same.
-        Assertions.assertEquals(APPLICATION_PROPERTIES.size(), serviceBusMessage.getProperties().size());
+        assertEquals(APPLICATION_PROPERTIES.size(), serviceBusMessage.getProperties().size());
         APPLICATION_PROPERTIES.forEach((key, value) -> {
             Assertions.assertTrue(serviceBusMessage.getProperties().containsKey(key));
-            Assertions.assertEquals(value, serviceBusMessage.getProperties().get(key));
+            assertEquals(value, serviceBusMessage.getProperties().get(key));
         });
 
         // Verifying the contents of our message is the same.
-        Assertions.assertEquals(payload, new String(serviceBusMessage.getBody(), UTF_8));
+        assertEquals(payload, new String(serviceBusMessage.getBody(), UTF_8));
     }
 }
