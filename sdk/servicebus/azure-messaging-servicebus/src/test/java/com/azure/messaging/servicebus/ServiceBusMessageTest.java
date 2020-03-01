@@ -33,7 +33,6 @@ public class ServiceBusMessageTest {
         final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BYTES);
 
         // Assert
-        Assertions.assertNotNull(serviceBusMessageData.getSystemProperties());
         Assertions.assertNotNull(serviceBusMessageData.getBody());
         Assertions.assertNotNull(serviceBusMessageData.getContext());
         Assertions.assertNotNull(serviceBusMessageData.getProperties());
@@ -45,7 +44,6 @@ public class ServiceBusMessageTest {
         final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD);
 
         // Assert
-        Assertions.assertNotNull(serviceBusMessageData.getSystemProperties());
         Assertions.assertNotNull(serviceBusMessageData.getBody());
         Assertions.assertNotNull(serviceBusMessageData.getContext());
         Assertions.assertNotNull(serviceBusMessageData.getProperties());

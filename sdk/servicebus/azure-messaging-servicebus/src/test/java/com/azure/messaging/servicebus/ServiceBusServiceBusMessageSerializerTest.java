@@ -7,8 +7,6 @@ import org.apache.qpid.proton.Proton;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.servicebus.TestUtils.APPLICATION_PROPERTIES;
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -65,9 +63,6 @@ public class ServiceBusServiceBusMessageSerializerTest {
 
         // Assert
         // Verifying all our system properties were properly deserialized.
-
-        Assertions.assertTrue(serviceBusMessage.getSystemProperties().containsKey(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
-        Assertions.assertTrue(serviceBusMessage.getSystemProperties().containsKey(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
 
         // Verifying our application properties are the same.
         Assertions.assertEquals(APPLICATION_PROPERTIES.size(), serviceBusMessage.getProperties().size());

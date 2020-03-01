@@ -7,18 +7,12 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
-
-import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
-import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
-
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
-
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.implementation.CreateBatchOptions;
@@ -45,6 +39,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
+import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
+import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
@@ -134,7 +130,7 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
                 .flatMap(list -> sendInternalBatch(Flux.fromIterable(list))));
     }
 
-    private Mono<Void> sendInternalBatch(Flux<MessageBatch> eventBatches) {
+    private Mono<Void> sendInternalBatch(Flux<ServiceBusMessageBatch> eventBatches) {
         return eventBatches
             .flatMap(this::send)
             .then()
@@ -181,7 +177,7 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
      * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    Mono<Void> send(MessageBatch batch) {
+    Mono<Void> send(ServiceBusMessageBatch batch) {
         Objects.requireNonNull(batch, "'batch' cannot be null.");
         final boolean isTracingEnabled = tracerProvider.isEnabled();
         final AtomicReference<Context> parentContext = isTracingEnabled
@@ -253,14 +249,14 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
     }
 
-    private static class AmqpMessageCollector implements Collector<ServiceBusMessage, List<MessageBatch>,
-        List<MessageBatch>> {
+    private static class AmqpMessageCollector implements Collector<ServiceBusMessage, List<ServiceBusMessageBatch>,
+        List<ServiceBusMessageBatch>> {
         private final int maxMessageSize;
         private final Integer maxNumberOfBatches;
         private final ErrorContextProvider contextProvider;
         private final TracerProvider tracerProvider;
 
-        private volatile MessageBatch currentBatch;
+        private volatile ServiceBusMessageBatch currentBatch;
 
         AmqpMessageCollector(CreateBatchOptions options, Integer maxNumberOfBatches,
                              ErrorContextProvider contextProvider,
@@ -272,18 +268,18 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
             this.contextProvider = contextProvider;
             this.tracerProvider = tracerProvider;
 
-            currentBatch = new MessageBatch(maxMessageSize, contextProvider, tracerProvider);
+            currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider);
         }
 
         @Override
-        public Supplier<List<MessageBatch>> supplier() {
+        public Supplier<List<ServiceBusMessageBatch>> supplier() {
             return ArrayList::new;
         }
 
         @Override
-        public BiConsumer<List<MessageBatch>, ServiceBusMessage> accumulator() {
+        public BiConsumer<List<ServiceBusMessageBatch>, ServiceBusMessage> accumulator() {
             return (list, event) -> {
-                MessageBatch batch = currentBatch;
+                ServiceBusMessageBatch batch = currentBatch;
                 if (batch.tryAdd(event)) {
                     return;
                 }
@@ -296,14 +292,14 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
                         contextProvider.getErrorContext());
                 }
 
-                currentBatch = new MessageBatch(maxMessageSize, contextProvider, tracerProvider);
+                currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider);
                 currentBatch.tryAdd(event);
                 list.add(batch);
             };
         }
 
         @Override
-        public BinaryOperator<List<MessageBatch>> combiner() {
+        public BinaryOperator<List<ServiceBusMessageBatch>> combiner() {
             return (existing, another) -> {
                 existing.addAll(another);
                 return existing;
@@ -311,9 +307,9 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
         }
 
         @Override
-        public Function<List<MessageBatch>, List<MessageBatch>> finisher() {
+        public Function<List<ServiceBusMessageBatch>, List<ServiceBusMessageBatch>> finisher() {
             return list -> {
-                MessageBatch batch = currentBatch;
+                ServiceBusMessageBatch batch = currentBatch;
                 currentBatch = null;
 
                 if (batch != null) {

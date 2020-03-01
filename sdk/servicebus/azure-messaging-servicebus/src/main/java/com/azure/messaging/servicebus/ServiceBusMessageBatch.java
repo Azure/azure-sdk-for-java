@@ -3,10 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.AmqpMessageConstant;
+
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
@@ -14,14 +13,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.Symbol;
+
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
-import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+
 import reactor.core.publisher.Signal;
 
 import java.nio.BufferOverflowException;
-import java.util.HashMap;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -35,8 +34,8 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
  * A class for aggregating {@link ServiceBusMessage} into a single, size-limited, batch. It is treated as
  * a single message when sent to the Azure Service Bus service.
  */
-final class MessageBatch {
-    private final ClientLogger logger = new ClientLogger(MessageBatch.class);
+final class ServiceBusMessageBatch {
+    private final ClientLogger logger = new ClientLogger(ServiceBusMessageBatch.class);
     private final Object lock = new Object();
     private final int maxMessageSize;
     private final ErrorContextProvider contextProvider;
@@ -45,10 +44,9 @@ final class MessageBatch {
     private int sizeInBytes;
     private final TracerProvider tracerProvider;
 
-    MessageBatch(int maxMessageSize, ErrorContextProvider contextProvider,
+    ServiceBusMessageBatch(int maxMessageSize, ErrorContextProvider contextProvider,
                  TracerProvider tracerProvider) {
         this.maxMessageSize = maxMessageSize;
-
         this.contextProvider = contextProvider;
         this.serviceBusMessageList = new LinkedList<>();
         this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
@@ -66,18 +64,18 @@ final class MessageBatch {
     }
 
     /**
-     * Gets the maximum size, in bytes, of the {@link MessageBatch}.
+     * Gets the maximum size, in bytes, of the {@link ServiceBusMessageBatch}.
      *
-     * @return The maximum size, in bytes, of the {@link MessageBatch}.
+     * @return The maximum size, in bytes, of the {@link ServiceBusMessageBatch}.
      */
     int getMaxSizeInBytes() {
         return maxMessageSize;
     }
 
     /**
-     * Gets the size of the {@link MessageBatch} in bytes.
+     * Gets the size of the {@link ServiceBusMessageBatch} in bytes.
      *
-     * @return the size of the {@link MessageBatch} in bytes.
+     * @return the size of the {@link ServiceBusMessageBatch} in bytes.
      */
     int getSizeInBytes() {
         return this.sizeInBytes;
@@ -90,7 +88,7 @@ final class MessageBatch {
      * @return {@code true} if the message could be added to the batch; {@code false} if the event was too large
      * to fit in the batch.
      * @throws IllegalArgumentException if {@code message} is {@code null}.
-     * @throws AmqpException if {@code message} is larger than the maximum size of the {@link MessageBatch}.
+     * @throws AmqpException if {@code message} is larger than the maximum size of the {@link ServiceBusMessageBatch}.
      */
     boolean tryAdd(final ServiceBusMessage serviceBusMessage) {
         if (serviceBusMessage == null) {
@@ -181,68 +179,6 @@ final class MessageBatch {
             message.setApplicationProperties(applicationProperties);
         }
 
-        if (event.getSystemProperties() != null) {
-            event.getSystemProperties().forEach((key, value) -> {
-                if (ServiceBusMessage.RESERVED_SYSTEM_PROPERTIES.contains(key)) {
-                    return;
-                }
-
-                final AmqpMessageConstant constant = AmqpMessageConstant.fromString(key);
-
-                if (constant != null) {
-                    switch (constant) {
-                        case MESSAGE_ID:
-                            message.setMessageId(value);
-                            break;
-                        case USER_ID:
-                            message.setUserId((byte[]) value);
-                            break;
-                        case TO:
-                            message.setAddress((String) value);
-                            break;
-                        case SUBJECT:
-                            message.setSubject((String) value);
-                            break;
-                        case REPLY_TO:
-                            message.setReplyTo((String) value);
-                            break;
-                        case CORRELATION_ID:
-                            message.setCorrelationId(value);
-                            break;
-                        case CONTENT_TYPE:
-                            message.setContentType((String) value);
-                            break;
-                        case CONTENT_ENCODING:
-                            message.setContentEncoding((String) value);
-                            break;
-                        case ABSOLUTE_EXPIRY_TIME:
-                            message.setExpiryTime((long) value);
-                            break;
-                        case CREATION_TIME:
-                            message.setCreationTime((long) value);
-                            break;
-                        case GROUP_ID:
-                            message.setGroupId((String) value);
-                            break;
-                        case GROUP_SEQUENCE:
-                            message.setGroupSequence((long) value);
-                            break;
-                        case REPLY_TO_GROUP_ID:
-                            message.setReplyToGroupId((String) value);
-                            break;
-                        default:
-                            throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,
-                                "Property is not a recognized reserved property name: %s", key)));
-                    }
-                } else {
-                    final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
-                        ? new MessageAnnotations(new HashMap<>())
-                        : message.getMessageAnnotations();
-                    messageAnnotations.getValue().put(Symbol.getSymbol(key), value);
-                    message.setMessageAnnotations(messageAnnotations);
-                }
-            });
-        }
         message.setBody(new Data(new Binary(event.getBody())));
         return message;
     }
