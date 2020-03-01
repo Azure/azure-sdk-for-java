@@ -10,10 +10,13 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
 
+
 import com.azure.core.annotation.ServiceClient;
+
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ServiceBusAsyncConsumer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
+import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -47,6 +50,9 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final int prefetchCount;
     private final TracerProvider tracerProvider;
     private final ReceiveMode defaultReceiveMode = ReceiveMode.PEEK_LOCK;
+
+    // Client will maintain the sequence number of last peeked message.
+    //private long lastPeekedSequenceNumber = 0;
 
     /**
      * Consumer to maintain single connection per queue.
@@ -88,7 +94,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      *
      * @return A stream of messages from Queue.
      */
-    public Flux<ServiceBusMessage> receive() {
+    public Flux<ServiceBusReceivedMessage> receive() {
         return receive(defaultReceiveMode);
     }
 
@@ -101,7 +107,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      *
      * @throws NullPointerException if {@code receiveMode} is null.
      */
-    public Flux<ServiceBusMessage> receive(ReceiveMode receiveMode) {
+    public Flux<ServiceBusReceivedMessage> receive(ReceiveMode receiveMode) {
         if (Objects.isNull(receiveMode)) {
             return fluxError(logger, new NullPointerException("'receiveMode' cannot be null."));
         }
@@ -126,7 +132,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
 
     }
 
-    private Flux<ServiceBusMessage> createConsumer(String linkName, ReceiveMode receiveMode) {
+    private Flux<ServiceBusReceivedMessage> createConsumer(String linkName, ReceiveMode receiveMode) {
         if (openConsumer.get() == null) {
             logger.info("{}: Creating receive consumer.", linkName);
             openConsumer.set(createServiceBusConsumer(linkName, receiveMode));
@@ -305,12 +311,10 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * Peek single message on Service Bus Queue or Subscriber.
      * @return Single {@link ServiceBusReceivedMessage} .
      */
-    public Mono<ServiceBusReceivedMessage> peek() {
+    public Mono<ServiceBusReceivedMessage> inspectMessage() {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode())
-            .flatMap(serviceBusManagementNode -> {
-                return serviceBusManagementNode.peek(1).last();
-            });
+            .flatMap(ServiceBusManagementNode::peek);
     }
 
     /**
@@ -319,12 +323,10 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return Single {@link ServiceBusReceivedMessage} .
 
      */
-    public Mono<ServiceBusReceivedMessage> peek(int fromSequenceNumber) {
+    public Mono<ServiceBusReceivedMessage> inspectMessage(int fromSequenceNumber) {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode())
-            .flatMap(serviceBusManagementNode -> {
-                return serviceBusManagementNode.peek(1, fromSequenceNumber).last();
-            });
+            .flatMap(ServiceBusManagementNode::peek);
     }
 
     /**

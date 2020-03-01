@@ -11,10 +11,11 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
+
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
@@ -22,6 +23,7 @@ import reactor.core.scheduler.Scheduler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Channel responsible for Service Bus related metadata, peek  and management plane operations.
@@ -47,8 +49,9 @@ public class ManagementChannel implements  ServiceBusManagementNode {
 
     // Well-known values for the service request.
     private static final String READ_OPERATION_VALUE = "READ";
+    private static final String PEEK_OPERATION_VALUE = AmqpConstants.VENDOR + ":peek-message";
     private static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":servicebus";
-    private static final String MANAGEMENT_PARTITION_ENTITY_TYPE = AmqpConstants.VENDOR + ":partition";
+    private static final String MANAGEMENT_SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 
 
     private final TokenCredential tokenProvider;
@@ -71,41 +74,51 @@ public class ManagementChannel implements  ServiceBusManagementNode {
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
     }
 
-
     /**
      * {@inheritDoc}
      */
     @Override
-    public Flux<ServiceBusReceivedMessage> peek(int maxMessages, int sequenceNumber) {
+    public Mono<ServiceBusReceivedMessage> peek() {
 
+        int maxMessages = 2;
+        long fromSequenceNumber = 1;
         final Map<String, Object> properties = new HashMap<>();
         properties.put(MANAGEMENT_ENTITY_TYPE_KEY, MANAGEMENT_EVENTHUB_ENTITY_TYPE);
         properties.put(MANAGEMENT_ENTITY_NAME_KEY, topicOrQueueName);
         properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
-        return peek(properties, ServiceBusReceivedMessage.class).publishOn(scheduler).flux();
+        return peek(properties, ServiceBusReceivedMessage.class, maxMessages, fromSequenceNumber, null)
+            .publishOn(scheduler);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Flux<ServiceBusReceivedMessage> peek(int maxMessages) {
-        return null;
-    }
+    private <T> Mono<T> peek(Map<String, Object> appProperties, Class<T> responseType,
+                             int maxMessages, long fromSequenceNumber, UUID sessionId) {
 
-
-    private <T> Mono<T> peek(Map<String, Object> properties, Class<T> responseType) {
         final String tokenAudience = tokenManagerProvider.getScopesFromResource(topicOrQueueName);
 
         return tokenProvider.getToken(new TokenRequestContext().addScopes(tokenAudience)).flatMap(accessToken -> {
-            properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.getToken());
+            appProperties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.getToken());
+
+            // set mandatory application properties for AMQP message.
+            appProperties.put(MANAGEMENT_OPERATION_KEY, PEEK_OPERATION_VALUE);
+            appProperties.put(MANAGEMENT_SERVER_TIMEOUT, "" + 1000 * 30);
 
             final Message request = Proton.message();
-            final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
+            final ApplicationProperties applicationProperties = new ApplicationProperties(appProperties);
             request.setApplicationProperties(applicationProperties);
 
-            return channelMono.flatMap(x -> x.sendWithAck(request))
+            // set mandatory properties on AMQP message body
+            HashMap<String, Object> requestBodyMap = new HashMap<>();
+            requestBodyMap.put(ServiceBusConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMER, fromSequenceNumber);
+            requestBodyMap.put(ServiceBusConstants.REQUEST_RESPONSE_MESSAGE_COUNT, maxMessages);
+
+            if (!Objects.isNull(sessionId)) {
+                requestBodyMap.put(ServiceBusConstants.REQUEST_RESPONSE_SESSIONID, sessionId);
+            }
+
+            request.setBody(new AmqpValue(requestBodyMap));
+
+            return channelMono.flatMap(requestResponseChannel -> requestResponseChannel.sendWithAck(request))
                 .map(message -> messageSerializer.deserialize(message, responseType));
         });
     }

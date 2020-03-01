@@ -25,9 +25,9 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.servicebus.implementation.ServiceBusClientConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
+import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import reactor.core.publisher.Flux;
@@ -42,14 +42,14 @@ import java.util.Objects;
 import java.util.ServiceLoader;
 
 /***
- * The builder to create {@link ServiceBusReceiverAsyncClient} and {@link ServiceSenderSenderAsyncClient}.
+ * The builder to create {@link ServiceBusReceiverAsyncClient} and {@link ServiceBusSenderAsyncClient}.
  */
-@ServiceClientBuilder(serviceClients = { ServiceBusReceiverAsyncClient.class, ServiceSenderSenderAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { ServiceBusReceiverAsyncClient.class, ServiceBusSenderAsyncClient.class})
 public final class ServiceBusClientBuilder {
 
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final AmqpRetryOptions DEFAULT_RETRY =
-        new AmqpRetryOptions().setTryTimeout(ServiceBusClientConstants.OPERATION_TIMEOUT);
+        new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
 
     private static final String SERVICEBUS_PROPERTIES_FILE = "azure-messaging-servicebus.properties";
     private static final String NAME_KEY = "name";
@@ -58,7 +58,6 @@ public final class ServiceBusClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(ServiceBusClientBuilder.class);
 
-    private ServiceBusReceiveMessageOptions serviceBusReceiveMessageOptions;
     private ProxyOptions proxyOptions;
     private TokenCredential credentials;
     private Configuration configuration;
@@ -70,11 +69,14 @@ public final class ServiceBusClientBuilder {
     private ServiceBusConnectionProcessor serviceBusConnectionProcessor;
     private final String connectionId;
 
+    private ServiceBusReceiveMessageOptions sbReceiveMessageOptions;
+
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
      */
     public ServiceBusClientBuilder() {
         this.connectionId = StringUtil.getRandomString("MF");
+        sbReceiveMessageOptions = new ServiceBusReceiveMessageOptions();
     }
 
     /**
@@ -87,7 +89,7 @@ public final class ServiceBusClientBuilder {
         final TokenCredential tokenCredential;
         try {
             tokenCredential = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(),
-                properties.getSharedAccessKey(), ServiceBusClientConstants.TOKEN_VALIDITY);
+                properties.getSharedAccessKey(), ServiceBusConstants.TOKEN_VALIDITY);
         } catch (Exception e) {
             throw logger.logExceptionAsError(
                 new AzureException("Could not create the ServiceBusSharedKeyCredential.", e));
@@ -124,12 +126,12 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Creates an {@link ServiceSenderSenderAsyncClient} for transmitting {@link ServiceBusMessage}
+     * Creates an {@link ServiceBusSenderAsyncClient} for transmitting {@link ServiceBusMessage}
      * to the Service Bus Queue.
      *
-     * @return A new {@link ServiceSenderSenderAsyncClient}.
+     * @return A new {@link ServiceBusSenderAsyncClient}.
      */
-    ServiceSenderSenderAsyncClient buildAsyncSenderClient() {
+    ServiceBusSenderAsyncClient buildAsyncSenderClient() {
         if (retryOptions == null) {
             retryOptions = DEFAULT_RETRY;
         }
@@ -147,7 +149,7 @@ public final class ServiceBusClientBuilder {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new ServiceSenderSenderAsyncClient(serviceBusResourceName, connectionProcessor,
+        return new ServiceBusSenderAsyncClient(serviceBusResourceName, connectionProcessor,
             retryOptions, tracerProvider, messageSerializer);
     }
     /**
@@ -175,11 +177,11 @@ public final class ServiceBusClientBuilder {
 
         return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
             serviceBusResourceName, connectionProcessor, tracerProvider, messageSerializer,
-            serviceBusReceiveMessageOptions.getPrefetchCount());
+            sbReceiveMessageOptions.getPrefetchCount());
     }
 
     /**
-     * Sets the proxy configuration to use for {@link ServiceSenderSenderAsyncClient}.
+     * Sets the proxy configuration to use for {@link ServiceBusSenderAsyncClient}.
      * When a proxy is configured, {@link AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
      * @param proxyOptions The proxy configuration to use.
@@ -202,7 +204,6 @@ public final class ServiceBusClientBuilder {
         return connectionString(connectionString);
     }
 
-
     /**
      *
      * @param retryPolicy to recover from Connection.
@@ -218,9 +219,10 @@ public final class ServiceBusClientBuilder {
      * @return The {@link ServiceBusClientBuilder}.
      */
     public ServiceBusClientBuilder receiveMessageOptions(ServiceBusReceiveMessageOptions receiveMessageOptions) {
-        this.serviceBusReceiveMessageOptions = receiveMessageOptions;
+        this.sbReceiveMessageOptions = receiveMessageOptions;
         return this;
     }
+
     /**
      *
      * @param transportType to use.
@@ -246,7 +248,7 @@ public final class ServiceBusClientBuilder {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
             connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-            ServiceBusClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
+            ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 

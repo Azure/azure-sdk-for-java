@@ -107,7 +107,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         Objects.requireNonNull(message, "'message' cannot be null.");
         Objects.requireNonNull(clazz, "'clazz' cannot be null.");
 
-        if (clazz == ServiceBusMessage.class) {
+        if (clazz == ServiceBusReceivedMessage.class) {
             return (T) deserializeMessage(message);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -151,15 +151,16 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             body = new byte[0];
         }
 
-        final ServiceBusMessage serviceBusMessage = new ServiceBusMessage(body, receiveProperties, Context.NONE);
+        final ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage(body, receiveProperties,
+            Context.NONE);
         final Map<String, Object> properties = message.getApplicationProperties() == null
             ? new HashMap<>()
             : message.getApplicationProperties().getValue();
 
-        properties.forEach((key, value) -> serviceBusMessage.getProperties().put(key, value));
+        properties.forEach((key, value) -> receivedMessage.getProperties().put(key, value));
 
         message.clear();
-        return serviceBusMessage;
+        return receivedMessage;
     }
 
     /*
@@ -312,7 +313,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         if (content == null) {
             return;
         }
-
         map.put(key.getValue(), content);
     }
 }

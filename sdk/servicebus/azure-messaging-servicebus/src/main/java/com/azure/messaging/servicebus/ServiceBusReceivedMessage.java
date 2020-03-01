@@ -69,6 +69,9 @@ public final class ServiceBusReceivedMessage extends ServiceBusMessage {
         super(body, systemProperties, context);
     }
 
+    ServiceBusReceivedMessage(byte[] body, Map<String, Object> systemProperties, Context context) {
+        super(body, systemProperties, context);
+    }
     ServiceBusReceivedMessage(byte[] body, Map<String, Object> systemProperties, Context context, String sessionId) {
         super(body, systemProperties, context, sessionId);
     }

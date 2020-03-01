@@ -44,7 +44,7 @@ public class ServiceBusClientBuilderTest {
     @Test
     public void defaultProxyConfigurationBuilder() {
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-        final ServiceSenderSenderAsyncClient client = builder.connectionString(CORRECT_CONNECTION_STRING)
+        final ServiceBusSenderAsyncClient client = builder.connectionString(CORRECT_CONNECTION_STRING)
             .buildAsyncSenderClient();
 
         assertNotNull(client);

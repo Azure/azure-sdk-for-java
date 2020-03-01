@@ -4,9 +4,10 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.util.Context;
+
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 
@@ -22,7 +23,7 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
     private final MessageSerializer messageSerializer;
     private final String fullyQualifiedNamespace;
     private final String queueName;
-    private final EmitterProcessor<ServiceBusMessage> emitterProcessor;
+    private final EmitterProcessor<ServiceBusReceivedMessage> emitterProcessor;
 
     public ServiceBusAsyncConsumer(ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
                             MessageSerializer messageSerializer, String fullyQualifiedNamespace, String queueName) {
@@ -33,6 +34,10 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
 
         this.emitterProcessor = amqpReceiveLinkProcessor
             .map(message -> onMessageReceived(message))
+            .doOnNext(receivedMessage -> {
+                // Keep track of the last position so if the link goes down, we don't start from the original location.
+                final long sequenceNumber = receivedMessage.getSequenceNumber();
+            })
             .subscribeWith(EmitterProcessor.create(false));
     }
 
@@ -52,7 +57,7 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
      *
      * @return A stream of events received from the partition.
      */
-    public Flux<ServiceBusMessage> receive() {
+    public Flux<ServiceBusReceivedMessage> receive() {
         return emitterProcessor;
     }
 
@@ -66,8 +71,7 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
      *
      * @return The deserialized {@link ServiceBusMessage} with partition information.
      */
-    private ServiceBusMessage onMessageReceived(org.apache.qpid.proton.message.Message message) {
-        final ServiceBusMessage event = messageSerializer.deserialize(message, ServiceBusMessage.class);
-        return new ServiceBusMessage(event.getBody(), event.getSystemProperties(), Context.NONE);
+    private ServiceBusReceivedMessage onMessageReceived(org.apache.qpid.proton.message.Message message) {
+        return messageSerializer.deserialize(message, ServiceBusReceivedMessage.class);
     }
 }

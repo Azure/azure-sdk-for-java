@@ -53,9 +53,9 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
  * The client to send messages to Queue.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
-public final class ServiceSenderSenderAsyncClient implements Closeable {
+public final class ServiceBusSenderAsyncClient implements Closeable {
 
-    private final ClientLogger logger = new ClientLogger(ServiceSenderSenderAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(ServiceBusSenderAsyncClient.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
@@ -70,11 +70,11 @@ public final class ServiceSenderSenderAsyncClient implements Closeable {
     public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
     /**
-     * Creates a new instance of this {@link ServiceSenderSenderAsyncClient} that sends messages to
+     * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to
      */
-    ServiceSenderSenderAsyncClient(String queueName, ServiceBusConnectionProcessor connectionProcessor,
-                                   AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
-                                   MessageSerializer messageSerializer) {
+    ServiceBusSenderAsyncClient(String queueName, ServiceBusConnectionProcessor connectionProcessor,
+                                AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
+                                MessageSerializer messageSerializer) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");
@@ -330,7 +330,7 @@ public final class ServiceSenderSenderAsyncClient implements Closeable {
     }
 
     /**
-     * Disposes of the {@link ServiceSenderSenderAsyncClient}. If the client had a dedicated connection, the underlying
+     * Disposes of the {@link ServiceBusSenderAsyncClient}. If the client had a dedicated connection, the underlying
      * connection is also closed.
      */
     @Override

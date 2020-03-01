@@ -4,28 +4,20 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
-import reactor.core.publisher.Flux;
+
+import reactor.core.publisher.Mono;
+
 
 /**
  * The management node for fetching metadata about the Service Bus and peek operation.
  */
 public interface ServiceBusManagementNode extends AutoCloseable {
 
-
     /**
      *
-     * @param maxMessages to be returned
      * @return Flux of ReceivedMessage.
      */
-    Flux<ServiceBusReceivedMessage> peek(int maxMessages);
-
-    /**
-     *
-     * @param maxMessages to be returned
-     * @param sequenceNumber from where to start peeking.
-     * @return Flux of ReceivedMessage.
-     */
-    Flux<ServiceBusReceivedMessage> peek(int maxMessages, int sequenceNumber);
+    Mono<ServiceBusReceivedMessage> peek();
 
     @Override
     void close();
