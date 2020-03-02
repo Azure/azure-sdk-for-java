@@ -12,9 +12,9 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentSentimentLabel;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentenceSentimentLabel;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScore;
-import com.azure.ai.textanalytics.models.TextAnalyticsPagedFlux;
-import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.SimpleResponse;
@@ -42,7 +42,7 @@ class AnalyzeSentimentAsyncClient {
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code AnalyzeSentimentAsyncClient} that sends requests to the Text Analytics services's sentiment
+     * Create a {@link AnalyzeSentimentAsyncClient} that sends requests to the Text Analytics services's sentiment
      * analysis endpoint.
      *
      * @param service The proxy service used to perform REST calls.
@@ -51,28 +51,14 @@ class AnalyzeSentimentAsyncClient {
         this.service = service;
     }
 
-//    Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeSentimentBatchWithResponse(
-//        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-//        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-//
-//        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-//            .setDocuments(toMultiLanguageInput(textInputs));
-//        return service.sentimentWithRestResponseAsync(
-//            batchInput,
-//            options == null ? null : options.getModelVersion(),
-//            options == null ? null : options.showStatistics(), context)
-//            .doOnSubscribe(ignoredValue -> logger.info("A batch of text sentiment input - {}", textInputs.toString()))
-//            .doOnSuccess(response -> logger.info("A batch of text sentiment output - {}", response))
-//            .doOnError(error -> logger.warning("Failed to analyze text sentiment - {}", error))
-//            .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
-//    }
-
     /**
-     * // TODO: add java doc stirng
-     * @param textInputs The given collection of input texts.
-     * @param options a
+     * Helper function that analyzes a batch of text inputs and returns {@link TextAnalyticsPagedFlux} that is a paged
+     * flux contains {@link AnalyzeSentimentResult}.
      *
-     * @return a
+     * @param textInputs A batch of input texts.
+     * @param options The request options, such as the training model version and to show statistics.
+     *
+     * @return {@link TextAnalyticsPagedFlux} of {@link AnalyzeSentimentResult}.
      */
     TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(Iterable<TextDocumentInput> textInputs,
         TextAnalyticsRequestOptions options) {
@@ -96,14 +82,14 @@ class AnalyzeSentimentAsyncClient {
     }
 
     /**
-     *  Helper function that calling service with max overloaded parameters and returns
-     *  {@link TextAnalyticsPagedFlux} that is the collection of entity document results.
+     * Helper function that calling service with max overloaded parameters and returns {@link TextAnalyticsPagedFlux}
+     * that is a paged flux contains {@link AnalyzeSentimentResult}.
      *
-     * @param textInputs The given collection of input texts.
-     * @param options aa
-     * @param context a
+     * @param textInputs A batch of input texts.
+     * @param options The request options, such as the training model version and to show statistics.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return text analytics flux of {@link AnalyzeSentimentResult}
+     * @return The {@link TextAnalyticsPagedFlux} of {@link AnalyzeSentimentResult}.
      */
     TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatchWithContext(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
@@ -123,14 +109,13 @@ class AnalyzeSentimentAsyncClient {
                 .flux());
     }
 
-
     /**
      * Helper method to convert the service response of {@link SentimentResponse} to {@link TextAnalyticsPagedResponse}
      * of {@link AnalyzeSentimentResult}.
      *
-     * @param response the {@link SimpleResponse} returned by the service.
+     * @param response The {@link SimpleResponse} of {@link SentimentResponse} returned by the service.
      *
-     * @return the {@link TextAnalyticsPagedResponse} of {@link AnalyzeSentimentResult} to be returned by the SDK.
+     * @return The {@link TextAnalyticsPagedResponse} of {@link AnalyzeSentimentResult} returned by the SDK.
      */
     private TextAnalyticsPagedResponse<AnalyzeSentimentResult> toTextAnalyticsPagedResponse(
         final SimpleResponse<SentimentResponse> response) {
@@ -162,14 +147,14 @@ class AnalyzeSentimentAsyncClient {
     /**
      * Helper method to convert the service response of {@link DocumentSentiment} to {@link AnalyzeSentimentResult}.
      *
-     * @param documentSentiment the {@link DocumentSentiment} returned by the service.
+     * @param documentSentiment The {@link DocumentSentiment} returned by the service.
      *
-     * @return the {@link AnalyzeSentimentResult} to be returned by the SDK.
+     * @return The {@link AnalyzeSentimentResult} to be returned by the SDK.
      */
     private AnalyzeSentimentResult convertToAnalyzeSentimentResult(DocumentSentiment documentSentiment) {
         // Document text sentiment
-        final DocumentSentimentLabel documentSentimentLabel = DocumentSentimentLabel.fromString(documentSentiment.
-            getSentiment().toString());
+        final DocumentSentimentLabel documentSentimentLabel = DocumentSentimentLabel.fromString(
+            documentSentiment.getSentiment().toString());
         if (documentSentimentLabel == null) {
             // Not throw exception for an invalid Sentiment type because we should not skip processing the
             // other response. It is a service issue.
@@ -198,7 +183,7 @@ class AnalyzeSentimentAsyncClient {
 
                 return new SentenceSentiment(
                     sentenceSentimentLabel,
-                    new SentimentConfidenceScore(confidenceScorePerSentence.getNegative(),
+                    new SentimentConfidenceScorePerLabel(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
                     sentenceSentiment.getLength(),
                     sentenceSentiment.getOffset());
@@ -211,7 +196,7 @@ class AnalyzeSentimentAsyncClient {
                 : toTextDocumentStatistics(documentSentiment.getStatistics()), null,
             new com.azure.ai.textanalytics.models.DocumentSentiment(
                 documentSentimentLabel,
-                new SentimentConfidenceScore(
+                new SentimentConfidenceScorePerLabel(
                     confidenceScorePerLabel.getNegative(),
                     confidenceScorePerLabel.getNeutral(),
                     confidenceScorePerLabel.getPositive()),

@@ -12,9 +12,9 @@ import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.TextAnalyticsPagedFlux;
-import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -36,7 +36,7 @@ class DetectLanguageAsyncClient {
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code DetectLanguageAsyncClient} that sends requests to the Text Analytics services's detect language
+     * Create a {@link DetectLanguageAsyncClient} that sends requests to the Text Analytics services's detect language
      * endpoint.
      *
      * @param service The proxy service used to perform REST calls.
@@ -45,38 +45,26 @@ class DetectLanguageAsyncClient {
         this.service = service;
     }
 
-//    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguageBatchWithResponse(
-//        Iterable<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-//        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-//        final List<LanguageInput> multiLanguageInputs = new ArrayList<>();
-//        for (DetectLanguageInput textDocumentInput : textInputs) {
-//            multiLanguageInputs.add(new LanguageInput()
-//                .setId(textDocumentInput.getId())
-//                .setText(textDocumentInput.getText())
-//                .setCountryHint(textDocumentInput.getCountryHint()));
-//        }
-//
-//        return service.languagesWithRestResponseAsync(new LanguageBatchInput().setDocuments(multiLanguageInputs),
-//            options == null ? null : options.getModelVersion(),
-//            options == null ? null : options.showStatistics(), context)
-//            .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", textInputs.toString()))
-//            .doOnSuccess(response -> logger.info("A batch of detected language output - {}", response.getValue()))
-//            .doOnError(error -> logger.warning("Failed to detect language - {}", error))
-//            .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
-//    }
-
-
+    /**
+     * Helper function that detects a batch of text inputs and returns {@link TextAnalyticsPagedFlux} that is a paged
+     * flux contains {@link DetectLanguageResult}.
+     *
+     * @param textInputs A batch of input texts.
+     * @param options The request options, such as the training model version and to show statistics boolean.
+     *
+     * @return The {@link TextAnalyticsPagedFlux} of {@link DetectLanguageResult}.
+     */
     TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(Iterable<DetectLanguageInput> textInputs,
         TextAnalyticsRequestOptions options) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+
+        final List<LanguageInput> multiLanguageInputs = new ArrayList<>();
+        textInputs.forEach(textDocumentInput -> multiLanguageInputs.add(new LanguageInput()
+            .setId(textDocumentInput.getId())
+            .setText(textDocumentInput.getText())
+            .setCountryHint(textDocumentInput.getCountryHint())));
+
         try {
-            final List<LanguageInput> multiLanguageInputs = new ArrayList<>();
-            for (DetectLanguageInput textDocumentInput : textInputs) {
-                multiLanguageInputs.add(new LanguageInput()
-                    .setId(textDocumentInput.getId())
-                    .setText(textDocumentInput.getText())
-                    .setCountryHint(textDocumentInput.getCountryHint()));
-            }
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 service.languagesWithRestResponseAsync(new LanguageBatchInput().setDocuments(multiLanguageInputs),
                     options == null ? null : options.getModelVersion(),
@@ -88,23 +76,29 @@ class DetectLanguageAsyncClient {
                     .map(this::toTextAnalyticsPagedResponse))
                     .flux());
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() ->
-                (continuationToken, pageSize) -> fluxError(logger, ex));
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
     }
 
-
+    /**
+     * Helper function that detects a batch of text inputs with {@link Context} and returns
+     * {@link TextAnalyticsPagedFlux} that is a paged flux contains {@link DetectLanguageResult}.
+     *
+     * @param textInputs A batch of input texts.
+     * @param options The request options, such as the training model version and to show statistics.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return The {@link TextAnalyticsPagedFlux} of {@link DetectLanguageResult}.
+     */
     TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatchWithContext(
         Iterable<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         final List<LanguageInput> multiLanguageInputs = new ArrayList<>();
-        for (DetectLanguageInput textDocumentInput : textInputs) {
-            multiLanguageInputs.add(new LanguageInput()
-                .setId(textDocumentInput.getId())
-                .setText(textDocumentInput.getText())
-                .setCountryHint(textDocumentInput.getCountryHint()));
-        }
+        textInputs.forEach(textDocumentInput -> multiLanguageInputs.add(new LanguageInput()
+            .setId(textDocumentInput.getId())
+            .setText(textDocumentInput.getText())
+            .setCountryHint(textDocumentInput.getCountryHint())));
+
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
             service.languagesWithRestResponseAsync(
                 new LanguageBatchInput().setDocuments(multiLanguageInputs),
@@ -117,20 +111,18 @@ class DetectLanguageAsyncClient {
                 .flux());
     }
 
-
-
     /**
      * Helper method to convert the service response of {@link LanguageResult} to {@link TextAnalyticsPagedResponse}
      * of {@link DetectLanguageResult}.
      *
-     * @param response the {@link SimpleResponse} returned by the service.
+     * @param response the {@link SimpleResponse} of {@link LanguageResult} returned by the service.
      *
      * @return the {@link TextAnalyticsPagedResponse} of {@link DetectLanguageResult} to be returned by the SDK.
      */
     private TextAnalyticsPagedResponse<DetectLanguageResult> toTextAnalyticsPagedResponse(
-        final SimpleResponse<LanguageResult> response) {
+        SimpleResponse<LanguageResult> response) {
 
-        LanguageResult languageResult = response.getValue();
+        final LanguageResult languageResult = response.getValue();
 
         final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
         for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
@@ -146,8 +138,7 @@ class DetectLanguageAsyncClient {
                     detectedLanguageResult.getIso6391Name(), detectedLanguageResult.getScore());
             }
 
-            final String documentID = documentLanguage.getId();
-            detectLanguageResults.add(new DetectLanguageResult(documentID,
+            detectLanguageResults.add(new DetectLanguageResult(documentLanguage.getId(),
                 documentLanguage.getStatistics() == null
                     ? null : Transforms.toTextDocumentStatistics(documentLanguage.getStatistics()),
                 null,

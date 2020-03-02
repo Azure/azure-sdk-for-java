@@ -4,17 +4,15 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.models.DocumentError;
-import com.azure.ai.textanalytics.implementation.models.DocumentLinkedEntities;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsPagedFlux;
-import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
@@ -29,6 +27,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -41,7 +40,7 @@ class RecognizeLinkedEntityAsyncClient {
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code RecognizeLinkedEntityAsyncClient} that sends requests to the Text Analytics services's recognize
+     * Create a {@link RecognizeLinkedEntityAsyncClient} that sends requests to the Text Analytics services's recognize
      * linked entity endpoint.
      *
      * @param service The proxy service used to perform REST calls.
@@ -50,28 +49,14 @@ class RecognizeLinkedEntityAsyncClient {
         this.service = service;
     }
 
-//    Mono<PagedResponse<com.azure.ai.textanalytics.models.LinkedEntity>> recognizeLinkedEntitiesWithResponse(
-//        String text, String language, Context context) {
-//        Objects.requireNonNull(text, "'text' cannot be null.");
-//
-//        return recognizeLinkedEntitiesBatchWithResponse(
-//            Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-//            .map(response -> new PagedResponseBase<>(
-//                response.getRequest(),
-//                response.getStatusCode(),
-//                response.getHeaders(),
-//                Transforms.processSingleResponseErrorResult(response).getValue().getEntities(),
-//                null,
-//                null
-//            ));
-//    }
-
     /**
-     * a
-     * @param text a
-     * @param language a
+     * Helper function that recognize a single of text inputs and returns {@link TextAnalyticsPagedFlux} that is a paged
+     * flux contains {@link LinkedEntity}.
      *
-     * @return a
+     * @param text A single input text.
+     * @param language The language hint.
+     *
+     * @return The {@link TextAnalyticsPagedFlux} of {@link LinkedEntity}.
      */
     TextAnalyticsPagedFlux<LinkedEntity> recognizeLinkedEntities(String text, String language) {
         return new TextAnalyticsPagedFlux<>(() ->
@@ -79,7 +64,7 @@ class RecognizeLinkedEntityAsyncClient {
                 Collections.singletonList(new TextDocumentInput("0", text, language)), null)
                 .byPage()
                 .map(resOfResult -> {
-                    Iterator<RecognizeLinkedEntitiesResult> iterator = resOfResult.getValue().iterator();
+                    final Iterator<RecognizeLinkedEntitiesResult> iterator = resOfResult.getValue().iterator();
                     // Collection will never empty
                     if (!iterator.hasNext()) {
                         throw logger.logExceptionAsError(new IllegalStateException(
@@ -88,8 +73,7 @@ class RecognizeLinkedEntityAsyncClient {
 
                     final RecognizeLinkedEntitiesResult entitiesResult = iterator.next();
                     if (entitiesResult.isError()) {
-                        throw logger.logExceptionAsError(
-                            Transforms.toTextAnalyticsException(entitiesResult.getError()));
+                        throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
                     }
 
                     return new TextAnalyticsPagedResponse<>(
@@ -99,43 +83,14 @@ class RecognizeLinkedEntityAsyncClient {
                 }));
     }
 
-//    PagedFlux<com.azure.ai.textanalytics.models.LinkedEntity> recognizeLinkedEntities(
-//        String text, String language, Context context) {
-//        return new PagedFlux<>(() -> recognizeLinkedEntitiesWithResponse(text, language, context));
-//    }
-//
-//    Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(
-//        List<String> textInputs, String language, TextAnalyticsRequestOptions options, Context context) {
-//        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-//
-//        List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
-//            new TextDocumentInput(index, value, language));
-//        return recognizeLinkedEntitiesBatchWithResponse(documentInputs, options, context);
-//    }
-
-//    Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesBatchWithResponse(
-//        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-//        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-//
-//        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-//            .setDocuments(toMultiLanguageInput(textInputs));
-//        return service.entitiesLinkingWithRestResponseAsync(
-//            batchInput,
-//            options == null ? null : options.getModelVersion(),
-//            options == null ? null : options.showStatistics(), context)
-//            .doOnSubscribe(ignoredValue ->
-//              logger.info("A batch of linked entities input - {}", textInputs.toString()))
-//            .doOnSuccess(response -> logger.info("A batch of linked entities output - {}", response.getValue()))
-//            .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
-//            .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
-//    }
-
     /**
-     * // TODO: add java doc stirng
-     * @param textInputs The given collection of input texts.
-     * @param options a
+     * Helper function that recognizes a batch of text inputs and returns {@link TextAnalyticsPagedFlux} that is a
+     * paged flux contains {@link RecognizeLinkedEntitiesResult}.
      *
-     * @return a
+     * @param textInputs A batch of input texts.
+     * @param options The request options, such as the training model version and to show statistics.
+     *
+     * @return The {@link TextAnalyticsPagedFlux} of {@link RecognizeLinkedEntitiesResult}.
      */
     TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
@@ -159,20 +114,18 @@ class RecognizeLinkedEntityAsyncClient {
     }
 
     /**
-     *  Helper function that calling service with max overloaded parameters and returns
-     *  {@link TextAnalyticsPagedFlux} that is the collection of entity document results.
+     * Helper function that calling service with max overloaded parameters and returns
+     * {@link TextAnalyticsPagedFlux} that is the collection of entity document results.
      *
-     * @param textInputs The given collection of input texts.
-     * @param options aa
-     * @param context a
+     * @param textInputs A batch of input texts.
+     * @param options The request options, such as the training model version and to show statistics.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return text analytics flux of {@link RecognizeLinkedEntitiesResult}
+     * @return the {@link TextAnalyticsPagedFlux} of {@link RecognizeLinkedEntitiesResult} to be returned by the SDK.
      */
     TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatchWithContext(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
             service.entitiesLinkingWithRestResponseAsync(
                 new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
@@ -190,42 +143,31 @@ class RecognizeLinkedEntityAsyncClient {
      * Helper method to convert the service response of {@link EntityLinkingResult} to
      * {@link TextAnalyticsPagedResponse} of {@link RecognizeLinkedEntitiesResult}
      *
-     * @param response the {@link SimpleResponse} returned by the service.
+     * @param response the {@link SimpleResponse} of {@link EntityLinkingResult} returned by the service.
      *
      * @return the {@link TextAnalyticsPagedResponse} of {@link RecognizeLinkedEntitiesResult} to be returned
      * by the SDK.
      */
     private TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult> toTextAnalyticsPagedResponse(
         final SimpleResponse<EntityLinkingResult> response) {
-
-        EntityLinkingResult entityLinkingResult = response.getValue();
-
-        List<RecognizeLinkedEntitiesResult> linkedEntitiesResults = new ArrayList<>();
-        for (DocumentLinkedEntities documentLinkedEntities : entityLinkingResult.getDocuments()) {
-            final String documentId = documentLinkedEntities.getId();
+        final EntityLinkingResult entityLinkingResult = response.getValue();
+        // List of document results
+        final List<RecognizeLinkedEntitiesResult> linkedEntitiesResults = new ArrayList<>();
+        entityLinkingResult.getDocuments().forEach(documentLinkedEntities ->
             linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(
-                documentId,
+                documentLinkedEntities.getId(),
                 documentLinkedEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentLinkedEntities.getStatistics()),
                 null,
-                mapLinkedEntity(documentLinkedEntities.getEntities())
-            ));
-        }
-        for (DocumentError documentError : entityLinkingResult.getErrors()) {
-            final com.azure.ai.textanalytics.models.TextAnalyticsError error =
-                toTextAnalyticsError(documentError.getError());
-            final String documentId = documentError.getId();
-            linkedEntitiesResults.add(
-                new RecognizeLinkedEntitiesResult(documentId, null, error, null));
-        }
+                mapLinkedEntity(documentLinkedEntities.getEntities()))));
+        // Document errors
+        entityLinkingResult.getErrors().forEach(documentError -> linkedEntitiesResults.add(
+            new RecognizeLinkedEntitiesResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null)));
 
         return new TextAnalyticsPagedResponse<>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            linkedEntitiesResults,
-            null,
-            entityLinkingResult.getModelVersion(),
+            response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            linkedEntitiesResults, null, entityLinkingResult.getModelVersion(),
             entityLinkingResult.getStatistics() == null ? null
                 : toBatchStatistics(entityLinkingResult.getStatistics()));
     }

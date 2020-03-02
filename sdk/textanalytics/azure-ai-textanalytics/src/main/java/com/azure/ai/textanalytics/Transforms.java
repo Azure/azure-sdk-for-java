@@ -105,29 +105,6 @@ final class Transforms {
         return multiLanguageInputs;
     }
 
-//    /**
-//     * Convert the service returned model response {@link DocumentResultCollection} to a {@link SimpleResponse}.
-//     * If the response returned with an error, a {@link TextAnalyticsException} is thrown.
-//     *
-//     * @param response the {@link com.azure.ai.textanalytics.models.TextAnalyticsError}.
-//     * @return the {@link SimpleResponse}.
-//     *
-//     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
-//     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
-//     */
-//    static <T extends DocumentResult> Response<T> processSingleResponseErrorResult(
-//        Response<DocumentResultCollection<T>> response) {
-//        Iterator<T> responseIterator = response.getValue().iterator();
-//        T result = null;
-//        if (response.getStatusCode() == HttpURLConnection.HTTP_OK && responseIterator.hasNext()) {
-//            result = responseIterator.next();
-//            if (result.isError()) {
-//                throw LOGGER.logExceptionAsError(toTextAnalyticsException(result.getError()));
-//            }
-//        }
-//        return new SimpleResponse<>(response, result);
-//    }
-
     /**
      * Convert the incoming input {@link com.azure.ai.textanalytics.models.TextAnalyticsError}
      * to a {@link TextAnalyticsException}.

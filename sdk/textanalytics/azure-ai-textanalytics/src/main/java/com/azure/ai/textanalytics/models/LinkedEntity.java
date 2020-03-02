@@ -7,7 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The LinkedEntity model.
+ * The {@link LinkedEntity} model.
  */
 @Immutable
 public final class LinkedEntity {
@@ -42,7 +42,7 @@ public final class LinkedEntity {
     private final String dataSource;
 
     /**
-     * Creates a {@code LinkedEntity} model that describes linked entity.
+     * Creates a {@link LinkedEntity} model that describes linked entity.
      *
      * @param name entity Linking formal name
      * @param linkedEntityMatches list of instances this entity appears in the text

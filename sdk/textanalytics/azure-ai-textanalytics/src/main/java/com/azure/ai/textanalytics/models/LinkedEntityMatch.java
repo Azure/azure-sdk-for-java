@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The LinkedEntityMatch model.
+ * The {@link LinkedEntityMatch} model.
  */
 @Immutable
 public final class LinkedEntityMatch {

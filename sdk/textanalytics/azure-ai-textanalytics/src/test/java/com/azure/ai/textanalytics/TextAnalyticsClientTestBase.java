@@ -3,19 +3,24 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
+import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -74,8 +79,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private final Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
-
-    static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when RecognizeEntitiesResult returned with an error: Document text is empty. ErrorCodeValue: {invalidDocument}";
+    static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when RecognizeCategorizedEntitiesResult returned with an error: Document text is empty. ErrorCodeValue: {invalidDocument}";
     static final String INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE = "Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code. ErrorCodeValue: {invalidCountryHint}";
     static final String INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE = "Document text is empty. ErrorCodeValue: {invalidDocument}";
     static final String INVALID_KEY = "invalid key";
@@ -383,46 +387,60 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             : Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
     }
 
-//    static void validateDetectLanguage(boolean showStatistics, DocumentResultCollection<DetectLanguageResult> expected,
-//        DocumentResultCollection<DetectLanguageResult> actual) {
-////        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
-////            validatePrimaryLanguage(expectedItem.getPrimaryLanguage(), actualItem.getPrimaryLanguage());
-////        });
-//    }
+    static void validateDetectLanguage(boolean showStatistics, TextAnalyticsPagedResponse<DetectLanguageResult> expected,
+        TextAnalyticsPagedResponse<DetectLanguageResult> actual) {
+        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+            validatePrimaryLanguage(expectedItem.getPrimaryLanguage(), actualItem.getPrimaryLanguage()));
+    }
 
-    static void validateCategorizedEntity(boolean showStatistics,
+    static void validateCategorizedEntitiesWithPagedResponse(boolean showStatistics,
         TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult> expected,
         TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult> actual) {
 
         validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validateCategorizedEntities(expectedItem.getEntities().stream().collect(Collectors.toList()), actualItem.getEntities().stream().collect(Collectors.toList())));
+            validateCategorizedEntities(
+                expectedItem.getEntities().stream().collect(Collectors.toList()),
+                actualItem.getEntities().stream().collect(Collectors.toList())));
     }
 
-//    static void validatePiiEntity(boolean showStatistics, DocumentResultCollection<RecognizePiiEntitiesResult> expected,
-//        DocumentResultCollection<RecognizePiiEntitiesResult> actual) {
-////        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-////            validatePiiEntities(expectedItem.getEntities(), actualItem.getEntities()));
-//    }
+    static void validateCategorizedEntities(
+        TextAnalyticsPagedResponse<CategorizedEntity> expected, TextAnalyticsPagedResponse<CategorizedEntity> actual) {
+        validateCategorizedEntities(expected.getValue(), actual.getValue());
+    }
 
-//    static void validateLinkedEntity(boolean showStatistics,
-//        DocumentResultCollection<RecognizeLinkedEntitiesResult> expected,
-//        DocumentResultCollection<RecognizeLinkedEntitiesResult> actual) {
-////        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-////            validateLinkedEntities(expectedItem.getEntities(), actualItem.getEntities()));
-//    }
+    static void validatePiiEntityWithPagedResponse(boolean showStatistics,
+        TextAnalyticsPagedResponse<RecognizePiiEntitiesResult> expected,
+        TextAnalyticsPagedResponse<RecognizePiiEntitiesResult> actual) {
+        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+            validatePiiEntities(
+                expectedItem.getEntities().stream().collect(Collectors.toList()),
+                actualItem.getEntities().stream().collect(Collectors.toList())));
+    }
 
-//    static void validateExtractKeyPhrase(boolean showStatistics, DocumentResultCollection<ExtractKeyPhraseResult> expected,
-//        DocumentResultCollection<ExtractKeyPhraseResult> actual) {
-////        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-////            validateKeyPhrases(expectedItem.getKeyPhrases(), actualItem.getKeyPhrases()));
-//    }
-//
-//    static void validateSentiment(boolean showStatistics, DocumentResultCollection<AnalyzeSentimentResult> expected,
-//        DocumentResultCollection<AnalyzeSentimentResult> actual) {
-////        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
-////            validateAnalyzedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment());
-////        });
-//    }
+    static void validateLinkedEntitiesWithPagedResponse(boolean showStatistics,
+        TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult> expected,
+        TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult> actual) {
+        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+            validateLinkedEntities(
+                expectedItem.getEntities().stream().collect(Collectors.toList()),
+                actualItem.getEntities().stream().collect(Collectors.toList())));
+    }
+
+    static void validateExtractKeyPhraseWithPagedResponse(boolean showStatistics,
+        TextAnalyticsPagedResponse<ExtractKeyPhraseResult> expected,
+        TextAnalyticsPagedResponse<ExtractKeyPhraseResult> actual) {
+        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+            validateKeyPhrases(
+                expectedItem.getKeyPhrases().stream().collect(Collectors.toList()),
+                actualItem.getKeyPhrases().stream().collect(Collectors.toList())));
+    }
+
+    static void validateSentimentWithPagedResponse(boolean showStatistics,
+        TextAnalyticsPagedResponse<AnalyzeSentimentResult> expected,
+        TextAnalyticsPagedResponse<AnalyzeSentimentResult> actual) {
+        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+            validateAnalyzedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment()));
+    }
 
     /**
      * Helper method to validate a single detected language.
@@ -480,7 +498,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedLinkedEntity.getLanguage(), actualLinkedEntity.getLanguage());
         assertEquals(expectedLinkedEntity.getUrl(), actualLinkedEntity.getUrl());
         assertEquals(expectedLinkedEntity.getDataSourceEntityId(), actualLinkedEntity.getDataSourceEntityId());
-        validateLinkedEntityMatches(expectedLinkedEntity.getLinkedEntityMatches().stream().collect(Collectors.toList()), actualLinkedEntity.getLinkedEntityMatches().stream().collect(Collectors.toList()));
+        validateLinkedEntityMatches(expectedLinkedEntity.getLinkedEntityMatches().stream().collect(Collectors.toList()),
+            actualLinkedEntity.getLinkedEntityMatches().stream().collect(Collectors.toList()));
     }
 
     /**

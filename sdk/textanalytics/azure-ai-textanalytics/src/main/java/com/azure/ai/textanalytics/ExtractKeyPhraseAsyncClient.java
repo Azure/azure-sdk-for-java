@@ -9,8 +9,8 @@ import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsPagedFlux;
-import com.azure.ai.textanalytics.models.TextAnalyticsPagedResponse;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.http.rest.SimpleResponse;
@@ -39,7 +39,7 @@ class ExtractKeyPhraseAsyncClient {
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code ExtractKeyPhraseAsyncClient} that sends requests to the Text Analytics services's extract
+     * Create a {@link ExtractKeyPhraseAsyncClient} that sends requests to the Text Analytics services's extract
      * keyphrase endpoint.
      *
      * @param service The proxy service used to perform REST calls.
@@ -48,37 +48,19 @@ class ExtractKeyPhraseAsyncClient {
         this.service = service;
     }
 
-//    Mono<PagedResponse<String>> extractKeyPhrasesWithResponse(String text, String language, Context context) {
-//        Objects.requireNonNull(text, "'text' cannot be null.");
-//
-//        return extractKeyPhrasesBatchWithResponse(
-//            Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-//            .map(response -> new PagedResponseBase<>(
-//                response.getRequest(),
-//                response.getStatusCode(),
-//                response.getHeaders(),
-//                Transforms.processSingleResponseErrorResult(response).getValue().getKeyPhrases(),
-//                null,
-//                null
-//            ));
-//    }
-
-//    PagedFlux<String> extractKeyPhrases(String text, String language, Context context) {
-//        return new PagedFlux<>(() -> extractKeyPhrasesWithResponse(text, language, context));
-//    }
-
     /**
-     * a
-     * @param text a
-     * @param language a
+     * Helper function that extracts a single text inputs and returns {@link TextAnalyticsPagedFlux} that is a paged
+     * flux contains extract key phrases.
      *
-     * @return a
+     * @param text An input text.
+     * @param language The language hint.
+     *
+     * @return The {@link TextAnalyticsPagedFlux} of extracted key phrases strings.
      */
     TextAnalyticsPagedFlux<String> extractKeyPhrasesSingleText(String text, String language) {
         return new TextAnalyticsPagedFlux<>(() ->
             (continuationToken, pageSize) -> extractKeyPhrases(
-                Collections.singletonList(new TextDocumentInput("0", text, language)), null)
-                .byPage()
+                Collections.singletonList(new TextDocumentInput("0", text, language)), null).byPage()
                 .map(resOfResult -> {
                     Iterator<ExtractKeyPhraseResult> iterator = resOfResult.getValue().iterator();
                     // Collection will never empty
@@ -100,25 +82,17 @@ class ExtractKeyPhraseAsyncClient {
                 }));
     }
 
-//    Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesWithResponse(
-//        List<String> textInputs, String language,  TextAnalyticsRequestOptions options, Context context) {
-//        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-//
-//        List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
-//            new TextDocumentInput(index, value, language));
-//        return extractKeyPhrasesBatchWithResponse(documentInputs, options, context);
-//    }
-
-
     /**
-     * // TODO: add java doc stirng
-     * @param textInputs The given collection of input texts.
-     * @param options a
+     * Helper function that extracts a batch of text inputs and returns {@link TextAnalyticsPagedFlux} that is a paged
+     * flux contains {@link ExtractKeyPhraseResult}.
      *
-     * @return a
+     * @param textInputs A batch of input texts.
+     * @param options The request options, such as the training model version and to show statistics boolean.
+     *
+     * @return The {@link TextAnalyticsPagedFlux} of {@link ExtractKeyPhraseResult}.
      */
     TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrases(Iterable<TextDocumentInput> textInputs,
-                                                                     TextAnalyticsRequestOptions options) {
+        TextAnalyticsRequestOptions options) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
@@ -138,33 +112,15 @@ class ExtractKeyPhraseAsyncClient {
         }
     }
 
-
-//    Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesBatchWithResponse(
-//        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-//        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-//
-//        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-//            .setDocuments(toMultiLanguageInput(textInputs));
-//        return service.keyPhrasesWithRestResponseAsync(
-//            batchInput,
-//            options == null ? null : options.getModelVersion(),
-//            options == null ? null : options.showStatistics(), context)
-//            .doOnSubscribe(ignoredValue -> logger.info("A batch of key phrases input - {}", textInputs.toString()))
-//            .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
-//            .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
-//            .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
-//    }
-
-
     /**
-     *  Helper function that calling service with max overloaded parameters and returns
-     *  {@link TextAnalyticsPagedFlux} that is the collection of entity document results.
+     * Helper function that calling service with max overloaded parameters and returns {@link TextAnalyticsPagedFlux}
+     * that is a paged flux contains {@link ExtractKeyPhraseResult}.
      *
-     * @param textInputs The given collection of input texts.
-     * @param options aa
-     * @param context a
+     * @param textInputs A batch of input texts.
+     * @param options The request options, such as the training model version and to show statistics boolean.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return text analytics flux of {@link ExtractKeyPhraseResult}
+     * @return The {@link TextAnalyticsPagedFlux} of {@link ExtractKeyPhraseResult}.
      */
     TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrasesBatchWithContext(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
@@ -193,9 +149,9 @@ class ExtractKeyPhraseAsyncClient {
     private TextAnalyticsPagedResponse<ExtractKeyPhraseResult> toTextAnalyticsPagedResponse(
         final SimpleResponse<KeyPhraseResult> response) {
 
-        KeyPhraseResult keyPhraseResult = response.getValue();
+        final KeyPhraseResult keyPhraseResult = response.getValue();
 
-        List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
+        final List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
         for (DocumentKeyPhrases documentKeyPhrases : keyPhraseResult.getDocuments()) {
             final String documentId = documentKeyPhrases.getId();
             keyPhraseResultList.add(new ExtractKeyPhraseResult(

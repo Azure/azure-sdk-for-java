@@ -20,7 +20,7 @@ public class DocumentResult {
     private final boolean isError;
 
     /**
-     * Create a {@code DocumentResult} model that maintains document id, information about the document payload,
+     * Create a {@link DocumentResult} model that maintains document id, information about the document payload,
      * and document error.
      *
      * @param id unique, non-empty document identifier.
