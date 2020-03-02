@@ -88,10 +88,14 @@ class InstanceFailoverGroupsImpl extends WrapperImpl<InstanceFailoverGroupsInner
     public Observable<InstanceFailoverGroup> getAsync(String resourceGroupName, String locationName, String failoverGroupName) {
         InstanceFailoverGroupsInner client = this.inner();
         return client.getAsync(resourceGroupName, locationName, failoverGroupName)
-        .map(new Func1<InstanceFailoverGroupInner, InstanceFailoverGroup>() {
+        .flatMap(new Func1<InstanceFailoverGroupInner, Observable<InstanceFailoverGroup>>() {
             @Override
-            public InstanceFailoverGroup call(InstanceFailoverGroupInner inner) {
-                return wrapModel(inner);
+            public Observable<InstanceFailoverGroup> call(InstanceFailoverGroupInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((InstanceFailoverGroup)wrapModel(inner));
+                }
             }
        });
     }
