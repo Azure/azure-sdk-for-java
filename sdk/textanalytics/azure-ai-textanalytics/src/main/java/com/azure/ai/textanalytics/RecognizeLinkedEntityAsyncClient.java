@@ -100,7 +100,7 @@ class RecognizeLinkedEntityAsyncClient {
                 service.entitiesLinkingWithRestResponseAsync(
                     new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                     options == null ? null : options.getModelVersion(),
-                    options == null ? null : options.showStatistics(), context)
+                    options == null ? null : options.isStatisticsShown(), context)
                     .doOnSubscribe(ignoredValue ->
                         logger.info("A batch of linked entities input - {}", textInputs.toString()))
                     .doOnSuccess(response -> logger.info("A batch of linked entities output - {}", response.getValue()))
@@ -130,7 +130,7 @@ class RecognizeLinkedEntityAsyncClient {
             service.entitiesLinkingWithRestResponseAsync(
                 new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                 options == null ? null : options.getModelVersion(),
-                options == null ? null : options.showStatistics(), context)
+                options == null ? null : options.isStatisticsShown(), context)
                 .doOnSubscribe(ignoredValue ->
                     logger.info("A batch of linked entities input - {}", textInputs.toString()))
                 .doOnSuccess(response -> logger.info("A batch of linked entities output - {}", response.getValue()))

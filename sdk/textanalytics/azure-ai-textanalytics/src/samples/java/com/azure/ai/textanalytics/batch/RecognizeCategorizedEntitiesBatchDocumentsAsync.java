@@ -37,7 +37,7 @@ public class RecognizeCategorizedEntitiesBatchDocumentsAsync {
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         // Recognizing batch entities
         client.recognizeCategorizedEntitiesBatch(inputs, requestOptions).byPage().subscribe(
@@ -65,8 +65,8 @@ public class RecognizeCategorizedEntitiesBatchDocumentsAsync {
                                 entity.getText(),
                                 entity.getCategory(),
                                 entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                                entity.getOffset(),
-                                entity.getLength(),
+                                entity.getGraphemeOffset(),
+                                entity.getGraphemeLength(),
                                 entity.getScore()));
                     }
                 });

@@ -49,8 +49,8 @@ public class RecognizePiiBatchDocuments {
                         entity.getText(),
                         entity.getCategory(),
                         entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                        entity.getOffset(),
-                        entity.getLength(),
+                        entity.getGraphemeOffset(),
+                        entity.getGraphemeLength(),
                         entity.getScore()));
             }
         });

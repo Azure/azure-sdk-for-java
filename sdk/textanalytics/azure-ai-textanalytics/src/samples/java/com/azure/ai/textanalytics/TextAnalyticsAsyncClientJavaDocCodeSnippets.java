@@ -8,7 +8,6 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -142,7 +141,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         );
 
         // Request options: show statistics and model version
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         textAnalyticsAsyncClient.detectLanguageBatch(detectLanguageInputs1, requestOptions).byPage()
             .subscribe(response -> {
@@ -214,8 +213,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     entity.getCategory(),
                     entity.getSubCategory() == null || entity.getSubCategory().isEmpty()
                         ? "N/A" : entity.getSubCategory(),
-                    entity.getOffset(),
-                    entity.getLength(),
+                    entity.getGraphemeOffset(),
+                    entity.getGraphemeLength(),
                     entity.getScore())));
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable
@@ -255,7 +254,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "I work at Microsoft."));
 
         // Request options: show statistics and model version
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         textAnalyticsAsyncClient.recognizeEntitiesBatch(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
@@ -377,7 +376,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "Visa card 0111 1111 1111 1111."));
 
         // Request options: show statistics and model version
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         textAnalyticsAsyncClient.recognizePiiEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
@@ -421,8 +420,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
                 System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
                     linkedEntityMatch.getText(),
-                    linkedEntityMatch.getOffset(),
-                    linkedEntityMatch.getLength(),
+                    linkedEntityMatch.getGraphemeOffset(),
+                    linkedEntityMatch.getGraphemeLength(),
                     linkedEntityMatch.getScore());
             }
         });
@@ -447,8 +446,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
                     System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
                         linkedEntityMatch.getText(),
-                        linkedEntityMatch.getOffset(),
-                        linkedEntityMatch.getLength(),
+                        linkedEntityMatch.getGraphemeOffset(),
+                        linkedEntityMatch.getGraphemeLength(),
                         linkedEntityMatch.getScore());
                 }
             });
@@ -485,8 +484,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
                         System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
                             linkedEntityMatch.getText(),
-                            linkedEntityMatch.getOffset(),
-                            linkedEntityMatch.getLength(),
+                            linkedEntityMatch.getGraphemeOffset(),
+                            linkedEntityMatch.getGraphemeLength(),
                             linkedEntityMatch.getScore());
                     }
                 }
@@ -525,8 +524,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
                             System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
                                 linkedEntityMatch.getText(),
-                                linkedEntityMatch.getOffset(),
-                                linkedEntityMatch.getLength(),
+                                linkedEntityMatch.getGraphemeOffset(),
+                                linkedEntityMatch.getGraphemeLength(),
                                 linkedEntityMatch.getScore());
                         }
                     }
@@ -546,7 +545,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "Mount Shasta has lenticular clouds."));
 
         // Request options: show statistics and model version
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         textAnalyticsAsyncClient.recognizeLinkedEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
@@ -570,8 +569,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
                             System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
                                 linkedEntityMatch.getText(),
-                                linkedEntityMatch.getOffset(),
-                                linkedEntityMatch.getLength(),
+                                linkedEntityMatch.getGraphemeOffset(),
+                                linkedEntityMatch.getGraphemeLength(),
                                 linkedEntityMatch.getScore());
                         }
                     }
@@ -669,7 +668,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "I work at Microsoft."));
 
         // Request options: show statistics and model version
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         textAnalyticsAsyncClient.extractKeyPhrasesBatchWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
@@ -814,7 +813,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "The restaurant had amazing gnocchi."));
 
         // Request options: show statistics and model version
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         textAnalyticsAsyncClient.analyzeSentimentBatchWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {

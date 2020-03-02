@@ -27,8 +27,8 @@ public class AnalyzeSentimentBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("b2f8b7b697c348dcb0e30055d49f3d0f"))
-            .endpoint("https://javatextanalyticstestresources.cognitiveservices.azure.com/")
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildAsyncClient();
 
         // The texts that need be analyzed.
@@ -38,7 +38,7 @@ public class AnalyzeSentimentBatchDocumentsAsync {
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         // Analyzing batch sentiments
         client.analyzeSentimentBatch(inputs, requestOptions).byPage().subscribe(
@@ -73,8 +73,8 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                                 sentenceSentiment.getConfidenceScores().getPositive(),
                                 sentenceSentiment.getConfidenceScores().getNeutral(),
                                 sentenceSentiment.getConfidenceScores().getNegative(),
-                                sentenceSentiment.getLength(),
-                                sentenceSentiment.getOffset()));
+                                sentenceSentiment.getGraphemeLength(),
+                                sentenceSentiment.getGraphemeOffset()));
                     }
                 });
             },

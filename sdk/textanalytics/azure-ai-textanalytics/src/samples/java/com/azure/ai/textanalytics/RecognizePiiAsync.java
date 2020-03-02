@@ -34,8 +34,8 @@ public class RecognizePiiAsync {
                 entity.getText(),
                 entity.getCategory(),
                 entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                entity.getOffset(),
-                entity.getLength(),
+                entity.getGraphemeOffset(),
+                entity.getGraphemeLength(),
                 entity.getScore()),
             error -> System.err.printf(
                 "There was an error recognizing Personally Identifiable Information entities of the text. %s%n", error),

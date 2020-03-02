@@ -34,8 +34,8 @@ public class RecognizeLinkedEntities {
             linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
                 System.out.printf("(Linked Entity Match) Text: %s, offset: %s, length: %s, score: %.2f.%n",
                     linkedEntityMatch.getText(),
-                    linkedEntityMatch.getOffset(),
-                    linkedEntityMatch.getLength(),
+                    linkedEntityMatch.getGraphemeOffset(),
+                    linkedEntityMatch.getGraphemeLength(),
                     linkedEntityMatch.getScore()));
         });
     }

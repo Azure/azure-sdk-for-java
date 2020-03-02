@@ -32,8 +32,8 @@ public class RecognizeCategorizedEntitiesAsync {
                 entity.getText(),
                 entity.getCategory(),
                 entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                entity.getOffset(),
-                entity.getLength(),
+                entity.getGraphemeOffset(),
+                entity.getGraphemeLength(),
                 entity.getScore()),
             error -> System.err.println("There was an error recognizing entities of the text." + error),
             () -> System.out.println("Entities recognized."));

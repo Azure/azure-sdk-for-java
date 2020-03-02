@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The CategorizedEntity model.
+ * The {@link CategorizedEntity} model.
  */
 @Immutable
 public final class CategorizedEntity {
@@ -26,12 +26,12 @@ public final class CategorizedEntity {
     private final String subCategory;
 
     /*
-     * Start position (in Unicode characters) for the entity text.
+     * Start position for the entity text.
      */
     private final int offset;
 
     /*
-     * Length (in Unicode characters) for the entity text.
+     * Length for the entity text.
      */
     private final int length;
 
@@ -43,12 +43,12 @@ public final class CategorizedEntity {
     /**
      * Creates a {@code CategorizedEntity} model that describes entity.
      *
-     * @param text categorizedEntity text as appears in the request
-     * @param category categorizedEntity category, such as Person/Location/Org/SSN etc
-     * @param subCategory categorizedEntity sub category, such as Age/Year/TimeRange etc
-     * @param offset start position (in Unicode characters) for the entity text
-     * @param length length (in Unicode characters) for the entity text
-     * @param score confidence score between 0 and 1 of the extracted entity
+     * @param text Entity text as appears in the request.
+     * @param category Entity category, such as Person/Location/Org/SSN etc.
+     * @param subCategory Entity sub category, such as Age/Year/TimeRange etc.
+     * @param offset Grapheme start position for the entity text.
+     * @param length Grapheme length for the entity text.
+     * @param score Confidence score between 0 and 1 of the extracted entity.
      */
     public CategorizedEntity(String text, String category, String subCategory, int offset, int length, double score) {
         this.text = text;
@@ -60,7 +60,7 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the text property: CategorizedEntity text as appears in the request.
+     * Get the text property: Categorized entity text as appears in the request.
      *
      * @return the text value.
      */
@@ -69,7 +69,7 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the category property: CategorizedEntity category, such as Person/Location/Org/SSN etc.
+     * Get the category property: Categorized entity category, such as Person/Location/Org/SSN etc.
      *
      * @return the category value.
      */
@@ -78,7 +78,7 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the subcategory property: CategorizedEntity sub category, such as Age/Year/TimeRange etc.
+     * Get the subcategory property: Categorized entity sub category, such as Age/Year/TimeRange etc.
      *
      * @return the subcategory value.
      */
@@ -87,20 +87,20 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the offset property: Start position (in Unicode characters) for the entity text.
+     * Get the offset property: Grapheme start position for the entity text.
      *
      * @return the offset value.
      */
-    public int getOffset() {
+    public int getGraphemeOffset() {
         return this.offset;
     }
 
     /**
-     * Get the length property: Length (in Unicode characters) for the entity text.
+     * Get the length property: Grapheme length for the entity text.
      *
      * @return the length value.
      */
-    public int getLength() {
+    public int getGraphemeLength() {
         return this.length;
     }
 

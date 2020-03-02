@@ -99,7 +99,7 @@ class ExtractKeyPhraseAsyncClient {
                 service.keyPhrasesWithRestResponseAsync(
                     new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                     options == null ? null : options.getModelVersion(),
-                    options == null ? null : options.showStatistics(), context)
+                    options == null ? null : options.isStatisticsShown(), context)
                     .doOnSubscribe(ignoredValue ->
                         logger.info("A batch of key phrases input - {}", textInputs.toString()))
                     .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
@@ -130,7 +130,7 @@ class ExtractKeyPhraseAsyncClient {
             service.keyPhrasesWithRestResponseAsync(
                 new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                 options == null ? null : options.getModelVersion(),
-                options == null ? null : options.showStatistics(), context)
+                options == null ? null : options.isStatisticsShown(), context)
                 .doOnSubscribe(ignoredValue -> logger.info("A batch of key phrases input - {}", textInputs.toString()))
                 .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
                 .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))

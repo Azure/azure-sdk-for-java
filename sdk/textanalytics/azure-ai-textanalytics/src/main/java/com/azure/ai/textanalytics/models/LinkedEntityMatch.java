@@ -22,23 +22,23 @@ public final class LinkedEntityMatch {
     private final String text;
 
     /*
-     * Start position (in Unicode characters) for the entity match text.
+     * Grapheme start position for the entity match text.
      */
     private final int offset;
 
     /*
-     * Length (in Unicode characters) for the entity match text.
+     * Grapheme length for the entity match text.
      */
     private final int length;
 
     /**
-     * Creates a {@code LinkedEntityMatch} model that describes linked entity match.
+     * Creates a {@link LinkedEntityMatch} model that describes linked entity match.
      *
-     * @param text entity text as appears in the request
-     * @param score if a well-known item is recognized, a decimal number denoting the
-     * confidence level between 0 and 1 will be returned
-     * @param offset start position (in Unicode characters) for the entity match text
-     * @param length length (in Unicode characters) for the entity match text
+     * @param text The entity text as appears in the request.
+     * @param score If a well-known item is recognized, a decimal number denoting the.
+     * confidence level between 0 and 1 will be returned.
+     * @param offset Grapheme start position for the entity match text.
+     * @param length Grapheme length for the entity match text.
      */
     public LinkedEntityMatch(String text, double score, int offset, int length) {
         this.text = text;
@@ -51,7 +51,7 @@ public final class LinkedEntityMatch {
      * Get the score property: If a well-known item is recognized, a decimal
      * number denoting the confidence level between 0 and 1 will be returned.
      *
-     * @return the score value.
+     * @return The score value.
      */
     public double getScore() {
         return this.score;
@@ -60,27 +60,27 @@ public final class LinkedEntityMatch {
     /**
      * Get the text property: Entity text as appears in the request.
      *
-     * @return the text value.
+     * @return The text value.
      */
     public String getText() {
         return this.text;
     }
 
     /**
-     * Get the offset property: Start position (in Unicode characters) for the entity match text.
+     * Get the offset property: Grapheme start position for the entity match text.
      *
-     * @return the offset value.
+     * @return The offset value.
      */
-    public int getOffset() {
+    public int getGraphemeOffset() {
         return this.offset;
     }
 
     /**
-     * Get the length property: Length (in Unicode characters) for the entity match text.
+     * Get the length property: Grapheme Length for the entity match text.
      *
-     * @return the length value.
+     * @return The length value.
      */
-    public int getLength() {
+    public int getGraphemeLength() {
         return this.length;
     }
 }

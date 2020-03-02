@@ -38,7 +38,7 @@ public class DetectLanguageBatchDocumentsAsync {
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         // Detecting batch languages
         client.detectLanguageBatch(inputs, requestOptions).byPage().subscribe(

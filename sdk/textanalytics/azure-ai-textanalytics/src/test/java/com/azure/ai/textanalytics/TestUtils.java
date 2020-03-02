@@ -62,6 +62,10 @@ final class TestUtils {
     static final List<String> DETECT_LANGUAGE_INPUTS = Arrays.asList(
         "This is written in English", "Este es un document escrito en Español.", "~@!~:)");
 
+    static final List<String> EMOJI_INPUTS = Arrays.asList(
+        "\uD83D\uDC69 This is a emoji.",
+        "This \uD83D\uDC69 is a Emoji at second word.");
+
     static List<DetectLanguageInput> getDetectLanguageInputs() {
         return Arrays.asList(
             new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US"),

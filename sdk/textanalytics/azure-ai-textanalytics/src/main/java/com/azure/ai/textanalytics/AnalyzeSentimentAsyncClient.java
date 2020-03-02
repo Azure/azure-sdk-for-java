@@ -68,7 +68,7 @@ class AnalyzeSentimentAsyncClient {
                 service.sentimentWithRestResponseAsync(
                     new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                     options == null ? null : options.getModelVersion(),
-                    options == null ? null : options.showStatistics(), context)
+                    options == null ? null : options.isStatisticsShown(), context)
                     .doOnSubscribe(ignoredValue ->
                         logger.info("A batch of text sentiment input - {}", textInputs.toString()))
                     .doOnSuccess(response -> logger.info("A batch of text sentiment output - {}", response))
@@ -100,7 +100,7 @@ class AnalyzeSentimentAsyncClient {
             service.sentimentWithRestResponseAsync(
                 new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                 options == null ? null : options.getModelVersion(),
-                options == null ? null : options.showStatistics(), context)
+                options == null ? null : options.isStatisticsShown(), context)
                 .doOnSubscribe(ignoredValue ->
                     logger.info("A batch of text sentiment input - {}", textInputs.toString()))
                 .doOnSuccess(response -> logger.info("A batch of text sentiment output - {}", response))

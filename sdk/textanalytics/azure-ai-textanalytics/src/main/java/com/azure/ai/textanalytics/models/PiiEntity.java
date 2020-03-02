@@ -26,12 +26,12 @@ public final class PiiEntity {
     private final String subCategory;
 
     /*
-     * Start position (in Unicode characters) for the entity text.
+     * Grapheme start position for the entity text.
      */
     private final int offset;
 
     /*
-     * Length (in Unicode characters) for the entity text.
+     * Grapheme length for the entity text.
      */
     private final int length;
 
@@ -46,9 +46,9 @@ public final class PiiEntity {
      * @param text Personally Identifiable Information entity text as appears in the request
      * @param category Personally Identifiable Information entity category, such as Person/Location/Org/SSN etc
      * @param subCategory Personally Identifiable Information entity sub category, such as Age/Year/TimeRange etc
-     * @param offset start position (in Unicode characters) for the entity text
-     * @param length length (in Unicode characters) for the entity text
-     * @param score confidence score between 0 and 1 of the extracted entity
+     * @param offset Grapheme start position for the entity text
+     * @param length Grapheme length for the entity text
+     * @param score Confidence score between 0 and 1 of the extracted entity
      */
     public PiiEntity(String text, String category, String subCategory, int offset, int length, double score) {
         this.text = text;
@@ -89,20 +89,20 @@ public final class PiiEntity {
     }
 
     /**
-     * Get the offset property: Start position (in Unicode characters) for the entity text.
+     * Get the offset property: Grapheme start position for the entity text.
      *
      * @return the offset value.
      */
-    public int getOffset() {
+    public int getGraphemeOffset() {
         return this.offset;
     }
 
     /**
-     * Get the length property: Length (in Unicode characters) for the entity text.
+     * Get the length property: Grapheme length for the entity text.
      *
      * @return the length value.
      */
-    public int getLength() {
+    public int getGraphemeLength() {
         return this.length;
     }
 

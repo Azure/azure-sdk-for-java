@@ -11,7 +11,7 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class TextAnalyticsRequestOptions {
     private String modelVersion;
-    private boolean showStatistics;
+    private boolean isStatisticsShown;
 
     /**
      * Gets the version of the text analytics model used by this operation.
@@ -35,23 +35,23 @@ public final class TextAnalyticsRequestOptions {
     }
 
     /**
-     * Get the value of {@code showStatistics}.
+     * Get the value of {@code isStatisticsShown}.
      *
-     * @return the value of {@code showStatistics}
+     * @return the value of {@code isStatisticsShown}
      */
-    public boolean showStatistics() {
-        return showStatistics;
+    public boolean isStatisticsShown() {
+        return isStatisticsShown;
     }
 
     /**
-     * Set the value of {@code showStatistics}.
+     * Set the value of {@code isStatisticsShown}.
      *
-     * @param showStatistics if a boolean value was specified in the request this field will contain
+     * @param statisticsShown if a boolean value was specified in the request this field will contain
      * information about the document payload
      * @return the TextAnalyticsRequestOptions object itself
      */
-    public TextAnalyticsRequestOptions setShowStatistics(boolean showStatistics) {
-        this.showStatistics = showStatistics;
+    public TextAnalyticsRequestOptions setStatisticsShown(boolean statisticsShown) {
+        this.isStatisticsShown = statisticsShown;
         return this;
     }
 }

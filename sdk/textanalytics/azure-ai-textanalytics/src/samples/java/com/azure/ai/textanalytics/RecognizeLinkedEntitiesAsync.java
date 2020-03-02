@@ -37,8 +37,8 @@ public class RecognizeLinkedEntitiesAsync {
                 linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch -> System.out.printf(
                         "(Linked Entity Match) Text: %s, offset: %s, length: %s, score: %.2f.%n",
                         linkedEntityMatch.getText(),
-                        linkedEntityMatch.getOffset(),
-                        linkedEntityMatch.getLength(),
+                        linkedEntityMatch.getGraphemeOffset(),
+                        linkedEntityMatch.getGraphemeLength(),
                         linkedEntityMatch.getScore()));
             },
             error -> System.err.println("There was an error recognizing linked entity of the text." + error),

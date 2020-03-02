@@ -145,8 +145,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         );
 
         DocumentResultCollection<DetectLanguageResult> batchResult =
-            textAnalyticsClient.detectLanguageBatch(detectLanguageInputs,
-                new TextAnalyticsRequestOptions().setShowStatistics(true), Context.NONE).getValue();
+            textAnalyticsClient.detectLanguageBatchWithResponse(detectLanguageInputs,
+                new TextAnalyticsRequestOptions().setStatisticsShown(true), Context.NONE).getValue();
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = batchResult.getStatistics();
@@ -258,8 +258,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         );
 
         DocumentResultCollection<RecognizeEntitiesResult> recognizeEntitiesResults =
-            textAnalyticsClient.recognizeEntitiesBatch(textDocumentInputs,
-                new TextAnalyticsRequestOptions().setShowStatistics(true), Context.NONE).getValue();
+            textAnalyticsClient.recognizeEntitiesBatchWithResponse(textDocumentInputs,
+                new TextAnalyticsRequestOptions().setStatisticsShown(true), Context.NONE).getValue();
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResults.getStatistics();
@@ -370,7 +370,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         DocumentResultCollection<RecognizePiiEntitiesResult> recognizePiiEntitiesResults =
             textAnalyticsClient.recognizePiiEntitiesBatchWithResponse(textDocumentInputs,
-                new TextAnalyticsRequestOptions().setShowStatistics(true), Context.NONE).getValue();
+                new TextAnalyticsRequestOptions().setStatisticsShown(true), Context.NONE).getValue();
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = recognizePiiEntitiesResults.getStatistics();
@@ -406,8 +406,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
                 System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
                     linkedEntityMatch.getText(),
-                    linkedEntityMatch.getOffset(),
-                    linkedEntityMatch.getLength(),
+                    linkedEntityMatch.getGraphemeOffset(),
+                    linkedEntityMatch.getGraphemeLength(),
                     linkedEntityMatch.getScore());
             }
         }
@@ -430,8 +430,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
                 System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
                     linkedEntityMatch.getText(),
-                    linkedEntityMatch.getOffset(),
-                    linkedEntityMatch.getLength(),
+                    linkedEntityMatch.getGraphemeOffset(),
+                    linkedEntityMatch.getGraphemeLength(),
                     linkedEntityMatch.getScore());
             }
         }
@@ -466,8 +466,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
                     System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
                         linkedEntityMatch.getText(),
-                        linkedEntityMatch.getOffset(),
-                        linkedEntityMatch.getLength(),
+                        linkedEntityMatch.getGraphemeOffset(),
+                        linkedEntityMatch.getGraphemeLength(),
                         linkedEntityMatch.getScore());
                 }
             }
@@ -504,8 +504,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
                     System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
                         linkedEntityMatch.getText(),
-                        linkedEntityMatch.getOffset(),
-                        linkedEntityMatch.getLength(),
+                        linkedEntityMatch.getGraphemeOffset(),
+                        linkedEntityMatch.getGraphemeLength(),
                         linkedEntityMatch.getScore());
                 }
             }
@@ -525,7 +525,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
         DocumentResultCollection<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResults =
             textAnalyticsClient.recognizeLinkedEntitiesBatchWithResponse(textDocumentInputs,
-                new TextAnalyticsRequestOptions().setShowStatistics(true), Context.NONE).getValue();
+                new TextAnalyticsRequestOptions().setStatisticsShown(true), Context.NONE).getValue();
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = recognizeLinkedEntitiesResults.getStatistics();
@@ -544,8 +544,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
                     System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
                         linkedEntityMatch.getText(),
-                        linkedEntityMatch.getOffset(),
-                        linkedEntityMatch.getLength(),
+                        linkedEntityMatch.getGraphemeOffset(),
+                        linkedEntityMatch.getGraphemeLength(),
                         linkedEntityMatch.getScore());
                 }
             }
@@ -657,7 +657,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // Extracting batch key phrases
         DocumentResultCollection<ExtractKeyPhraseResult> extractKeyPhraseResults =
             textAnalyticsClient.extractKeyPhrasesBatchWithResponse(textDocumentInputs,
-                new TextAnalyticsRequestOptions().setShowStatistics(true), Context.NONE).getValue();
+                new TextAnalyticsRequestOptions().setStatisticsShown(true), Context.NONE).getValue();
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
@@ -828,7 +828,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         // Analyzing batch sentiments
         DocumentResultCollection<AnalyzeSentimentResult> sentimentBatchResult =
             textAnalyticsClient.analyzeSentimentBatchWithResponse(textDocumentInputs,
-                new TextAnalyticsRequestOptions().setShowStatistics(true), Context.NONE).getValue();
+                new TextAnalyticsRequestOptions().setStatisticsShown(true), Context.NONE).getValue();
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = sentimentBatchResult.getStatistics();

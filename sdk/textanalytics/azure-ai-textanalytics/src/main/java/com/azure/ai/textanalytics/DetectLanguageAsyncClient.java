@@ -68,7 +68,7 @@ class DetectLanguageAsyncClient {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 service.languagesWithRestResponseAsync(new LanguageBatchInput().setDocuments(multiLanguageInputs),
                     options == null ? null : options.getModelVersion(),
-                    options == null ? null : options.showStatistics(), context)
+                    options == null ? null : options.isStatisticsShown(), context)
                     .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", textInputs.toString()))
                     .doOnSuccess(response ->
                         logger.info("A batch of detected language output - {}", response.getValue()))
@@ -103,7 +103,7 @@ class DetectLanguageAsyncClient {
             service.languagesWithRestResponseAsync(
                 new LanguageBatchInput().setDocuments(multiLanguageInputs),
                 options == null ? null : options.getModelVersion(),
-                options == null ? null : options.showStatistics(), context)
+                options == null ? null : options.isStatisticsShown(), context)
                 .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", textInputs.toString()))
                 .doOnSuccess(response -> logger.info("A batch of detected language output - {}", response.getValue()))
                 .doOnError(error -> logger.warning("Failed to detect language - {}", error))

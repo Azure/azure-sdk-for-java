@@ -252,7 +252,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextAnalyticsRequestOptions> testRunner) {
         final List<DetectLanguageInput> detectLanguageInputs = TestUtils.getDetectLanguageInputs();
 
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
         testRunner.accept(detectLanguageInputs, options);
     }
 
@@ -294,7 +294,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void recognizeBatchCategorizedEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(CATEGORIZED_ENTITY_INPUTS);
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         testRunner.accept(textDocumentInputs, options);
     }
@@ -315,7 +315,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void recognizeBatchPiiEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(PII_ENTITY_INPUTS);
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         testRunner.accept(textDocumentInputs, options);
     }
@@ -323,7 +323,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     // Linked Entity runner
     void recognizeBatchLinkedEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         testRunner.accept(TestUtils.getTextDocumentInputs(LINKED_ENTITY_INPUTS), options);
     }
@@ -344,7 +344,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void extractBatchKeyPhrasesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(KEY_PHRASE_INPUTS);
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
         testRunner.accept(textDocumentInputs, options);
     }
 
@@ -377,7 +377,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(SENTIMENT_INPUTS);
 
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
         testRunner.accept(textDocumentInputs, options);
     }
 
@@ -462,8 +462,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      */
     static void validateCategorizedEntity(
         CategorizedEntity expectedCategorizedEntity, CategorizedEntity actualCategorizedEntity) {
-        assertEquals(expectedCategorizedEntity.getLength() > 0, actualCategorizedEntity.getLength() > 0);
-        assertEquals(expectedCategorizedEntity.getOffset(), actualCategorizedEntity.getOffset());
+        assertEquals(expectedCategorizedEntity.getGraphemeLength() > 0, actualCategorizedEntity.getGraphemeLength() > 0);
+        assertEquals(expectedCategorizedEntity.getGraphemeOffset(), actualCategorizedEntity.getGraphemeOffset());
         assertEquals(expectedCategorizedEntity.getSubCategory(), actualCategorizedEntity.getSubCategory());
         assertEquals(expectedCategorizedEntity.getText(), actualCategorizedEntity.getText());
         assertEquals(expectedCategorizedEntity.getCategory(), actualCategorizedEntity.getCategory());
@@ -478,8 +478,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      */
     static void validatePiiEntity(
         PiiEntity expectedPiiEntity, PiiEntity actualPiiEntity) {
-        assertEquals(expectedPiiEntity.getLength() > 0, actualPiiEntity.getLength() > 0);
-        assertEquals(expectedPiiEntity.getOffset(), actualPiiEntity.getOffset());
+        assertEquals(expectedPiiEntity.getGraphemeLength() > 0, actualPiiEntity.getGraphemeLength() > 0);
+        assertEquals(expectedPiiEntity.getGraphemeOffset(), actualPiiEntity.getGraphemeOffset());
         assertEquals(expectedPiiEntity.getSubCategory(), actualPiiEntity.getSubCategory());
         assertEquals(expectedPiiEntity.getText(), actualPiiEntity.getText());
         assertEquals(expectedPiiEntity.getCategory(), actualPiiEntity.getCategory());
@@ -600,8 +600,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateSentenceSentiment(SentenceSentiment expectedSentiment, SentenceSentiment actualSentiment) {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
         // score per label doesn't need to verify since service can return it with different values
-        assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
-        assertTrue(actualSentiment.getLength() > 0);
+        assertEquals(expectedSentiment.getGraphemeOffset(), actualSentiment.getGraphemeOffset());
+        assertTrue(actualSentiment.getGraphemeLength() > 0);
     }
 
     /**
@@ -694,8 +694,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             LinkedEntityMatch expectedLinkedEntity = expectedLinkedEntityMatches.get(i);
             LinkedEntityMatch actualLinkedEntity = actualLinkedEntityMatches.get(i);
             assertEquals(expectedLinkedEntity.getText(), actualLinkedEntity.getText());
-            assertEquals(expectedLinkedEntity.getLength() > 0, actualLinkedEntity.getLength() > 0);
-            assertEquals(expectedLinkedEntity.getOffset(), actualLinkedEntity.getOffset());
+            assertEquals(expectedLinkedEntity.getGraphemeLength() > 0, actualLinkedEntity.getGraphemeLength() > 0);
+            assertEquals(expectedLinkedEntity.getGraphemeOffset(), actualLinkedEntity.getGraphemeOffset());
             assertNotNull(actualLinkedEntity.getScore());
         }
     }

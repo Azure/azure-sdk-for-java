@@ -37,7 +37,7 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         // Extracting batch key phrases
         client.extractKeyPhrasesBatch(inputs, requestOptions).byPage().subscribe(
