@@ -16,8 +16,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-
-
 import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
