@@ -1,6 +1,6 @@
 #Azure Media Services Spring Boot Starter client library for Java
 
-## Getting Started
+## Getting started
 
 ### Add the dependency
 

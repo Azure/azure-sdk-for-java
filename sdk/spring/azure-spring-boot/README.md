@@ -1,4 +1,4 @@
-# Azure Spring Boot Support
+#Azure Spring Boot client library for Java
 This project provides auto-configuration for the following Azure services:
 
 - [Azure Active Directory](../azure-spring-boot-starters/azure-active-directory-spring-boot-starter)
@@ -44,3 +44,4 @@ Please refer to the [samples](../azure-spring-boot-samples) for more getting sta
 ## Troubleshooting
 ## Next steps
 ## Contributing
+## Examples
