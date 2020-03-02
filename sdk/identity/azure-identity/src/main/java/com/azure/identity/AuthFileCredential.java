@@ -39,9 +39,8 @@ public class AuthFileCredential implements TokenCredential {
     private final static ClientLogger logger = new ClientLogger(AuthFileCredential.class);
     private final static  SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     private final String filepath;
-    private byte[] lock = new byte[0];
     private IdentityClientOptions identityClientOptions;
-    TokenCredential credential;
+    private TokenCredential credential;
     
     /**
      * Creates an instance of the SdkAuthFileCredential class based on information
@@ -90,11 +89,7 @@ public class AuthFileCredential implements TokenCredential {
     void ensureCredential() {
         if (credential == null) {
             try {  
-                synchronized (lock){   
-                    if (credential == null) {           
-                        credential = buildCredentialForCredentialsFile(parseCredentialsFile(filepath));
-                    }
-                }
+                credential = buildCredentialForCredentialsFile(parseCredentialsFile(filepath));
             } catch (Exception e) {
                 throw logger.logExceptionAsError(new RuntimeException("Error parsing SDK Auth File", e));
             }

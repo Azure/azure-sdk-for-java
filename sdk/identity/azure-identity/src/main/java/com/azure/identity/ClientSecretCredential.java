@@ -26,7 +26,7 @@ import java.util.Objects;
 @Immutable
 public class ClientSecretCredential implements TokenCredential {
     /* The client secret value. */
-    final String clientSecret;
+    private final String clientSecret;
     private final IdentityClient identityClient;
 
     /**

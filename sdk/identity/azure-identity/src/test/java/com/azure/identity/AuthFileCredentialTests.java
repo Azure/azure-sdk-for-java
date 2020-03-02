@@ -3,6 +3,9 @@
 
 package com.azure.identity;
 
+import java.lang.reflect.Field;
+
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 
 import org.junit.Assert;
@@ -19,16 +22,21 @@ import reactor.test.StepVerifier;
 @PowerMockIgnore({ "com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*" })
 public class AuthFileCredentialTests<T> {
 
-     @Test
-     public void sdkAuthFileEnsureCredentialParsesCorrectly() throws Exception {
-        // setup 
+    @Test
+    public void sdkAuthFileEnsureCredentialParsesCorrectly() throws Exception {
+        // setup
         String authFilePath = getClass().getResource("/authfile.json").getPath();
-        AuthFileCredential credential = new AuthFileCredentialBuilder().filePath(authFilePath).build();
+        Field credential = Class.forName("com.azure.identity.AuthFileCredential").getDeclaredField("credential");
+        credential.setAccessible(true);
+        AuthFileCredential authFileCredential = new AuthFileCredentialBuilder().filePath(authFilePath).build();
 
         // test
-        credential.ensureCredential();
-        ClientSecretCredential clientSecretCredential= (ClientSecretCredential) credential.credential;
-        Assert.assertEquals("mockclientsecret", clientSecretCredential.clientSecret);
+        authFileCredential.ensureCredential();
+        Field  clientSecret= Class.forName("com.azure.identity.ClientSecretCredential").getDeclaredField("clientSecret");
+        clientSecret.setAccessible(true);
+        ClientSecretCredential clientSecretCredential= (ClientSecretCredential) credential.get(authFileCredential);
+        Assert.assertNotNull(clientSecretCredential);
+        Assert.assertEquals("mockclientsecret",(String)clientSecret.get(clientSecretCredential));
      }
 
     @Test
