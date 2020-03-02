@@ -1,4 +1,6 @@
-## Usage
+#Azure Media Services Spring Boot Starter client library for Java
+
+## Getting Started
 
 ### Add the dependency
 
@@ -51,6 +53,8 @@ When telemetry is enabled, an HTTP request will be sent to URL `https://dc.servi
 Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/en-us/privacystatement/OnlineServices/Default.aspx). 
 
 
+## Key concepts
+## Examples
 ## Troubleshooting
 ## Next steps
 ## Contributing
