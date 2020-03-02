@@ -6,6 +6,7 @@ module com.azure.messaging.servicebus {
     requires proton.j;
 
     exports com.azure.messaging.servicebus;
+    exports com.azure.messaging.servicebus.models;
 
     opens com.azure.messaging.servicebus;
     opens com.azure.messaging.servicebus.implementation;

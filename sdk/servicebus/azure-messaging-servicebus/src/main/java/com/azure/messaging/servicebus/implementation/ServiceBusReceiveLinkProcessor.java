@@ -64,8 +64,9 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.parentConnection = Objects.requireNonNull(parentConnection, "'parentConnection' cannot be null.");
 
-        if (prefetch < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'prefetch' cannot be less than 0."));
+        if (prefetch <= 0) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'prefetch' cannot be less than or equal to 0."));
         }
 
         this.prefetch = prefetch;
@@ -106,8 +107,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
         logger.verbose("Subscribing to upstream.");
 
         this.upstream = subscription;
-
-        // Don't request from upstream until there is a downstream subscriber.
         subscription.request(0);
     }
 
@@ -147,6 +146,10 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
             });
 
             currentLinkSubscriptions = Disposables.composite(
+                next.receive().subscribe(message -> {
+                    logger.verbose("Pushing next message downstream.");
+                    downstream.onNext(message);
+                }),
                 next.getEndpointStates().subscribe(
                     state -> {
                         // Connection was successfully opened, we can reset the retry interval.
@@ -174,11 +177,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
 
                             requestUpstream();
                         }
-                    }),
-                next.receive().subscribe(message -> {
-                    logger.verbose("Pushing next message downstream.");
-                    downstream.onNext(message);
-                }));
+                    }));
         }
 
         if (oldChannel != null) {

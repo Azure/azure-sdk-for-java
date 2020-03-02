@@ -83,9 +83,9 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     }
 
     /**
-     *
      * @param serviceBusMessage to be sent to Service Bus Queue.
      * @param sessionId the session id to associate with the message.
+     *
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Void> send(ServiceBusMessage serviceBusMessage, String sessionId) {
@@ -94,8 +94,8 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     }
 
     /**
-     *
      * @param serviceBusMessage to be sent Service Bus Queue.
+     *
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Void> send(ServiceBusMessage serviceBusMessage) {
@@ -105,10 +105,11 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
 
     /**
      * Sends a set of messages to the associated Service Bus using a batched approach. If the size of messages exceed
-     * the maximum size of a single batch, an exception will be triggered and the send will fail.
-     * By default, the message size is the max amount allowed on the link.
-
-     * @param messages to send to the Service Bus Queue..
+     * the maximum size of a single batch, an exception will be triggered and the send will fail. By default, the
+     * message size is the max amount allowed on the link.
+     *
+     * @param messages to send to the Service Bus.
+     * *
      * @return A {@link Mono} that completes when all messages are pushed to the service.
      */
     public Mono<Void> send(Flux<ServiceBusMessage> messages) {
@@ -125,7 +126,7 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
                     final CreateBatchOptions batchOptions = new CreateBatchOptions()
                         .setMaximumSizeInBytes(batchSize);
                     return messages.collect(new AmqpMessageCollector(batchOptions, 1,
-                        link::getErrorContext, tracerProvider));
+                        link::getErrorContext, tracerProvider, messageSerializer));
                 })
                 .flatMap(list -> sendInternalBatch(Flux.fromIterable(list))));
     }
@@ -146,6 +147,7 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
      *
      * @param serviceBusMessage to be sent to the Service Bus Queue.
      * @param scheduledEnqueueTimeUtc Declares at which time the message should appear on the Service Bus Queue.
+     *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
      */
     public Mono<Long> schedule(ServiceBusMessage serviceBusMessage, Instant scheduledEnqueueTimeUtc) {
@@ -155,7 +157,9 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
 
     /**
      * Cancels the enqueuing of an already sent scheduled message, if it was not already enqueued.
+     *
      * @param sequenceNumber of the scheduled message to cancel.
+     *
      * @return The {@link Mono} that finishes this operation on service bus resource.
      */
     public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
@@ -164,7 +168,6 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     }
 
     /**
-     *
      * @return The name of  the queue.
      */
     public String getQueueName() {
@@ -175,6 +178,7 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
      * Sends a message batch to the Azure Service Bus entity this sender is connected to.
      *
      * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
+     *
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     Mono<Void> send(ServiceBusMessageBatch batch) {
@@ -184,7 +188,7 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
             ? new AtomicReference<>(Context.NONE)
             : null;
 
-        if (batch.getServiceBusMessageList().isEmpty()) {
+        if (batch.getMessages().isEmpty()) {
             logger.info("Cannot send an EventBatch that is empty.");
             return Mono.empty();
         }
@@ -194,8 +198,8 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
         Context sharedContext = null;
         final List<org.apache.qpid.proton.message.Message> messages = new ArrayList<>();
 
-        for (int i = 0; i < batch.getServiceBusMessageList().size(); i++) {
-            final ServiceBusMessage event = batch.getServiceBusMessageList().get(i);
+        for (int i = 0; i < batch.getMessages().size(); i++) {
+            final ServiceBusMessage event = batch.getMessages().get(i);
             if (isTracingEnabled) {
                 parentContext.set(event.getContext());
                 if (i == 0) {
@@ -206,8 +210,8 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
             final org.apache.qpid.proton.message.Message message = messageSerializer.serialize(event);
 
             final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
-                    ? new MessageAnnotations(new HashMap<>())
-                    : message.getMessageAnnotations();
+                ? new MessageAnnotations(new HashMap<>())
+                : message.getMessageAnnotations();
 
             message.setMessageAnnotations(messageAnnotations);
             messages.add(message);
@@ -255,20 +259,21 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
         private final Integer maxNumberOfBatches;
         private final ErrorContextProvider contextProvider;
         private final TracerProvider tracerProvider;
+        private final MessageSerializer serializer;
 
         private volatile ServiceBusMessageBatch currentBatch;
 
         AmqpMessageCollector(CreateBatchOptions options, Integer maxNumberOfBatches,
-                             ErrorContextProvider contextProvider,
-                             TracerProvider tracerProvider) {
+            ErrorContextProvider contextProvider, TracerProvider tracerProvider, MessageSerializer serializer) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.getMaximumSizeInBytes() > 0
                 ? options.getMaximumSizeInBytes()
                 : MAX_MESSAGE_LENGTH_BYTES;
             this.contextProvider = contextProvider;
             this.tracerProvider = tracerProvider;
+            this.serializer = serializer;
 
-            currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider);
+            currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider, serializer);
         }
 
         @Override
@@ -292,7 +297,7 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
                         contextProvider.getErrorContext());
                 }
 
-                currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider);
+                currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracerProvider, serializer);
                 currentBatch.tryAdd(event);
                 list.add(batch);
             };

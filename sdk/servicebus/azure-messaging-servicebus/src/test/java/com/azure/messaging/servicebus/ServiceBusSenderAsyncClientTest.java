@@ -51,7 +51,7 @@ import static org.mockito.Mockito.when;
 
 public class ServiceBusSenderAsyncClientTest {
     private static final String NAMESPACE = "my-namespace";
-    private static final String QUEUE_NAME = "my-queue-name";
+    private static final String ENTITY_NAME = "my-servicebus-entity";
 
     @Mock
     private AmqpSendLink sendLink;
@@ -75,7 +75,7 @@ public class ServiceBusSenderAsyncClientTest {
         .setTryTimeout(Duration.ofSeconds(10));
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-    private ServiceBusSenderAsyncClient serviceBusSenderAsyncClient;
+    private ServiceBusSenderAsyncClient sender;
     private ServiceBusConnectionProcessor connectionProcessor;
     private TracerProvider tracerProvider;
     private ConnectionOptions connectionOptions;
@@ -97,7 +97,7 @@ public class ServiceBusSenderAsyncClientTest {
         MockitoAnnotations.initMocks(this);
 
         tracerProvider = new TracerProvider(Collections.emptyList());
-        connectionOptions = new ConnectionOptions(NAMESPACE, QUEUE_NAME, tokenCredential,
+        connectionOptions = new ConnectionOptions(NAMESPACE, ENTITY_NAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
 
@@ -107,7 +107,7 @@ public class ServiceBusSenderAsyncClientTest {
         connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
             new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getEntityPath(), connectionOptions.getRetry()));
-        serviceBusSenderAsyncClient = new ServiceBusSenderAsyncClient(QUEUE_NAME, connectionProcessor, retryOptions,
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, connectionProcessor, retryOptions,
             tracerProvider, messageSerializer);
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
@@ -134,15 +134,14 @@ public class ServiceBusSenderAsyncClientTest {
             final ServiceBusMessage data = new ServiceBusMessage(contents);
             return Flux.just(data);
         });
-        //final SendOptions options = new SendOptions();
 
-        // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(QUEUE_NAME), eq(QUEUE_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         // Act
-        StepVerifier.create(serviceBusSenderAsyncClient.send(testData))
+        StepVerifier.create(sender.send(testData))
             .verifyComplete();
 
         // Assert
@@ -164,13 +163,13 @@ public class ServiceBusSenderAsyncClientTest {
             new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(QUEUE_NAME), eq(QUEUE_NAME), eq(retryOptions)))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
 
         when(sendLink.send(any(org.apache.qpid.proton.message.Message.class))).thenReturn(Mono.empty());
 
         // Act
-        StepVerifier.create(serviceBusSenderAsyncClient.send(testData))
+        StepVerifier.create(sender.send(testData))
             .verifyComplete();
 
         // Assert
