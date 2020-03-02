@@ -6,8 +6,7 @@ package com.azure.core.util.paging;
 import com.azure.core.util.IterableStream;
 
 /**
- * Represents a page returned from a service, this page may contain a reference to additional pages known as a
- * continuation token.
+ * Represents a page returned, this page may contain a reference to additional pages known as a continuation token.
  *
  * @param <C> Type of the continuation token.
  * @param <T> Type of the elements in the page.
