@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.ResourceResponse;
 import org.apache.commons.lang3.StringUtils;
 

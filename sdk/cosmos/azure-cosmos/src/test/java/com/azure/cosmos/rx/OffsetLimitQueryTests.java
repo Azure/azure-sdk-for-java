@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
@@ -21,7 +21,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -55,10 +54,10 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         int takeCount = 10;
         String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
-        options.populateQueryMetrics(qmEnabled);
+        options.setMaxItemCount(5);
+        options.setPopulateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
-        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options,
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options,
                                                                                                 CosmosItemProperties.class);
 
         FeedResponseListValidator<CosmosItemProperties> validator =
@@ -79,8 +78,8 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         int takeCount = 2;
         String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
-        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable;
+        options.setMaxItemCount(5);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable;
 
         int totalDocsObtained = 0;
         int totalDocs = docs.size();
@@ -152,10 +151,10 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
 
         do {
             FeedOptions options = new FeedOptions();
-            options.maxItemCount(pageSize);
-            options.maxItemCount(5);
-            options.requestContinuation(requestContinuation);
-            CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable =
+            options.setMaxItemCount(pageSize);
+            options.setMaxItemCount(5);
+            options.setRequestContinuation(requestContinuation);
+            CosmosPagedFlux<CosmosItemProperties> queryObservable =
                 createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();

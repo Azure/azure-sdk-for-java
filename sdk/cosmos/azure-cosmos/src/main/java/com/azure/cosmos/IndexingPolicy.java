@@ -140,8 +140,9 @@ public final class IndexingPolicy extends JsonSerializable {
         return this.includedPaths;
     }
 
-    public void setIncludedPaths(List<IncludedPath> includedPaths) {
+    public IndexingPolicy setIncludedPaths(List<IncludedPath> includedPaths) {
         this.includedPaths = includedPaths;
+        return this;
     }
 
     /**
@@ -231,7 +232,8 @@ public final class IndexingPolicy extends JsonSerializable {
     }
 
     @Override
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
+        super.populatePropertyBag();
         // If indexing mode is not 'none' and not paths are set, set them to the defaults
         if (this.getIndexingMode() != IndexingMode.NONE && this.getIncludedPaths().size() == 0
                 && this.getExcludedPaths().size() == 0) {

@@ -10,8 +10,9 @@ import com.azure.cosmos.DatabaseAccount;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.Permission;
 import com.azure.cosmos.SqlQuerySpec;
-import com.azure.cosmos.TokenResolver;
+import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import reactor.core.publisher.Flux;
@@ -76,9 +77,10 @@ public interface AsyncDocumentClient {
         List<Permission> permissionFeed;
         String masterKeyOrResourceToken;
         URI serviceEndpoint;
-        TokenResolver tokenResolver;
+        CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
         CosmosKeyCredential cosmosKeyCredential;
         boolean sessionCapturingOverride;
+        boolean transportClientSharing;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -147,6 +149,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withTransportClientSharing(boolean transportClientSharing) {
+            this.transportClientSharing = transportClientSharing;
+            return this;
+        }
+
         public Builder withCosmosKeyCredential(CosmosKeyCredential cosmosKeyCredential) {
             if (cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey())) {
                 throw new IllegalArgumentException("Cannot buildAsyncClient client with empty key credential");
@@ -158,11 +165,11 @@ public interface AsyncDocumentClient {
         /**
          * This method will accept functional interface TokenResolver which helps in generation authorization
          * token per request. AsyncDocumentClient can be successfully initialized with this API without passing any MasterKey, ResourceToken or PermissionFeed.
-         * @param tokenResolver The tokenResolver
+         * @param cosmosAuthorizationTokenResolver The tokenResolver
          * @return current Builder.
          */
-        public Builder withTokenResolver(TokenResolver tokenResolver) {
-            this.tokenResolver = tokenResolver;
+        public Builder withTokenResolver(CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
+            this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
             return this;
         }
 
@@ -177,7 +184,7 @@ public interface AsyncDocumentClient {
             ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot buildAsyncClient client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
-                        && this.tokenResolver == null && this.cosmosKeyCredential == null,
+                        && this.cosmosAuthorizationTokenResolver == null && this.cosmosKeyCredential == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
                         "resource token, permissionFeed, tokenResolver and cosmos key credential");
             ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
@@ -189,9 +196,10 @@ public interface AsyncDocumentClient {
                                                                    connectionPolicy,
                                                                    desiredConsistencyLevel,
                                                                    configs,
-                                                                   tokenResolver,
+                                                                   cosmosAuthorizationTokenResolver,
                                                                    cosmosKeyCredential,
-                                                                   sessionCapturingOverride);
+                                                                   sessionCapturingOverride,
+                                                                   transportClientSharing);
             client.init();
             return client;
         }
@@ -244,12 +252,12 @@ public interface AsyncDocumentClient {
             this.serviceEndpoint = serviceEndpoint;
         }
 
-        public TokenResolver getTokenResolver() {
-            return tokenResolver;
+        public CosmosAuthorizationTokenResolver getCosmosAuthorizationTokenResolver() {
+            return cosmosAuthorizationTokenResolver;
         }
 
-        public void setTokenResolver(TokenResolver tokenResolver) {
-            this.tokenResolver = tokenResolver;
+        public void setCosmosAuthorizationTokenResolver(CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
+            this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         }
 
         public CosmosKeyCredential getCosmosKeyCredential() {

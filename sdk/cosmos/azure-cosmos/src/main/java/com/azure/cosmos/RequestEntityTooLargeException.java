@@ -37,8 +37,8 @@ public class RequestEntityTooLargeException extends CosmosClientException {
         super(msg, null, null, HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE, resourceAddress);
     }
 
-    public RequestEntityTooLargeException(String message, HttpHeaders headers, String requestUriString) {
-        this(message, null, headers, requestUriString);
+    public RequestEntityTooLargeException(String message, HttpHeaders headers, String requestUri) {
+        this(message, null, headers, requestUri);
     }
 
     RequestEntityTooLargeException(Exception innerException) {
@@ -48,11 +48,11 @@ public class RequestEntityTooLargeException extends CosmosClientException {
     RequestEntityTooLargeException(String message,
                                    Exception innerException,
                                    HttpHeaders headers,
-                                   String requestUriString) {
+                                   String requestUri) {
         super(String.format(RMResources.RequestEntityTooLarge, message),
             innerException,
             HttpUtils.asMap(headers),
             HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE,
-            requestUriString);
+            requestUri);
     }
 }

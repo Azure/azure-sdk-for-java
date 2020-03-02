@@ -4,7 +4,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
-import com.azure.cosmos.implementation.Permission;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -123,14 +122,14 @@ public class CosmosAsyncUser {
      * Reads all permissions.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response pages of the read permissions.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read permissions.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the read permissions or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosPermissionProperties> readAllPermissions(FeedOptions options) {
-        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+    public CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(FeedOptions options) {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                                 .readPermissions(getLink(), options)
@@ -144,13 +143,13 @@ public class CosmosAsyncUser {
      * Query for permissions.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response pages of the obtained permissions.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained permissions.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained permissions or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained permissions or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosPermissionProperties> queryPermissions(String query) {
+    public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query) {
         return queryPermissions(query, new FeedOptions());
     }
 
@@ -158,15 +157,15 @@ public class CosmosAsyncUser {
      * Query for permissions.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response pages of the obtained permissions.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained permissions.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of the obtained permissions or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained permissions or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosPermissionProperties> queryPermissions(String query, FeedOptions options) {
-        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+    public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query, FeedOptions options) {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                                 .queryPermissions(getLink(), query, options)

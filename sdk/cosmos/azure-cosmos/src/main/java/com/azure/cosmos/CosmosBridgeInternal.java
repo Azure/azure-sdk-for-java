@@ -16,6 +16,10 @@ public class CosmosBridgeInternal {
         return new DocumentCollection(cosmosContainerProperties.toJson());
     }
 
+    public static AsyncDocumentClient getAsyncDocumentClient(CosmosClient client) {
+        return client.asyncClient().getDocClientWrapper();
+    }
+
     public static AsyncDocumentClient getAsyncDocumentClient(CosmosAsyncClient client) {
         return client.getDocClientWrapper();
     }
@@ -46,5 +50,9 @@ public class CosmosBridgeInternal {
 
     public static AsyncDocumentClient getContextClient(CosmosAsyncContainer container) {
         return container.getDatabase().getClient().getContextClient();
+    }
+
+    public static CosmosAsyncContainer getCosmosAsyncContainer(CosmosContainer container) {
+        return container.asyncContainer;
     }
 }

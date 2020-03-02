@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.TestConfigurations;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.reactivestreams.Subscription;
 import org.testng.annotations.AfterClass;
@@ -31,11 +32,13 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -129,7 +132,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_Async() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -174,7 +177,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_Async_withoutLambda() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -222,7 +225,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_findTotalRequestCharge() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<Double> totalChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
@@ -246,7 +249,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_unsubscribeAfterFirstPage() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<FeedResponse<Document>> requestChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -267,7 +270,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
             subscription.request(1);
         });
 
-        Thread.sleep(4000);
+        waitForConditionOrTimeout(() -> (onNextCounter.get() == 1));
 
         // After subscriber unsubscribes, it doesn't receive any more pages.
         assertThat(onNextCounter.get(), equalTo(1));
@@ -282,7 +285,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_filterFetchedResults() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Predicate<Document> isPrimeNumber = new Predicate<Document>() {
 
@@ -307,7 +310,6 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
               .filter(isPrimeNumber) // Filter documents using isPrimeNumber predicate
               .subscribe(doc -> resultList.add(doc)); // Collect the getResults
 
-        Thread.sleep(4000);
 
         int expectedNumberOfPrimes = 0;
         // Find all the documents with prime number counter
@@ -327,6 +329,9 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
             }
         }
 
+        int finalExpectedNumberOfPrimes = expectedNumberOfPrimes;
+        waitForConditionOrTimeout(() -> resultList.size() == finalExpectedNumberOfPrimes);
+
         // Assert that we only collected what's expected
         assertThat(resultList, hasSize(expectedNumberOfPrimes));
     }
@@ -341,7 +346,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         // Query for documents
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -390,7 +395,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         // Query for the documents order by the prop field
         SqlQuerySpec query = new SqlQuerySpec("SELECT r.id FROM r ORDER BY r.prop", new SqlParameterList());
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
+        options.setMaxItemCount(5);
 
         // Max degree of parallelism determines the number of partitions that
         // the SDK establishes simultaneous connections to.
@@ -408,7 +413,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
                 .map(Resource::getId) // Map to the document Id
                 .subscribe(resultList::add); // Add each document Id to the resultList
 
-        Thread.sleep(4000);
+        waitForConditionOrTimeout(() -> resultList.size() == totalNumberOfDocumentsInMultiPartitionCollection);
 
         // Assert we found all the results
         assertThat(resultList, hasSize(totalNumberOfDocumentsInMultiPartitionCollection));
@@ -426,7 +431,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void transformObservableToCompletableFuture() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -466,5 +471,15 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
                                                      .single().block().getResource();
 
         return createdCollection;
+    }
+
+    private void waitForConditionOrTimeout(Callable<Boolean> completionCondition) throws Exception {
+        long start = System.currentTimeMillis();
+        while(!completionCondition.call()) {
+            Thread.sleep(1000);
+            if ((System.currentTimeMillis() - start) > TIMEOUT) {
+                break;
+            }
+        }
     }
 }

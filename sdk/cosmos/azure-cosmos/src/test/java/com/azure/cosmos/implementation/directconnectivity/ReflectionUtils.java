@@ -4,7 +4,10 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosBridgeInternal;
+import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -45,6 +48,28 @@ public class ReflectionUtils {
         return get(StoreClient.class, serverStoreModel, "storeClient");
     }
 
+    public static HttpClient getGatewayHttpClient(CosmosClient client) {
+        return getGatewayHttpClient((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client));
+    }
+
+    public static HttpClient getGatewayHttpClient(CosmosAsyncClient client) {
+        return getGatewayHttpClient((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client));
+    }
+
+    public static HttpClient getGatewayHttpClient(RxDocumentClientImpl client) {
+        return get(HttpClient.class, client, "reactorHttpClient");
+    }
+
+    public static TransportClient getTransportClient(CosmosClient client) {
+        StoreClient storeClient = getStoreClient((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client));
+        return get(TransportClient.class, storeClient, "transportClient");
+    }
+
+    public static TransportClient getTransportClient(CosmosAsyncClient client) {
+        StoreClient storeClient = getStoreClient((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client));
+        return get(TransportClient.class, storeClient, "transportClient");
+    }
+
     public static TransportClient getTransportClient(RxDocumentClientImpl client) {
         StoreClient storeClient = getStoreClient(client);
         return get(TransportClient.class, storeClient, "transportClient");
@@ -61,12 +86,20 @@ public class ReflectionUtils {
         assert transportClient instanceof HttpTransportClient;
         set(transportClient, newHttpClient, "httpClient");
     }
-    
+
     public static AsyncDocumentClient getAsyncDocumentClient(CosmosAsyncClient client) {
         return get(AsyncDocumentClient.class, client, "asyncDocumentClient");
     }
-    
+
     public static void setAsyncDocumentClient(CosmosAsyncClient client, RxDocumentClientImpl rxClient) {
         set(client, rxClient, "asyncDocumentClient");
+    }
+
+    public static GatewayServiceConfigurationReader getServiceConfigurationReader(RxDocumentClientImpl rxDocumentClient){
+        return get(GatewayServiceConfigurationReader.class, rxDocumentClient, "gatewayConfigurationReader");
+    }
+
+    public static void setBackgroundRefreshLocationTimeIntervalInMS(GlobalEndpointManager globalEndPointManager, int millSec){
+        set(globalEndPointManager, millSec, "backgroundRefreshLocationTimeIntervalInMS");
     }
 }

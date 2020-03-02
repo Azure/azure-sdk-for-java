@@ -46,7 +46,7 @@ public class CosmosKeyCredential {
      *
      * @return hashcode of the key
      */
-    public int getKeyHashCode() {
+    int getKeyHashCode() {
         return this.keyHashCode;
     }
 }

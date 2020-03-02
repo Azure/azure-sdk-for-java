@@ -3,28 +3,26 @@
 
 package com.azure.search;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.search.models.SuggestDocumentsResult;
 import com.azure.search.models.SuggestResult;
 
-import java.util.stream.Collectors;
-
 /**
- * Represents an HTTP response from the suggest API request
- * that contains a list of items deserialized into a {@link Page}.
- * Each page contains additional information returned by the API request. In the Suggest API case
- * the additional information is:
- * coverage - coverage value.
+ * Represents an HTTP response from the suggest API request that contains a list of items deserialized into a {@link
+ * Page}. Each page contains additional information returned by the API request. In the Suggest API case the additional
+ * information is: coverage - coverage value.
  */
-public class SuggestPagedResponse extends PagedResponseBase<String, SuggestResult> {
+public final class SuggestPagedResponse extends PagedResponseBase<Void, SuggestResult> {
 
     /**
-     * Get coverage
+     * The percentage of the index covered in the suggest request.
+     * <p>
+     * If {@code minimumCoverage} wasn't supplied in the request this will be {@code null}.
      *
-     * @return Double
+     * @return The percentage of the index covered in the suggest request if {@code minimumCoverage} was set in the
+     * request, otherwise {@code null}.
      */
     public Double getCoverage() {
         return coverage;
@@ -37,19 +35,13 @@ public class SuggestPagedResponse extends PagedResponseBase<String, SuggestResul
      *
      * @param documentSearchResponse an http response with the results
      */
-    public SuggestPagedResponse(SimpleResponse<SuggestDocumentsResult> documentSearchResponse) {
+    SuggestPagedResponse(SimpleResponse<SuggestDocumentsResult> documentSearchResponse) {
         super(documentSearchResponse.getRequest(),
             documentSearchResponse.getStatusCode(),
             documentSearchResponse.getHeaders(),
             documentSearchResponse.getValue().getResults(),
             null,
-            deserializeHeaders(documentSearchResponse.getHeaders()));
+            null);
         this.coverage = documentSearchResponse.getValue().getCoverage();
-    }
-
-    private static String deserializeHeaders(HttpHeaders headers) {
-        return headers.toMap().entrySet().stream().map((entry) ->
-            entry.getKey() + "," + entry.getValue()
-        ).collect(Collectors.joining(","));
     }
 }

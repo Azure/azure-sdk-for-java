@@ -35,7 +35,7 @@ public class ReadFeedPkrTests extends TestSuiteBase {
     public void readPartitionKeyRanges() throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
+        options.setMaxItemCount(2);
 
         Flux<FeedResponse<PartitionKeyRange>> feedObservable = client.readPartitionKeyRanges(getCollectionLink(), options);
 

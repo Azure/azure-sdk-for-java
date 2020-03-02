@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.Permission;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.BridgeInternal;
@@ -14,7 +15,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,12 +84,16 @@ public class RxDocumentServiceResponse {
         return this.headersMap;
     }
 
-    public String getReponseBodyAsString() {
+    public byte[] getResponseBodyAsByteArray() {
         return this.storeResponse.getResponseBody();
     }
 
+    public String getResponseBodyAsString() {
+        return Utils.utf8StringFromOrNull(this.getResponseBodyAsByteArray());
+    }
+
     public <T extends Resource> T getResource(Class<T> c) {
-        String responseBody = this.getReponseBodyAsString();
+        String responseBody = this.getResponseBodyAsString();
         if (StringUtils.isEmpty(responseBody))
             return null;
 
@@ -108,7 +112,7 @@ public class RxDocumentServiceResponse {
     }
 
     public <T extends Resource> List<T> getQueryResponse(Class<T> c) {
-        String responseBody = this.getReponseBodyAsString();
+        String responseBody = this.getResponseBodyAsString();
         if (responseBody == null) {
             return new ArrayList<T>();
         }
@@ -178,10 +182,6 @@ public class RxDocumentServiceResponse {
             return this.headersMap.get(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
         }
         return null;
-    }
-
-    public InputStream getContentStream() {
-        return this.storeResponse.getResponseStream();
     }
 
     CosmosResponseDiagnostics getCosmosResponseRequestDiagnosticStatistics() {

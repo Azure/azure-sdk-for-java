@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.StringWriter;
 import java.lang.reflect.Method;
+import java.net.InetSocketAddress;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -71,7 +72,7 @@ public class ProxyHostTest extends TestSuiteBase {
         CosmosAsyncClient clientWithRightProxy = null;
         try {
             ConnectionPolicy connectionPolicy =new ConnectionPolicy();
-            connectionPolicy.setProxy(PROXY_HOST, PROXY_PORT);
+            connectionPolicy.setProxy(new InetSocketAddress(PROXY_HOST, PROXY_PORT));
             clientWithRightProxy = new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
                     .setKey(TestConfigurations.MASTER_KEY)
                     .setConnectionPolicy(connectionPolicy)
@@ -85,7 +86,7 @@ public class ProxyHostTest extends TestSuiteBase {
                     .withId(docDefinition.getId())
                     .build();
             this.validateItemSuccess(createObservable, validator);
-            
+
         } finally {
             safeClose(clientWithRightProxy);
         }
@@ -105,7 +106,7 @@ public class ProxyHostTest extends TestSuiteBase {
                 "ProxyStringAppender", consoleWriter);
 
             ConnectionPolicy connectionPolicy =new ConnectionPolicy();
-            connectionPolicy.setProxy(PROXY_HOST, PROXY_PORT);
+            connectionPolicy.setProxy(new InetSocketAddress(PROXY_HOST, PROXY_PORT));
             clientWithRightProxy = new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
                     .setKey(TestConfigurations.MASTER_KEY)
                     .setConnectionPolicy(connectionPolicy)

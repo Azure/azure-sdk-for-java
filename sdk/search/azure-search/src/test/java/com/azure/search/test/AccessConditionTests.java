@@ -4,35 +4,43 @@
 package com.azure.search.test;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.CoreUtils;
+import com.azure.search.TestHelpers;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class AccessConditionTests extends AccessConditionBase {
+import static com.azure.search.TestHelpers.generateIfExistsAccessCondition;
+import static com.azure.search.TestHelpers.generateIfNotChangedAccessCondition;
+import static com.azure.search.TestHelpers.generateIfNotExistsAccessCondition;
+import static com.azure.search.TestHelpers.getETag;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
+public class AccessConditionTests {
 
     /**
      * Checks that create or update fails when a resource exists
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void createOrUpdateIfNotExistsFailsOnExistingResource(
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Supplier<T> newResourceDefinition,
+    public static <T> void createOrUpdateIfNotExistsFailsOnExistingResource(
+        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Supplier<T> newResourceDefinition,
         Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
 
         // Create the resource in the search service
-        AccessOptions accessOptions =
-            new AccessOptions(generateIfNotExistsAccessCondition());
+        AccessOptions accessOptions = new AccessOptions(generateIfNotExistsAccessCondition());
         T createdResource = createOrUpdateDefinition.apply(newResource, accessOptions);
 
         try {
@@ -41,11 +49,11 @@ public class AccessConditionTests extends AccessConditionBase {
 
             // Update the resource, expect to fail as it already exists
             createOrUpdateDefinition.apply(mutatedResource, accessOptions);
-            Assert.fail("createOrUpdateDefinition should have failed due to "
-                + "selected AccessCondition");
+            fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
         } catch (Exception exc) {
-            Assert.assertEquals(HttpResponseException.class, exc.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(HttpResponseException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(),
+                ((HttpResponseException) exc).getResponse().getStatusCode());
         }
     }
 
@@ -54,23 +62,20 @@ public class AccessConditionTests extends AccessConditionBase {
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> T createOrUpdateIfNotExistsSucceedsOnNoResource(
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Supplier<T> newResourceDefinition) {
+    public static <T> T createOrUpdateIfNotExistsSucceedsOnNoResource(
+        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Supplier<T> newResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
 
-        AccessOptions accessOptions =
-            new AccessOptions(generateIfNotExistsAccessCondition());
+        AccessOptions accessOptions = new AccessOptions(generateIfNotExistsAccessCondition());
 
         // Create the resource on the service
         T createdResource = createOrUpdateDefinition.apply(newResource, accessOptions);
 
-        String eTag = getEtag(createdResource);
-        Assert.assertTrue(StringUtils.isNotBlank(eTag));
+        assertFalse(TestHelpers.isBlank(getETag(createdResource)));
 
         return createdResource;
     }
@@ -82,14 +87,11 @@ public class AccessConditionTests extends AccessConditionBase {
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
      * @param resourceName the name of the resource
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void deleteIfExistsWorksOnlyWhenResourceExists(
-        BiConsumer<String, AccessOptions> deleteFunc,
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Supplier<T> newResourceDefinition,
-        String resourceName
-    ) {
+    public static <T> void deleteIfExistsWorksOnlyWhenResourceExists(BiConsumer<String, AccessOptions> deleteFunc,
+        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Supplier<T> newResourceDefinition,
+        String resourceName) {
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
         AccessOptions accessOptions = new AccessOptions(null);
@@ -98,17 +100,16 @@ public class AccessConditionTests extends AccessConditionBase {
         createOrUpdateDefinition.apply(newResource, accessOptions);
 
         // Try to delete and expect to succeed
-        accessOptions =
-            new AccessOptions(generateIfExistsAccessCondition());
+        accessOptions = new AccessOptions(generateIfExistsAccessCondition());
         deleteFunc.accept(resourceName, accessOptions);
 
         // Try to delete again and expect to fail
         try {
             deleteFunc.accept(resourceName, accessOptions);
-            Assert.fail("deleteFunc should have failed due to non existent resource");
+            fail("deleteFunc should have failed due to non existent resource");
         } catch (Exception exc) {
-            Assert.assertEquals(HttpResponseException.class, exc.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(HttpResponseException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
         }
     }
 
@@ -117,44 +118,37 @@ public class AccessConditionTests extends AccessConditionBase {
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void deleteIfNotChangedWorksOnlyOnCurrentResource(
-        BiConsumer<String, AccessOptions> deleteFunc,
-        Supplier<T> newResourceDefinition,
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        String resourceName
-    ) {
+    public static <T> void deleteIfNotChangedWorksOnlyOnCurrentResource(BiConsumer<String, AccessOptions> deleteFunc,
+        Supplier<T> newResourceDefinition, BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
+        String resourceName) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T staleResource = newResourceDefinition.get();
-        AccessOptions accessOptions =
-            new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(null);
 
         // Create the resource in the search service
-        staleResource =
-            createOrUpdateDefinition.apply(staleResource, accessOptions);
+        staleResource = createOrUpdateDefinition.apply(staleResource, accessOptions);
 
         // Get the eTag for the newly created resource
-        String eTagStale = getEtag(staleResource);
+        String eTagStale = getETag(staleResource);
 
-        // Update the resource, the etag will be changed
+        // Update the resource, the eTag will be changed
         T currentResource = createOrUpdateDefinition.apply(staleResource, accessOptions);
 
         try {
-            accessOptions =
-                new AccessOptions(generateIfNotChangedAccessCondition(eTagStale));
+            accessOptions = new AccessOptions(generateIfNotChangedAccessCondition(eTagStale));
             deleteFunc.accept(resourceName, accessOptions);
-            Assert.fail("deleteFunc should have failed due to selected AccessCondition");
+            fail("deleteFunc should have failed due to selected AccessCondition");
         } catch (Exception exc) {
-            Assert.assertEquals(HttpResponseException.class, exc.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(HttpResponseException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
         }
 
         // Get the new eTag
-        String eTagCurrent = getEtag(currentResource);
-        accessOptions =
-            new AccessOptions(generateIfNotChangedAccessCondition(eTagCurrent));
+        String eTagCurrent = getETag(currentResource);
+        accessOptions = new AccessOptions(generateIfNotChangedAccessCondition(eTagCurrent));
 
         // Delete should succeed
         deleteFunc.accept(resourceName, accessOptions);
@@ -165,26 +159,22 @@ public class AccessConditionTests extends AccessConditionBase {
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void updateIfExistsFailsOnNoResource(
-        Supplier<T> newResourceDefinition,
+    public static <T> void updateIfExistsFailsOnNoResource(Supplier<T> newResourceDefinition,
         BiFunction<T, AccessOptions, T> createOrUpdateDefinition) {
         T newResource = newResourceDefinition.get();
         try {
-            AccessOptions accessOptions =
-                new AccessOptions(generateIfExistsAccessCondition());
+            AccessOptions accessOptions = new AccessOptions(generateIfExistsAccessCondition());
             createOrUpdateDefinition.apply(newResource, accessOptions);
-            Assert.fail("createOrUpdateDefinition should have failed due to "
-                + "selected AccessCondition");
+            fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
         } catch (Exception exc) {
-            Assert.assertEquals(HttpResponseException.class, exc.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(HttpResponseException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
         }
 
         // The resource should never have been created on the server, and thus it should not have an ETag
-        String eTag = getEtag(newResource);
-        Assert.assertNull(eTag);
+        assertNull(getETag(newResource));
     }
 
     /**
@@ -192,23 +182,20 @@ public class AccessConditionTests extends AccessConditionBase {
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void updateIfExistsSucceedsOnExistingResource(
-        Supplier<T> newResourceDefinition,
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Function<T, T> mutateResourceDefinition) {
+    public static <T> void updateIfExistsSucceedsOnExistingResource(Supplier<T> newResourceDefinition,
+        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
 
         // Create the resource on the search service
-        AccessOptions accessOptions =
-            new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(null);
         newResource = createOrUpdateDefinition.apply(newResource, accessOptions);
 
         // get the original eTag
-        String originalETag = getEtag(newResource);
+        String originalETag = getETag(newResource);
 
         // Change the resource
         T mutateResource = mutateResourceDefinition.apply(newResource);
@@ -218,11 +205,11 @@ public class AccessConditionTests extends AccessConditionBase {
         mutateResource = createOrUpdateDefinition.apply(mutateResource, accessOptions);
 
         // Get the updated ETag
-        String updatedETag = getEtag(mutateResource);
+        String updatedETag = getETag(mutateResource);
 
         // Verify the eTag is not empty and was changed
-        Assert.assertTrue(StringUtils.isNotEmpty(updatedETag));
-        Assert.assertNotEquals(originalETag, updatedETag);
+        assertFalse(CoreUtils.isNullOrEmpty(updatedETag));
+        assertNotEquals(originalETag, updatedETag);
     }
 
     /**
@@ -230,21 +217,18 @@ public class AccessConditionTests extends AccessConditionBase {
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void updateIfNotChangedFailsWhenResourceChanged(
-        Supplier<T> newResourceDefinition,
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Function<T, T> mutateResourceDefinition) {
+    public static <T> void updateIfNotChangedFailsWhenResourceChanged(Supplier<T> newResourceDefinition,
+        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
 
         // Create the resource on the search service
-        AccessOptions accessOptions =
-            new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(null);
         newResource = createOrUpdateDefinition.apply(newResource, accessOptions);
-        String originalETag = getEtag(newResource);
+        String originalETag = getETag(newResource);
 
         // Change the resource
         T mutateResource = mutateResourceDefinition.apply(newResource);
@@ -254,22 +238,21 @@ public class AccessConditionTests extends AccessConditionBase {
         mutateResource = createOrUpdateDefinition.apply(mutateResource, accessOptions);
 
         // Get the updated eTag
-        String updatedETag = getEtag(mutateResource);
+        String updatedETag = getETag(mutateResource);
 
         // Update and check the eTags were changed
         try {
             createOrUpdateDefinition.apply(mutateResource, accessOptions);
-            Assert.fail("createOrUpdateDefinition should have failed due to "
-                + "selected AccessCondition");
+            fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
         } catch (Exception exc) {
-            Assert.assertEquals(HttpResponseException.class, exc.getClass());
-            Assert.assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(HttpResponseException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
         }
 
         // Check eTags
-        Assert.assertTrue(StringUtils.isNotEmpty(originalETag));
-        Assert.assertTrue(StringUtils.isNotEmpty(updatedETag));
-        Assert.assertNotEquals(originalETag, updatedETag);
+        assertFalse(CoreUtils.isNullOrEmpty(originalETag));
+        assertFalse(CoreUtils.isNullOrEmpty(updatedETag));
+        assertNotEquals(originalETag, updatedETag);
     }
 
     /**
@@ -277,34 +260,31 @@ public class AccessConditionTests extends AccessConditionBase {
      *
      * @param createOrUpdateDefinition a function that creates or updates a resource in the service
      * @param newResourceDefinition a function to generate a new resource object
-     * @param <T> one of the entity types (Index / Indexer / SynonymMap / Datasource / etc)
+     * @param <T> one of the entity types (Index / Indexer / SynonymMap / DataSource / etc)
      */
-    public <T> void updateIfNotChangedSucceedsWhenResourceUnchanged(
-        Supplier<T> newResourceDefinition,
-        BiFunction<T, AccessOptions, T> createOrUpdateDefinition,
-        Function<T, T> mutateResourceDefinition) {
+    public static <T> void updateIfNotChangedSucceedsWhenResourceUnchanged(Supplier<T> newResourceDefinition,
+        BiFunction<T, AccessOptions, T> createOrUpdateDefinition, Function<T, T> mutateResourceDefinition) {
 
         // Create a new resource (Indexer, SynonymMap, etc...)
         T newResource = newResourceDefinition.get();
 
         // Create the resource on the search service
-        AccessOptions accessOptions =
-            new AccessOptions(null);
+        AccessOptions accessOptions = new AccessOptions(null);
         newResource = createOrUpdateDefinition.apply(newResource, accessOptions);
-        String originalEtag = getEtag(newResource);
+        String originalETag = getETag(newResource);
 
         // Change the resource
         T mutateResource = mutateResourceDefinition.apply(newResource);
 
         // Update the resource on the service
-        accessOptions.setAccessCondition(generateIfNotChangedAccessCondition(originalEtag));
+        accessOptions.setAccessCondition(generateIfNotChangedAccessCondition(originalETag));
         mutateResource = createOrUpdateDefinition.apply(mutateResource, accessOptions);
 
-        String updatedETag = getEtag(mutateResource);
+        String updatedETag = getETag(mutateResource);
 
         // Check eTags as expected
-        Assert.assertTrue(StringUtils.isNotEmpty(originalEtag));
-        Assert.assertTrue(StringUtils.isNotEmpty(updatedETag));
-        Assert.assertNotEquals(originalEtag, updatedETag);
+        assertFalse(CoreUtils.isNullOrEmpty(originalETag));
+        assertFalse(CoreUtils.isNullOrEmpty(updatedETag));
+        assertNotEquals(originalETag, updatedETag);
     }
 }

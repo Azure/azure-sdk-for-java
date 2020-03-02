@@ -253,7 +253,8 @@ public class DatabaseAccount extends Resource {
         BridgeInternal.setProperty(this, Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS, value);
     }
 
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
+        super.populatePropertyBag();
         if (this.consistencyPolicy != null) {
             BridgeInternal.populatePropertyBagJsonSerializable(this.consistencyPolicy);
             BridgeInternal.setProperty(this, Constants.Properties.USER_CONSISTENCY_POLICY, this.consistencyPolicy);

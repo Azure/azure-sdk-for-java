@@ -108,7 +108,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     partitionedQueryExecutionInfo.getQueryInfo().getOrderBy(),
                     partitionedQueryExecutionInfo.getQueryInfo().getOrderByExpressions(),
                     initialPageSize,
-                    feedOptions.requestContinuation());
+                    feedOptions.getRequestContinuation());
 
             return Flux.just(context);
         } catch (CosmosClientException dce) {
@@ -547,7 +547,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
 
     @Override
     public Flux<FeedResponse<T>> executeAsync() {
-        return drainAsync(feedOptions.maxItemCount());
+        return drainAsync(feedOptions.getMaxItemCount());
     }
 
     private String getContinuationToken(

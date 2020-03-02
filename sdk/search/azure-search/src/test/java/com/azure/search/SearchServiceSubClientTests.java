@@ -3,8 +3,10 @@
 package com.azure.search;
 
 import com.azure.core.http.HttpPipeline;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SearchServiceSubClientTests extends SearchServiceTestBase {
 
@@ -16,20 +18,20 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
         SearchIndexClient indexClient = serviceClient.getIndexClient("hotels");
 
         // Validate the client was created
-        Assert.assertNotNull(indexClient);
+        assertNotNull(indexClient);
 
         // Validate the client points to the same instance
-        Assert.assertEquals(serviceClient.getEndpoint(), indexClient.getEndpoint());
-        Assert.assertEquals(serviceClient.getApiVersion(), indexClient.getApiVersion());
+        assertEquals(serviceClient.getEndpoint(), indexClient.getEndpoint());
+        assertEquals(serviceClient.getServiceVersion(), indexClient.getServiceVersion());
 
         // Validate that the client uses the same HTTP pipeline for authentication, retries, etc
         HttpPipeline servicePipeline = serviceClient.getHttpPipeline();
         HttpPipeline indexPipeline = indexClient.getHttpPipeline();
 
-        Assert.assertEquals(servicePipeline, indexPipeline);
+        assertEquals(servicePipeline, indexPipeline);
 
         // Validate that the client uses the specified index
-        Assert.assertEquals("hotels", indexClient.getIndexName());
+        assertEquals("hotels", indexClient.getIndexName());
     }
 
     @Test
@@ -39,20 +41,20 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
         SearchIndexAsyncClient indexClient = serviceClient.getIndexClient("hotels");
 
         // Validate the client was created
-        Assert.assertNotNull(indexClient);
+        assertNotNull(indexClient);
 
         // Validate the client points to the same instance
-        Assert.assertEquals(serviceClient.getEndpoint(), indexClient.getEndpoint());
-        Assert.assertEquals(serviceClient.getApiVersion(), indexClient.getApiVersion());
+        assertEquals(serviceClient.getEndpoint(), indexClient.getEndpoint());
+        assertEquals(serviceClient.getServiceVersion(), indexClient.getServiceVersion());
 
         // Validate that the client uses the same HTTP pipeline for authentication, retries, etc
         HttpPipeline servicePipeline = serviceClient.getHttpPipeline();
         HttpPipeline indexPipeline = indexClient.getHttpPipeline();
 
-        Assert.assertEquals(servicePipeline, indexPipeline);
+        assertEquals(servicePipeline, indexPipeline);
 
         // Validate that the client uses the specified index
-        Assert.assertEquals("hotels", indexClient.getIndexName());
+        assertEquals("hotels", indexClient.getIndexName());
     }
 
     @Test
@@ -67,7 +69,7 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
 
         // This should not fail
         SearchIndexClient indexClient = serviceClient.getIndexClient("hotels");
-        Assert.assertEquals("hotels", indexClient.getIndexName());
+        assertEquals("hotels", indexClient.getIndexName());
     }
 
     @Test
@@ -82,7 +84,7 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
 
         // This should not fail
         SearchIndexAsyncClient indexClient = serviceClient.getIndexClient("hotels");
-        Assert.assertEquals("hotels", indexClient.getIndexName());
+        assertEquals("hotels", indexClient.getIndexName());
     }
 
     private SearchServiceClient getSearchService() {

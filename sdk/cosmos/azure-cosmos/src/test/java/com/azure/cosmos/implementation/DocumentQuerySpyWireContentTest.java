@@ -50,28 +50,28 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     public static Object[][] responseContinuationTokenLimitParamProvider() {
 
         FeedOptions options1 = new FeedOptions();
-        options1.maxItemCount(1);
+        options1.setMaxItemCount(1);
         options1.getResponseContinuationTokenLimitInKb(5);
-        options1.partitionKey(new PartitionKey("99"));
+        options1.setPartitionKey(new PartitionKey("99"));
         String query1 = "Select * from r";
         boolean multiPartitionCollection1 = true;
 
         FeedOptions options2 = new FeedOptions();
-        options2.maxItemCount(1);
+        options2.setMaxItemCount(1);
         options2.getResponseContinuationTokenLimitInKb(5);
-        options2.partitionKey(new PartitionKey("99"));
+        options2.setPartitionKey(new PartitionKey("99"));
         String query2 = "Select * from r order by r.prop";
         boolean multiPartitionCollection2 = false;
 
         FeedOptions options3 = new FeedOptions();
-        options3.maxItemCount(1);
+        options3.setMaxItemCount(1);
         options3.getResponseContinuationTokenLimitInKb(5);
-        options3.partitionKey(new PartitionKey("99"));
+        options3.setPartitionKey(new PartitionKey("99"));
         String query3 = "Select * from r";
         boolean multiPartitionCollection3 = false;
 
         FeedOptions options4 = new FeedOptions();
-        options4.partitionKey(new PartitionKey("99"));
+        options4.setPartitionKey(new PartitionKey("99"));
         String query4 = "Select * from r order by r.prop";
         boolean multiPartitionCollection4 = false;
 

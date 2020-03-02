@@ -12,13 +12,16 @@ import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.fasterxml.uuid.EthernetAddress;
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.impl.TimeBasedGenerator;
+import io.netty.buffer.ByteBuf;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -37,6 +40,7 @@ import java.util.UUID;
  * This is meant to be internally used only by our sdk.
  */
 public class Utils {
+    private static final int ONE_KB = 1024;
     private static final ZoneId GMT_ZONE_ID = ZoneId.of("GMT");
     public static final Base64.Encoder Base64Encoder = Base64.getEncoder();
     public static final Base64.Decoder Base64Decoder = Base64.getDecoder();
@@ -61,8 +65,24 @@ public class Utils {
         Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
     }
 
-    public static byte[] getUTF8Bytes(String str) throws UnsupportedEncodingException {
-        return str.getBytes("UTF-8");
+    public static byte[] getUTF8BytesOrNull(String str) {
+        if (str == null) {
+            return null;
+        }
+
+        try {
+            return str.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static byte[] getUTF8Bytes(String str) {
+        try {
+            return str.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static String encodeBase64String(byte[] binaryData) {
@@ -534,27 +554,60 @@ public class Utils {
         }
     }
 
+    public static <T> T parse(byte[] item, Class<T> itemClassType) {
+        if (Utils.isEmpty(item)) {
+            return null;
+        }
+        try {
+            return getSimpleObjectMapper().readValue(item, itemClassType);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to get POJO.", e);
+        }
+    }
+
+    public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {
+        try {
+            ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
+            objectMapper.writeValue(byteBufferOutputStream, object);
+            return byteBufferOutputStream.asByteBuffer();
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Failed to serialize the object into json", e);
+        }
+    }
+
+    public static boolean isEmpty(byte[] bytes) {
+        return bytes == null || bytes.length == 0;
+    }
+
+    public static String utf8StringFromOrNull(byte[] bytes) {
+        if (bytes == null) {
+            return null;
+        }
+
+        return new String(bytes);
+    }
+
     public static void setContinuationTokenAndMaxItemCount(CosmosPagedFluxOptions pagedFluxOptions, FeedOptions feedOptions) {
         if (pagedFluxOptions == null) {
             return;
         }
         if (pagedFluxOptions.getRequestContinuation() != null) {
-            feedOptions.requestContinuation(pagedFluxOptions.getRequestContinuation());
+            feedOptions.setRequestContinuation(pagedFluxOptions.getRequestContinuation());
         }
         if (pagedFluxOptions.getMaxItemCount() != null) {
-            feedOptions.maxItemCount(pagedFluxOptions.getMaxItemCount());
+            feedOptions.setMaxItemCount(pagedFluxOptions.getMaxItemCount());
         }
     }
 
     static String escapeNonAscii(String partitionKeyJson) {
         // if all are ascii original string will be returned, and avoids copying data.
         StringBuilder sb = null;
-        for(int i = 0; i < partitionKeyJson.length(); i++) {
+        for (int i = 0; i < partitionKeyJson.length(); i++) {
             int val = partitionKeyJson.charAt(i);
             if (val > 127) {
                 if (sb == null) {
                     sb = new StringBuilder(partitionKeyJson.length());
-                    sb.append(partitionKeyJson.substring(0, i));
+                    sb.append(partitionKeyJson, 0, i);
                 }
                 sb.append("\\u").append(String.format("%04X", val));
             } else {
@@ -570,5 +623,11 @@ public class Utils {
         } else {
             return sb.toString();
         }
+    }
+
+    static byte[] toByteArray(ByteBuf buf) {
+        byte[] bytes = new byte[buf.readableBytes()];
+        buf.readBytes(bytes);
+        return bytes;
     }
 }

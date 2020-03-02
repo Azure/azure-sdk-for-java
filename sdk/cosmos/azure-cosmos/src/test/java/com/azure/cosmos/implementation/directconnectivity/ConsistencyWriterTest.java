@@ -24,7 +24,6 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -151,7 +150,7 @@ public class ConsistencyWriterTest {
         builder.add(new AbstractMap.SimpleEntry<>(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, "2"));
         ImmutableList<Map.Entry<String, String>> headers = builder.build();
 
-        StoreResponse sr = new StoreResponse(0, headers, (String) null);
+        StoreResponse sr = new StoreResponse(0, headers, null);
         Utils.ValueHolder<Long> lsn = Utils.ValueHolder.initialize(-2l);
         Utils.ValueHolder<Long> globalCommittedLsn = Utils.ValueHolder.initialize(-2l);
         ConsistencyWriter.getLsnAndGlobalCommittedLsn(sr, lsn, globalCommittedLsn);

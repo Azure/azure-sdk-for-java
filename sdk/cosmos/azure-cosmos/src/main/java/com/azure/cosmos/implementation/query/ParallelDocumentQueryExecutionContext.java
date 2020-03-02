@@ -6,11 +6,9 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -20,7 +18,6 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
@@ -30,7 +27,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
@@ -93,7 +89,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             context.initialize(collectionRid,
                     targetRanges,
                     initialPageSize,
-                    feedOptions.requestContinuation());
+                    feedOptions.getRequestContinuation());
             return Flux.just(context);
         } catch (CosmosClientException dce) {
             return Flux.error(dce);
@@ -106,7 +102,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
         FeedOptions feedOptions, String collectionRid, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
-        
+
         List<PartitionKeyRange> ranges = new ArrayList<>();
         ranges.addAll(rangeQueryMap.keySet());
 
@@ -128,7 +124,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                                 activityId, collectionRid);
         return Flux.just(context);
     }
-    
+
 
     private void initialize(
             String collectionRid,
@@ -263,7 +259,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             // results.
             return source.filter(documentProducerFeedResponse -> {
                 if (documentProducerFeedResponse.pageResult.getResults().isEmpty()
-                        && !this.feedOptions.getAllowEmptyPages()) {
+                        && !this.feedOptions.isEmptyPagesAllowed()) {
                     // filter empty pages and accumulate charge
                     tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                     return false;
@@ -357,7 +353,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
     @Override
     public Flux<FeedResponse<T>> executeAsync() {
-        return this.drainAsync(feedOptions.maxItemCount());
+        return this.drainAsync(feedOptions.getMaxItemCount());
     }
 
     protected DocumentProducer<T> createDocumentProducer(

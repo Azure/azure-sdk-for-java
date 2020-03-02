@@ -12,7 +12,7 @@ import java.net.URL;
 /**
  * This class is used internally to parse endpoint URLs for use with the underlying AutoRest clients
  */
-class SearchServiceUrlParser {
+final class SearchServiceUrlParser {
 
     static SearchServiceUrlParts parseServiceUrlParts(String endpoint) {
         ClientLogger logger = new ClientLogger(SearchServiceUrlParser.class);

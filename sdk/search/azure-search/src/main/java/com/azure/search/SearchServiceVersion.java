@@ -6,7 +6,7 @@ package com.azure.search;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * This ENUM includes all the supported versions of the Cognitive Search Service by this SDK
+ * The versions of Azure Search supported by this client library.
  */
 public enum SearchServiceVersion implements ServiceVersion {
     V2019_05_06("2019-05-06");

@@ -48,7 +48,7 @@ public final class GeoPoint {
     }
 
     /**
-     * Create GeoPoint object from latitude, longitude and coordinae system
+     * Create GeoPoint object from latitude, longitude and coordinate system
      * @param latitude latitude value of the GeographyPoint
      * @param longitude longitude value of the GeographyPoint
      * @param coordinateSystem EPSG:4326 coordination system
@@ -117,18 +117,10 @@ public final class GeoPoint {
     }
 
     /**
-     * Retrieve coordinates
-     * @return List of coordinates values
-     */
-    public List<Double> getCoordinates() {
-        return coordinates;
-    }
-
-    /**
      * Return latitude
      * @return value of latitude coordinate
      */
-    public Double getLatitude() {
+    public double getLatitude() {
         return coordinates.get(1);
     }
 
@@ -136,7 +128,7 @@ public final class GeoPoint {
      * Return longitude
      * @return value of longitude coordinate
      */
-    public Double getLongitude() {
+    public double getLongitude() {
         return coordinates.get(0);
     }
 
