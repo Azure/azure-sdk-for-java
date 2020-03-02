@@ -43,6 +43,7 @@ class AzurePathSpec extends APISpec {
         "fakeroot:/foo"      || true     | "fakeroot:/"
         "jtcazurepath2:/"    || true     | "jtcazurepath2:/"
         "jtcazurepath2:"     || true     | "jtcazurepath2:/"
+        ""                   || false    | null
     }
 
     @Unroll
@@ -66,6 +67,7 @@ class AzurePathSpec extends APISpec {
         "foo/.."         || ".."     | "foo/"        | 2
         "foo/./bar"      || "bar"    | "foo/./"      | 3
         "foo/bar/."      || "."      | "foo/bar/"    | 3
+        ""               || ""       | null          | 1
     }
 
     @Unroll
@@ -175,6 +177,8 @@ class AzurePathSpec extends APISpec {
         "foo/bar/fizz" | "f"          || false
         "foo/bar/fizz" | "foo/bar/f"  || false
         "foo"          | "foo/bar"    || false
+        ""             | "foo"        || false
+        "foo"          | ""           || false
     }
 
     @Unroll
@@ -200,6 +204,8 @@ class AzurePathSpec extends APISpec {
         "foo/bar/fizz" | "z"          || false
         "foo/bar/fizz" | "r/fizz"     || false
         "foo"          | "foo/bar"    || false
+        ""             | "foo"        || false
+        "foo"          | ""           || false
     }
 
     @Unroll
@@ -226,6 +232,7 @@ class AzurePathSpec extends APISpec {
         "root:/.."           || "root:/"
         "root:/../../.."     || "root:/"
         "root:/foo/.."       || "root:"
+        ""                   || ""
     }
 
     @Unroll
@@ -242,6 +249,7 @@ class AzurePathSpec extends APISpec {
         "foo/bar"         | "fizz/buzz"       || "foo/bar/fizz/buzz"
         "foo/bar/.."      | "../../fizz/buzz" || "foo/bar/../../../fizz/buzz"
         "root:/../foo/./" | "fizz/../buzz"    || "root:/../foo/./fizz/../buzz"
+        ""                | "foo/bar"         || "foo/bar"
     }
 
     @Unroll
@@ -256,6 +264,7 @@ class AzurePathSpec extends APISpec {
         "foo/bar"       | "root:/fizz" || "root:/fizz"
         "foo/bar"       | ""           || "foo"
         "foo"           | ""           || ""
+        ""              | "foo"        || "foo"
         "foo/bar"       | "fizz"       || "foo/fizz"
         "foo/bar/fizz"  | "buzz/dir"   || "foo/bar/buzz/dir"
         "root:/foo/bar" | "fizz"       || "root:/foo/fizz"
@@ -285,6 +294,8 @@ class AzurePathSpec extends APISpec {
         "a/b/c"         | "foo/bar/fizz"       || "../../../foo/bar/fizz" | true
         "foo/../bar"    | "bar/./fizz"         || "fizz"                  | false
         "root:"         | "root:/foo/bar"      || "foo/bar"               | false
+        ""              | "foo"                || "foo"                   | true
+        "foo"           | ""                   || ".."                    | true
     }
 
     def "Path relativize fail"() {
@@ -310,6 +321,7 @@ class AzurePathSpec extends APISpec {
         path            | expected
         "root:/foo/bar" | "root:/foo/bar"
         "foo/bar"       | "jtcazurepath1:/foo/bar"
+        ""              | "jtcazurepath1:"
     }
 
     @Unroll
@@ -319,11 +331,16 @@ class AzurePathSpec extends APISpec {
         def it = p.iterator()
         def i = 0
 
+        def emptyIt = fs.getPath("").iterator()
+
         expect:
         while (it.hasNext()) {
             assert it.next() == p.getName(i)
             i++
         }
+
+        emptyIt.next().toString() == ""
+        !emptyIt.hasNext()
 
         where:
         path                | _
@@ -344,6 +361,7 @@ class AzurePathSpec extends APISpec {
         "a/b/c"   | "a/b"     | false
         "a/b/c"   | "foo/bar" | false
         "foo/bar" | "foo/bar" | true
+        ""        | "foo"     | false
     }
 
     def "Path compareTo equals fails"() {
@@ -378,11 +396,18 @@ class AzurePathSpec extends APISpec {
 
         then:
         thrown(IOException)
+
+        when:
+        path = fs.getPath("")
+        ((AzurePath) path).toBlobClient()
+
+        then:
+        thrown(IOException)
     }
 
     def "Path getBlobClient absolute"() {
         when:
-        def path = fs.getPath(getNonDefaultRootDir(), "foo/bar")
+        def path = fs.getPath(getNonDefaultRootDir(fs), "foo/bar")
         def client = ((AzurePath) path).toBlobClient()
 
         then:
