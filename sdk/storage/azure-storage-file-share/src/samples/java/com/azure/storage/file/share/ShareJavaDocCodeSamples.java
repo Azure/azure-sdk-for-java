@@ -35,6 +35,8 @@ public class ShareJavaDocCodeSamples {
     private String value1 = "val1";
 
     private String leaseId = "leaseId";
+    ShareClient client = createClientWithSASToken();
+    private Duration timeout = Duration.ofSeconds(30);
 
     /**
      * Generates code sample for {@link ShareClient} instantiation.
@@ -93,6 +95,21 @@ public class ShareJavaDocCodeSamples {
             .buildClient();
         // END: com.azure.storage.file.share.ShareClient.instantiation.connectionstring
         return shareClient;
+    }
+
+    /**
+     * Code snippets for {@link ShareClient#exists()} and {@link ShareClient#existsWithResponse(
+     * Duration, Context)}
+     */
+    public void exists() {
+        // BEGIN: com.azure.storage.file.share.ShareClient.exists
+        System.out.printf("Exists? %b%n", client.exists());
+        // END: com.azure.storage.file.share.ShareClient.exists
+
+        // BEGIN: com.azure.storage.file.share.ShareClient.existsWithResponse#Duration-Context
+        Context context = new Context("Key", "Value");
+        System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, context).getValue());
+        // END: com.azure.storage.file.share.ShareClient.existsWithResponse#Duration-Context
     }
 
     /**

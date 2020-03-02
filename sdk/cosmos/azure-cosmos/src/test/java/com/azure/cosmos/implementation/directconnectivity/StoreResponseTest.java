@@ -3,15 +3,12 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import org.apache.commons.io.IOUtils;
-import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.azure.cosmos.implementation.Utils.getUTF8BytesOrNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StoreResponseTest {
@@ -22,28 +19,10 @@ public class StoreResponseTest {
         headerMap.put("key1", "value1");
         headerMap.put("key2", "value2");
 
-        StoreResponse sp = new StoreResponse(200, new ArrayList<>(headerMap.entrySet()), content);
+        StoreResponse sp = new StoreResponse(200, new ArrayList<>(headerMap.entrySet()), getUTF8BytesOrNull(content));
 
         assertThat(sp.getStatus()).isEqualTo(200);
-        assertThat(sp.getResponseStream()).isNull();
-        assertThat(sp.getResponseBody()).isEqualTo(content);
+        assertThat(sp.getResponseBody()).isEqualTo(getUTF8BytesOrNull(content));
         assertThat(sp.getHeaderValue("key1")).isEqualTo("value1");
-    }
-
-    @Test(groups = { "unit" })
-    public void streamContent() throws Exception {
-
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        baos.write(new byte[] { 3, 0, 1, 9, -1, 125 });
-        HashMap<String, String> headerMap = new HashMap<>();
-        headerMap.put("key1", "value1");
-        headerMap.put("key2", "value2");
-
-        StoreResponse sp = new StoreResponse(200, new ArrayList<>(headerMap.entrySet()), new ByteArrayInputStream(baos.toByteArray()));
-
-        assertThat(sp.getStatus()).isEqualTo(200);
-        assertThat(sp.getResponseBody()).isNull();
-        assertThat(sp.getResponseStream()).isNotNull();
-        Assertions.assertThat(IOUtils.contentEquals(new ByteArrayInputStream(baos.toByteArray()), sp.getResponseStream()));
     }
 }

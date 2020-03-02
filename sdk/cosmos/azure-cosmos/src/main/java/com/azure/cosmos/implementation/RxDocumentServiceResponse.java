@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,11 +85,11 @@ public class RxDocumentServiceResponse {
     }
 
     public byte[] getResponseBodyAsByteArray() {
-        return this.storeResponse.getResponseBodyAsByteArray();
+        return this.storeResponse.getResponseBody();
     }
 
     public String getResponseBodyAsString() {
-        return Utils.utf8StringFrom(this.getResponseBodyAsByteArray());
+        return Utils.utf8StringFromOrNull(this.getResponseBodyAsByteArray());
     }
 
     public <T extends Resource> T getResource(Class<T> c) {
@@ -183,10 +182,6 @@ public class RxDocumentServiceResponse {
             return this.headersMap.get(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
         }
         return null;
-    }
-
-    public InputStream getContentStream() {
-        return this.storeResponse.getResponseStream();
     }
 
     CosmosResponseDiagnostics getCosmosResponseRequestDiagnosticStatistics() {
