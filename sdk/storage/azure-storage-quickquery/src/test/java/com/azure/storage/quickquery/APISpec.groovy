@@ -30,6 +30,7 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.quickquery.models.BlobQuickQuerySerialization
 import reactor.core.publisher.Flux
 import spock.lang.Requires
 import spock.lang.Shared
@@ -390,5 +391,8 @@ class APISpec extends Specification {
         } else {
             return leaseID
         }
+    }
+
+    class MockSerialization extends BlobQuickQuerySerialization<MockSerialization> {
     }
 }

@@ -13,6 +13,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.quickquery.implementation.util.NetworkInputStream;
 import com.azure.storage.quickquery.models.BlobQuickQueryError;
 import com.azure.storage.quickquery.models.BlobQuickQueryErrorReceiver;
 import com.azure.storage.quickquery.models.BlobQuickQueryResponse;
@@ -21,19 +22,24 @@ import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.SeekableByteArrayInput;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericRecord;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 import reactor.core.Exceptions;
+import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.concurrent.Flow;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
@@ -60,31 +66,104 @@ public class BlobQuickQueryClient {
 
     /**
      * Opens a blob input stream to query the blob.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.quickquery.BlobQuickQueryClient.openInputStream#String}
+     *
+     * @param expression The query expression.
      */
     public final BlobQuickQueryInputStream openInputStream(String expression) {
-
         return openInputStream(expression, null, null, null, null, null);
     }
 
     /**
      * Opens a blob input stream to query the blob.
+     *
+     * @param expression The query expression.
+     * @param input {@link BlobQuickQuerySerialization Serialization input}.
+     * @param output {@link BlobQuickQuerySerialization Serialization output}.
+     * @param requestConditions {@link BlobRequestConditions}
+     *
      */
     public final BlobQuickQueryInputStream openInputStream(String expression, BlobQuickQuerySerialization input,
         BlobQuickQuerySerialization output, BlobRequestConditions requestConditions,
         BlobQuickQueryErrorReceiver nonFatalErrorReceiver, ProgressReceiver progressReceiver) {
 
-        PipedInputStream in = new PipedInputStream();
+        PipedInputStream networkStream = new PipedInputStream();
 
         client.queryWithResponse(expression, input, output, requestConditions)
             .flatMapMany(ResponseBase::getValue)
             .subscribeOn(Schedulers.elastic())
-            .subscribe(new PipedStreamSubscriber(in, logger));
+            .subscribe(new NetworkSubscriber(networkStream, logger));
 
-        return new BlobQuickQueryInputStream(in, nonFatalErrorReceiver, progressReceiver, logger);
+        return new BlobQuickQueryInputStream(networkStream, nonFatalErrorReceiver, progressReceiver);
+    }
+
+    private class NetworkSubscriber extends BaseSubscriber<ByteBuffer> {
+
+        private final ClientLogger logger;
+        private final PipedInputStream networkStream;
+        private PipedOutputStream buffer;
+
+        NetworkSubscriber(PipedInputStream networkStream, ClientLogger logger) {
+            this.networkStream = networkStream;
+            this.logger = logger;
+        }
+
+        @Override
+        protected void hookOnSubscribe(Subscription subscription) {
+            super.hookOnSubscribe(subscription);
+            try {
+                this.buffer = new PipedOutputStream(networkStream);
+            } catch (IOException e) {
+                throw logger.logExceptionAsError(new UncheckedIOException(e));
+            }
+        }
+
+        @Override
+        protected void hookOnNext(ByteBuffer byteBuffer) {
+            try {
+                buffer.write(FluxUtil.byteBufferToArray(byteBuffer));
+            } catch (IOException e) {
+                throw logger.logExceptionAsError(new UncheckedIOException(e));
+            }
+        }
+
+        @Override
+        protected void hookOnError(Throwable throwable) {
+            if (throwable instanceof BlobStorageException) {
+                throw logger.logExceptionAsError((BlobStorageException) throwable);
+            } else if (throwable instanceof IllegalArgumentException) {
+                throw logger.logExceptionAsError((IllegalArgumentException) throwable);
+            }
+            try {
+                buffer.close();
+            } catch (IOException e) {
+                throw logger.logExceptionAsError(new UncheckedIOException(e));
+            }
+        }
+
+        @Override
+        protected void hookOnComplete() {
+            try {
+                buffer.close();
+            } catch (IOException e) {
+                throw logger.logExceptionAsError(new UncheckedIOException(e));
+            }
+        }
+
+        @Override
+        protected void hookOnCancel() {
+            try {
+                buffer.close();
+            } catch (IOException e) {
+                throw logger.logExceptionAsError(new UncheckedIOException(e));
+            }
+        }
     }
 
     /**
-     * Queries an entire blob into an output stream.
+     * Queries an entire blob into an output stream. NOTE: Returns raw avro.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -100,7 +179,7 @@ public class BlobQuickQueryClient {
     }
 
     /**
-     * Queries an entire blob into an output stream.
+     * Queries an entire blob into an output stream. NOTE: Returns raw avro.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -134,170 +213,5 @@ public class BlobQuickQueryClient {
 
         return blockWithOptionalTimeout(download, timeout);
     }
-
-    public BlobQuickQueryResponse parsedQueryWithResponseSample(OutputStream stream, String expression,
-        BlobQuickQuerySerialization input, BlobQuickQuerySerialization output,
-        BlobQuickQueryErrorReceiver nonFatalErrorReceiver, BlobRequestConditions requestConditions,
-        ProgressReceiver progressReceiver, Duration timeout, Context context) throws RuntimeException {
-        StorageImplUtils.assertNotNull("stream", stream);
-        ByteArrayOutputStream avroStream = new ByteArrayOutputStream();
-        Mono<BlobQuickQueryResponse> download = client
-            .queryWithResponse(expression, input, output, requestConditions, context)
-            .flatMap(response -> response.getValue().reduce(avroStream, (aStream, buffer) -> {
-                try {
-                    aStream.write(FluxUtil.byteBufferToArray(buffer));
-                    return aStream;
-                } catch (IOException ex) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-                }
-            }).thenReturn(new BlobQuickQueryResponse(response)));
-
-        DataFileReader<GenericRecord> reader;
-        try {
-            reader = new DataFileReader<>(
-                new SeekableByteArrayInput(avroStream.toByteArray()),
-                new GenericDatumReader<>());
-        } catch (IOException ex) {
-            throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-        }
-        long totalBytes = 0;
-
-        endOfStream:
-        while(reader.hasNext())
-        {
-            GenericRecord record = reader.next();
-
-            switch (record.getSchema().getName()) {
-                case "resultData":
-                    try {
-                        stream.write(((ByteBuffer) record.get("data")).array());
-                    } catch (IOException ex) {
-                        throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-                    }
-                    break;
-                case "end":
-                    if (progressReceiver != null) {
-                        progressReceiver.reportProgress(totalBytes);
-                    }
-                    break endOfStream;
-                case "progress":
-                    if (progressReceiver != null) {
-                        progressReceiver.reportProgress((long) record.get("bytesScanned"));
-                    }
-                    if (totalBytes == 0) {
-                        /* This is for the end record to update progress receiver. */
-                        totalBytes = (long) record.get("totalBytes");
-                    }
-                    break;
-                case "error":
-                    if (nonFatalErrorReceiver != null) {
-                        String description = record.get("description").toString();
-                        Boolean fatal = (Boolean) record.get("fatal");
-                        if (fatal) {
-                            nonFatalErrorReceiver.reportError(
-                                new BlobQuickQueryError(fatal, record.get("name").toString(),
-                                    description, (Long) record.get("position")));
-                        } else {
-                            throw logger.logExceptionAsError(new UncheckedIOException(new IOException("Failed to "
-                                + "parse error record from blob query response stream.")));
-                        }
-                    }
-                    break;
-                default:
-                    throw logger.logExceptionAsError(new UncheckedIOException(new IOException("Unknown record type "
-                        + record.getSchema().getName() + " in blob query response parsing.")));
-            }
-        }
-
-        return blockWithOptionalTimeout(download, timeout);
-    }
-
-//    public static void main(String[] args) throws IOException {
-//        String accountName = "0cpxscnapsat09prde01f";
-//        String accountKey = "EDy+1m2BEi7arksSm5UBabPgNfpkv8/nxWdKbi2geqPeTAxEw5eqtViNPNLQmXqY26RFlZDspyMQF1aDGblRrw==";
-//        StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
-//        NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-//            .wiretap(true)
-//            .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)));
-//
-//        BlobServiceClient sc = new BlobServiceClientBuilder()
-//            .endpoint("https://" + accountName + ".blob.preprod.core.windows.net")
-//            .credential(credential)
-//            .httpClient(builder.build())
-//            .serviceVersion(BlobServiceVersion.V2019_12_12)
-//            .buildClient();
-//
-//        BlobContainerClient cc = sc.getBlobContainerClient("myquickquerycontainer");
-//
-//        BlobClient bc = cc.getBlobClient("myquickqueryblob.csv");
-//        byte[] headers = "one,two,three,four\n".getBytes();
-//
-//        byte[] csvData = "100,200,300,400\n300,400,500,600\n".getBytes();
-//
-//        byte[] data = new byte[1024 + headers.length];
-//        System.arraycopy(headers, 0, data, 0, headers.length);
-//
-//        for (int i = 0; i < 32; i++) {
-//            int o = i * csvData.length + headers.length;
-//            System.arraycopy(csvData, 0, data, o, csvData.length);
-//        }
-//
-//        InputStream inputStream = new ByteArrayInputStream(data);
-//
-//        bc.upload(inputStream, data.length, true);
-//
-//        String expression = "SELECT _2 from BlobStorage WHERE _1 > 250;";
-//
-//        BlobQuickQueryDelimitedSerialization input = new BlobQuickQueryDelimitedSerialization()
-//            .setEscapeChar('\0')
-//            .setColumnSeparator(',')
-//            .setRecordSeparator('\n')
-//            .setFieldQuote('\'')
-//            .setHeadersPresent(true);
-//
-//        BlobQuickQueryDelimitedSerialization output = new BlobQuickQueryDelimitedSerialization()
-//            .setEscapeChar('\0')
-//            .setColumnSeparator(',')
-//            .setRecordSeparator('.')
-//            .setFieldQuote('\'')
-//            .setHeadersPresent(true);
-//
-//        BlobQuickQueryClient qqc = new BlobQuickQueryClientBuilder(bc).buildClient();
-//
-//        ByteArrayOutputStream os = new ByteArrayOutputStream();
-//        qqc.queryWithResponse(os, expression, input, output, null, null, null);
-//
-//        ByteArrayOutputStream realOutputStream = new ByteArrayOutputStream();
-//
-//        DataFileReader<GenericRecord> reader = new DataFileReader<>(
-//            new SeekableByteArrayInput(os.toByteArray()),
-//            new GenericDatumReader<>());
-//
-//        while(reader.hasNext())
-//        {
-//            GenericRecord record = reader.next();
-//
-//            if (record.getSchema().getName().equals("resultData")) {
-//                realOutputStream.write(((ByteBuffer) record.get("data")).array());
-//            } else if (record.getSchema().getName().equals("end")) {
-//                System.out.println("end");
-//                break;
-//            } else if (record.getSchema().getName().equals("progress")) {
-//                System.out.println("progress: " + record.get("bytesScanned") + "/" + record.get("totalBytes"));
-//            }  else if (record.getSchema().getName().equals("error")) {
-//                BlobQuickQueryError error =
-//                    new BlobQuickQueryError((Boolean) record.get("fatal"), record.get("name").toString(), record.get("description").toString(), (Long) record.get("position"));
-//                System.out.println("error: " + error.isFatal() + " " + error.getName() + " " + error.getDescription() + " " + error.getPosition());
-//            } else {
-//                System.out.println("error parsing stream");
-//            }
-//        }
-//        System.out.println("real output");
-//        System.out.println(new String(realOutputStream.toByteArray()));
-//        realOutputStream.close();
-//        inputStream.close();
-//        os.close();
-//
-//    }
 
 }

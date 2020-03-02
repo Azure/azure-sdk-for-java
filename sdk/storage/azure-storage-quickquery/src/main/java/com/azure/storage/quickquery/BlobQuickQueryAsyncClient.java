@@ -73,7 +73,7 @@ public class BlobQuickQueryAsyncClient {
     }
 
     /**
-     * Queries the entire blob.
+     * Queries the entire blob. NOTE: Returns raw avro.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -88,7 +88,7 @@ public class BlobQuickQueryAsyncClient {
     }
 
     /**
-     * Queries the entire blob.
+     * Queries the entire blob. NOTE: Returns raw avro.
      *
      * <p><strong>Code Samples</strong></p>
      *

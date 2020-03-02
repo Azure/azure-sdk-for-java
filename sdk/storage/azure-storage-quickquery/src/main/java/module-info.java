@@ -7,4 +7,6 @@ module com.azure.storage.quickquery {
 
     exports com.azure.storage.quickquery;
 
+    exports com.azure.storage.quickquery.models;
+
 }
