@@ -65,6 +65,12 @@ import java.util.function.Consumer;
 public class IdentityClient {
     private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final Random RANDOM = new Random();
+    private static final String WINDOWS_STARTER = "cmd.exe";
+    private static final String LINUX_MAC_STARTER = "/bin/sh";
+    private static final String WINDOWS_SWITCHER = "/c";
+    private static final String LINUX_MAC_SWITCHER = "-c";
+    private static final String WINDOWS_PROCESS_ERROR_MESSAGE = "'az' is not recognized";
+    private static final String LINUX_MAC_PROCESS_ERROR_MESSAGE = "(.*)az:(.*)not found";
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
@@ -125,11 +131,11 @@ public class IdentityClient {
             String starter;
             String switcher;
             if (System.getProperty("os.name").contains("Windows")) {
-                starter = "cmd.exe";
-                switcher = "/c";
+                starter = WINDOWS_STARTER;
+                switcher = WINDOWS_SWITCHER;
             } else {
-                starter = "/bin/sh";
-                switcher = "-c";
+                starter = LINUX_MAC_STARTER;
+                switcher = LINUX_MAC_SWITCHER;
             }
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, command.toString());
@@ -144,12 +150,11 @@ public class IdentityClient {
                 if (line == null) {
                     break;
                 }
-                if(line.startsWith("'az' is not recognized") || line.matches("(.*)az:(.*)not found")) {
+                if(line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE) || line.matches(LINUX_MAC_PROCESS_ERROR_MESSAGE)) {
                     throw logger.logExceptionAsError(new ClientAuthenticationException("Azure CLI not installed", null));
                 }
                 output.append(line);
             }
-            reader.close();
             String processOutput = output.toString();
             if(process.exitValue() != 0){
                 throw logger.logExceptionAsError(new ClientAuthenticationException(processOutput, null));
@@ -167,6 +172,8 @@ public class IdentityClient {
             throw logger.logExceptionAsError(new IllegalStateException(e));
         } catch (RuntimeException e) {
             return Mono.error(logger.logExceptionAsError(e));
+        } finally {
+            reader.close();
         }
         return Mono.just(token);
     }
