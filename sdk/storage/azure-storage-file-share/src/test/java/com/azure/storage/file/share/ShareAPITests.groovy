@@ -78,6 +78,32 @@ class ShareAPITests extends APISpec {
         fileClient instanceof ShareFileClient
     }
 
+    def "Exists"() {
+        when:
+        primaryShareClient.create()
+
+        then:
+        primaryShareClient.exists()
+    }
+
+    def "Does not exist"() {
+        expect:
+        !primaryShareClient.exists()
+    }
+
+    def "Exists error"() {
+        setup:
+        primaryShareClient = shareBuilderHelper(interceptorManager, shareName)
+            .sasToken("sig=dummyToken").buildClient()
+
+        when:
+        primaryShareClient.exists()
+
+        then:
+        def e = thrown(ShareStorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 403, ShareErrorCode.AUTHENTICATION_FAILED)
+    }
+
     def "Create share"() {
         expect:
         FileTestHelper.assertResponseStatusCode(primaryShareClient.createWithResponse(null, null, null, null), 201)

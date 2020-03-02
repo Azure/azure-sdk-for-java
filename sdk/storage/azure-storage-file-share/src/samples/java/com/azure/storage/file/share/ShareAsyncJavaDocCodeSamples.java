@@ -24,6 +24,7 @@ import java.util.Map;
  */
 public class ShareAsyncJavaDocCodeSamples {
     private String leaseId = "leaseId";
+    ShareAsyncClient client = createAsyncClientWithSASToken();
 
     /**
      * Generates code sample for {@link ShareAsyncClient} instantiation.
@@ -35,6 +36,24 @@ public class ShareAsyncJavaDocCodeSamples {
             .endpoint("${endpoint}")
             .buildAsyncClient();
         // END: com.azure.storage.file.share.ShareAsyncClient.instantiation
+    }
+
+    /**
+     * Code snippet for {@link ShareAsyncClient#exists()}
+     */
+    public void exists() {
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.exists
+        client.exists().subscribe(response -> System.out.printf("Exists? %b%n", response));
+        // END: com.azure.storage.file.share.ShareAsyncClient.exists
+    }
+
+    /**
+     * Code snippet for {@link ShareAsyncClient#existsWithResponse()}
+     */
+    public void existsWithResponse() {
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.existsWithResponse
+        client.existsWithResponse().subscribe(response -> System.out.printf("Exists? %b%n", response.getValue()));
+        // END: com.azure.storage.file.share.ShareAsyncClient.existsWithResponse
     }
 
     /**
