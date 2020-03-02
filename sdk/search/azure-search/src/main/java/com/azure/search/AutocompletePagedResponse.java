@@ -3,6 +3,7 @@
 
 package com.azure.search;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -13,6 +14,7 @@ import com.azure.search.models.AutocompleteResult;
  * This class represents a response from the autocomplete API. It contains the {@link AutocompleteItem
  * AutocompleteItems} returned from the service.
  */
+@Immutable
 public final class AutocompletePagedResponse extends PagedResponseBase<Void, AutocompleteItem> {
     private final Double coverage;
 

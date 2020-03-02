@@ -3,6 +3,7 @@
 
 package com.azure.search;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -14,6 +15,7 @@ import com.azure.search.models.SuggestResult;
  * Page}. Each page contains additional information returned by the API request. In the Suggest API case the additional
  * information is: coverage - coverage value.
  */
+@Immutable
 public final class SuggestPagedResponse extends PagedResponseBase<Void, SuggestResult> {
 
     /**

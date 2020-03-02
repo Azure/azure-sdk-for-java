@@ -3,6 +3,7 @@
 
 package com.azure.search;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Page;
@@ -19,13 +20,13 @@ import com.azure.search.models.SearchResult;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * Represents an HTTP response from the search API request that contains a list of items deserialized into a {@link
  * Page}. Each page contains additional information returned by the API request. In the Search API case the additional
  * information is: count - number of total documents returned. Will be returned only if isIncludeTotalResultCount is set
  * to true coverage - coverage value.
  */
+@Immutable
 public final class SearchPagedResponse implements ContinuablePage<SearchRequest, SearchResult>,
     Response<List<SearchResult>> {
     private final int statusCode;
