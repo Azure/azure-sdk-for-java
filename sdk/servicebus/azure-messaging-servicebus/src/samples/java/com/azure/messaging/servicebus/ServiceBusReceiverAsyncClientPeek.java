@@ -133,7 +133,14 @@ public class ServiceBusReceiverAsyncClientPeek {
 
         queueReceiverAsyncClient.inspectMessage()
             .doOnNext(receivedMessage -> {
-                System.out.println("!!!!!! doOnNext Got message from queue: " + receivedMessage.getBodyAsString());
+                System.out.println("!!!!!! doOnNext Got message from queue: " + receivedMessage.getBodyAsString() +
+                    ", " + new String(receivedMessage.getBody()) +
+                    ", property size " + receivedMessage.getProperties().size()
+                    );
+                for(String s:  receivedMessage.getProperties().keySet()){
+                    System.out.println( receivedMessage.getProperties().get(s));
+                }
+
             })
             .subscribe(receivedMessage -> {
                 System.out.println("!!!!!! subscribe Got message from queue: " + receivedMessage.getBodyAsString());
@@ -143,7 +150,7 @@ public class ServiceBusReceiverAsyncClientPeek {
                 });
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(15000);
         } catch (Exception ex) {
 
         }

@@ -25,13 +25,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
+
 /**
  * An AMQP session for Service Bus.
  */
 class ServiceBusReactorSession extends ReactorSession implements ServiceBusSession {
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorSession.class);
-
+    private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
+        Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
     /**
      * Creates a new AMQP session using proton-j.
      *
@@ -69,7 +72,9 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
         final Map<Symbol, Object> properties = new HashMap<>();
 
-        return createConsumer(linkName, entityPath, timeout, retry, filter, properties, null);
+        final Symbol[] desiredCapabilities = new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME};
+
+        return createConsumer(linkName, entityPath, timeout, retry, filter, properties, desiredCapabilities);
     }
 
 }

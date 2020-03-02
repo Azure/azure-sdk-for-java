@@ -17,4 +17,7 @@ public class ServiceBusConstants {
     public static final String REQUEST_RESPONSE_MESSAGE_COUNT = "message-count";
 
     public static final String REQUEST_RESPONSE_SESSIONID = "session-id";
+
+    public static final String REQUEST_RESPONSE_ASSOCIATED_LINK_NAME = "associated-link-name";
+
 }

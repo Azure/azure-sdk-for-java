@@ -91,18 +91,25 @@ public class RequestResponseChannel implements Disposable {
         this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
+        // Create sender
         this.replyTo = entityPath.replace("$", "") + "-client-reply-to";
         this.messageSerializer = messageSerializer;
+        session.setOutgoingWindow(Integer.MAX_VALUE);
+        session.open();
+
         this.sendLink = session.sender(linkName + ":sender");
         final Target target = new Target();
         target.setAddress(entityPath);
         this.sendLink.setTarget(target);
-        sendLink.setSource(new Source());
+        Source senderSource = new Source();
+        senderSource.setAddress(replyTo);
+        sendLink.setSource(senderSource);
         this.sendLink.setSenderSettleMode(SenderSettleMode.SETTLED);
         this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, fullyQualifiedNamespace, linkName,
             entityPath);
         BaseHandler.setHandler(sendLink, sendLinkHandler);
 
+        // Create Receiver
         this.receiveLink = session.receiver(linkName + ":receiver");
         final Source source = new Source();
         source.setAddress(entityPath);
@@ -115,6 +122,7 @@ public class RequestResponseChannel implements Disposable {
         this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace,
             linkName, entityPath);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
+
 
         this.subscriptions = Disposables.composite(
             receiveLinkHandler.getDeliveredMessages()

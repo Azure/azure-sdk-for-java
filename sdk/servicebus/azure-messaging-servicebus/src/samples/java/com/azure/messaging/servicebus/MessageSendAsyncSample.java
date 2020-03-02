@@ -37,7 +37,7 @@ public class MessageSendAsyncSample {
 
         senderAsyncClient.send(message).subscribe();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(5000);
         } catch (Exception ee) {
 
         }

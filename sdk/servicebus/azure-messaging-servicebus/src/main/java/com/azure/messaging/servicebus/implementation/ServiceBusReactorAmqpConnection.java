@@ -30,8 +30,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServiceBusReactorAmqpConnection extends ReactorConnection implements ServiceBusAmqpConnection {
 
     private static final String MANAGEMENT_SESSION_NAME = "mgmt-session";
-    private static final String MANAGEMENT_LINK_NAME = "mgmt";
-    private static final String MANAGEMENT_ADDRESS = "$management";
+    private static final String MANAGEMENT_LINK_NAME = "hemant-test1-mgmt";
+    private static final String MANAGEMENT_ADDRESS = "hemant-test1/$management";//;"$management";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorAmqpConnection.class);
     /**

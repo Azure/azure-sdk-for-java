@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
+import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -41,6 +42,8 @@ public class ManagementChannel implements  ServiceBusManagementNode {
     public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC = "last_enqueued_time_utc";
     public static final String MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC = "runtime_info_retrieval_time_utc";
     public static final String MANAGEMENT_RESULT_PARTITION_IS_EMPTY = "is_partition_empty";
+    private static final String MANAGEMENT_RECEIVER_LINK_NAME = "hemant-test1-mgmt:receiver";
+
 
     // Well-known keys for management plane service requests.
     private static final String MANAGEMENT_ENTITY_TYPE_KEY = "type";
@@ -50,7 +53,7 @@ public class ManagementChannel implements  ServiceBusManagementNode {
     // Well-known values for the service request.
     private static final String READ_OPERATION_VALUE = "READ";
     private static final String PEEK_OPERATION_VALUE = AmqpConstants.VENDOR + ":peek-message";
-    private static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":servicebus";
+    private static final String MANAGEMENT_SERVICEBUS_ENTITY_TYPE = AmqpConstants.VENDOR + ":servicebus";
     private static final String MANAGEMENT_SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 
 
@@ -83,9 +86,9 @@ public class ManagementChannel implements  ServiceBusManagementNode {
         int maxMessages = 2;
         long fromSequenceNumber = 1;
         final Map<String, Object> properties = new HashMap<>();
-        properties.put(MANAGEMENT_ENTITY_TYPE_KEY, MANAGEMENT_EVENTHUB_ENTITY_TYPE);
-        properties.put(MANAGEMENT_ENTITY_NAME_KEY, topicOrQueueName);
-        properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
+        //properties.put(MANAGEMENT_ENTITY_TYPE_KEY, MANAGEMENT_SERVICEBUS_ENTITY_TYPE);
+        //properties.put(MANAGEMENT_ENTITY_NAME_KEY, topicOrQueueName);
+        //properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
         return peek(properties, ServiceBusReceivedMessage.class, maxMessages, fromSequenceNumber, null)
             .publishOn(scheduler);
@@ -100,17 +103,19 @@ public class ManagementChannel implements  ServiceBusManagementNode {
             appProperties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.getToken());
 
             // set mandatory application properties for AMQP message.
-            appProperties.put(MANAGEMENT_OPERATION_KEY, PEEK_OPERATION_VALUE);
-            appProperties.put(MANAGEMENT_SERVER_TIMEOUT, "" + 1000 * 30);
+            appProperties.put(MANAGEMENT_OPERATION_KEY,/* READ_OPERATION_VALUE*/PEEK_OPERATION_VALUE);
+            appProperties.put(MANAGEMENT_SERVER_TIMEOUT, 30000L); // 1000 = one second
+            //appProperties.put(MANAGEMENT_ENTITY_TYPE_KEY, MANAGEMENT_SERVICEBUS_ENTITY_TYPE);
+
+            appProperties.put(ServiceBusConstants.REQUEST_RESPONSE_ASSOCIATED_LINK_NAME, MANAGEMENT_RECEIVER_LINK_NAME);
 
             final Message request = Proton.message();
-            final ApplicationProperties applicationProperties = new ApplicationProperties(appProperties);
-            request.setApplicationProperties(applicationProperties);
+            request.setApplicationProperties(new ApplicationProperties(appProperties));
 
             // set mandatory properties on AMQP message body
             HashMap<String, Object> requestBodyMap = new HashMap<>();
-            requestBodyMap.put(ServiceBusConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMER, fromSequenceNumber);
-            requestBodyMap.put(ServiceBusConstants.REQUEST_RESPONSE_MESSAGE_COUNT, maxMessages);
+            requestBodyMap.put(ServiceBusConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMER, 1L);
+            requestBodyMap.put(ServiceBusConstants.REQUEST_RESPONSE_MESSAGE_COUNT, 10);
 
             if (!Objects.isNull(sessionId)) {
                 requestBodyMap.put(ServiceBusConstants.REQUEST_RESPONSE_SESSIONID, sessionId);
