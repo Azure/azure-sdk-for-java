@@ -1,10 +1,12 @@
+# Azure Gremlin Spring Boot Starter client library for Java
+
 ## Overview
 
 **Spring Data Gremlin** provides initial Spring Data support for those databases using Gremlin query language. With annotation oriented programming model, it simplified the mapping to the database entity. It also provides supports for basic and custom query. 
 
 This project works with *any Gremlin-compatible* data store, and also with [Azure Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/introduction). Cosmos is a globally-distributed database service that allows developers to work with data using a variety of standard APIs, such as Graph, MongoDB, and SQL. Spring Data Gremlin provides a delightful experience to interact with Azure Cosmos DB Graph API. 
 
-## Usage
+## Getting started
 
 ### Add the dependency
 `spring-data-gremlin` is published on Maven Central Repository. If you are using Maven, add the following dependency.  
@@ -149,3 +151,9 @@ Find more information about Azure Service Privacy Statement, please check [Micro
 If you encounter any bug, please file an issue [here](https://github.com/Microsoft/spring-data-gremlin/issues/new?template=custom.md).
 
 To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
+
+## Key concepts
+## Examples
+## Troubleshooting
+## Next steps
+## Contributing

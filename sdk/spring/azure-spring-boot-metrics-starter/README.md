@@ -1,4 +1,6 @@
-## Usage
+#Azure Metrics Spring Boot Starter client library for Java
+
+## Getting started
 
 ### Add the dependency
 
@@ -21,7 +23,7 @@ Open `application.properties` file and add below properties with your instrument
 management.metrics.export.azuremonitor.instrumentation-key=<your-instrumentation-key-here>
 ```
 
-### Trouble Shooting
+## Troubleshooting
 1. If the JDK version you use is greater than 1.8, You may meet this problem: 
 ```
 NoClassDefFoundError: javax/xml/bind/JAXBException
@@ -35,3 +37,8 @@ To solve this issue, you need to add the dependency below into your classpath:
    <version>2.3.0</version>
 </dependency>
 ```
+
+## Key concepts
+## Examples
+## Next steps
+## Contributing
