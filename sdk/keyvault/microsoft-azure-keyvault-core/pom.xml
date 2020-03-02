@@ -26,6 +26,10 @@
       <id>azure-java-build-docs</id>
       <url>${site.url}/site/${project.artifactId}</url>
     </site>
+    <relocation>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-security-keyvault-keys</artifactId>
+    </relocation>
   </distributionManagement>
 
   <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
@@ -48,7 +52,7 @@
     <version>24.1.1-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
   	</dependency>
   </dependencies>
-  
+
   <build>
     <plugins>
       <plugin>
