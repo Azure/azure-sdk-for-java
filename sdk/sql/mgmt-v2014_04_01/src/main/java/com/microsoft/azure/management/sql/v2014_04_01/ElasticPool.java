@@ -177,7 +177,7 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithEdition {
             /**
              * Specifies edition.
-             * @param edition The edition of the elastic pool. Possible values include: 'Basic', 'Standard', 'Premium'
+             * @param edition The edition of the elastic pool. Possible values include: 'Basic', 'Standard', 'Premium', 'GeneralPurpose', 'BusinessCritical'
              * @return the next definition stage
              */
             WithCreate withEdition(ElasticPoolEdition edition);
@@ -279,7 +279,7 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithEdition {
             /**
              * Specifies edition.
-             * @param edition The edition of the elastic pool. Possible values include: 'Basic', 'Standard', 'Premium'
+             * @param edition The edition of the elastic pool. Possible values include: 'Basic', 'Standard', 'Premium', 'GeneralPurpose', 'BusinessCritical'
              * @return the next update stage
              */
             Update withEdition(ElasticPoolEdition edition);
