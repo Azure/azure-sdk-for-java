@@ -115,7 +115,7 @@ public class IdentityClient {
                     publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
                 } else {
                     //Http Client is null, proxy options are not set, use the default client and build the pipeline.
-                    httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient));
+                    httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault()));
                     publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
                 }
             }
@@ -163,8 +163,7 @@ public class IdentityClient {
         policies.add(new RetryPolicy());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpClient client = httpClient != null ? httpClient : HttpClient.createDefault();
-        return new HttpPipelineBuilder().httpClient(client)
+        return new HttpPipelineBuilder().httpClient(httpClient)
                    .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
     }
 
