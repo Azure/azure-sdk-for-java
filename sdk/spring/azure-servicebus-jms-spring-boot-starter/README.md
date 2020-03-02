@@ -1,5 +1,5 @@
 #Azure Service Bus JMS Spring Boot Starter client library for Java
-## Getting Started
+## Getting started
 
 It is Azure Service Bus JMS Spring Boot Starter.
 
