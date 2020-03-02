@@ -12,6 +12,8 @@
 <!--    <module>azure-spring-boot-parent</module>-->
 <!--    <module>azure-spring-boot-bom</module>-->
     <module>../core/azure-core</module>
+    <module>../core/azure-core-test</module>
+    <module>../core/azure-core-http-netty</module>
     <module>../keyvault/azure-security-keyvault-secrets</module>
     <module>../identity/azure-identity</module>
     <module>azure-spring-boot</module>
