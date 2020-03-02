@@ -34,6 +34,7 @@ public PollerFlux<OperationResult, ExtractedReceiptResult> beginAnalyzeReceipt(S
 // Analyze Layout
 public PollerFlux<OperationResult, ExtractedLayoutResult> beginAnalyzeLayout(String uploadFilePath, boolean includeTextDetails) { }
 public PollerFlux<OperationResult, ExtractedLayoutResult> beginAnalyzeLayout(Flux<ByteBuffer> data, boolean includeTextDetails) { }
+```
 
 ### Models
 
@@ -301,7 +302,7 @@ Model unsupervisedModel = trainingPoller
             // training completed successfully, retrieving final result.
             return trainingOperationResponse.getFinalResult();
         } else {
-            throw new RuntimeException("polling completed unsuccessfully with status:"
+            throw new RuntimeException("Polling completed unsuccessfully with status:"
                 + trainingOperationResponse.getStatus());
         }
     }).block();
@@ -326,7 +327,6 @@ FormResult analyzeFormResult = analyzePoller
 for(ExtractedPage extractedPage : analyzeFormResult.getPages()) {
     System.out.printf("Page Number:%s", extractedPage.getPageNumber());
     System.out.printf("Cluster Id:%s", extractedPage.getClusterId());
-
     for(ExtractedField extractedField : extractedPage.getFields()) {
         System.out.printf("Name:%s", extractedField.getExtractedKey().getText());
         System.out.printf("Value:%s", extractedPage.getExtractedValue().getText());
@@ -347,7 +347,7 @@ SupervisedModel supervisedModel = trainingPoller
             // training completed successfully, retrieving final result.
             return trainingOperationResponse.getFinalResult();
         } else {
-            throw new RuntimeException("polling completed unsuccessfully with status:"
+            throw new RuntimeException("Polling completed unsuccessfully with status:"
                 + trainingOperationResponse.getStatus());
         }
     }).block();
@@ -370,13 +370,14 @@ PredefinedFormResult predefinedFormResult = analyzePoller
     }).block();
 
 for(PredefinedFieldForm extractedForm : predefinedFormResult.getForms()) {
-    System.out.printf("Form Type:%s", extractedForm.getFormType());
+    System.out.printf("Form Type: %s", extractedForm.getFormType());
 
     for(PredefinedFieldPage fieldPage : extractedForm.getPages()) {
+        System.out.printf("Page Number: %d", extractedField.getPageNumber());
             for(PredefinedField extractedField : extractedForm.getFields()) {
-                System.out.printf("Name:%s", extractedField.getName());
-                System.out.printf("Confidence score:%s", extractedField.getConfidenceScore());
-                System.out.printf("Value:%s", extractedField.getExtractedValue().getText());
+                System.out.printf("Name: %s", extractedField.getName());
+                System.out.printf("Confidence score: %s", extractedField.getConfidenceScore());
+                System.out.printf("Value: %s", extractedField.getExtractedValue().getText());
         }
     }
 }
@@ -394,7 +395,7 @@ Model unsupervisedModel = trainingPoller
             // training completed successfully, retrieving final result.
             return trainingOperationResponse.getFinalResult();
         } else {
-            throw new RuntimeException("polling completed unsuccessfully with status:"
+            throw new RuntimeException("Polling completed unsuccessfully with status:"
                 + trainingOperationResponse.getStatus());
         }
     }).block();
@@ -421,7 +422,7 @@ SupervisedModel supervisedModel = trainingPoller
             // training completed successfully, retrieving final result.
             return trainingOperationResponse.getFinalResult();
         } else {
-            throw new RuntimeException("polling completed unsuccessfully with status:"
+            throw new RuntimeException("Polling completed unsuccessfully with status:"
                 + trainingOperationResponse.getStatus());
         }
     }).block();
@@ -458,16 +459,22 @@ ExtractedReceiptResult extractedReceiptResult = analyzePoller
         }
     }).block();
 
+System.out.println("Receipt contained the following values:");
 for(ExtractedReceipt receiptResultItem : extractedReceiptResult.getReceiptResultItems()) {
     System.out.println("Merchant Name: %s", receiptResultItem.getMerchantName());
-    System.out.println("Receipt Type: %s", receiptResultItem.getReceiptType());
-    System.out.println("Receipt Total: %s", receiptResultItem.getTotal());
+    System.out.println("Merchant Address: %s", receiptResultItem.getMerchantAddress());
+    System.out.println("Merchant Phone Number: %s", receiptResultItem.getMerchantPhoneNumber());
     System.out.println("Transaction Date: %s", receiptResultItem.getTransactionDate());
+    System.out.println("Transaction Time: %s", receiptResultItem.getTransactionTime());
     for(ReceiptItem receiptItem : receiptResultItem.getReceiptItem()) {
         System.out.println("Receipt item name: %s", receiptItem.getName());
         System.out.println("Receipt item quantity: %s", receiptItem.getQuantity());
         System.out.println("Receipt item total price: %s", receiptItem.getTotalPrice());
     }
+    System.out.println("Subtotal: %s", receiptResultItem.getTotal());
+    System.out.println("Tax: %s", receiptResultItem.getTransactionDate());
+    System.out.println("Tip: %s", receiptResultItem.getTransactionDate());
+    System.out.println("Total: %s", receiptResultItem.getTotal());
 }
 ```
 
@@ -490,7 +497,7 @@ ExtractedLayoutResult extractedLayoutResult = analyzePoller
 
 for(RawPageExtraction rawPageExtraction : extractedLayoutResult.getRawPageExtractions()) {
     System.out.println("Extracted Layout page number: %s", rawPageExtractions.getPageNumber());
-    for(ExtractedLine extractedLine : rawPageExtractions..getLines()) {
+    for(ExtractedLine extractedLine : rawPageExtractions.getLines()) {
         System.out.println("Extracted Line Language: %s", extractedLine.getLanguage());
         for(ExtractedWord extractedWord : extractedLine.getWords()) {
             System.out.println("Text :%s", extractedWord.getText());
