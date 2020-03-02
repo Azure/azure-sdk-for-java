@@ -85,7 +85,7 @@ public class Worker {
                 do {
 
                     FeedOptions options = new FeedOptions();
-                    options.requestContinuation(response != null ? response.getContinuationToken() : null);
+                    options.setRequestContinuation(response != null ? response.getContinuationToken() : null);
 
                     response = this.client.readDocuments(this.documentCollectionUri, options).take(1)
                             .subscribeOn(schedulerForBlockingWork).single().block();
@@ -122,7 +122,7 @@ public class Worker {
         do {
 
             FeedOptions options = new FeedOptions();
-            options.requestContinuation(response != null ? response.getContinuationToken() : null);
+            options.setRequestContinuation(response != null ? response.getContinuationToken() : null);
 
             response = this.client.readDocuments(this.documentCollectionUri, options).take(1)
                     .subscribeOn(schedulerForBlockingWork).single().block();

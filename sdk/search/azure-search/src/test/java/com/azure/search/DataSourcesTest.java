@@ -24,8 +24,8 @@ public class DataSourcesTest {
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString("connectionString"))
             .setContainer(new DataContainer().setName("table"));
-
-        DataSource actual = DataSources.azureSql("sql", "connectionString", "table");
+        DataSource actual = DataSources.createFromAzureSql(
+            "sql", "connectionString", "table");
 
         TestHelpers.assertDataSourcesEqual(expected, actual);
     }
@@ -40,8 +40,8 @@ public class DataSourcesTest {
                 .setConnectionString("connectionString"))
             .setContainer(new DataContainer()
                 .setName("container"));
-
-        DataSource actual = DataSources.azureBlobStorage("storageBlob", "connectionString", "container");
+        DataSource actual = DataSources.createFromAzureBlobStorage(
+            "storageBlob", "connectionString", "container");
 
         TestHelpers.assertDataSourcesEqual(expected, actual);
     }
@@ -55,9 +55,9 @@ public class DataSourcesTest {
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString("connectionString"))
             .setContainer(new DataContainer()
-                .setName("table"));
-
-        DataSource actual = DataSources.azureTableStorage("storageTable", "connectionString", "table");
+            .setName("table"));
+        DataSource actual = DataSources.createFromAzureTableStorage(
+            "storageTable", "connectionString", "table");
 
         TestHelpers.assertDataSourcesEqual(expected, actual);
     }
@@ -73,7 +73,7 @@ public class DataSourcesTest {
             .setContainer(new DataContainer()
                 .setName("collection"));
 
-        DataSource actual = DataSources.cosmos("cosmos", "connectionString", "collection", false);
+        DataSource actual = DataSources.createFromCosmos("cosmos", "connectionString", "collection", false);
 
         TestHelpers.assertDataSourcesEqual(expected, actual);
     }
@@ -90,7 +90,7 @@ public class DataSourcesTest {
                 .setName("collection"))
             .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts"));
 
-        DataSource actual = DataSources.cosmos("cosmos", "connectionString", "collection");
+        DataSource actual = DataSources.createFromCosmos("cosmos", "connectionString", "collection");
 
         TestHelpers.assertDataSourcesEqual(expected, actual);
     }

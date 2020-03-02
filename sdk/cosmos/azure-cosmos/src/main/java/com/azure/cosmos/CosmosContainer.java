@@ -236,41 +236,41 @@ public class CosmosContainer {
     }
 
     /**
-     * Read all items {@link CosmosContinuablePagedIterable}.
+     * Read all items {@link CosmosPagedIterable}.
      *
      * @param <T> the type parameter
      * @param options the options
-     * @param klass the klass
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @param classType the classType
+     * @return the {@link CosmosPagedIterable}
      */
-    public <T> CosmosContinuablePagedIterable<T> readAllItems(FeedOptions options, Class<T> klass) {
-        return getCosmosContinuablePagedIterable(this.asyncContainer.readAllItems(options, klass));
+    public <T> CosmosPagedIterable<T> readAllItems(FeedOptions options, Class<T> classType) {
+        return getCosmosPagedIterable(this.asyncContainer.readAllItems(options, classType));
     }
 
     /**
-     * Query items {@link CosmosContinuablePagedIterable}.
+     * Query items {@link CosmosPagedIterable}.
      *
      * @param <T> the type parameter
      * @param query the query
      * @param options the options
-     * @param klass the class type
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @param classType the class type
+     * @return the {@link CosmosPagedIterable}
      */
-    public <T> CosmosContinuablePagedIterable<T> queryItems(String query, FeedOptions options, Class<T> klass) {
-        return getCosmosContinuablePagedIterable(this.asyncContainer.queryItems(query, options, klass));
+    public <T> CosmosPagedIterable<T> queryItems(String query, FeedOptions options, Class<T> classType) {
+        return getCosmosPagedIterable(this.asyncContainer.queryItems(query, options, classType));
     }
 
     /**
-     * Query items {@link CosmosContinuablePagedIterable}.
+     * Query items {@link CosmosPagedIterable}.
      *
      * @param <T> the type parameter
      * @param querySpec the query spec
      * @param options the options
-     * @param klass the class type
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @param classType the class type
+     * @return the {@link CosmosPagedIterable}
      */
-    public <T> CosmosContinuablePagedIterable<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
-        return getCosmosContinuablePagedIterable(this.asyncContainer.queryItems(querySpec, options, klass));
+    public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> classType) {
+        return getCosmosPagedIterable(this.asyncContainer.queryItems(querySpec, options, classType));
     }
 
     /**
@@ -362,8 +362,8 @@ public class CosmosContainer {
         return new CosmosItemResponse<T>(response);
     }
 
-    private <T> CosmosContinuablePagedIterable<T> getCosmosContinuablePagedIterable(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux) {
-        return new CosmosContinuablePagedIterable<>(cosmosContinuablePagedFlux);
+    private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
+        return new CosmosPagedIterable<>(cosmosPagedFlux);
     }
 
 }

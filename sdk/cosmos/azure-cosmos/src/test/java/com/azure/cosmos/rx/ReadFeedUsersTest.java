@@ -5,7 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosUserProperties;
 import com.azure.cosmos.FeedOptions;
@@ -40,7 +40,7 @@ public class ReadFeedUsersTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
 
-        CosmosContinuablePagedFlux<CosmosUserProperties> feedObservable = createdDatabase.readAllUsers(options);
+        CosmosPagedFlux<CosmosUserProperties> feedObservable = createdDatabase.readAllUsers(options);
 
         int expectedPageSize = (createdUsers.size() + maxItemCount - 1) / maxItemCount;
 

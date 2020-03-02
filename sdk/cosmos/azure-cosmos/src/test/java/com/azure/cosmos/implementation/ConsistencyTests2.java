@@ -183,7 +183,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             String token = childResource.getSessionToken().split(":")[0] + ":" + this.createSessionToken(SessionTokenHelper.parse(childResource.getSessionToken()), 100000000).convertToString();
 
             FeedOptions feedOptions = new FeedOptions();
-            feedOptions.partitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
+            feedOptions.setPartitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
             feedOptions.setSessionToken(token);
             FailureValidator validator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
             Flux<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(parentResource.getSelfLink(), feedOptions);
@@ -237,7 +237,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             Mono<Void> task2 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> {
                 try {
                     FeedOptions feedOptions = new FeedOptions();
-                    feedOptions.setAllowEmptyPages(true);
+                    feedOptions.setEmptyPagesAllowed(true);
                     FeedResponse<Document> queryResponse = client.queryDocuments(createdCollection.getSelfLink(),
                                                                                  "SELECT * FROM c WHERE c.Id = " +
                                                                                          "'foo'", feedOptions)

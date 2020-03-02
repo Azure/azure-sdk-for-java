@@ -114,8 +114,8 @@ implements IDocumentQueryExecutionContext<T> {
 
     public FeedOptions getFeedOptions(String continuationToken, Integer maxPageSize) {
         FeedOptions options = new FeedOptions(this.feedOptions);
-        options.requestContinuation(continuationToken);
-        options.maxItemCount(maxPageSize);
+        options.setRequestContinuation(continuationToken);
+        options.setMaxItemCount(maxPageSize);
         return options;
     }
 
@@ -150,12 +150,12 @@ implements IDocumentQueryExecutionContext<T> {
             }
         }
 
-        requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, feedOptions.requestContinuation());
+        requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, feedOptions.getRequestContinuation());
         requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY, Strings.toString(true));
 
         // Flow the pageSize only when we are not doing client eval
-        if (feedOptions.maxItemCount() != null && feedOptions.maxItemCount() > 0) {
-            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(feedOptions.maxItemCount()));
+        if (feedOptions.getMaxItemCount() != null && feedOptions.getMaxItemCount() > 0) {
+            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(feedOptions.getMaxItemCount()));
         }
 
         if (feedOptions.getMaxDegreeOfParallelism() != 0) {
@@ -171,8 +171,8 @@ implements IDocumentQueryExecutionContext<T> {
             requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, desiredConsistencyLevel.toString());
         }
 
-        if(feedOptions.populateQueryMetrics()){
-            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(feedOptions.populateQueryMetrics()));
+        if(feedOptions.isPopulateQueryMetrics()){
+            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(feedOptions.isPopulateQueryMetrics()));
         }
 
         return requestHeaders;
@@ -213,7 +213,6 @@ implements IDocumentQueryExecutionContext<T> {
             SqlQuerySpec querySpec) {
         RxDocumentServiceRequest executeQueryRequest;
 
-        String queryText;
         switch (this.client.getQueryCompatibilityMode()) {
         case SqlQuery:
             SqlParameterList params = querySpec.getParameters();
@@ -227,7 +226,7 @@ implements IDocumentQueryExecutionContext<T> {
                     requestHeaders);
 
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.JSON);
-            queryText = querySpec.getQueryText();
+            executeQueryRequest.setContentBytes(Utils.getUTF8Bytes(querySpec.getQueryText()));
             break;
 
         case Default:
@@ -239,16 +238,8 @@ implements IDocumentQueryExecutionContext<T> {
                     requestHeaders);
 
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
-            queryText = querySpec.toJson();
+            executeQueryRequest.setByteBuffer(querySpec.serializeJsonToByteBuffer());
             break;
-        }
-
-        try {
-            executeQueryRequest.setContentBytes(queryText.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            // TODO: exception should be handled differently
-            e.printStackTrace();
         }
 
         return executeQueryRequest;

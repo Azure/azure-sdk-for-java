@@ -9,11 +9,21 @@ import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.models.BlobType
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.models.AccessTier
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions
+import com.azure.storage.file.datalake.models.DataLakeStorageException
+import com.azure.storage.file.datalake.models.DownloadRetryOptions
+import com.azure.storage.file.datalake.models.FileRange
+import com.azure.storage.file.datalake.models.LeaseStateType
+import com.azure.storage.file.datalake.models.LeaseStatusType
+import com.azure.storage.file.datalake.models.PathAccessControl
+import com.azure.storage.file.datalake.models.PathAccessControlEntry
+import com.azure.storage.file.datalake.models.PathHttpHeaders
+import com.azure.storage.file.datalake.models.PathPermissions
+import com.azure.storage.file.datalake.models.RolePermissions
 import reactor.core.Exceptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
@@ -24,9 +34,9 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
+import java.nio.file.Files
 import java.nio.file.OpenOption
 import java.nio.file.StandardOpenOption
-import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
 
@@ -1336,41 +1346,42 @@ class FileAPITest extends APISpec {
         file.delete()
     }
 
-    @Unroll
-    def "Download file AC"() {
-        setup:
-        def file = getRandomFile(defaultDataSize)
-        fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
-        if (outFile.exists()) {
-            assert outFile.delete()
-        }
-
-        match = setupPathMatchCondition(fc, match)
-        leaseID = setupPathLeaseCondition(fc, leaseID)
-        DataLakeRequestConditions bro = new DataLakeRequestConditions().setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified).setIfMatch(match).setIfNoneMatch(noneMatch)
-            .setLeaseId(leaseID)
-
-        when:
-        fc.readToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, false, null, null, null)
-
-        then:
-        notThrown(DataLakeStorageException)
-
-        cleanup:
-        outFile.delete()
-        file.delete()
-
-        where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
-    }
+    // TODO (alzimmer): Disabling this test until this issue is fixed. https://github.com/Azure/azure-sdk-for-java/issues/8611
+//    @Unroll
+//    def "Download file AC"() {
+//        setup:
+//        def file = getRandomFile(defaultDataSize)
+//        fc.uploadFromFile(file.toPath().toString(), true)
+//        def outFile = new File(testName + "")
+//        if (outFile.exists()) {
+//            assert outFile.delete()
+//        }
+//
+//        match = setupPathMatchCondition(fc, match)
+//        leaseID = setupPathLeaseCondition(fc, leaseID)
+//        DataLakeRequestConditions bro = new DataLakeRequestConditions().setIfModifiedSince(modified)
+//            .setIfUnmodifiedSince(unmodified).setIfMatch(match).setIfNoneMatch(noneMatch)
+//            .setLeaseId(leaseID)
+//
+//        when:
+//        fc.readToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, false, null, null, null)
+//
+//        then:
+//        notThrown(DataLakeStorageException)
+//
+//        cleanup:
+//        outFile.delete()
+//        file.delete()
+//
+//        where:
+//        modified | unmodified | match        | noneMatch   | leaseID
+//        null     | null       | null         | null        | null
+//        oldDate  | null       | null         | null        | null
+//        null     | newDate    | null         | null        | null
+//        null     | null       | receivedEtag | null        | null
+//        null     | null       | null         | garbageEtag | null
+//        null     | null       | null         | null        | receivedLeaseID
+//    }
 
     @Unroll
     def "Download file AC fail"() {
@@ -2321,6 +2332,7 @@ class FileAPITest extends APISpec {
 
     // These two tests are to test optimizations in buffered upload for small files.
     @Unroll
+    @Requires({ liveMode() })
     def "Buffered upload handle pathing"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2345,6 +2357,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ liveMode() })
     def "Buffered upload handle pathing hot flux"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())

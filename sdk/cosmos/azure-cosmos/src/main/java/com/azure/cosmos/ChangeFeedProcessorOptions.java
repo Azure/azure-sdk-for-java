@@ -62,7 +62,7 @@ public class ChangeFeedProcessorOptions {
     /**
      * Gets the interval to kick off a task to compute if partitions are distributed evenly among known host instances.
      *
-     * @return the interval to kick off a task to compute if partitions are distributed evenly among known host 
+     * @return the interval to kick off a task to compute if partitions are distributed evenly among known host
      * instances.
      */
     public Duration getLeaseAcquireInterval() {
@@ -72,7 +72,7 @@ public class ChangeFeedProcessorOptions {
     /**
      * Sets he interval to kick off a task to compute if partitions are distributed evenly among known host instances.
      *
-     * @param leaseAcquireInterval he interval to kick off a task to compute if partitions are distributed evenly 
+     * @param leaseAcquireInterval he interval to kick off a task to compute if partitions are distributed evenly
      * among known host instances.
      * @return the current ChangeFeedProcessorOptions instance.
      */
@@ -121,7 +121,7 @@ public class ChangeFeedProcessorOptions {
     /**
      * Sets the delay in between polling a partition for new changes on the feed, after all current changes are drained.
      *
-     * @param feedPollDelay the delay in between polling a partition for new changes on the feed, after all current 
+     * @param feedPollDelay the delay in between polling a partition for new changes on the feed, after all current
      * changes are drained.
      * @return the current ChangeFeedProcessorOptions instance.
      */
@@ -240,7 +240,7 @@ public class ChangeFeedProcessorOptions {
      *
      * @return a value indicating whether change feed in the Azure Cosmos DB service should start from.
      */
-    public boolean getStartFromBeginning() {
+    public boolean isStartFromBeginning() {
         return this.startFromBeginning;
     }
 
@@ -313,7 +313,7 @@ public class ChangeFeedProcessorOptions {
      * Gets a value indicating whether on start of the host all existing leases should be deleted and the host
      * should start from scratch.
      *
-     * @return a value indicating whether on start of the host all existing leases should be deleted and the host 
+     * @return a value indicating whether on start of the host all existing leases should be deleted and the host
      * should start from scratch.
      */
     public boolean getDiscardExistingLeases() {

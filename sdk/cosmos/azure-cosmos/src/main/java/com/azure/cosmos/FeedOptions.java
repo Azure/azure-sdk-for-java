@@ -12,7 +12,7 @@ import java.util.Map;
 public final class FeedOptions {
     private String sessionToken;
     private String partitionKeyRangeId;
-    private Boolean enableScanInQuery;
+    private Boolean scanInQueryEnabled;
     private Boolean emitVerboseTracesInQuery;
     private int maxDegreeOfParallelism;
     private int maxBufferedItemCount;
@@ -22,7 +22,7 @@ public final class FeedOptions {
     private PartitionKey partitionkey;
     private boolean populateQueryMetrics;
     private Map<String, Object> properties;
-    private boolean allowEmptyPages;
+    private boolean emptyPagesAllowed;
 
     public FeedOptions() {
     }
@@ -30,7 +30,7 @@ public final class FeedOptions {
     public FeedOptions(FeedOptions options) {
         this.sessionToken = options.sessionToken;
         this.partitionKeyRangeId = options.partitionKeyRangeId;
-        this.enableScanInQuery = options.enableScanInQuery;
+        this.scanInQueryEnabled = options.scanInQueryEnabled;
         this.emitVerboseTracesInQuery = options.emitVerboseTracesInQuery;
         this.maxDegreeOfParallelism = options.maxDegreeOfParallelism;
         this.maxBufferedItemCount = options.maxBufferedItemCount;
@@ -39,7 +39,7 @@ public final class FeedOptions {
         this.requestContinuation = options.requestContinuation;
         this.partitionkey = options.partitionkey;
         this.populateQueryMetrics = options.populateQueryMetrics;
-        this.allowEmptyPages = options.allowEmptyPages;
+        this.emptyPagesAllowed = options.emptyPagesAllowed;
     }
 
     /**
@@ -88,19 +88,19 @@ public final class FeedOptions {
      *
      * @return the option of enable scan in query.
      */
-    public Boolean getEnableScanInQuery() {
-        return this.enableScanInQuery;
+    public Boolean isScanInQueryEnabled() {
+        return this.scanInQueryEnabled;
     }
 
     /**
      * Sets the option to allow scan on the queries which couldn't be served as
      * indexing was opted out on the requested paths.
      *
-     * @param enableScanInQuery the option of enable scan in query.
+     * @param scanInQueryEnabled the option of enable scan in query.
      * @return the FeedOptions.
      */
-    public FeedOptions setEnableScanInQuery(Boolean enableScanInQuery) {
-        this.enableScanInQuery = enableScanInQuery;
+    public FeedOptions setScanInQueryEnabled(Boolean scanInQueryEnabled) {
+        this.scanInQueryEnabled = scanInQueryEnabled;
         return this;
     }
 
@@ -110,7 +110,7 @@ public final class FeedOptions {
      *
      * @return the emit verbose traces in query.
      */
-    public Boolean getEmitVerboseTracesInQuery() {
+    public Boolean isEmitVerboseTracesInQuery() {
         return this.emitVerboseTracesInQuery;
     }
 
@@ -217,7 +217,7 @@ public final class FeedOptions {
      *
      * @return the max number of items.
      */
-    public Integer maxItemCount() {
+    public Integer getMaxItemCount() {
         return this.maxItemCount;
     }
 
@@ -228,7 +228,7 @@ public final class FeedOptions {
      * @param maxItemCount the max number of items.
      * @return the FeedOptionsBase.
      */
-    public FeedOptions maxItemCount(Integer maxItemCount) {
+    public FeedOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
     }
@@ -238,7 +238,7 @@ public final class FeedOptions {
      *
      * @return the request continuation.
      */
-    public String requestContinuation() {
+    public String getRequestContinuation() {
         return this.requestContinuation;
     }
 
@@ -248,7 +248,7 @@ public final class FeedOptions {
      * @param requestContinuation the request continuation.
      * @return the FeedOptionsBase.
      */
-    public FeedOptions requestContinuation(String requestContinuation) {
+    public FeedOptions setRequestContinuation(String requestContinuation) {
         this.requestContinuation = requestContinuation;
         return this;
     }
@@ -259,7 +259,7 @@ public final class FeedOptions {
      *
      * @return the partition key.
      */
-    public PartitionKey partitionKey() {
+    public PartitionKey getPartitionKey() {
         return this.partitionkey;
     }
 
@@ -270,7 +270,7 @@ public final class FeedOptions {
      * @param partitionkey the partition key value.
      * @return the FeedOptionsBase.
      */
-    public FeedOptions partitionKey(PartitionKey partitionkey) {
+    public FeedOptions setPartitionKey(PartitionKey partitionkey) {
         this.partitionkey = partitionkey;
         return this;
     }
@@ -280,7 +280,7 @@ public final class FeedOptions {
      *
      * @return whether to enable populate query metrics
      */
-    public boolean populateQueryMetrics() {
+    public boolean isPopulateQueryMetrics() {
         return populateQueryMetrics;
     }
 
@@ -290,7 +290,7 @@ public final class FeedOptions {
      * @param populateQueryMetrics whether to enable or disable query metrics
      * @return the FeedOptionsBase.
      */
-    public FeedOptions populateQueryMetrics(boolean populateQueryMetrics) {
+    public FeedOptions setPopulateQueryMetrics(boolean populateQueryMetrics) {
         this.populateQueryMetrics = populateQueryMetrics;
         return this;
     }
@@ -300,7 +300,7 @@ public final class FeedOptions {
      *
      * @return Map of request options properties
      */
-    public Map<String, Object> properties() {
+    public Map<String, Object> getProperties() {
         return properties;
     }
 
@@ -310,7 +310,7 @@ public final class FeedOptions {
      * @param properties the properties.
      * @return the FeedOptionsBase.
      */
-    public FeedOptions properties(Map<String, Object> properties) {
+    public FeedOptions setProperties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
     }
@@ -320,15 +320,15 @@ public final class FeedOptions {
      *
      * @return whether to enable allow empty pages or not
      */
-    public boolean getAllowEmptyPages() {
-        return allowEmptyPages;
+    public boolean isEmptyPagesAllowed() {
+        return emptyPagesAllowed;
     }
 
     /**
      * Sets the option to allow empty result pages in feed response. Defaults to false
-     * @param allowEmptyPages whether to allow empty pages in feed response
+     * @param emptyPagesAllowed whether to allow empty pages in feed response
      */
-    public void setAllowEmptyPages(boolean allowEmptyPages) {
-        this.allowEmptyPages = allowEmptyPages;
+    public void setEmptyPagesAllowed(boolean emptyPagesAllowed) {
+        this.emptyPagesAllowed = emptyPagesAllowed;
     }
 }

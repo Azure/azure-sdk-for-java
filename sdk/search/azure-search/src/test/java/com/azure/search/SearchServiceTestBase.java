@@ -113,11 +113,14 @@ public abstract class SearchServiceTestBase extends TestBase {
     @BeforeAll
     public static void beforeAll() {
         initializeAzureResources();
+        if (!playbackMode()) {
+            azureSearchResources.initialize();
+            azureSearchResources.createResourceGroup();
+        }
     }
 
     @AfterAll
     public static void afterAll() {
-        azureSearchResources.deleteResourceGroup();
     }
 
     @Override
@@ -125,8 +128,6 @@ public abstract class SearchServiceTestBase extends TestBase {
         searchDnsSuffix = testEnvironment.equals("DOGFOOD") ? DOGFOOD_DNS_SUFFIX : DEFAULT_DNS_SUFFIX;
 
         if (!interceptorManager.isPlaybackMode()) {
-            azureSearchResources.initialize();
-            azureSearchResources.createResourceGroup(testResourceNamer);
             azureSearchResources.createService(testResourceNamer);
             searchApiKeyCredential = new SearchApiKeyCredential(azureSearchResources.getSearchAdminKey());
         }
@@ -461,7 +462,7 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     DataSource createTestSqlDataSourceObject(DataDeletionDetectionPolicy deletionDetectionPolicy,
         DataChangeDetectionPolicy changeDetectionPolicy) {
-        return DataSources.azureSql(
+        return DataSources.createFromAzureSql(
             SearchServiceTestBase.SQL_DATASOURCE_NAME,
             AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND,
             "GeoNamesRI",
@@ -492,7 +493,7 @@ public abstract class SearchServiceTestBase extends TestBase {
         }
 
         // create the new data source object for this storage account and container
-        return DataSources.azureBlobStorage(
+        return DataSources.createFromAzureBlobStorage(
             BLOB_DATASOURCE_NAME,
             storageConnString,
             blobContainerDatasourceName,
@@ -638,6 +639,10 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     static boolean liveMode() {
         return setupTestMode() == TestMode.LIVE;
+    }
+
+    static boolean playbackMode() {
+        return setupTestMode() == TestMode.PLAYBACK;
     }
 
     static TestMode setupTestMode() {

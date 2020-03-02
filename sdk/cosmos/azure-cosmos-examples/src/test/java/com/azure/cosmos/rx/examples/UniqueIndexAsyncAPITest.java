@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import io.reactivex.subscribers.TestSubscriber;
@@ -44,7 +45,7 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.setPaths(ImmutableList.of("/name", "/field"));
-        uniqueKeyPolicy.uniqueKeys(Lists.newArrayList(uniqueKey));
+        uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();

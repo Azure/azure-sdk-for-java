@@ -66,7 +66,7 @@ public class GlobalAddressResolverTest {
         urlforWrite3 = new URI("http://testWrite3.com/");
 
         connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setEnableReadRequestsFallback(true);
+        connectionPolicy.setReadRequestsFallbackEnabled(true);
         httpClient = Mockito.mock(HttpClient.class);
         endpointManager = Mockito.mock(GlobalEndpointManager.class);
 

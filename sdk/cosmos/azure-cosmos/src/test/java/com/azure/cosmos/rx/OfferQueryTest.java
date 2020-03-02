@@ -54,7 +54,7 @@ public class OfferQueryTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.offerResourceId = '%s'", collectionResourceId);
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
+        options.setMaxItemCount(2);
         Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(query, null);
 
         List<Offer> allOffers = client.readOffers(null).flatMap(f -> Flux.fromIterable(f.getResults())).collectList().single().block();
@@ -62,7 +62,7 @@ public class OfferQueryTest extends TestSuiteBase {
 
         assertThat(expectedOffers).isNotEmpty();
 
-        int expectedPageSize = (expectedOffers.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedOffers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
                 .totalSize(expectedOffers.size())
@@ -83,7 +83,7 @@ public class OfferQueryTest extends TestSuiteBase {
                 Strings.join(collectionResourceIds.stream().map(s -> "'" + s + "'").collect(Collectors.toList())).with(","));
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(1);
+        options.setMaxItemCount(1);
         Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(query, options);
 
         List<Offer> expectedOffers = client.readOffers(null).flatMap(f -> Flux.fromIterable(f.getResults()))
@@ -94,7 +94,7 @@ public class OfferQueryTest extends TestSuiteBase {
 
         assertThat(expectedOffers).hasSize(createdCollections.size());
 
-        int expectedPageSize = (expectedOffers.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedOffers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
                 .totalSize(expectedOffers.size())

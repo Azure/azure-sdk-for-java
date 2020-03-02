@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -22,25 +23,15 @@ public class StoreResponse {
     final private int status;
     final private String[] responseHeaderNames;
     final private String[] responseHeaderValues;
-    final private InputStream httpEntityStream;
-    final private String content;
+    final private byte[] content;
 
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
     private RequestTimeline requestTimeline;
 
-    public StoreResponse(int status, List<Entry<String, String>> headerEntries, InputStream inputStream) {
-        this(status, headerEntries, null, inputStream);
-    }
-
-    public StoreResponse(int status, List<Entry<String, String>> headerEntries, String content) {
-        this(status, headerEntries, content, null);
-    }
-
-    private StoreResponse(
+    public StoreResponse(
             int status,
             List<Entry<String, String>> headerEntries,
-            String content,
-            InputStream inputStream) {
+            byte[] content) {
 
         requestTimeline = RequestTimeline.empty();
         responseHeaderNames = new String[headerEntries.size()];
@@ -55,9 +46,7 @@ public class StoreResponse {
         }
 
         this.status = status;
-
         this.content = content;
-        this.httpEntityStream = inputStream;
     }
 
     public int getStatus() {
@@ -72,13 +61,8 @@ public class StoreResponse {
         return responseHeaderValues;
     }
 
-    public String getResponseBody() {
+    public byte[] getResponseBody() {
         return this.content;
-    }
-
-    public InputStream getResponseStream() {
-        // Some operation type doesn't have a response stream so this can be null
-        return this.httpEntityStream;
     }
 
     public long getLSN() {
