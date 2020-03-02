@@ -27,6 +27,17 @@ the MIT License. See License.txt in the project root for license information. --
     </site>
     <relocation>
       <groupId>com.azure</groupId>
+      <message>
+        This library has been replaced by the following new Azure SDKs. You can read about the new Azure SDKs at https://aka.ms/azsdkvalueprop.
+
+        The latest libraries to interact with the Azure KeyVault service are:
+
+        * https://search.maven.org/artifact/com.azure/azure-security-keyvault-keys
+        * https://search.maven.org/artifact/com.azure/azure-security-keyvault-secrets
+        * https://search.maven.org/artifact/com.azure/azure-security-keyvault-certificates
+
+        It is recommended that you move to the new package.
+      </message>
     </relocation>
   </distributionManagement>
 
