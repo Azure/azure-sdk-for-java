@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.eventgrid.customization;
 
 import com.microsoft.azure.management.apigeneration.Beta;
