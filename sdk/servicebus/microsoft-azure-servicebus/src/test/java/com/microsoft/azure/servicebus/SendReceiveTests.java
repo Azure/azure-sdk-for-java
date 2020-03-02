@@ -46,12 +46,12 @@ public abstract class SendReceiveTests extends Tests {
     public void setup() throws InterruptedException, ExecutionException, ServiceBusException {
         if (this.shouldCreateEntityForEveryTest() || SendReceiveTests.entityNameCreatedForAllTests == null) {
              // Create entity
-            this.entityName = "hemant-test1";//TestUtils.randomizeEntityName(this.getEntityNamePrefix());
+            this.entityName = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
             if (this.isEntityQueue()) {
                 this.receiveEntityPath = this.entityName;
                 QueueDescription queueDescription = new QueueDescription(this.entityName);
                 queueDescription.setEnablePartitioning(this.isEntityPartitioned());
-                //managementClient.createQueueAsync(queueDescription).get();
+                managementClient.createQueueAsync(queueDescription).get();
                 if (!this.shouldCreateEntityForEveryTest()) {
                     SendReceiveTests.entityNameCreatedForAllTests = entityName;
                     SendReceiveTests.receiveEntityPathForAllTest = entityName;
@@ -74,7 +74,7 @@ public abstract class SendReceiveTests extends Tests {
         }
 
         this.factory = MessagingFactory.createFromNamespaceEndpointURI(TestUtils.getNamespaceEndpointURI(), TestUtils.getClientSettings());
-        //this.sender = ClientFactory.createMessageSenderFromEntityPath(this.factory, this.entityName);
+        this.sender = ClientFactory.createMessageSenderFromEntityPath(this.factory, this.entityName);
     }
 
     @After
@@ -96,7 +96,7 @@ public abstract class SendReceiveTests extends Tests {
         }
 
         if (this.shouldCreateEntityForEveryTest()) {
-            //managementClient.deleteQueueAsync(this.entityName).get();
+            managementClient.deleteQueueAsync(this.entityName).get();
         }
     }
 
@@ -106,7 +106,7 @@ public abstract class SendReceiveTests extends Tests {
             return;
         }
         if (SendReceiveTests.entityNameCreatedForAllTests != null) {
-            //managementClient.deleteQueueAsync(SendReceiveTests.entityNameCreatedForAllTests).get();
+            managementClient.deleteQueueAsync(SendReceiveTests.entityNameCreatedForAllTests).get();
             managementClient.close();
         }
     }
@@ -197,7 +197,6 @@ public abstract class SendReceiveTests extends Tests {
 
     @Test
     public void testPeekMessageBatch() throws InterruptedException, ServiceBusException {
-        this.receiveEntityPath = "hemant-test1";
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
         TestCommons.testPeekMessageBatch(this.sender, this.sessionId, this.receiver, this.isEntityPartitioned());
     }

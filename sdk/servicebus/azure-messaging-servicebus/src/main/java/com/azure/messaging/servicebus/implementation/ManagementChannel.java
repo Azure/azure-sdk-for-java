@@ -42,8 +42,6 @@ public class ManagementChannel implements  ServiceBusManagementNode {
     public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC = "last_enqueued_time_utc";
     public static final String MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC = "runtime_info_retrieval_time_utc";
     public static final String MANAGEMENT_RESULT_PARTITION_IS_EMPTY = "is_partition_empty";
-    private static final String MANAGEMENT_RECEIVER_LINK_NAME = "hemant-test1-mgmt:receiver";
-
 
     // Well-known keys for management plane service requests.
     private static final String MANAGEMENT_ENTITY_TYPE_KEY = "type";
@@ -53,7 +51,7 @@ public class ManagementChannel implements  ServiceBusManagementNode {
     // Well-known values for the service request.
     private static final String READ_OPERATION_VALUE = "READ";
     private static final String PEEK_OPERATION_VALUE = AmqpConstants.VENDOR + ":peek-message";
-    private static final String MANAGEMENT_SERVICEBUS_ENTITY_TYPE = AmqpConstants.VENDOR + ":servicebus";
+    private static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":servicebus";
     private static final String MANAGEMENT_SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 
 
@@ -105,9 +103,6 @@ public class ManagementChannel implements  ServiceBusManagementNode {
             // set mandatory application properties for AMQP message.
             appProperties.put(MANAGEMENT_OPERATION_KEY,/* READ_OPERATION_VALUE*/PEEK_OPERATION_VALUE);
             appProperties.put(MANAGEMENT_SERVER_TIMEOUT, 30000L); // 1000 = one second
-            //appProperties.put(MANAGEMENT_ENTITY_TYPE_KEY, MANAGEMENT_SERVICEBUS_ENTITY_TYPE);
-
-            appProperties.put(ServiceBusConstants.REQUEST_RESPONSE_ASSOCIATED_LINK_NAME, MANAGEMENT_RECEIVER_LINK_NAME);
 
             final Message request = Proton.message();
             request.setApplicationProperties(new ApplicationProperties(appProperties));

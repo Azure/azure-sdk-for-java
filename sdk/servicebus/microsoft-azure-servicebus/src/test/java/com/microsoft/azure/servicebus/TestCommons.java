@@ -427,7 +427,7 @@ public class TestCommons {
                 message.setPartitionKey(partitionKey);
             }
         }
-        //sender.send(message);
+        sender.send(message);
         message = new Message("AMQP Scheduled message2");
         if (sessionId != null) {
             message.setSessionId(sessionId);
@@ -436,9 +436,9 @@ public class TestCommons {
                 message.setPartitionKey(partitionKey);
             }
         }
-        //sender.send(message);
+        sender.send(message);
         Thread.sleep(5000);
-        Collection<IMessage> peekedMessages = browser.peekBatch(2);
+        Collection<IMessage> peekedMessages = browser.peekBatch(10);
         long firstMessageSequenceNumber = peekedMessages.iterator().next().getSequenceNumber();
         int peekedMessagesCount = peekedMessages.size();
         if (peekedMessagesCount < 2) {
@@ -446,16 +446,10 @@ public class TestCommons {
             peekedMessages = browser.peekBatch(10);
             peekedMessagesCount += peekedMessages.size();
         }
-
         Assert.assertEquals("PeekBatch didnot return all messages.", 2, peekedMessagesCount);
 
         // Now peek with fromSequnceNumber.. May not work for partitioned entities
-        Collection<IMessage> peekedMessagesBatch2 = browser.peekBatch(firstMessageSequenceNumber, 2);
-        System.out.println("peekedMessagesCount : "+peekedMessagesCount);
-        for (IMessage message1: peekedMessagesBatch2) {
-           // System.out.println("message1.getMessageBody : "+message1.getMessageBody().toString());
-            System.out.println("message1.getMessageBody : "+new String(message1.getBody()));
-        }
+        Collection<IMessage> peekedMessagesBatch2 = browser.peekBatch(firstMessageSequenceNumber, 10);
         Assert.assertEquals("PeekBatch with sequence number didnot return all messages.", 2, peekedMessagesBatch2.size());
         Assert.assertEquals("PeekBatch with sequence number failed.", firstMessageSequenceNumber, peekedMessagesBatch2.iterator().next().getSequenceNumber());
     }
