@@ -91,7 +91,7 @@ public class CustomizationTests {
     }
 
     @Test
-    public void ConsumeCustomEvents() throws IOException {
+    public void consumeCustomEvents() throws IOException {
         String jsonData = getTestPayloadFromFile("CustomEvents.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
@@ -369,7 +369,7 @@ public class CustomizationTests {
 
     // EventGrid events
     @Test
-    public void ConsumeEventGridSubscriptionValidationEvent() throws IOException {
+    public void consumeEventGridSubscriptionValidationEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("EventGridSubscriptionValidationEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
@@ -787,7 +787,7 @@ public class CustomizationTests {
     }
 
     @Test
-    public void ConsumeMediaLiveEventIncomingVideoStreamsOutOfSyncEvent() throws IOException {
+    public void consumeMediaLiveEventIncomingVideoStreamsOutOfSyncEvent() throws IOException {
         String jsonData = getTestPayloadFromFile("MediaLiveEventIncomingVideoStreamsOutOfSyncEvent.json");
         //
         EventGridSubscriber eventGridSubscriber = new EventGridSubscriber();
