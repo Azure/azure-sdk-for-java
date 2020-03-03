@@ -17,7 +17,6 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.ProgressReporter;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -665,33 +664,45 @@ public class BlobAsyncClientBase {
         }
     }
 
-    Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
-        BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
-        return downloadHelper(range, options, requestConditions, getRangeContentMd5, context)
-            .map(response -> new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue(), response.getDeserializedHeaders()));
-    }
-
-    private Mono<ReliableDownload> downloadHelper(BlobRange range, DownloadRetryOptions options,
-        BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
+    Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range,
+                                                DownloadRetryOptions options,
+                                                BlobRequestConditions requestConditions,
+                                                boolean getRangeContentMd5,
+                                                Context context) {
+        Boolean getMD5 = getRangeContentMd5 ? true : null;
         range = range == null ? new BlobRange(0) : range;
-        Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
-        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-        HttpGetterInfo info = new HttpGetterInfo()
-            .setOffset(range.getOffset())
-            .setCount(range.getCount())
-            .setETag(requestConditions.getIfMatch());
+        final long rangeStartIndex = range.getOffset();
+        final long rangeLength = range.getCount();
 
-        return azureBlobStorage.blobs().downloadWithRestResponseAsync(null, null, snapshot, null, range.toHeaderValue(),
-            requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
-            .map(response -> {
-                info.setETag(response.getDeserializedHeaders().getETag());
-                return new ReliableDownload(response, options, info, updatedInfo ->
-                    downloadHelper(new BlobRange(updatedInfo.getOffset(), updatedInfo.getCount()), options,
-                        new BlobRequestConditions().setIfMatch(info.getETag()), false, context));
-            });
+        return ContentRetryableResponseUtil.createResponse((bytesEmitted, lastResponse) -> {
+            final long currentRangeStartIndex = rangeStartIndex + bytesEmitted;
+            final long currentRangeLength = rangeLength - bytesEmitted;
+            final BlobRange currentRange = new BlobRange(currentRangeStartIndex, currentRangeLength);
+
+            BlobRequestConditions currentRequestConditions;
+            Boolean currentGetMD5;
+            final boolean isInitialRequest = lastResponse == null;
+            if (isInitialRequest) {
+                currentRequestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+                currentGetMD5 = getMD5;
+            } else {
+                currentRequestConditions = new BlobRequestConditions()
+                    .setIfMatch(lastResponse.getDeserializedHeaders().getETag());
+                currentGetMD5 = false;
+            }
+            return azureBlobStorage.blobs().downloadWithRestResponseAsync(null, null,
+                snapshot, null,
+                currentRange.toHeaderValue(), currentRequestConditions.getLeaseId(),
+                currentGetMD5, null,
+                currentRequestConditions.getIfModifiedSince(), currentRequestConditions.getIfUnmodifiedSince(),
+                currentRequestConditions.getIfMatch(), currentRequestConditions.getIfNoneMatch(),
+                null, customerProvidedKey, context);
+        },
+            (response, retriableContent) -> {
+                return new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), retriableContent, response.getDeserializedHeaders());
+            },
+        Duration.ofSeconds(60), options.getMaxRetryRequests());
     }
 
     /**
@@ -1270,7 +1281,7 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions,
         Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-        
+
         return this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
