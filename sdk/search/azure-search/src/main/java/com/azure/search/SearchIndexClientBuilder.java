@@ -47,7 +47,7 @@ public final class SearchIndexClientBuilder {
      * This header tells the service to return the request ID in the HTTP response. This is useful for correlating the
      * request sent to the response.
      */
-    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
+    private static final String ECHO_REQUEST_ID_HEADER = "return-client-request-id";
 
     /*
      * This is the name of the request ID header that the Search service expects. If the customer doesn't pass
