@@ -86,7 +86,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 The Azure Text Analytics client library provides a way to **rotate the existing API key**.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L165-L171 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L159-L165 -->
 ```java
 TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -166,7 +166,7 @@ The following are types of text analysis that the service offers:
 1. [Sentiment Analysis][sentiment_analysis]
     
     Use sentiment analysis to find out what customers think of your brand or topic by analyzing raw text for clues about positive or negative sentiment.
-    Scores closer to `1` indicate positive sentiment, while scores closer to `0` indicate negative sentiment.
+    The returned scores represent the model's confidence that the text is either positive, negative, or neutral. Higher values signify higher confidence.
     Sentiment analysis returns scores and labels at a document and sentence level.
 
 2. [Named Entity Recognition][named_entity_recognition]
@@ -217,14 +217,13 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 
 ### Analyze sentiment
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L137-L142 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L132-L136 -->
 ```java
 String text = "The hotel was dark and unclean. I like microsoft.";
 DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(text);
 System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentiment());
-for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-    System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment());
-}
+documentSentiment.getSentences().forEach(sentenceSentiment ->
+    System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment()));
 ```
 
 ### Detect language
@@ -237,48 +236,43 @@ System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %.2f.%n
 ```
 
 ### Recognize entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L88-L92 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L88-L91 -->
 ```java
 String text = "Satya Nadella is the CEO of Microsoft";
-for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text)) {
+textAnalyticsClient.recognizeCategorizedEntities(text).forEach(entity ->
     System.out.printf("Recognized categorized entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
-        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
-}
+        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()));
 ```
 
 ### Recognize PII (Personally Identifiable Information) entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L99-L103 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L98-L101 -->
 ```java
 String text = "My SSN is 555-55-5555";
-for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text)) {
+textAnalyticsClient.recognizePiiEntities(text).forEach(piiEntity ->
     System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
-        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
-}
+        piiEntity.getText(), piiEntity.getCategory(), piiEntity.getSubCategory(), piiEntity.getScore()));
 ```
 
 ### Recognize linked entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L110-L119 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L108-L116 -->
 
 ```java
 String text = "Old Faithful is a geyser at Yellowstone Park.";
-for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text)) {
+textAnalyticsClient.recognizeLinkedEntities(text).forEach(linkedEntity -> {
     System.out.println("Linked Entities:");
     System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
         linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
-    for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
+    linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
         System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n", linkedEntityMatch.getText(),
-            linkedEntityMatch.getOffset(), linkedEntityMatch.getLength(), linkedEntityMatch.getScore());
-    }
-}
+            linkedEntityMatch.getGraphemeOffset(), linkedEntityMatch.getGraphemeLength(), linkedEntityMatch.getScore()));
+});
 ```
 ### Extract key phrases
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L126-L130 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L123-L125 -->
 ```java
 String text = "My cat might need to see a veterinarian.";
 System.out.println("Extracted phrases:");
-for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text)) {
-    System.out.printf("%s.%n", keyPhrase);
-}
+textAnalyticsClient.extractKeyPhrases(text).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
 ```
 
 Above examples are introduced as the single input examples.
@@ -290,7 +284,7 @@ Text Analytics clients raise exceptions. For example, if you try to detect the l
 document IDs, `400` error is return that indicating bad request. In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L149-L158 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L143-L152 -->
 ```java
 List<DetectLanguageInput> inputs = Arrays.asList(
     new DetectLanguageInput("1", "This is written in English.", "us"),

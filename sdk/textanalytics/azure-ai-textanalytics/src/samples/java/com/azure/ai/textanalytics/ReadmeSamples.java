@@ -86,10 +86,9 @@ public class ReadmeSamples {
      */
     public void recognizeCategorizedEntity() {
         String text = "Satya Nadella is the CEO of Microsoft";
-        for (CategorizedEntity entity : textAnalyticsClient.recognizeCategorizedEntities(text)) {
+        textAnalyticsClient.recognizeCategorizedEntities(text).forEach(entity ->
             System.out.printf("Recognized categorized entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
-        }
+                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()));
     }
 
     /**
@@ -97,10 +96,9 @@ public class ReadmeSamples {
      */
     public void recognizePiiEntity() {
         String text = "My SSN is 555-55-5555";
-        for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text)) {
+        textAnalyticsClient.recognizePiiEntities(text).forEach(piiEntity ->
             System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
-        }
+                piiEntity.getText(), piiEntity.getCategory(), piiEntity.getSubCategory(), piiEntity.getScore()));
     }
 
     /**
@@ -108,15 +106,14 @@ public class ReadmeSamples {
      */
     public void recognizeLinkedEntity() {
         String text = "Old Faithful is a geyser at Yellowstone Park.";
-        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text)) {
+        textAnalyticsClient.recognizeLinkedEntities(text).forEach(linkedEntity -> {
             System.out.println("Linked Entities:");
             System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
-            for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
+            linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
                 System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n", linkedEntityMatch.getText(),
-                    linkedEntityMatch.getGraphemeOffset(), linkedEntityMatch.getGraphemeLength(), linkedEntityMatch.getScore());
-            }
-        }
+                    linkedEntityMatch.getGraphemeOffset(), linkedEntityMatch.getGraphemeLength(), linkedEntityMatch.getScore()));
+        });
     }
 
     /**
@@ -125,9 +122,7 @@ public class ReadmeSamples {
     public void extractKeyPhrases() {
         String text = "My cat might need to see a veterinarian.";
         System.out.println("Extracted phrases:");
-        for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text)) {
-            System.out.printf("%s.%n", keyPhrase);
-        }
+        textAnalyticsClient.extractKeyPhrases(text).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
     }
 
     /**
@@ -137,9 +132,8 @@ public class ReadmeSamples {
         String text = "The hotel was dark and unclean. I like microsoft.";
         DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(text);
         System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentiment());
-        for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-            System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment());
-        }
+        documentSentiment.getSentences().forEach(sentenceSentiment ->
+            System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment()));
     }
 
     /**
