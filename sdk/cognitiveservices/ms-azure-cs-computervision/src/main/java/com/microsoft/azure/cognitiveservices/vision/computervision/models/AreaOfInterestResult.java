@@ -8,18 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Result of domain-specific classifications for the domain of celebrities.
+ * Result of AreaOfInterest operation.
  */
-public class CelebrityResults {
+public class AreaOfInterestResult {
     /**
-     * List of celebrities recognized in the image.
+     * A bounding box for an area of interest inside an image.
      */
-    @JsonProperty(value = "celebrities")
-    private List<CelebritiesModel> celebrities;
+    @JsonProperty(value = "areaOfInterest", access = JsonProperty.Access.WRITE_ONLY)
+    private BoundingRect areaOfInterest;
 
     /**
      * Id of the REST API request.
@@ -34,23 +33,12 @@ public class CelebrityResults {
     private ImageMetadata metadata;
 
     /**
-     * Get the celebrities value.
+     * Get the areaOfInterest value.
      *
-     * @return the celebrities value
+     * @return the areaOfInterest value
      */
-    public List<CelebritiesModel> celebrities() {
-        return this.celebrities;
-    }
-
-    /**
-     * Set the celebrities value.
-     *
-     * @param celebrities the celebrities value to set
-     * @return the CelebrityResults object itself.
-     */
-    public CelebrityResults withCelebrities(List<CelebritiesModel> celebrities) {
-        this.celebrities = celebrities;
-        return this;
+    public BoundingRect areaOfInterest() {
+        return this.areaOfInterest;
     }
 
     /**
@@ -66,9 +54,9 @@ public class CelebrityResults {
      * Set the requestId value.
      *
      * @param requestId the requestId value to set
-     * @return the CelebrityResults object itself.
+     * @return the AreaOfInterestResult object itself.
      */
-    public CelebrityResults withRequestId(String requestId) {
+    public AreaOfInterestResult withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -86,9 +74,9 @@ public class CelebrityResults {
      * Set the metadata value.
      *
      * @param metadata the metadata value to set
-     * @return the CelebrityResults object itself.
+     * @return the AreaOfInterestResult object itself.
      */
-    public CelebrityResults withMetadata(ImageMetadata metadata) {
+    public AreaOfInterestResult withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
         return this;
     }

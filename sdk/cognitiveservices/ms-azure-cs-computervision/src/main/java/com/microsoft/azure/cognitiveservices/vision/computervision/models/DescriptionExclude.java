@@ -12,38 +12,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for TextOperationStatusCodes.
+ * Defines values for DescriptionExclude.
  */
-public enum TextOperationStatusCodes {
-    /** Enum value NotStarted. */
-    NOT_STARTED("NotStarted"),
+public enum DescriptionExclude {
+    /** Enum value Celebrities. */
+    CELEBRITIES("Celebrities"),
 
-    /** Enum value Running. */
-    RUNNING("Running"),
+    /** Enum value Landmarks. */
+    LANDMARKS("Landmarks");
 
-    /** Enum value Failed. */
-    FAILED("Failed"),
-
-    /** Enum value Succeeded. */
-    SUCCEEDED("Succeeded");
-
-    /** The actual serialized value for a TextOperationStatusCodes instance. */
+    /** The actual serialized value for a DescriptionExclude instance. */
     private String value;
 
-    TextOperationStatusCodes(String value) {
+    DescriptionExclude(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a TextOperationStatusCodes instance.
+     * Parses a serialized value to a DescriptionExclude instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed TextOperationStatusCodes object, or null if unable to parse.
+     * @return the parsed DescriptionExclude object, or null if unable to parse.
      */
     @JsonCreator
-    public static TextOperationStatusCodes fromString(String value) {
-        TextOperationStatusCodes[] items = TextOperationStatusCodes.values();
-        for (TextOperationStatusCodes item : items) {
+    public static DescriptionExclude fromString(String value) {
+        DescriptionExclude[] items = DescriptionExclude.values();
+        for (DescriptionExclude item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

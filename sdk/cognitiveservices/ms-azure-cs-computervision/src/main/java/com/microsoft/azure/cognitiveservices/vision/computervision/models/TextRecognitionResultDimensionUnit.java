@@ -12,38 +12,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for TextOperationStatusCodes.
+ * Defines values for TextRecognitionResultDimensionUnit.
  */
-public enum TextOperationStatusCodes {
-    /** Enum value NotStarted. */
-    NOT_STARTED("NotStarted"),
+public enum TextRecognitionResultDimensionUnit {
+    /** Enum value pixel. */
+    PIXEL("pixel"),
 
-    /** Enum value Running. */
-    RUNNING("Running"),
+    /** Enum value inch. */
+    INCH("inch");
 
-    /** Enum value Failed. */
-    FAILED("Failed"),
-
-    /** Enum value Succeeded. */
-    SUCCEEDED("Succeeded");
-
-    /** The actual serialized value for a TextOperationStatusCodes instance. */
+    /** The actual serialized value for a TextRecognitionResultDimensionUnit instance. */
     private String value;
 
-    TextOperationStatusCodes(String value) {
+    TextRecognitionResultDimensionUnit(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a TextOperationStatusCodes instance.
+     * Parses a serialized value to a TextRecognitionResultDimensionUnit instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed TextOperationStatusCodes object, or null if unable to parse.
+     * @return the parsed TextRecognitionResultDimensionUnit object, or null if unable to parse.
      */
     @JsonCreator
-    public static TextOperationStatusCodes fromString(String value) {
-        TextOperationStatusCodes[] items = TextOperationStatusCodes.values();
-        for (TextOperationStatusCodes item : items) {
+    public static TextRecognitionResultDimensionUnit fromString(String value) {
+        TextRecognitionResultDimensionUnit[] items = TextRecognitionResultDimensionUnit.values();
+        for (TextRecognitionResultDimensionUnit item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

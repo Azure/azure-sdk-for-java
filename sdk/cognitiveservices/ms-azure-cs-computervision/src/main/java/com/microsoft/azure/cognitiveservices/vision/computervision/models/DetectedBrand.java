@@ -11,21 +11,27 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A landmark recognized in the image.
+ * A brand detected in an image.
  */
-public class LandmarksModel {
+public class DetectedBrand {
     /**
-     * Name of the landmark.
+     * Label for the brand.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * Confidence level for the landmark recognition as a value ranging from 0
-     * to 1.
+     * Confidence score of having observed the brand in the image, as a value
+     * ranging from 0 to 1.
      */
-    @JsonProperty(value = "confidence")
+    @JsonProperty(value = "confidence", access = JsonProperty.Access.WRITE_ONLY)
     private double confidence;
+
+    /**
+     * Approximate location of the detected brand.
+     */
+    @JsonProperty(value = "rectangle", access = JsonProperty.Access.WRITE_ONLY)
+    private BoundingRect rectangle;
 
     /**
      * Get the name value.
@@ -34,17 +40,6 @@ public class LandmarksModel {
      */
     public String name() {
         return this.name;
-    }
-
-    /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     * @return the LandmarksModel object itself.
-     */
-    public LandmarksModel withName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -57,14 +52,12 @@ public class LandmarksModel {
     }
 
     /**
-     * Set the confidence value.
+     * Get the rectangle value.
      *
-     * @param confidence the confidence value to set
-     * @return the LandmarksModel object itself.
+     * @return the rectangle value
      */
-    public LandmarksModel withConfidence(double confidence) {
-        this.confidence = confidence;
-        return this;
+    public BoundingRect rectangle() {
+        return this.rectangle;
     }
 
 }

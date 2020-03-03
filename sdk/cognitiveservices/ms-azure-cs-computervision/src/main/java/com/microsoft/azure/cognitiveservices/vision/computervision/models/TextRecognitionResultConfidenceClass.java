@@ -12,38 +12,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for TextOperationStatusCodes.
+ * Defines values for TextRecognitionResultConfidenceClass.
  */
-public enum TextOperationStatusCodes {
-    /** Enum value NotStarted. */
-    NOT_STARTED("NotStarted"),
+public enum TextRecognitionResultConfidenceClass {
+    /** Enum value High. */
+    HIGH("High"),
 
-    /** Enum value Running. */
-    RUNNING("Running"),
+    /** Enum value Low. */
+    LOW("Low");
 
-    /** Enum value Failed. */
-    FAILED("Failed"),
-
-    /** Enum value Succeeded. */
-    SUCCEEDED("Succeeded");
-
-    /** The actual serialized value for a TextOperationStatusCodes instance. */
+    /** The actual serialized value for a TextRecognitionResultConfidenceClass instance. */
     private String value;
 
-    TextOperationStatusCodes(String value) {
+    TextRecognitionResultConfidenceClass(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a TextOperationStatusCodes instance.
+     * Parses a serialized value to a TextRecognitionResultConfidenceClass instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed TextOperationStatusCodes object, or null if unable to parse.
+     * @return the parsed TextRecognitionResultConfidenceClass object, or null if unable to parse.
      */
     @JsonCreator
-    public static TextOperationStatusCodes fromString(String value) {
-        TextOperationStatusCodes[] items = TextOperationStatusCodes.values();
-        for (TextOperationStatusCodes item : items) {
+    public static TextRecognitionResultConfidenceClass fromString(String value) {
+        TextRecognitionResultConfidenceClass[] items = TextRecognitionResultConfidenceClass.values();
+        for (TextRecognitionResultConfidenceClass item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
