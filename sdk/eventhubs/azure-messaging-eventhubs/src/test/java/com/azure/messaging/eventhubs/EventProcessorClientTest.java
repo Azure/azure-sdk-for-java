@@ -202,7 +202,6 @@ public class EventProcessorClientTest {
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
         when(eventData1.getSequenceNumber()).thenReturn(1L);
-        when(eventData1.getSequenceNumber()).thenReturn(2L);
         when(eventData1.getOffset()).thenReturn(1L);
         when(eventData1.getOffset()).thenReturn(100L);
         when(eventData1.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
