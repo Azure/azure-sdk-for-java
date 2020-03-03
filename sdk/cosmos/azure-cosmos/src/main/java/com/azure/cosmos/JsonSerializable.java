@@ -340,17 +340,7 @@ public class JsonSerializable {
                     throw new IllegalStateException("Failed to create enum.", e);
                 }
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
-                try {
-                    Constructor<T> constructor = c.getDeclaredConstructor(String.class);
-                    if (Modifier.isPrivate(constructor.getModifiers())) {
-                        constructor.setAccessible(true);
-                    }
-                    return constructor.newInstance(toJson(jsonObj));
-                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                             | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                    throw new IllegalStateException(
-                        "Failed to instantiate class object.", e);
-                }
+                return (T) BridgeInternal.instantiateJsonSerializable((ObjectNode) jsonObj, c);
             } else {
                 // POJO
                 JsonSerializable.checkForValidPOJO(c);

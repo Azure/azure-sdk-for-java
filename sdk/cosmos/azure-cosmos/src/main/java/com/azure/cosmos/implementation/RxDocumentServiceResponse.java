@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.Permission;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -140,15 +141,9 @@ public class RxDocumentServiceResponse {
                 JsonNode resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
                         ? fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString()))
                                 : jToken;
-                        T resource = null;
-                        try {
-                            resource = c.getConstructor(ObjectNode.class).newInstance((ObjectNode) resourceJson);
-                        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                            throw new IllegalStateException("Failed to instantiate class object. " + c.getName(), e);
-                        }
 
-                        queryResults.add(resource);
+               T resource = (T) BridgeInternal.instantiateJsonSerializable((ObjectNode) resourceJson, c);
+               queryResults.add(resource);
             }
         }
 

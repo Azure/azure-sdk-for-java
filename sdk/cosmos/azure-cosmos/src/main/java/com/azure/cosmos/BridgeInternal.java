@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Flux;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
@@ -520,5 +521,15 @@ public class BridgeInternal {
 
     public static String getLink(CosmosAsyncContainer cosmosAsyncContainer) {
         return cosmosAsyncContainer.getLink();
+    }
+
+    public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class klassType) {
+        try {
+            JsonSerializable instance = (JsonSerializable) klassType.getDeclaredConstructor().newInstance();
+            instance.propertyBag = objectNode;
+            return instance;
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }
