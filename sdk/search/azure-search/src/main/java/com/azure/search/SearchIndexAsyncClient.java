@@ -62,7 +62,7 @@ public final class SearchIndexAsyncClient {
     /**
      * Search REST API Version
      */
-    private final SearchServiceVersion searchServiceVersion;
+    private final SearchServiceVersion serviceVersion;
 
     /**
      * The endpoint for the Azure Cognitive Search service.
@@ -92,20 +92,20 @@ public final class SearchIndexAsyncClient {
     /**
      * Package private constructor to be used by {@link SearchIndexClientBuilder}
      */
-    SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion searchServiceVersion,
+    SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
         HttpPipeline httpPipeline) {
 
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
         this.endpoint = endpoint;
         this.indexName = indexName;
-        this.searchServiceVersion = searchServiceVersion;
+        this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
 
         restClient = new SearchIndexRestClientBuilder()
             .searchServiceName(parts.serviceName)
             .indexName(indexName)
             .searchDnsSuffix(parts.dnsSuffix)
-            .apiVersion(searchServiceVersion.getVersion())
+            .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
             .serializer(SERIALIZER)
             .build();
@@ -333,7 +333,7 @@ public final class SearchIndexAsyncClient {
      * @return The version of the Search service the client is using.
      */
     public SearchServiceVersion getServiceVersion() {
-        return this.searchServiceVersion;
+        return this.serviceVersion;
     }
 
     /**
