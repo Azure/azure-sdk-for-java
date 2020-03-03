@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
@@ -40,6 +41,7 @@ import java.util.UUID;
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.mock;
@@ -112,18 +114,17 @@ public class ServiceBusReceiverAsyncClientTest {
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
 
-        when(connection.createReceiveLink(anyString(), anyString(),
-            any(ReceiveMode.class))).thenReturn(just(amqpReceiveLink));
-
         when(connection.getManagementNode(anyString())).thenReturn(just(managementNode));
+        when(connection.createReceiveLink(anyString(), anyString(), any(ReceiveMode.class), anyBoolean(), any(),
+            any(MessagingEntityType.class))).thenReturn(Mono.just(amqpReceiveLink));
 
         ServiceBusConnectionProcessor connectionProcessor = Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
             .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 ENTITY_NAME, connectionOptions.getRetry()));
 
         ReceiveMessageOptions receiveOptions = new ReceiveMessageOptions().setPrefetchCount(PREFETCH);
-        consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_NAME, connectionProcessor, tracerProvider,
-            messageSerializer, receiveOptions);
+        consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_NAME, false, connectionProcessor,
+            tracerProvider, messageSerializer, receiveOptions, null, MessagingEntityType.QUEUE);
     }
 
     @AfterEach

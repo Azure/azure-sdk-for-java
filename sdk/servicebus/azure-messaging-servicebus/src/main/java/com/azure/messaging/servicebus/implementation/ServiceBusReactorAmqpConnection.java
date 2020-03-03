@@ -69,9 +69,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param messageSerializer Serializes and deserializes proton-j messages.
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
-                                           ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-                                           TokenManagerProvider tokenManagerProvider,
-                                           MessageSerializer messageSerializer, String product, String clientVersion) {
+        ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
+        String clientVersion) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion,
             SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
@@ -156,14 +156,15 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode) {
+    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
+        boolean isSession, String transferEntityPath, MessagingEntityType entityType) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
                 logger.verbose("Get or create consumer for path: '{}'", entityPath);
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-                return session.createConsumer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy,
-                    receiveMode);
+                return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
+                    retryPolicy, receiveMode, isSession);
             });
     }
 
