@@ -15,6 +15,7 @@ import reactor.core.Disposables;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -145,7 +146,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLin
             });
 
             currentLinkSubscriptions = Disposables.composite(
-                next.receive().subscribe(message -> {
+                next.receive().publishOn(Schedulers.boundedElastic()).subscribe(message -> {
                     logger.verbose("Pushing next message downstream.");
                     downstream.onNext(message);
                 }),
