@@ -37,7 +37,7 @@ public final class SuggestPagedResponse extends PagedResponseBase<Void, SuggestR
      *
      * @param documentSearchResponse an http response with the results
      */
-    SuggestPagedResponse(SimpleResponse<SuggestDocumentsResult> documentSearchResponse) {
+    public SuggestPagedResponse(SimpleResponse<SuggestDocumentsResult> documentSearchResponse) {
         super(documentSearchResponse.getRequest(),
             documentSearchResponse.getStatusCode(),
             documentSearchResponse.getHeaders(),

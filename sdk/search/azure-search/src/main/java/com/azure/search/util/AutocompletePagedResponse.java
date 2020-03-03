@@ -23,7 +23,7 @@ public final class AutocompletePagedResponse extends PagedResponseBase<Void, Aut
      *
      * @param autocompleteResponse Autocomplete response returned from the service.
      */
-    AutocompletePagedResponse(SimpleResponse<AutocompleteResult> autocompleteResponse) {
+    public AutocompletePagedResponse(SimpleResponse<AutocompleteResult> autocompleteResponse) {
         super(autocompleteResponse.getRequest(),
             autocompleteResponse.getStatusCode(),
             autocompleteResponse.getHeaders(),

@@ -44,7 +44,7 @@ public final class SearchPagedResponse implements ContinuablePage<SearchRequest,
      *
      * @param documentSearchResponse an http response with the results
      */
-    SearchPagedResponse(SimpleResponse<SearchDocumentsResult> documentSearchResponse) {
+    public SearchPagedResponse(SimpleResponse<SearchDocumentsResult> documentSearchResponse) {
         this.statusCode = documentSearchResponse.getStatusCode();
         this.headers = documentSearchResponse.getHeaders();
         this.request = documentSearchResponse.getRequest();
