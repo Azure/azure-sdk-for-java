@@ -23,6 +23,7 @@ import java.util.Map;
 public class ShareDirectoryAsyncJavaDocCodeSamples {
 
     private String leaseId = "leaseId";
+    ShareDirectoryAsyncClient client = createAsyncClientWithSASToken();
 
     /**
      * Generates code sample for {@link ShareDirectoryAsyncClient} instantiation.
@@ -84,6 +85,24 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
             .buildDirectoryAsyncClient();
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.instantiation.connectionstring
         return shareDirectoryAsyncClient;
+    }
+
+    /**
+     * Code snippet for {@link ShareDirectoryAsyncClient#exists()}
+     */
+    public void exists() {
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.exists
+        client.exists().subscribe(response -> System.out.printf("Exists? %b%n", response));
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.exists
+    }
+
+    /**
+     * Code snippet for {@link ShareDirectoryAsyncClient#existsWithResponse()}
+     */
+    public void existsWithResponse() {
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.existsWithResponse
+        client.existsWithResponse().subscribe(response -> System.out.printf("Exists? %b%n", response.getValue()));
+        // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.existsWithResponse
     }
 
 

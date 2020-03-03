@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search;
+package com.azure.search.util;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -14,6 +15,7 @@ import com.azure.search.models.SuggestResult;
  * Page}. Each page contains additional information returned by the API request. In the Suggest API case the additional
  * information is: coverage - coverage value.
  */
+@Immutable
 public final class SuggestPagedResponse extends PagedResponseBase<Void, SuggestResult> {
 
     /**
@@ -35,7 +37,7 @@ public final class SuggestPagedResponse extends PagedResponseBase<Void, SuggestR
      *
      * @param documentSearchResponse an http response with the results
      */
-    SuggestPagedResponse(SimpleResponse<SuggestDocumentsResult> documentSearchResponse) {
+    public SuggestPagedResponse(SimpleResponse<SuggestDocumentsResult> documentSearchResponse) {
         super(documentSearchResponse.getRequest(),
             documentSearchResponse.getStatusCode(),
             documentSearchResponse.getHeaders(),

@@ -40,6 +40,14 @@ public class AzureFileStorageReadSettings extends StoreReadSettings {
     private Object wildcardFileName;
 
     /**
+     * Point to a text file that lists each file (relative path to the path
+     * configured in the dataset) that you want to copy. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "fileListPath")
+    private Object fileListPath;
+
+    /**
      * Indicates whether to enable partition discovery.
      */
     @JsonProperty(value = "enablePartitionDiscovery")
@@ -116,6 +124,26 @@ public class AzureFileStorageReadSettings extends StoreReadSettings {
      */
     public AzureFileStorageReadSettings withWildcardFileName(Object wildcardFileName) {
         this.wildcardFileName = wildcardFileName;
+        return this;
+    }
+
+    /**
+     * Get point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     *
+     * @return the fileListPath value
+     */
+    public Object fileListPath() {
+        return this.fileListPath;
+    }
+
+    /**
+     * Set point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     *
+     * @param fileListPath the fileListPath value to set
+     * @return the AzureFileStorageReadSettings object itself.
+     */
+    public AzureFileStorageReadSettings withFileListPath(Object fileListPath) {
+        this.fileListPath = fileListPath;
         return this;
     }
 

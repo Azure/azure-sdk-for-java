@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datafactory.v2018_06_01;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -27,6 +28,13 @@ public class CommonDataServiceForAppsSource extends CopySource {
     private Object query;
 
     /**
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects (or Expression with resultType array of objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private List<AdditionalColumns> additionalColumns;
+
+    /**
      * Get fetchXML is a proprietary query language that is used in Microsoft Common Data Service for Apps (online &amp; on-premises). Type: string (or Expression with resultType string).
      *
      * @return the query value
@@ -43,6 +51,26 @@ public class CommonDataServiceForAppsSource extends CopySource {
      */
     public CommonDataServiceForAppsSource withQuery(Object query) {
         this.query = query;
+        return this;
+    }
+
+    /**
+     * Get specifies the additional columns to be added to source data. Type: array of objects (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value
+     */
+    public List<AdditionalColumns> additionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set specifies the additional columns to be added to source data. Type: array of objects (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set
+     * @return the CommonDataServiceForAppsSource object itself.
+     */
+    public CommonDataServiceForAppsSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 

@@ -11,21 +11,21 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The TextOperationResult model.
+ * Result of recognition text operation.
  */
 public class TextOperationResult {
     /**
-     * Status of the text operation. Possible values include: 'Not Started',
+     * Status of the text operation. Possible values include: 'NotStarted',
      * 'Running', 'Failed', 'Succeeded'.
      */
     @JsonProperty(value = "status")
     private TextOperationStatusCodes status;
 
     /**
-     * The recognitionResult property.
+     * Text recognition result of the text operation.
      */
     @JsonProperty(value = "recognitionResult")
-    private RecognitionResult recognitionResult;
+    private TextRecognitionResult recognitionResult;
 
     /**
      * Get the status value.
@@ -52,7 +52,7 @@ public class TextOperationResult {
      *
      * @return the recognitionResult value
      */
-    public RecognitionResult recognitionResult() {
+    public TextRecognitionResult recognitionResult() {
         return this.recognitionResult;
     }
 
@@ -62,7 +62,7 @@ public class TextOperationResult {
      * @param recognitionResult the recognitionResult value to set
      * @return the TextOperationResult object itself.
      */
-    public TextOperationResult withRecognitionResult(RecognitionResult recognitionResult) {
+    public TextOperationResult withRecognitionResult(TextRecognitionResult recognitionResult) {
         this.recognitionResult = recognitionResult;
         return this;
     }

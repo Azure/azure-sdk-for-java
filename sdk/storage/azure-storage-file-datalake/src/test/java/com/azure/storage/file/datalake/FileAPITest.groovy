@@ -1346,41 +1346,42 @@ class FileAPITest extends APISpec {
         file.delete()
     }
 
-    @Unroll
-    def "Download file AC"() {
-        setup:
-        def file = getRandomFile(defaultDataSize)
-        fc.uploadFromFile(file.toPath().toString(), true)
-        def outFile = new File(testName + "")
-        if (outFile.exists()) {
-            assert outFile.delete()
-        }
-
-        match = setupPathMatchCondition(fc, match)
-        leaseID = setupPathLeaseCondition(fc, leaseID)
-        DataLakeRequestConditions bro = new DataLakeRequestConditions().setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified).setIfMatch(match).setIfNoneMatch(noneMatch)
-            .setLeaseId(leaseID)
-
-        when:
-        fc.readToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, false, null, null, null)
-
-        then:
-        notThrown(DataLakeStorageException)
-
-        cleanup:
-        outFile.delete()
-        file.delete()
-
-        where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
-    }
+    // TODO (alzimmer): Disabling this test until this issue is fixed. https://github.com/Azure/azure-sdk-for-java/issues/8611
+//    @Unroll
+//    def "Download file AC"() {
+//        setup:
+//        def file = getRandomFile(defaultDataSize)
+//        fc.uploadFromFile(file.toPath().toString(), true)
+//        def outFile = new File(testName + "")
+//        if (outFile.exists()) {
+//            assert outFile.delete()
+//        }
+//
+//        match = setupPathMatchCondition(fc, match)
+//        leaseID = setupPathLeaseCondition(fc, leaseID)
+//        DataLakeRequestConditions bro = new DataLakeRequestConditions().setIfModifiedSince(modified)
+//            .setIfUnmodifiedSince(unmodified).setIfMatch(match).setIfNoneMatch(noneMatch)
+//            .setLeaseId(leaseID)
+//
+//        when:
+//        fc.readToFileWithResponse(outFile.toPath().toString(), null, null, null, bro, false, null, null, null)
+//
+//        then:
+//        notThrown(DataLakeStorageException)
+//
+//        cleanup:
+//        outFile.delete()
+//        file.delete()
+//
+//        where:
+//        modified | unmodified | match        | noneMatch   | leaseID
+//        null     | null       | null         | null        | null
+//        oldDate  | null       | null         | null        | null
+//        null     | newDate    | null         | null        | null
+//        null     | null       | receivedEtag | null        | null
+//        null     | null       | null         | garbageEtag | null
+//        null     | null       | null         | null        | receivedLeaseID
+//    }
 
     @Unroll
     def "Download file AC fail"() {

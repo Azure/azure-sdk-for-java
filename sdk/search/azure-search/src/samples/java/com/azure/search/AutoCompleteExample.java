@@ -10,6 +10,7 @@ import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.RequestOptions;
+import com.azure.search.util.AutocompletePagedResponse;
 
 import java.util.UUID;
 

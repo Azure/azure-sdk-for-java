@@ -3,12 +3,13 @@
 
 package com.azure.search;
 
-import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.util.Configuration;
 import com.azure.search.models.FacetResult;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
+import com.azure.search.util.SearchPagedFlux;
+import com.azure.search.util.SearchPagedResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class SearchOptionsAsyncExample {
     private static void searchResultsFacetsFromPage(SearchIndexAsyncClient searchClient) {
         // Each page in the response of the search query holds the facets value
         // Get Facets property from the first page in the response
-        PagedFluxBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
+        SearchPagedFlux results = searchClient.search("*",
             new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"),
             new RequestOptions());
 
@@ -74,7 +75,7 @@ public class SearchOptionsAsyncExample {
     private static void searchResultsFacetsFromStream(SearchIndexAsyncClient searchClient) {
         // Each page in the response of the search query holds the facets value
         // Accessing Facets property with stream
-        PagedFluxBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
+        SearchPagedFlux results = searchClient.search("*",
             new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"),
             new RequestOptions());
 
@@ -97,7 +98,7 @@ public class SearchOptionsAsyncExample {
     private static void searchResultsCoverageFromPage(SearchIndexAsyncClient searchClient) {
         // Each page in the response of the search query holds the coverage value
         // Get Coverage property from the first page in the response
-        PagedFluxBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
+        SearchPagedFlux results = searchClient.search("*",
             new SearchOptions().setMinimumCoverage(80.0),
             new RequestOptions());
 
@@ -110,7 +111,7 @@ public class SearchOptionsAsyncExample {
     private static void searchResultsCoverage(SearchIndexAsyncClient searchClient) {
         // Each page in the response of the search query holds the coverage value
         // Accessing Coverage property when iterating by page
-        PagedFluxBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
+        SearchPagedFlux results = searchClient.search("*",
             new SearchOptions().setMinimumCoverage(80.0),
             new RequestOptions());
 
@@ -123,7 +124,7 @@ public class SearchOptionsAsyncExample {
         // Each page in the response of the search query holds the count value
         // Get total search results count
         // Get count property from the first page in the response
-        PagedFluxBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
+        SearchPagedFlux results = searchClient.search("*",
             new SearchOptions().setIncludeTotalResultCount(true),
             new RequestOptions());
 
@@ -136,7 +137,7 @@ public class SearchOptionsAsyncExample {
         // Each page in the response of the search query holds the count value
         // Get total search results count by accessing the SearchPagedResponse
         // Access Count property when iterating by page
-        PagedFluxBase<SearchResult, SearchPagedResponse> results = searchClient.search("*",
+        SearchPagedFlux results = searchClient.search("*",
             new SearchOptions().setIncludeTotalResultCount(true),
             new RequestOptions());
 
@@ -151,8 +152,7 @@ public class SearchOptionsAsyncExample {
             .byPage().toStream();
 
         streamResponse.collect(Collectors.toList()).forEach(searchPagedResponse -> {
-            List<SearchResult> results = searchPagedResponse.getItems();
-            results.forEach(result ->
+            searchPagedResponse.getElements().forEach(result ->
                 result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
             );
         });

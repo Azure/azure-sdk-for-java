@@ -41,6 +41,16 @@ public class SqlSource extends TabularSource {
     private Map<String, StoredProcedureParameter> storedProcedureParameters;
 
     /**
+     * Specifies the transaction locking behavior for the SQL source. Allowed
+     * values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The
+     * default value is ReadCommitted. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "isolationLevel")
+    private Object isolationLevel;
+
+    /**
      * Get sQL reader query. Type: string (or Expression with resultType string).
      *
      * @return the sqlReaderQuery value
@@ -97,6 +107,26 @@ public class SqlSource extends TabularSource {
      */
     public SqlSource withStoredProcedureParameters(Map<String, StoredProcedureParameter> storedProcedureParameters) {
         this.storedProcedureParameters = storedProcedureParameters;
+        return this;
+    }
+
+    /**
+     * Get specifies the transaction locking behavior for the SQL source. Allowed values: ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type: string (or Expression with resultType string).
+     *
+     * @return the isolationLevel value
+     */
+    public Object isolationLevel() {
+        return this.isolationLevel;
+    }
+
+    /**
+     * Set specifies the transaction locking behavior for the SQL source. Allowed values: ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type: string (or Expression with resultType string).
+     *
+     * @param isolationLevel the isolationLevel value to set
+     * @return the SqlSource object itself.
+     */
+    public SqlSource withIsolationLevel(Object isolationLevel) {
+        this.isolationLevel = isolationLevel;
         return this;
     }
 
