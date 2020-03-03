@@ -4,7 +4,9 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.Resource;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents a stored procedure in the Azure Cosmos DB database service.
@@ -14,6 +16,16 @@ import com.azure.cosmos.Resource;
  * additional details, refer to the server-side JavaScript API documentation.
  */
 public class StoredProcedure extends Resource {
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public StoredProcedure(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     /**
      * Constructor.

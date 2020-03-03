@@ -5,12 +5,24 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents a per-User Permission to access a specific resource e.g. Document or Collection in the Azure Cosmos DB database service.
  */
 public class Permission extends Resource {
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public Permission(ObjectNode objectNode) {
+        super(objectNode);
+    }
+
     /**
      * Initialize a permission object.
      */

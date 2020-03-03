@@ -3,12 +3,24 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.Resource;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents a database user in the Azure Cosmos DB database service.
  */
 public class User extends Resource {
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public User(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     /**
      * Initialize a user object.

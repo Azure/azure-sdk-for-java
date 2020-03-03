@@ -22,6 +22,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -70,19 +71,12 @@ public class Utils {
             return null;
         }
 
-        try {
-            return str.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        return str.getBytes(StandardCharsets.UTF_8);
     }
 
     public static byte[] getUTF8Bytes(String str) {
-        try {
-            return str.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        return str.getBytes(StandardCharsets.UTF_8);
+
     }
 
     public static String encodeBase64String(byte[] binaryData) {

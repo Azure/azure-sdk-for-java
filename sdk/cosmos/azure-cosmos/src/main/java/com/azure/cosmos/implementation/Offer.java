@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.Resource;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -11,6 +12,16 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * Represents an offer in the Azure Cosmos DB database service.
  */
 public class Offer extends Resource {
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public Offer(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     /**
      * Initialize an new instance of the Offer object.
@@ -34,7 +45,7 @@ public class Offer extends Resource {
     public Offer(String jsonString) {
         super(jsonString);
     }
-    
+
     /**
      * Gets the self-link of a resource to which the resource offer applies.
      *

@@ -4,9 +4,11 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.TriggerOperation;
 import com.azure.cosmos.TriggerType;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -16,6 +18,16 @@ import org.apache.commons.lang3.StringUtils;
  * additional details, refer to the server-side JavaScript API documentation.
  */
 public class Trigger extends Resource {
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public Trigger(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     /**
      * Constructor.
