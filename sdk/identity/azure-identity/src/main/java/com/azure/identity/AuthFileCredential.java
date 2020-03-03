@@ -36,8 +36,11 @@ import java.util.Objects;
 @Immutable
 public class AuthFileCredential implements TokenCredential {
     /* The file path value. */
-    private final static ClientLogger logger = new ClientLogger(AuthFileCredential.class);
-    private final static  SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    private static final ClientLogger logger = new ClientLogger(AuthFileCredential.class);
+    private static final  SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    private static final String CLIENT_ID = "clientId";
+    private static final String CLIENT_SECRET = "clientSecret";
+    private static final String TENANT_ID    = "tenantId";
     private final String filepath;
     private IdentityClientOptions identityClientOptions;
     private TokenCredential credential;
@@ -119,9 +122,9 @@ public class AuthFileCredential implements TokenCredential {
 
     private  TokenCredential buildCredentialForCredentialsFile(Map<String, String> authData) 
     {
-        String clientId = authData.get("clientId");
-        String clientSecret = authData.get("clientSecret");
-        String tenantId = authData.get("tenantId");
+        String clientId = authData.get(CLIENT_ID);
+        String clientSecret = authData.get(CLIENT_SECRET);
+        String tenantId = authData.get(TENANT_ID);
         String activeDirectoryEndpointUrl = authData.get("activeDirectoryEndpointUrl");
 
         if (clientId == null || clientSecret == null || tenantId == null || activeDirectoryEndpointUrl == null)

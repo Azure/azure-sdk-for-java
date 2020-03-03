@@ -4,8 +4,6 @@
 package com.azure.identity;
 
 import java.lang.reflect.Field;
-
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 
 import org.junit.Assert;
