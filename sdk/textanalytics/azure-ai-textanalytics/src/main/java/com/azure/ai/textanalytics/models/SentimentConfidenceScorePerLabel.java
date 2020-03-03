@@ -15,7 +15,8 @@ public final class SentimentConfidenceScorePerLabel {
     private final double positiveScore;
 
     /**
-     * Creates a {@link SentimentConfidenceScorePerLabel} model that describes the sentiment score of the sentiment label.
+     * Creates a {@link SentimentConfidenceScorePerLabel} model that describes the sentiment score of the sentiment
+     * label.
      *
      * @param negativeScore negative score value, range in between 0 and 1.0
      * @param neutralScore neutral score value, range in between 0 and 1.0

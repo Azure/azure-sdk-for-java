@@ -69,7 +69,7 @@ public class DetectLanguageBatchDocumentsAsync {
                     }
                 });
             },
-            error -> System.err.println("There was an error detecting language of the text inputs." + error),
+            error -> System.err.println("There was an error detecting language of the documents." + error),
             () -> System.out.println("Batch of language detected."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

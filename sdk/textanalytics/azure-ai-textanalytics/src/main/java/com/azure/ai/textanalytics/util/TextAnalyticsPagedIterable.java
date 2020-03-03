@@ -42,7 +42,7 @@ public final class TextAnalyticsPagedIterable<T> extends IterableStream<T> {
     /**
      * Creates instance given {@link TextAnalyticsPagedFlux}.
      *
-     * @param textAnalyticsPagedFlux  It used as iterable.
+     * @param textAnalyticsPagedFlux It used as iterable.
      */
     public TextAnalyticsPagedIterable(TextAnalyticsPagedFlux<T> textAnalyticsPagedFlux) {
         super(textAnalyticsPagedFlux);

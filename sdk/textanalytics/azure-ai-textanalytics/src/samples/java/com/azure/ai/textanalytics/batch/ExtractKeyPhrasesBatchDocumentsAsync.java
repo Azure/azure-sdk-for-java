@@ -65,7 +65,7 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
                     }
                 });
             },
-            error -> System.err.println("There was an error extracting key phrases of the text inputs." + error),
+            error -> System.err.println("There was an error extracting key phrases of the documents." + error),
             () -> System.out.println("Batch of key phrases extracted."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

@@ -42,7 +42,9 @@ public final class DetectLanguageInput {
      *
      * @param id unique, non-empty document identifier
      * @param text the text property
-     * @param countryHint the country hint
+     * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
+     * specified. To remove this behavior you can reset this parameter by setting this value to empty string
+     * {@code countryHint} = "".
      */
     public DetectLanguageInput(String id, String text, String countryHint) {
         this.id = id;

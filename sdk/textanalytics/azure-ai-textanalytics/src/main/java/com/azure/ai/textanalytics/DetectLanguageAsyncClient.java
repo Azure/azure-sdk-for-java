@@ -46,7 +46,7 @@ class DetectLanguageAsyncClient {
     }
 
     /**
-     * Helper function that detects a batch of text inputs and returns {@link TextAnalyticsPagedFlux} that is a paged
+     * Helper function that detects a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
      * flux contains {@link DetectLanguageResult}.
      *
      * @param textInputs A batch of input texts.
@@ -81,7 +81,7 @@ class DetectLanguageAsyncClient {
     }
 
     /**
-     * Helper function that detects a batch of text inputs with {@link Context} and returns
+     * Helper function that detects a batch of documents with {@link Context} and returns
      * {@link TextAnalyticsPagedFlux} that is a paged flux contains {@link DetectLanguageResult}.
      *
      * @param textInputs A batch of input texts.

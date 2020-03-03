@@ -31,7 +31,7 @@ public final class TextDocumentInput {
     private final String language;
 
     /**
-     * Creates a {@code TextDocumentInput} model that describes the text inputs.
+     * Creates a {@code TextDocumentInput} model that describes the documents.
      *
      * @param id a unique, non-empty document identifier
      * @param text the input text to process
@@ -41,7 +41,7 @@ public final class TextDocumentInput {
     }
 
     /**
-     * Creates a {@code TextDocumentInput} model that describes the text inputs.
+     * Creates a {@code TextDocumentInput} model that describes the documents.
      *
      * @param id a unique, non-empty document identifier
      * @param text the input text to process

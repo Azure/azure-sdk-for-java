@@ -95,7 +95,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that a single DetectLanguageResult is returned for a text input to detectLanguages.
+     * Verifies that a single DetectLanguageResult is returned for a document to detectLanguages.
      */
     @Test
     public void detectSingleTextLanguage() {
@@ -113,7 +113,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that a TextAnalyticsException is thrown for an empty text input.
+     * Verifies that a TextAnalyticsException is thrown for an empty document.
      */
     @Test
     public void detectLanguageEmptyText() {
@@ -131,7 +131,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that a TextAnalyticsException is thrown for a text input with invalid country hint.
+     * Verifies that a TextAnalyticsException is thrown for a document with invalid country hint.
      */
     @Test
     public void detectLanguageInvalidCountryHint() {
@@ -376,7 +376,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that a TextAnalyticsException is thrown for an empty text input.
+     * Verifies that a TextAnalyticsException is thrown for an empty document.
      */
     @Test
     public void analyseSentimentForEmptyText() {

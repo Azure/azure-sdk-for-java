@@ -50,7 +50,7 @@ class RecognizeLinkedEntityAsyncClient {
     }
 
     /**
-     * Helper function that recognize a single of text inputs and returns {@link TextAnalyticsPagedFlux} that is a paged
+     * Helper function that recognize a single of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
      * flux contains {@link LinkedEntity}.
      *
      * @param text A single input text.
@@ -84,7 +84,7 @@ class RecognizeLinkedEntityAsyncClient {
     }
 
     /**
-     * Helper function that recognizes a batch of text inputs and returns {@link TextAnalyticsPagedFlux} that is a
+     * Helper function that recognizes a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a
      * paged flux contains {@link RecognizeLinkedEntitiesResult}.
      *
      * @param textInputs A batch of input texts.

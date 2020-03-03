@@ -64,8 +64,8 @@ public class AnalyzeSentimentBatchStringDocuments {
                         sentenceSentiment.getConfidenceScores().getPositive(),
                         sentenceSentiment.getConfidenceScores().getNeutral(),
                         sentenceSentiment.getConfidenceScores().getNegative(),
-                        sentenceSentiment.getLength(),
-                        sentenceSentiment.getOffset()));
+                        sentenceSentiment.getGraphemeLength(),
+                        sentenceSentiment.getGraphemeOffset()));
             }
         });
     }

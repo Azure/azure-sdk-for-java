@@ -49,7 +49,7 @@ class ExtractKeyPhraseAsyncClient {
     }
 
     /**
-     * Helper function that extracts a single text inputs and returns {@link TextAnalyticsPagedFlux} that is a paged
+     * Helper function that extracts a single documents and returns {@link TextAnalyticsPagedFlux} that is a paged
      * flux contains extract key phrases.
      *
      * @param text An input text.
@@ -83,7 +83,7 @@ class ExtractKeyPhraseAsyncClient {
     }
 
     /**
-     * Helper function that extracts a batch of text inputs and returns {@link TextAnalyticsPagedFlux} that is a paged
+     * Helper function that extracts a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
      * flux contains {@link ExtractKeyPhraseResult}.
      *
      * @param textInputs A batch of input texts.

@@ -4,16 +4,14 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
-import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
@@ -50,7 +48,7 @@ class RecognizeCategorizedEntityAsyncClient {
     }
 
     /**
-     * Helper function that recognize a single of text inputs and returns {@link TextAnalyticsPagedFlux} that is a paged
+     * Helper function that recognize a single of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
      * flux contains {@link CategorizedEntity}.
      *
      * @param text A single input text.
@@ -85,7 +83,7 @@ class RecognizeCategorizedEntityAsyncClient {
     }
 
     /**
-     * Helper function that recognizes a batch of text inputs and returns {@link TextAnalyticsPagedFlux} that is a
+     * Helper function that recognizes a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a
      * paged flux contains {@link RecognizeCategorizedEntitiesResult}.
      *
      * @param textInputs A batch of input texts.
@@ -101,7 +99,7 @@ class RecognizeCategorizedEntityAsyncClient {
                 service.entitiesRecognitionGeneralWithRestResponseAsync(
                     new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                     options == null ? null : options.getModelVersion(),
-                    options == null ? null : options.showStatistics(), context)
+                    options == null ? null : options.isStatisticsShown(), context)
                     .doOnSubscribe(ignoredValue -> logger.info("A batch of categorized entities input - {}",
                         textInputs.toString()))
                     .doOnSuccess(response ->
@@ -135,7 +133,7 @@ class RecognizeCategorizedEntityAsyncClient {
             service.entitiesRecognitionGeneralWithRestResponseAsync(
                 new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                 options == null ? null : options.getModelVersion(),
-                options == null ? null : options.showStatistics(), context)
+                options == null ? null : options.isStatisticsShown(), context)
                 .doOnSubscribe(ignoredValue -> logger.info("A batch of categorized entities input - {}",
                     textInputs.toString()))
                 .doOnSuccess(response -> logger.info("A batch of categorized entities output - {}",

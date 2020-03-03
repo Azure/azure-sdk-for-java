@@ -77,7 +77,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                     }
                 });
             },
-            error -> System.err.println("There was an error recognizing linked entities of the text inputs." + error),
+            error -> System.err.println("There was an error recognizing linked entities of the documents." + error),
             () -> System.out.println("Batch of linked entities recognized."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

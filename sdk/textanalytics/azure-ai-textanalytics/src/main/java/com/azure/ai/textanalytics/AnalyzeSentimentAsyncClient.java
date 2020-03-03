@@ -52,7 +52,7 @@ class AnalyzeSentimentAsyncClient {
     }
 
     /**
-     * Helper function that analyzes a batch of text inputs and returns {@link TextAnalyticsPagedFlux} that is a paged
+     * Helper function that analyzes a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
      * flux contains {@link AnalyzeSentimentResult}.
      *
      * @param textInputs A batch of input texts.

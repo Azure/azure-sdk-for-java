@@ -50,8 +50,7 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                 System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(),
                     batchStatistics.getInvalidDocumentCount(),
-                    batchStatistics.getTransactionCount(),
-                    batchStatistics.getValidDocumentCount());
+                    batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 // Analyzed sentiment for each of document from a batch of documents
                 pagedResponse.getElements().forEach(analyzeSentimentResult -> {
@@ -78,7 +77,7 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                     }
                 });
             },
-            error -> System.err.println("There was an error analyzing sentiment of the text inputs." + error),
+            error -> System.err.println("There was an error analyzing sentiment of the documents." + error),
             () -> System.out.println("Batch of sentiment analyzed."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

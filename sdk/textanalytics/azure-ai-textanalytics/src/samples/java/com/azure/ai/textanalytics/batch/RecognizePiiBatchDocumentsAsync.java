@@ -73,7 +73,7 @@ public class RecognizePiiBatchDocumentsAsync {
                     }
                 });
             },
-            error -> System.err.printf("There was an error recognizing Personally Identifiable Information entities of the text inputs. %s%n", error),
+            error -> System.err.printf("There was an error recognizing Personally Identifiable Information entities of the documents. %s%n", error),
             () -> System.out.println("Batch of Personally Identifiable Information entities recognized."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
