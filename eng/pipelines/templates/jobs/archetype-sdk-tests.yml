@@ -10,7 +10,7 @@ parameters:
       DisplayName: 'Linux - Java 8'
     macOS - Java 8:
       OSName: 'macOS'
-      OSVmImage: 'macOS-10.13'
+      OSVmImage: 'macOS-10.15'
       JavaVersion: '1.8'
       DisplayName: 'macOS - Java 8'
     Windows - Java 8:
@@ -25,7 +25,7 @@ parameters:
       DisplayName: 'Linux - Java 11'
     macOS - Java 11:
       OSName: 'macOS'
-      OSVmImage: 'macOS-10.13'
+      OSVmImage: 'macOS-10.15'
       JavaVersion: '1.11'
       DisplayName: 'macOS - Java 11'
     Windows - Java 11:
