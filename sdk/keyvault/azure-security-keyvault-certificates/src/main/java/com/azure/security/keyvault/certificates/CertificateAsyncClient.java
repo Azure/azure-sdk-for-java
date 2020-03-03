@@ -69,7 +69,7 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = CertificateClientBuilder.class, isAsync = true, serviceInterfaces = CertificateService.class)
 public final class CertificateAsyncClient {
-    static final String API_VERSION = "7.0";
+    static String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
@@ -89,6 +89,7 @@ public final class CertificateAsyncClient {
         Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.vaultUrl = vaultUrl.toString();
         this.service = RestProxy.create(CertificateService.class, pipeline);
+        API_VERSION = version.getVersion();
     }
 
     /**

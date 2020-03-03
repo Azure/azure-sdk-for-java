@@ -35,7 +35,7 @@ import java.util.Base64;
 import java.util.Objects;
 
 class CryptographyServiceClient {
-    static final String API_VERSION = "7.0";
+    static String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
 
@@ -46,11 +46,12 @@ class CryptographyServiceClient {
     private String keyName;
     private final String keyId;
 
-    CryptographyServiceClient(String keyId, CryptographyService service) {
+    CryptographyServiceClient(String keyId, CryptographyService service, CryptographyServiceVersion serviceVersion) {
         Objects.requireNonNull(keyId);
         unpackId(keyId);
         this.keyId = keyId;
         this.service = service;
+        API_VERSION = serviceVersion.getVersion();
     }
 
     Mono<Response<KeyVaultKey>> getKey(Context context) {

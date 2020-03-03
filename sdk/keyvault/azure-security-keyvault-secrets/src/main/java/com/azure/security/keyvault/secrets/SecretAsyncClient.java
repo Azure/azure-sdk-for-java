@@ -54,7 +54,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = SecretClientBuilder.class, isAsync = true, serviceInterfaces = SecretService.class)
 public final class SecretAsyncClient {
-    static final String API_VERSION = "7.0";
+    static String API_VERSION = "7.0";
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
@@ -76,6 +76,7 @@ public final class SecretAsyncClient {
             KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.vaultUrl = vaultUrl.toString();
         this.service = RestProxy.create(SecretService.class, pipeline);
+        API_VERSION = version.getVersion();
     }
 
     /**
