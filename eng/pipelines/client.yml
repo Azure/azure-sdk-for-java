@@ -164,27 +164,27 @@ jobs:
     strategy:
       matrix:
         Linux - Java 8:
-          OSName: 'Linux'
+          Platform: 'Linux'
           OSVmImage: 'ubuntu-16.04'
           JavaVersion: '1.8'
         macOS - Java 8:
-          OSName: 'macOS'
+          Platform: 'macOS'
           OSVmImage: 'macOS-10.15'
           JavaVersion: '1.8'
         Windows - Java 8:
-          OSName: 'Windows'
+          Platform: 'Windows'
           OSVmImage: 'windows-2019'
           JavaVersion: '1.8'
         Linux - Java 11:
-          OSName: 'Linux'
+          Platform: 'Linux'
           OSVmImage: 'ubuntu-16.04'
           JavaVersion: '1.11'
         macOS - Java 11:
-          OSName: 'macOS'
+          Platform: 'macOS'
           OSVmImage: 'macOS-10.15'
           JavaVersion: '1.11'
         Windows - Java 11:
-          OSName: 'Windows'
+          Platform: 'Windows'
           OSVmImage: 'windows-2019'
           JavaVersion: '1.11'
 
@@ -194,7 +194,7 @@ jobs:
     steps:
       - template: eng/pipelines/templates/scripts/verify-agent-os.yml@azure-sdk-tools
         parameters:
-          OSName: $(OSVmImage)
+          OSName: $(Platform)
 
       - task: Maven@3
         displayName: 'Compile all code and run tests'
@@ -211,7 +211,7 @@ jobs:
         # Generate JaCoCo code coverage report on Java 11, Linux builds if the build reason is not PR.
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
-        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), contains(variables['pomFile'], 'pom.client.xml'), ne(variables['Build.Reason'], 'PullRequest'))
+        condition: and(eq(variables['Platform'], 'Linux'), eq(variables['JavaVersion'], '1.11'), contains(variables['pomFile'], 'pom.client.xml'), ne(variables['Build.Reason'], 'PullRequest'))
         inputs:
           mavenPomFile: $(pomFile)
           options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
@@ -226,12 +226,12 @@ jobs:
         condition: succeededOrFailed()
         inputs:
           mergeTestResults: true
-          testRunTitle: '$(OSName) on Java $(JavaVersion)'
+          testRunTitle: '$(Platform) on Java $(JavaVersion)'
 
       # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
       # Code coverage reporting is setup only for Track 2 modules.
       - task: PublishCodeCoverageResults@1
-        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), contains(variables['pomFile'], 'pom.client.xml'), ne(variables['Build.Reason'], 'PullRequest'))
+        condition: and(eq(variables['Platform'], 'Linux'), eq(variables['JavaVersion'], '1.11'), contains(variables['pomFile'], 'pom.client.xml'), ne(variables['Build.Reason'], 'PullRequest'))
         inputs:
           codeCoverageTool: JaCoCo
           summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
@@ -242,7 +242,7 @@ jobs:
       # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
       - task: PublishPipelineArtifact@0
         displayName: 'Publish coverage artifact'
-        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'), contains(variables['pomFile'], 'pom.client.xml'), ne(variables['Build.Reason'], 'PullRequest'))
+        condition: and(eq(variables['Platform'], 'Linux'), eq(variables['JavaVersion'], '1.11'), contains(variables['pomFile'], 'pom.client.xml'), ne(variables['Build.Reason'], 'PullRequest'))
         inputs:
           artifactName: coverage
           targetPath: eng/jacoco-test-coverage/target/site/
