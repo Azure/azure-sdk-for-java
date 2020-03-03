@@ -6,26 +6,24 @@ package com.azure.core.util.paging;
 import com.azure.core.util.IterableStream;
 
 /**
- * Represents Page from service that has reference to next set of one or more pages,
- * such a reference is known as continuation token.
+ * Represents a page returned, this page may contain a reference to additional pages known as a continuation token.
  *
- * @param <C> Type of the continuation token
- * @param <T> Type of the elements in the page
- *
+ * @param <C> Type of the continuation token.
+ * @param <T> Type of the elements in the page.
  * @see ContinuablePagedFlux
  */
 public interface ContinuablePage<C, T> {
     /**
-     * Get an iterable stream of elements in the page.
+     * Gets an {@link IterableStream} of elements in the page.
      *
-     * @return elements in the page as iterable stream.
+     * @return An {@link IterableStream} containing the elements in the page.
      */
     IterableStream<T> getElements();
 
     /**
-     * Get reference to the next page.
+     * Gets the reference to the next page.
      *
-     * @return next page reference, or {@code null} if there are no more pages.
+     * @return The next page reference or {@code null} if there isn't a next page.
      */
     C getContinuationToken();
 }
