@@ -21,7 +21,7 @@ public class SearchIndexClientBuilderTests {
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .indexName(indexName)
-            .searchServiceVersion(apiVersion)
+            .serviceVersion(apiVersion)
             .buildClient();
 
         assertNotNull(client);
@@ -46,7 +46,7 @@ public class SearchIndexClientBuilderTests {
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .indexName(indexName)
-            .searchServiceVersion(apiVersion)
+            .serviceVersion(apiVersion)
             .buildAsyncClient();
 
         assertNotNull(client);
@@ -73,7 +73,7 @@ public class SearchIndexClientBuilderTests {
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .indexName(indexName)
-            .searchServiceVersion(expectedVersion)
+            .serviceVersion(expectedVersion)
             .buildClient();
 
         assertEquals(expectedVersion, searchIndexClient.getServiceVersion());
@@ -82,7 +82,7 @@ public class SearchIndexClientBuilderTests {
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .indexName(indexName)
-            .searchServiceVersion(expectedVersion)
+            .serviceVersion(expectedVersion)
             .buildAsyncClient();
         assertEquals(expectedVersion, asyncClient.getServiceVersion());
     }
@@ -161,7 +161,7 @@ public class SearchIndexClientBuilderTests {
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .indexName(indexName)
-            .searchServiceVersion(null);
+            .serviceVersion(null);
 
         assertEquals(SearchServiceVersion.getLatest(), builder.buildAsyncClient().getServiceVersion());
         assertEquals(SearchServiceVersion.getLatest(), builder.buildClient().getServiceVersion());
