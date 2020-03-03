@@ -35,7 +35,7 @@ import java.util.Base64;
 import java.util.Objects;
 
 class CryptographyServiceClient {
-    static String API_VERSION = "7.0";
+    final String apiVersion;
     static final String ACCEPT_LANGUAGE = "en-US";
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
 
@@ -51,7 +51,7 @@ class CryptographyServiceClient {
         unpackId(keyId);
         this.keyId = keyId;
         this.service = service;
-        API_VERSION = serviceVersion.getVersion();
+        apiVersion = serviceVersion.getVersion();
     }
 
     Mono<Response<KeyVaultKey>> getKey(Context context) {
@@ -62,14 +62,14 @@ class CryptographyServiceClient {
     }
 
     private Mono<Response<KeyVaultKey>> getKey(String name, String version, Context context) {
-        return service.getKey(vaultUrl, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+        return service.getKey(vaultUrl, name, version, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Retrieving key - {}", name))
             .doOnSuccess(response -> logger.info("Retrieved key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
     }
 
     Mono<Response<JsonWebKey>> getSecretKey(Context context) {
-        return service.getSecret(vaultUrl, keyName, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+        return service.getSecret(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
            .doOnRequest(ignored -> logger.info("Retrieving key - {}", keyName))
            .doOnSuccess(response -> logger.info("Retrieved key - {}", response.getValue().getName()))
            .doOnError(error -> logger.warning("Failed to get key - {}", keyName, error))
@@ -93,7 +93,7 @@ class CryptographyServiceClient {
                                                  .setContentType(secret.getProperties().getContentType())
                                                  .setSecretAttributes(new SecretRequestAttributes(secret.getProperties()));
 
-        return service.setSecret(vaultUrl, secret.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.setSecret(vaultUrl, secret.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
                    .doOnRequest(ignored -> logger.info("Setting secret - {}", secret.getName()))
                    .doOnSuccess(response -> logger.info("Set secret - {}", response.getValue().getName()))
@@ -121,7 +121,7 @@ class CryptographyServiceClient {
     Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
 
         KeyOperationParameters parameters = new KeyOperationParameters().setAlgorithm(algorithm).setValue(plaintext);
-        return service.encrypt(vaultUrl, keyName, version, API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.encrypt(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Encrypting content with algorithm - {}", algorithm.toString()))
             .doOnSuccess(response -> logger.info("Retrieved encrypted content with algorithm- {}",
@@ -134,7 +134,7 @@ class CryptographyServiceClient {
 
     Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, Context context) {
         KeyOperationParameters parameters = new KeyOperationParameters().setAlgorithm(algorithm).setValue(cipherText);
-        return service.decrypt(vaultUrl, keyName, version, API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.decrypt(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Decrypting content with algorithm - {}", algorithm.toString()))
             .doOnSuccess(response -> logger.info("Retrieved decrypted content with algorithm- {}",
@@ -147,7 +147,7 @@ class CryptographyServiceClient {
 
     Mono<SignResult> sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
         KeySignRequest parameters = new KeySignRequest().setAlgorithm(algorithm).setValue(digest);
-        return service.sign(vaultUrl, keyName, version, API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.sign(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Signing content with algorithm - {}", algorithm.toString()))
             .doOnSuccess(response -> logger.info("Retrieved signed content with algorithm- {}", algorithm.toString()))
@@ -160,7 +160,7 @@ class CryptographyServiceClient {
     Mono<VerifyResult> verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
 
         KeyVerifyRequest parameters = new KeyVerifyRequest().setAlgorithm(algorithm).setDigest(digest).setSignature(signature);
-        return service.verify(vaultUrl, keyName, version, API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.verify(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Verifying content with algorithm - {}", algorithm.toString()))
             .doOnSuccess(response -> logger.info("Retrieved verified content with algorithm- {}", algorithm.toString()))
@@ -173,7 +173,7 @@ class CryptographyServiceClient {
     Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
 
         KeyWrapUnwrapRequest parameters = new KeyWrapUnwrapRequest().setAlgorithm(algorithm).setValue(key);
-        return service.wrapKey(vaultUrl, keyName, version, API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.wrapKey(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Wrapping key content with algorithm - {}", algorithm.toString()))
             .doOnSuccess(response -> logger.info("Retrieved wrapped key content with algorithm- {}",
@@ -187,7 +187,7 @@ class CryptographyServiceClient {
     Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
 
         KeyWrapUnwrapRequest parameters = new KeyWrapUnwrapRequest().setAlgorithm(algorithm).setValue(encryptedKey);
-        return service.unwrapKey(vaultUrl, keyName, version, API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.unwrapKey(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Unwrapping key content with algorithm - {}", algorithm.toString()))
             .doOnSuccess(response -> logger.info("Retrieved unwrapped key content with algorithm- {}",
