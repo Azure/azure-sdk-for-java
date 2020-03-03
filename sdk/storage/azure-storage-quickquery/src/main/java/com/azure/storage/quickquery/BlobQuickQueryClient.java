@@ -89,77 +89,14 @@ public class BlobQuickQueryClient {
         BlobQuickQuerySerialization output, BlobRequestConditions requestConditions,
         BlobQuickQueryErrorReceiver nonFatalErrorReceiver, ProgressReceiver progressReceiver) {
 
-        PipedInputStream networkStream = new PipedInputStream();
-
-        client.queryWithResponse(expression, input, output, requestConditions)
+        Flux<ByteBuffer> data = client.queryWithResponse(expression, input, output, requestConditions)
             .flatMapMany(ResponseBase::getValue)
-            .subscribeOn(Schedulers.elastic())
-            .subscribe(new NetworkSubscriber(networkStream, logger));
+            .onBackpressureBuffer()
+            .subscribeOn(Schedulers.boundedElastic());
 
-        return new BlobQuickQueryInputStream(networkStream, nonFatalErrorReceiver, progressReceiver);
-    }
+        NetworkInputStream networkInputStream = new NetworkInputStream(data, logger);
 
-    private class NetworkSubscriber extends BaseSubscriber<ByteBuffer> {
-
-        private final ClientLogger logger;
-        private final PipedInputStream networkStream;
-        private PipedOutputStream buffer;
-
-        NetworkSubscriber(PipedInputStream networkStream, ClientLogger logger) {
-            this.networkStream = networkStream;
-            this.logger = logger;
-        }
-
-        @Override
-        protected void hookOnSubscribe(Subscription subscription) {
-            super.hookOnSubscribe(subscription);
-            try {
-                this.buffer = new PipedOutputStream(networkStream);
-            } catch (IOException e) {
-                throw logger.logExceptionAsError(new UncheckedIOException(e));
-            }
-        }
-
-        @Override
-        protected void hookOnNext(ByteBuffer byteBuffer) {
-            try {
-                buffer.write(FluxUtil.byteBufferToArray(byteBuffer));
-            } catch (IOException e) {
-                throw logger.logExceptionAsError(new UncheckedIOException(e));
-            }
-        }
-
-        @Override
-        protected void hookOnError(Throwable throwable) {
-            if (throwable instanceof BlobStorageException) {
-                throw logger.logExceptionAsError((BlobStorageException) throwable);
-            } else if (throwable instanceof IllegalArgumentException) {
-                throw logger.logExceptionAsError((IllegalArgumentException) throwable);
-            }
-            try {
-                buffer.close();
-            } catch (IOException e) {
-                throw logger.logExceptionAsError(new UncheckedIOException(e));
-            }
-        }
-
-        @Override
-        protected void hookOnComplete() {
-            try {
-                buffer.close();
-            } catch (IOException e) {
-                throw logger.logExceptionAsError(new UncheckedIOException(e));
-            }
-        }
-
-        @Override
-        protected void hookOnCancel() {
-            try {
-                buffer.close();
-            } catch (IOException e) {
-                throw logger.logExceptionAsError(new UncheckedIOException(e));
-            }
-        }
+        return new BlobQuickQueryInputStream(networkInputStream, nonFatalErrorReceiver, progressReceiver, logger);
     }
 
     /**

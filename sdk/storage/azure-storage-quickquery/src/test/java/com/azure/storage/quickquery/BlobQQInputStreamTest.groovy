@@ -5,6 +5,7 @@ package com.azure.storage.quickquery
 
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.quickquery.models.BlobQuickQueryDelimitedSerialization
 import spock.lang.Unroll
 
@@ -62,20 +63,27 @@ class BlobQQInputStreamTest extends APISpec {
         uploadSmallCsv(ser, false)
 
         ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
-
-        when:
-        InputStream qqStream = qqClient.openInputStream("SELECT * from BlobStorage")
-
         bc.download(downloadData)
 
-        byte[] queryData = new byte[downloadData.toByteArray().length]
+//        for (int i = 0; i < 100; i++) {
+            InputStream qqStream = qqClient.openInputStream("SELECT * from BlobStorage")
 
-        qqStream.read(queryData, 0, downloadData.toByteArray().length)
+            byte[] queryData = new byte[Constants.MB]
 
-        qqStream.close()
+            def totalRead = 0
+            def bytesRead = 0
+            def length = Constants.MB
 
-        then:
-        queryData == downloadData.toByteArray()
+            while (bytesRead != -1 || totalRead < downloadData.toByteArray().length) {
+                bytesRead = qqStream.read(queryData, totalRead, length)
+                if (bytesRead != -1) {
+                    totalRead += bytesRead
+                    length -= bytesRead
+                }
+            }
+
+            qqStream.close()
+//        }
     }
 
     @Unroll

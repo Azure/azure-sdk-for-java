@@ -13,6 +13,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Subscribes to a Flux coming in from the network and allows data to be read.
@@ -23,9 +26,10 @@ public class NetworkInputStream extends InputStream {
 
     private Flux<ByteBuffer> data;
 
+
     private Subscription subscription; // Subscription to request more data from as needed
 
-    private ByteArrayInputStream userStream;
+    private ByteArrayInputStream buffer;
 
     private boolean subscribed;
     private boolean fluxComplete;
@@ -52,25 +56,33 @@ public class NetworkInputStream extends InputStream {
     public int read(byte[] b, int off, int len) throws IOException {
         // Not subscribed? subscribe
         if (!subscribed) {
+            waiting = true;
             subscribeToData();
         }
 
-        // Data may or may not be available
-        if (this.userStream == null) {
+        // Subscribed
+
+        // Right after the first subscription, data may or may not be available.
+        // The user stream will never have been initialized if data is not available on first subscription, return 0.
+        if (this.buffer == null) {
             return 0;
         } else {
-            // End of last chunk - request more data
-            if (this.userStream.available() == 0) {
+            // Middle of stream.
+            // End of last buffer read, no more data available.
+            if (this.buffer.available() == 0) {
+                // If the flux completed, there is no more data available to be read from the stream. Return -1.
                 if (this.fluxComplete) {
                     return -1;
                 }
+                // If we are not waiting for another request to come in, request more data.
                 if (!waiting) {
                     waiting = true;
                     subscription.request(1);
-                    return 0; // Wait for data to come in.
                 }
-            } else if (this.userStream.available() > 0) { // Data is in buffer - read and return
-                return this.userStream.read(b, off, len);
+                return 0; // Wait for more data to come in.
+            } else if (this.buffer.available() > 0) {
+                // Data available in buffer, read the buffer.
+                return this.buffer.read(b, off, len);
             }
         }
         return 0;
@@ -86,12 +98,13 @@ public class NetworkInputStream extends InputStream {
             .subscribe(
             // ByteBuffer consumer
             byteBuffer -> {
-                this.userStream = new ByteArrayInputStream(FluxUtil.byteBufferToArray(byteBuffer));
+                this.buffer = new ByteArrayInputStream(FluxUtil.byteBufferToArray(byteBuffer));
                 this.waiting = false;
             },
             // Error consumer
             throwable -> {
                 this.fluxComplete = true;
+                this.waiting = false;
                 if (throwable instanceof BlobStorageException) {
                     throw logger.logExceptionAsError((BlobStorageException) throwable);
                 } else if (throwable instanceof IllegalArgumentException) {
@@ -99,7 +112,10 @@ public class NetworkInputStream extends InputStream {
                 }
             },
             // Complete consumer
-            () -> this.fluxComplete = true,
+            () -> {
+                this.fluxComplete = true;
+                this.waiting = false;
+            },
             // Subscription consumer
             subscription -> {
                 this.subscription = subscription;
