@@ -4,23 +4,23 @@
 
 ```java
 // Train
-public PollerFlux<OperationResult, Model> beginModelTraining(String sourceUrl) { }
-public PollerFlux<OperationResult, Model> beginModelTraining(String sourceUrl, String filePrefix, boolean includeSubFolders) { }
+public PollerFlux<OperationResult, TrainedModel> beginModelTraining(String sourceUrl) { }
+public PollerFlux<OperationResult, TrainedModel> beginModelTraining(String sourceUrl, String filePrefix, boolean includeSubFolders) { }
 
-public PollerFlux<OperationResult, SupervisedModel> beginSupervisedModelTraining(String sourceUrl) { }
-public PollerFlux<OperationResult, SupervisedModel> beginSupervisedModelTraining(String sourceUrl, String filePrefix, boolean includeSubFolders) { }
+public PollerFlux<OperationResult, TrainedLabeledModel> beginLabeledModelTraining(String sourceUrl) { }
+public PollerFlux<OperationResult, TrainedLabeledModel> beginLabeledModelTraining(String sourceUrl, String filePrefix, boolean includeSubFolders) { }
 
 // Analyze form with custom models
 public PollerFlux<OperationResult, FormResult> beginAnalyzeForm(Flux<ByteBuffer> data, String modelId, boolean includeTextDetails) { }
 public PollerFlux<OperationResult, FormResult> beginAnalyzeForm(String uploadFilePath, String modelId, boolean includeTextDetails) { }
 
 // Analyze with supervised models
-public PollerFlux<OperationResult, PredefinedFormResult> beginSupervisedAnalyzeForm(Flux<ByteBuffer> data, String modelId, boolean includeTextDetails) { }
-public PollerFlux<OperationResult, PredefinedFormResult> beginSupervisedAnalyzeForm(String uploadFilePath, String modelId, boolean includeTextDetails) { }
+public PollerFlux<OperationResult, LabeledFormResult> beginAnalyzeLabeledForm(Flux<ByteBuffer> data, String modelId, boolean includeTextDetails) { }
+public PollerFlux<OperationResult, LabeledFormResult> beginAnalyzeLabeledForm(String uploadFilePath, String modelId, boolean includeTextDetails) { }
 
 // List custom Models
 public PagedFlux<ModelInfo> listModels() {}
-public Mono<ModelSummary> getModelListSummary() {}
+public Mono<ModelListSummary> getModelListSummary() {}
 public Mono<Response<ModelListSummary>> getModelListSummaryWithResponse() {}
 
 // Delete model
@@ -43,14 +43,14 @@ public class OperationResult {
     private String resultId;
 }
 
-// Unsupervised Model result
-public class Model {
-    private UnsupervisedModelInfo modelInfo;
+// Unsupervised Model
+public class TrainedModel {
+    private TrainedModelInfo modelInfo;
     private List<FormRecognizerError> trainingErrors;
     private List<TrainingInput> trainingInputResult;
 }
 
-public class UnsupervisedModelInfo extends ModelInfo {
+public class TrainedModelInfo extends ModelInfo {
     private List<FormCluster> formClusters;
 }
 
@@ -98,22 +98,22 @@ public class ExtractedTableCell extends ExtractedText {
     private boolean isHeader;
     private int rowIndex;
     private int rowSpan;
-    private List<String> elements; // only included if text details true. Confirm others.
+    private List<String> referenceElements; // only included if text details true. Confirm others.
 }
 
 // Supervised analyze result
-public class PredefinedFormResult {
-    private List<PredefinedFieldForm> forms ;
+public class LabeledFormResult {
+    private List<LabeledFieldForm> forms ;
     private List<RawPageExtraction> rawPageExtractions ;
 }
 
-public class PredefinedFieldForm {
+public class LabeledFieldForm {
     private String formType ;
     private PageRange pageRange ;
-    private List<PredefinedFieldPage> pages ;
+    private List<LabeledPageInfo> pages ;
 }
 
-public class PredefinedFieldPage {
+public class LabeledPageInfo {
     private List<PredefinedField> fields ;
     private int pageNumber ;
     private List<ExtractedTable> tables ;
@@ -122,7 +122,7 @@ public class PredefinedFieldPage {
 public class PredefinedField {
     private double confidence ;
     private String name ;
-    private PredefinedFieldValueType Type ;
+    private ValueType valueType ;
     private ExtractedText extractedValue ;
     List<String> referenceElements;
 }
@@ -143,8 +143,8 @@ public class RawPageExtraction {
 }
 
 // Train supervised model
-public class SupervisedModel {
-    private PredefinedFieldModel modelInfo;
+public class TrainedLabeledModel {
+    private LabeledModelInfo modelInfo;
     public List<FormRecognizerError> trainingErrors;
     public List<TrainingInput> trainingInputResult;
 }
@@ -153,10 +153,10 @@ public class TrainingInput {
     private String documentName ;
     private TrainingStatus status ;
     private int totalTrainedPages ;
-    private FormRecognizerError[] trainingInputErrors ;
+    private List<FormRecognizerError> trainingInputErrors ;
 }
 
-public class PredefinedFieldModel extends ModelInfo{
+public class LabeledModelInfo extends ModelInfo{
     private double averageFieldAccuracy ;
     private List<FieldDetails> fieldDetails ;
 }
@@ -167,7 +167,7 @@ public class FieldDetails {
 }
 
 // List Models
-public class ModelSummary {
+public class ModelListSummary {
     private int count;
     private int limit;
     private OffsetDateTime lastUpdatedDateTime;
@@ -234,21 +234,21 @@ public class RawReceiptItemExtraction {
  public class PredefinedField {
     public double confidence;
     public String name;
-    public PredefinedFieldValueType type;
+    public ValueType type;
     public ExtractedText extractedValue;
 }
-public class PredefinedFieldForm {
+public class LabeledFieldForm {
     public String formType;
     public PageRange PageRange;
-    public List<PredefinedFieldPage> pages;
+    public List<LabeledPageInfo> pages;
 }
-public class PredefinedFieldPage {
+public class LabeledPageInfo {
     public List<PredefinedField> fields;
     public int PageNumber;
     public List<ExtractedTable> Tables;
 }
 
-public enum PredefinedFieldValueType {
+public enum ValueType {
     StringType,
     Date,
     Time,
@@ -290,12 +290,14 @@ public enum ModelStatus {
 
 ## Samples
 ### [Unsupervised] Train and analyze with custom model
+Train without labels
+- By default, Form Recognizer uses unsupervised learning to understand the layout and relationships between fields and entries in your forms.
 
 ```java
 String trainingSetSource = "<storage-sas-url>";
-PollerFlux<OperationResult, Model> trainingPoller = client.beginModelTraining(trainingSetSource);
+PollerFlux<OperationResult, TrainedModel> trainingPoller = client.beginModelTraining(trainingSetSource);
 
-Model unsupervisedModel = trainingPoller
+TrainedModel unsupervisedModel = trainingPoller
     .last()
     .flatMap(trainingOperationResponse -> {
         if (trainingOperationResponse.getStatus().isComplete()) {
@@ -308,9 +310,9 @@ Model unsupervisedModel = trainingPoller
     }).block();
 
 // Analyze with custom model
-String analyzeFilePath = "https://templates.invoicehome.com/invoice-template-us-neat-750px.png";
+String formFileUrl = "https://templates.invoicehome.com/invoice-template-us-neat-750px.png";
 String customModelId = unsupervisedModel.getModelInfo().getModelId().toString();
-PollerFlux<OperationResult, FormResult> analyzePoller = client.beginAnalyzeForm(analyzeFilePath, customModelId, false);
+PollerFlux<OperationResult, FormResult> analyzePoller = client.beginAnalyzeForm(formFileUrl, customModelId, false);
 
 FormResult analyzeFormResult = analyzePoller
     .last()
@@ -336,11 +338,14 @@ for(ExtractedPage extractedPage : analyzeFormResult.getPages()) {
 ```
 
 ### [Supervised] Train and analyze with custom model
+Train with labels
+- When you train with labeled data, the model does supervised learning to extract values of interest, using the labeled forms you provide. 
+
 ```java
 String trainingSetSource = "<storage-sas-url>";
-PollerFlux<OperationResult, SupervisedModel> trainingPoller = client.beginSupervisedModelTraining(trainingSetSource);
+PollerFlux<OperationResult, TrainedLabeledModel> trainingPoller = client.beginLabeledModelTraining(trainingSetSource);
 
-SupervisedModel supervisedModel = trainingPoller
+TrainedLabeledModel supervisedModel = trainingPoller
     .last()
     .flatMap(trainingOperationResponse -> {
         if (trainingOperationResponse.getStatus().isComplete()) {
@@ -353,11 +358,11 @@ SupervisedModel supervisedModel = trainingPoller
     }).block();
 
 // Analyze with custom model
-String analyzeFilePath = "https://templates.invoicehome.com/invoice-template-us-neat-750px.png";
-String customModelId = unsupervisedModel.getModelInfo().getModelId().toString();
-PollerFlux<OperationResult, PredefinedFormResult> analyzePoller = client.beginAnalyzeForm(analyzeFilePath, customModelId, false);
+String formFileUrl = "https://templates.invoicehome.com/invoice-template-us-neat-750px.png";
+String customModelId = supervisedModel.getModelInfo().getModelId().toString();
+PollerFlux<OperationResult, LabeledFormResult> analyzePoller = client.beginAnalyzeLabeledForm(formFileUrl, customModelId, false);
 
-PredefinedFormResult predefinedFormResult = analyzePoller
+LabeledFormResult labeledFormResult = analyzePoller
     .last()
     .flatMap(analyzePollResponse -> {
         if (analyzePollResponse.getStatus().isComplete()) {
@@ -369,10 +374,10 @@ PredefinedFormResult predefinedFormResult = analyzePoller
         }
     }).block();
 
-for(PredefinedFieldForm extractedForm : predefinedFormResult.getForms()) {
+for(LabeledFieldForm extractedForm : labeledFormResult.getForms()) {
     System.out.printf("Form Type: %s", extractedForm.getFormType());
 
-    for(PredefinedFieldPage fieldPage : extractedForm.getPages()) {
+    for(LabeledPageInfo fieldPage : extractedForm.getPages()) {
         System.out.printf("Page Number: %d", extractedField.getPageNumber());
             for(PredefinedField extractedField : extractedForm.getFields()) {
                 System.out.printf("Name: %s", extractedField.getName());
@@ -380,58 +385,6 @@ for(PredefinedFieldForm extractedForm : predefinedFormResult.getForms()) {
                 System.out.printf("Value: %s", extractedField.getExtractedValue().getText());
         }
     }
-}
-```
-
-### Train unsupervised model
-```java
-String trainingSetSource = "<storage-sas-url>";
-PollerFlux<OperationResult, Model> trainingPoller = client.beginModelTraining(trainingSetSource);
-
-Model unsupervisedModel = trainingPoller
-    .last()
-    .flatMap(trainingOperationResponse -> {
-        if (trainingOperationResponse.getStatus().isComplete()) {
-            // training completed successfully, retrieving final result.
-            return trainingOperationResponse.getFinalResult();
-        } else {
-            throw new RuntimeException("Polling completed unsuccessfully with status:"
-                + trainingOperationResponse.getStatus());
-        }
-    }).block();
-
-System.out.printf("Model Id: %s", unsupervisedModel.getModelInfo().getModelId());
-System.out.printf("Model status: %s", unsupervisedModel.getModelInfo().getModelStatus());
-for(FormCluster formCluster : unsupervisedModel.getModelInfo().getFormClusters()){
-    System.out.println(formCluster.getFormClusterId());
-    for(String fieldName : formCluster.getFieldNames()) {
-        System.out.printf("Field Name: %s", fieldName);
-    }
-}
-```
-
-### Train supervised model
-```java
-String trainingSetSource = "<storage-sas-url>";
-PollerFlux<OperationResult, SupervisedModel> trainingPoller = client.beginSupervisedModelTraining(trainingSetSource);
-
-SupervisedModel supervisedModel = trainingPoller
-    .last()
-    .flatMap(trainingOperationResponse -> {
-        if (trainingOperationResponse.getStatus().isComplete()) {
-            // training completed successfully, retrieving final result.
-            return trainingOperationResponse.getFinalResult();
-        } else {
-            throw new RuntimeException("Polling completed unsuccessfully with status:"
-                + trainingOperationResponse.getStatus());
-        }
-    }).block();
-
-System.out.printf("Model Id: %s", supervisedModel.getModelInfo().getModelId());
-System.out.printf("Model status: %s", supervisedModel.getModelInfo().getModelStatus());
-for(FieldDetails fieldDetails : supervisedModel.getModelInfo().getFieldAccuracies()){
-    System.out.println("Field Name: %s", fieldAccuracy.getFieldName());
-    System.out.println("Field Accuracy: %s", fieldAccuracy.getAccuracy());
 }
 ```
 
@@ -505,4 +458,6 @@ for(RawPageExtraction rawPageExtraction : extractedLayoutResult.getRawPageExtrac
         }
     }
 }
+
+// will customers be more interested in the tabular data?
 ```
