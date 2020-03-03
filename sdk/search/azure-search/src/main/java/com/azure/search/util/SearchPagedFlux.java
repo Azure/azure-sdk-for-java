@@ -6,7 +6,6 @@ package com.azure.search.util;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.core.util.paging.ContinuablePagedFluxCore;
 import com.azure.core.util.paging.PageRetriever;
-import com.azure.search.SearchPagedResponse;
 import com.azure.search.models.SearchRequest;
 import com.azure.search.models.SearchResult;
 

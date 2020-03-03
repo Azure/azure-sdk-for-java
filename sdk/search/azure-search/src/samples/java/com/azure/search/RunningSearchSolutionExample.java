@@ -15,7 +15,9 @@ import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
+import com.azure.search.util.AutocompletePagedResponse;
 import com.azure.search.util.SearchPagedIterable;
+import com.azure.search.util.SuggestPagedResponse;
 
 import java.util.Iterator;
 

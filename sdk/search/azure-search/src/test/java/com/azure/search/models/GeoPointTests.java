@@ -6,7 +6,7 @@ package com.azure.search.models;
 import com.azure.core.util.Context;
 import com.azure.search.SearchIndexClient;
 import com.azure.search.SearchIndexClientTestBase;
-import com.azure.search.SearchPagedResponse;
+import com.azure.search.util.SearchPagedResponse;
 import com.azure.search.implementation.SerializationUtil;
 import com.azure.search.util.SearchPagedIterable;
 import com.fasterxml.jackson.databind.ObjectMapper;

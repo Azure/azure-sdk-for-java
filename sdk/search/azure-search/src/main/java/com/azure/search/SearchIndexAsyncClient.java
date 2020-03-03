@@ -29,8 +29,11 @@ import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestRequest;
 import com.azure.search.models.SuggestResult;
 import com.azure.search.util.AutocompletePagedFlux;
+import com.azure.search.util.AutocompletePagedResponse;
 import com.azure.search.util.SearchPagedFlux;
+import com.azure.search.util.SearchPagedResponse;
 import com.azure.search.util.SuggestPagedFlux;
+import com.azure.search.util.SuggestPagedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 

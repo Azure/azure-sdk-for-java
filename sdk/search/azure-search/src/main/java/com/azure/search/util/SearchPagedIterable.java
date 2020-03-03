@@ -3,7 +3,6 @@
 
 package com.azure.search.util;
 
-import com.azure.search.SearchPagedResponse;
 import com.azure.search.models.SearchRequest;
 import com.azure.search.models.SearchResult;
 

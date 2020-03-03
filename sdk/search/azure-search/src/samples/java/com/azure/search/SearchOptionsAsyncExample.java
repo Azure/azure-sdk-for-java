@@ -9,6 +9,7 @@ import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
 import com.azure.search.util.SearchPagedFlux;
+import com.azure.search.util.SearchPagedResponse;
 
 import java.util.List;
 import java.util.Map;

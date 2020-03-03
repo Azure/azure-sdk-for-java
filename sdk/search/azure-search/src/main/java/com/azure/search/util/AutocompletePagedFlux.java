@@ -4,7 +4,6 @@
 package com.azure.search.util;
 
 import com.azure.core.http.rest.PagedFluxBase;
-import com.azure.search.AutocompletePagedResponse;
 import com.azure.search.models.AutocompleteItem;
 import reactor.core.publisher.Mono;
 

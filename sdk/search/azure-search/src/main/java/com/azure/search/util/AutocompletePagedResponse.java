@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search;
+package com.azure.search.util;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.http.rest.PagedResponseBase;
