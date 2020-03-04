@@ -6,8 +6,8 @@ package com.azure.core.util.serializer;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -76,14 +76,14 @@ public class JacksonAdapter implements SerializerAdapter {
         xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
         xmlMapper.setDefaultUseWrapper(false);
         ObjectMapper flatteningMapper = initializeObjectMapper(new ObjectMapper())
-                .registerModule(FlatteningSerializer.getModule(simpleMapper()))
-                .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+            .registerModule(FlatteningSerializer.getModule(simpleMapper()))
+            .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
         mapper = initializeObjectMapper(new ObjectMapper())
-                // Order matters: must register in reverse order of hierarchy
-                .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
-                .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
-                .registerModule(FlatteningSerializer.getModule(simpleMapper()))
-                .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+            // Order matters: must register in reverse order of hierarchy
+            .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
+            .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
+            .registerModule(FlatteningSerializer.getModule(simpleMapper()))
+            .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
         headerMapper = simpleMapper
             .copy()
             .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
@@ -166,12 +166,10 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         // Remove any leading BOM from the XML.
-        if (encoding == SerializerEncoding.XML) {
-            if (value.startsWith(BOM)) {
-                value = value.replaceFirst(BOM, "");
-            } else if (value.startsWith(BOM_STRING)) {
-                value = value.replaceFirst(BOM_STRING, "");
-            }
+        if (value.startsWith(BOM)) {
+            value = value.replaceFirst(BOM, "");
+        } else if (value.startsWith(BOM_STRING)) {
+            value = value.replaceFirst(BOM_STRING, "");
         }
 
         final JavaType javaType = createJavaType(type);
@@ -248,8 +246,7 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     /**
-     * Initializes an instance of JacksonMapperAdapter with default configurations
-     * applied to the object mapper.
+     * Initializes an instance of JacksonMapperAdapter with default configurations applied to the object mapper.
      *
      * @param mapper the object mapper to use.
      */
