@@ -130,6 +130,7 @@ public final class TextAnalyticsClient {
 
     /**
      * Detects Language for a batch of input.
+     *
      * This method will use the default country hint that sets up in
      * {@link TextAnalyticsClientBuilder#defaultCountryHint(String)}. If none is specified, service will use 'US' as
      * the country hint.
@@ -153,10 +154,35 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Detects Language for a batch of input with the provided country hint.
+     * Detects Language for a batch of input with provided country hint.
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Detects the language in a list of document with a provided country hint.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#Iterable-String}
+     *
+     * @param textInputs The list of document to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
+     * specified. To remove this behavior you can reset this parameter by setting this value to empty string
+     * {@code countryHint} = "".
+     *
+     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * {@link DetectLanguageResult detected language document result}.
+     *
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedIterable<DetectLanguageResult> detectLanguageBatch(
+        Iterable<String> textInputs, String countryHint) {
+        return new TextAnalyticsPagedIterable<>(client.detectLanguageBatch(textInputs, countryHint));
+    }
+
+    /**
+     * Detects Language for a batch of input with the provided country hint and request options.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Detects the language in a list of document with a provided country hint and request options.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs The list of document to be analyzed.
@@ -180,10 +206,11 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Detects Language for a batch of input with the provided {@link TextAnalyticsRequestOptions}.
+     * Detects Language for a batch of {@link DetectLanguageInput document} with provided request options.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Detects the languages with http response in a list of {@link DetectLanguageInput}.</p>
+     * <p>Detects the languages with http response in a list of {@link DetectLanguageInput document} with provided
+     * request options.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#Iterable-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
@@ -208,6 +235,7 @@ public final class TextAnalyticsClient {
     // Categorized Entity
     /**
      * Returns a list of general categorized entities in the provided document.
+     *
      * For a list of supported entity types, check: <a href="https://aka.ms/taner"></a>
      *
      * This method will use the default language that sets up in
@@ -234,12 +262,13 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of general categorized entities in the provided document.
+     * Returns a list of general categorized entities in the provided document with provided language code.
+     *
      * For a list of supported entity types, check: <a href="https://aka.ms/taner"></a>
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the entities in a document with a provided language representation.</p>
+     * <p>Recognizes the entities in a document with a provided language code.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String-String}
      *
      * @param text The document to recognize entities for.
@@ -285,10 +314,34 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of general categorized entities for the provided list of document.
+     * Returns a list of general categorized entities for the provided list of document with provided language code.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the entities in a list of document with a provided language representation.</p>
+     * <p>Recognizes the entities in a list of document with a provided language code.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntitiesBatch#Iterable-String}
+     *
+     * @param textInputs A list of document to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
+     *
+     * @return The {@link TextAnalyticsPagedIterable} containing the list of
+     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     *
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeCategorizedEntitiesBatch(
+        Iterable<String> textInputs, String language) {
+        return new TextAnalyticsPagedIterable<>(client.recognizeCategorizedEntitiesBatch(textInputs, language));
+    }
+
+    /**
+     * Returns a list of general categorized entities for the provided list of document with provided language code
+     * and request options.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the entities in a list of document with a provided language code and request options.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of document to recognize entities for.
@@ -311,10 +364,12 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of general categorized entities for the provided list of document.
+     * Returns a list of general categorized entities for the provided list of {@link TextDocumentInput document} with
+     * provided request options.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the entities with http response in a list of {@link TextDocumentInput}.</p>
+     * <p>Recognizes the entities with http response in a list of {@link TextDocumentInput document} with provided
+     * request options.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
@@ -340,6 +395,7 @@ public final class TextAnalyticsClient {
     // Personally Identifiable Information Entities
     /**
      * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the document.
+     *
      * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a> PII.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
@@ -367,7 +423,9 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the document.
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the document with provided
+     * language code.
+     *
      * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
@@ -422,7 +480,38 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of document.
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of document with
+     * provided language code.
+     *
+     * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the Personally Identifiable Information entities in a list of document with a provided language
+     * code.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String}
+     *
+     * @param textInputs A list of document to recognize Personally Identifiable Information entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
+     * English as default.
+     *
+     * @return A {@link TextAnalyticsPagedIterable} of the
+     * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
+     *
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedIterable<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
+        Iterable<String> textInputs, String language) {
+        return new TextAnalyticsPagedIterable<>(client.recognizePiiEntitiesBatch(textInputs, language));
+    }
+
+    /**
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of document with
+     * provided language code and request options.
+     *
      * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
@@ -451,7 +540,9 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs.
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of
+     * {@link TextDocumentInput documents} with request options.
+     *
      * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
@@ -510,11 +601,13 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the provided document.
+     * Returns a list of recognized entities with links to a well-known knowledge base for the provided document with
+     * language code.
+     *
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the linked entities in a document with a provided language representation.</p>
+     * <p>Recognizes the linked entities in a document with a provided language code.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String-String}
      *
      * @param text The document to recognize linked entities for.
@@ -562,11 +655,41 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of document.
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of document with
+     * provided language code.
+     *
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the linked entities in a list of document with a provided language representation.
+     * <p>Recognizes the linked entities in a list of document with a provided language code.
+     * </p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-String}
+     *
+     * @param textInputs A list of document to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     *
+     * @return A {@link TextAnalyticsPagedIterable} of the
+     * {@link LinkedEntity recognized linked entities document result}.
+     *
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedIterable<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
+        Iterable<String> textInputs, String language) {
+        return new TextAnalyticsPagedIterable<>(client.recognizeLinkedEntitiesBatch(textInputs, language));
+    }
+
+    /**
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of document with
+     * provided language code and request options.
+     *
+     * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the linked entities in a list of document with a provided language code and request options.
      * </p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
@@ -590,11 +713,14 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs.
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of
+     * {@link TextDocumentInput document} and request options.
+     *
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the linked entities with http response in a list of {@link TextDocumentInput}.</p>
+     * <p>Recognizes the linked entities with http response in a list of {@link TextDocumentInput} with request options.
+     * </p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context}
      *
      * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
@@ -693,11 +819,39 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of strings denoting the key phrases in the documents.
+     * Returns a list of strings denoting the key phrases in the documents with provided language code.
+     *
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Extracts key phrases in a list of document with a provided language representation.</p>
+     * <p>Extracts key phrases in a list of document with a provided language code.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#Iterable-String}
+     *
+     * @param textInputs A list of document to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     *
+     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * {@link ExtractKeyPhraseResult extracted key phrases document result}.
+     *
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedIterable<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
+        Iterable<String> textInputs, String language) {
+        return new TextAnalyticsPagedIterable<>(client.extractKeyPhrasesBatch(textInputs, language));
+    }
+
+    /**
+     * Returns a list of strings denoting the key phrases in the documents with provided language code and
+     * request options.
+     *
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Extracts key phrases in a list of document with a provided language code and request options.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of document to be analyzed.
@@ -720,14 +874,16 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of strings denoting the key phrases in the documents.
+     * Returns a list of strings denoting the key phrases in the a batch of {@link TextDocumentInput document} with
+     * request options.
+     *
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Extracts key phrases with http response in a list of {@link TextDocumentInput}.</p>
+     * <p>Extracts key phrases with http response in a list of {@link TextDocumentInput} with request options.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#Iterable-TextAnalyticsRequestOptions-Context}
      *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -828,7 +984,32 @@ public final class TextAnalyticsClient {
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Analyze the sentiments in a list of document with a provided language representation.</p>
+     * <p>Analyze the sentiments in a list of document with a provided language code.</p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-String}
+     *
+     * @param textInputs A list of document to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default..
+     *
+     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * {@link AnalyzeSentimentResult analyzed sentiment document result}.
+     *
+     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedIterable<AnalyzeSentimentResult> analyzeSentimentBatch(
+        Iterable<String> textInputs, String language) {
+        return new TextAnalyticsPagedIterable<>(client.analyzeSentimentBatch(textInputs, language));
+    }
+
+    /**
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label
+     * (Positive, Negative, and Neutral) for the document and each sentence within it.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiments in a list of document with a provided language representation and request options.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
      * @param textInputs A list of document to be analyzed.
@@ -855,10 +1036,11 @@ public final class TextAnalyticsClient {
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Analyze the sentiments with http response in a list of {@link TextDocumentInput}.</p>
+     * <p>Analyze the sentiments with http response in a list of {@link TextDocumentInput documents} with request
+     * options.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-TextAnalyticsRequestOptions-Context}
      *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
+     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents

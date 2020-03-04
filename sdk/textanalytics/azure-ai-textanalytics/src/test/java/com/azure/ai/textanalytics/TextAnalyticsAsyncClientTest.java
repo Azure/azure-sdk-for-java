@@ -467,12 +467,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test analyzing sentiment for a list of string input with language hint.
+     * Test analyzing sentiment for a list of string input with language code.
      */
     @Test
     public void analyseSentimentForListLanguageHint() {
         analyseSentimentLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.analyzeSentimentBatch(inputs, language, null).byPage())
+            StepVerifier.create(client.analyzeSentimentBatch(inputs, language).byPage())
                 .assertNext(response -> validateSentimentWithPagedResponse(false, getExpectedBatchTextSentiment(), response))
                 .verifyComplete());
     }
