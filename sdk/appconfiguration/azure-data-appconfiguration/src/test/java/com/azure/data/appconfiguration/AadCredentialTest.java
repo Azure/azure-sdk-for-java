@@ -13,11 +13,7 @@ import com.azure.data.appconfiguration.implementation.ConfigurationClientCredent
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
-import java.util.List;
-import org.eclipse.jetty.util.annotation.ManagedAttribute;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
