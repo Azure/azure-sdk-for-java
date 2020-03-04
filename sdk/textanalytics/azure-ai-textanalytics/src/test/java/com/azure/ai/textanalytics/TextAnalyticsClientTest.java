@@ -31,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import java.net.HttpURLConnection;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,6 +57,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             .pipeline(httpPipeline)
             .buildClient());
     }
+
+    // Detect language
 
     /**
      * Verify that we can get statistics on the collection result when given a batch input with options.
@@ -83,7 +86,17 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguagesBatchListCountryHint() {
         detectLanguagesCountryHintRunner((inputs, countryHint) -> validateDetectLanguage(
             false, getExpectedBatchDetectedLanguages(),
-            client.detectLanguageBatch(inputs, countryHint, null).streamByPage().findFirst().get()));
+            client.detectLanguageBatch(inputs, countryHint).streamByPage().findFirst().get()));
+    }
+
+    /**
+     * Test detect batch languages for a list of string input with request options
+     */
+    @Test
+    public void detectLanguagesBatchListCountryHintWithOptions() {
+        detectLanguagesBatchListCountryHintWithOptionsRunner((inputs, options) -> validateDetectLanguage(true,
+            getExpectedBatchDetectedLanguages(),
+            client.detectLanguageBatch(inputs, null, options).streamByPage().findFirst().get()));
     }
 
     /**
@@ -96,7 +109,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that a single DetectLanguageResult is returned for a document to detectLanguages.
+     * Verifies that a single DetectLanguageResult is returned for a document to detect language.
      */
     @Test
     public void detectSingleTextLanguage() {
@@ -171,9 +184,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
+    // Recognize categorized Entity
+
     @Test
     public void recognizeEntitiesForTextInput() {
-        final CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, null, 26, 7, 0.0);
+        final CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 26, 7, 0.0);
         final CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
 
         final List<CategorizedEntity> entities = client.recognizeCategorizedEntities("I had a wonderful trip to Seattle last week.").stream().collect(Collectors.toList());
@@ -229,16 +244,29 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForListLanguageHint() {
         recognizeCategorizedEntitiesLanguageHintRunner((inputs, language) ->
-            client.recognizeCategorizedEntitiesBatch(inputs, language, null).iterableByPage().forEach(
+            client.recognizeCategorizedEntitiesBatch(inputs, language).iterableByPage().forEach(
                 pagedResponse ->
                     validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
 
     @Test
+    public void recognizeEntitiesForListWithOptions() {
+        recognizeStringBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
+            client.recognizeCategorizedEntitiesBatch(inputs, null, options).iterableByPage().forEach(
+                pagedResponse ->
+                    validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
+    }
+
+    // Recognize PII entity
+
+    @Test
     public void recognizePiiEntitiesForTextInput() {
-        final PiiEntity piiEntity = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), "", 28, 11, 0.0);
+        final PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0, 9, 1.0);
+        final PiiEntity piiEntity = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 28, 11, 0.0);
         final TextAnalyticsPagedIterable<PiiEntity> entities = client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.");
-        validatePiiEntity(piiEntity, entities.iterator().next());
+        Iterator<PiiEntity> iterator = entities.iterator();
+        validatePiiEntity(piiEntity0, iterator.next());
+        validatePiiEntity(piiEntity, iterator.next());
     }
 
     @Test
@@ -276,9 +304,18 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizePiiEntitiesForListLanguageHint() {
         recognizePiiLanguageHintRunner((inputs, language) ->
-            client.recognizePiiEntitiesBatch(inputs, language, null).iterableByPage().forEach(pagedResponse ->
+            client.recognizePiiEntitiesBatch(inputs, language).iterableByPage().forEach(pagedResponse ->
                 validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), pagedResponse)));
     }
+
+    @Test
+    public void recognizePiiEntitiesForListStringWithOptions() {
+        recognizeStringBatchPiiEntitiesShowStatsRunner((inputs, options) ->
+            client.recognizePiiEntitiesBatch(inputs, null, options).iterableByPage().forEach(pagedResponse ->
+                validatePiiEntityWithPagedResponse(true, getExpectedBatchPiiEntities(), pagedResponse)));
+    }
+
+    // Recognize linked entity
 
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
@@ -326,9 +363,19 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeLinkedEntitiesForListLanguageHint() {
         recognizeLinkedLanguageHintRunner((inputs, language) ->
-            client.recognizeLinkedEntitiesBatch(inputs, language, null).iterableByPage().forEach(pagedResponse ->
+            client.recognizeLinkedEntitiesBatch(inputs, language).iterableByPage().forEach(pagedResponse ->
                 validateLinkedEntitiesWithPagedResponse(false, getExpectedBatchLinkedEntities(), pagedResponse)));
     }
+
+    @Test
+    public void recognizeLinkedEntitiesForListStringWithOptions() {
+        recognizeBatchStringLinkedEntitiesShowStatsRunner((inputs, options) ->
+            client.recognizeLinkedEntitiesBatch(inputs, null, options).iterableByPage().forEach(pagedResponse ->
+                validateLinkedEntitiesWithPagedResponse(true, getExpectedBatchLinkedEntities(), pagedResponse)));
+    }
+
+
+    // Extract key phrase
 
     @Test
     public void extractKeyPhrasesForTextInput() {
@@ -370,8 +417,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void extractKeyPhrasesForListLanguageHint() {
         extractKeyPhrasesLanguageHintRunner((inputs, language) ->
-            client.extractKeyPhrasesBatch(inputs, language, null).iterableByPage().forEach(pagedResponse ->
+            client.extractKeyPhrasesBatch(inputs, language).iterableByPage().forEach(pagedResponse ->
                 validateExtractKeyPhraseWithPagedResponse(false, getExpectedBatchKeyPhrases(), pagedResponse)));
+    }
+
+    @Test
+    public void extractKeyPhrasesForListStringWithOptions() {
+        extractBatchStringKeyPhrasesShowStatsRunner((inputs, options) ->
+            client.extractKeyPhrasesBatch(inputs, null, options).iterableByPage().forEach(pagedResponse ->
+                validateExtractKeyPhraseWithPagedResponse(true, getExpectedBatchKeyPhrases(), pagedResponse)));
     }
 
     // Sentiment
@@ -436,8 +490,18 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void analyseSentimentForListLanguageHint() {
         analyseSentimentLanguageHintRunner((inputs, language) ->
-            client.analyzeSentimentBatch(inputs, language, null).iterableByPage().forEach(pagedResponse ->
+            client.analyzeSentimentBatch(inputs, language).iterableByPage().forEach(pagedResponse ->
                 validateSentimentWithPagedResponse(false, getExpectedBatchTextSentiment(), pagedResponse)));
+    }
+
+    /**
+     * Verify that we can get statistics on the collection result when given a batch input with request options.
+     */
+    @Test
+    public void analyseSentimentForListStringWithOptions() {
+        analyseBatchStringSentimentShowStatsRunner((inputs, options) ->
+            client.analyzeSentimentBatch(inputs, null, options).iterableByPage().forEach(pagedResponse ->
+                validateSentimentWithPagedResponse(true, getExpectedBatchTextSentiment(), pagedResponse)));
     }
 
     /**
@@ -451,7 +515,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verify that we can get statistics on the collection result when given a batch input with options.
+     * Verify that we can get statistics on the collection result when given a batch input with request options.
      */
     @Test
     public void analyseSentimentForBatchInputShowStatistics() {

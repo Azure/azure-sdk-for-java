@@ -21,10 +21,10 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentenceSentimentLabel;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.util.IterableStream;
 
 import java.util.Arrays;
@@ -63,14 +63,10 @@ final class TestUtils {
     static final List<String> DETECT_LANGUAGE_INPUTS = Arrays.asList(
         "This is written in English", "Este es un document escrito en Español.", "~@!~:)");
 
-    static final List<String> EMOJI_INPUTS = Arrays.asList(
-        "\uD83D\uDC69\u200D\uD83D\uDC69\u200D\uD83D\uDC67\u200D\uD83D\uDC67  I had a wonderful trip to Seattle last week.",
-        "This \uD83D\uDC69 works at Microsoft.");
-
     static List<DetectLanguageInput> getDetectLanguageInputs() {
         return Arrays.asList(
             new DetectLanguageInput("0", DETECT_LANGUAGE_INPUTS.get(0), "US"),
-            new DetectLanguageInput("1", DETECT_LANGUAGE_INPUTS.get(1)),
+            new DetectLanguageInput("1", DETECT_LANGUAGE_INPUTS.get(1), "US"),
             new DetectLanguageInput("2", DETECT_LANGUAGE_INPUTS.get(2), "US")
         );
     }
@@ -122,7 +118,6 @@ final class TestUtils {
             new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
 
-
     /**
      * Helper method to get the expected Categorized Entities
      */
@@ -133,15 +128,15 @@ final class TestUtils {
             new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
 
-
     /**
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
-        CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, null, 26, 7, 0.0);
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 26, 7, 0.0);
         CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
         return Arrays.asList(categorizedEntity1, categorizedEntity2);
     }
+
     /**
      * Helper method to get the expected Categorized Entities List 2
      */
@@ -174,11 +169,13 @@ final class TestUtils {
      * Helper method to get the expected batch of Personally Identifiable Information entities
      */
     static TextAnalyticsPagedResponse<RecognizePiiEntitiesResult> getExpectedBatchPiiEntities() {
-        PiiEntity piiEntity1 = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), "", 28, 11, 0.0);
-        PiiEntity piiEntity2 = new PiiEntity("111000025", EntityCategory.fromString("ABA Routing Number"), "", 18, 9, 0.0);
+        PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0, 9, 1.0);
+        PiiEntity piiEntity1 = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 28, 11, 0.65);
+        PiiEntity piiEntity2 = new PiiEntity("111000025", EntityCategory.fromString("PhoneNumber"), null, 18, 9, 0.8);
+        PiiEntity piiEntity3 = new PiiEntity("111000025", EntityCategory.fromString("ABA Routing Number"), null, 18, 9, 0.75);
 
-        IterableStream<PiiEntity> piiEntityList = new IterableStream<>(Collections.singletonList(piiEntity1));
-        IterableStream<PiiEntity> piiEntityList1 = new IterableStream<>(Collections.singletonList(piiEntity2));
+        IterableStream<PiiEntity> piiEntityList = new IterableStream<>(Arrays.asList(piiEntity0, piiEntity1));
+        IterableStream<PiiEntity> piiEntityList1 = new IterableStream<>(Arrays.asList(piiEntity2, piiEntity3));
 
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(105, 1);

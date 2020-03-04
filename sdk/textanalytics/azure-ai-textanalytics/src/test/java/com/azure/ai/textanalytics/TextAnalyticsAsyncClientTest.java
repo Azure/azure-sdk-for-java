@@ -64,7 +64,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Detected Languages
 
     /**
-     * Verify that we can get statistics on the collection result when given a batch input with options.
+     * Verify that we can get statistics on the collection result when given a batch input with request options.
      */
     @Test
     public void detectLanguagesBatchInputShowStatistics() {
@@ -86,13 +86,24 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test to detect language for each string input of batch, with given country hint.
+     * Test to detect language for each string input of batch with given country hint.
      */
     @Test
     public void detectLanguagesBatchListCountryHint() {
         detectLanguagesCountryHintRunner((inputs, countryHint) ->
-            StepVerifier.create(client.detectLanguageBatch(inputs, countryHint, null).byPage())
+            StepVerifier.create(client.detectLanguageBatch(inputs, countryHint).byPage())
                 .assertNext(response -> validateDetectLanguage(false, getExpectedBatchDetectedLanguages(), response))
+                .verifyComplete());
+    }
+
+    /**
+     * Test to detect language for each string input of batch with request options.
+     */
+    @Test
+    public void detectLanguagesBatchListCountryHintWithOptions() {
+        detectLanguagesBatchListCountryHintWithOptionsRunner((inputs, options) ->
+            StepVerifier.create(client.detectLanguageBatch(inputs, null, options).byPage())
+                .assertNext(response -> validateDetectLanguage(true, getExpectedBatchDetectedLanguages(), response))
                 .verifyComplete());
     }
 
@@ -238,8 +249,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForListLanguageHint() {
         recognizeCategorizedEntitiesLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs, language, null).byPage())
+            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs, language).byPage())
                 .assertNext(response -> validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), response))
+                .verifyComplete());
+    }
+
+    @Test
+    public void recognizeEntitiesForListWithOptions() {
+        recognizeStringBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
+            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs, null, options).byPage())
+                .assertNext(response -> validateCategorizedEntitiesWithPagedResponse(true, getExpectedBatchCategorizedEntities(), response))
                 .verifyComplete());
     }
 
@@ -291,19 +310,30 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(response -> validateLinkedEntitiesWithPagedResponse(false, getExpectedBatchLinkedEntities(), response))
                 .verifyComplete());
     }
+
     @Test
     public void recognizeLinkedEntitiesForListLanguageHint() {
         recognizeLinkedLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, language, null).byPage())
+            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, language).byPage())
                 .assertNext(response -> validateLinkedEntitiesWithPagedResponse(false, getExpectedBatchLinkedEntities(), response))
+                .verifyComplete());
+    }
+
+    @Test
+    public void recognizeLinkedEntitiesForListStringWithOptions() {
+        recognizeBatchStringLinkedEntitiesShowStatsRunner((inputs, options) ->
+            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null, options).byPage())
+                .assertNext(response -> validateLinkedEntitiesWithPagedResponse(true, getExpectedBatchLinkedEntities(), response))
                 .verifyComplete());
     }
 
     // Personally Identifiable Information Entities
     @Test
     public void recognizePiiEntitiesForTextInput() {
-        PiiEntity piiEntity = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), "", 28, 11, 0.0);
+        PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0, 9, 1.0);
+        PiiEntity piiEntity = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 28, 11, 0.65);
         StepVerifier.create(client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's."))
+            .assertNext(response -> validatePiiEntity(piiEntity0, response))
             .assertNext(response -> validatePiiEntity(piiEntity, response))
             .verifyComplete();
     }
@@ -351,6 +381,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         recognizePiiLanguageHintRunner((inputs, language) ->
             StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, language, null).byPage())
                 .assertNext(response -> validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), response))
+                .verifyComplete());
+    }
+
+    @Test
+    public void recognizePiiEntitiesForListStringWithOptions() {
+        recognizeStringBatchPiiEntitiesShowStatsRunner((inputs, options) ->
+            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, null, options).byPage())
+                .assertNext(response -> validatePiiEntityWithPagedResponse(true, getExpectedBatchPiiEntities(), response))
                 .verifyComplete());
     }
 
@@ -404,8 +442,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void extractKeyPhrasesForListLanguageHint() {
         extractKeyPhrasesLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, language, null).byPage())
+            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, language).byPage())
                 .assertNext(response -> validateExtractKeyPhraseWithPagedResponse(false, getExpectedBatchKeyPhrases(), response))
+                .verifyComplete());
+    }
+
+    @Test
+    public void extractKeyPhrasesForListStringWithOptions() {
+        extractBatchStringKeyPhrasesShowStatsRunner((inputs, options) ->
+            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null, options).byPage())
+                .assertNext(response -> validateExtractKeyPhraseWithPagedResponse(true, getExpectedBatchKeyPhrases(), response))
                 .verifyComplete());
     }
 
@@ -478,7 +524,18 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test analyzing sentiment for batch input.
+     * Test analyzing sentiment for a list of string input with request options.
+     */
+    @Test
+    public void analyseSentimentForListStringWithOptions() {
+        analyseBatchStringSentimentShowStatsRunner((inputs, options) ->
+            StepVerifier.create(client.analyzeSentimentBatch(inputs, null, options).byPage())
+                .assertNext(response -> validateSentimentWithPagedResponse(true, getExpectedBatchTextSentiment(), response))
+                .verifyComplete());
+    }
+
+    /**
+     * Test analyzing sentiment for a batch of document.
      */
     @Test
     public void analyseSentimentForBatchInput() {
@@ -489,7 +546,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verify that we can get statistics on the collection result when given a batch input with options.
+     * Verify that we can get statistics on the collection result when given a batch of document with options.
      */
     @Test
     public void analyseSentimentForBatchInputShowStatistics() {

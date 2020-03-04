@@ -20,11 +20,11 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -59,7 +59,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
-import static com.azure.ai.textanalytics.TestUtils.EMOJI_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_INPUTS;
@@ -266,6 +265,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(DETECT_LANGUAGE_INPUTS, "US");
     }
 
+    void detectLanguagesBatchListCountryHintWithOptionsRunner(BiConsumer<List<String>,
+        TextAnalyticsRequestOptions> testRunner) {
+        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
+        testRunner.accept(TestUtils.DETECT_LANGUAGE_INPUTS, options);
+    }
+
     void detectLanguageStringInputRunner(Consumer<List<String>> testRunner) {
         testRunner.accept(DETECT_LANGUAGE_INPUTS);
     }
@@ -300,8 +305,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(textDocumentInputs, options);
     }
 
-    void recognizeCategorizedEntitiesWithEmojiLanguageHintRunner(Consumer<List<String>> testRunner) {
-        testRunner.accept(EMOJI_INPUTS);
+    void recognizeStringBatchCategorizedEntitiesShowStatsRunner(
+        BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
+        testRunner.accept(CATEGORIZED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setStatisticsShown(true));
     }
 
     // Personally Identifiable Information Entity runner
@@ -325,7 +331,17 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(textDocumentInputs, options);
     }
 
+    void recognizeStringBatchPiiEntitiesShowStatsRunner(
+        BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
+        testRunner.accept(PII_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setStatisticsShown(true));
+    }
+
     // Linked Entity runner
+    void recognizeBatchStringLinkedEntitiesShowStatsRunner(
+        BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
+        testRunner.accept(LINKED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setStatisticsShown(true));
+    }
+
     void recognizeBatchLinkedEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
@@ -346,6 +362,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Key Phrases runner
+    void extractBatchStringKeyPhrasesShowStatsRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
+        testRunner.accept(KEY_PHRASE_INPUTS, new TextAnalyticsRequestOptions().setStatisticsShown(true));
+    }
+
     void extractBatchKeyPhrasesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(KEY_PHRASE_INPUTS);
@@ -376,6 +396,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void analyseBatchSentimentRunner(Consumer<List<TextDocumentInput>> testRunner) {
         testRunner.accept(TestUtils.getTextDocumentInputs(SENTIMENT_INPUTS));
+    }
+
+    void analyseBatchStringSentimentShowStatsRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
+        testRunner.accept(SENTIMENT_INPUTS, new TextAnalyticsRequestOptions().setStatisticsShown(true));
     }
 
     void analyseBatchSentimentShowStatsRunner(
