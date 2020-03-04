@@ -1346,6 +1346,26 @@ class EncyptedBlockBlobAPITest extends APISpec {
         8 * 1026 * 1024 + 10 | _
     }
 
+    def "Upload min"() {
+        when:
+        bec.upload(new ByteArrayInputStream(new byte[0]), 0)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        when:
+        bec.upload(new ByteArrayInputStream(new byte[0]), 0, true)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        when:
+        bec.uploadWithResponse(new ByteArrayInputStream(new byte[0]), 0, null, null, null, null, null, null, null)
+
+        then:
+        thrown(UnsupportedOperationException)
+    }
+
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
         result.position(0)
         for (ByteBuffer buffer : buffers) {
