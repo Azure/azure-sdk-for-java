@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -22,6 +23,16 @@ public final class IndexingPolicy extends JsonSerializable {
     private List<ExcludedPath> excludedPaths;
     private List<List<CompositePath>> compositeIndexes;
     private List<SpatialSpec> spatialIndexes;
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    IndexingPolicy(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     /**
      * Constructor.
