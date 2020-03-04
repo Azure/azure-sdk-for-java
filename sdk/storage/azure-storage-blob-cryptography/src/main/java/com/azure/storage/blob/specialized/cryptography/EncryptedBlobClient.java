@@ -115,23 +115,14 @@ public class EncryptedBlobClient extends BlobClient {
     }
 
     /**
-     * Creates a new blob. By default this method will not overwrite an existing blob.
-     *
-     * @param data The data to write to the blob.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data provided in the {@link InputStream}.
+     * @throws UnsupportedOperationException Please use the getBlobOutputStream method for similar functionality.
      */
     public void upload(InputStream data, long length) {
         upload(data, length, false);
     }
 
     /**
-     * Creates a new blob, or updates the content of an existing blob.
-     *
-     * @param data The data to write to the blob.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data provided in the {@link InputStream}.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @throws UnsupportedOperationException Please use the getBlobOutputStream method for similar functionality.
      */
     public void upload(InputStream data, long length, boolean overwrite) {
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
@@ -142,20 +133,8 @@ public class EncryptedBlobClient extends BlobClient {
     }
 
     /**
-     * Creates a new blob, or updates the content of an existing blob.
-     * <p>
-     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
-     * @param data The data to write to the blob.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data provided in the {@link InputStream}.
-     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
-     * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
-     * @param tier {@link AccessTier} for the destination blob.
-     * @param requestConditions {@link BlobRequestConditions}
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @throws UnsupportedOperationException Please use the getBlobOutputStream method for similar functionality.
      */
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
