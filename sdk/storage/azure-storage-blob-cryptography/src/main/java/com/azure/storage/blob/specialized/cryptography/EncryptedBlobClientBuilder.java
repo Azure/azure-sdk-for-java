@@ -29,6 +29,8 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -101,6 +103,7 @@ public final class EncryptedBlobClientBuilder {
     private AsyncKeyEncryptionKeyResolver keyResolver;
     private String keyWrapAlgorithm;
     private BlobServiceVersion version;
+    private CpkInfo customerProvidedKey;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -148,7 +151,7 @@ public final class EncryptedBlobClientBuilder {
 
         return new EncryptedBlobAsyncClient(getHttpPipeline(),
             String.format("%s/%s/%s", endpoint, containerName, blobName), serviceVersion, accountName, containerName,
-            blobName, snapshot, keyWrapper, keyWrapAlgorithm);
+            blobName, snapshot, customerProvidedKey, null, keyWrapper, keyWrapAlgorithm);
     }
 
     private HttpPipeline getHttpPipeline() {
@@ -499,6 +502,25 @@ public final class EncryptedBlobClientBuilder {
      */
     public EncryptedBlobClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the {@link CustomerProvidedKey customer provided key} that is used to encrypt blob contents on the server.
+     *
+     * @param customerProvidedKey {@link CustomerProvidedKey}
+     * @return the updated EncryptedBlobClientBuilder object
+     */
+    public EncryptedBlobClientBuilder customerProvidedKey(CustomerProvidedKey customerProvidedKey) {
+        if (customerProvidedKey == null) {
+            this.customerProvidedKey = null;
+        } else {
+            this.customerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+
         return this;
     }
 
