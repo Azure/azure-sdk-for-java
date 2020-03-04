@@ -5,6 +5,7 @@ package com.azure.storage.quickquery
 
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.common.ErrorReceiver
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
@@ -88,6 +89,38 @@ class BlobQQInputStreamTest extends APISpec {
 
         ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
         bc.download(downloadData)
+        byte[] downloadedData = downloadData.toByteArray()
+
+        when:
+        InputStream qqStream = qqClient.openInputStream("SELECT * from BlobStorage")
+
+        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
+
+        then:
+        for (int j = 0; j < downloadedData.length; j++) {
+            assert queryData[j] == downloadedData[j]
+        }
+    }
+
+    def "Snapshot"() {
+        setup:
+        BlobQuickQueryDelimitedSerialization ser = new BlobQuickQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        uploadCsv(ser, 32)
+
+        // Create snapshot of blob
+        BlobClientBase blobClient = bc.createSnapshot()
+        qqClient = new BlobQuickQueryClientBuilder(blobClient).buildClient()
+
+        // Overwrite blob to be empty.
+        bc.upload(new ByteArrayInputStream(new byte[0]), 0, true)
+
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+        blobClient.download(downloadData)
         byte[] downloadedData = downloadData.toByteArray()
 
         when:
@@ -299,12 +332,6 @@ class BlobQQInputStreamTest extends APISpec {
         }
     }
 
-    // Query snapshot
-
-    // Query CPK
-
-    // Query encryption scope
-
     class MockProgressReceiver implements ProgressReceiver {
 
         List<Long> progressList
@@ -416,4 +443,6 @@ class BlobQQInputStreamTest extends APISpec {
         null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
     }
+
+    // TODO : Query CPK test, Query encryption scope test
 }

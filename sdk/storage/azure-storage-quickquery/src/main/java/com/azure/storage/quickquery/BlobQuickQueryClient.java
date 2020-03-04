@@ -65,6 +65,10 @@ public class BlobQuickQueryClient {
     /**
      * Opens a blob input stream to query the blob.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.quickquery.BlobQuickQueryClient.openInputStream#String-BlobQuickQuerySerialization-BlobQuickQuerySerialization-BlobRequestConditions-ErrorReceiver-ProgressReceiver}
+     *
      * @param expression The query expression.
      * @param input {@link BlobQuickQuerySerialization Serialization input}.
      * @param output {@link BlobQuickQuerySerialization Serialization output}.
