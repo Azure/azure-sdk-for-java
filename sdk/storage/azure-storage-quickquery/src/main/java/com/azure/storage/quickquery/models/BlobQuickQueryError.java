@@ -35,8 +35,8 @@ public class BlobQuickQueryError {
 
     @Override
     public String toString() {
-        return String.format("BlobQueryError. Is Fatal = %b, Error Name = %s, Error Description = %s, Error Position "
-            + "(in source data blob) = %d.", this.fatal, this.name,this.description ,this.position);
+        return String.format("BlobQuickQueryError. fatality = %b, name = %s, description = %s, position (in source "
+            + "blob) = %d.", this.fatal, this.name, this.description, this.position);
     }
 
 }

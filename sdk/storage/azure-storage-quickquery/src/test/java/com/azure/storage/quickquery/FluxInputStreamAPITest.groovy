@@ -9,13 +9,14 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.quickquery.implementation.util.NetworkInputStream
+import com.azure.storage.quickquery.implementation.util.FluxInputStream
+import org.eclipse.jetty.util.IO
 import reactor.core.publisher.Flux
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 
-class NetworkInputStreamAPITest extends APISpec {
+class FluxInputStreamAPITest extends APISpec {
 
     Flux<ByteBuffer> generateData(int num) {
         List<ByteBuffer> buffers = new ArrayList<>()
@@ -31,13 +32,13 @@ class NetworkInputStreamAPITest extends APISpec {
         def data = generateData(num)
 
         when:
-        def is = new NetworkInputStream(data, new ClientLogger(NetworkInputStream.class))
+        def is = new FluxInputStream(data, new ClientLogger(FluxInputStream.class))
         def bytes = new byte[num]
 
         def totalRead = 0
         def bytesRead = 0
 
-        while (bytesRead != -1) {
+        while (bytesRead != -1 && totalRead < num) {
             bytesRead = is.read(bytes, totalRead, num)
             if (bytesRead != -1) {
                 totalRead += bytesRead
@@ -66,15 +67,14 @@ class NetworkInputStreamAPITest extends APISpec {
         def data = Flux.error(exception)
 
         when:
-        def is = new NetworkInputStream(data, new ClientLogger(NetworkInputStream.class))
+        def is = new FluxInputStream(data, new ClientLogger(FluxInputStream.class))
 
         is.read()
 
-        then:
-        def e = thrown(Throwable)
-        e instanceof IllegalArgumentException || e instanceof BlobStorageException
-
         is.close()
+
+        then:
+        thrown(IOException)
 
         where:
         exception                                                                                       || _
@@ -89,13 +89,13 @@ class NetworkInputStreamAPITest extends APISpec {
         def data = bcAsync.download()
 
         when:
-        def is = new NetworkInputStream(data, new ClientLogger(NetworkInputStream.class))
+        def is = new FluxInputStream(data, new ClientLogger(FluxInputStream.class))
         def bytes = new byte[num]
 
         def totalRead = 0
         def bytesRead = 0
 
-        while (bytesRead != -1) {
+        while (bytesRead != -1 && totalRead < num) {
             bytesRead = is.read(bytes, totalRead, num)
             if (bytesRead != -1) {
                 totalRead += bytesRead
@@ -119,7 +119,6 @@ class NetworkInputStreamAPITest extends APISpec {
         Constants.MB    || _
     }
 
-    // TODO : Determine wy this does not propogate correctly
     @Unroll
     def "Network IS error BlobStorageException"() {
         setup:
@@ -132,13 +131,14 @@ class NetworkInputStreamAPITest extends APISpec {
             .flatMapMany(ResponseBase.&getValue)
 
         when:
-        def is = new NetworkInputStream(data, new ClientLogger(NetworkInputStream.class))
+        def is = new FluxInputStream(data, new ClientLogger(FluxInputStream.class))
 
         is.read()
 
-        then:
-        thrown(BlobStorageException)
         is.close()
+
+        then:
+        thrown(IOException)
     }
 
     @Unroll
@@ -149,12 +149,14 @@ class NetworkInputStreamAPITest extends APISpec {
             .flatMapMany(ResponseBase.&getValue)
 
         when:
-        def is = new NetworkInputStream(data, new ClientLogger(NetworkInputStream.class))
+        def is = new FluxInputStream(data, new ClientLogger(FluxInputStream.class))
+
         is.read()
 
-        then:
-        thrown(IllegalArgumentException)
         is.close()
+
+        then:
+        thrown(IOException)
 
         where:
         input                                                    | output                                                   || _

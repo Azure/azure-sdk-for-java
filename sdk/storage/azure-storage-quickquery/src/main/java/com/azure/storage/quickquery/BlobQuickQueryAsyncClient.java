@@ -14,6 +14,7 @@ import com.azure.storage.blob.implementation.models.DelimitedTextConfiguration;
 import com.azure.storage.blob.implementation.models.JsonTextConfiguration;
 import com.azure.storage.blob.implementation.models.QueryRequest;
 import com.azure.storage.blob.implementation.models.QuickQueryFormat;
+import com.azure.storage.blob.implementation.models.QuickQueryFormatType;
 import com.azure.storage.blob.implementation.models.QuickQuerySerialization;
 import com.azure.storage.blob.implementation.models.QuickQueryType;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -146,13 +147,13 @@ public class BlobQuickQueryAsyncClient {
         QuickQueryFormat generatedFormat = new QuickQueryFormat();
         if (userSerialization instanceof BlobQuickQueryDelimitedSerialization) {
 
-            generatedFormat.setQuickQueryType(QuickQueryType.DELIMITED);
+            generatedFormat.setType(QuickQueryFormatType.DELIMITED);
             generatedFormat.setDelimitedTextConfiguration(transformDelimited(
                 (BlobQuickQueryDelimitedSerialization) userSerialization));
 
         } else if (userSerialization instanceof BlobQuickQueryJsonSerialization) {
 
-            generatedFormat.setQuickQueryType(QuickQueryType.JSON);
+            generatedFormat.setType(QuickQueryFormatType.JSON);
             generatedFormat.setJsonTextConfiguration(transformJson(
                 (BlobQuickQueryJsonSerialization) userSerialization));
 

@@ -17,8 +17,8 @@ public final class QuickQueryFormat {
     /*
      * Possible values include: 'delimited', 'json'
      */
-    @JsonProperty(value = "Type", required = true)
-    private QuickQueryType quickQueryType;
+    @JsonProperty(value = "Type")
+    private QuickQueryFormatType type;
 
     /*
      * The delimitedTextConfiguration property.
@@ -33,24 +33,22 @@ public final class QuickQueryFormat {
     private JsonTextConfiguration jsonTextConfiguration;
 
     /**
-     * Get the quickQueryType property: Possible values include: 'delimited',
-     * 'json'.
+     * Get the type property: Possible values include: 'delimited', 'json'.
      *
-     * @return the quickQueryType value.
+     * @return the type value.
      */
-    public QuickQueryType getQuickQueryType() {
-        return this.quickQueryType;
+    public QuickQueryFormatType getType() {
+        return this.type;
     }
 
     /**
-     * Set the quickQueryType property: Possible values include: 'delimited',
-     * 'json'.
+     * Set the type property: Possible values include: 'delimited', 'json'.
      *
-     * @param quickQueryType the quickQueryType value to set.
+     * @param type the type value to set.
      * @return the QuickQueryFormat object itself.
      */
-    public QuickQueryFormat setQuickQueryType(QuickQueryType quickQueryType) {
-        this.quickQueryType = quickQueryType;
+    public QuickQueryFormat setType(QuickQueryFormatType type) {
+        this.type = type;
         return this;
     }
 

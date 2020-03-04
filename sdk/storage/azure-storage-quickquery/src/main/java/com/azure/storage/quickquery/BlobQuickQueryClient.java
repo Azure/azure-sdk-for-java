@@ -10,36 +10,22 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobRequestConditions;
 
-import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.common.ErrorReceiver;
 import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.quickquery.implementation.util.NetworkInputStream;
+import com.azure.storage.quickquery.implementation.util.FluxInputStream;
 import com.azure.storage.quickquery.models.BlobQuickQueryError;
-import com.azure.storage.quickquery.models.BlobQuickQueryErrorReceiver;
 import com.azure.storage.quickquery.models.BlobQuickQueryResponse;
 import com.azure.storage.quickquery.models.BlobQuickQuerySerialization;
-import org.apache.avro.file.DataFileReader;
-import org.apache.avro.file.SeekableByteArrayInput;
-import org.apache.avro.generic.GenericDatumReader;
-import org.apache.avro.generic.GenericRecord;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 import reactor.core.Exceptions;
-import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.concurrent.Flow;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
@@ -83,20 +69,21 @@ public class BlobQuickQueryClient {
      * @param input {@link BlobQuickQuerySerialization Serialization input}.
      * @param output {@link BlobQuickQuerySerialization Serialization output}.
      * @param requestConditions {@link BlobRequestConditions}
-     *
+     * @param nonFatalErrorReceiver {@link ErrorReceiver<BlobQuickQueryError>}
+     * @param progressReceiver {@link ProgressReceiver}
      */
     public final BlobQuickQueryInputStream openInputStream(String expression, BlobQuickQuerySerialization input,
         BlobQuickQuerySerialization output, BlobRequestConditions requestConditions,
-        BlobQuickQueryErrorReceiver nonFatalErrorReceiver, ProgressReceiver progressReceiver) {
+        ErrorReceiver<BlobQuickQueryError> nonFatalErrorReceiver, ProgressReceiver progressReceiver) {
 
+        // Data to subscribe to and read from.
         Flux<ByteBuffer> data = client.queryWithResponse(expression, input, output, requestConditions)
-            .flatMapMany(ResponseBase::getValue)
-            .onBackpressureBuffer()
-            .subscribeOn(Schedulers.boundedElastic());
+            .flatMapMany(ResponseBase::getValue);
 
-        NetworkInputStream networkInputStream = new NetworkInputStream(data, logger);
+        // Create input stream from the data.
+        FluxInputStream fluxInputStream = new FluxInputStream(data, logger);
 
-        return new BlobQuickQueryInputStream(networkInputStream, nonFatalErrorReceiver, progressReceiver, logger);
+        return new BlobQuickQueryInputStream(fluxInputStream, nonFatalErrorReceiver, progressReceiver);
     }
 
     /**
