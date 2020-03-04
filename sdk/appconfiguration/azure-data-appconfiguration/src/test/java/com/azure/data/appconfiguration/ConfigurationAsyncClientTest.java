@@ -953,7 +953,5 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             StepVerifier.create(client.listConfigurationSettings(selector))
                 .verifyError(HttpResponseException.class));
     }
-
-
 }
 
