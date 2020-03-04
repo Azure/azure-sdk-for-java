@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 
 /**
@@ -75,7 +76,8 @@ final class ReliableDownload {
 
     private Flux<ByteBuffer> tryContinueFlux(Throwable t, int retryCount, DownloadRetryOptions options) {
         // If all the errors are exhausted, return this error to the user.
-        if (retryCount > options.getMaxRetryRequests() || !(t instanceof IOException)) {
+        if (retryCount > options.getMaxRetryRequests() ||
+            !(t instanceof IOException || t instanceof TimeoutException)) {
             return Flux.error(t);
         } else {
             /*
@@ -90,7 +92,8 @@ final class ReliableDownload {
                 the raw body.
                 */
                 return getter.apply(info)
-                    .flatMapMany(ignored -> applyReliableDownload(rawResponse.getValue(), retryCount, options));
+                    .flatMapMany(newResponse ->
+                        applyReliableDownload(newResponse.rawResponse.getValue(), retryCount, options));
             } catch (Exception e) {
                 // If the getter fails, return the getter failure to the user.
                 return Flux.error(e);

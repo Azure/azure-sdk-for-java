@@ -10,6 +10,8 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.DownloadRetryOptions
 import spock.lang.Unroll
 
+import java.time.Duration
+
 class DownloadResponseTest extends APISpec {
     BlockBlobClient bu
 
@@ -29,6 +31,14 @@ class DownloadResponseTest extends APISpec {
         bu.download(outputStream)
         outputStream.toByteArray() == defaultData.array()
     }
+
+    /*def "TimeoutTest"() {
+        setup:
+        bu.upload(defaultInputStream.get(), defaultDataSize)
+
+        expect:
+        primaryBlobServiceClient.getConta.getBlobAsyncClient(bu.getBlobName()).download().timeout(Duration.ofSeconds(5)).then().block()
+    }*/
 
     @Unroll
     def "Successful"() {
@@ -55,6 +65,7 @@ class DownloadResponseTest extends APISpec {
         DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK       | 1
         DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK     | 1
         DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES | 4
+        DownloadResponseMockFlux.DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION   | 4
     }
 
     @Unroll

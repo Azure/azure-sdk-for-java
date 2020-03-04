@@ -19,21 +19,24 @@ import reactor.core.publisher.Operators;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.concurrent.TimeoutException;
 
 class DownloadResponseMockFlux extends Flux<ByteBuffer> {
-    static final int DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK = 0;
-    static final int DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK = 1;
-    static final int DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES = 2;
-    static final int DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED = 3;
-    static final int DR_TEST_SCENARIO_NON_RETRYABLE_ERROR = 4;
-    static final int DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE = 6;
-    static final int DR_TEST_SCENARIO_INFO_TEST = 8;
+    static final int DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK = 0; // Data emitted in one chunk
+    static final int DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK = 1; // Data emitted in multiple chunks
+    static final int DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES = 2; // Stream failures successfully handled
+    static final int DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED = 3; // We appropriate honor max retries
+    static final int DR_TEST_SCENARIO_NON_RETRYABLE_ERROR = 4; // We will not retry on a non-retryable error
+    static final int DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE = 6; // Throwing an error from the getter
+    static final int DR_TEST_SCENARIO_INFO_TEST = 8; // Initial info values are honored
+    static final int DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION = 9; // We do not subscribe to the same stream twice
 
     private int scenario;
     private int tryNumber;
     private HttpGetterInfo info;
     private ByteBuffer scenarioData;
     private DownloadRetryOptions options;
+    private boolean subscribed = false; // Only used for multiple subscription test.
 
     DownloadResponseMockFlux(int scenario, APISpec apiSpec) {
         this.scenario = scenario;
@@ -44,6 +47,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                 break;
             case DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK:
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
+            case DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION:
                 this.scenarioData = apiSpec.getRandomData(1024);
                 break;
             case DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED:
@@ -54,6 +58,18 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
             default:
                 throw new IllegalArgumentException("Invalid download resource test scenario.");
         }
+    }
+
+    /*
+    For internal construction on NO_MULTIPLE_SUBSCRIPTION test
+     */
+    DownloadResponseMockFlux(int scenario, int tryNumber, ByteBuffer scenarioData, HttpGetterInfo info,
+        DownloadRetryOptions options) {
+        this.scenario = scenario;
+        this.tryNumber = tryNumber;
+        this.scenarioData = scenarioData;
+        this.info = info;
+        this.options = options;
     }
 
     ByteBuffer getScenarioData() {
@@ -87,6 +103,13 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                 Operators.complete(subscriber);
                 break;
 
+            case DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION:
+                if (this.subscribed) {
+                    throw new IllegalStateException("Cannot subscribe to the same flux twice");
+                }
+                this.subscribed = true;
+                // fall through to test data
+
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
                 if (this.tryNumber <= 3) {
                     // tryNumber is 1 indexed, so we have to sub 1.
@@ -99,7 +122,8 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                     toSend.position((this.tryNumber - 1) * 256);
                     toSend.limit(this.tryNumber * 256);
                     subscriber.onNext(toSend);
-                    Operators.error(subscriber, new IOException());
+                    Exception e = tryNumber % 2 == 0 ? new IOException() : new TimeoutException();
+                    Operators.error(subscriber, e);
                     break;
                 }
                 if (this.info.getOffset() != (this.tryNumber - 1) * 256
@@ -215,6 +239,12 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                     throw new IllegalArgumentException("Info values incorrect");
                 }
                 return Mono.just(response);
+            case DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION:
+                DownloadResponseMockFlux nextFlux = new DownloadResponseMockFlux(this.scenario, this.tryNumber,
+                    this.scenarioData, this.info, this.options);
+                rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(), nextFlux,
+                    new BlobDownloadHeaders());
+                response = new ReliableDownload(rawResponse, options, info, this::getter);
             default:
                 return Mono.just(response);
         }
