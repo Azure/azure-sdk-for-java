@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -164,8 +165,8 @@ class RecognizeCategorizedEntityAsyncClient {
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null,
                 new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
-                    new CategorizedEntity(entity.getText(), entity.getType(), entity.getSubtype(),
-                        entity.getOffset(), entity.getLength(), entity.getScore()))
+                    new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getType()),
+                        entity.getSubtype(), entity.getOffset(), entity.getLength(), entity.getScore()))
                     .collect(Collectors.toList())))));
         // Document errors
         entitiesResult.getErrors().forEach(documentError -> recognizeCategorizedEntitiesResults.add(

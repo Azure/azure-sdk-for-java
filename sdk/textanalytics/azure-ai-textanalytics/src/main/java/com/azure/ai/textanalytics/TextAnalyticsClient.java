@@ -43,12 +43,6 @@ public final class TextAnalyticsClient {
     private final TextAnalyticsAsyncClient client;
 
     /**
-     * By default the API is using the "US" as the default countryHint, to remove this behavior you can reset
-     * this parameter by setting this value to empty string countryHint = "".
-     */
-    public static final String NONE_COUNTRY_HINT = "";
-
-    /**
      * Create a {@code TextAnalyticsClient client} that sends requests to the Text Analytics service's endpoint.
      * Each service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.
      *

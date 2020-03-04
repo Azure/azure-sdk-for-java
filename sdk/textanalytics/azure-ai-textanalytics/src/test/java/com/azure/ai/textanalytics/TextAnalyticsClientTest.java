@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.DocumentSentimentLabel;
+import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
@@ -141,6 +142,24 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
+     * Verify that with countryHint with empty string will not throw exception.
+     */
+    @Test
+    public void detectLanguageEmptyCountryHint() {
+        validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0),
+            client.detectLanguage("Este es un document escrito en Español", ""));
+    }
+
+    /**
+     * Verify that with countryHint with "none" will not throw exception.
+     */
+    @Test
+    public void detectLanguageNoneCountryHint() {
+        validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0),
+            client.detectLanguage("Este es un document escrito en Español", "none"));
+    }
+
+    /**
      * Verifies that a bad request exception is returned for input documents with same IDs.
      */
     @Test
@@ -154,8 +173,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForTextInput() {
-        final CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
-        final CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
+        final CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, null, 26, 7, 0.0);
+        final CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
 
         final List<CategorizedEntity> entities = client.recognizeCategorizedEntities("I had a wonderful trip to Seattle last week.").stream().collect(Collectors.toList());
         validateCategorizedEntity(categorizedEntity1, entities.get(0));
@@ -217,7 +236,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizePiiEntitiesForTextInput() {
-        final PiiEntity piiEntity = new PiiEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
+        final PiiEntity piiEntity = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), "", 28, 11, 0.0);
         final TextAnalyticsPagedIterable<PiiEntity> entities = client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.");
         validatePiiEntity(piiEntity, entities.iterator().next());
     }

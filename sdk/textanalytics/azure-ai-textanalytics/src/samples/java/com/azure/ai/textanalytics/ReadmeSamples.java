@@ -3,14 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -72,6 +67,46 @@ public class ReadmeSamples {
     }
 
     /**
+     * Code snippet for rotating API key of the client
+     */
+    public void rotatingApiKey() {
+        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
+        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+            .apiKey(credential)
+            .endpoint("{endpoint}")
+            .buildClient();
+
+        credential.updateCredential("{new_api_key}");
+    }
+
+    /**
+     * Code snippet for handling exception
+     */
+    public void handlingException() {
+        List<DetectLanguageInput> inputs = Arrays.asList(
+            new DetectLanguageInput("1", "This is written in English.", "us"),
+            new DetectLanguageInput("1", "Este es un document escrito en Español.", "es")
+        );
+
+        try {
+            textAnalyticsClient.detectLanguageBatch(inputs, null, Context.NONE);
+        } catch (HttpResponseException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Code snippet for analyzing sentiment of a text.
+     */
+    public void analyzeSentiment() {
+        String text = "The hotel was dark and unclean. I like microsoft.";
+        DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(text);
+        System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentiment());
+        documentSentiment.getSentences().forEach(sentenceSentiment ->
+            System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment()));
+    }
+
+    /**
      * Code snippet for detecting language in a text.
      */
     public void detectLanguages() {
@@ -123,45 +158,5 @@ public class ReadmeSamples {
         String text = "My cat might need to see a veterinarian.";
         System.out.println("Extracted phrases:");
         textAnalyticsClient.extractKeyPhrases(text).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
-    }
-
-    /**
-     * Code snippet for analyzing sentiment of a text.
-     */
-    public void analyzeSentiment() {
-        String text = "The hotel was dark and unclean. I like microsoft.";
-        DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(text);
-        System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentiment());
-        documentSentiment.getSentences().forEach(sentenceSentiment ->
-            System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment()));
-    }
-
-    /**
-     * Code snippet for handling exception
-     */
-    public void handlingException() {
-        List<DetectLanguageInput> inputs = Arrays.asList(
-            new DetectLanguageInput("1", "This is written in English.", "us"),
-            new DetectLanguageInput("1", "Este es un document escrito en Español.", "es")
-        );
-
-        try {
-            textAnalyticsClient.detectLanguageBatch(inputs, null, Context.NONE);
-        } catch (HttpResponseException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    /**
-     * Code snippet for rotating API key of the client
-     */
-    public void rotatingApiKey() {
-        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
-        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(credential)
-            .endpoint("{endpoint}")
-            .buildClient();
-
-        credential.updateCredential("{new_api_key}");
     }
 }

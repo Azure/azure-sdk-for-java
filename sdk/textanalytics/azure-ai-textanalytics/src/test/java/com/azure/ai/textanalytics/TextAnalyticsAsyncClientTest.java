@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.DocumentSentimentLabel;
+import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
@@ -158,6 +159,28 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass())));
     }
 
+    /**
+     * Verify that with countryHint with empty string will not throw exception.
+     */
+    @Test
+    public void detectLanguageEmptyCountryHint() {
+        StepVerifier.create(client.detectLanguage("Este es un document escrito en Español", ""))
+            .assertNext(response -> validatePrimaryLanguage(
+                new DetectedLanguage("Spanish", "es", 0.0), response))
+            .verifyComplete();
+    }
+
+    /**
+     * Verify that with countryHint with "none" will not throw exception.
+     */
+    @Test
+    public void detectLanguageNoneCountryHint() {
+        StepVerifier.create(client.detectLanguage("Este es un document escrito en Español", "none"))
+            .assertNext(response -> validatePrimaryLanguage(
+                new DetectedLanguage("Spanish", "es", 0.0), response))
+            .verifyComplete();
+    }
+
     // Entities
     @Test
     public void recognizeEntitiesForTextInput() {
@@ -279,7 +302,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Personally Identifiable Information Entities
     @Test
     public void recognizePiiEntitiesForTextInput() {
-        PiiEntity piiEntity = new PiiEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
+        PiiEntity piiEntity = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), "", 28, 11, 0.0);
         StepVerifier.create(client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's."))
             .assertNext(response -> validatePiiEntity(piiEntity, response))
             .verifyComplete();

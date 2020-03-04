@@ -60,12 +60,6 @@ public final class TextAnalyticsAsyncClient {
     final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
 
     /**
-     * By default the API is using the "US" as the default countryHint, to remove this behavior you can reset
-     * this parameter by setting this value to empty string countryHint = "".
-     */
-    public static final String NONE_COUNTRY_HINT = "";
-
-    /**
      * Create a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint. Each
      * service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.
      *
@@ -231,8 +225,13 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(
         Iterable<String> textInputs, String countryHint, TextAnalyticsRequestOptions options) {
+        if (countryHint != null && countryHint.equalsIgnoreCase("none")) {
+            countryHint = "";
+        }
+        final String finalCountryHint = countryHint;
         return detectLanguageBatch(
-            mapByIndex(textInputs, (index, value) -> new DetectLanguageInput(index, value, countryHint)), options);
+            mapByIndex(textInputs, (index, value) ->
+                new DetectLanguageInput(index, value, finalCountryHint)), options);
     }
 
     /**

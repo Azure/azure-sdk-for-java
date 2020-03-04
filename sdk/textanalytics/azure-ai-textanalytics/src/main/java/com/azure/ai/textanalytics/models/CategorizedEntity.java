@@ -18,7 +18,7 @@ public final class CategorizedEntity {
     /*
      * CategorizedEntity category, such as Person/Location/Org/SSN etc
      */
-    private final String category;
+    private final EntityCategory category;
 
     /*
      * CategorizedEntity sub category, such as Age/Year/TimeRange etc
@@ -50,7 +50,8 @@ public final class CategorizedEntity {
      * @param length Grapheme length for the entity text.
      * @param score Confidence score between 0 and 1 of the extracted entity.
      */
-    public CategorizedEntity(String text, String category, String subCategory, int offset, int length, double score) {
+    public CategorizedEntity(String text, EntityCategory category, String subCategory,
+        int offset, int length, double score) {
         this.text = text;
         this.category = category;
         this.subCategory = subCategory;
@@ -73,7 +74,7 @@ public final class CategorizedEntity {
      *
      * @return the category value.
      */
-    public String getCategory() {
+    public EntityCategory getCategory() {
         return this.category;
     }
 

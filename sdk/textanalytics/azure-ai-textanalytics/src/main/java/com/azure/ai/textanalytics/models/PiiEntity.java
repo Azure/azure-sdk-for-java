@@ -18,7 +18,7 @@ public final class PiiEntity {
     /*
      * Personally Identifiable Information entity category, such as Person/Location/Org/SSN etc
      */
-    private final String category;
+    private final EntityCategory category;
 
     /*
      * Personally Identifiable Information entity sub category, such as Age/Year/TimeRange etc
@@ -50,7 +50,7 @@ public final class PiiEntity {
      * @param length Grapheme length for the entity text
      * @param score Confidence score between 0 and 1 of the extracted entity
      */
-    public PiiEntity(String text, String category, String subCategory, int offset, int length, double score) {
+    public PiiEntity(String text, EntityCategory category, String subCategory, int offset, int length, double score) {
         this.text = text;
         this.category = category;
         this.subCategory = subCategory;
@@ -74,7 +74,7 @@ public final class PiiEntity {
      *
      * @return the category value.
      */
-    public String getCategory() {
+    public EntityCategory getCategory() {
         return this.category;
     }
 

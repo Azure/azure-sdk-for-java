@@ -59,6 +59,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.EMOJI_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_INPUTS;
@@ -297,6 +298,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         testRunner.accept(textDocumentInputs, options);
+    }
+
+    void recognizeCategorizedEntitiesWithEmojiLanguageHintRunner(Consumer<List<String>> testRunner) {
+        testRunner.accept(EMOJI_INPUTS);
     }
 
     // Personally Identifiable Information Entity runner
@@ -542,8 +547,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedPiiEntityList piiEntities returned by the service.
      * @param actualPiiEntityList piiEntities returned by the API.
      */
-    static void validatePiiEntities(List<PiiEntity> expectedPiiEntityList,
-        List<PiiEntity> actualPiiEntityList) {
+    static void validatePiiEntities(List<PiiEntity> expectedPiiEntityList, List<PiiEntity> actualPiiEntityList) {
         assertEquals(expectedPiiEntityList.size(), actualPiiEntityList.size());
         expectedPiiEntityList.sort(Comparator.comparing(PiiEntity::getText));
         actualPiiEntityList.sort(Comparator.comparing(PiiEntity::getText));
@@ -613,7 +617,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      */
     static void validateAnalyzedSentiment(DocumentSentiment expectedSentiment, DocumentSentiment actualSentiment) {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
-        validateAnalyzedSentenceSentiment(expectedSentiment.getSentences().stream().collect(Collectors.toList()), expectedSentiment.getSentences().stream().collect(Collectors.toList()));
+        validateAnalyzedSentenceSentiment(expectedSentiment.getSentences().stream().collect(Collectors.toList()),
+            expectedSentiment.getSentences().stream().collect(Collectors.toList()));
     }
 
     /**
@@ -623,8 +628,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextAnalyticsPagedResponse<T> expectedResults, TextAnalyticsPagedResponse<T> actualResults,
         BiConsumer<T, T> additionalAssertions) {
 
-        final Map<String, T> expected = expectedResults.getElements().stream().collect(Collectors.toMap(r -> r.getId(), r -> r));
-        final Map<String, T> actual = actualResults.getElements().stream().collect(Collectors.toMap(r -> r.getId(), r -> r));
+        final Map<String, T> expected = expectedResults.getElements().stream().collect(
+            Collectors.toMap(DocumentResult::getId, r -> r));
+        final Map<String, T> actual = actualResults.getElements().stream().collect(
+            Collectors.toMap(DocumentResult::getId, r -> r));
 
         assertEquals(expected.size(), actual.size());
 

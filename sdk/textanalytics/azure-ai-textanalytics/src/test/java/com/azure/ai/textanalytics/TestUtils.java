@@ -10,6 +10,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.DocumentSentimentLabel;
+import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
@@ -63,8 +64,8 @@ final class TestUtils {
         "This is written in English", "Este es un document escrito en Español.", "~@!~:)");
 
     static final List<String> EMOJI_INPUTS = Arrays.asList(
-        "\uD83D\uDC69 This is a emoji.",
-        "This \uD83D\uDC69 is a Emoji at second word.");
+        "\uD83D\uDC69\u200D\uD83D\uDC69\u200D\uD83D\uDC67\u200D\uD83D\uDC67  I had a wonderful trip to Seattle last week.",
+        "This \uD83D\uDC69 works at Microsoft.");
 
     static List<DetectLanguageInput> getDetectLanguageInputs() {
         return Arrays.asList(
@@ -137,15 +138,15 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
-        CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
-        CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, null, 26, 7, 0.0);
+        CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
         return Arrays.asList(categorizedEntity1, categorizedEntity2);
     }
     /**
      * Helper method to get the expected Categorized Entities List 2
      */
     static List<CategorizedEntity> getCategorizedEntitiesList2() {
-        CategorizedEntity categorizedEntity3 = new CategorizedEntity("Microsoft", "Organization", null, 10, 9, 0.0);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 10, 9, 0.0);
         return Arrays.asList(categorizedEntity3);
     }
 
@@ -173,8 +174,8 @@ final class TestUtils {
      * Helper method to get the expected batch of Personally Identifiable Information entities
      */
     static TextAnalyticsPagedResponse<RecognizePiiEntitiesResult> getExpectedBatchPiiEntities() {
-        PiiEntity piiEntity1 = new PiiEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
-        PiiEntity piiEntity2 = new PiiEntity("111000025", "ABA Routing Number", "", 18, 9, 0.0);
+        PiiEntity piiEntity1 = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), "", 28, 11, 0.0);
+        PiiEntity piiEntity2 = new PiiEntity("111000025", EntityCategory.fromString("ABA Routing Number"), "", 18, 9, 0.0);
 
         IterableStream<PiiEntity> piiEntityList = new IterableStream<>(Collections.singletonList(piiEntity1));
         IterableStream<PiiEntity> piiEntityList1 = new IterableStream<>(Collections.singletonList(piiEntity2));

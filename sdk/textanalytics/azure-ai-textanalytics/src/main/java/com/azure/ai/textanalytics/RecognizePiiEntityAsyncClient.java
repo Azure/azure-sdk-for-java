@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -166,8 +167,8 @@ class RecognizePiiEntityAsyncClient {
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null,
                 new IterableStream<>(documentEntities.getEntities().stream().map(entity -> new PiiEntity(
-                    entity.getText(), entity.getType(), entity.getSubtype(), entity.getOffset(),
-                    entity.getLength(), entity.getScore())).collect(Collectors.toList())))));
+                    entity.getText(), EntityCategory.fromString(entity.getType()), entity.getSubtype(),
+                    entity.getOffset(), entity.getLength(), entity.getScore())).collect(Collectors.toList())))));
         // Document errors
         entitiesResult.getErrors().forEach(documentError -> recognizePiiEntitiesResults.add(
             new RecognizePiiEntitiesResult(documentError.getId(), null,
