@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
@@ -19,6 +20,9 @@ import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -31,6 +35,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClientTest.class);
@@ -42,8 +47,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         return "";
     }
 
-    @Override
-    protected void beforeTest() {
+    protected void initializeClient(HttpClient httpClient) {
         beforeTestSetup();
 
         if (interceptorManager.isPlaybackMode()) {
@@ -80,8 +84,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that a configuration is able to be added, these are differentiate from each other using a key or key-label identifier.
      */
-    @Test
-    public void addConfigurationSetting() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void addConfigurationSetting(HttpClient httpClient) {
+        initializeClient(httpClient);
         addConfigurationSettingRunner((expected) ->
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
@@ -91,8 +97,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that we cannot add a configuration setting when the key is an empty string.
      */
-    @Test
-    public void addConfigurationSettingEmptyKey() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void addConfigurationSettingEmptyKey(HttpClient httpClient) {
+        initializeClient(httpClient);
         StepVerifier.create(client.addConfigurationSetting("", null, "A value"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_BAD_METHOD));
     }
@@ -100,8 +108,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that we can add configuration settings when value is not null or an empty string.
      */
-    @Test
-    public void addConfigurationSettingEmptyValue() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void addConfigurationSettingEmptyValue(HttpClient httpClient) {
+        initializeClient(httpClient);
         addConfigurationSettingEmptyValueRunner((setting) -> {
             StepVerifier.create(client.addConfigurationSetting(setting.getKey(), setting.getLabel(), setting.getValue()))
                 .assertNext(response -> assertConfigurationEquals(setting, response))
@@ -116,8 +126,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that an exception is thrown when null key is passed.
      */
-    @Test
-    public void addConfigurationSettingNullKey() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void addConfigurationSettingNullKey(HttpClient httpClient) {
+        initializeClient(httpClient);
         StepVerifier.create(client.addConfigurationSetting(null, null, "A Value"))
             .expectError(IllegalArgumentException.class)
             .verify();
@@ -130,8 +142,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that a configuration cannot be added twice with the same key. This should return a 412 error.
      */
-    @Test
-    public void addExistingSetting() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void addExistingSetting(HttpClient httpClient) {
+        initializeClient(httpClient);
         addExistingSettingRunner((expected) ->
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected).then(client.addConfigurationSettingWithResponse(expected)))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED)));
@@ -141,8 +155,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Tests that a configuration is able to be added or updated with set.
      * When the configuration is read-only updates cannot happen, this will result in a 409.
      */
-    @Test
-    public void setConfigurationSetting() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void setConfigurationSetting(HttpClient httpClient) {
+        initializeClient(httpClient);
         setConfigurationSettingRunner((expected, update) ->
             StepVerifier.create(client.setConfigurationSettingWithResponse(expected, false))
                     .assertNext(response -> assertConfigurationEquals(expected, response))
@@ -154,8 +170,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * ETag. If the set ETag doesn't match anything the update won't happen, this will result in a 412. This will
      * prevent set from doing an add as well.
      */
-    @Test
-    public void setConfigurationSettingIfETag() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void setConfigurationSettingIfETag(HttpClient httpClient) {
+        initializeClient(httpClient);
         setConfigurationSettingIfETagRunner((initial, update) -> {
             // This ETag is not the correct format. It is not the correct hash that the service is expecting.
             StepVerifier.create(client.setConfigurationSettingWithResponse(initial.setETag("badEtag"), true))
@@ -179,8 +197,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that we cannot set a configuration setting when the key is an empty string.
      */
-    @Test
-    public void setConfigurationSettingEmptyKey() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void setConfigurationSettingEmptyKey(HttpClient httpClient) {
+        initializeClient(httpClient);
         StepVerifier.create(client.setConfigurationSetting("", NO_LABEL, "A value"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_BAD_METHOD));
     }
@@ -189,8 +209,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Tests that we can set configuration settings when value is not null or an empty string.
      * Value is not a required property.
      */
-    @Test
-    public void setConfigurationSettingEmptyValue() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void setConfigurationSettingEmptyValue(HttpClient httpClient) {
+        initializeClient(httpClient);
         setConfigurationSettingEmptyValueRunner((setting) -> {
             StepVerifier.create(client.setConfigurationSetting(setting.getKey(), NO_LABEL, setting.getValue()))
                 .assertNext(response -> assertConfigurationEquals(setting, response))
@@ -205,8 +227,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that an exception is thrown when null key is passed.
      */
-    @Test
-    public void setConfigurationSettingNullKey() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void setConfigurationSettingNullKey(HttpClient httpClient) {
+        initializeClient(httpClient);
 
         StepVerifier.create(client.setConfigurationSetting(null, NO_LABEL, "A Value"))
             .verifyError(IllegalArgumentException.class);
@@ -217,8 +241,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that a configuration is able to be retrieved when it exists, whether or not it is read-only.
      */
-    @Test
-    public void getConfigurationSetting() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void getConfigurationSetting(HttpClient httpClient) {
+        initializeClient(httpClient);
         getConfigurationSettingRunner((expected) ->
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected).then(client.getConfigurationSettingWithResponse(expected, null, false)))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
@@ -228,8 +254,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that attempting to retrieve a non-existent configuration doesn't work, this will result in a 404.
      */
-    @Test
-    public void getConfigurationSettingNotFound() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void getConfigurationSettingNotFound(HttpClient httpClient) {
+        initializeClient(httpClient);
         final String key = getKey();
         final ConfigurationSetting neverRetrievedConfiguration = new ConfigurationSetting().setKey(key).setValue("myNeverRetreivedValue");
         final ConfigurationSetting nonExistentLabel = new ConfigurationSetting().setKey(key).setLabel("myNonExistentLabel");
@@ -251,8 +279,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * After the configuration has been deleted attempting to get it will result in a 404, the same as if the
      * configuration never existed.
      */
-    @Test
-    public void deleteConfigurationSetting() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void deleteConfigurationSetting(HttpClient httpClient) {
+        initializeClient(httpClient);
         deleteConfigurationSettingRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected).then(client.getConfigurationSettingWithResponse(expected, null, false)))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
@@ -270,8 +300,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that attempting to delete a non-existent configuration will return a 204.
      */
-    @Test
-    public void deleteConfigurationSettingNotFound() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void deleteConfigurationSettingNotFound(HttpClient httpClient) {
+        initializeClient(httpClient);
         final String key = getKey();
         final ConfigurationSetting neverDeletedConfiguration = new ConfigurationSetting().setKey(key).setValue("myNeverDeletedValue");
 
@@ -296,8 +328,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Tests that when an ETag is passed to delete it will only delete if the current representation of the setting has the ETag.
      * If the delete ETag doesn't match anything the delete won't happen, this will result in a 412.
      */
-    @Test
-    public void deleteConfigurationSettingWithETag() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void deleteConfigurationSettingWithETag(HttpClient httpClient) {
+        initializeClient(httpClient);
         deleteConfigurationSettingWithETagRunner((initial, update) -> {
             final ConfigurationSetting initiallyAddedConfig = client.addConfigurationSettingWithResponse(initial).block().getValue();
             final ConfigurationSetting updatedConfig = client.setConfigurationSettingWithResponse(update, true).block().getValue();
@@ -321,8 +355,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
      */
-    @Test
-    public void deleteConfigurationSettingNullKey() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void deleteConfigurationSettingNullKey(HttpClient httpClient) {
+        initializeClient(httpClient);
         StepVerifier.create(client.deleteConfigurationSetting(null, null))
             .verifyError(IllegalArgumentException.class);
         StepVerifier.create(client.deleteConfigurationSettingWithResponse(null, false))
@@ -332,8 +368,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests assert that the setting can not be deleted after set the setting to read-only.
      */
-    @Test
-    public void setReadOnly() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void setReadOnly(HttpClient httpClient) {
+        initializeClient(httpClient);
 
         lockUnlockRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
@@ -354,8 +392,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests assert that the setting can be deleted after clear read-only of the setting.
      */
-    @Test
-    public void clearReadOnly() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void clearReadOnly(HttpClient httpClient) {
+        initializeClient(httpClient);
 
         lockUnlockRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
@@ -386,8 +426,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests assert that the setting can not be deleted after set the setting to read-only.
      */
-    @Test
-    public void setReadOnlyWithConfigurationSetting() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void setReadOnlyWithConfigurationSetting(HttpClient httpClient) {
+        initializeClient(httpClient);
         lockUnlockRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
@@ -407,8 +449,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Tests assert that the setting can be deleted after clear read-only of the setting.
      */
-    @Test
-    public void clearReadOnlyWithConfigurationSetting() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void clearReadOnlyWithConfigurationSetting(HttpClient httpClient) {
+        initializeClient(httpClient);
         lockUnlockRunner((expected) -> {
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
@@ -439,8 +483,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that a ConfigurationSetting can be added with a label, and that we can fetch that ConfigurationSetting
      * from the service when filtering by either its label or just its key.
      */
-    @Test
-    public void listWithKeyAndLabel() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listWithKeyAndLabel(HttpClient httpClient) {
+        initializeClient(httpClient);
         final String value = "myValue";
         final String key = testResourceNamer.randomName(keyPrefix, 16);
         final String label = testResourceNamer.randomName("lbl", 8);
@@ -463,8 +509,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that ConfigurationSettings can be added and that we can fetch those ConfigurationSettings from the
      * service when filtering by their keys.
      */
-    @Test
-    public void listWithMultipleKeys() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listWithMultipleKeys(HttpClient httpClient) {
+        initializeClient(httpClient);
         String key = getKey();
         String key2 = getKey();
 
@@ -492,8 +540,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those ConfigurationSettings
      * from the service when filtering by their labels.
      */
-    @Test
-    public void listWithMultipleLabels() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listWithMultipleLabels(HttpClient httpClient) {
+        initializeClient(httpClient);
         String key = getKey();
         String label = getLabel();
         String label2 = getLabel();
@@ -521,8 +571,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can select filter results by key, label, and select fields using SettingSelector.
      */
-    @Test
-    public void listConfigurationSettingsSelectFields() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listConfigurationSettingsSelectFields(HttpClient httpClient) {
+        initializeClient(httpClient);
         listConfigurationSettingsSelectFieldsRunner((settings, selector) -> {
             final List<Mono<Response<ConfigurationSetting>>> settingsBeingAdded = new ArrayList<>();
             for (ConfigurationSetting setting : settings) {
@@ -545,40 +597,50 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that throws exception when using SettingSelector with not supported *a key filter.
      */
-    @Test
-    public void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter(HttpClient httpClient) {
+        initializeClient(httpClient);
         filterValueTest("*" + getKey(), getLabel());
     }
 
     /**
      * Verifies that throws exception when using SettingSelector with not supported *a* key filter.
      */
-    @Test
-    public void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter(HttpClient httpClient) {
+        initializeClient(httpClient);
         filterValueTest("*" + getKey() + "*", getLabel());
     }
 
     /**
      * Verifies that throws exception when using SettingSelector with not supported *a label filter.
      */
-    @Test
-    public void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter(HttpClient httpClient) {
+        initializeClient(httpClient);
         filterValueTest(getKey(), "*" + getLabel());
     }
 
     /**
      * Verifies that throws exception when using SettingSelector with not supported *a* label filter.
      */
-    @Test
-    public void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter(HttpClient httpClient) {
+        initializeClient(httpClient);
         filterValueTest(getKey(), "*" + getLabel() + "*");
     }
 
     /**
      * Verifies that we can get a ConfigurationSetting at the provided accept datetime
      */
-    @Test
-    public void listConfigurationSettingsAcceptDateTime() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listConfigurationSettingsAcceptDateTime(HttpClient httpClient) {
+        initializeClient(httpClient);
         final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
@@ -612,8 +674,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that we can get all of the revisions for this ConfigurationSetting. Then verifies that we can select
      * specific fields.
      */
-    @Test
-    public void listRevisions() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listRevisions(HttpClient httpClient) {
+        initializeClient(httpClient);
         final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
@@ -648,8 +712,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can get all the revisions for all settings with the specified keys.
      */
-    @Test
-    public void listRevisionsWithMultipleKeys() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listRevisionsWithMultipleKeys(HttpClient httpClient) {
+        initializeClient(httpClient);
         String key = getKey();
         String key2 = getKey();
 
@@ -686,8 +752,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can get all revisions for all settings with the specified labels.
      */
-    @Test
-    public void listRevisionsWithMultipleLabels() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listRevisionsWithMultipleLabels(HttpClient httpClient) {
+        initializeClient(httpClient);
         String key = getKey();
         String label = getLabel();
         String label2 = getLabel();
@@ -725,8 +793,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
      */
-    @Test
-    public void listRevisionsAcceptDateTime() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listRevisionsAcceptDateTime(HttpClient httpClient) {
+        initializeClient(httpClient);
         final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
@@ -762,8 +832,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
-    @Test
-    public void listRevisionsWithPagination() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listRevisionsWithPagination(HttpClient httpClient) {
+        initializeClient(httpClient);
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
         for (int value = 0; value < numberExpected; value++) {
@@ -787,8 +859,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
-    @Test
-    public void listRevisionsWithPaginationAndRepeatStream() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listRevisionsWithPaginationAndRepeatStream(HttpClient httpClient) {
+        initializeClient(httpClient);
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
         List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
@@ -817,8 +891,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
-    @Test
-    public void listRevisionsWithPaginationAndRepeatIterator() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listRevisionsWithPaginationAndRepeatIterator(HttpClient httpClient) {
+        initializeClient(httpClient);
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
         List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
@@ -847,8 +923,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.
      */
-    @Test
-    public void listConfigurationSettingsWithPagination() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void listConfigurationSettingsWithPagination(HttpClient httpClient) {
+        initializeClient(httpClient);
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
         for (int value = 0; value < numberExpected; value++) {
@@ -872,8 +950,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies the conditional "GET" scenario where the setting has yet to be updated, resulting in a 304. This GET
      * scenario will return a setting when the ETag provided does not match the one of the current setting.
      */
-    @Test
-    public void getConfigurationSettingWhenValueNotUpdated() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void getConfigurationSettingWhenValueNotUpdated(HttpClient httpClient) {
+        initializeClient(httpClient);
         final String key = getKey();
         final ConfigurationSetting expected = new ConfigurationSetting().setKey(key).setValue("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().setKey(key).setValue("myNewValue");
@@ -896,9 +976,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete();
     }
 
-    @Test
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
     @Disabled
-    public void deleteAllSettings() {
+    public void deleteAllSettings(HttpClient httpClient) {
+        initializeClient(httpClient);
         client.listConfigurationSettings(new SettingSelector().setKeyFilter("*"))
             .flatMap(configurationSetting -> {
                 logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
@@ -906,8 +988,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             }).blockLast();
     }
 
-    @Test
-    public void addHeadersFromContextPolicyTest() {
+    @ParameterizedTest(name="{0}")
+    @MethodSource("getHttpClients")
+    public void addHeadersFromContextPolicyTest(HttpClient httpClient) {
+        initializeClient(httpClient);
         final HttpHeaders headers = getCustomizedHeaders();
         addHeadersFromContextPolicyRunner(expected ->
             StepVerifier.create(client.addConfigurationSettingWithResponse(expected)
