@@ -9,18 +9,24 @@ import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ServiceVersion;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static com.azure.data.appconfiguration.TestHelper.getCombinations;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 /**
@@ -33,7 +39,7 @@ public class AadCredentialTest extends TestBase {
     static String connectionString;
     static TokenCredential tokenCredential;
 
-    public void setup(HttpClient httpClient) throws InvalidKeyException, NoSuchAlgorithmException {
+    public void setup(Object httpClient, Object serviceVersion) throws InvalidKeyException, NoSuchAlgorithmException {
         if (interceptorManager.isPlaybackMode()) {
             connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
 
@@ -42,7 +48,7 @@ public class AadCredentialTest extends TestBase {
             client = new ConfigurationClientBuilder()
                 .connectionString(connectionString)
                 .endpoint(endpoint)
-                .httpClient(httpClient)
+                .httpClient(interceptorManager.getPlaybackClient())
                 .buildClient();
         } else {
             connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
@@ -50,18 +56,19 @@ public class AadCredentialTest extends TestBase {
 
             String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
             client = new ConfigurationClientBuilder()
-                .httpClient(httpClient)
+                .httpClient((HttpClient) httpClient)
                 .credential(tokenCredential)
                 .endpoint(endpoint)
                 .addPolicy(interceptorManager.getRecordPolicy()) // Record
+                .serviceVersion((ConfigurationServiceVersion) serviceVersion)
                 .buildClient();
         }
     }
 
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void aadAuthenticationAzConfigClient(HttpClient httpClient) throws Exception {
-        setup(httpClient);
+    @ParameterizedTest()
+    @MethodSource("getSources")
+    public void aadAuthenticationAzConfigClient(HttpClient httpClient, ServiceVersion serviceVersion) throws Exception {
+        setup(httpClient, serviceVersion);
         final String key = "newKey";
         final String value = "newValue";
 
@@ -70,13 +77,11 @@ public class AadCredentialTest extends TestBase {
         Assertions.assertEquals(addedSetting.getValue(), value);
     }
 
-    private HttpClient[] getHttpClients(){
-        if (getTestMode() == TestMode.PLAYBACK) {
-            return Arrays.asList(interceptorManager.getPlaybackClient())
-                .toArray(HttpClient[]::new);
-        } else {
-            return Arrays.asList(new NettyAsyncHttpClientBuilder().wiretap(true).build(),
-                new OkHttpAsyncHttpClientBuilder().build()).toArray(HttpClient[]::new);
-        }
+    private Stream<Arguments> getSources(){
+        HttpClient[] httpClients = new HttpClient[]{new NettyAsyncHttpClientBuilder().wiretap(true).build(),
+            new OkHttpAsyncHttpClientBuilder().build()};
+        return getCombinations(httpClients, ConfigurationServiceVersion.values());
     }
+
+
 }
