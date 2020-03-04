@@ -7,8 +7,11 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -17,11 +20,15 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
+import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -525,9 +532,14 @@ public class BridgeInternal {
 
     public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class klassType) {
         try {
-            try {
+            // the hot path should come through here to avoid serialization/deserialization
+            if (klassType.equals(Document.class) || klassType.equals(OrderByRowResult.class) || klassType.equals(CosmosItemProperties.class)
+                || klassType.equals(PartitionKeyRange.class) || klassType.equals(Range.class) || klassType.equals(QueryInfo.class) ||  klassType.equals(Address.class)
+                || klassType.equals(DatabaseAccount.class) || klassType.equals(DatabaseAccountLocation.class)
+                || klassType.equals(ReplicationPolicy.class) || klassType.equals(ConsistencyPolicy.class)
+                || klassType.equals(DocumentCollection.class) || klassType.equals(Database.class)) {
                 return (JsonSerializable) klassType.getDeclaredConstructor(ObjectNode.class).newInstance(objectNode);
-            } catch (NoSuchMethodException e) {
+            } else {
                 return (JsonSerializable) klassType.getDeclaredConstructor(String.class).newInstance(objectNode.toString());
             }
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
