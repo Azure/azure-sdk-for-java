@@ -525,10 +525,8 @@ public class BridgeInternal {
 
     public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class klassType) {
         try {
-            JsonSerializable instance = (JsonSerializable) klassType.getDeclaredConstructor().newInstance();
-            instance.propertyBag = objectNode;
-            return instance;
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            return (JsonSerializable) klassType.getDeclaredConstructor(ObjectNode.class).newInstance(objectNode);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
             throw new IllegalArgumentException(e);
         }
     }

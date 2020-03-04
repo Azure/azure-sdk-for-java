@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -22,6 +23,10 @@ public final class PartitionKeyDefinition extends JsonSerializable {
     private PartitionKind kind;
     private Optional<PartitionKeyDefinitionVersion> versionOptional;
     private Boolean systemKey;
+
+    PartitionKeyDefinition(ObjectNode objectNode) {
+        this.propertyBag = objectNode;
+    }
 
     /**
      * Constructor. Creates a new instance of the PartitionKeyDefinition object.

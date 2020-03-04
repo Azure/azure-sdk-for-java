@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 
@@ -11,6 +12,16 @@ import static com.azure.cosmos.BridgeInternal.setProperty;
  * Represents the location of a database account in the Azure Cosmos DB database service.
  */
 public class DatabaseAccountLocation extends JsonSerializable {
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    DatabaseAccountLocation(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     /**
      * DEFAULT Constructor. Creates a new instance of the
