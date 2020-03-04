@@ -8,19 +8,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
-import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlobOutputStream;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.time.Duration;
@@ -115,15 +112,19 @@ public class EncryptedBlobClient extends BlobClient {
     }
 
     /**
+     * @inheritDoc
      * @throws UnsupportedOperationException Please use the getBlobOutputStream method for similar functionality.
      */
+    @Override
     public void upload(InputStream data, long length) {
         upload(data, length, false);
     }
 
     /**
+     * @inheritDoc
      * @throws UnsupportedOperationException Please use the getBlobOutputStream method for similar functionality.
      */
+    @Override
     public void upload(InputStream data, long length, boolean overwrite) {
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
         if (!overwrite) {
@@ -133,9 +134,10 @@ public class EncryptedBlobClient extends BlobClient {
     }
 
     /**
-     *
+     * @inheritDoc
      * @throws UnsupportedOperationException Please use the getBlobOutputStream method for similar functionality.
      */
+    @Override
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
@@ -152,6 +154,7 @@ public class EncryptedBlobClient extends BlobClient {
      *
      * @param filePath Path of the file to upload
      */
+    @Override
     public void uploadFromFile(String filePath) {
         uploadFromFile(filePath, false);
     }
@@ -166,6 +169,7 @@ public class EncryptedBlobClient extends BlobClient {
      * @param filePath Path of the file to upload
      * @param overwrite Whether or not to overwrite should data already exist on the blob
      */
+    @Override
     public void uploadFromFile(String filePath, boolean overwrite) {
         if (!overwrite && exists()) {
             throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
@@ -190,6 +194,7 @@ public class EncryptedBlobClient extends BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @Override
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) throws UncheckedIOException {

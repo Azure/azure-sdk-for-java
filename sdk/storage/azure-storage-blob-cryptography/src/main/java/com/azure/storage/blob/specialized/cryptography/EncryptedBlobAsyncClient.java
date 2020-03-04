@@ -137,6 +137,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @Override
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
         try {
             return this.upload(data, parallelTransferOptions, false);
@@ -178,6 +179,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @Override
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
         try {
@@ -233,6 +235,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @Override
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobRequestConditions requestConditions) {
@@ -257,6 +260,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param filePath Path to the upload file
      * @return An empty response
      */
+    @Override
     public Mono<Void> uploadFromFile(String filePath) {
         try {
             return uploadFromFile(filePath, false);
@@ -277,6 +281,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param overwrite Whether or not to overwrite should data exist on the blob.
      * @return An empty response
      */
+    @Override
     public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
         try {
             Mono<Void> uploadTask = uploadFromFile(filePath, null, null, null, null, null);
@@ -312,6 +317,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @Override
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {

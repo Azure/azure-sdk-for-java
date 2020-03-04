@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.4.1 (2020-03-04)
-- Fixed a bug where EncryptedBlobClient.upload methods would not encrypt users data. Now the method throws an UnsupportedOperationException.
+- Fixed a bug where EncryptedBlobClient.upload and EncryptedBlobClient.uploadWithResponse methods would not encrypt users data. Now the method throws an UnsupportedOperationException.
 
 ## 12.4.0 (2020-02-12)
 - Added support for upload via OutputStream by adding EncryptedBlobClient.getOutputStream methods
