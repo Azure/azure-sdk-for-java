@@ -35,7 +35,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     static final String AZ_NAMESPACE_KEY = "az.namespace";
     static final String MESSAGE_BUS_DESTINATION = "message_bus.destination";
     static final String PEER_ENDPOINT = "peer.address";
-    static final String MESSAGE_ENQUEUED_TIME = "x-opt-enqueued-time";
 
     private final ClientLogger logger = new ClientLogger(OpenTelemetryTracer.class);
 
