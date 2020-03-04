@@ -2,7 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
@@ -13,9 +21,6 @@ import com.azure.data.appconfiguration.implementation.ConfigurationClientCredent
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import java.lang.reflect.Field;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -31,15 +36,16 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.params.provider.Arguments;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
+@TestInstance(Lifecycle.PER_CLASS)
 public abstract class ConfigurationClientTestBase extends TestBase {
+    public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String KEY_PREFIX = "key";
     private static final String LABEL_PREFIX = "label";
@@ -86,8 +92,21 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         return testResourceNamer.randomName(labelPrefix, RESOURCE_LENGTH);
     }
 
+    protected Stream<Arguments> getTestParameters() {
+        // when this issues is closed, the newer version of junit will have better support for
+        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+        List<Arguments> argumentsList = new ArrayList<>();
+        getHttpClients()
+            .forEach(httpClient -> {
+                for (ConfigurationServiceVersion serviceVersion : ConfigurationServiceVersion.values()) {
+                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
+                }
+            });
+        return argumentsList.stream();
+    }
+
     @Test
-    public abstract void addConfigurationSetting();
+    public abstract void addConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     void addConfigurationSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         final Map<String, String> tags = new HashMap<>();

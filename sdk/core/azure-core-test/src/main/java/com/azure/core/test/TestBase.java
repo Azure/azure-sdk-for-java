@@ -2,9 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.core.test;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.implementation.http.HttpClientProviders;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -86,7 +92,7 @@ public abstract class TestBase implements BeforeEachCallback {
      *
      * @return The TestMode that has been initialized.
      */
-    public TestMode getTestMode() {
+    public static TestMode getTestMode() {
         return testMode;
     }
 
@@ -119,6 +125,25 @@ public abstract class TestBase implements BeforeEachCallback {
      * additional functionality during test teardown.
      */
     protected void afterTest() {
+    }
+
+    /**
+     * Returns a list of {@link HttpClient HttpClients} that should be tested.
+     * @return A list of {@link HttpClient HttpClients} to be tested.
+     */
+    protected Stream<HttpClient> getHttpClients() {
+        if (testMode == TestMode.PLAYBACK) {
+            // Call to @MethodSource method happens @BeforeEach call, so the interceptorManager is
+            // not yet initialized. So, playbackClient will not be available until later.
+            return Stream.of(new HttpClient[]{null});
+        }
+        return HttpClientProviders.getAllHttpClients().stream().filter(this::shouldClientBeTested);
+    }
+
+    private boolean shouldClientBeTested(HttpClient client) {
+        // This is for when we decide to filter some http clients based on some criteria
+        // to reduce the time take to run the tests.
+        return true;
     }
 
     private static TestMode initializeTestMode() {
