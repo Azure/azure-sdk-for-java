@@ -102,6 +102,21 @@
         "code": "java\\.class\\.(noLongerInheritsFromClass|nonFinalClassInheritsFromNewClass)",
         "class": "com.azure.identity.SharedTokenCacheCredentialBuilder",
         "justification": "SharedTokenCacheCredentialBuilder now inherites AadCredentialBuilderBase instead of CredentialBuilderBase thus being reported. However, AadCredentialBuilderBase also extends CredentialBuilderBase so it's not a breaking change."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient::upload(java.io.InputStream, long)",
+        "justification": "EncryptedBlobClient inherits from BlobClient that has all the upload methods. It is not a breaking change."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient::upload(java.io.InputStream, long, boolean)",
+        "justification": "EncryptedBlobClient inherits from BlobClient that has all the upload methods. It is not a breaking change."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient::uploadWithResponse(java.io.InputStream, long, com.azure.storage.blob.models.ParallelTransferOptions, com.azure.storage.blob.models.BlobHttpHeaders, java.util.Map<java.lang.String, java.lang.String>, com.azure.storage.blob.models.AccessTier, com.azure.storage.blob.models.BlobRequestConditions, java.time.Duration, com.azure.core.util.Context)",
+        "justification": "EncryptedBlobClient inherits from BlobClient that has all the upload methods. It is not a breaking change."
       }
     ]
   }
