@@ -36,6 +36,7 @@
   <suppress checks="Header" files=".*KeyVaultKeyResolverBCProviderTest.java"/>
   <suppress checks="Header" files=".*KeyVaultKeyResolverDefaultProviderTest.java"/>
   <suppress checks="Header" files="com.azure.core.http.netty.implementation.HttpProxyHandler"/>
+  <suppress checks="Header" files="eventgrid[/\\](models|implementation)[/\\].*\.java"/>
 
   <!-- Cryptography Client exception for service client instantiation as it provides client side crypto and is not entirely based on REST service -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*CryptographyAsyncClient.java"/>
@@ -226,11 +227,11 @@
 
   <!-- Report AMQP retry attempts in static withRetry method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.amqp.implementation.RetryUtil.java"/>
-  
+
   <!-- The Identity Azure Platform End to tend Test.-->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.endtoend.identity.IdentityTest.java"/>
     <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.endtoend.identity.WebJobsIdentityTest.java"/>
-  
+
   <!-- Use the logger in a Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.textanalytics.Transforms.java" />
 

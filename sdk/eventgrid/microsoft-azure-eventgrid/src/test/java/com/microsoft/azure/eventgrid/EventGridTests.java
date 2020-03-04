@@ -1,9 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.eventgrid;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
-import com.microsoft.azure.eventgrid.TopicCredentials;
 import com.microsoft.azure.eventgrid.implementation.EventGridClientImpl;
 import com.microsoft.azure.eventgrid.models.EventGridEvent;
 import com.microsoft.azure.eventgrid.models.StorageBlobCreatedEventData;
@@ -55,8 +56,7 @@ public class EventGridTests {
     private List<EventGridEvent> getEventsList() {
         List<EventGridEvent> eventsList = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++)
-        {
+        for (int i = 0; i < 10; i++) {
             eventsList.add(new EventGridEvent(
                     UUID.randomUUID().toString(),
                     "TestSubject",
