@@ -6,7 +6,6 @@ package com.azure.storage.file.datalake.implementation.util;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 
 /**
  * This class provides helper methods for common model patterns.

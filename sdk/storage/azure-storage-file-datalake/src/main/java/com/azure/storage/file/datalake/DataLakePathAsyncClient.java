@@ -62,7 +62,7 @@ public class DataLakePathAsyncClient {
     private final String pathName;
     private final DataLakeServiceVersion serviceVersion;
 
-    PathResourceType pathResourceType;
+    final PathResourceType pathResourceType;
 
     final BlockBlobAsyncClient blockBlobAsyncClient;
 
