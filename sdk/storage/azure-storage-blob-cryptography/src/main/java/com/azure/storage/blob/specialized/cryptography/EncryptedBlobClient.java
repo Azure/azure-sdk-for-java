@@ -112,7 +112,7 @@ public class EncryptedBlobClient extends BlobClient {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      * @throws UnsupportedOperationException Please use the getBlobOutputStream method for similar functionality.
      */
     @Override
@@ -121,7 +121,7 @@ public class EncryptedBlobClient extends BlobClient {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      * @throws UnsupportedOperationException Please use the getBlobOutputStream method for similar functionality.
      */
     @Override
@@ -134,7 +134,7 @@ public class EncryptedBlobClient extends BlobClient {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      * @throws UnsupportedOperationException Please use the getBlobOutputStream method for similar functionality.
      */
     @Override
