@@ -80,7 +80,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      * @param tokenRefreshOffset the duration before the actual expiry of a token to refresh it
      */
     @SuppressWarnings("unchecked")
-    public T setTokenRefreshOffset(Duration tokenRefreshOffset) {
+    public T tokenRefreshOffset(Duration tokenRefreshOffset) {
         this.identityClientOptions.setTokenRefreshOffset(tokenRefreshOffset);
         return (T) this;
     }
