@@ -100,17 +100,6 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     }
 
     /**
-     * @param message to be sent to Service Bus Queue.
-     * @param sessionId the session id to associate with the message.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> send(ServiceBusMessage message, String sessionId) {
-        //TODO(sessionid) Implement session id feature
-        return send(Flux.just(message));
-    }
-
-    /**
      * @param message to be sent Service Bus Queue.
      *
      * @return The {@link Mono} the finishes this operation on service bus resource.
@@ -118,6 +107,19 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     public Mono<Void> send(ServiceBusMessage message) {
         Objects.requireNonNull(message, "'message' cannot be null.");
         return send(Flux.just(message));
+    }
+
+    /**
+     * Sends a message to a Service Bus queue or topic.
+     *
+     * @param message to be sent to Service Bus queue or topic.
+     * @param sessionId the session id to associate with the message.
+     *
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Void> send(ServiceBusMessage message, String sessionId) {
+        //TODO (hemanttanwar): Implement session id feature.
+        return Mono.error(new IllegalStateException("Not implemented."));
     }
 
     /**

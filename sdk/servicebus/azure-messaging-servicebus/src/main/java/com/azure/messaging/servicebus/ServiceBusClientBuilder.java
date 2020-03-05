@@ -100,7 +100,7 @@ public final class ServiceBusClientBuilder {
      * Sets the credential for the Service Bus resource.
      *
      * @param fullyQualifiedNamespace for the Service Bus.
-     * @param topicOrQueueName The name of the queue.
+     * @param topicOrQueueName The name of the queue or topic.
      * @param credential {@link TokenCredential} to be used for authentication.
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
@@ -188,9 +188,9 @@ public final class ServiceBusClientBuilder {
 
     /**
      * Creates an {@link ServiceBusSenderAsyncClient} for transmitting {@link ServiceBusMessage}
-     * to the Service Bus Queue.
+     * to a Service Bus queue or topic.
      *
-     * @return A new {@link ServiceBusSenderAsyncClient}.
+     * @return A new {@link ServiceBusSenderAsyncClient} for transmitting to a Service queue or topic.
      */
     public ServiceBusSenderAsyncClient buildAsyncSenderClient() {
         if (retryOptions == null) {
@@ -211,9 +211,10 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Creates an Service Bus Queue receiver responsible for reading {@link ServiceBusMessage} from a specific Queue.
+     * Creates an Service Bus receiver responsible for reading {@link ServiceBusMessage ServiceBusMessages} from a
+     * specific queue or topic.
      *
-     * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from the Queue.
+     * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from a queue or topic.
      */
     public ServiceBusReceiverAsyncClient buildAsyncReceiverClient() {
         if (retryOptions == null) {
