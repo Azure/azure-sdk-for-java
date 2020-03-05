@@ -11,7 +11,7 @@ package com.microsoft.azure.management.compute.v2017_03_30;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The vault id is an Azure Resource Manager Resoure id in the form
+ * The vault id is an Azure Resource Manager Resource id in the form
  * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}.
  */
 public class SourceVault {
@@ -22,7 +22,7 @@ public class SourceVault {
     private String id;
 
     /**
-     * Get the id value.
+     * Get resource Id.
      *
      * @return the id value
      */
@@ -31,7 +31,7 @@ public class SourceVault {
     }
 
     /**
-     * Set the id value.
+     * Set resource Id.
      *
      * @param id the id value to set
      * @return the SourceVault object itself.

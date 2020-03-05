@@ -47,7 +47,7 @@ public class OperationStatusResponseInner {
     private ApiError error;
 
     /**
-     * Get the name value.
+     * Get operation ID.
      *
      * @return the name value
      */
@@ -56,7 +56,7 @@ public class OperationStatusResponseInner {
     }
 
     /**
-     * Get the status value.
+     * Get operation status.
      *
      * @return the status value
      */
@@ -65,7 +65,7 @@ public class OperationStatusResponseInner {
     }
 
     /**
-     * Get the startTime value.
+     * Get start time of the operation.
      *
      * @return the startTime value
      */
@@ -74,7 +74,7 @@ public class OperationStatusResponseInner {
     }
 
     /**
-     * Get the endTime value.
+     * Get end time of the operation.
      *
      * @return the endTime value
      */
@@ -83,7 +83,7 @@ public class OperationStatusResponseInner {
     }
 
     /**
-     * Get the error value.
+     * Get api error.
      *
      * @return the error value
      */
