@@ -18,9 +18,12 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 
 import java.time.Duration;
+import java.util.Deque;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
 /**
  * Processes AMQP receive links into a stream of AMQP messages.
@@ -37,6 +40,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final AtomicInteger retryAttempts = new AtomicInteger();
     private final AtomicBoolean isRequested = new AtomicBoolean();
     private final AtomicInteger linkCreditRequest = new AtomicInteger(1);
+    private final Deque<Message> messageQueue = new ConcurrentLinkedDeque<>();
 
     private final int prefetch;
     private final AmqpRetryPolicy retryPolicy;
@@ -49,6 +53,10 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private volatile AmqpReceiveLink currentLink;
     private volatile Disposable currentLinkSubscriptions;
     private volatile Disposable retrySubscription;
+
+    volatile long requested;
+    static final AtomicLongFieldUpdater<AmqpReceiveLinkProcessor> REQUESTED =
+        AtomicLongFieldUpdater.newUpdater(AmqpReceiveLinkProcessor.class, "requested");
 
     /**
      * Creates an instance of {@link AmqpReceiveLinkProcessor}.
@@ -104,12 +112,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             return;
         }
 
-        logger.verbose("Subscribing to upstream.");
-
         this.upstream = subscription;
-
-        // Don't request from upstream until there is a downstream subscriber.
-        subscription.request(0);
+        requestUpstream();
     }
 
     /**
