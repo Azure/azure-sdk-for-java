@@ -24,7 +24,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Processes AMQP receive links into a stream of AMQP messages.
  */
-
 public class ServiceBusReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Message> implements Subscription {
     // We don't want to dump too many credits on the link at once. It's easy enough to ask for more.
     private static final int MINIMUM_REQUEST = 0;

@@ -1,14 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.implementation;
+package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.messaging.servicebus.ServiceBusMessageBatch;
+import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 
 /**
  * The set of options that can be specified when creating an batch of messages. This wrapper will help to limit
  * the messages with maximum allowed size.
  *
+ * @see ServiceBusMessageBatch
+ * @see ServiceBusSenderAsyncClient
  */
 @Fluent
 public class CreateBatchOptions {
@@ -34,6 +38,4 @@ public class CreateBatchOptions {
     public int getMaximumSizeInBytes() {
         return maximumSizeInBytes;
     }
-
-
 }

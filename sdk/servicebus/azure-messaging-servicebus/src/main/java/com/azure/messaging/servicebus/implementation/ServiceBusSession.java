@@ -20,7 +20,6 @@ import java.time.Duration;
  * @see AmqpSession
  * @see ReactorSession
  */
-
 public interface ServiceBusSession extends AmqpSession {
     /**
      * Creates a new AMQP link that consumes events from the message broker.
@@ -34,5 +33,5 @@ public interface ServiceBusSession extends AmqpSession {
      * @return A newly created AMQP link.
      */
     Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout,
-                                         AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode);
+        AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode);
 }

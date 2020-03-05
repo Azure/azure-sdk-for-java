@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus.implementation;
 import java.time.Duration;
 
 /**
- * Constants defined to be used for interaction with Service Bus..
+ * Constants defined to be used for interaction with Service Bus.
  */
 public class ServiceBusConstants {
 

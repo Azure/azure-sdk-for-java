@@ -95,8 +95,9 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             return Flux.error(new IllegalStateException("Cannot receive from a client that is already closed."));
         }
 
-        final String linkName = connectionProcessor.getEntityPath();
-        return openConsumers.computeIfAbsent(linkName, name -> {
+        //TODO (conniey): This will return the same link because the linkName is not unique. Is this what we want?
+        final String linkName = entityPath;
+        return openConsumers.computeIfAbsent(entityPath, name -> {
             logger.info("{}: Creating consumer for link '{}'", entityPath, linkName);
             return createServiceBusConsumer(linkName);
         })

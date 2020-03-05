@@ -12,10 +12,13 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
 
+/**
+ * Responsible for emitting an active {@link ServiceBusAmqpConnection} to downstream subscribers. Fetches a new
+ * connection when the existing connection closes.
+ */
 public class ServiceBusConnectionProcessor extends AmqpChannelProcessor<ServiceBusAmqpConnection> {
 
     private final String fullyQualifiedNamespace;
-    private final String entityPath;
     private final AmqpRetryOptions retryOptions;
 
     public ServiceBusConnectionProcessor(String fullyQualifiedNamespace, String entityPath,
@@ -25,7 +28,6 @@ public class ServiceBusConnectionProcessor extends AmqpChannelProcessor<ServiceB
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
-        this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
     }
 
@@ -36,21 +38,12 @@ public class ServiceBusConnectionProcessor extends AmqpChannelProcessor<ServiceB
      */
     public String getFullyQualifiedNamespace() {
         return fullyQualifiedNamespace;
-    }
+    }ServiceBusReceiverAsyncClient
 
     /**
-     * Gets the name of the Event Hub.
+     * Gets the retry options associated with the Service Bus connection.
      *
-     * @return The name of the Event Hub.
-     */
-    public String getEntityPath() {
-        return entityPath;
-    }
-
-    /**
-     * Gets the retry options associated with the Event Hub connection.
-     *
-     * @return The retry options associated with the Event Hub connection.
+     * @return The retry options associated with the Service Bus connection.
      */
     public AmqpRetryOptions getRetryOptions() {
         return retryOptions;

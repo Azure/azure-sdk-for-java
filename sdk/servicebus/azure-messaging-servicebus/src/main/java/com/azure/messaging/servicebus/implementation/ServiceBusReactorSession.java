@@ -71,5 +71,4 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
         return createConsumer(linkName, entityPath, timeout, retry, filter, properties, null);
     }
-
 }
