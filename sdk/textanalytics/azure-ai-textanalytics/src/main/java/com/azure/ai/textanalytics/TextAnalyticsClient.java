@@ -257,8 +257,8 @@ public final class TextAnalyticsClient {
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<CategorizedEntity> recognizeCategorizedEntities(String text) {
-        return recognizeCategorizedEntities(text, client.getDefaultLanguage());
+    public TextAnalyticsPagedIterable<CategorizedEntity> recognizeEntities(String text) {
+        return recognizeEntities(text, client.getDefaultLanguage());
     }
 
     /**
@@ -283,8 +283,8 @@ public final class TextAnalyticsClient {
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<CategorizedEntity> recognizeCategorizedEntities(String text, String language) {
-        return new TextAnalyticsPagedIterable<>(client.recognizeCategorizedEntities(text, language));
+    public TextAnalyticsPagedIterable<CategorizedEntity> recognizeEntities(String text, String language) {
+        return new TextAnalyticsPagedIterable<>(client.recognizeEntities(text, language));
     }
 
     /**
@@ -308,9 +308,9 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeCategorizedEntitiesBatch(
+    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> textInputs) {
-        return new TextAnalyticsPagedIterable<>(client.recognizeCategorizedEntitiesBatch(textInputs));
+        return new TextAnalyticsPagedIterable<>(client.recognizeEntitiesBatch(textInputs));
     }
 
     /**
@@ -331,9 +331,9 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeCategorizedEntitiesBatch(
+    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> textInputs, String language) {
-        return new TextAnalyticsPagedIterable<>(client.recognizeCategorizedEntitiesBatch(textInputs, language));
+        return new TextAnalyticsPagedIterable<>(client.recognizeEntitiesBatch(textInputs, language));
     }
 
     /**
@@ -357,10 +357,10 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeCategorizedEntitiesBatch(
+    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> textInputs, String language, TextAnalyticsRequestOptions options) {
         return new TextAnalyticsPagedIterable<>(
-            client.recognizeCategorizedEntitiesBatch(textInputs, language, options));
+            client.recognizeEntitiesBatch(textInputs, language, options));
     }
 
     /**
@@ -385,7 +385,7 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeCategorizedEntitiesBatch(
+    public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         return new TextAnalyticsPagedIterable<>(
             client.recognizeCategorizedEntityAsyncClient.recognizeEntitiesBatchWithContext(textInputs, options,

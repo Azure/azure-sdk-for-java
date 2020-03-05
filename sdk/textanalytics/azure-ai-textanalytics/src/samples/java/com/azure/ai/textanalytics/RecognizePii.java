@@ -27,11 +27,6 @@ public class RecognizePii {
 
         client.recognizePiiEntities(text).forEach(entity -> System.out.printf(
             "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-            entity.getText(),
-            entity.getCategory(),
-            entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-            entity.getGraphemeOffset(),
-            entity.getGraphemeLength(),
-            entity.getScore()));
+            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getGraphemeOffset(), entity.getGraphemeLength(), entity.getScore()));
     }
 }

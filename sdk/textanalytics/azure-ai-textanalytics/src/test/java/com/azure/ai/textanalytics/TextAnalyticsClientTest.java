@@ -191,26 +191,26 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         final CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 26, 7, 0.0);
         final CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
 
-        final List<CategorizedEntity> entities = client.recognizeCategorizedEntities("I had a wonderful trip to Seattle last week.").stream().collect(Collectors.toList());
+        final List<CategorizedEntity> entities = client.recognizeEntities("I had a wonderful trip to Seattle last week.").stream().collect(Collectors.toList());
         validateCategorizedEntity(categorizedEntity1, entities.get(0));
         validateCategorizedEntity(categorizedEntity2, entities.get(1));
     }
 
     @Test
     public void recognizeEntitiesForEmptyText() {
-        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.recognizeCategorizedEntities("").iterator().hasNext());
+        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.recognizeEntities("").iterator().hasNext());
         assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
     @Test
     public void recognizeEntitiesForFaultyText() {
-        assertFalse(client.recognizeCategorizedEntities("!@#%%").iterator().hasNext());
+        assertFalse(client.recognizeEntities("!@#%%").iterator().hasNext());
     }
 
     @Test
     public void recognizeEntitiesBatchInputSingleError() {
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) -> {
-            TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> response = client.recognizeCategorizedEntitiesBatch(inputs, null, Context.NONE);
+            TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> response = client.recognizeEntitiesBatch(inputs, null, Context.NONE);
             response.forEach(recognizeEntitiesResult -> {
                 Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getEntities());
                 assertTrue(exception.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE));
@@ -221,7 +221,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForBatchInput() {
         recognizeBatchCategorizedEntityRunner((inputs) ->
-            client.recognizeCategorizedEntitiesBatch(inputs, null, Context.NONE).iterableByPage().forEach(
+            client.recognizeEntitiesBatch(inputs, null, Context.NONE).iterableByPage().forEach(
                 pagedResponse ->
                     validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
@@ -229,14 +229,14 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForBatchInputShowStatistics() {
         recognizeBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
-            client.recognizeCategorizedEntitiesBatch(inputs, options, Context.NONE).iterableByPage().forEach(
+            client.recognizeEntitiesBatch(inputs, options, Context.NONE).iterableByPage().forEach(
                 pagedResponse ->
                     validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
 
     @Test
     public void recognizeEntitiesForBatchStringInput() {
-        recognizeCategorizedEntityStringInputRunner((inputs) -> client.recognizeCategorizedEntitiesBatch(inputs).iterableByPage()
+        recognizeCategorizedEntityStringInputRunner((inputs) -> client.recognizeEntitiesBatch(inputs).iterableByPage()
             .forEach(pagedResponse ->
                 validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
@@ -244,7 +244,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForListLanguageHint() {
         recognizeCategorizedEntitiesLanguageHintRunner((inputs, language) ->
-            client.recognizeCategorizedEntitiesBatch(inputs, language).iterableByPage().forEach(
+            client.recognizeEntitiesBatch(inputs, language).iterableByPage().forEach(
                 pagedResponse ->
                     validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
@@ -252,7 +252,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForListWithOptions() {
         recognizeStringBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
-            client.recognizeCategorizedEntitiesBatch(inputs, null, options).iterableByPage().forEach(
+            client.recognizeEntitiesBatch(inputs, null, options).iterableByPage().forEach(
                 pagedResponse ->
                     validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }

@@ -196,12 +196,12 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     // Categorized Entity
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizeCategorizedEntities(String)}
+     * Code snippet for {@link TextAnalyticsClient#recognizeEntities(String)}
      */
     public void recognizeEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String
         final TextAnalyticsPagedIterable<CategorizedEntity> recognizeEntitiesResult =
-            textAnalyticsClient.recognizeCategorizedEntities("Satya Nadella is the CEO of Microsoft");
+            textAnalyticsClient.recognizeEntities("Satya Nadella is the CEO of Microsoft");
         for (CategorizedEntity entity : recognizeEntitiesResult) {
             System.out.printf("Recognized entity: %s, entity category: %s, score: %.2f.%n",
                 entity.getText(), entity.getCategory(), entity.getScore());
@@ -210,12 +210,12 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizeCategorizedEntities(String, String)}
+     * Code snippet for {@link TextAnalyticsClient#recognizeEntities(String, String)}
      */
     public void recognizeEntitiesWithLanguage() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String-String
         final TextAnalyticsPagedIterable<CategorizedEntity> recognizeEntitiesResult =
-            textAnalyticsClient.recognizeCategorizedEntities("Satya Nadella is the CEO of Microsoft", "en");
+            textAnalyticsClient.recognizeEntities("Satya Nadella is the CEO of Microsoft", "en");
 
         for (CategorizedEntity entity : recognizeEntitiesResult) {
             System.out.printf("Recognized entity: %s, entity category: %s, score: %.2f.%n",
@@ -225,7 +225,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizeCategorizedEntitiesBatch(Iterable)}
+     * Code snippet for {@link TextAnalyticsClient#recognizeEntitiesBatch(Iterable)}
      */
     public void recognizeEntitiesStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntitiesBatch#Iterable
@@ -233,7 +233,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "I had a wonderful trip to Seattle last week.",
             "I work at Microsoft.");
 
-        textAnalyticsClient.recognizeCategorizedEntitiesBatch(textInputs).iterableByPage().forEach(response -> {
+        textAnalyticsClient.recognizeEntitiesBatch(textInputs).iterableByPage().forEach(response -> {
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = response.getStatistics();
             System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
@@ -248,7 +248,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizeCategorizedEntitiesBatch(Iterable, String)}
+     * Code snippet for {@link TextAnalyticsClient#recognizeEntitiesBatch(Iterable, String)}
      */
     public void recognizeEntitiesStringListWithLanguageCode() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntitiesBatch#Iterable-String
@@ -256,7 +256,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "I had a wonderful trip to Seattle last week.",
             "I work at Microsoft.");
 
-        textAnalyticsClient.recognizeCategorizedEntitiesBatch(textInputs, "en").iterableByPage()
+        textAnalyticsClient.recognizeEntitiesBatch(textInputs, "en").iterableByPage()
             .forEach(response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
@@ -274,7 +274,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizeCategorizedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
+     * Code snippet for {@link TextAnalyticsClient#recognizeEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     public void recognizeEntitiesStringListWithOptions() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
@@ -282,7 +282,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "I had a wonderful trip to Seattle last week.",
             "I work at Microsoft.");
 
-        textAnalyticsClient.recognizeCategorizedEntitiesBatch(textInputs, "en", null).iterableByPage()
+        textAnalyticsClient.recognizeEntitiesBatch(textInputs, "en", null).iterableByPage()
             .forEach(response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
@@ -300,7 +300,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#recognizeCategorizedEntitiesBatch(Iterable, TextAnalyticsRequestOptions,
+     * Code snippet for {@link TextAnalyticsClient#recognizeEntitiesBatch(Iterable, TextAnalyticsRequestOptions,
      * Context)}
      */
     public void recognizeBatchEntitiesMaxOverload() {
@@ -310,7 +310,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "I work at Microsoft.")
         );
 
-        textAnalyticsClient.recognizeCategorizedEntitiesBatch(textDocumentInputs,
+        textAnalyticsClient.recognizeEntitiesBatch(textDocumentInputs,
                 new TextAnalyticsRequestOptions().setStatisticsShown(true), Context.NONE).iterableByPage().forEach(
                     response -> {
                         // Batch statistics

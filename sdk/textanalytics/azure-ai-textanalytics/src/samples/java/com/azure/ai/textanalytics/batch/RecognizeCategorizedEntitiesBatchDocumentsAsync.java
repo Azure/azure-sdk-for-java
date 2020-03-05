@@ -40,17 +40,14 @@ public class RecognizeCategorizedEntitiesBatchDocumentsAsync {
         final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
         // Recognizing batch entities
-        client.recognizeCategorizedEntitiesBatch(inputs, requestOptions).byPage().subscribe(
+        client.recognizeEntitiesBatch(inputs, requestOptions).byPage().subscribe(
             pagedResponse -> {
                 System.out.printf("Model version: %s%n", pagedResponse.getModelVersion());
 
                 // Batch statistics
                 final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
                 System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getDocumentCount(),
-                    batchStatistics.getInvalidDocumentCount(),
-                    batchStatistics.getTransactionCount(),
-                    batchStatistics.getValidDocumentCount());
+                    batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 // Recognized entities for each of document from a batch of documents
                 pagedResponse.getElements().forEach(entitiesResult -> {
@@ -60,14 +57,9 @@ public class RecognizeCategorizedEntitiesBatchDocumentsAsync {
                         System.out.printf("Cannot recognize entities. Error: %s%n", entitiesResult.getError().getMessage());
                     } else {
                         // Valid document
-                        entitiesResult.getEntities().forEach(entity ->
-                            System.out.printf("Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                                entity.getText(),
-                                entity.getCategory(),
-                                entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                                entity.getGraphemeOffset(),
-                                entity.getGraphemeLength(),
-                                entity.getScore()));
+                        entitiesResult.getEntities().forEach(entity -> System.out.printf(
+                            "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getGraphemeOffset(), entity.getGraphemeLength(), entity.getScore()));
                     }
                 });
             },

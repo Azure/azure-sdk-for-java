@@ -49,10 +49,7 @@ public class RecognizePiiBatchDocumentsAsync {
                 // Batch statistics
                 final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
                 System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getDocumentCount(),
-                    batchStatistics.getInvalidDocumentCount(),
-                    batchStatistics.getTransactionCount(),
-                    batchStatistics.getValidDocumentCount());
+                    batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 // Recognized Personally Identifiable Information entities for each of document from a batch of documents
                 pagedResponse.getElements().forEach(entitiesResult -> {
@@ -62,14 +59,9 @@ public class RecognizePiiBatchDocumentsAsync {
                         System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n", entitiesResult.getError().getMessage());
                     } else {
                         // Valid document
-                        entitiesResult.getEntities().forEach(entity ->
-                            System.out.printf("Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                                entity.getText(),
-                                entity.getCategory(),
-                                entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                                entity.getGraphemeOffset(),
-                                entity.getGraphemeLength(),
-                                entity.getScore()));
+                        entitiesResult.getEntities().forEach(entity -> System.out.printf(
+                            "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getGraphemeOffset(), entity.getGraphemeLength(), entity.getScore()));
                     }
                 });
             },

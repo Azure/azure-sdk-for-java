@@ -47,9 +47,7 @@ public class RecognizePiiBatchStringDocuments {
             // Valid document
             entitiesResult.getEntities().forEach(entity -> System.out.printf(
                 "PII entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                entity.getText(), entity.getCategory(),
-                entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                entity.getGraphemeOffset(), entity.getGraphemeLength(), entity.getScore()));
+                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getGraphemeOffset(), entity.getGraphemeLength(), entity.getScore()));
         });
     }
 }

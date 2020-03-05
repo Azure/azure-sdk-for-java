@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -48,9 +49,7 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                 // Batch statistics
                 final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
                 System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getDocumentCount(),
-                    batchStatistics.getInvalidDocumentCount(),
-                    batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+                    batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 // Analyzed sentiment for each of document from a batch of documents
                 pagedResponse.getElements().forEach(analyzeSentimentResult -> {
@@ -60,20 +59,17 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                         System.out.printf("Cannot analyze sentiment. Error: %s%n", analyzeSentimentResult.getError().getMessage());
                     } else {
                         // Valid document
-                        final DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+                        DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
+                        SentimentConfidenceScorePerLabel scores = documentSentiment.getConfidenceScores();
                         System.out.printf("Analyzed document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
-                            documentSentiment.getSentiment(),
-                            documentSentiment.getConfidenceScores().getPositive(),
-                            documentSentiment.getConfidenceScores().getNeutral(),
-                            documentSentiment.getConfidenceScores().getNegative());
-                        documentSentiment.getSentences().forEach(sentenceSentiment ->
-                            System.out.printf("Analyzed sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
-                                sentenceSentiment.getSentiment(),
-                                sentenceSentiment.getConfidenceScores().getPositive(),
-                                sentenceSentiment.getConfidenceScores().getNeutral(),
-                                sentenceSentiment.getConfidenceScores().getNegative(),
-                                sentenceSentiment.getGraphemeLength(),
-                                sentenceSentiment.getGraphemeOffset()));
+                            documentSentiment.getSentiment(), scores.getPositive(), scores.getNeutral(), scores.getNegative());
+                        documentSentiment.getSentences().forEach(sentenceSentiment -> {
+                            SentimentConfidenceScorePerLabel sentenceScores = sentenceSentiment.getConfidenceScores();
+                            System.out.printf(
+                                "Analyzed sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
+                                sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative(),
+                                sentenceSentiment.getGraphemeLength(), sentenceSentiment.getGraphemeOffset());
+                        });
                     }
                 });
             },

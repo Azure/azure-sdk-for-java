@@ -316,8 +316,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<CategorizedEntity> recognizeCategorizedEntities(String text) {
-        return recognizeCategorizedEntities(text, defaultLanguage);
+    public TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String text) {
+        return recognizeEntities(text, defaultLanguage);
     }
 
     /**
@@ -345,7 +345,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<CategorizedEntity> recognizeCategorizedEntities(String text, String language) {
+    public TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String text, String language) {
         return recognizeCategorizedEntityAsyncClient.recognizeEntities(text, language);
     }
 
@@ -372,9 +372,9 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeCategorizedEntitiesBatch(
+    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> textInputs) {
-        return recognizeCategorizedEntitiesBatch(textInputs, defaultLanguage, null);
+        return recognizeEntitiesBatch(textInputs, defaultLanguage, null);
     }
 
     /**
@@ -398,9 +398,9 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeCategorizedEntitiesBatch(
+    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> textInputs, String language) {
-        return recognizeCategorizedEntitiesBatch(textInputs, language, null);
+        return recognizeEntitiesBatch(textInputs, language, null);
     }
 
     /**
@@ -427,9 +427,9 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeCategorizedEntitiesBatch(
+    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> textInputs, String language, TextAnalyticsRequestOptions options) {
-        return recognizeCategorizedEntitiesBatch(
+        return recognizeEntitiesBatch(
             mapByIndex(textInputs, (index, value) -> new TextDocumentInput(index, value, language)), options);
     }
 
@@ -455,7 +455,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code textInputs} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeCategorizedEntitiesBatch(
+    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
         return recognizeCategorizedEntityAsyncClient.recognizeEntitiesBatch(textInputs, options);
     }

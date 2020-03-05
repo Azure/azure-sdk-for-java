@@ -47,10 +47,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                 // Batch statistics
                 final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
                 System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getDocumentCount(),
-                    batchStatistics.getInvalidDocumentCount(),
-                    batchStatistics.getTransactionCount(),
-                    batchStatistics.getValidDocumentCount());
+                    batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 // Recognized linked entities from a batch of documents
                 pagedResponse.getElements().forEach(entitiesResult -> {
@@ -63,16 +60,10 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                         entitiesResult.getEntities().forEach(linkedEntity -> {
                             System.out.println("Linked Entities:");
                             System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                                linkedEntity.getName(),
-                                linkedEntity.getDataSourceEntityId(),
-                                linkedEntity.getUrl(),
-                                linkedEntity.getDataSource());
-                            linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
-                                System.out.printf("(Linked Entity Match) Text: %s, offset: %s, length: %s, score: %.2f.%n",
-                                    linkedEntityMatch.getText(),
-                                    linkedEntityMatch.getGraphemeOffset(),
-                                    linkedEntityMatch.getGraphemeLength(),
-                                    linkedEntityMatch.getScore()));
+                                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+                            linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch -> System.out.printf(
+                                "(Linked Entity Match) Text: %s, offset: %s, length: %s, score: %.2f.%n",
+                                linkedEntityMatch.getText(), linkedEntityMatch.getGraphemeOffset(), linkedEntityMatch.getGraphemeLength(), linkedEntityMatch.getScore()));
                         });
                     }
                 });

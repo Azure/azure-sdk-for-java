@@ -189,12 +189,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     // Entity
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeCategorizedEntities(String)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntities(String)}
      */
     public void recognizeEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string
         String inputText = "Satya Nadella is the CEO of Microsoft";
-        textAnalyticsAsyncClient.recognizeCategorizedEntities(inputText)
+        textAnalyticsAsyncClient.recognizeEntities(inputText)
             .subscribe(entity -> System.out.printf("Recognized categorized entity: %s, category: %s, score: %.2f.%n",
                 entity.getText(),
                 entity.getCategory(),
@@ -203,12 +203,12 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeCategorizedEntities(String, String)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntities(String, String)}
      */
     public void recognizeEntitiesWithLanguage() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string-string
         String inputText1 = "Satya Nadella is the CEO of Microsoft";
-        textAnalyticsAsyncClient.recognizeCategorizedEntities(inputText1, "en")
+        textAnalyticsAsyncClient.recognizeEntities(inputText1, "en")
             .subscribe(entity -> System.out.printf("Recognized categorized entity: %s, category: %s, score: %.2f.%n",
                 entity.getText(),
                 entity.getCategory(),
@@ -217,7 +217,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeCategorizedEntitiesBatch(Iterable)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntitiesBatch(Iterable)}
      */
     public void recognizeEntitiesStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable
@@ -226,7 +226,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "I work at Microsoft."
         );
 
-        textAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch(textInputs).byPage().subscribe(batchResult -> {
+        textAnalyticsAsyncClient.recognizeEntitiesBatch(textInputs).byPage().subscribe(batchResult -> {
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = batchResult.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
@@ -248,14 +248,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeCategorizedEntitiesBatch(Iterable, String)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntitiesBatch(Iterable, String)}
      */
     public void recognizeEntitiesStringListWithLanguageCode() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-String
         List<String> textInputs1 = Arrays.asList(
             "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
-        textAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch(textInputs1, "en").byPage()
+        textAnalyticsAsyncClient.recognizeEntitiesBatch(textInputs1, "en").byPage()
             .subscribe(batchResult -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = batchResult.getStatistics();
@@ -271,14 +271,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeCategorizedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     public void recognizeEntitiesStringListWithOptions() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
         List<String> textInputs1 = Arrays.asList(
             "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
-        textAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch(textInputs1, "en", null).byPage()
+        textAnalyticsAsyncClient.recognizeEntitiesBatch(textInputs1, "en", null).byPage()
             .subscribe(batchResult -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = batchResult.getStatistics();
@@ -294,7 +294,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeCategorizedEntitiesBatch(Iterable,
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntitiesBatch(Iterable,
      * TextAnalyticsRequestOptions)}
      */
     public void recognizeBatchEntitiesMaxOverload() {
@@ -306,7 +306,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
 
-        textAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch(textDocumentInputs1, requestOptions).byPage()
+        textAnalyticsAsyncClient.recognizeEntitiesBatch(textDocumentInputs1, requestOptions).byPage()
             .subscribe(response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
@@ -966,7 +966,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     // Text Analytics Paged flux
     public void textAnalyticsPagedFluxSample() {
         TextAnalyticsPagedFlux<CategorizedEntity> pagedFlux =
-            textAnalyticsAsyncClient.recognizeCategorizedEntities("");
+            textAnalyticsAsyncClient.recognizeEntities("");
         // BEGIN: com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux.subscribe
         pagedFlux
             .log()

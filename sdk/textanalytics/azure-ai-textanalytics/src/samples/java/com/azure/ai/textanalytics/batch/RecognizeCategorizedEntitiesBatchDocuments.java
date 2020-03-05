@@ -35,7 +35,7 @@ public class RecognizeCategorizedEntitiesBatchDocuments {
         );
 
         // Recognizing batch entities
-        client.recognizeCategorizedEntitiesBatch(inputs, null, Context.NONE).forEach(entitiesResult -> {
+        client.recognizeEntitiesBatch(inputs, null, Context.NONE).forEach(entitiesResult -> {
             // Recognized entities for each of document from a batch of documents
             System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
             if (entitiesResult.isError()) {
@@ -43,14 +43,9 @@ public class RecognizeCategorizedEntitiesBatchDocuments {
                 System.out.printf("Cannot recognize entities. Error: %s%n", entitiesResult.getError().getMessage());
             } else {
                 // Valid document
-                entitiesResult.getEntities().forEach(entity ->
-                    System.out.printf("Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                        entity.getText(),
-                        entity.getCategory(),
-                        entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                        entity.getGraphemeOffset(),
-                        entity.getGraphemeLength(),
-                        entity.getScore())
+                entitiesResult.getEntities().forEach(entity -> System.out.printf(
+                    "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
+                    entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getGraphemeOffset(), entity.getGraphemeLength(), entity.getScore())
                 );
             }
         });

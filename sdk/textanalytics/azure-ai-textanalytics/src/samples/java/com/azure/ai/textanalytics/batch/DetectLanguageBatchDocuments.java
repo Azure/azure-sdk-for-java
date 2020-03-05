@@ -44,11 +44,9 @@ public class DetectLanguageBatchDocuments {
                 System.out.printf("Cannot detect language. Error: %s%n", detectLanguageResult.getError().getMessage());
             } else {
                 // Valid document
-                final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
+                final DetectedLanguage language = detectLanguageResult.getPrimaryLanguage();
                 System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %.2f.%n",
-                    detectedPrimaryLanguage.getName(),
-                    detectedPrimaryLanguage.getIso6391Name(),
-                    detectedPrimaryLanguage.getScore());
+                    language.getName(), language.getIso6391Name(), language.getScore());
             }
         });
     }

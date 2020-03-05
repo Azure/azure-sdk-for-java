@@ -30,16 +30,10 @@ public class RecognizeLinkedEntitiesAsync {
             linkedEntity -> {
                 System.out.println("Linked Entities:");
                 System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                    linkedEntity.getName(),
-                    linkedEntity.getDataSourceEntityId(),
-                    linkedEntity.getUrl(),
-                    linkedEntity.getDataSource());
-                linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch -> System.out.printf(
-                        "(Linked Entity Match) Text: %s, offset: %s, length: %s, score: %.2f.%n",
-                        linkedEntityMatch.getText(),
-                        linkedEntityMatch.getGraphemeOffset(),
-                        linkedEntityMatch.getGraphemeLength(),
-                        linkedEntityMatch.getScore()));
+                    linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+                linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                    "(Linked Entity Match) Text: %s, offset: %s, length: %s, score: %.2f.%n",
+                    entityMatch.getText(), entityMatch.getGraphemeOffset(), entityMatch.getGraphemeLength(), entityMatch.getScore()));
             },
             error -> System.err.println("There was an error recognizing linked entity of the text." + error),
             () -> System.out.println("Linked entity recognized."));

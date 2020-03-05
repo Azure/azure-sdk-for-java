@@ -195,21 +195,21 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Entities
     @Test
     public void recognizeEntitiesForTextInput() {
-        StepVerifier.create(client.recognizeCategorizedEntities("I had a wonderful trip to Seattle last week.").byPage())
+        StepVerifier.create(client.recognizeEntities("I had a wonderful trip to Seattle last week.").byPage())
             .assertNext(response -> validateCategorizedEntities(getExpectedCategorizedEntities(), response))
             .verifyComplete();
     }
 
     @Test
     public void recognizeEntitiesForEmptyText() {
-        StepVerifier.create(client.recognizeCategorizedEntities(""))
+        StepVerifier.create(client.recognizeEntities(""))
             .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
                 && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
     @Test
     public void recognizeEntitiesForFaultyText() {
-        StepVerifier.create(client.recognizeCategorizedEntities("!@#%%"))
+        StepVerifier.create(client.recognizeEntities("!@#%%"))
             .expectNextCount(0)
             .verifyComplete();
     }
@@ -217,7 +217,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesBatchInputSingleError() {
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) ->
-            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs, null))
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null))
                 .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
                     && throwable.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE)));
     }
@@ -225,7 +225,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForBatchInput() {
         recognizeBatchCategorizedEntityRunner((inputs) ->
-            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs, null).byPage())
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null).byPage())
                 .assertNext(response -> validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), response))
                 .verifyComplete());
     }
@@ -233,7 +233,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForBatchInputShowStatistics() {
         recognizeBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs, options).byPage())
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs, options).byPage())
                 .assertNext(response -> validateCategorizedEntitiesWithPagedResponse(true, getExpectedBatchCategorizedEntities(), response))
                 .verifyComplete());
     }
@@ -241,7 +241,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForBatchStringInput() {
         recognizeCategorizedEntityStringInputRunner((inputs) ->
-            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs).byPage())
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs).byPage())
                 .assertNext(response -> validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), response))
                 .verifyComplete());
     }
@@ -249,7 +249,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForListLanguageHint() {
         recognizeCategorizedEntitiesLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs, language).byPage())
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs, language).byPage())
                 .assertNext(response -> validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), response))
                 .verifyComplete());
     }
@@ -257,7 +257,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForListWithOptions() {
         recognizeStringBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizeCategorizedEntitiesBatch(inputs, null, options).byPage())
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null, options).byPage())
                 .assertNext(response -> validateCategorizedEntitiesWithPagedResponse(true, getExpectedBatchCategorizedEntities(), response))
                 .verifyComplete());
     }
