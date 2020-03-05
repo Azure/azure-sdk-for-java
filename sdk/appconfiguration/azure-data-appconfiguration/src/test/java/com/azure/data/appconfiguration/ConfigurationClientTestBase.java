@@ -161,8 +161,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void setConfigurationSetting(HttpClient httpClient,
-	    ConfigurationServiceVersion serviceVersion);
+    public abstract void setConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     void setConfigurationSettingRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -177,7 +176,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
     @Test
     public abstract void setConfigurationSettingIfETag(HttpClient httpClient,
-	    ConfigurationServiceVersion serviceVersion);
+        ConfigurationServiceVersion serviceVersion);
 
     void setConfigurationSettingIfETagRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -229,8 +228,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void deleteConfigurationSetting(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion);
+    public abstract void deleteConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     void deleteConfigurationSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -266,12 +264,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void setReadOnly(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion);
+    public abstract void setReadOnly(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void clearReadOnly(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion);
+    public abstract void clearReadOnly(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
     public abstract void setReadOnlyWithConfigurationSetting(HttpClient httpClient,
@@ -289,12 +285,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listWithKeyAndLabel(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion);
+    public abstract void listWithKeyAndLabel(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listWithMultipleKeys(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion);
+    public abstract void listWithMultipleKeys(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     void listWithMultipleKeysRunner(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, Iterable<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value");
@@ -305,8 +299,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listWithMultipleLabels(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion);
+    public abstract void listWithMultipleLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     void listWithMultipleLabelsRunner(String key, String label, String label2, BiFunction<ConfigurationSetting, ConfigurationSetting, Iterable<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label);
@@ -390,8 +383,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listRevisions(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion);
+    public abstract void listRevisions(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     static void validateListRevisions(ConfigurationSetting expected, ConfigurationSetting actual) {
         assertEquals(expected.getKey(), actual.getKey());
@@ -439,12 +431,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listRevisionsAcceptDateTime(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion);
+    public abstract void listRevisionsAcceptDateTime(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listRevisionsWithPagination(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion);
+    public abstract void listRevisionsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
     public abstract void listConfigurationSettingsWithPagination(HttpClient httpClient,

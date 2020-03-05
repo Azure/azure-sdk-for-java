@@ -24,6 +24,7 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -32,6 +33,7 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import org.junit.jupiter.params.provider.Arguments;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -70,7 +72,6 @@ public abstract class KeyClientTestBase extends TestBase {
                 .build();
         }
 
-        HttpClient httpClient;
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), KeyServiceVersion.getLatest()));
@@ -82,17 +83,12 @@ public abstract class KeyClientTestBase extends TestBase {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        if (interceptorManager.isPlaybackMode()) {
-            httpClient = interceptorManager.getPlaybackClient();
-            policies.add(interceptorManager.getRecordPolicy());
-        } else {
-            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
+        if (!interceptorManager.isPlaybackMode()) {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
             .build();
 
         T client;
@@ -102,7 +98,7 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void setKey();
+    public abstract void setKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     void setKeyRunner(Consumer<CreateKeyOptions> testRunner) {
         final Map<String, String> tags = new HashMap<>();
@@ -118,21 +114,21 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void setKeyEmptyName();
+    public abstract void setKeyEmptyName(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     @Test
-    public abstract void setKeyNullType();
+    public abstract void setKeyNullType(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     void setKeyEmptyValueRunner(Consumer<CreateKeyOptions> testRunner) {
         CreateKeyOptions key = new CreateKeyOptions(KEY_NAME, null);
         testRunner.accept(key);
     }
 
-    @Test public abstract void setKeyNull();
+    @Test public abstract void setKeyNull(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
 
     @Test
-    public abstract void updateKey();
+    public abstract void updateKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     void updateKeyRunner(BiConsumer<CreateKeyOptions, CreateKeyOptions> testRunner) {
 
@@ -153,7 +149,7 @@ public abstract class KeyClientTestBase extends TestBase {
 
 
     @Test
-    public abstract void updateDisabledKey();
+    public abstract void updateDisabledKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     void updateDisabledKeyRunner(BiConsumer<CreateKeyOptions, CreateKeyOptions> testRunner) {
 
@@ -170,7 +166,7 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getKey();
+    public abstract void getKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     void getKeyRunner(Consumer<CreateKeyOptions> testRunner) {
         final CreateKeyOptions originalKey = new CreateKeyOptions(generateResourceId("testKey4"), RSA_KEY_TYPE)
@@ -180,7 +176,7 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getKeySpecificVersion();
+    public abstract void getKeySpecificVersion(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     void getKeySpecificVersionRunner(BiConsumer<CreateKeyOptions, CreateKeyOptions> testRunner) {
         final String keyName = generateResourceId("testKey3");
@@ -194,10 +190,10 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getKeyNotFound();
+    public abstract void getKeyNotFound(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     @Test
-    public abstract void deleteKey();
+    public abstract void deleteKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     void deleteKeyRunner(Consumer<CreateKeyOptions> testRunner) {
         final CreateKeyOptions keyToDelete = new CreateKeyOptions(generateResourceId("testKey5"), RSA_KEY_TYPE)
@@ -207,10 +203,10 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void deleteKeyNotFound();
+    public abstract void deleteKeyNotFound(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     @Test
-    public abstract void getDeletedKey();
+    public abstract void getDeletedKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     void getDeletedKeyRunner(Consumer<CreateKeyOptions> testRunner) {
         final CreateKeyOptions keyToDeleteAndGet = new CreateKeyOptions(generateResourceId("testKey6"), RSA_KEY_TYPE)
@@ -219,10 +215,10 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getDeletedKeyNotFound();
+    public abstract void getDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     @Test
-    public abstract void recoverDeletedKey();
+    public abstract void recoverDeletedKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     void recoverDeletedKeyRunner(Consumer<CreateKeyOptions> testRunner) {
         final CreateKeyOptions keyToDeleteAndRecover = new CreateKeyOptions(generateResourceId("testKey7"), RSA_KEY_TYPE)
@@ -231,10 +227,10 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void recoverDeletedKeyNotFound();
+    public abstract void recoverDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     @Test
-    public abstract void backupKey();
+    public abstract void backupKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     void backupKeyRunner(Consumer<CreateKeyOptions> testRunner) {
         final CreateKeyOptions keyToBackup = new CreateKeyOptions(generateResourceId("testKey8"), RSA_KEY_TYPE)
@@ -243,10 +239,10 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void backupKeyNotFound();
+    public abstract void backupKeyNotFound(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     @Test
-    public abstract void restoreKey();
+    public abstract void restoreKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     void restoreKeyRunner(Consumer<CreateKeyOptions> testRunner) {
         final CreateKeyOptions keyToBackupAndRestore = new CreateKeyOptions(generateResourceId("testKey9"), RSA_KEY_TYPE)
@@ -255,10 +251,10 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void restoreKeyFromMalformedBackup();
+    public abstract void restoreKeyFromMalformedBackup(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     @Test
-    public abstract void listKeys();
+    public abstract void listKeys(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     void listKeysRunner(Consumer<HashMap<String, CreateKeyOptions>> testRunner) {
         HashMap<String, CreateKeyOptions> keys = new HashMap<>();
@@ -273,7 +269,7 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listKeyVersions();
+    public abstract void listKeyVersions(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     void listKeyVersionsRunner(Consumer<List<CreateKeyOptions>> testRunner) {
         List<CreateKeyOptions> keys = new ArrayList<>();
@@ -287,7 +283,7 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listDeletedKeys();
+    public abstract void listDeletedKeys(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
 
     void listDeletedKeysRunner(Consumer<HashMap<String, CreateKeyOptions>> testRunner) {
         HashMap<String, CreateKeyOptions> keys = new HashMap<>();
@@ -412,5 +408,24 @@ public abstract class KeyClientTestBase extends TestBase {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
+     * service versions that should be tested.
+     *
+     * @return A stream of HttpClient and service version combinations to test.
+     */
+    protected Stream<Arguments> getTestParameters() {
+        // when this issues is closed, the newer version of junit will have better support for
+        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+        List<Arguments> argumentsList = new ArrayList<>();
+        getHttpClients()
+            .forEach(httpClient -> {
+                for (KeyServiceVersion serviceVersion : KeyServiceVersion.values()) {
+                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
+                }
+            });
+        return argumentsList.stream();
     }
 }
