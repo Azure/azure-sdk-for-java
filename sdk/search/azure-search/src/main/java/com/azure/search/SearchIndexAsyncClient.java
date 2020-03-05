@@ -11,10 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.search.SearchServiceUrlParser.SearchServiceUrlParts;
 import com.azure.search.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.implementation.SearchIndexRestClientImpl;
 import com.azure.search.implementation.SerializationUtil;
+import com.azure.search.implementation.util.DocumentResponseConversions;
+import com.azure.search.implementation.util.SearchServiceUrlParser;
+import com.azure.search.implementation.util.SearchServiceUrlParser.SearchServiceUrlParts;
+import com.azure.search.implementation.util.SuggestOptionsHandler;
 import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
 import com.azure.search.models.IndexAction;
@@ -102,9 +105,9 @@ public final class SearchIndexAsyncClient {
         this.httpPipeline = httpPipeline;
 
         restClient = new SearchIndexRestClientBuilder()
-            .searchServiceName(parts.serviceName)
+            .searchServiceName(parts.getServiceName())
             .indexName(indexName)
-            .searchDnsSuffix(parts.dnsSuffix)
+            .searchDnsSuffix(parts.getDnsSuffix())
             .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
             .serializer(SERIALIZER)

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.search.implementation.util.SearchServiceUrlParser;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,14 +37,14 @@ public class SearchServiceUrlParserTests {
     @Test
     public void parsesProdEndpoint() {
         SearchServiceUrlParser.SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts("https://test1.search.windows.net");
-        assertEquals("test1", parts.serviceName);
-        assertEquals("search.windows.net", parts.dnsSuffix);
+        assertEquals("test1", parts.getServiceName());
+        assertEquals("search.windows.net", parts.getDnsSuffix());
     }
 
     @Test
     public void parsesDfEndpoint() {
         SearchServiceUrlParser.SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts("https://test1.search-dogfood.windows-int.net");
-        assertEquals("test1", parts.serviceName);
-        assertEquals("search-dogfood.windows-int.net", parts.dnsSuffix);
+        assertEquals("test1", parts.getServiceName());
+        assertEquals("search-dogfood.windows-int.net", parts.getDnsSuffix());
     }
 }
