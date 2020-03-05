@@ -77,17 +77,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    public static final int MAX_APPEND_FILE_BYTES = 100 * Constants.MB;
-
-    /**
-     * The block size to use if none is specified in parallel operations.
-     */
-    public static final int FILE_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
-
-    /**
-     * The number of buffers to use if none is specified on the buffered upload method.
-     */
-    public static final int FILE_DEFAULT_NUMBER_OF_BUFFERS = 8;
+    static final int MAX_APPEND_FILE_BYTES = 100 * Constants.MB;
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileAsyncClient.class);
 
