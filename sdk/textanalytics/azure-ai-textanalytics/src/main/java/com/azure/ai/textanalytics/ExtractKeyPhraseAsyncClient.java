@@ -50,7 +50,7 @@ class ExtractKeyPhraseAsyncClient {
 
     /**
      * Helper function that extracts a single documents and returns {@link TextAnalyticsPagedFlux} that is a paged
-     * flux contains extract key phrases.
+     * flux containing extract key phrases.
      *
      * @param text An input text.
      * @param language The language hint.
@@ -84,9 +84,9 @@ class ExtractKeyPhraseAsyncClient {
 
     /**
      * Helper function that extracts a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
-     * flux contains {@link ExtractKeyPhraseResult}.
+     * flux containing {@link ExtractKeyPhraseResult}.
      *
-     * @param textInputs A batch of input texts.
+     * @param textInputs A batch of documents.
      * @param options The request options, such as the training model version and to show statistics boolean.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link ExtractKeyPhraseResult}.
@@ -114,9 +114,9 @@ class ExtractKeyPhraseAsyncClient {
 
     /**
      * Helper function that calling service with max overloaded parameters and returns {@link TextAnalyticsPagedFlux}
-     * that is a paged flux contains {@link ExtractKeyPhraseResult}.
+     * that is a paged flux containing {@link ExtractKeyPhraseResult}.
      *
-     * @param textInputs A batch of input texts.
+     * @param textInputs A batch of documents.
      * @param options The request options, such as the training model version and to show statistics boolean.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *

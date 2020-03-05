@@ -7,10 +7,11 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentimentLabel;
@@ -52,9 +53,9 @@ class AnalyzeSentimentAsyncClient {
 
     /**
      * Helper function that analyzes a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
-     * flux contains {@link AnalyzeSentimentResult}.
+     * flux containing {@link AnalyzeSentimentResult}.
      *
-     * @param textInputs A batch of input texts.
+     * @param textInputs A batch of documents.
      * @param options The request options, such as the training model version and to show statistics.
      *
      * @return {@link TextAnalyticsPagedFlux} of {@link AnalyzeSentimentResult}.
@@ -82,9 +83,9 @@ class AnalyzeSentimentAsyncClient {
 
     /**
      * Helper function that calling service with max overloaded parameters and returns {@link TextAnalyticsPagedFlux}
-     * that is a paged flux contains {@link AnalyzeSentimentResult}.
+     * that is a paged flux containing {@link AnalyzeSentimentResult}.
      *
-     * @param textInputs A batch of input texts.
+     * @param textInputs A batch of documents.
      * @param options The request options, such as the training model version and to show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -117,30 +118,21 @@ class AnalyzeSentimentAsyncClient {
      * @return The {@link TextAnalyticsPagedResponse} of {@link AnalyzeSentimentResult} returned by the SDK.
      */
     private TextAnalyticsPagedResponse<AnalyzeSentimentResult> toTextAnalyticsPagedResponse(
-        final SimpleResponse<SentimentResponse> response) {
-        SentimentResponse sentimentResponse = response.getValue();
-        List<AnalyzeSentimentResult> analyzeSentimentResults = new ArrayList<>();
+        SimpleResponse<SentimentResponse> response) {
+        final SentimentResponse sentimentResponse = response.getValue();
+        final List<AnalyzeSentimentResult> analyzeSentimentResults = new ArrayList<>();
         for (DocumentSentiment documentSentiment : sentimentResponse.getDocuments()) {
-
-            analyzeSentimentResults.add(
-                convertToAnalyzeSentimentResult(documentSentiment));
+            analyzeSentimentResults.add(convertToAnalyzeSentimentResult(documentSentiment));
         }
         for (DocumentError documentError : sentimentResponse.getErrors()) {
-            final com.azure.ai.textanalytics.models.TextAnalyticsError error =
-                toTextAnalyticsError(documentError.getError());
-
-            final String documentId = documentError.getId();
-            analyzeSentimentResults.add(new AnalyzeSentimentResult(documentId, null,
-                error, null));
+            analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
         }
         return new TextAnalyticsPagedResponse<>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            analyzeSentimentResults,
-            null,
-            sentimentResponse.getModelVersion(), sentimentResponse.getStatistics() == null ? null
-            : toBatchStatistics(sentimentResponse.getStatistics()));
+            response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            analyzeSentimentResults, null,
+            sentimentResponse.getModelVersion(),
+            sentimentResponse.getStatistics() == null ? null : toBatchStatistics(sentimentResponse.getStatistics()));
     }
 
     /**
@@ -162,13 +154,12 @@ class AnalyzeSentimentAsyncClient {
                     documentSentiment.getSentiment())));
         }
 
-        final com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel
-            confidenceScorePerLabel = documentSentiment.getDocumentScores();
+        final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getDocumentScores();
 
         // Sentence text sentiment
         final List<SentenceSentiment> sentenceSentiments = documentSentiment.getSentences().stream()
             .map(sentenceSentiment -> {
-                TextSentimentLabel sentenceSentimentLabel = TextSentimentLabel.fromString(
+                final TextSentimentLabel sentenceSentimentLabel = TextSentimentLabel.fromString(
                     sentenceSentiment.getSentiment().toString());
                 if (sentenceSentimentLabel == null) {
                     // Not throw exception for an invalid Sentiment type because we should not skip processing the
@@ -177,25 +168,25 @@ class AnalyzeSentimentAsyncClient {
                         new RuntimeException(String.format(Locale.ROOT, "'%s' is not valid text sentiment.",
                             sentenceSentiment.getSentiment())));
                 }
-                com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel
-                    confidenceScorePerSentence = sentenceSentiment.getSentenceScores();
+                final SentimentConfidenceScorePerLabel confidenceScorePerSentence =
+                    sentenceSentiment.getSentenceScores();
 
                 return new SentenceSentiment(
                     sentenceSentimentLabel,
-                    new SentimentConfidenceScorePerLabel(confidenceScorePerSentence.getNegative(),
+                    new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
                     sentenceSentiment.getLength(),
                     sentenceSentiment.getOffset());
-
             }).collect(Collectors.toList());
 
         return new AnalyzeSentimentResult(
             documentSentiment.getId(),
-            documentSentiment.getStatistics() == null ? null
-                : toTextDocumentStatistics(documentSentiment.getStatistics()), null,
+            documentSentiment.getStatistics() == null
+                ? null : toTextDocumentStatistics(documentSentiment.getStatistics()),
+            null,
             new com.azure.ai.textanalytics.models.DocumentSentiment(
                 documentSentimentLabel,
-                new SentimentConfidenceScorePerLabel(
+                new SentimentConfidenceScores(
                     confidenceScorePerLabel.getNegative(),
                     confidenceScorePerLabel.getNeutral(),
                     confidenceScorePerLabel.getPositive()),

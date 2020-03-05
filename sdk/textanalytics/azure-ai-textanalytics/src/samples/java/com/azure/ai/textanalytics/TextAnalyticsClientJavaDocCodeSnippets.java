@@ -97,7 +97,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         textAnalyticsClient.detectLanguageBatch(textInputs).iterableByPage().forEach(response -> {
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-            System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+            System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
             response.getElements().forEach(detectLanguageResult -> {
@@ -123,7 +123,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-                System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
                 // Batch result of languages
                 response.getElements().forEach(detectLanguageResult -> {
@@ -150,7 +150,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-                System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
                 // Batch result of languages
                 response.getElements().forEach(detectLanguageResult -> {
@@ -180,7 +180,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     // Batch statistics
                     TextDocumentBatchStatistics batchStatistics = response.getStatistics();
                     System.out.printf(
-                        "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                        "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                         batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
                     // Batch result of languages
                     response.getElements().forEach(detectLanguageResult -> {
@@ -236,7 +236,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         textAnalyticsClient.recognizeEntitiesBatch(textInputs).iterableByPage().forEach(response -> {
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-            System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+            System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
             response.getElements().forEach(recognizeEntitiesResult ->
@@ -261,7 +261,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
                 System.out.printf(
-                    "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                    "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 response.getElements().forEach(recognizeEntitiesResult ->
@@ -287,7 +287,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
                 System.out.printf(
-                    "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                    "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 response.getElements().forEach(recognizeEntitiesResult ->
@@ -316,7 +316,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                         // Batch statistics
                         TextDocumentBatchStatistics batchStatistics = response.getStatistics();
                         System.out.printf(
-                            "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                            "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                         response.getElements().forEach(recognizeEntitiesResult ->
@@ -365,7 +365,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         textAnalyticsClient.recognizePiiEntitiesBatch(textInputs).iterableByPage().forEach(response -> {
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-            System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+            System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
             response.getElements().forEach(recognizePiiEntitiesResult ->
@@ -393,7 +393,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             .forEach(response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-                System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 response.getElements().forEach(recognizePiiEntitiesResult ->
@@ -420,7 +420,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             .forEach(response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-                System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 response.getElements().forEach(recognizePiiEntitiesResult ->
@@ -449,7 +449,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     // Batch statistics
                     TextDocumentBatchStatistics batchStatistics = response.getStatistics();
                     System.out.printf(
-                        "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                        "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                         batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                     response.getElements().forEach(recognizePiiEntitiesResult ->
@@ -524,7 +524,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         textAnalyticsClient.recognizeLinkedEntitiesBatch(textInputs).iterableByPage().forEach(response -> {
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-            System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+            System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
             response.getElements().forEach(recognizeLinkedEntitiesResult ->
@@ -560,7 +560,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             .forEach(response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-                System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 response.getElements().forEach(recognizeLinkedEntitiesResult ->
@@ -596,7 +596,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             .forEach(response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-                System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 response.getElements().forEach(recognizeLinkedEntitiesResult ->
@@ -634,7 +634,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     // Batch statistics
                     TextDocumentBatchStatistics batchStatistics = response.getStatistics();
                     System.out.printf(
-                        "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                        "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                         batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                     response.getElements().forEach(recognizeLinkedEntitiesResult ->
@@ -695,10 +695,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         textAnalyticsClient.extractKeyPhrasesBatch(textInputs).iterableByPage().forEach(response -> {
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-            System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+            System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-            // Extracted key phrase for each of document from a batch of documents
+            // Extracted key phrase for each of documents from a batch of documents
             response.getElements().forEach(extractKeyPhraseResult -> {
                 System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
                 // Valid document
@@ -725,10 +725,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
                 System.out.printf(
-                    "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                    "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                // Extracted key phrase for each of document from a batch of documents
+                // Extracted key phrase for each of documents from a batch of documents
                 response.getElements().forEach(extractKeyPhraseResult -> {
                     System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
                     // Valid document
@@ -755,10 +755,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
                 System.out.printf(
-                    "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                    "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                // Extracted key phrase for each of document from a batch of documents
+                // Extracted key phrase for each of documents from a batch of documents
                 response.getElements().forEach(extractKeyPhraseResult -> {
                     System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
                     // Valid document
@@ -787,10 +787,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     // Batch statistics
                     TextDocumentBatchStatistics batchStatistics = response.getStatistics();
                     System.out.printf(
-                        "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                        "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                         batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                    // Extracted key phrase for each of document from a batch of documents
+                    // Extracted key phrase for each of documents from a batch of documents
                     response.getElements().forEach(extractKeyPhraseResult -> {
                         System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
                         // Valid document
@@ -870,10 +870,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = response.getStatistics();
             System.out.printf(
-                "A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                "A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-            // Analyzed sentiment for each of document from a batch of documents
+            // Analyzed sentiment for each of documents from a batch of documents
             response.getElements().forEach(analyzeSentimentResult -> {
                 System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
                 // Valid document
@@ -912,10 +912,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             .forEach(response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-                System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                // Analyzed sentiment for each of document from a batch of documents
+                // Analyzed sentiment for each of documents from a batch of documents
                 response.getElements().forEach(analyzeSentimentResult -> {
                     System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
                     // Valid document
@@ -954,10 +954,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             .forEach(response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-                System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                // Analyzed sentiment for each of document from a batch of documents
+                // Analyzed sentiment for each of documents from a batch of documents
                 response.getElements().forEach(analyzeSentimentResult -> {
                     System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
                     // Valid document
@@ -997,10 +997,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             .forEach(response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
-                System.out.printf("A batch of document statistics, transaction count: %s, valid document count: %s.%n",
+                System.out.printf("A batch of documents statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                // Analyzed sentiment for each of document from a batch of documents
+                // Analyzed sentiment for each of documents from a batch of documents
                 response.getElements().forEach(analyzeSentimentResult -> {
                     System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
                     // Valid document

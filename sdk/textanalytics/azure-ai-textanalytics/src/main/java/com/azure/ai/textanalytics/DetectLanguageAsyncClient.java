@@ -47,9 +47,9 @@ class DetectLanguageAsyncClient {
 
     /**
      * Helper function that detects a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
-     * flux contains {@link DetectLanguageResult}.
+     * flux containing {@link DetectLanguageResult}.
      *
-     * @param textInputs A batch of input texts.
+     * @param textInputs A batch of documents.
      * @param options The request options, such as the training model version and to show statistics boolean.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link DetectLanguageResult}.
@@ -82,9 +82,9 @@ class DetectLanguageAsyncClient {
 
     /**
      * Helper function that detects a batch of documents with {@link Context} and returns
-     * {@link TextAnalyticsPagedFlux} that is a paged flux contains {@link DetectLanguageResult}.
+     * {@link TextAnalyticsPagedFlux} that is a paged flux containing {@link DetectLanguageResult}.
      *
-     * @param textInputs A batch of input texts.
+     * @param textInputs A batch of documents.
      * @param options The request options, such as the training model version and to show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *

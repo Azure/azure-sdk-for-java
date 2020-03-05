@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The TextAnalyticsRequestOptions model.
+ * The {@link TextAnalyticsRequestOptions} model.
  */
 @Fluent
 public final class TextAnalyticsRequestOptions {
@@ -16,7 +16,7 @@ public final class TextAnalyticsRequestOptions {
     /**
      * Gets the version of the text analytics model used by this operation.
      *
-     * @return the model version
+     * @return The model version.
      */
     public String getModelVersion() {
         return modelVersion;
@@ -26,8 +26,8 @@ public final class TextAnalyticsRequestOptions {
      * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
      *
-     * @param modelVersion the model version
-     * @return the TextAnalyticsRequestOptions object itself
+     * @param modelVersion The model version.
+     * @return The {@link TextAnalyticsRequestOptions} object itself.
      */
     public TextAnalyticsRequestOptions setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
@@ -37,7 +37,7 @@ public final class TextAnalyticsRequestOptions {
     /**
      * Get the value of {@code isStatisticsShown}.
      *
-     * @return the value of {@code isStatisticsShown}
+     * @return The value of {@code isStatisticsShown}.
      */
     public boolean isStatisticsShown() {
         return isStatisticsShown;
@@ -46,9 +46,9 @@ public final class TextAnalyticsRequestOptions {
     /**
      * Set the value of {@code isStatisticsShown}.
      *
-     * @param statisticsShown if a boolean value was specified in the request this field will contain
-     * information about the document payload
-     * @return the TextAnalyticsRequestOptions object itself
+     * @param statisticsShown If a boolean value was specified in the request this field will contain
+     * information about the document payload.
+     * @return the {@link TextAnalyticsRequestOptions} object itself.
      */
     public TextAnalyticsRequestOptions setStatisticsShown(boolean statisticsShown) {
         this.isStatisticsShown = statisticsShown;

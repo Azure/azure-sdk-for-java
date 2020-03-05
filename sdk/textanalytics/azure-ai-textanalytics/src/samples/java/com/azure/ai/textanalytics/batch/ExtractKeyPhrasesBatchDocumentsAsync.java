@@ -46,10 +46,10 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
 
                 // Batch statistics
                 final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
-                System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
+                System.out.printf("A batch of documents statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                // Extracted key phrase for each of document from a batch of documents
+                // Extracted key phrase for each of documents from a batch of documents
                 pagedResponse.getElements().forEach(extractKeyPhraseResult -> {
                     System.out.printf("%nDocument ID: %s%n", extractKeyPhraseResult.getId());
                     if (extractKeyPhraseResult.isError()) {

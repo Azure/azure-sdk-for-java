@@ -36,7 +36,7 @@ public class RecognizeCategorizedEntitiesBatchDocuments {
 
         // Recognizing batch entities
         client.recognizeEntitiesBatch(inputs, null, Context.NONE).forEach(entitiesResult -> {
-            // Recognized entities for each of document from a batch of documents
+            // Recognized entities for each of documents from a batch of documents
             System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
             if (entitiesResult.isError()) {
                 // Erroneous document

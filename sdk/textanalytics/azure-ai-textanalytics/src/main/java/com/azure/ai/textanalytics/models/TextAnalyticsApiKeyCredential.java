@@ -12,7 +12,6 @@ import java.util.Objects;
  *
  * <p>Be able to rotate an existing API key</p>
  * {@codesnippet com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential}
- *
  */
 public final class TextAnalyticsApiKeyCredential {
     private final ClientLogger logger = new ClientLogger(TextAnalyticsApiKeyCredential.class);
@@ -21,7 +20,7 @@ public final class TextAnalyticsApiKeyCredential {
     /**
      * Creates a {@link TextAnalyticsApiKeyCredential} model that describes API key for authentication.
      *
-     * @param apiKey the API key for authentication
+     * @param apiKey The API key for authentication.
      */
     public TextAnalyticsApiKeyCredential(String apiKey) {
         Objects.requireNonNull(apiKey, "`apiKey` cannot be null.");
@@ -34,7 +33,7 @@ public final class TextAnalyticsApiKeyCredential {
     /**
      * Get the API key.
      *
-     * @return the API key
+     * @return The API key for authentication.
      */
     public String getApiKey() {
         return this.apiKey;
@@ -43,7 +42,7 @@ public final class TextAnalyticsApiKeyCredential {
     /**
      * Set the API key.
      *
-     * @param apiKey the API key for authentication
+     * @param apiKey The API key for authentication.
      */
     public void updateCredential(String apiKey) {
         this.apiKey = Objects.requireNonNull(apiKey, "`apiKey` cannot be null.");

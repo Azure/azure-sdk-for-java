@@ -51,7 +51,7 @@ class RecognizeLinkedEntityAsyncClient {
 
     /**
      * Helper function that recognize a single of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
-     * flux contains {@link LinkedEntity}.
+     * flux containing {@link LinkedEntity}.
      *
      * @param text A single input text.
      * @param language The language hint.
@@ -85,9 +85,9 @@ class RecognizeLinkedEntityAsyncClient {
 
     /**
      * Helper function that recognizes a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a
-     * paged flux contains {@link RecognizeLinkedEntitiesResult}.
+     * paged flux containing {@link RecognizeLinkedEntitiesResult}.
      *
-     * @param textInputs A batch of input texts.
+     * @param textInputs A batch of documents.
      * @param options The request options, such as the training model version and to show statistics.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link RecognizeLinkedEntitiesResult}.
@@ -117,7 +117,7 @@ class RecognizeLinkedEntityAsyncClient {
      * Helper function that calling service with max overloaded parameters and returns
      * {@link TextAnalyticsPagedFlux} that is the collection of entity document results.
      *
-     * @param textInputs A batch of input texts.
+     * @param textInputs A batch of documents.
      * @param options The request options, such as the training model version and to show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -151,7 +151,7 @@ class RecognizeLinkedEntityAsyncClient {
     private TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult> toTextAnalyticsPagedResponse(
         final SimpleResponse<EntityLinkingResult> response) {
         final EntityLinkingResult entityLinkingResult = response.getValue();
-        // List of document results
+        // List of documents results
         final List<RecognizeLinkedEntitiesResult> linkedEntitiesResults = new ArrayList<>();
         entityLinkingResult.getDocuments().forEach(documentLinkedEntities ->
             linkedEntitiesResults.add(new RecognizeLinkedEntitiesResult(

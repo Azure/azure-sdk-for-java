@@ -13,7 +13,7 @@ public final class AnalyzeSentimentResult extends DocumentResult {
     private final DocumentSentiment documentSentiment;
 
     /**
-     * Creates a {@code TextSentimentResult} model that describes analyzed sentiment result.
+     * Creates a {@link AnalyzeSentimentResult} model that describes analyzed sentiment result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.

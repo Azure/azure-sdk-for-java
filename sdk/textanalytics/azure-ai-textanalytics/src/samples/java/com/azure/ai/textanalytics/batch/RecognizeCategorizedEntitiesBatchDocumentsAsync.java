@@ -46,10 +46,10 @@ public class RecognizeCategorizedEntitiesBatchDocumentsAsync {
 
                 // Batch statistics
                 final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
-                System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
+                System.out.printf("A batch of documents statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                // Recognized entities for each of document from a batch of documents
+                // Recognized entities for each of documents from a batch of documents
                 pagedResponse.getElements().forEach(entitiesResult -> {
                     System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
                     if (entitiesResult.isError()) {

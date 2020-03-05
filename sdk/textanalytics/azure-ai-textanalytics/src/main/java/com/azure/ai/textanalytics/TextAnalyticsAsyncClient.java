@@ -36,7 +36,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Text Analytics.
  * Operations allowed by the client are language detection, sentiment analysis, and recognition entities,
- * Personally Identifiable Information entities, and linked entities of a document or a list of document.
+ * Personally Identifiable Information entities, and linked entities of a document or a list of documents.
  *
  * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>
  * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation}
@@ -180,12 +180,12 @@ public final class TextAnalyticsAsyncClient {
      * the country hint.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Detects language in a list of document. Subscribes to the call asynchronously and prints out the
+     * <p>Detects language in a list of documents. Subscribes to the call asynchronously and prints out the
      * detected language details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable}
      *
-     * @param textInputs The list of document to be analyzed.
+     * @param textInputs The list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
@@ -203,12 +203,12 @@ public final class TextAnalyticsAsyncClient {
      * Returns the detected language for a batch of documents with the provided country hint.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Detects language in a list of document with a provided country hint for the batch. Subscribes to the
+     * <p>Detects language in a list of documents with a provided country hint for the batch. Subscribes to the
      * call asynchronously and prints out the detected language details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-String}
      *
-     * @param textInputs The list of document to be analyzed.
+     * @param textInputs The list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
@@ -230,13 +230,13 @@ public final class TextAnalyticsAsyncClient {
      * Returns the detected language for a batch of documents with the provided country hint and request option.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Detects language in a list of document with a provided country hint and request option for the batch.
+     * <p>Detects language in a list of documents with a provided country hint and request option for the batch.
      * Subscribes to the call asynchronously and prints out the detected language details when a response is received.
      * </p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
-     * @param textInputs The list of document to be analyzed.
+     * @param textInputs The list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
@@ -350,7 +350,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of general categorized entities for the provided list of document.
+     * Returns a list of general categorized entities for the provided list of documents.
      *
      * This method will use the default language that sets up in
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
@@ -362,7 +362,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable}
      *
-     * @param textInputs A list of document to recognize entities for.
+     * @param textInputs A list of documents to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
@@ -378,7 +378,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of general categorized entities for the provided list of document with provided language code.
+     * Returns a list of general categorized entities for the provided list of documents with provided language code.
      *
      * <p><strong>Code sample</strong></p>
      * <p>Recognize entities in a document with the provided language code. Subscribes to the call asynchronously and
@@ -386,7 +386,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-String}
      *
-     * @param textInputs A list of document to recognize entities for.
+     * @param textInputs A list of documents to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
@@ -404,7 +404,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of general categorized entities for the provided list of document with the provided language code
+     * Returns a list of general categorized entities for the provided list of documents with the provided language code
      * and request options.
      *
      * <p><strong>Code sample</strong></p>
@@ -413,7 +413,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
-     * @param textInputs A list of document to recognize entities for.
+     * @param textInputs A list of documents to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
@@ -524,7 +524,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of document.
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of documents.
      *
      * For the list of supported entity types, check: <a href="https://aka.ms/taner"></a>.
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
@@ -534,12 +534,12 @@ public final class TextAnalyticsAsyncClient {
      * the language.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Recognize Personally Identifiable Information entities in a list of document. Subscribes to the call
+     * <p>Recognize Personally Identifiable Information entities in a list of documents. Subscribes to the call
      * asynchronously and prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable}
      *
-     * @param textInputs A list of document to recognize Personally Identifiable Information entities for.
+     * @param textInputs A list of documents to recognize Personally Identifiable Information entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
@@ -555,19 +555,19 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of document with
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of documents with
      * provided language code.
      *
      * For the list of supported entity types, check <a href="https://aka.ms/taner"></a>.
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Recognize Personally Identifiable Information entities in a list of document with provided language code.
+     * <p>Recognize Personally Identifiable Information entities in a list of documents with provided language code.
      * Subscribes to the call asynchronously and prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String}
      *
-     * @param textInputs A list of document to recognize Personally Identifiable Information entities for.
+     * @param textInputs A list of documents to recognize Personally Identifiable Information entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
@@ -585,20 +585,20 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of document with
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of documents with
      * provided language code and request options.
      *
      * For the list of supported entity types, check <a href="https://aka.ms/taner"></a>.
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Recognize Personally Identifiable Information entities in a list of document with provided language code and
+     * <p>Recognize Personally Identifiable Information entities in a list of documents with provided language code and
      * request options. Subscribes to the call asynchronously and prints out the entity details when a response is
      * received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
-     * @param textInputs A list of document to recognize Personally Identifiable Information entities for.
+     * @param textInputs A list of documents to recognize Personally Identifiable Information entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
@@ -705,19 +705,19 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of document. See
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of documents. See
      * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
      * This method will use the default language that sets up in
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
-     * <p>Recognize linked entities in a list of document. Subscribes to the call asynchronously and prints out the
+     * <p>Recognize linked entities in a list of documents. Subscribes to the call asynchronously and prints out the
      * entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable}
      *
-     * @param textInputs A list of document to recognize linked entities for.
+     * @param textInputs A list of documents to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
@@ -733,17 +733,17 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of document with
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of documents with
      * provided language code.
      *
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
-     * <p>Recognize linked entities in a list of document with provided language code. Subscribes to the call
+     * <p>Recognize linked entities in a list of documents with provided language code. Subscribes to the call
      * asynchronously and prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-String}
      *
-     * @param textInputs A list of document to recognize linked entities for.
+     * @param textInputs A list of documents to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -761,17 +761,17 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of document with
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of documents with
      * provided language code and request options.
      *
      * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
-     * <p>Recognize linked entities in a list of document with provided language code. Subscribes to the call
+     * <p>Recognize linked entities in a list of documents with provided language code. Subscribes to the call
      * asynchronously and prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
-     * @param textInputs A list of document to recognize linked entities for.
+     * @param textInputs A list of documents to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -880,12 +880,12 @@ public final class TextAnalyticsAsyncClient {
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
-     * <p>Extract key phrases in a list of document. Subscribes to the call asynchronously and prints out the
+     * <p>Extract key phrases in a list of documents. Subscribes to the call asynchronously and prints out the
      * key phrases when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatch#Iterable}
      *
-     * @param textInputs A list of document to be analyzed.
+     * @param textInputs A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
@@ -904,12 +904,12 @@ public final class TextAnalyticsAsyncClient {
      *
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
-     * <p>Extract key phrases in a list of document with a provided language code. Subscribes to the call asynchronously
-     * and prints out the key phrases when a response is received.</p>
+     * <p>Extract key phrases in a list of documents with a provided language code. Subscribes to the call
+     * asynchronously and prints out the key phrases when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatch#Iterable-String}
      *
-     * @param textInputs A list of document to be analyzed.
+     * @param textInputs A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -932,12 +932,12 @@ public final class TextAnalyticsAsyncClient {
      *
      * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
-     * <p>Extract key phrases in a list of document with a provided language and request options. Subscribes to the call
-     * asynchronously and prints out the key phrases when a response is received.</p>
+     * <p>Extract key phrases in a list of documents with a provided language and request options. Subscribes to the
+     * call asynchronously and prints out the key phrases when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
-     * @param textInputs A list of document to be analyzed.
+     * @param textInputs A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
@@ -994,7 +994,7 @@ public final class TextAnalyticsAsyncClient {
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
-     * <p>Analyze sentiment in a list of document. Subscribes to the call asynchronously and prints out the
+     * <p>Analyze sentiment in a list of documents. Subscribes to the call asynchronously and prints out the
      * sentiment details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string}
@@ -1021,7 +1021,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
-     * <p>Analyze sentiment in a list of document. Subscribes to the call asynchronously and prints out the
+     * <p>Analyze sentiment in a list of documents. Subscribes to the call asynchronously and prints out the
      * sentiment details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string-string}
@@ -1057,12 +1057,12 @@ public final class TextAnalyticsAsyncClient {
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
      *
-     * <p>Analyze sentiment in a list of document. Subscribes to the call asynchronously and prints out the
+     * <p>Analyze sentiment in a list of documents. Subscribes to the call asynchronously and prints out the
      * sentiment details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable}
      *
-     * @param textInputs A list of document to be analyzed.
+     * @param textInputs A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
@@ -1080,12 +1080,12 @@ public final class TextAnalyticsAsyncClient {
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
-     * <p>Analyze sentiment in a list of document with provided language code. Subscribes to the
+     * <p>Analyze sentiment in a list of documents with provided language code. Subscribes to the
      * call asynchronously and prints out the sentiment details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-String}
      *
-     * @param textInputs A list of document to be analyzed.
+     * @param textInputs A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
@@ -1106,12 +1106,12 @@ public final class TextAnalyticsAsyncClient {
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
-     * <p>Analyze sentiment in a list of document with provided language code and request options. Subscribes to the
+     * <p>Analyze sentiment in a list of documents with provided language code and request options. Subscribes to the
      * call asynchronously and prints out the sentiment details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
-     * @param textInputs A list of document to be analyzed.
+     * @param textInputs A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for

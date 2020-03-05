@@ -41,14 +41,14 @@ public final class CategorizedEntity {
     private final double score;
 
     /**
-     * Creates a {@code CategorizedEntity} model that describes entity.
+     * Creates a {@link CategorizedEntity} model that describes entity.
      *
-     * @param text Entity text as appears in the request.
-     * @param category Entity category, such as Person/Location/Org/SSN etc.
-     * @param subCategory Entity sub category, such as Age/Year/TimeRange etc.
-     * @param offset Grapheme start position for the entity text.
-     * @param length Grapheme length for the entity text.
-     * @param score Confidence score between 0 and 1 of the extracted entity.
+     * @param text The entity text as appears in the request.
+     * @param category The entity category, such as Person/Location/Org/SSN etc.
+     * @param subCategory The entity subcategory, such as Age/Year/TimeRange etc.
+     * @param offset The grapheme start position for the entity text.
+     * @param length The grapheme length for the entity text.
+     * @param score A confidence score between 0 and 1 of the extracted entity.
      */
     public CategorizedEntity(String text, EntityCategory category, String subCategory,
         int offset, int length, double score) {
@@ -63,7 +63,7 @@ public final class CategorizedEntity {
     /**
      * Get the text property: Categorized entity text as appears in the request.
      *
-     * @return the text value.
+     * @return The text value.
      */
     public String getText() {
         return this.text;
@@ -72,7 +72,7 @@ public final class CategorizedEntity {
     /**
      * Get the category property: Categorized entity category, such as Person/Location/Org/SSN etc.
      *
-     * @return the category value.
+     * @return The category value.
      */
     public EntityCategory getCategory() {
         return this.category;
@@ -81,7 +81,7 @@ public final class CategorizedEntity {
     /**
      * Get the subcategory property: Categorized entity sub category, such as Age/Year/TimeRange etc.
      *
-     * @return the subcategory value.
+     * @return The subcategory value.
      */
     public String getSubCategory() {
         return this.subCategory;
@@ -90,7 +90,7 @@ public final class CategorizedEntity {
     /**
      * Get the offset property: Grapheme start position for the entity text.
      *
-     * @return the offset value.
+     * @return The offset value.
      */
     public int getGraphemeOffset() {
         return this.offset;
@@ -99,7 +99,7 @@ public final class CategorizedEntity {
     /**
      * Get the length property: Grapheme length for the entity text.
      *
-     * @return the length value.
+     * @return The length value.
      */
     public int getGraphemeLength() {
         return this.length;
@@ -108,7 +108,7 @@ public final class CategorizedEntity {
     /**
      * Get the score property: Confidence score between 0 and 1 of the extracted entity.
      *
-     * @return the score value.
+     * @return The score value.
      */
     public double getScore() {
         return this.score;

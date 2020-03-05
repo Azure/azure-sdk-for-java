@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -48,10 +48,10 @@ public class AnalyzeSentimentBatchDocumentsAsync {
 
                 // Batch statistics
                 final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
-                System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
+                System.out.printf("A batch of documents statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                // Analyzed sentiment for each of document from a batch of documents
+                // Analyzed sentiment for each of documents from a batch of documents
                 pagedResponse.getElements().forEach(analyzeSentimentResult -> {
                     System.out.printf("%nDocument ID: %s%n", analyzeSentimentResult.getId());
                     if (analyzeSentimentResult.isError()) {
@@ -60,11 +60,11 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                     } else {
                         // Valid document
                         DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-                        SentimentConfidenceScorePerLabel scores = documentSentiment.getConfidenceScores();
+                        SentimentConfidenceScores scores = documentSentiment.getConfidenceScores();
                         System.out.printf("Analyzed document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
                             documentSentiment.getSentiment(), scores.getPositive(), scores.getNeutral(), scores.getNegative());
                         documentSentiment.getSentences().forEach(sentenceSentiment -> {
-                            SentimentConfidenceScorePerLabel sentenceScores = sentenceSentiment.getConfidenceScores();
+                            SentimentConfidenceScores sentenceScores = sentenceSentiment.getConfidenceScores();
                             System.out.printf(
                                 "Analyzed sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
                                 sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative(),

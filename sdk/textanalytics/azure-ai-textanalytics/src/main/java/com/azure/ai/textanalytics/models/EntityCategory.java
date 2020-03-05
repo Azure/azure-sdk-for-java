@@ -58,8 +58,8 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
     /**
      * Creates or finds a {@link EntityCategory} from its string representation.
      *
-     * @param name the string name to look for.
-     * @return the corresponding {@link EntityCategory}.
+     * @param name The string name to look for.
+     * @return The corresponding {@link EntityCategory}.
      */
     @JsonCreator
     public static EntityCategory fromString(String name) {

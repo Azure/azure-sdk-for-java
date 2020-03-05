@@ -36,7 +36,7 @@ public class ExtractKeyPhrasesBatchDocuments {
 
         // Extracting batch key phrases
         client.extractKeyPhrasesBatch(inputs, null, Context.NONE).forEach(extractKeyPhraseResult -> {
-            // Extracted key phrase for each of document from a batch of documents
+            // Extracted key phrase for each of documents from a batch of documents
             System.out.printf("%nDocument ID: %s%n", extractKeyPhraseResult.getId());
             if (extractKeyPhraseResult.isError()) {
                 // Erroneous document

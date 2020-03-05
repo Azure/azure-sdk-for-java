@@ -34,7 +34,7 @@ public class ExtractKeyPhrasesBatchStringDocuments {
 
         // Extracting batch key phrases
         client.extractKeyPhrasesBatch(inputs).forEach(extractKeyPhraseResult -> {
-            // Extracted key phrase for each of document from a batch of documents
+            // Extracted key phrase for each of documents from a batch of documents
             System.out.printf("%nDocument ID: %s%n", extractKeyPhraseResult.getId());
             System.out.printf("Input text: %s%n", inputs.get(Integer.parseInt(extractKeyPhraseResult.getId())));
 

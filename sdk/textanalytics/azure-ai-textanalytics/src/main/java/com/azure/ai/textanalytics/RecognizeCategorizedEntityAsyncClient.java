@@ -50,7 +50,7 @@ class RecognizeCategorizedEntityAsyncClient {
 
     /**
      * Helper function that recognize a single of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
-     * flux contains {@link CategorizedEntity}.
+     * flux containing {@link CategorizedEntity}.
      *
      * @param text A single input text.
      * @param language The language hint.
@@ -85,9 +85,9 @@ class RecognizeCategorizedEntityAsyncClient {
 
     /**
      * Helper function that recognizes a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a
-     * paged flux contains {@link RecognizeCategorizedEntitiesResult}.
+     * paged flux containing {@link RecognizeCategorizedEntitiesResult}.
      *
-     * @param textInputs A batch of input texts.
+     * @param textInputs A batch of documents.
      * @param options The request options, such as the training model version and to show statistics.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link RecognizeCategorizedEntitiesResult}.
@@ -118,7 +118,7 @@ class RecognizeCategorizedEntityAsyncClient {
      * Helper function that calling service with max overloaded parameters and returns
      * {@link TextAnalyticsPagedFlux} that is the collection of entity document results.
      *
-     * @param textInputs A batch of input texts.
+     * @param textInputs A batch of documents.
      * @param options The request options, such as the training model version and to show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -156,7 +156,7 @@ class RecognizeCategorizedEntityAsyncClient {
     private TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult> toTextAnalyticsPagedResponse(
         final SimpleResponse<EntitiesResult> response) {
         EntitiesResult entitiesResult = response.getValue();
-        // List of document results
+        // List of documents results
         List<RecognizeCategorizedEntitiesResult> recognizeCategorizedEntitiesResults = new ArrayList<>();
         entitiesResult.getDocuments().forEach(documentEntities ->
             recognizeCategorizedEntitiesResults.add(new RecognizeCategorizedEntitiesResult(

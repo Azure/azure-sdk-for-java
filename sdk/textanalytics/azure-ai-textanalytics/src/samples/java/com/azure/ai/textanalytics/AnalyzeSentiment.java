@@ -4,7 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
@@ -27,13 +27,13 @@ public class AnalyzeSentiment {
         String text = "The hotel was dark and unclean. I like Microsoft.";
 
         final DocumentSentiment documentSentiment = client.analyzeSentiment(text);
-        SentimentConfidenceScorePerLabel scores = documentSentiment.getConfidenceScores();
+        SentimentConfidenceScores scores = documentSentiment.getConfidenceScores();
         System.out.printf(
             "Recognized document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
             documentSentiment.getSentiment(), scores.getPositive(), scores.getNeutral(), scores.getNegative());
 
         documentSentiment.getSentences().forEach(sentenceSentiment -> {
-            SentimentConfidenceScorePerLabel sentenceScores = sentenceSentiment.getConfidenceScores();
+            SentimentConfidenceScores sentenceScores = sentenceSentiment.getConfidenceScores();
             System.out.printf("Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
                 sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative());
         });

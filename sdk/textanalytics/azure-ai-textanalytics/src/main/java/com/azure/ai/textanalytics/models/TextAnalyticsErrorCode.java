@@ -80,8 +80,8 @@ public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnaly
     /**
      * Creates or finds a TextAnalyticsErrorCode from its string representation.
      *
-     * @param name the string name to look for.
-     * @return the corresponding TextAnalyticsErrorCode.
+     * @param name The string name to look for.
+     * @return The corresponding TextAnalyticsErrorCode.
      */
     @JsonCreator
     public static TextAnalyticsErrorCode fromString(String name) {

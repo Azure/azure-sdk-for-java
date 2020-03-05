@@ -44,12 +44,12 @@ public final class LinkedEntity {
     /**
      * Creates a {@link LinkedEntity} model that describes linked entity.
      *
-     * @param name entity Linking formal name
-     * @param linkedEntityMatches list of instances this entity appears in the text
-     * @param language language used in the data source
-     * @param dataSourceEntityId unique identifier of the recognized entity from the data source
-     * @param url URL for the entity's page from the data source
-     * @param dataSource data source used to extract entity linking, such as Wiki/Bing etc
+     * @param name The entity Linking formal name.
+     * @param linkedEntityMatches A list of instances this entity appears in the text.
+     * @param language The language used in the data source.
+     * @param dataSourceEntityId Unique identifier of the recognized entity from the data source.
+     * @param url URL for the entity's page from the data source.
+     * @param dataSource The data source used to extract entity linking, such as Wiki/Bing etc.
      */
     public LinkedEntity(String name, IterableStream<LinkedEntityMatch> linkedEntityMatches, String language,
         String dataSourceEntityId, String url, String dataSource) {
@@ -64,7 +64,7 @@ public final class LinkedEntity {
     /**
      * Get the name property: Entity Linking formal name.
      *
-     * @return the name value.
+     * @return The name value.
      */
     public String getName() {
         return this.name;
@@ -73,7 +73,7 @@ public final class LinkedEntity {
     /**
      * Get the linkedEntityMatches property: List of instances this entity appears in the text.
      *
-     * @return the linkedEntityMatches value.
+     * @return The linkedEntityMatches value.
      */
     public IterableStream<LinkedEntityMatch> getLinkedEntityMatches() {
         return this.linkedEntityMatches;
@@ -82,7 +82,7 @@ public final class LinkedEntity {
     /**
      * Get the language property: Language used in the data source.
      *
-     * @return the language value.
+     * @return The language value.
      */
     public String getLanguage() {
         return this.language;
@@ -91,7 +91,7 @@ public final class LinkedEntity {
     /**
      * Get the id property: Unique identifier of the recognized entity from the data source.
      *
-     * @return the id value.
+     * @return The id value.
      */
     public String getDataSourceEntityId() {
         return this.dataSourceEntityId;
@@ -100,7 +100,7 @@ public final class LinkedEntity {
     /**
      * Get the url property: URL for the entity's page from the data source.
      *
-     * @return the url value.
+     * @return The URL value.
      */
     public String getUrl() {
         return this.url;
@@ -109,7 +109,7 @@ public final class LinkedEntity {
     /**
      * Get the dataSource property: Data source used to extract entity linking, such as Wiki/Bing etc.
      *
-     * @return the dataSource value.
+     * @return The dataSource value.
      */
     public String getDataSource() {
         return this.dataSource;

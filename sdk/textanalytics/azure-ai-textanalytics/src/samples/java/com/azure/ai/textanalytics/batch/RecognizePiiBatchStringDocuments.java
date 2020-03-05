@@ -16,7 +16,7 @@ import java.util.List;
 public class RecognizePiiBatchStringDocuments {
     /**
      * Main method to invoke this demo about how to recognize the Personally Identifiable Information entities of a
-     * batch of document.
+     * batch of documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -35,7 +35,7 @@ public class RecognizePiiBatchStringDocuments {
 
         // Recognizing batch entities
         client.recognizePiiEntitiesBatch(inputs).forEach(entitiesResult -> {
-            // Recognized Personally Identifiable Information entities for each of document from a batch of documents
+            // Recognized Personally Identifiable Information entities for each of documents from a batch of documents
             System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
             System.out.printf("Input text: %s%n", inputs.get(Integer.parseInt(entitiesResult.getId())));
             if (entitiesResult.isError()) {

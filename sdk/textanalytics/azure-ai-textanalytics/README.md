@@ -239,7 +239,7 @@ System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %.2f.%n
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L123-L126 -->
 ```java
 String text = "Satya Nadella is the CEO of Microsoft";
-textAnalyticsClient.recognizeCategorizedEntities(text).forEach(entity ->
+textAnalyticsClient.recognizeEntities(text).forEach(entity ->
     System.out.printf("Recognized categorized entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
         entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()));
 ```

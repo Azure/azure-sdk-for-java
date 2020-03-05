@@ -13,7 +13,7 @@ import com.azure.core.annotation.Immutable;
 public final class SentenceSentiment {
     private final int graphemeLength;
     private final int graphemeOffset;
-    private final SentimentConfidenceScorePerLabel confidenceScores;
+    private final SentimentConfidenceScores confidenceScores;
     private final TextSentimentLabel sentiment;
 
     /**
@@ -25,7 +25,7 @@ public final class SentenceSentiment {
      * @param graphemeLength The grapheme length of the sentence.
      * @param graphemeOffset The grapheme offset, start position for the sentence sentiment.
      */
-    public SentenceSentiment(TextSentimentLabel sentiment, SentimentConfidenceScorePerLabel confidenceScores,
+    public SentenceSentiment(TextSentimentLabel sentiment, SentimentConfidenceScores confidenceScores,
         int graphemeLength, int graphemeOffset) {
         this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
@@ -64,9 +64,9 @@ public final class SentenceSentiment {
      * Get the confidence score of the sentiment label. All score values sum up to 1, higher the score value means
      * higher confidence the sentiment label represents.
      *
-     * @return The {@link SentimentConfidenceScorePerLabel}.
+     * @return The {@link SentimentConfidenceScores}.
      */
-    public SentimentConfidenceScorePerLabel getConfidenceScores() {
+    public SentimentConfidenceScores getConfidenceScores() {
         return confidenceScores;
     }
 }

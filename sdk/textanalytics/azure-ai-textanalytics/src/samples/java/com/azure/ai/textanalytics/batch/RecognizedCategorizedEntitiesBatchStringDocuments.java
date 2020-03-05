@@ -34,7 +34,7 @@ public class RecognizedCategorizedEntitiesBatchStringDocuments {
 
         // Recognizing batch entities
         client.recognizeEntitiesBatch(inputs).forEach(entitiesResult -> {
-            // Recognized entities for each of document from a batch of documents
+            // Recognized entities for each of documents from a batch of documents
             System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
             System.out.printf("Input text: %s%n", inputs.get(Integer.parseInt(entitiesResult.getId())));
             if (entitiesResult.isError()) {

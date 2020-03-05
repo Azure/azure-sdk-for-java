@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 import java.util.Arrays;
@@ -46,12 +46,12 @@ public class AnalyzeSentimentBatchStringDocuments {
             }
             // Valid document
             DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
-            SentimentConfidenceScorePerLabel documentScores = documentSentiment.getConfidenceScores();
+            SentimentConfidenceScores documentScores = documentSentiment.getConfidenceScores();
             System.out.printf("Document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
                 documentSentiment.getSentiment(), documentScores.getPositive(), documentScores.getNeutral(), documentScores.getNegative());
             // Each sentence sentiment
             documentSentiment.getSentences().forEach(sentiment -> {
-                SentimentConfidenceScorePerLabel sentencesScores = sentiment.getConfidenceScores();
+                SentimentConfidenceScores sentencesScores = sentiment.getConfidenceScores();
                 System.out.printf("Sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, "
                         + "length of sentence: %s, offset of sentence: %s.%n",
                     sentiment.getSentiment(), sentencesScores.getPositive(), sentencesScores.getNeutral(),

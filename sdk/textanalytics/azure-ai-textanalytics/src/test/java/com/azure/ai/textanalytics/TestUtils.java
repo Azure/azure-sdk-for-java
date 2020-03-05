@@ -18,7 +18,7 @@ import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
@@ -245,17 +245,17 @@ final class TestUtils {
         final TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(67, 1);
 
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentimentLabel.MIXED,
-            new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
+            new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentimentLabel.NEGATIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(TextSentimentLabel.POSITIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentiment(TextSentimentLabel.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentiment(TextSentimentLabel.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 32)
             )));
 
         final DocumentSentiment expectedDocumentSentiment2 = new DocumentSentiment(TextSentimentLabel.MIXED,
-            new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
+            new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentimentLabel.POSITIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 35, 0),
-                new SentenceSentiment(TextSentimentLabel.NEGATIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 31, 36)
+                new SentenceSentiment(TextSentimentLabel.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 0),
+                new SentenceSentiment(TextSentimentLabel.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 36)
             )));
 
         final AnalyzeSentimentResult analyzeSentimentResult1 = new AnalyzeSentimentResult("0",

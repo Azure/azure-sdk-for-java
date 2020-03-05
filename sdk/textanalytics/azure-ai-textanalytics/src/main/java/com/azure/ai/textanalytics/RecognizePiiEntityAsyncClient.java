@@ -51,7 +51,7 @@ class RecognizePiiEntityAsyncClient {
 
     /**
      * Helper function that recognize a single of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
-     * flux contains {@link PiiEntity}.
+     * flux containing {@link PiiEntity}.
      *
      * @param text A single input text.
      * @param language The language hint.
@@ -85,9 +85,9 @@ class RecognizePiiEntityAsyncClient {
 
     /**
      * Helper function that recognizes a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a
-     * paged flux contains {@link RecognizePiiEntitiesResult}.
+     * paged flux containing {@link RecognizePiiEntitiesResult}.
      *
-     * @param textInputs A batch of input texts.
+     * @param textInputs A batch of documents.
      * @param options The request options, such as the training model version and to show statistics.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link RecognizePiiEntitiesResult}.
@@ -117,9 +117,9 @@ class RecognizePiiEntityAsyncClient {
 
     /**
      *  Helper function that calling service with max overloaded parameters and returns
-     * {@link TextAnalyticsPagedFlux} that is a paged flux contains {@link RecognizePiiEntitiesResult}.
+     * {@link TextAnalyticsPagedFlux} that is a paged flux containing {@link RecognizePiiEntitiesResult}.
      *
-     * @param textInputs A batch of input texts.
+     * @param textInputs A batch of documents.
      * @param options The request options, such as the training model version and to show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -158,7 +158,7 @@ class RecognizePiiEntityAsyncClient {
         SimpleResponse<EntitiesResult> response) {
 
         final EntitiesResult entitiesResult = response.getValue();
-        // List of document results
+        // List of documents results
         final List<RecognizePiiEntitiesResult> recognizePiiEntitiesResults = new ArrayList<>();
         entitiesResult.getDocuments().forEach(documentEntities -> recognizePiiEntitiesResults.add(
             new RecognizePiiEntitiesResult(

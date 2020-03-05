@@ -23,7 +23,7 @@ public class DocumentResult {
      * Create a {@link DocumentResult} model that maintains document id, information about the document payload,
      * and document error.
      *
-     * @param id unique, non-empty document identifier.
+     * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
@@ -57,7 +57,7 @@ public class DocumentResult {
     /**
      * Get the error of text document.
      *
-     * @return the error of text document.
+     * @return The error of text document.
      */
     public TextAnalyticsError getError() {
         return error;
@@ -74,7 +74,6 @@ public class DocumentResult {
 
     /**
      * Throw a {@link TextAnalyticsException} if result has isError true and when a non-error property was accessed.
-     *
      */
     void throwExceptionIfError() {
         if (this.isError()) {

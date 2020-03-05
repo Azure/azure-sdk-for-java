@@ -35,8 +35,8 @@ public final class TextSentimentLabel extends ExpandableStringEnum<TextSentiment
     /**
      * Creates or finds a {@link TextSentimentLabel} from its string representation.
      *
-     * @param name a name to look for.
-     * @return the corresponding {@link TextSentimentLabel}.
+     * @param name A name to look for.
+     * @return The corresponding {@link TextSentimentLabel}.
      */
     @JsonCreator
     public static TextSentimentLabel fromString(String name) {
