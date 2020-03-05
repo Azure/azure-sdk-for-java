@@ -44,7 +44,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         return "";
     }
 
-    protected void initializeClient(HttpClient httpClient) {
+    @Override
+    protected void beforeTest() {
         beforeTestSetup();
     }
 

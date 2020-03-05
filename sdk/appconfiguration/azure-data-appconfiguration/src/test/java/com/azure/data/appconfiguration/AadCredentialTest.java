@@ -10,12 +10,16 @@ import com.azure.core.util.ServiceVersion;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.data.appconfiguration.ConfigurationClientTestBase.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -49,11 +53,11 @@ public class AadCredentialTest extends TestBase {
 
             String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
             client = new ConfigurationClientBuilder()
-                .httpClient((HttpClient) httpClient)
+                .httpClient(httpClient)
                 .credential(tokenCredential)
                 .endpoint(endpoint)
                 .addPolicy(interceptorManager.getRecordPolicy()) // Record
-                .serviceVersion((ConfigurationServiceVersion) serviceVersion)
+                .serviceVersion(serviceVersion)
                 .buildClient();
         }
     }
@@ -68,5 +72,24 @@ public class AadCredentialTest extends TestBase {
         ConfigurationSetting addedSetting = client.setConfigurationSetting(key, null, value);
         Assertions.assertEquals(addedSetting.getKey(), key);
         Assertions.assertEquals(addedSetting.getValue(), value);
+    }
+
+    /**
+     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
+     * service versions that should be tested.
+     *
+     * @return A stream of HttpClient and service version combinations to test.
+     */
+    protected Stream<Arguments> getTestParameters() {
+        // when this issues is closed, the newer version of junit will have better support for
+        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+        List<Arguments> argumentsList = new ArrayList<>();
+        getHttpClients()
+            .forEach(httpClient -> {
+                for (ConfigurationServiceVersion serviceVersion : ConfigurationServiceVersion.values()) {
+                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
+                }
+            });
+        return argumentsList.stream();
     }
 }

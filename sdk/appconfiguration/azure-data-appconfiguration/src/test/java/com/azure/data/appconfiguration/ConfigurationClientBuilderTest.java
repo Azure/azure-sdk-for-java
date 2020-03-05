@@ -15,6 +15,9 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -23,12 +26,16 @@ import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Objects;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.data.appconfiguration.ConfigurationClientTestBase.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
+@TestInstance(PER_CLASS)
 public class ConfigurationClientBuilderTest extends TestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String DEFAULT_DOMAIN_NAME = ".azconfig.io";
@@ -132,13 +139,11 @@ public class ConfigurationClientBuilderTest extends TestBase {
             .connectionString(connectionString)
             .retryPolicy(new RetryPolicy())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(null);
+            .serviceVersion(null)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(httpClient);
-        } else {
-            clientBuilder.httpClient(httpClient)
-                .addPolicy(interceptorManager.getRecordPolicy());
+        if (!interceptorManager.isPlaybackMode()) {
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
@@ -148,7 +153,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void defaultPipeline() {
+    public void defaultPipeline(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         final String key = "newKey";
         final String value = "newValue";
 
@@ -163,13 +168,12 @@ public class ConfigurationClientBuilderTest extends TestBase {
             .retryPolicy(new RetryPolicy())
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .pipeline(new HttpPipelineBuilder().build());
+            .pipeline(new HttpPipelineBuilder().build())
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .serviceVersion(serviceVersion);
 
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
+        if (!interceptorManager.isPlaybackMode()) {
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
 
             assertThrows(HttpResponseException.class,
                 () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
@@ -191,4 +195,22 @@ public class ConfigurationClientBuilderTest extends TestBase {
         }
     }
 
+    /**
+     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
+     * service versions that should be tested.
+     *
+     * @return A stream of HttpClient and service version combinations to test.
+     */
+    protected Stream<Arguments> getTestParameters() {
+        // when this issues is closed, the newer version of junit will have better support for
+        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+        List<Arguments> argumentsList = new ArrayList<>();
+        getHttpClients()
+            .forEach(httpClient -> {
+                for (ConfigurationServiceVersion serviceVersion : ConfigurationServiceVersion.values()) {
+                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
+                }
+            });
+        return argumentsList.stream();
+    }
 }
