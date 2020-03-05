@@ -45,7 +45,6 @@ import java.util.Objects;
  * "user::rwx,user:john.doe@contoso:rwx,group::r--,other::---,mask::rwx".
  */
 public class PathAccessControlEntry {
-    public static final String SUPERUSER = "$superuser";
 
     private static final String ACCESS_CONTROL_ENTRY_INVALID_SCOPE = "Scope must be default or otherwise omitted";
 
@@ -82,35 +81,7 @@ public class PathAccessControlEntry {
      */
     public PathAccessControlEntry() {
         this.permissions = new RolePermissions();
-    }
-
-    /**
-     * Initializes a new instance of {@code PathAccessControlEntry} with the given values.
-     *
-     * @param defaultScope Indicates whether this entry belongs to the default ACL for a directory.
-     * @param accessControlType Indicates which role this entry targets.
-     * @param entityID Specifies the entity for which this entry applies. Must be omitted for types mask or other.
-     * It must also be omitted when the user or group is the owner.
-     * @param permissions Specifies the permissions granted to this entry.
-     */
-    public PathAccessControlEntry(boolean defaultScope, AccessControlType accessControlType, String entityID,
-        RolePermissions permissions) {
-        this.defaultScope = defaultScope;
-        this.accessControlType = accessControlType;
-        this.entityID = entityID;
-        this.permissions = new RolePermissions(permissions);
-    }
-
-    /**
-     * Initializes a new instance of {@code PathAccesControlEntry} with values copied from the provided instance.
-     *
-     * @param other The instance with values to copy.
-     */
-    public PathAccessControlEntry(PathAccessControlEntry other) {
-        this.defaultScope = other.defaultScope;
-        this.accessControlType = other.accessControlType;
-        this.entityID = other.entityID;
-        this.permissions = new RolePermissions(other.permissions);
+        this.accessControlType = new AccessControlType();
     }
 
     @Override
@@ -228,7 +199,7 @@ public class PathAccessControlEntry {
      *
      * @return {@code true} if in the default scope and {@code false} otherwise.
      */
-    public boolean defaultScope() {
+    public boolean isInDefaultScope() {
         return defaultScope;
     }
 
@@ -237,7 +208,7 @@ public class PathAccessControlEntry {
      *
      * @return The {@link AccessControlType} for this entry.
      */
-    public AccessControlType accessControlType() {
+    public AccessControlType getAccessControlType() {
         return accessControlType;
     }
 
@@ -246,7 +217,7 @@ public class PathAccessControlEntry {
      *
      * @return The entity for which this entry applies.
      */
-    public String entityID() {
+    public String getEntityID() {
         return entityID;
     }
 
@@ -255,7 +226,7 @@ public class PathAccessControlEntry {
      *
      * @return The {@link RolePermissions} for this entry.
      */
-    public RolePermissions permissions() {
+    public RolePermissions getPermissions() {
         return permissions;
     }
 
@@ -265,7 +236,7 @@ public class PathAccessControlEntry {
      * @param defaultScope {@code true} to set as the default scope and {@code false} otherwise.
      * @return The updated PathAccessControlEntry object.
      */
-    public PathAccessControlEntry defaultScope(boolean defaultScope) {
+    public PathAccessControlEntry setDefaultScope(boolean defaultScope) {
         this.defaultScope = defaultScope;
         return this;
     }
@@ -276,7 +247,7 @@ public class PathAccessControlEntry {
      * @param accessControlType The {@link AccessControlType} for this entry.
      * @return The updated PathAccessControlEntry object.
      */
-    public PathAccessControlEntry accessControlType(AccessControlType accessControlType) {
+    public PathAccessControlEntry setAccessControlType(AccessControlType accessControlType) {
         this.accessControlType = accessControlType;
         return this;
     }
@@ -289,7 +260,7 @@ public class PathAccessControlEntry {
      * @param entityID The entity to which this entry will apply.
      * @return The updated PathAccessControlEntry object.
      */
-    public PathAccessControlEntry entityID(String entityID) {
+    public PathAccessControlEntry setEntityID(String entityID) {
         this.entityID = entityID;
         return this;
     }
@@ -300,7 +271,7 @@ public class PathAccessControlEntry {
      * @param permissions {@link RolePermissions} to set for this entry.
      * @return The updated PathAccessControlEntry object.
      */
-    public PathAccessControlEntry permissions(RolePermissions permissions) {
+    public PathAccessControlEntry setPermissions(RolePermissions permissions) {
         this.permissions = permissions;
         return this;
     }

@@ -41,7 +41,7 @@ class QueryPlanRetriever {
                                                                                  resourceLink,
                                                                                  requestHeaders);
         request.UseGatewayMode = true;
-        request.setContentBytes(sqlQuerySpec.toJson().getBytes(StandardCharsets.UTF_8));
+        request.setByteBuffer(sqlQuerySpec.serializeJsonToByteBuffer());
 
         final DocumentClientRetryPolicy retryPolicyInstance =
             queryClient.getResetSessionTokenRetryPolicy().getRequestPolicy();
@@ -51,7 +51,7 @@ class QueryPlanRetriever {
                 retryPolicyInstance.onBeforeSendRequest(req);
                 return queryClient.executeQueryAsync(request).flatMap(rxDocumentServiceResponse -> {
                     PartitionedQueryExecutionInfo partitionedQueryExecutionInfo =
-                        new PartitionedQueryExecutionInfo(rxDocumentServiceResponse.getResponseBodyAsString());
+                        new PartitionedQueryExecutionInfo(rxDocumentServiceResponse.getResponseBodyAsByteArray());
                     return Mono.just(partitionedQueryExecutionInfo);
 
                 });

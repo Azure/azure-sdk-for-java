@@ -5,7 +5,15 @@ package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -38,7 +46,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Scanner;
@@ -58,6 +68,7 @@ public class IdentityClient {
     private final PublicClientApplication publicClientApplication;
     private final String tenantId;
     private final String clientId;
+    private HttpPipelineAdapter httpPipelineAdapter;
 
     /**
      * Creates an IdentityClient with the given options.
@@ -81,17 +92,31 @@ public class IdentityClient {
         } else {
             String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
-            if (options.getHttpPipeline() != null) {
-                publicClientApplicationBuilder = publicClientApplicationBuilder
-                        .httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
-            }
             try {
                 publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
             } catch (MalformedURLException e) {
                 throw logger.logExceptionAsWarning(new IllegalStateException(e));
             }
-            if (options.getProxyOptions() != null) {
-                publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+
+            // If user supplies the pipeline, then it should override all other properties
+            // as they should directly be set on the pipeline.
+            HttpPipeline httpPipeline = options.getHttpPipeline();
+            if (httpPipeline != null) {
+                httpPipelineAdapter = new HttpPipelineAdapter(httpPipeline);
+                publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
+            } else {
+                // If http client is set on the credential, then it should override the proxy options if any configured.
+                HttpClient httpClient = options.getHttpClient();
+                if (httpClient != null) {
+                    httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient));
+                    publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
+                } else if (options.getProxyOptions() != null) {
+                    publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+                } else {
+                    //Http Client is null, proxy options are not set, use the default client and build the pipeline.
+                    httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault()));
+                    publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
+                }
             }
             this.publicClientApplication = publicClientApplicationBuilder.build();
         }
@@ -110,12 +135,14 @@ public class IdentityClient {
             ConfidentialClientApplication.Builder applicationBuilder =
                 ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromSecret(clientSecret))
                     .authority(authorityUrl);
-            if (options.getProxyOptions() != null) {
+
+            // If http pipeline is available, then it should override the proxy options if any configured.
+            if (httpPipelineAdapter != null) {
+                applicationBuilder.httpClient(httpPipelineAdapter);
+            } else if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
-            if (options.getHttpPipeline() != null) {
-                applicationBuilder.httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
-            }
+
             ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
@@ -124,6 +151,17 @@ public class IdentityClient {
         } catch (MalformedURLException e) {
             return Mono.error(e);
         }
+    }
+
+    private HttpPipeline setupPipeline(HttpClient httpClient) {
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        HttpLogOptions httpLogOptions = new HttpLogOptions();
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new RetryPolicy());
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        return new HttpPipelineBuilder().httpClient(httpClient)
+                   .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
     }
 
     /**
@@ -142,12 +180,14 @@ public class IdentityClient {
                     ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromCertificate(
                                 new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
                             .authority(authorityUrl);
-            if (options.getProxyOptions() != null) {
+
+            // If http pipeline is available, then it should override the proxy options if any configured.
+            if (httpPipelineAdapter != null) {
+                applicationBuilder.httpClient(httpPipelineAdapter);
+            } else if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
-            if (options.getHttpPipeline() != null) {
-                applicationBuilder.httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
-            }
+
             return applicationBuilder.build();
         }).flatMap(application -> Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build())))
@@ -170,12 +210,14 @@ public class IdentityClient {
                             CertificateUtil.privateKeyFromPem(pemCertificateBytes),
                             CertificateUtil.publicKeyFromPem(pemCertificateBytes)))
                         .authority(authorityUrl);
-            if (options.getProxyOptions() != null) {
+
+            // If http pipeline is available, then it should override the proxy options if any configured.
+            if (httpPipelineAdapter != null) {
+                applicationBuilder.httpClient(httpPipelineAdapter);
+            } else if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
-            if (options.getHttpPipeline() != null) {
-                applicationBuilder.httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
-            }
+
             ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
