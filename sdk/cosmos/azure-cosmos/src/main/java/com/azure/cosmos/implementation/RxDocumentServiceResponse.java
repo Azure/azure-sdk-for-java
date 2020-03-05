@@ -30,7 +30,7 @@ public class RxDocumentServiceResponse {
     private final StoreResponse storeResponse;
 
     public RxDocumentServiceResponse(StoreResponse response) {
-        this.headersMap = new HashMap<>(response.getResponseHeaders());
+        this.headersMap = response.getResponseHeaders();
 
         // Gets status code.
         this.statusCode = response.getStatus();
