@@ -21,7 +21,7 @@ public final class IdentityClientOptions {
     private Function<Duration, Duration> retryTimeout;
     private ProxyOptions proxyOptions;
     private HttpPipeline httpPipeline;
-    private Duration refreshBeforeExpiry = Duration.ofMinutes(2);
+    private Duration tokenRefreshOffset = Duration.ofMinutes(2);
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -118,20 +118,23 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * @return the duration before the actual expiry of a token to refresh it.
+     * @return how long before the actual token expiry to refresh the token.
      */
-    public Duration getRefreshBeforeExpiry() {
-        return refreshBeforeExpiry;
+    public Duration getTokenRefreshOffset() {
+        return tokenRefreshOffset;
     }
 
     /**
-     * Sets the duration before the actual expiry of a token to refresh it.
+     * Sets how long before the actual token expiry to refresh the token. The
+     * token will be considered expired at and after the time of (actual
+     * expiry - token refresh offset). The default offset is 2 minutes.
+     *
      * This is useful when network is congested and a request containing the
      * token takes longer than normal to get to the server.
      *
-     * @param refreshBeforeExpiry the duration before the actual expiry of a token to refresh it
+     * @param tokenRefreshOffset the duration before the actual expiry of a token to refresh it
      */
-    public void setRefreshBeforeExpiry(Duration refreshBeforeExpiry) {
-        this.refreshBeforeExpiry = refreshBeforeExpiry;
+    public void setTokenRefreshOffset(Duration tokenRefreshOffset) {
+        this.tokenRefreshOffset = tokenRefreshOffset;
     }
 }

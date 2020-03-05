@@ -3,7 +3,6 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.credential.AccessToken;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 
@@ -13,7 +12,7 @@ import java.time.ZoneOffset;
 /**
  * Type representing authentication result from the MSAL (Microsoft Authentication Library).
  */
-public final class MsalToken extends AccessToken {
+public final class MsalToken extends IdentityToken {
 
     private IAccount account;
 
@@ -23,9 +22,9 @@ public final class MsalToken extends AccessToken {
      * @param msalResult the raw authentication result returned by MSAL
      */
     public MsalToken(IAuthenticationResult msalResult, IdentityClientOptions options) {
-        super(msalResult.accessToken(), OffsetDateTime.ofInstant(
-                msalResult.expiresOnDate().toInstant().minus(options.getRefreshBeforeExpiry()), ZoneOffset.UTC)
-            .plusMinutes(2));
+        super(msalResult.accessToken(),
+                OffsetDateTime.ofInstant(msalResult.expiresOnDate().toInstant(), ZoneOffset.UTC),
+                options);
         this.account = msalResult.account();
     }
 
