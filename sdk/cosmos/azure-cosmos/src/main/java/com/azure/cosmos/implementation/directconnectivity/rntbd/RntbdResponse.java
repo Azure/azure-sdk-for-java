@@ -291,14 +291,11 @@ public final class RntbdResponse implements ReferenceCounted {
     }
 
     StoreResponse toStoreResponse(final RntbdContext context) {
-
-
-
         checkNotNull(context, "context");
 
         return new StoreResponse(
             this.getStatus().code(),
-            this.headers.asList(context, this.getActivityId()),
+            this.headers.asMap(context, this.getActivityId()),
             toByteArray(this.content)
         );
     }

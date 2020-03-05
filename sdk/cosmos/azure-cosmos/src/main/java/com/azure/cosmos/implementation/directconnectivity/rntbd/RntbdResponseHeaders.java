@@ -8,13 +8,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.CorruptedFrameException;
 
 import java.math.BigDecimal;
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -209,17 +209,18 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
 
     public Map<String, String> asMap(final RntbdContext context, final UUID activityId) {
 
-        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(this.computeCount() + 2);
-        builder.put(new Entry(HttpHeaders.SERVER_VERSION, context.serverVersion()));
-        builder.put(new Entry(HttpHeaders.ACTIVITY_ID, activityId.toString()));
+        final HashMap<String, String> headersMap = new HashMap<>(this.computeCount() + 2);
+        headersMap.put(HttpHeaders.SERVER_VERSION, context.serverVersion());
+        headersMap.put(HttpHeaders.ACTIVITY_ID, activityId.toString());
 
         this.collectEntries((token, toEntry) -> {
             if (token.isPresent()) {
-                builder.put(toEntry.apply(token));
+                Map.Entry<String, String> entry = toEntry.apply(token);
+                headersMap.put(entry.getKey(), entry.getValue());
             }
         });
 
-        return builder.build();
+        return headersMap;
     }
 
     static RntbdResponseHeaders decode(final ByteBuf in) {

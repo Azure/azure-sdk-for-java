@@ -10,10 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 
 /**
  * Used internally to represents a response from the store.
@@ -21,8 +18,7 @@ import java.util.Map.Entry;
 public class StoreResponse {
     final static Logger LOGGER = LoggerFactory.getLogger(StoreResponse.class);
     final private int status;
-    final private String[] responseHeaderNames;
-    final private String[] responseHeaderValues;
+    final private Map<String, String> responseHeaders;
     final private byte[] content;
 
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
@@ -30,20 +26,11 @@ public class StoreResponse {
 
     public StoreResponse(
             int status,
-            List<Entry<String, String>> headerEntries,
+            Map<String, String> headerEntries,
             byte[] content) {
 
         requestTimeline = RequestTimeline.empty();
-        responseHeaderNames = new String[headerEntries.size()];
-        responseHeaderValues = new String[headerEntries.size()];
-
-        int i = 0;
-
-        for(Entry<String, String> headerEntry: headerEntries) {
-            responseHeaderNames[i] = headerEntry.getKey();
-            responseHeaderValues[i] = headerEntry.getValue();
-            i++;
-        }
+        responseHeaders = headerEntries;
 
         this.status = status;
         this.content = content;
@@ -53,12 +40,8 @@ public class StoreResponse {
         return status;
     }
 
-    public String[] getResponseHeaderNames() {
-        return responseHeaderNames;
-    }
-
-    public String[] getResponseHeaderValues() {
-        return responseHeaderValues;
+    public Map<String, String> getResponseHeaders() {
+        return this.responseHeaders;
     }
 
     public byte[] getResponseBody() {
@@ -82,18 +65,16 @@ public class StoreResponse {
         return this.getHeaderValue(HttpConstants.HttpHeaders.CONTINUATION);
     }
 
+    public boolean containsHeader(String key) {
+        return this.responseHeaders != null && this.responseHeaders.containsKey(key);
+    }
+
+    public String setHeaderValue(String key, String value) {
+        return this.responseHeaders.put(key, value);
+    }
+
     public String getHeaderValue(String attribute) {
-        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
-            return null;
-        }
-
-        for (int i = 0; i < responseHeaderNames.length; i++) {
-            if (responseHeaderNames[i].equalsIgnoreCase(attribute)) {
-                return responseHeaderValues[i];
-            }
-        }
-
-        return null;
+        return this.responseHeaders.get(attribute);
     }
 
     public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {

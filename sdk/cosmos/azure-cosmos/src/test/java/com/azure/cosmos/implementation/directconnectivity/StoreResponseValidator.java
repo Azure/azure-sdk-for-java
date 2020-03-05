@@ -40,7 +40,7 @@ public interface StoreResponseValidator {
             validators.add(new StoreResponseValidator() {
                 @Override
                 public void validate(StoreResponse resp) {
-                    assertThat(Arrays.asList(resp.getResponseHeaderNames())).asList().contains(headerKey);
+                    assertThat(resp.getResponseHeaders().keySet()).contains(headerKey);
                 }
             });
             return this;
@@ -50,9 +50,8 @@ public interface StoreResponseValidator {
             validators.add(new StoreResponseValidator() {
                 @Override
                 public void validate(StoreResponse resp) {
-                    assertThat(Arrays.asList(resp.getResponseHeaderNames())).asList().contains(headerKey);
-                    int index = Arrays.asList(resp.getResponseHeaderNames()).indexOf(headerKey);
-                    assertThat(resp.getResponseHeaderValues()[index]).isEqualTo(headerValue);
+                    assertThat(resp.getResponseHeaders().keySet()).contains(headerKey);
+                    assertThat(resp.getResponseHeaders().get(headerKey)).isEqualTo(headerValue);
                 }
             });
             return this;
@@ -63,10 +62,9 @@ public interface StoreResponseValidator {
             validators.add(new StoreResponseValidator() {
                 @Override
                 public void validate(StoreResponse resp) {
-                    assertThat(Arrays.asList(resp.getResponseHeaderNames())).asList().contains(headerKey);
-                    int index = Arrays.asList(resp.getResponseHeaderNames()).indexOf(headerKey);
-                    String value = resp.getResponseHeaderValues()[index];
-                    condition.matches(value);
+                    assertThat(resp.getResponseHeaders().keySet()).contains(headerKey);
+                    String headerValue = resp.getResponseHeaders().get(headerKey);
+                    condition.matches(headerValue);
                 }
             });
             return this;

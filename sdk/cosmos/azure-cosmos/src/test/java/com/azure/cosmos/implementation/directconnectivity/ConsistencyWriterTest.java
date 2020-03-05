@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -145,10 +146,12 @@ public class ConsistencyWriterTest {
 
     @Test(groups = "unit")
     public void getLsnAndGlobalCommittedLsn() {
-        ImmutableList.Builder<Map.Entry<String, String>> builder = new ImmutableList.Builder<>();
-        builder.add(new AbstractMap.SimpleEntry<>(WFConstants.BackendHeaders.LSN, "3"));
-        builder.add(new AbstractMap.SimpleEntry<>(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, "2"));
-        ImmutableList<Map.Entry<String, String>> headers = builder.build();
+
+        ImmutableMap.Builder<String, String> builder = new ImmutableMap.Builder<>();
+
+        builder.put(WFConstants.BackendHeaders.LSN, "3");
+        builder.put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, "2");
+        ImmutableMap<String, String> headers = builder.build();
 
         StoreResponse sr = new StoreResponse(0, headers, null);
         Utils.ValueHolder<Long> lsn = Utils.ValueHolder.initialize(-2l);
