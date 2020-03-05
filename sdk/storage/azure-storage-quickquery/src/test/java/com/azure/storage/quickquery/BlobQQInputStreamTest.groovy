@@ -20,9 +20,16 @@ class BlobQQInputStreamTest extends APISpec {
 
     // Generates and uploads a small 1KB CSV file
     def uploadCsv(BlobQuickQueryDelimitedSerialization s, int numCopies) {
-        byte[] headers = ("rn1" + s.getColumnSeparator() + "rn2" + s.getColumnSeparator() + "rn3" + s.getColumnSeparator() + "rn4" + s.getRecordSeparator()).getBytes()
-        byte[] csvData = ("100" + s.getColumnSeparator() + "200" + s.getColumnSeparator() + "300" + s.getColumnSeparator() + "400" + s.getRecordSeparator()
-            + "300" + s.getColumnSeparator() + "400" + s.getColumnSeparator() + "500" + s.getColumnSeparator() + "600" + s.getRecordSeparator()).getBytes()
+        String header = String.join(new String(s.getColumnSeparator()), "rn1", "rn2", "rn3", "rn4")
+            .concat(new String(s.getRecordSeparator()))
+        byte[] headers = header.getBytes()
+
+        String csv = String.join(new String(s.getColumnSeparator()), "100", "200", "300", "400")
+            .concat(new String(s.getRecordSeparator()))
+            .concat(String.join(new String(s.getColumnSeparator()), "300", "400", "500", "600")
+                .concat(new String(s.getRecordSeparator())))
+
+        byte[] csvData = csv.getBytes()
 
         int headerLength = s.isHeadersPresent() ? headers.length : 0
         byte[] data = new byte[headerLength + csvData.length * numCopies]

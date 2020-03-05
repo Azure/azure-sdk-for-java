@@ -128,6 +128,9 @@ public class FluxInputStream extends InputStream {
             this.buffer.close();
         }
         super.close();
+        if (this.lastError != null) {
+            throw this.lastError;
+        }
     }
 
     /**

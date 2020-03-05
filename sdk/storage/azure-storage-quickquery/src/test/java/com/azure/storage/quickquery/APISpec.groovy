@@ -316,13 +316,6 @@ class APISpec extends Specification {
             .buildClient()
     }
 
-    static BlobLeaseClient createLeaseClient(BlobContainerClient containerClient, String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .containerClient(containerClient)
-            .leaseId(leaseId)
-            .buildClient()
-    }
-
     /**
      * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
      * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
@@ -338,14 +331,6 @@ class APISpec extends Specification {
     def setupBlobMatchCondition(BlobClientBase bc, String match) {
         if (match == receivedEtag) {
             return bc.getProperties().getETag()
-        } else {
-            return match
-        }
-    }
-
-    def setupBlobMatchCondition(BlobAsyncClientBase bac, String match) {
-        if (match == receivedEtag) {
-            return bac.getProperties().block().getETag()
         } else {
             return match
         }
@@ -369,22 +354,6 @@ class APISpec extends Specification {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             responseLeaseId = createLeaseClient(bc).acquireLease(-1)
-        }
-        if (leaseID == receivedLeaseID) {
-            return responseLeaseId
-        } else {
-            return leaseID
-        }
-    }
-
-    def setupBlobLeaseCondition(BlobAsyncClientBase bac, String leaseID) {
-        String responseLeaseId = null
-        if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = new BlobLeaseClientBuilder()
-                .blobAsyncClient(bac)
-                .buildAsyncClient()
-                .acquireLease(-1)
-                .block()
         }
         if (leaseID == receivedLeaseID) {
             return responseLeaseId
