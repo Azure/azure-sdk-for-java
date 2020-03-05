@@ -1,6 +1,8 @@
 # Release History
 
 ## 1.0.0-beta.3 (Unreleased)
+- EventHubs: add enqueueTime to Process span links.
+- EventHubs: add az namespace attribute to all outgoing spans. 
 
 ## 1.0.0-beta.2 (2020-01-07)
 - Add `EventHubs.*` properties to attributes of processing spans.
