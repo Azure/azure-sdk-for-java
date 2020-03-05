@@ -460,6 +460,16 @@
     <Method name="endTracingSpan"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
+  
+  <!-- Incorrect flagging, error will be thrown if value is null -->
+  <Match>
+      <Class name="com.azure.endtoend.identity.WebJobsIdentityTest"/>
+      <Or>
+          <Method name="testMSIEndpointWithSystemAssigned"/>
+          <Method name="testMSIEndpointWithUserAssigned"/>
+      </Or>
+      <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
 
   <!-- Incorrect flagging, if the response is null a StorageException would have been thrown -->
   <Match>
@@ -605,9 +615,13 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
-  <!-- Retry thus does not throw -->
+  <!-- Retry thus does not throw.
+    SharedTokenCacheCredential needs to catch any catch exception that gets thrown.-->
   <Match>
-    <Class name="com.azure.identity.implementation.msalextensions.CacheLock"/>
+    <Or>
+      <Class name="com.azure.identity.SharedTokenCacheCredential"/>
+      <Class name="com.azure.identity.implementation.msalextensions.CacheLock"/>
+    </Or>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
   <!-- Return value not needed -->

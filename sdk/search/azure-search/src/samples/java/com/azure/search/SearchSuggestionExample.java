@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
+import com.azure.search.util.SuggestPagedResponse;
 
 import java.util.Iterator;
 import java.util.List;

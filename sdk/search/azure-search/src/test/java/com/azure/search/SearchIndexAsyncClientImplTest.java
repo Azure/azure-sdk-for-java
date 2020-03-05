@@ -3,12 +3,9 @@
 package com.azure.search;
 
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.search.models.GeoPoint;
 import com.azure.search.models.SearchOptions;
-import com.azure.search.models.SearchResult;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Assert;
+import com.azure.search.util.SearchPagedFlux;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -23,7 +20,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
@@ -110,17 +108,14 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
         Mono<Document> futureDoc = asyncClient.getDocument("1");
 
-        StepVerifier
-            .create(futureDoc)
-            .assertNext(result -> Assert.assertEquals(expectedDoc, result))
+        StepVerifier.create(futureDoc)
+            .assertNext(result -> assertEquals(expectedDoc, result))
             .verifyComplete();
     }
 
     @Test
     public void getDocumentThrowsWhenDocumentNotFound() {
-        Mono<Document> futureDoc = asyncClient.getDocument("1000000001");
-        StepVerifier
-            .create(futureDoc)
+        StepVerifier.create(asyncClient.getDocument("1000000001"))
             .verifyErrorSatisfies(error -> assertEquals(ResourceNotFoundException.class, error.getClass()));
     }
 
@@ -135,10 +130,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
         uploadDocument(asyncClient, hotelDoc);
         assertHttpResponseExceptionAsync(
-            asyncClient.getDocument("2", selectedFields, null),
-            HttpResponseStatus.BAD_REQUEST,
-            "Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' "
-                + "on type 'search.document'."
+            asyncClient.getDocumentWithResponse("2", selectedFields, null)
         );
     }
 
@@ -195,7 +187,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         thread3.join();
 
         if (failed.get()) {
-            Assert.fail();
+            fail();
         }
     }
 
@@ -256,11 +248,11 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         threadWithSkip30.join();
 
         if (failed.get()) {
-            Assert.fail();
+            fail();
         }
     }
 
-    private void processResult(PagedFluxBase<SearchResult, SearchPagedResponse> result, Integer expectedCount) throws Exception {
+    private void processResult(SearchPagedFlux result, Integer expectedCount) throws Exception {
         if (result == null) {
             throw new Exception("Result is null");
         }

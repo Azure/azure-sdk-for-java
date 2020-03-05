@@ -37,11 +37,10 @@ pr:
       - sdk/servicebus/mgmt-
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: servicebus
       Artifacts:
         - name: azure-servicebus
           groupId: com.microsoft.azure
           safeName: azureservicebus
-          stagingProfileId: 534d15ee3800f4

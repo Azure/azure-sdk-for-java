@@ -4,13 +4,14 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.nio.implementation.util.Utility;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.FileStore;
 import java.nio.file.FileSystem;
 import java.nio.file.InvalidPathException;
 import java.nio.file.LinkOption;
@@ -26,7 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * The root component, if it is present, is the first element of the path and is denoted by a {@code ':'} as the last
@@ -47,7 +47,7 @@ import java.util.stream.StreamSupport;
  */
 public final class AzurePath implements Path {
     private final ClientLogger logger = new ClientLogger(AzurePath.class);
-    private static final String ROOT_DIR_SUFFIX = ":";
+    static final String ROOT_DIR_SUFFIX = ":";
 
     private final AzureFileSystem parentFileSystem;
     private final String pathString;
@@ -512,11 +512,25 @@ public final class AzurePath implements Path {
         return Objects.hash(parentFileSystem, pathString);
     }
 
-    // Used to ensure we only try to access containers that are mounted.
-    boolean validRoot(String fileStoreName) {
-        return StreamSupport.stream(parentFileSystem.getFileStores().spliterator(), false)
-            .map(FileStore::name)
-            .anyMatch(fileStoreName::equals);
+    /*
+    We don't store the blob client because unlike other types in this package, a Path does not actually indicate the
+    existence or even validity of any remote resource. It is purely a representation of a path. Therefore, we do not
+    construct the client or perform any validation until it is requested.
+     */
+    BlobClient toBlobClient() throws IOException {
+        // Converting to an absolute path ensures there is a container to operate on even if it is the default.
+        // Normalizing ensures the path is clean.
+        Path root = this.normalize().toAbsolutePath().getRoot();
+        if (root == null) {
+            throw Utility.logError(logger,
+                new IllegalStateException("Root should never be null after calling toAbsolutePath."));
+        }
+        String fileStoreName = this.rootToFileStore(root.toString());
+
+        BlobContainerClient containerClient =
+            ((AzureFileStore) this.parentFileSystem.getFileStore(fileStoreName)).getContainerClient();
+
+        return containerClient.getBlobClient(this.withoutRoot());
     }
 
     private String withoutRoot() {
@@ -546,5 +560,9 @@ public final class AzurePath implements Path {
             return new String[0];
         }
         return arr;
+    }
+
+    private String rootToFileStore(String root) {
+        return root.substring(0, root.length() - 1); // Remove the ROOT_DIR_SUFFIX
     }
 }

@@ -3,8 +3,6 @@
 
 package com.azure.search;
 
-import com.azure.core.http.rest.PagedIterableBase;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
 import com.azure.search.models.CoordinateSystem;
 import com.azure.search.models.FacetResult;
@@ -17,14 +15,13 @@ import com.azure.search.models.ValueFacetResult;
 import com.azure.search.test.environment.models.Bucket;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.NonNullableModel;
+import com.azure.search.util.SearchPagedIterable;
+import com.azure.search.util.SearchPagedResponse;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.unitils.reflectionassert.ReflectionAssert;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
@@ -43,8 +40,12 @@ import java.util.stream.Stream;
 
 import static com.azure.search.models.QueryType.SIMPLE;
 import static com.azure.search.models.SearchMode.ALL;
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchSyncTests extends SearchTestBase {
 
@@ -60,33 +61,33 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canSearchDynamicDocuments() throws IOException {
+    public void canSearchDynamicDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION);
 
-        PagedIterableBase<SearchResult, SearchPagedResponse> searchResults = client.search("*");
-        Assert.assertNotNull(searchResults);
+        SearchPagedIterable searchResults = client.search("*");
+        assertNotNull(searchResults);
 
         Iterator<SearchPagedResponse> iterator = searchResults.iterableByPage().iterator();
 
         List<Map<String, Object>> actualResults = new ArrayList<>();
         while (iterator.hasNext()) {
             SearchPagedResponse result = iterator.next();
-            Assert.assertNull(result.getCount());
-            Assert.assertNull(result.getCoverage());
-            Assert.assertNull(result.getFacets());
-            Assert.assertNotNull(result.getItems());
+            assertNull(result.getCount());
+            assertNull(result.getCoverage());
+            assertNull(result.getFacets());
+            assertNotNull(result.getValue());
 
-            result.getItems().forEach(item -> {
-                Assert.assertEquals(1, item.getScore(), 0);
-                Assert.assertNull(item.getHighlights());
+            result.getElements().forEach(item -> {
+                assertEquals(1, item.getScore(), 0);
+                assertNull(item.getHighlights());
                 actualResults.add(item.getDocument());
             });
         }
-        Assert.assertEquals(hotels.size(), actualResults.size());
-        Assert.assertTrue(compareResults(actualResults, hotels));
+        assertEquals(hotels.size(), actualResults.size());
+        assertTrue(compareResults(actualResults, hotels));
     }
 
     @Test
@@ -104,22 +105,21 @@ public class SearchSyncTests extends SearchTestBase {
         List<String> expectedHotelIds = hotels.stream().map(hotel -> (String) hotel.get("HotelId")).sorted()
             .collect(Collectors.toList());
 
-        PagedIterableBase<SearchResult, SearchPagedResponse> results =
-            client.search("*", searchOptions, generateRequestOptions(), Context.NONE);
+        SearchPagedIterable results = client.search("*", searchOptions, generateRequestOptions(), Context.NONE);
 
-        Assert.assertNotNull(results);
+        assertNotNull(results);
 
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
 
-        PagedResponse<SearchResult> firstPage = iterator.next();
-        Assert.assertEquals(50, firstPage.getValue().size());
+        SearchPagedResponse firstPage = iterator.next();
+        assertEquals(50, firstPage.getValue().size());
         assertListEqualHotelIds(expectedHotelIds.subList(0, 50), firstPage.getValue());
-        Assert.assertNotNull(firstPage.getContinuationToken());
+        assertNotNull(firstPage.getContinuationToken());
 
-        PagedResponse<SearchResult> secondPage = iterator.next();
-        Assert.assertEquals(50, secondPage.getValue().size());
+        SearchPagedResponse secondPage = iterator.next();
+        assertEquals(50, secondPage.getValue().size());
         assertListEqualHotelIds(expectedHotelIds.subList(50, 100), secondPage.getValue());
-        Assert.assertNull(secondPage.getContinuationToken());
+        assertNull(secondPage.getContinuationToken());
     }
 
     @Test
@@ -139,48 +139,46 @@ public class SearchSyncTests extends SearchTestBase {
         List<String> expectedHotelIds = hotels.stream().map(hotel -> (String) hotel.get("HotelId")).sorted()
             .collect(Collectors.toList());
 
-        PagedIterableBase<SearchResult, SearchPagedResponse> results =
-            client.search("*", searchOptions, generateRequestOptions(), Context.NONE);
+        SearchPagedIterable results = client.search("*", searchOptions, generateRequestOptions(), Context.NONE);
 
-        Assert.assertNotNull(results);
+        assertNotNull(results);
 
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
 
-        PagedResponse<SearchResult> firstPage = iterator.next();
-        Assert.assertEquals(1000, firstPage.getValue().size());
+        SearchPagedResponse firstPage = iterator.next();
+        assertEquals(1000, firstPage.getValue().size());
         assertListEqualHotelIds(expectedHotelIds.subList(0, 1000), firstPage.getValue());
-        Assert.assertNotNull(firstPage.getContinuationToken());
+        assertNotNull(firstPage.getContinuationToken());
 
-        PagedResponse<SearchResult> secondPage = iterator.next();
-        Assert.assertEquals(1000, secondPage.getValue().size());
+        SearchPagedResponse secondPage = iterator.next();
+        assertEquals(1000, secondPage.getValue().size());
         assertListEqualHotelIds(expectedHotelIds.subList(1000, 2000), secondPage.getValue());
-        Assert.assertNull(secondPage.getContinuationToken());
+        assertNull(secondPage.getContinuationToken());
     }
 
     @Test
-    public void canSearchStaticallyTypedDocuments() throws IOException {
+    public void canSearchStaticallyTypedDocuments() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION);
 
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("*",
-            new SearchOptions(), generateRequestOptions(), Context.NONE);
-        Assert.assertNotNull(results);
+        SearchPagedIterable results = client.search("*", new SearchOptions(), generateRequestOptions(), Context.NONE);
+        assertNotNull(results);
 
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
 
         List<Hotel> actualResults = new ArrayList<>();
         while (iterator.hasNext()) {
             SearchPagedResponse result = iterator.next();
-            Assert.assertNull(result.getCount());
-            Assert.assertNull(result.getCoverage());
-            Assert.assertNull(result.getFacets());
-            Assert.assertNotNull(result.getItems());
+            assertNull(result.getCount());
+            assertNull(result.getCoverage());
+            assertNull(result.getFacets());
+            assertNotNull(result.getValue());
 
-            result.getItems().forEach(item -> {
-                Assert.assertEquals(1, item.getScore(), 0);
-                Assert.assertNull(item.getHighlights());
+            result.getElements().forEach(item -> {
+                assertEquals(1, item.getScore(), 0);
+                assertNull(item.getHighlights());
                 actualResults.add(convertToType(item.getDocument(), Hotel.class));
             });
         }
@@ -200,8 +198,10 @@ public class SearchSyncTests extends SearchTestBase {
             return h;
         }).collect(Collectors.toList());
 
-        Assert.assertEquals(hotelsList.size(), actualResults.size());
-        assertReflectionEquals(hotelsList, actualResults, IGNORE_DEFAULTS);
+        assertEquals(hotelsList.size(), actualResults.size());
+        for (int i = 0; i < hotelsList.size(); i++) {
+            TestHelpers.assertHotelsEqual(hotelsList.get(i), actualResults.get(i));
+        }
     }
 
     @Test
@@ -224,20 +224,19 @@ public class SearchSyncTests extends SearchTestBase {
 
         uploadDocuments(client, Arrays.asList(doc1, doc2));
 
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("*",
-            new SearchOptions(), generateRequestOptions(), Context.NONE);
-        Assert.assertNotNull(results);
+        SearchPagedIterable results = client.search("*", new SearchOptions(), generateRequestOptions(), Context.NONE);
+        assertNotNull(results);
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
-        Assert.assertTrue(iterator.hasNext());
+        assertTrue(iterator.hasNext());
 
-        PagedResponse<SearchResult> result = iterator.next();
-        Assert.assertEquals(2, result.getItems().size());
-        assertReflectionEquals(doc1, convertToType(result.getItems().get(0).getDocument(), NonNullableModel.class), IGNORE_DEFAULTS);
-        assertReflectionEquals(doc2, convertToType(result.getItems().get(1).getDocument(), NonNullableModel.class), IGNORE_DEFAULTS);
+        SearchPagedResponse result = iterator.next();
+        assertEquals(2, result.getValue().size());
+        TestHelpers.assetNonNullableModelsEqual(doc1, convertToType(result.getValue().get(0).getDocument(), NonNullableModel.class));
+        TestHelpers.assetNonNullableModelsEqual(doc2, convertToType(result.getValue().get(1).getDocument(), NonNullableModel.class));
     }
 
     @Test
-    public void canSearchWithDateInStaticModel() throws ParseException, IOException {
+    public void canSearchWithDateInStaticModel() throws ParseException {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -245,20 +244,19 @@ public class SearchSyncTests extends SearchTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         Date expected = DATE_FORMAT.parse("2010-06-27T00:00:00Z");
 
-        PagedIterableBase<SearchResult, SearchPagedResponse>  results = client
-            .search("Fancy", new SearchOptions(), generateRequestOptions(), Context.NONE);
-        Assert.assertNotNull(results);
+        SearchPagedIterable results = client.search("Fancy", new SearchOptions(), generateRequestOptions(), Context.NONE);
+        assertNotNull(results);
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
-        Assert.assertTrue(iterator.hasNext());
+        assertTrue(iterator.hasNext());
 
-        PagedResponse<SearchResult> result = iterator.next();
-        Assert.assertEquals(1, result.getItems().size());
-        Date actual = convertToType(result.getItems().get(0).getDocument(), Hotel.class).lastRenovationDate();
-        Assert.assertEquals(expected, actual);
+        SearchPagedResponse result = iterator.next();
+        assertEquals(1, result.getValue().size());
+        Date actual = convertToType(result.getValue().get(0).getDocument(), Hotel.class).lastRenovationDate();
+        assertEquals(expected, actual);
     }
 
     @Test
-    public void canSearchWithSelectedFields() throws IOException {
+    public void canSearchWithSelectedFields() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -269,8 +267,7 @@ public class SearchSyncTests extends SearchTestBase {
         sp.setSearchFields("HotelName", "Category");
         sp.setSelect("HotelName", "Rating", "Address/City", "Rooms/Type");
 
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("fancy luxury secret",
-            sp, generateRequestOptions(), Context.NONE);
+        SearchPagedIterable results = client.search("fancy luxury secret", sp, generateRequestOptions(), Context.NONE);
 
         HashMap<String, Object> expectedHotel1 = new HashMap<>();
         expectedHotel1.put("HotelName", "Fancy Stay");
@@ -292,20 +289,20 @@ public class SearchSyncTests extends SearchTestBase {
         expectedHotel2.put("Rooms", Arrays.asList(rooms, rooms2));
 
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
-        PagedResponse<SearchResult> result = iterator.next();
-        Assert.assertEquals(2, result.getItems().size());
+        SearchPagedResponse result = iterator.next();
+        assertEquals(2, result.getValue().size());
 
         // From the result object, extract the two hotels, clean up (irrelevant fields) and change data structure
         // as a preparation to check equality
-        Map<String, Object> hotel1 = extractAndTransformSingleResult(result.getItems().get(0));
-        Map<String, Object> hotel2 = extractAndTransformSingleResult(result.getItems().get(1));
+        Map<String, Object> hotel1 = extractAndTransformSingleResult(result.getValue().get(0));
+        Map<String, Object> hotel2 = extractAndTransformSingleResult(result.getValue().get(1));
 
-        Assert.assertEquals(expectedHotel1, hotel1);
-        Assert.assertEquals(expectedHotel2, hotel2);
+        assertEquals(expectedHotel1, hotel1);
+        assertEquals(expectedHotel2, hotel2);
     }
 
     @Test
-    public void canUseTopAndSkipForClientSidePaging() throws IOException {
+    public void canUseTopAndSkipForClientSidePaging() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -313,8 +310,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         SearchOptions parameters = new SearchOptions().setTop(3).setSkip(0).setOrderBy("HotelId");
 
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("*",
-            parameters, generateRequestOptions(), Context.NONE);
+        SearchPagedIterable results = client.search("*", parameters, generateRequestOptions(), Context.NONE);
         assertKeySequenceEqual(results, Arrays.asList("1", "10", "2"));
 
         parameters.setSkip(3);
@@ -323,7 +319,7 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void searchWithoutOrderBySortsByScore() throws IOException {
+    public void searchWithoutOrderBySortsByScore() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -333,11 +329,11 @@ public class SearchSyncTests extends SearchTestBase {
             .search("*", new SearchOptions().setFilter("Rating lt 4"), generateRequestOptions(), Context.NONE).iterator();
         SearchResult firstResult = results.next();
         SearchResult secondResult = results.next();
-        Assert.assertTrue(firstResult.getScore() <= secondResult.getScore());
+        assertTrue(firstResult.getScore() <= secondResult.getScore());
     }
 
     @Test
-    public void orderByProgressivelyBreaksTies() throws IOException {
+    public void orderByProgressivelyBreaksTies() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -349,11 +345,11 @@ public class SearchSyncTests extends SearchTestBase {
             .search("*",
                 new SearchOptions().setOrderBy("Rating desc", "LastRenovationDate asc"), generateRequestOptions(), Context.NONE).stream()
             .map(res -> getSearchResultId(res, "HotelId"));
-        Assert.assertArrayEquals(results.toArray(), expectedResults);
+        assertArrayEquals(results.toArray(), expectedResults);
     }
 
     @Test
-    public void canFilter() throws IOException {
+    public void canFilter() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -361,33 +357,29 @@ public class SearchSyncTests extends SearchTestBase {
 
         SearchOptions searchOptions = new SearchOptions()
             .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z");
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("*",
-            searchOptions, generateRequestOptions(), Context.NONE);
-        Assert.assertNotNull(results);
+        SearchPagedIterable results = client.search("*", searchOptions, generateRequestOptions(), Context.NONE);
+        assertNotNull(results);
 
         List<Map<String, Object>> searchResultsList = getSearchResults(results);
-        Assert.assertEquals(2, searchResultsList.size());
+        assertEquals(2, searchResultsList.size());
 
         List<Object> hotelIds = searchResultsList.stream().map(r -> r.get("HotelId")).collect(Collectors.toList());
-        Assert.assertTrue(Arrays.asList("1", "5").containsAll(hotelIds));
+        assertTrue(Arrays.asList("1", "5").containsAll(hotelIds));
     }
 
     @Test
-    public void canSearchWithRangeFacets() throws IOException {
+    public void canSearchWithRangeFacets() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("*",
-            getSearchOptionsForRangeFacets(), generateRequestOptions(), Context.NONE);
-        Assert.assertNotNull(results);
+        SearchPagedIterable results = client.search("*", getSearchOptionsForRangeFacets(), generateRequestOptions(),
+            Context.NONE);
 
-        Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
-
-        for (SearchPagedResponse result : pagesIterable) {
-            assertContainHotelIds(hotels, result.getItems());
-            Assert.assertNotNull(result.getFacets());
+        for (SearchPagedResponse result : results.iterableByPage()) {
+            assertContainHotelIds(hotels, result.getValue());
+            assertNotNull(result.getFacets());
             List<RangeFacetResult> baseRateFacets = getRangeFacetsForField(result.getFacets(), "Rooms/BaseRate", 4);
             List<RangeFacetResult> lastRenovationDateFacets = getRangeFacetsForField(
                 result.getFacets(), "LastRenovationDate", 2);
@@ -396,22 +388,18 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canSearchWithValueFacets() throws IOException {
+    public void canSearchWithValueFacets() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("*",
-            getSearchOptionsForValueFacets(), generateRequestOptions(), Context.NONE);
-        Assert.assertNotNull(results);
+        SearchPagedIterable results = client.search("*", getSearchOptionsForValueFacets(), generateRequestOptions(), Context.NONE);
 
-        Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
-
-        for (SearchPagedResponse result : pagesIterable) {
-            assertContainHotelIds(hotels, result.getItems());
+        for (SearchPagedResponse result : results.iterableByPage()) {
+            assertContainHotelIds(hotels, result.getValue());
             Map<String, List<FacetResult>> facets = result.getFacets();
-            Assert.assertNotNull(facets);
+            assertNotNull(facets);
 
             assertValueFacetsEqual(
                 getValueFacetsForField(facets, "Rating", 2),
@@ -465,7 +453,7 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canSearchWithLuceneSyntax() throws IOException {
+    public void canSearchWithLuceneSyntax() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -476,13 +464,13 @@ public class SearchSyncTests extends SearchTestBase {
         expectedResult.put("Rating", 1);
 
         SearchOptions searchOptions = new SearchOptions().setQueryType(QueryType.FULL).setSelect("HotelName", "Rating");
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("HotelName:roch~",
-            searchOptions, generateRequestOptions(), Context.NONE);
+        SearchPagedIterable results = client.search("HotelName:roch~", searchOptions, generateRequestOptions(),
+            Context.NONE);
 
-        Assert.assertNotNull(results);
+        assertNotNull(results);
         List<Map<String, Object>> searchResultsList = getSearchResults(results);
-        Assert.assertEquals(1, searchResultsList.size());
-        Assert.assertEquals(expectedResult, searchResultsList.get(0));
+        assertEquals(1, searchResultsList.size());
+        assertEquals(expectedResult, searchResultsList.get(0));
     }
 
     @Test
@@ -503,18 +491,18 @@ public class SearchSyncTests extends SearchTestBase {
         SearchOptions searchOptions = new SearchOptions()
             .setFilter("IntValue eq 0 or (Bucket/BucketName eq 'B' and Bucket/Count lt 10)");
 
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("*",
-            searchOptions, generateRequestOptions(), Context.NONE);
-        Assert.assertNotNull(results);
+        SearchPagedIterable results = client.search("*", searchOptions, generateRequestOptions(), Context.NONE);
+        assertNotNull(results);
 
         List<Map<String, Object>> searchResultsList = getSearchResults(results);
-        Assert.assertEquals(2, searchResultsList.size());
-
-        ReflectionAssert.assertLenientEquals(expectedDocsList, searchResultsList);
+        assertEquals(2, searchResultsList.size());
+        for (int i = 0; i < searchResultsList.size(); i++) {
+            TestHelpers.assertDocumentsEqual(expectedDocsList.get(i), searchResultsList.get(i));
+        }
     }
 
     @Test
-    public void canSearchWithSearchModeAll() throws IOException {
+    public void canSearchWithSearchModeAll() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -523,12 +511,12 @@ public class SearchSyncTests extends SearchTestBase {
         List<Map<String, Object>> response = getSearchResults(client
             .search("Cheapest hotel", new SearchOptions().setQueryType(SIMPLE).setSearchMode(ALL),
                 generateRequestOptions(), Context.NONE));
-        Assert.assertEquals(1, response.size());
-        Assert.assertEquals("2", response.get(0).get("HotelId"));
+        assertEquals(1, response.size());
+        assertEquals("2", response.get(0).get("HotelId"));
     }
 
     @Test
-    public void defaultSearchModeIsAny() throws IOException {
+    public void defaultSearchModeIsAny() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -536,31 +524,31 @@ public class SearchSyncTests extends SearchTestBase {
 
         List<Map<String, Object>> response = getSearchResults(client.search("Cheapest hotel",
             new SearchOptions(), generateRequestOptions(), Context.NONE));
-        Assert.assertEquals(7, response.size());
-        Assert.assertEquals(
+        assertEquals(7, response.size());
+        assertEquals(
             Arrays.asList("2", "10", "3", "4", "5", "1", "9"),
             response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
     }
 
     @Test
-    public void canGetResultCountInSearch() throws IOException {
+    public void canGetResultCountInSearch() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        PagedIterableBase<SearchResult, SearchPagedResponse>  results = client.search("*",
-            new SearchOptions().setIncludeTotalResultCount(true), generateRequestOptions(), Context.NONE);
-        Assert.assertNotNull(results);
+        SearchPagedIterable results = client.search("*", new SearchOptions().setIncludeTotalResultCount(true),
+            generateRequestOptions(), Context.NONE);
+        assertNotNull(results);
         Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
         Iterator<SearchPagedResponse> iterator = pagesIterable.iterator();
 
-        Assert.assertEquals(hotels.size(), iterator.next().getCount().intValue());
-        Assert.assertFalse(iterator.hasNext());
+        assertEquals(hotels.size(), iterator.next().getCount().intValue());
+        assertFalse(iterator.hasNext());
     }
 
     @Test
-    public void canSearchWithRegex() throws IOException {
+    public void canSearchWithRegex() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -570,9 +558,9 @@ public class SearchSyncTests extends SearchTestBase {
             .setQueryType(QueryType.FULL)
             .setSelect("HotelName", "Rating");
 
-        PagedIterableBase<SearchResult, SearchPagedResponse>  results = client.search("HotelName:/.*oach.*\\/?/",
-            searchOptions, generateRequestOptions(), Context.NONE);
-        Assert.assertNotNull(results);
+        SearchPagedIterable results = client.search("HotelName:/.*oach.*\\/?/", searchOptions, generateRequestOptions(),
+            Context.NONE);
+        assertNotNull(results);
 
         List<Map<String, Object>> resultsList = getSearchResults(results);
 
@@ -580,28 +568,28 @@ public class SearchSyncTests extends SearchTestBase {
         expectedHotel.put("HotelName", "Roach Motel");
         expectedHotel.put("Rating", 1);
 
-        Assert.assertEquals(1, resultsList.size());
-        Assert.assertEquals(dropUnnecessaryFields(resultsList.get(0)), expectedHotel);
+        assertEquals(1, resultsList.size());
+        assertEquals(dropUnnecessaryFields(resultsList.get(0)), expectedHotel);
     }
 
     @Test
-    public void canSearchWithEscapedSpecialCharsInRegex() throws IOException {
+    public void canSearchWithEscapedSpecialCharsInRegex() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SearchOptions searchOptions = new SearchOptions().setQueryType(QueryType.FULL);
 
-        PagedIterableBase<SearchResult, SearchPagedResponse>  results = client.search("\\+\\-\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\~\\*\\?\\:",
-            searchOptions, generateRequestOptions(), Context.NONE);
-        Assert.assertNotNull(results);
+        SearchPagedIterable results = client.search("\\+\\-\\&\\|\\!\\(\\)\\{\\}\\[\\]\\^\\~\\*\\?\\:", searchOptions,
+            generateRequestOptions(), Context.NONE);
+        assertNotNull(results);
 
         List<Map<String, Object>> resultsList = getSearchResults(results);
-        Assert.assertEquals(0, resultsList.size());
+        assertEquals(0, resultsList.size());
     }
 
     @Test
-    public void searchWithScoringProfileBoostsScore() throws IOException {
+    public void searchWithScoringProfileBoostsScore() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -613,29 +601,29 @@ public class SearchSyncTests extends SearchTestBase {
 
         List<Map<String, Object>> response = getSearchResults(client.search("hotel",
             searchOptions, generateRequestOptions(), Context.NONE));
-        Assert.assertEquals(2, response.size());
-        Assert.assertEquals(
+        assertEquals(2, response.size());
+        assertEquals(
             Arrays.asList("2", "1"),
             response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
     }
 
     @Test
-    public void canSearchWithMinimumCoverage() throws IOException {
+    public void canSearchWithMinimumCoverage() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
-        PagedIterableBase<SearchResult, SearchPagedResponse>  results = client.search("*",
-            new SearchOptions().setMinimumCoverage(50.0), generateRequestOptions(), Context.NONE);
-        Assert.assertNotNull(results);
+        SearchPagedIterable results = client.search("*", new SearchOptions().setMinimumCoverage(50.0),
+            generateRequestOptions(), Context.NONE);
+        assertNotNull(results);
 
         Iterator<SearchPagedResponse> resultsIterator = results.iterableByPage().iterator();
 
-        Assert.assertEquals(100.0, resultsIterator.next().getCoverage(), 0);
+        assertEquals(100.0, resultsIterator.next().getCoverage(), 0);
     }
 
     @Test
-    public void canUseHitHighlighting() throws IOException {
+    public void canUseHitHighlighting() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -652,40 +640,39 @@ public class SearchSyncTests extends SearchTestBase {
         sp.setHighlightFields(category, description);
 
         //act
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("luxury hotel",
-            sp, generateRequestOptions(), Context.NONE);
+        SearchPagedIterable results = client.search("luxury hotel", sp, generateRequestOptions(), Context.NONE);
 
         //sanity
-        Assert.assertNotNull(results);
+        assertNotNull(results);
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
-        PagedResponse<SearchResult> result = iterator.next();
-        List<SearchResult> documents = result.getItems();
+        SearchPagedResponse result = iterator.next();
+        List<SearchResult> documents = result.getValue();
 
         // sanity
-        Assert.assertEquals(1, documents.size());
+        assertEquals(1, documents.size());
         Map<String, List<String>> highlights = documents.get(0).getHighlights();
-        Assert.assertNotNull(highlights);
-        Assert.assertEquals(2, highlights.keySet().size());
-        Assert.assertTrue(highlights.containsKey(description));
-        Assert.assertTrue(highlights.containsKey(category));
+        assertNotNull(highlights);
+        assertEquals(2, highlights.keySet().size());
+        assertTrue(highlights.containsKey(description));
+        assertTrue(highlights.containsKey(category));
 
         String categoryHighlight = highlights.get(category).get(0);
 
         //asserts
-        Assert.assertEquals("<b>Luxury</b>", categoryHighlight);
+        assertEquals("<b>Luxury</b>", categoryHighlight);
 
-        // Typed as IEnumerable so we get the right overload of Assert.Equals below.
+        // Typed as IEnumerable so we get the right overload of Equals below.
         List<String> expectedDescriptionHighlights =
             Arrays.asList(
                 "Best <b>hotel</b> in town if you like <b>luxury</b> <b>hotels</b>.",
                 "We highly recommend this <b>hotel</b>."
             );
 
-        Assert.assertEquals(expectedDescriptionHighlights, highlights.get(description));
+        assertEquals(expectedDescriptionHighlights, highlights.get(description));
     }
 
     @Test
-    public void canSearchWithSynonyms() throws IOException {
+    public void canSearchWithSynonyms() {
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
 
@@ -699,24 +686,23 @@ public class SearchSyncTests extends SearchTestBase {
             .setSearchFields(fieldName)
             .setSelect("HotelName", "Rating");
 
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("luxury",
-            searchOptions, generateRequestOptions(), Context.NONE);
-        Assert.assertNotNull(results);
+        SearchPagedIterable results = client.search("luxury", searchOptions, generateRequestOptions(), Context.NONE);
+        assertNotNull(results);
 
         List<Map<String, Object>> response = getSearchResults(results);
-        Assert.assertEquals(1, response.size());
-        Assert.assertEquals("Fancy Stay", response.get(0).get("HotelName"));
-        Assert.assertEquals(5, response.get(0).get("Rating"));
+        assertEquals(1, response.size());
+        assertEquals("Fancy Stay", response.get(0).get("HotelName"));
+        assertEquals(5, response.get(0).get("Rating"));
     }
 
-    private List<Map<String, Object>> getSearchResults(PagedIterableBase<SearchResult, SearchPagedResponse> results) {
+    private List<Map<String, Object>> getSearchResults(SearchPagedIterable results) {
         Iterator<SearchPagedResponse> resultsIterator = results.iterableByPage().iterator();
 
         List<Map<String, Object>> searchResults = new ArrayList<>();
         while (resultsIterator.hasNext()) {
             SearchPagedResponse result = resultsIterator.next();
-            Assert.assertNotNull(result.getItems());
-            result.getItems().forEach(item -> searchResults.add(dropUnnecessaryFields(item.getDocument())));
+            assertNotNull(result.getValue());
+            result.getElements().forEach(item -> searchResults.add(dropUnnecessaryFields(item.getDocument())));
         }
 
         return searchResults;
@@ -724,7 +710,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     private Map<String, Object> extractAndTransformSingleResult(SearchResult result) {
         return dropUnnecessaryFields(convertHashMapToMap(
-                (result.getDocument())));
+            (result.getDocument())));
     }
 
     /**
@@ -780,12 +766,12 @@ public class SearchSyncTests extends SearchTestBase {
         return convertedArray;
     }
 
-    private void assertKeySequenceEqual(PagedIterableBase<SearchResult, SearchPagedResponse> results, List<String> expectedKeys) {
-        Assert.assertNotNull(results);
+    private void assertKeySequenceEqual(SearchPagedIterable results, List<String> expectedKeys) {
+        assertNotNull(results);
 
         List<String> actualKeys = results.stream().filter(doc -> doc.getDocument().containsKey("HotelId"))
             .map(doc -> (String) doc.getDocument().get("HotelId")).collect(Collectors.toList());
 
-        Assert.assertEquals(expectedKeys, actualKeys);
+        assertEquals(expectedKeys, actualKeys);
     }
 }

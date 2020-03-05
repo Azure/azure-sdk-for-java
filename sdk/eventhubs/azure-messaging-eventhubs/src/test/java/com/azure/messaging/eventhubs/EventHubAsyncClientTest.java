@@ -43,7 +43,6 @@ class EventHubAsyncClientTest {
     @Mock
     private EventHubAmqpConnection connection3;
 
-    private final Duration timeout = Duration.ofSeconds(10);
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointProcessorSink = endpointProcessor.sink();
     private final DirectProcessor<AmqpShutdownSignal> shutdownSignalProcessor = DirectProcessor.create();

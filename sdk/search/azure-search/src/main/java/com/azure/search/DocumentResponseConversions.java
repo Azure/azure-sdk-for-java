@@ -9,7 +9,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 /**
  * Internal utility class for Document Response conversions.
  */
-class DocumentResponseConversions {
+final class DocumentResponseConversions {
 
     private static final String ODATA_CONTEXT = "@odata.context";
 

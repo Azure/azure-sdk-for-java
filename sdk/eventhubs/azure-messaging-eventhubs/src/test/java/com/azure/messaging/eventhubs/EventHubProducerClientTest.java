@@ -43,11 +43,14 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -99,7 +102,7 @@ public class EventHubProducerClientTest {
             .subscribeWith(new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getEntityPath(), connectionOptions.getRetry()));
         asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, false);
+            tracerProvider, messageSerializer, Schedulers.parallel(), false);
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
     }
@@ -146,7 +149,7 @@ public class EventHubProducerClientTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, false);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
@@ -157,12 +160,14 @@ public class EventHubProducerClientTest {
         when(tracer1.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
+                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
                 return passed.addData(PARENT_SPAN_KEY, "value");
             }
         );
         when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
+                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
                 return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
             }
         );
@@ -199,7 +204,7 @@ public class EventHubProducerClientTest {
             .thenReturn(Mono.just(sendLink));
 
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, false);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8))
             .addContext(SPAN_CONTEXT_KEY, Context.NONE);
@@ -207,6 +212,7 @@ public class EventHubProducerClientTest {
         when(tracer1.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
+                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
                 return passed.addData(PARENT_SPAN_KEY, "value");
             }
         );
@@ -310,7 +316,7 @@ public class EventHubProducerClientTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, false);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
