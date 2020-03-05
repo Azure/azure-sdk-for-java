@@ -11,8 +11,8 @@ import java.time.Duration;
  * Options set when receiving a message.
  */
 public class ReceiveMessageOptions {
-    // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application receiving messages at a slow rate.
-    // Applications can set it to a higher value if they need better performance.
+    // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application receiving
+    // messages at a slow rate. Applications can set it to a higher value if they need better performance.
     private static final int DEFAULT_PREFETCH_COUNT = 1;
 
     private boolean autoComplete;

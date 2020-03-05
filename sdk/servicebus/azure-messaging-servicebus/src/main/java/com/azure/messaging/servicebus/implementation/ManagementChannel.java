@@ -15,10 +15,8 @@ import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
-
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -109,11 +107,11 @@ public class ManagementChannel implements  ServiceBusManagementNode {
 
             // set mandatory properties on AMQP message body
             HashMap<String, Object> requestBodyMap = new HashMap<>();
-            requestBodyMap.put(ServiceBusConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMER, fromSequenceNumber);
+            requestBodyMap.put(ServiceBusConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER, fromSequenceNumber);
             requestBodyMap.put(ServiceBusConstants.REQUEST_RESPONSE_MESSAGE_COUNT, maxMessages);
 
             if (!Objects.isNull(sessionId)) {
-                requestBodyMap.put(ServiceBusConstants.REQUEST_RESPONSE_SESSIONID, sessionId);
+                requestBodyMap.put(ServiceBusConstants.REQUEST_RESPONSE_SESSION_ID, sessionId);
             }
 
             request.setBody(new AmqpValue(requestBodyMap));

@@ -45,7 +45,7 @@ import java.util.ServiceLoader;
 /***
  * The builder to create {@link ServiceBusReceiverAsyncClient} and {@link ServiceBusSenderAsyncClient}.
  */
-@ServiceClientBuilder(serviceClients = { ServiceBusReceiverAsyncClient.class, ServiceBusSenderAsyncClient.class})
+@ServiceClientBuilder(serviceClients = {ServiceBusReceiverAsyncClient.class, ServiceBusSenderAsyncClient.class})
 public final class ServiceBusClientBuilder {
 
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
@@ -79,6 +79,7 @@ public final class ServiceBusClientBuilder {
      * Sets the connection string for a Service Bus resource.
      *
      * @param connectionStringWithResourceName Connection string with name of Service Bus resource in it.
+     *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
     public ServiceBusClientBuilder connectionString(String connectionStringWithResourceName) {
@@ -102,10 +103,11 @@ public final class ServiceBusClientBuilder {
      * @param fullyQualifiedNamespace for the Service Bus.
      * @param topicOrQueueName The name of the queue or topic.
      * @param credential {@link TokenCredential} to be used for authentication.
+     *
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
     public ServiceBusClientBuilder credential(String fullyQualifiedNamespace, String topicOrQueueName,
-                                              TokenCredential credential) {
+        TokenCredential credential) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
@@ -124,8 +126,8 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Sets the proxy configuration to use for {@link ServiceBusSenderAsyncClient}.
-     * When a proxy is configured, {@link AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
+     * Sets the proxy configuration to use for {@link ServiceBusSenderAsyncClient}. When a proxy is configured, {@link
+     * AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
      * @param proxyOptions The proxy configuration to use.
      *
@@ -138,8 +140,10 @@ public final class ServiceBusClientBuilder {
 
     /**
      * Specify connection string and  queue name for connection to Queue.
+     *
      * @param connectionString to connect to service bus resource.
      * @param topicOrQueueName The name of the queue.
+     *
      * @return The {@link ServiceBusClientBuilder}.
      */
     public ServiceBusClientBuilder connectionString(String connectionString, String topicOrQueueName) {
@@ -148,8 +152,8 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     *
      * @param retryPolicy to recover from Connection.
+     *
      * @return The {@link ServiceBusClientBuilder}.
      */
     public ServiceBusClientBuilder retryPolicy(AmqpRetryPolicy retryPolicy) {
@@ -158,7 +162,9 @@ public final class ServiceBusClientBuilder {
 
     /**
      * This is valid for receiving messages only.
+     *
      * @param receiveMessageOptions for receiving.
+     *
      * @return The {@link ServiceBusClientBuilder}.
      */
     public ServiceBusClientBuilder receiveMessageOptions(ReceiveMessageOptions receiveMessageOptions) {
@@ -167,8 +173,8 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     *
      * @param transportType to use.
+     *
      * @return The {@link ServiceBusClientBuilder}.
      */
     public ServiceBusClientBuilder transportType(AmqpTransportType transportType) {
@@ -177,8 +183,8 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     *
      * @param retryOptions to manage AMQP connection.
+     *
      * @return The {@link ServiceBusClientBuilder}.
      */
     public ServiceBusClientBuilder retry(AmqpRetryOptions retryOptions) {
@@ -187,8 +193,8 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Creates an {@link ServiceBusSenderAsyncClient} for transmitting {@link ServiceBusMessage}
-     * to a Service Bus queue or topic.
+     * Creates an {@link ServiceBusSenderAsyncClient} for transmitting {@link ServiceBusMessage} to a Service Bus queue
+     * or topic.
      *
      * @return A new {@link ServiceBusSenderAsyncClient} for transmitting to a Service queue or topic.
      */
@@ -211,8 +217,8 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Creates an Service Bus receiver responsible for reading {@link ServiceBusMessage ServiceBusMessages} from a
-     * specific queue or topic.
+     * Creates an Service Bus receiver responsible for reading {@link ServiceBusMessage messages} from a specific queue
+     * or topic.
      *
      * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from a queue or topic.
      */
@@ -237,6 +243,7 @@ public final class ServiceBusClientBuilder {
      * Sets the scheduler to use.
      *
      * @param scheduler Scheduler to be used.
+     *
      * @return The {@link ServiceBusClientBuilder}.
      */
     ServiceBusClientBuilder scheduler(Scheduler scheduler) {

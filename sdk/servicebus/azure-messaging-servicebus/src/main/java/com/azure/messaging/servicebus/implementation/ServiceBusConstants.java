@@ -13,8 +13,8 @@ public class ServiceBusConstants {
     public static final String AZURE_ACTIVE_DIRECTORY_SCOPE = "https://servicebus.azure.net/.default";
     public static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(60);
     public static final Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
-    public static final String REQUEST_RESPONSE_FROM_SEQUENCE_NUMER = "from-sequence-number";
-    public static final String REQUEST_RESPONSE_MESSAGE_COUNT = "message-count";
 
-    public static final String REQUEST_RESPONSE_SESSIONID = "session-id";
+    public static final String REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER = "from-sequence-number";
+    public static final String REQUEST_RESPONSE_MESSAGE_COUNT = "message-count";
+    public static final String REQUEST_RESPONSE_SESSION_ID = "session-id";
 }
