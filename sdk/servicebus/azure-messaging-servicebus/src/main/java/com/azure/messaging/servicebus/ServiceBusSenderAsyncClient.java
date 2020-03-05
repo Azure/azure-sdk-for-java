@@ -46,7 +46,7 @@ import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
- * The client to send messages to Queue.
+ * The client to send messages to a Service Bus resource.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSenderAsyncClient implements Closeable {
@@ -57,7 +57,7 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     private final MessageSerializer messageSerializer;
     private final AmqpRetryOptions retryOptions;
     private final AmqpRetryPolicy retryPolicy;
-    private final String queueName;
+    private final String entityName;
     private final ServiceBusConnectionProcessor connectionProcessor;
 
     /**
@@ -68,14 +68,13 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     /**
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to
      */
-    ServiceBusSenderAsyncClient(String queueName, ServiceBusConnectionProcessor connectionProcessor,
-                                AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
-                                MessageSerializer messageSerializer) {
+    ServiceBusSenderAsyncClient(String entityName, ServiceBusConnectionProcessor connectionProcessor,
+        AmqpRetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        this.queueName = Objects.requireNonNull(queueName, "'entityPath' cannot be null.");
+        this.entityName = Objects.requireNonNull(entityName, "'entityPath' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
             "'connectionProcessor' cannot be null.");
         this.tracerProvider = tracerProvider;
@@ -83,24 +82,42 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     }
 
     /**
-     * @param serviceBusMessage to be sent to Service Bus Queue.
+     * Gets the fully qualified namespace.
+     *
+     * @return The fully qualified namespace.
+     */
+    public String getFullyQualifiedNamespace() {
+        return connectionProcessor.getFullyQualifiedNamespace();
+    }
+
+    /**
+     * Gets the name of the Service Bus resource.
+     *
+     * @return The name of the Service Bus resource.
+     */
+    public String getEntityName() {
+        return entityName;
+    }
+
+    /**
+     * @param message to be sent to Service Bus Queue.
      * @param sessionId the session id to associate with the message.
      *
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> send(ServiceBusMessage serviceBusMessage, String sessionId) {
+    public Mono<Void> send(ServiceBusMessage message, String sessionId) {
         //TODO(sessionid) Implement session id feature
-        return send(Flux.just(serviceBusMessage));
+        return send(Flux.just(message));
     }
 
     /**
-     * @param serviceBusMessage to be sent Service Bus Queue.
+     * @param message to be sent Service Bus Queue.
      *
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> send(ServiceBusMessage serviceBusMessage) {
-        Objects.requireNonNull(serviceBusMessage, "'message' cannot be null.");
-        return send(Flux.just(serviceBusMessage));
+    public Mono<Void> send(ServiceBusMessage message) {
+        Objects.requireNonNull(message, "'message' cannot be null.");
+        return send(Flux.just(message));
     }
 
     /**
@@ -108,70 +125,14 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
      * the maximum size of a single batch, an exception will be triggered and the send will fail. By default, the
      * message size is the max amount allowed on the link.
      *
-     * @param messages to send to the Service Bus.
-     * *
+     * @param messages to send to the Service Bus. *
+     *
      * @return A {@link Mono} that completes when all messages are pushed to the service.
      */
     public Mono<Void> send(Flux<ServiceBusMessage> messages) {
         Objects.requireNonNull(messages, "'messages' cannot be null.");
 
         return sendInternal(messages);
-    }
-
-    private Mono<Void> sendInternal(Flux<ServiceBusMessage> messages) {
-        return getSendLink()
-            .flatMap(link -> link.getLinkSize()
-                .flatMap(size -> {
-                    final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-                    final CreateBatchOptions batchOptions = new CreateBatchOptions()
-                        .setMaximumSizeInBytes(batchSize);
-                    return messages.collect(new AmqpMessageCollector(batchOptions, 1,
-                        link::getErrorContext, tracerProvider, messageSerializer));
-                })
-                .flatMap(list -> sendInternalBatch(Flux.fromIterable(list))));
-    }
-
-    private Mono<Void> sendInternalBatch(Flux<ServiceBusMessageBatch> eventBatches) {
-        return eventBatches
-            .flatMap(this::send)
-            .then()
-            .doOnError(error -> {
-                logger.error("Error sending batch.", error);
-            });
-    }
-
-
-    /**
-     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
-     * enqueued and made available to receivers only at the scheduled enqueue time.
-     *
-     * @param serviceBusMessage to be sent to the Service Bus Queue.
-     * @param scheduledEnqueueTimeUtc Declares at which time the message should appear on the Service Bus Queue.
-     *
-     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
-     */
-    public Mono<Long> schedule(ServiceBusMessage serviceBusMessage, Instant scheduledEnqueueTimeUtc) {
-        //TODO(feature-to-implement)
-        return null;
-    }
-
-    /**
-     * Cancels the enqueuing of an already sent scheduled message, if it was not already enqueued.
-     *
-     * @param sequenceNumber of the scheduled message to cancel.
-     *
-     * @return The {@link Mono} that finishes this operation on service bus resource.
-     */
-    public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
-        //TODO(feature-to-implement)
-        return null;
-    }
-
-    /**
-     * @return The name of  the queue.
-     */
-    public String getQueueName() {
-        return this.queueName;
     }
 
     /**
@@ -181,7 +142,7 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
      *
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    Mono<Void> send(ServiceBusMessageBatch batch) {
+    public Mono<Void> send(ServiceBusMessageBatch batch) {
         Objects.requireNonNull(batch, "'batch' cannot be null.");
         final boolean isTracingEnabled = tracerProvider.isEnabled();
         final AtomicReference<Context> parentContext = isTracingEnabled
@@ -245,9 +206,70 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
 
     }
 
+    /**
+     * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
+     * enqueued and made available to receivers only at the scheduled enqueue time.
+     *
+     * @param serviceBusMessage to be sent to the Service Bus Queue.
+     * @param scheduledEnqueueTimeUtc Declares at which time the message should appear on the Service Bus Queue.
+     *
+     * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     */
+    public Mono<Long> schedule(ServiceBusMessage serviceBusMessage, Instant scheduledEnqueueTimeUtc) {
+        //TODO(feature-to-implement)
+        return null;
+    }
+
+    /**
+     * Cancels the enqueuing of an already sent scheduled message, if it was not already enqueued.
+     *
+     * @param sequenceNumber of the scheduled message to cancel.
+     *
+     * @return The {@link Mono} that finishes this operation on service bus resource.
+     */
+    public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
+        //TODO(feature-to-implement)
+        return null;
+    }
+
+    /**
+     * Disposes of the {@link ServiceBusSenderAsyncClient}. If the client had a dedicated connection, the underlying
+     * connection is also closed.
+     */
+    @Override
+    public void close() {
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
+        connectionProcessor.dispose();
+
+    }
+
+    private Mono<Void> sendInternal(Flux<ServiceBusMessage> messages) {
+        return getSendLink()
+            .flatMap(link -> link.getLinkSize()
+                .flatMap(size -> {
+                    final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
+                    final CreateBatchOptions batchOptions = new CreateBatchOptions()
+                        .setMaximumSizeInBytes(batchSize);
+                    return messages.collect(new AmqpMessageCollector(batchOptions, 1,
+                        link::getErrorContext, tracerProvider, messageSerializer));
+                })
+                .flatMap(list -> sendInternalBatch(Flux.fromIterable(list))));
+    }
+
+    private Mono<Void> sendInternalBatch(Flux<ServiceBusMessageBatch> eventBatches) {
+        return eventBatches
+            .flatMap(this::send)
+            .then()
+            .doOnError(error -> {
+                logger.error("Error sending batch.", error);
+            });
+    }
+
     private Mono<AmqpSendLink> getSendLink() {
-        final String entityPath = queueName;
-        final String linkName = queueName;
+        final String entityPath = entityName;
+        final String linkName = entityName;
 
         return connectionProcessor
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
@@ -328,18 +350,5 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
         public Set<Characteristics> characteristics() {
             return Collections.emptySet();
         }
-    }
-
-    /**
-     * Disposes of the {@link ServiceBusSenderAsyncClient}. If the client had a dedicated connection, the underlying
-     * connection is also closed.
-     */
-    @Override
-    public void close() {
-        if (isDisposed.getAndSet(true)) {
-            return;
-        }
-        connectionProcessor.dispose();
-
     }
 }
