@@ -14,7 +14,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-eventhubs</artifactId>
-  <version>3.1.0</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
+  <version>3.2.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
 
   <name>Microsoft Azure SDK for Event Hubs</name>
   <description>Libraries built on Microsoft Azure Event Hubs</description>
@@ -25,6 +25,20 @@
       <id>azure-java-build-docs</id>
       <url>${site.url}/site/${project.artifactId}</url>
     </site>
+    <relocation>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-eventhubs</artifactId>
+      <message>
+        This library has been replaced by the following new Azure SDKs. You can read about the new Azure SDKs at https://aka.ms/azsdkvalueprop.
+
+        The latest libraries to interact with the Azure Event Hubs service are:
+
+        * https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs
+        * http://search.maven.org/artifact/com.azure/azure-messaging-eventhubs-checkpointstore-blob
+
+        It is recommended that you move to the new package.
+      </message>
+    </relocation>
   </distributionManagement>
 
   <scm>

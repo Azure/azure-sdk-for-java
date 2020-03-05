@@ -18,7 +18,7 @@ public class SearchServiceClientBuilderTests {
         SearchServiceClient client = new SearchServiceClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
-            .searchServiceVersion(apiVersion)
+            .serviceVersion(apiVersion)
             .buildClient();
 
         assertNotNull(client);
@@ -41,7 +41,7 @@ public class SearchServiceClientBuilderTests {
         SearchServiceAsyncClient client = new SearchServiceClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
-            .searchServiceVersion(apiVersion)
+            .serviceVersion(apiVersion)
             .buildAsyncClient();
 
         assertNotNull(client);
@@ -66,7 +66,7 @@ public class SearchServiceClientBuilderTests {
         SearchServiceClient client = new SearchServiceClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
-            .searchServiceVersion(expectedApiVersion)
+            .serviceVersion(expectedApiVersion)
             .buildClient();
 
         assertEquals(expectedApiVersion.getVersion(), client.getServiceVersion().getVersion());
@@ -74,7 +74,7 @@ public class SearchServiceClientBuilderTests {
         SearchServiceAsyncClient asyncClient = new SearchServiceClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
-            .searchServiceVersion(expectedApiVersion)
+            .serviceVersion(expectedApiVersion)
             .buildAsyncClient();
         assertEquals(expectedApiVersion.getVersion(), asyncClient.getServiceVersion().getVersion());
     }
@@ -92,7 +92,7 @@ public class SearchServiceClientBuilderTests {
         SearchServiceAsyncClient asyncClient = new SearchServiceClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
-            .searchServiceVersion(apiVersion)
+            .serviceVersion(apiVersion)
             .buildAsyncClient();
 
         assertEquals(searchEndpoint, asyncClient.getEndpoint());
@@ -120,7 +120,7 @@ public class SearchServiceClientBuilderTests {
         SearchServiceClientBuilder builder = new SearchServiceClientBuilder()
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
-            .searchServiceVersion(null);
+            .serviceVersion(null);
 
         assertEquals(SearchServiceVersion.getLatest(), builder.buildAsyncClient().getServiceVersion());
         assertEquals(SearchServiceVersion.getLatest(), builder.buildClient().getServiceVersion());

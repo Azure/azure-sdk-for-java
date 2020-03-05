@@ -16,16 +16,17 @@ module com.azure.core {
     // public API surface area
     exports com.azure.core.annotation;
     exports com.azure.core.credential;
+    exports com.azure.core.cryptography;
     exports com.azure.core.exception;
     exports com.azure.core.http;
     exports com.azure.core.http.policy;
     exports com.azure.core.http.rest;
     exports com.azure.core.util;
     exports com.azure.core.util.logging;
+    exports com.azure.core.util.paging;
     exports com.azure.core.util.polling;
     exports com.azure.core.util.serializer;
     exports com.azure.core.util.tracing;
-    exports com.azure.core.cryptography;
 
     // exporting some packages specifically for Jackson
     opens com.azure.core.http to com.fasterxml.jackson.databind;

@@ -45,7 +45,7 @@ public final class SearchServiceClientBuilder {
      * This header tells the service to return the request ID in the HTTP response. This is useful for correlating the
      * request sent to the response.
      */
-    private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
+    private static final String ECHO_REQUEST_ID_HEADER = "return-client-request-id";
 
     /*
      * This is the name of the request ID header that the Search service expects. If the customer doesn't pass
@@ -66,7 +66,7 @@ public final class SearchServiceClientBuilder {
     private final String clientVersion;
 
     private SearchApiKeyCredential searchApiKeyCredential;
-    private SearchServiceVersion searchServiceVersion;
+    private SearchServiceVersion serviceVersion;
     private String endpoint;
     private HttpClient httpClient;
     private HttpPipeline httpPipeline;
@@ -112,9 +112,9 @@ public final class SearchServiceClientBuilder {
     public SearchServiceAsyncClient buildAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
-        SearchServiceVersion buildVersion = (searchServiceVersion == null)
+        SearchServiceVersion buildVersion = (serviceVersion == null)
             ? SearchServiceVersion.getLatest()
-            : searchServiceVersion;
+            : serviceVersion;
 
         if (httpPipeline != null) {
             return new SearchServiceAsyncClient(endpoint, buildVersion, httpPipeline);
@@ -279,11 +279,11 @@ public final class SearchServiceClientBuilder {
      * If a service version is not provided, {@link SearchServiceVersion#getLatest()} will be used as a default. When
      * this default is used updating to a newer client library may result in a newer version of the service being used.
      *
-     * @param searchServiceVersion The version of the service to be used when making requests.
+     * @param serviceVersion The version of the service to be used when making requests.
      * @return The updated SearchServiceClientBuilder object.
      */
-    public SearchServiceClientBuilder searchServiceVersion(SearchServiceVersion searchServiceVersion) {
-        this.searchServiceVersion = searchServiceVersion;
+    public SearchServiceClientBuilder serviceVersion(SearchServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 }
