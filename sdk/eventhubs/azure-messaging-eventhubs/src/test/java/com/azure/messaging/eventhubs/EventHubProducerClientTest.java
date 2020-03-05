@@ -98,12 +98,12 @@ public class EventHubProducerClientTest {
 
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
-        ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
+        ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection))
             .subscribeWith(new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getEntityPath(), connectionOptions.getRetry()));
+                "event-hub-path", connectionOptions.getRetry()));
         asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
             tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
 

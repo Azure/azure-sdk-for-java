@@ -555,13 +555,13 @@ public class EventHubClientBuilder {
         final Flux<EventHubAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
 
-            return (EventHubAmqpConnection) new EventHubReactorAmqpConnection(connectionId, connectionOptions, provider,
-                handlerProvider, tokenManagerProvider, messageSerializer, product, clientVersion);
+            return (EventHubAmqpConnection) new EventHubReactorAmqpConnection(connectionId, connectionOptions,
+                eventHubName, provider, handlerProvider, tokenManagerProvider, messageSerializer, product,
+                clientVersion);
         }).repeat();
 
         return connectionFlux.subscribeWith(new EventHubConnectionProcessor(
-            connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getEntityPath(),
-            connectionOptions.getRetry()));
+            connectionOptions.getFullyQualifiedNamespace(), eventHubName, connectionOptions.getRetry()));
     }
 
     private ConnectionOptions getConnectionOptions() {
@@ -596,8 +596,8 @@ public class EventHubClientBuilder {
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        return new ConnectionOptions(fullyQualifiedNamespace, eventHubName, credentials, authorizationType,
-            transport, retryOptions, proxyOptions, scheduler);
+        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
+            proxyOptions, scheduler);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {

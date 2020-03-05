@@ -132,7 +132,7 @@ class EventHubProducerAsyncClientTest {
         MockitoAnnotations.initMocks(this);
 
         tracerProvider = new TracerProvider(Collections.emptyList());
-        connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
+        connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, testScheduler);
 
@@ -141,7 +141,7 @@ class EventHubProducerAsyncClientTest {
 
         connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getEntityPath(), connectionOptions.getRetry()));
+                "event-hub-path", connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
             tracerProvider, messageSerializer, testScheduler, false, onClientClosed);
 
@@ -886,8 +886,8 @@ class EventHubProducerAsyncClientTest {
                 }
             });
         }).subscribeWith(
-            new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getEntityPath(), connectionOptions.getRetry()));
+            new EventHubConnectionProcessor(EVENT_HUB_NAME, connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
             tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
 
@@ -962,7 +962,7 @@ class EventHubProducerAsyncClientTest {
             });
         }).subscribeWith(
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getEntityPath(), connectionOptions.getRetry()));
+                EVENT_HUB_NAME, connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
             tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
 
@@ -1038,7 +1038,7 @@ class EventHubProducerAsyncClientTest {
             });
         }).subscribeWith(
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getEntityPath(), connectionOptions.getRetry()));
+                EVENT_HUB_NAME, connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
             tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
 

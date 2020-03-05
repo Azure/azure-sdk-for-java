@@ -123,7 +123,7 @@ class EventHubConsumerAsyncClientTest {
         when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(testScheduler));
         when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
 
-        ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, EVENT_HUB_NAME, tokenCredential,
+        ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
 
