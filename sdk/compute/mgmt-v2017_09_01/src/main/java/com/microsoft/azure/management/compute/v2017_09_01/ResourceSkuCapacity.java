@@ -40,7 +40,7 @@ public class ResourceSkuCapacity {
     private ResourceSkuCapacityScaleType scaleType;
 
     /**
-     * Get the minimum value.
+     * Get the minimum capacity.
      *
      * @return the minimum value
      */
@@ -49,7 +49,7 @@ public class ResourceSkuCapacity {
     }
 
     /**
-     * Get the maximum value.
+     * Get the maximum capacity that can be set.
      *
      * @return the maximum value
      */
@@ -58,7 +58,7 @@ public class ResourceSkuCapacity {
     }
 
     /**
-     * Get the defaultProperty value.
+     * Get the default capacity.
      *
      * @return the defaultProperty value
      */
@@ -67,7 +67,7 @@ public class ResourceSkuCapacity {
     }
 
     /**
-     * Get the scaleType value.
+     * Get the scale type applicable to the sku. Possible values include: 'Automatic', 'Manual', 'None'.
      *
      * @return the scaleType value
      */
