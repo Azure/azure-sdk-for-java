@@ -8,7 +8,7 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import java.time.Instant;
 import java.util.UUID;
 
-/***
+/**
  * This class represents a received message from Service Bus.
  */
 public final class ServiceBusReceivedMessage extends ServiceBusMessage {
