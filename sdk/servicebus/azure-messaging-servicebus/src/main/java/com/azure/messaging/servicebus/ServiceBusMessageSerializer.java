@@ -110,10 +110,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         final ServiceBusMessage brokeredMessage = (ServiceBusMessage) object;
         final org.apache.qpid.proton.message.Message amqpMessage = Proton.message();
         final byte[] body = brokeredMessage.getBody();
-        if (body != null) {
-            //TODO (conniey): support AMQP sequence and AMQP value.
-            amqpMessage.setBody(new Data(new Binary(body)));
-        }
+
+        //TODO (conniey): support AMQP sequence and AMQP value.
+        amqpMessage.setBody(new Data(new Binary(body)));
 
         if (brokeredMessage.getProperties() != null) {
             amqpMessage.setApplicationProperties(new ApplicationProperties(brokeredMessage.getProperties()));

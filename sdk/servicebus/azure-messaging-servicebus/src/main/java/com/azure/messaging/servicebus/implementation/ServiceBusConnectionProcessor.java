@@ -38,7 +38,7 @@ public class ServiceBusConnectionProcessor extends AmqpChannelProcessor<ServiceB
      */
     public String getFullyQualifiedNamespace() {
         return fullyQualifiedNamespace;
-    }ServiceBusReceiverAsyncClient
+    }
 
     /**
      * Gets the retry options associated with the Service Bus connection.
