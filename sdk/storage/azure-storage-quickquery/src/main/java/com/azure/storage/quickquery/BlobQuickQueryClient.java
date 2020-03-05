@@ -102,7 +102,7 @@ public class BlobQuickQueryClient {
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.
      */
-    public void query(OutputStream stream, String expression) {
+    void query(OutputStream stream, String expression) {
         queryWithResponse(stream, expression, null, null, null, null, Context.NONE);
     }
 
@@ -124,7 +124,7 @@ public class BlobQuickQueryClient {
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.
      */
-    public BlobQuickQueryResponse queryWithResponse(OutputStream stream, String expression,
+    BlobQuickQueryResponse queryWithResponse(OutputStream stream, String expression,
         BlobQuickQuerySerialization input, BlobQuickQuerySerialization output, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);

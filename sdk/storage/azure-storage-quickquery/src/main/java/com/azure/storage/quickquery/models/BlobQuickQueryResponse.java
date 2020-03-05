@@ -9,13 +9,13 @@ import com.azure.storage.blob.models.BlobQuickQueryHeaders;
 /**
  * This class contains the response information return from the server when quick querying a blob.
  */
-public final class BlobQuickQueryResponse extends ResponseBase<BlobQuickQueryHeaders, Void> {
+final class BlobQuickQueryResponse extends ResponseBase<BlobQuickQueryHeaders, Void> {
     /**
      * Constructs a {@link BlobQuickQueryResponse}.
      *
      * @param response Response returned from the service.
      */
-    public BlobQuickQueryResponse(BlobQuickQueryAsyncResponse response) {
+    BlobQuickQueryResponse(BlobQuickQueryAsyncResponse response) {
         super(response.getRequest(), response.getStatusCode(), response.getHeaders(), null,
             response.getDeserializedHeaders());
     }

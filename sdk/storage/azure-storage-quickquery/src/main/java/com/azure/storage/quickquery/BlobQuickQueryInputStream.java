@@ -3,7 +3,6 @@
 
 package com.azure.storage.quickquery;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ErrorReceiver;
 import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.quickquery.models.BlobQuickQueryError;
@@ -24,19 +23,19 @@ public class BlobQuickQueryInputStream extends InputStream {
     private boolean firstRead;
     private InputStream networkStream;
 
-    private final ErrorReceiver<BlobQuickQueryError> nonFatalErrorHandler;
+    private final ErrorReceiver<BlobQuickQueryError> errorReceiver;
     private final ProgressReceiver progressReceiver;
 
     /**
      * Creates a new {@code BlobQuickQueryInputStream}
      * @param networkStream {@link InputStream network stream}
-     * @param nonFatalErrorHandler {@link ErrorReceiver<BlobQuickQueryError>}
+     * @param errorReceiver {@link ErrorReceiver<BlobQuickQueryError>}
      * @param progressReceiver {@link ProgressReceiver}
      */
-    BlobQuickQueryInputStream(InputStream networkStream, ErrorReceiver<BlobQuickQueryError> nonFatalErrorHandler,
+    BlobQuickQueryInputStream(InputStream networkStream, ErrorReceiver<BlobQuickQueryError> errorReceiver,
         ProgressReceiver progressReceiver) {
         this.networkStream = networkStream;
-        this.nonFatalErrorHandler = nonFatalErrorHandler;
+        this.errorReceiver = errorReceiver;
         this.progressReceiver = progressReceiver;
         this.endRecordSeen = false;
         this.firstRead = true;
@@ -124,6 +123,13 @@ public class BlobQuickQueryInputStream extends InputStream {
                 }
                 break;
             } case "end": {
+                if (this.progressReceiver != null) {
+                    Object total = record.get("totalBytes");
+
+                    if (checkParametersNotNull("end", total)) {
+                        this.progressReceiver.reportProgress((Long) total);
+                    }
+                }
                 this.endRecordSeen = true;
                 break;
             } case "progress": {
@@ -146,8 +152,8 @@ public class BlobQuickQueryInputStream extends InputStream {
                     BlobQuickQueryError error = new BlobQuickQueryError((Boolean) fatal, name.toString(),
                         description.toString(), (Long) position);
 
-                    if (this.nonFatalErrorHandler != null && !error.isFatal()) {
-                        this.nonFatalErrorHandler.reportError(error);
+                    if (this.errorReceiver != null) {
+                        this.errorReceiver.reportError(error);
                     } else {
                         throw new IOException("An error was reported during blob quick query response processing, "
                             + System.lineSeparator() + error.toString());

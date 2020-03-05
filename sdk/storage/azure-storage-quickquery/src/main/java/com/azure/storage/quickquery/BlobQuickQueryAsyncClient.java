@@ -47,7 +47,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * @see BlobQuickQueryClientBuilder
  */
 @ServiceClient(builder = BlobQuickQueryClientBuilder.class, isAsync = true)
-public class BlobQuickQueryAsyncClient {
+class BlobQuickQueryAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(BlobQuickQueryAsyncClient.class);
 
@@ -83,7 +83,7 @@ public class BlobQuickQueryAsyncClient {
      * @param expression The query expression.
      * @return A reactive response containing the queried data.
      */
-    public Flux<ByteBuffer> query(String expression) {
+    Flux<ByteBuffer> query(String expression) {
         return queryWithResponse(expression, null, null, null)
             .flatMapMany(BlobQuickQueryAsyncResponse::getValue);
     }
@@ -101,7 +101,7 @@ public class BlobQuickQueryAsyncClient {
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the queried data.
      */
-    public Mono<BlobQuickQueryAsyncResponse> queryWithResponse(String expression, BlobQuickQuerySerialization input,
+    Mono<BlobQuickQueryAsyncResponse> queryWithResponse(String expression, BlobQuickQuerySerialization input,
         BlobQuickQuerySerialization output, BlobRequestConditions requestConditions) {
         try {
             return withContext(context ->

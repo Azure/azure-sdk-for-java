@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
 /**
  * This class contains the response information returned from the server when running a quick query a blob.
  */
-public final class BlobQuickQueryAsyncResponse extends ResponseBase<BlobQuickQueryHeaders, Flux<ByteBuffer>> {
+final class BlobQuickQueryAsyncResponse extends ResponseBase<BlobQuickQueryHeaders, Flux<ByteBuffer>> {
     /**
      * Constructs a {@link BlobQuickQueryAsyncResponse}.
      *
@@ -24,7 +24,7 @@ public final class BlobQuickQueryAsyncResponse extends ResponseBase<BlobQuickQue
      * @param value Stream of download data being returned by the service.
      * @param deserializedHeaders Headers deserialized into an object.
      */
-    public BlobQuickQueryAsyncResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> value,
+    BlobQuickQueryAsyncResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> value,
         BlobQuickQueryHeaders deserializedHeaders) {
         super(request, statusCode, headers, value, deserializedHeaders);
     }
