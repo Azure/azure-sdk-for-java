@@ -116,10 +116,9 @@ public class FluxInputStream extends InputStream {
         if (this.fluxComplete) {
             return -1;
         } else {
-
+            throw new IOException("An unexpected error occurred. No data was read from the stream but the stream "
+                + "did not indicate completion.");
         }
-
-        return 0;
     }
 
     @Override
