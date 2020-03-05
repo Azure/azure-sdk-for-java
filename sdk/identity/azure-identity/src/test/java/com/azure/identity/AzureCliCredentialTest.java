@@ -46,25 +46,25 @@ public class AzureCliCredentialTest {
     }
 
     @Test
-    public void AzureCliCredentialWinAzureCLINotInstalledException() throws Exception {   
-         // setup
-         TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotInstalled");
+    public void azureCliCredentialWinAzureCLINotInstalledException() throws Exception {
+        // setup
+        TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotInstalled");
  
-         // mock
-         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-         when(identityClient.authenticateWithAzureCli(request))
-                 .thenReturn(Mono.error(new Exception("Azure CLI not installed")));
-         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+        // mock
+        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
+        when(identityClient.authenticateWithAzureCli(request))
+            .thenReturn(Mono.error(new Exception("Azure CLI not installed")));
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
  
-         // test
-         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
-         StepVerifier.create(credential.getToken(request))
-         .expectErrorMatches(e -> e instanceof Exception && "Azure CLI not installed".equals(e.getMessage()))
-         .verify();
+        // test
+        AzureCliCredential credential = new AzureCliCredentialBuilder().build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(e -> e instanceof Exception && "Azure CLI not installed".equals(e.getMessage()))
+            .verify();
     }
 
     @Test
-    public void AzureCliCredentialAzNotLogInException() throws Exception {   
+    public void azureCliCredentialAzNotLogInException() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotLogin");
   
@@ -77,12 +77,12 @@ public class AzureCliCredentialTest {
         // test
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
-        .expectErrorMatches(e -> e instanceof Exception && "Azure  not Login".equals(e.getMessage()))
-        .verify();
+            .expectErrorMatches(e -> e instanceof Exception && "Azure  not Login".equals(e.getMessage()))
+            .verify();
     }
     
     @Test
-    public void AzureCliCredentialAuthenticationFailedException() throws Exception {   
+    public void azureCliCredentialAuthenticationFailedException() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureCliCredentialAuthenticationFailed");
   
@@ -95,8 +95,8 @@ public class AzureCliCredentialTest {
         // test
         AzureCliCredential credential = new AzureCliCredentialBuilder().build();
         StepVerifier.create(credential.getToken(request))
-        .expectErrorMatches(e -> e instanceof Exception && "other error".equals(e.getMessage()))
-        .verify();
+            .expectErrorMatches(e -> e instanceof Exception && "other error".equals(e.getMessage()))
+            .verify();
     }
 
 }

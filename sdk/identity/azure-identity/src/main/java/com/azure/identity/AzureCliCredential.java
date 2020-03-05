@@ -21,14 +21,14 @@ import com.azure.core.credential.TokenRequestContext;
 @Immutable
 public class AzureCliCredential implements TokenCredential {
     private final IdentityClient identityClient;
-    
-     /**
+
+    /**
      * Creates an AzureCliSecretCredential with default identity client options.
      * @param identityClientOptions the options to configure the identity client
      */
     AzureCliCredential(IdentityClientOptions identityClientOptions) {
-        identityClient = new IdentityClientBuilder().identityClientOptions(identityClientOptions).build();   
-	}
+        identityClient = new IdentityClientBuilder().identityClientOptions(identityClientOptions).build();
+    }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {

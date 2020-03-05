@@ -7,6 +7,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -26,6 +27,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.awt.Desktop;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -56,6 +58,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 /**
@@ -120,17 +124,18 @@ public class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithAzureCli(TokenRequestContext request) {
         String azCommand = "az account get-access-token --output json --resource ";
-    
+
         StringBuilder command = new StringBuilder();
         command.append(azCommand);
         String scopes = ScopeUtil.scopesToResource(request.getScopes());
         command.append(scopes);
     
         AccessToken token = null;
+        BufferedReader reader = null;
         try {
             String starter;
             String switcher;
-            if (System.getProperty("os.name").contains("Windows")) {
+            if (isWindowsPlatform()) {
                 starter = WINDOWS_STARTER;
                 switcher = WINDOWS_SWITCHER;
             } else {
@@ -139,10 +144,14 @@ public class IdentityClient {
             }
 
             ProcessBuilder builder = new ProcessBuilder(starter, switcher, command.toString());
+            String workingDirectory = getSafeWorkingDirectory();
+            if (workingDirectory != null) {
+                builder.directory(new File(workingDirectory));
+            }
             builder.redirectErrorStream(true);
             Process process = builder.start();
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
             String line;
             StringBuilder output = new StringBuilder();
             while (true) {
@@ -150,13 +159,14 @@ public class IdentityClient {
                 if (line == null) {
                     break;
                 }
-                if(line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE) || line.matches(LINUX_MAC_PROCESS_ERROR_MESSAGE)) {
-                    throw logger.logExceptionAsError(new ClientAuthenticationException("Azure CLI not installed", null));
+                if (line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE) || line.matches(LINUX_MAC_PROCESS_ERROR_MESSAGE)) {
+                    throw logger.logExceptionAsError(
+                        new ClientAuthenticationException("Azure CLI not installed", null));
                 }
                 output.append(line);
             }
             String processOutput = output.toString();
-            if(process.exitValue() != 0){
+            if (process.exitValue() != 0) {
                 throw logger.logExceptionAsError(new ClientAuthenticationException(processOutput, null));
             }
             Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(processOutput, Map.class,
@@ -165,17 +175,28 @@ public class IdentityClient {
             String time = objectMap.get("expiresOn");
             String timeToSecond = time.substring(0, time.indexOf("."));
             String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
-            OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME).atZone(ZoneId.systemDefault())
-                .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
+            OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                                           .atZone(ZoneId.systemDefault())
+                                           .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
             token = new AccessToken(accessToken, expiresOn);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new IllegalStateException(e));
         } catch (RuntimeException e) {
             return Mono.error(logger.logExceptionAsError(e));
         } finally {
-            reader.close();
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException ex) {
+                return Mono.error(logger.logExceptionAsError(new IllegalStateException(ex)));
+            }
         }
         return Mono.just(token);
+    }
+
+    private boolean isWindowsPlatform() {
+        return System.getProperty("os.name").contains("Windows");
     }
 
 
@@ -188,6 +209,7 @@ public class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithClientSecret(String clientSecret, TokenRequestContext request) {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
+        ExecutorService service = Executors.newSingleThreadExecutor();
         try {
             ConfidentialClientApplication.Builder applicationBuilder =
                 ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.create(clientSecret))
@@ -203,7 +225,23 @@ public class IdentityClient {
                     ZoneOffset.UTC)));
         } catch (MalformedURLException e) {
             return Mono.error(e);
+        } finally {
+            service.shutdown();
         }
+    }
+
+    private String getSafeWorkingDirectory() {
+        String path = System.getenv("PATH");
+        if (CoreUtils.isNullOrEmpty(path)) {
+            return null;
+        }
+
+        String[] paths = isWindowsPlatform() ? path.split(";") : path.split(":");
+
+        if (paths.length >= 1) {
+            return paths[0];
+        }
+        return null;
     }
 
     /**
