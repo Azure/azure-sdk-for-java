@@ -54,7 +54,7 @@ public final class ServiceBusMessageBatch {
      *
      * @return The number of {@link ServiceBusMessage events} in the batch.
      */
-    int getCount() {
+    public int getCount() {
         return serviceBusMessageList.size();
     }
 
@@ -63,7 +63,7 @@ public final class ServiceBusMessageBatch {
      *
      * @return The maximum size, in bytes, of the {@link ServiceBusMessageBatch}.
      */
-    int getMaxSizeInBytes() {
+    public int getMaxSizeInBytes() {
         return maxMessageSize;
     }
 
@@ -72,7 +72,7 @@ public final class ServiceBusMessageBatch {
      *
      * @return the size of the {@link ServiceBusMessageBatch} in bytes.
      */
-    int getSizeInBytes() {
+    public int getSizeInBytes() {
         return this.sizeInBytes;
     }
 
@@ -88,7 +88,7 @@ public final class ServiceBusMessageBatch {
      * @throws AmqpException if {@code message} is larger than the maximum size of the {@link
      *     ServiceBusMessageBatch}.
      */
-    boolean tryAdd(final ServiceBusMessage serviceBusMessage) {
+    public boolean tryAdd(final ServiceBusMessage serviceBusMessage) {
         if (serviceBusMessage == null) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("message cannot be null"));
         }
@@ -118,6 +118,15 @@ public final class ServiceBusMessageBatch {
     }
 
     /**
+     * Gets the messages in the batch.
+     *
+     * @return The messages in the message batch.
+     */
+    List<ServiceBusMessage> getMessages() {
+        return serviceBusMessageList;
+    }
+
+    /**
      * Method to start and end a "Azure.EventHubs.message" span and add the "DiagnosticId" as a property of the
      * message.
      *
@@ -142,10 +151,6 @@ public final class ServiceBusMessageBatch {
         }
 
         return serviceBusMessage;
-    }
-
-    List<ServiceBusMessage> getMessages() {
-        return serviceBusMessageList;
     }
 
     private int getSize(final ServiceBusMessage serviceBusMessage, final boolean isFirst) {
