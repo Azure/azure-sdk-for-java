@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -40,10 +41,9 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.params.provider.Arguments;
 
-@TestInstance(Lifecycle.PER_CLASS)
+@TestInstance(PER_CLASS)
 public abstract class ConfigurationClientTestBase extends TestBase {
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
@@ -151,8 +151,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void addExistingSetting(HttpClient httpClient,
-	    ConfigurationServiceVersion serviceVersion);
+    public abstract void addExistingSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     void addExistingSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().setKey(getKey()).setValue("myNewValue");
