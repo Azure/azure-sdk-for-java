@@ -128,9 +128,10 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * Specifies the executor service on which to the authentication request will run.
+     * Specifies the  ExecutorService to be used to execute the requests.
+     * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
-     * @param executorService the executor service to run authentication requests on.
+     * @param executorService the executor service to use for executing authentication requests.
      * @return IdentityClientOptions
      */
     public IdentityClientOptions setExecutorService(ExecutorService executorService) {
@@ -139,7 +140,7 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * @return the ExecutorService to run authentication requests on.
+     * @return the ExecutorService to execute authentication requests.
      */
     public ExecutorService getExecutorService() {
         return executorService;
