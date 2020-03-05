@@ -104,7 +104,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
         if (!(object instanceof ServiceBusMessage)) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Cannot serialize object that is not EventData. Clazz: " + object.getClass()));
+                "Cannot serialize object that is not ServiceBusMessage. Clazz: " + object.getClass()));
         }
 
         final ServiceBusMessage brokeredMessage = (ServiceBusMessage) object;
