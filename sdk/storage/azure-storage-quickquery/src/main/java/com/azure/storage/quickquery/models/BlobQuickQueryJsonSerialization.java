@@ -3,6 +3,9 @@
 
 package com.azure.storage.quickquery.models;
 
+/**
+ * Defines the input or output JSON serialization for a blob quick query request.
+ */
 public class BlobQuickQueryJsonSerialization extends BlobQuickQuerySerialization<BlobQuickQueryJsonSerialization> {
 
 }
