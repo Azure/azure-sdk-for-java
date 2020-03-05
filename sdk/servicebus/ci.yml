@@ -21,7 +21,7 @@ trigger:
     include:
       - sdk/servicebus/
     exclude:
-      - sdk/servicebus/mgmt-
+      - sdk/servicebus/microsoft-azure
       - sdk/servicebus/mgmt-
 
 pr:
@@ -39,7 +39,7 @@ pr:
       - sdk/servicebus/mgmt-
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: servicebus
       Artifacts:
