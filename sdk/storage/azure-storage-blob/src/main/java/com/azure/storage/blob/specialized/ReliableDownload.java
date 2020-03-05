@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 
@@ -28,6 +29,7 @@ import java.util.function.Function;
  * </p>
  */
 final class ReliableDownload {
+    private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
     private final BlobsDownloadResponse rawResponse;
     private final DownloadRetryOptions options;
     private final HttpGetterInfo info;
@@ -68,7 +70,7 @@ final class ReliableDownload {
         add 1 before calling into tryContinueFlux, we set the initial value to -1.
          */
         Flux<ByteBuffer> value = (options.getMaxRetryRequests() == 0)
-            ? rawResponse.getValue()
+            ? rawResponse.getValue().timeout(TIMEOUT_VALUE)
             : applyReliableDownload(rawResponse.getValue(), -1, options);
 
         return value.switchIfEmpty(Flux.just(ByteBuffer.wrap(new byte[0])));
@@ -76,10 +78,11 @@ final class ReliableDownload {
 
     private Flux<ByteBuffer> tryContinueFlux(Throwable t, int retryCount, DownloadRetryOptions options) {
         // If all the errors are exhausted, return this error to the user.
-        if (retryCount > options.getMaxRetryRequests() ||
+        if (retryCount >= options.getMaxRetryRequests() ||
             !(t instanceof IOException || t instanceof TimeoutException)) {
             return Flux.error(t);
         } else {
+            System.out.println("Retrying");
             /*
             We wrap this in a try catch because we don't know the behavior of the getter. Most errors would probably
             come from an unsuccessful request, which would be propagated through the onError methods. However, it is
@@ -103,7 +106,9 @@ final class ReliableDownload {
 
     private Flux<ByteBuffer> applyReliableDownload(Flux<ByteBuffer> data, int currentRetryCount,
         DownloadRetryOptions options) {
-        return data.doOnNext(buffer -> {
+        return data
+            .timeout(TIMEOUT_VALUE)
+            .doOnNext(buffer -> {
             /*
             Update how much data we have received in case we need to retry and propagate to the user the data we
             have received.

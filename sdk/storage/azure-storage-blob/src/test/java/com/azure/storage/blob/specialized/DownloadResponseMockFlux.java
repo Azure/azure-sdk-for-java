@@ -30,6 +30,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
     static final int DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE = 6; // Throwing an error from the getter
     static final int DR_TEST_SCENARIO_INFO_TEST = 8; // Initial info values are honored
     static final int DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION = 9; // We do not subscribe to the same stream twice
+    static final int DR_TEST_SCENARIO_TIMEOUT = 10; // ReliableDownload with timeout after not receiving items for 60s
 
     private int scenario;
     private int tryNumber;
@@ -54,6 +55,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
             case DR_TEST_SCENARIO_NON_RETRYABLE_ERROR:
             case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
             case DR_TEST_SCENARIO_INFO_TEST:
+            case DR_TEST_SCENARIO_TIMEOUT:
                 break;
             default:
                 throw new IllegalArgumentException("Invalid download resource test scenario.");
@@ -171,6 +173,15 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                     default:
                         throw new IllegalArgumentException("Invalid try number.");
                 }
+                break;
+
+            case DR_TEST_SCENARIO_TIMEOUT:
+                try {
+                    Thread.sleep(61 * 1000L); // We hard code a timeout of 60s
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Operators.complete(subscriber);
                 break;
 
             default:
