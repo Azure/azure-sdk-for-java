@@ -9,9 +9,9 @@ import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.models.DocumentSentimentLabel;
+import com.azure.ai.textanalytics.models.TextSentimentLabel;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.SentenceSentimentLabel;
+import com.azure.ai.textanalytics.models.TextSentimentLabel;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
@@ -153,7 +153,7 @@ class AnalyzeSentimentAsyncClient {
      */
     private AnalyzeSentimentResult convertToAnalyzeSentimentResult(DocumentSentiment documentSentiment) {
         // Document text sentiment
-        final DocumentSentimentLabel documentSentimentLabel = DocumentSentimentLabel.fromString(
+        final TextSentimentLabel documentSentimentLabel = TextSentimentLabel.fromString(
             documentSentiment.getSentiment().toString());
         if (documentSentimentLabel == null) {
             // Not throw exception for an invalid Sentiment type because we should not skip processing the
@@ -169,7 +169,7 @@ class AnalyzeSentimentAsyncClient {
         // Sentence text sentiment
         final List<SentenceSentiment> sentenceSentiments = documentSentiment.getSentences().stream()
             .map(sentenceSentiment -> {
-                SentenceSentimentLabel sentenceSentimentLabel = SentenceSentimentLabel.fromString(
+                TextSentimentLabel sentenceSentimentLabel = TextSentimentLabel.fromString(
                     sentenceSentiment.getSentiment().toString());
                 if (sentenceSentimentLabel == null) {
                     // Not throw exception for an invalid Sentiment type because we should not skip processing the

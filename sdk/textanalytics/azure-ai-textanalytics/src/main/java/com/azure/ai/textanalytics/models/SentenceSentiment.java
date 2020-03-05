@@ -14,7 +14,7 @@ public final class SentenceSentiment {
     private final int graphemeLength;
     private final int graphemeOffset;
     private final SentimentConfidenceScorePerLabel confidenceScores;
-    private final SentenceSentimentLabel sentiment;
+    private final TextSentimentLabel sentiment;
 
     /**
      * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
@@ -25,7 +25,7 @@ public final class SentenceSentiment {
      * @param graphemeLength The grapheme length of the sentence.
      * @param graphemeOffset The grapheme offset, start position for the sentence sentiment.
      */
-    public SentenceSentiment(SentenceSentimentLabel sentiment, SentimentConfidenceScorePerLabel confidenceScores,
+    public SentenceSentiment(TextSentimentLabel sentiment, SentimentConfidenceScorePerLabel confidenceScores,
         int graphemeLength, int graphemeOffset) {
         this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
@@ -54,9 +54,9 @@ public final class SentenceSentiment {
     /**
      * Get the text sentiment label: POSITIVE, NEGATIVE, or NEUTRAL.
      *
-     * @return The {@link SentenceSentimentLabel}.
+     * @return The {@link TextSentimentLabel}.
      */
-    public SentenceSentimentLabel getSentiment() {
+    public TextSentimentLabel getSentiment() {
         return sentiment;
     }
 
