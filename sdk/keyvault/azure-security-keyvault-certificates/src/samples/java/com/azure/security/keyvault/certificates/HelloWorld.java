@@ -96,7 +96,7 @@ public class HelloWorld {
             certificateClient.beginDeleteCertificate("certificateName");
         // Deleted Certificate is accessible as soon as polling beings.
         PollResponse<DeletedCertificate> pollResponse = deletedCertificatePoller.poll();
-        System.out.printf("Deleted certitifcate with name %s and recovery id %s", pollResponse.getValue().getName(),
+        System.out.printf("Deleted certificate with name %s and recovery id %s", pollResponse.getValue().getName(),
             pollResponse.getValue().getRecoveryId());
         deletedCertificatePoller.waitForCompletion();
 
@@ -104,7 +104,7 @@ public class HelloWorld {
             certificateClient.beginDeleteCertificate("myCertificate");
         // Deleted Certificate is accessible as soon as polling beings.
         PollResponse<DeletedCertificate> deletePollResponse = deletedCertPoller.poll();
-        System.out.printf("Deleted certitifcate with name %s and recovery id %s", deletePollResponse.getValue().getName(),
+        System.out.printf("Deleted certificate with name %s and recovery id %s", deletePollResponse.getValue().getName(),
             deletePollResponse.getValue().getRecoveryId());
         deletedCertificatePoller.waitForCompletion();
 

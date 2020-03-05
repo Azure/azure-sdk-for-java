@@ -19,7 +19,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
-    <version>1.6.0</version> <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
+    <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
     <relativePath>./parent/pom.xml</relativePath>
   </parent>
 
@@ -79,7 +79,7 @@
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>8.24</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+            <version>8.29</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
           </dependency>
         </dependencies>
         <configuration>

@@ -27,7 +27,7 @@ class AppServiceMsiCredential {
      * @param identityClient The identity client to acquire a token with.
      */
     AppServiceMsiCredential(String clientId, IdentityClient identityClient) {
-        Configuration configuration = Configuration.getGlobalConfiguration();
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
         this.msiEndpoint = configuration.get(Configuration.PROPERTY_MSI_ENDPOINT);
         this.msiSecret = configuration.get(Configuration.PROPERTY_MSI_SECRET);
         this.identityClient = identityClient;

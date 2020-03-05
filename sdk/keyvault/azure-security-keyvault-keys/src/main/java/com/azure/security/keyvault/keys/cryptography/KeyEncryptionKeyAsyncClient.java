@@ -9,6 +9,7 @@ import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
 
 /**
@@ -30,15 +31,25 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
     }
 
     /**
-     * {@inheritDoc}
+     * Creates a KeyEncryptionKeyAsyncClient that uses {@code pipeline} to service requests
+     *
+     * @param key the KeyVaultKey to use for cryptography operations.
+     * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
+     * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
+     */
+    KeyEncryptionKeyAsyncClient(KeyVaultKey key, HttpPipeline pipeline, CryptographyServiceVersion version) {
+        super(key, pipeline, version);
+    }
+
+
+    /**
+     * Get the identifier of the key to use for cryptography operations.
+     *
+     * @return A {@link Mono} containing the key identifier.
      */
     @Override
     public Mono<String> getKeyId() {
-        try {
-            return Mono.just(key.getId());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return super.getKeyId();
     }
 
     /**

@@ -5,7 +5,6 @@ package com.azure.core.test.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -36,6 +35,7 @@ import com.azure.core.test.http.MockHttpClient;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.IterableStream;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.nio.charset.StandardCharsets;
@@ -468,8 +468,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
         }
 
         @Override
-        public List<KeyValue> getItems() {
-            return items;
+        public IterableStream<KeyValue> getElements() {
+            return new IterableStream<KeyValue>(items);
         }
 
         @Override
@@ -488,8 +488,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
         }
 
         @Override
-        public List<T> getItems() {
-            return items;
+        public IterableStream<T> getElements() {
+            return IterableStream.of(items);
         }
 
         @Override
@@ -611,9 +611,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
         StepVerifier.create(createService(Service2.class).getPageAsyncSerializes(page))
             .assertNext(response -> {
                 assertEquals(page.getContinuationToken(), response.getContinuationToken());
-                assertNull(response.getItems());
+                assertEquals(0, response.getItems().size());
             })
             .verifyComplete();
     }
-
 }

@@ -341,17 +341,6 @@ public final class CertificatePolicy {
     }
 
     /**
-     * Set the subject value.
-     *
-     * @param subjectName the subject value to set
-     * @return the updated CertificatePolicy object itself.
-     */
-    public CertificatePolicy getSubjectName(String subjectName) {
-        this.subject = subjectName;
-        return this;
-    }
-
-    /**
      * Get the subjectAlternativeNames.
      *
      * @return the subjectAlternativeNames.
@@ -368,6 +357,17 @@ public final class CertificatePolicy {
      */
     public CertificatePolicy setSubjectAlternativeNames(SubjectAlternativeNames subjectAlternativeNames) {
         this.subjectAlternativeNames = subjectAlternativeNames;
+        return this;
+    }
+
+    /**
+     * Set the subject Name.
+     *
+     * @param subject the subject Name to set
+     * @return the updated CertificatePolicy object itself.
+     */
+    public CertificatePolicy setSubject(final String subject) {
+        this.subject = subject;
         return this;
     }
 
@@ -401,17 +401,6 @@ public final class CertificatePolicy {
      */
     public CertificatePolicy setKeyCurveName(CertificateKeyCurveName keyCurveName) {
         this.keyCurveName = keyCurveName;
-        return this;
-    }
-
-    /**
-     * Set the issuer name.
-     *
-     * @param issuerName the issuer name to set
-     * @return the updated CertificatePolicy object itself.
-     */
-    public CertificatePolicy setIssuerName(String issuerName) {
-        this.issuerName = issuerName;
         return this;
     }
 

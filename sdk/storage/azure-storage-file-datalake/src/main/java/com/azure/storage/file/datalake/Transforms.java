@@ -20,6 +20,8 @@ import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
@@ -254,8 +256,9 @@ class Transforms {
         }
         return new PathItem(path.getETag(),
             OffsetDateTime.parse(path.getLastModified(), DateTimeFormatter.RFC_1123_DATE_TIME),
-            path.getContentLength(), path.getGroup(), path.isDirectory() == null ? false : path.isDirectory(),
-            path.getName(), path.getOwner(), path.getPermissions());
+            path.getContentLength() == null ? 0 : path.getContentLength(), path.getGroup(),
+            path.isDirectory() == null ? false : path.isDirectory(), path.getName(), path.getOwner(),
+            path.getPermissions());
     }
 
     static BlobRequestConditions toBlobRequestConditions(DataLakeRequestConditions requestConditions) {
@@ -424,5 +427,21 @@ class Transforms {
                 dataLakeServiceSasSignatureValues.getPermissions()));
         }
         return blobServiceSasSignatureValues;
+    }
+
+    static com.azure.storage.blob.models.ParallelTransferOptions toBlobParallelTransferOptions(
+        ParallelTransferOptions pto) {
+        if (pto == null) {
+            return null;
+        }
+        return new com.azure.storage.blob.models.ParallelTransferOptions(pto.getBlockSize(), pto.getNumBuffers(),
+            Transforms.toBlobProgressReceiver(pto.getProgressReceiver()), pto.getMaxSingleUploadSize());
+    }
+
+    static com.azure.storage.blob.ProgressReceiver toBlobProgressReceiver(ProgressReceiver pr) {
+        if (pr == null) {
+            return null;
+        }
+        return pr::reportProgress;
     }
 }

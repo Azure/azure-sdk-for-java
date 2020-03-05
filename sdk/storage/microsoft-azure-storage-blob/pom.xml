@@ -26,6 +26,21 @@
         <id>azure-java-build-docs</id>
         <url>${site.url}/site/${project.artifactId}</url>
       </site>
+      <relocation>
+        <groupId>com.azure</groupId>
+        <message>
+          This library has been replaced by the following new Azure SDKs. You can read about the new Azure SDKs at https://aka.ms/azsdkvalueprop.
+
+          The latest libraries to interact with the Azure Blob Storage service are:
+
+          * https://search.maven.org/artifact/com.azure/azure-storage-blob
+          * https://search.maven.org/artifact/com.azure/azure-storage-blob-batch
+          * https://search.maven.org/artifact/com.azure/azure-storage-queue
+          * https://search.maven.org/artifact/com.azure/azure-storage-file-share
+
+          It is recommended that you move to the new package.
+        </message>
+      </relocation>
     </distributionManagement>
 
     <scm>

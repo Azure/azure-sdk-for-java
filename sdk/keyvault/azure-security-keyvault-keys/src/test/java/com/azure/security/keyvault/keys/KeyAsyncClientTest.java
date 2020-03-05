@@ -9,9 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.*;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -139,7 +137,10 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @Test
     public void getKey() {
         getKeyRunner((original) -> {
-            client.createKey(original);
+            StepVerifier.create(client.createKey(original))
+                .assertNext(response -> assertKeyEquals(original, response))
+                .verifyComplete();
+
             StepVerifier.create(client.getKey(original.getName()))
                 .assertNext(response -> assertKeyEquals(original, response))
                 .verifyComplete();
@@ -356,12 +357,16 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             sleepInRecordMode(15000);
         });
     }
-//
+
     /**
      * Tests that deleted keys can be listed in the key vault.
      */
     @Test
     public void listDeletedKeys() {
+        if (!interceptorManager.isPlaybackMode()) {
+            return;
+        }
+
         listDeletedKeysRunner((keys) -> {
 
             List<DeletedKey> deletedKeys = new ArrayList<>();
@@ -378,27 +383,14 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 assertNotNull(response.getValue());
             }
 
-            sleepInRecordMode(60000);
-            client.listDeletedKeys().subscribe(deletedKeys::add);
-            sleepInRecordMode(30000);
-
-            for (DeletedKey actualKey : deletedKeys) {
-                if (keys.containsKey(actualKey.getName())) {
-                    assertNotNull(actualKey.getDeletedOn());
-                    assertNotNull(actualKey.getRecoveryId());
-                    keys.remove(actualKey.getName());
-                }
-            }
-
-            assertEquals(0, keys.size());
-
-            for (DeletedKey deletedKey : deletedKeys) {
-                StepVerifier.create(client.purgeDeletedKeyWithResponse(deletedKey.getName()))
-                        .assertNext(voidResponse -> {
-                            assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
-                        }).verifyComplete();
-                pollOnKeyPurge(deletedKey.getName());
-            }
+            sleepInRecordMode(90000);
+            DeletedKey deletedKey = client.listDeletedKeys().map(actualKey -> {
+                deletedKeys.add(actualKey);
+                assertNotNull(actualKey.getDeletedOn());
+                assertNotNull(actualKey.getRecoveryId());
+                return actualKey;
+            }).blockLast();
+            assertNotNull(deletedKey);
         });
     }
 
@@ -412,8 +404,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             String keyName = null;
             for (CreateKeyOptions key : keys) {
                 keyName = key.getName();
-                client.createKey(key).subscribe(keyResponse -> assertKeyEquals(key, keyResponse));
-                sleepInRecordMode(1000);
+                StepVerifier.create(client.createKey(key))
+                    .assertNext(keyResponse -> assertKeyEquals(key, keyResponse)).verifyComplete();
             }
             sleepInRecordMode(30000);
             client.listPropertiesOfKeyVersions(keyName).subscribe(output::add);
@@ -440,23 +432,20 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @Test
     public void listKeys() {
         listKeysRunner((keys) -> {
-            List<KeyProperties> output = new ArrayList<>();
             for (CreateKeyOptions key : keys.values()) {
-                client.createKey(key).subscribe(keyResponse -> assertKeyEquals(key, keyResponse));
-                sleepInRecordMode(1000);
+                assertKeyEquals(key, client.createKey(key).block());
             }
-            sleepInRecordMode(30000);
-            client.listPropertiesOfKeys().subscribe(output::add);
-            sleepInRecordMode(30000);
+            sleepInRecordMode(10000);
 
-            for (KeyProperties actualKey : output) {
+            client.listPropertiesOfKeys().map(actualKey -> {
                 if (keys.containsKey(actualKey.getName())) {
                     CreateKeyOptions expectedKey = keys.get(actualKey.getName());
                     assertEquals(expectedKey.getExpiresOn(), actualKey.getExpiresOn());
                     assertEquals(expectedKey.getNotBefore(), actualKey.getNotBefore());
                     keys.remove(actualKey.getName());
                 }
-            }
+                return actualKey;
+            }).blockLast();
             assertEquals(0, keys.size());
         });
     }

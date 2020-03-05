@@ -1,0 +1,121 @@
+trigger: none
+pr: none
+
+
+jobs:
+  - job: Generate
+    timeoutInMinutes: 180
+    variables:
+      - template: templates/variables/globals.yml
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+    - template: templates/steps/install-reporting-tools.yml
+      parameters:
+        Options: --batch-mode
+        MavenOptions: $(MemoryOptions) $(LoggingOptions)
+
+    - task: Maven@3
+      displayName: 'Install azure-sdk-parent'
+      inputs:
+        mavenPomFile: parent/pom.xml
+        options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
+        mavenOptions: '$(MemoryOptions)  $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'install'
+
+    - task: Maven@3
+      displayName: 'Install Module and Run SpotBugs, Checkstyle, RevApi, and Javadoc'
+      inputs:
+        mavenPomFile: sdk/core/pom.service.xml
+        options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme'
+        mavenOptions: '$(MemoryOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'install'
+
+    - task: Maven@3
+      displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
+      inputs:
+        mavenPomFile: pom.client.xml
+        options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'install site:site site:stage'
+
+    - task: Maven@3
+      displayName: 'Generate aggregate code coverage report'
+      inputs:
+        mavenPomFile: 'pom.client.xml'
+        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
+        mavenOptions: '-Xmx3072m $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'verify'
+
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        mergeTestResults: true
+        testRunTitle: 'Linux on Java 1.11'
+
+    # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
+    # Code coverage reporting is setup only for Track 2 modules.
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: JaCoCo
+        summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
+        reportDirectory: eng/jacoco-test-coverage/target/site/test-coverage/
+        failIfCoverageEmpty: true
+
+    # Publish code coverage to an artifact so it can be uploaded to the Maven site.
+    # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
+    - task: PublishPipelineArtifact@0
+      displayName: 'Publish coverage artifact'
+      inputs:
+        artifactName: coverage
+        targetPath: eng/jacoco-test-coverage/target/site/
+
+    - script: |
+        git clone https://github.com/JonathanGiles/DependencyChecker.git
+        mkdir input && cp eng/DependencyChecker/client_dependencies.json input/dependencies.json
+      displayName: 'Download dependency checker'
+
+    - task: Maven@3
+      displayName: 'Analyze dependencies'
+      inputs:
+        mavenPomFile: 'DependencyChecker/core/pom.xml'
+        options: '-Dexec.args="-showall -dependencymanagement"'
+        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'clean package exec:java'
+
+    - pwsh: |
+        $(Build.SourcesDirectory)/eng/DependencyGraph/gen-dep-graph-data.ps1
+      displayName: Generate Interdependency Report Data
+
+    - pwsh: |   
+        copy -r target/staging $(Build.ArtifactStagingDirectory)
+        copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
+        copy output/dependencies.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
+        copy eng/common/InterdependencyGraph.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
+        copy data.js (Join-Path $(Build.ArtifactStagingDirectory) "staging")
+      displayName: 'Copy reports to artifact staging'
+
+    - publish: $(Build.ArtifactStagingDirectory)
+      condition: succeededOrFailed()
+      displayName: 'Publish Report Artifacts'
+      artifact: reports

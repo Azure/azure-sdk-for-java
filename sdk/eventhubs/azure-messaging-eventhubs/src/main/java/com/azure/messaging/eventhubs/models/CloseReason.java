@@ -21,10 +21,4 @@ public enum CloseReason {
      * PartitionProcessor#close(CloseContext)} will be called with this reason.
      */
     EVENT_PROCESSOR_SHUTDOWN,
-
-    /**
-     * If a non-retryable exception occured when receiving events from Event Hub, this reason will be provided when
-     * {@link PartitionProcessor#close(CloseContext)} is called.
-     */
-    EVENT_HUB_EXCEPTION
 }

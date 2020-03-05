@@ -77,13 +77,6 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        //TODO (conniey): support creating a filter when we've already received some events. I believe this in
-        // the cause of recreating a failing link.
-        // final Map<Symbol, UnknownDescribedType> filterMap = MessageReceiver.this.settingsProvider
-        // .getFilter(MessageReceiver.this.lastReceivedMessage);
-        // if (filterMap != null) {
-        //    source.setFilter(filterMap);
-        // }
         final String eventPositionExpression = getExpression(eventPosition);
         final Map<Symbol, UnknownDescribedType> filter = new HashMap<>();
         filter.put(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER,

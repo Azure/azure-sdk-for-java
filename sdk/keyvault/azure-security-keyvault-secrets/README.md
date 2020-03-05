@@ -17,60 +17,10 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.0.1</version>
+    <version>4.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-### Default HTTP Client
-All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
-KeyVault Secrets to use Netty HTTP client. 
-
-### Alternate HTTP client
-If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
-Netty and include OkHTTP client in your pom.xml.
-
-[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-secrets;current})
-```xml
-<!-- Add KeyVault Secrets dependency without Netty HTTP client -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.0.1</version>
-    <exclusions>
-      <exclusion>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-http-netty</artifactId>
-      </exclusion>
-    </exclusions>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
-```xml
-<!-- Add OkHTTP client to use with KeyVault Secrets -->
-<dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-### Configuring HTTP Clients
-When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-secret-client), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
-
-For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
-
-```java
-HttpClient client = new NettyAsyncHttpClientBuilder()
-    .port(8080)
-    .wiretap(true)
-    .build();
-```
-
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ### Prerequisites
 
@@ -87,7 +37,7 @@ In order to interact with the Key Vault service, you'll need to create an instan
 
 The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
- #### Create/Get credentials
+#### Create/Get credentials
 To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
 
 Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to 
@@ -327,6 +277,16 @@ try {
     System.out.println(e.getMessage());
 }
 ```
+
+### Default HTTP Client
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
+the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
+better performance compared to the default SSL implementation within the JDK. For more information, including how to 
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
 Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:

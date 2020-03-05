@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public final class CertificateContact {
     /**
-     * Email addresss.
+     * Email address.
      */
     @JsonProperty(value = "email")
     private String email;
@@ -27,32 +27,6 @@ public final class CertificateContact {
      */
     @JsonProperty(value = "phone")
     private String phone;
-
-    /**
-     * Creates a new certificate contact.
-     *
-     * @param name The name of the contact
-     * @param email The email address of the contact
-     * @param phone The phone number of the contact.
-     */
-    public CertificateContact(String name, String email, String phone) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-    }
-
-    /**
-     * Creates a new certificate contact.
-     *
-     * @param name The name of the contact
-     * @param email The email address of the contact
-     */
-    public CertificateContact(String name, String email) {
-        this.name = name;
-        this.email = email;
-    }
-
-    CertificateContact() { }
 
     /**
      * Get the email address.
@@ -79,5 +53,35 @@ public final class CertificateContact {
      */
     public String getPhone() {
         return this.phone;
+    }
+
+    /**
+     * Set the email of the contact.
+     * @param email the email of the contact to set
+     * @return the updated CertificateContact object itself.
+     */
+    public CertificateContact setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    /**
+     * Set the name of the contact.
+     * @param name the name of the contact to set
+     * @return the updated CertificateContact object itself.
+     */
+    public CertificateContact setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Set the phone of the contact.
+     * @param phone the phone of the contact to set
+     * @return the updated CertificateContact object itself.
+     */
+    public CertificateContact setPhone(String phone) {
+        this.phone = phone;
+        return this;
     }
 }

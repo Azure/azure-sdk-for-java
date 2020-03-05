@@ -1,20 +1,77 @@
+variables:
+  - template: ./templates/variables/globals.yml
+  - name: PomFile
+    value: common/smoke-tests/pom.xml
+
 jobs:
   - job: SmokeTest
-    variables:
-      - template: ./templates/variables/globals.yml
-      - name: PomFile
-        value: eng/smoke-tests/pom.xml
+    timeoutInMinutes: 15
 
     strategy:
       matrix:
-        Java 8:
+        Java 8 Windows:
           ProfileFlag: ''
           JavaVersion: '1.8'
-        Java LTS:
-          ProfileFlag: '-Djava-lts'
+          OSVmImage: windows-2019
+        Java LTS Windows:
+          ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
+          OSVmImage: windows-2019
+        Java 8 Linux:
+          ProfileFlag: ''
+          JavaVersion: '1.8'
+          OSVmImage: ubuntu-18.04
+        Java LTS Linux:
+          ProfileFlag: '-Pjava-lts'
+          JavaVersion: '1.11'
+          OSVmImage: ubuntu-18.04
+        Java 8 MacOS:
+          ProfileFlag: ''
+          JavaVersion: '1.8'
+          OSVmImage: macOS-10.15
+        Java LTS MacOS:
+          ProfileFlag: '-Pjava-lts'
+          JavaVersion: '1.11'
+          OSVmImage: macOS-10.15
+
+    pool:
+      vmImage: $(OSVmImage)
 
     steps:
+      - task: Maven@3
+        displayName: Use the latest package version from the dev feed
+        inputs:
+          mavenPomFile: $(PomFile)
+          goals: 'versions:use-latest-versions'
+          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests "-Dincludes=com.azure:*"'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+
+      - task: PythonScript@0
+        inputs:
+          scriptPath: common/smoke-tests/validate_version_dates.py
+          workingDirectory: common/smoke-tests
+        continueOnError: true
+        displayName: Validate consistent dependency dev versions for com.azure packages
+
+      - task: Maven@3
+        displayName: Show dependency tree
+        inputs:
+          mavenPomFile: $(PomFile)
+          goals: 'dependency:tree'
+          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:

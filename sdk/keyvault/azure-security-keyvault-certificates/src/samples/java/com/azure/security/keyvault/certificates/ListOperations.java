@@ -88,7 +88,7 @@ public class ListOperations {
         }
 
         // Let's set certificate contacts on the Key vault.
-        CertificateContact contactToAdd = new CertificateContact("user", "useremail@exmaple.com");
+        CertificateContact contactToAdd = new CertificateContact().setName("user").setEmail("useremail@exmaple.com");
         for (CertificateContact contact : certificateClient.setContacts(Arrays.asList(contactToAdd))) {
             System.out.printf("Added contact with name %s and email %s to key vault", contact.getName(),
                 contact.getEmail());

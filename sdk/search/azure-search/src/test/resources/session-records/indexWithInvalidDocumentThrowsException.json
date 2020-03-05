@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk4318288bd38.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "0e32dca0-ebf9-4129-a81d-938567d152d1",
+      "StatusCode" : "400",
+      "Date" : "Mon, 24 Feb 2020 19:37:56 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "74",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "124",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: actions : 0: Document key cannot be missing or empty.\\r\\n\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk4318288bd38" ]
+}

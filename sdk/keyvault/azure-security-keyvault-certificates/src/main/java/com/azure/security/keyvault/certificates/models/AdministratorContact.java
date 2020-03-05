@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Represents an administrator in {@link CertificateIssuer}
  */
 public final class AdministratorContact {
+
     /**
      * First name.
      */
@@ -22,7 +23,7 @@ public final class AdministratorContact {
     private String lastName;
 
     /**
-     * Email addresss.
+     * Email address.
      */
     @JsonProperty(value = "email")
     private String email;
@@ -32,32 +33,6 @@ public final class AdministratorContact {
      */
     @JsonProperty(value = "phone")
     private String phone;
-
-    /**
-     * Creates an administrator of the issuer.
-     * @param firstName the firstName of the issuer.
-     * @param lastName the last name of the issuer.
-     * @param email the email of the issuer.
-     */
-    public AdministratorContact(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-    }
-
-    /**
-     * Creates an administrator of the issuer.
-     * @param firstName the firstName of the admin.
-     * @param lastName the last name of the admin.
-     * @param email the email of the admin.
-     * @param phone the contact info of the admin.
-     */
-    public AdministratorContact(String firstName, String lastName, String email, String phone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-    }
 
     /**
      * Get the first name of the admin.
@@ -89,5 +64,45 @@ public final class AdministratorContact {
      */
     public String getPhone() {
         return phone;
+    }
+
+    /**
+     * Set the first name of the admin.
+     * @param firstName the first name of the admin to set.
+     * @return the updated AdministratorContact object itself.
+     */
+    public AdministratorContact setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    /**
+     * Set the last name of the admin.
+     * @param lastName the last name of the admin to set.
+     * @return the updated AdministratorContact object itself.
+     */
+    public AdministratorContact setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    /**
+     * Set the email of the admin.
+     * @param email the email of the admin to set.
+     * @return the updated AdministratorContact object itself.
+     */
+    public AdministratorContact setEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    /**
+     * Set the contact of the admin.
+     * @param phone the enabled status to set
+     * @return the updated AdministratorContact object itself.
+     */
+    public AdministratorContact setPhone(String phone) {
+        this.phone = phone;
+        return this;
     }
 }

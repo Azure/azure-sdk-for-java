@@ -146,7 +146,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy getCertificate(String certificateName) {
-        return client.getCertificate(certificateName).block();
+        return getCertificateWithResponse(certificateName, Context.NONE).getValue();
     }
 
     /**
@@ -155,18 +155,19 @@ public final class CertificateClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the certificate in the key vault. Prints out the returned certificate details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String}
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String-Context}
      *
      * @param certificateName The name of the certificate to retrieve, cannot be null
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code certificateName} is empty string.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultCertificateWithPolicy certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultCertificateWithPolicy> getCertificateWithResponse(String certificateName) {
-        return client.getCertificateWithResponse(certificateName).block();
+    public Response<KeyVaultCertificateWithPolicy> getCertificateWithResponse(String certificateName, Context context) {
+        return client.getCertificateWithResponse(certificateName, "", context).block();
     }
-  
+
     /**
      * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
@@ -216,15 +217,15 @@ public final class CertificateClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.updateCertificateProperties#CertificateProperties}
      *
-     * @param certificateProperties The {@link CertificateProperties} object with updated properties.
+     * @param properties The {@link CertificateProperties} object with updated properties.
      * @throws NullPointerException if {@code certificate} is {@code null}.
      * @throws ResourceNotFoundException when a certificate with {@link CertificateProperties#getName() certificateName} and {@link CertificateProperties#getVersion() version} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link CertificateProperties#getName() certificateName} or {@link CertificateProperties#getVersion() version} is empty string.
      * @return The {@link CertificateProperties updated certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultCertificate updateCertificateProperties(CertificateProperties certificateProperties) {
-        return updateCertificatePropertiesWithResponse(certificateProperties, Context.NONE).getValue();
+    public KeyVaultCertificate updateCertificateProperties(CertificateProperties properties) {
+        return updateCertificatePropertiesWithResponse(properties, Context.NONE).getValue();
     }
 
     /**
@@ -237,7 +238,7 @@ public final class CertificateClient {
      *
      * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.updateCertificatePropertiesWithResponse#CertificateProperties-Context}
      *
-     * @param certificateProperties The {@link CertificateProperties} object with updated properties.
+     * @param properties The {@link CertificateProperties} object with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws NullPointerException if {@code certificate} is {@code null}.
      * @throws ResourceNotFoundException when a certificate with {@link CertificateProperties#getName() certificateName} and {@link CertificateProperties#getVersion() version} doesn't exist in the key vault.
@@ -245,8 +246,8 @@ public final class CertificateClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateProperties updated certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultCertificate> updateCertificatePropertiesWithResponse(CertificateProperties certificateProperties, Context context) {
-        return client.updateCertificatePropertiesWithResponse(certificateProperties, context).block();
+    public Response<KeyVaultCertificate> updateCertificatePropertiesWithResponse(CertificateProperties properties, Context context) {
+        return client.updateCertificatePropertiesWithResponse(properties, context).block();
     }
 
 
@@ -531,7 +532,7 @@ public final class CertificateClient {
      * @return A {@link PagedIterable} containing all of the {@link DeletedCertificate deleted certificates} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedCertificate> listDeletedCertificates(Boolean includePending, Context context) {
+    public PagedIterable<DeletedCertificate> listDeletedCertificates(boolean includePending, Context context) {
         return new PagedIterable<>(client.listDeletedCertificates(includePending, context));
     }
 
@@ -659,27 +660,6 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> updateCertificatePolicyWithResponse(String certificateName, CertificatePolicy policy, Context context) {
         return client.updateCertificatePolicyWithResponse(certificateName, policy, context).block();
-    }
-
-    /**
-     * Creates the specified certificate issuer. The SetCertificateIssuer operation updates the specified certificate issuer if it
-     * already exists or adds it if doesn't exist. This operation requires the certificates/setissuers permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new certificate issuer in the key vault. Prints out the created certificate
-     * issuer details when a response has been received.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.createIssuer#String-String}
-     *
-     * @param issuerName The name of the certificate issuer to be created.
-     * @param provider The provider of the certificate issuer to be created.
-     * @throws ResourceModifiedException when invalid certificate issuer {@code issuerName} or {@code provider} configuration is provided.
-     * @throws HttpRequestException when a certificate issuer with {@code issuerName} is empty string.
-     * @return The created {@link CertificateIssuer certificate issuer}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateIssuer createIssuer(String issuerName, String provider) {
-        return createIssuerWithResponse(new CertificateIssuer(issuerName, provider), Context.NONE).getValue();
     }
 
     /**
@@ -1026,6 +1006,44 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName, Context context) {
         return client.deleteCertificateOperationWithResponse(certificateName, context).block();
+    }
+    /**
+     * Cancels a certificate creation operation that is already in progress. This operation requires the {@code certificates/update} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Triggers certificate creation and then cancels the certificate creation operation in the Azure Key Vault. Subscribes to the call and prints out the
+     * updated certificate operation details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#string}
+     *
+     * @param certificateName The name of the certificate which is in the process of being created.
+     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when the {@code name} is empty string.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateOperation cancelled certificate operation}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateOperation cancelCertificateOperation(String certificateName) {
+        return cancelCertificateOperationWithResponse(certificateName, Context.NONE).getValue();
+    }
+
+    /**
+     * Cancels a certificate creation operation that is already in progress. This operation requires the {@code certificates/update} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Triggers certificate creation and then cancels the certificate creation operation in the Azure Key Vault. Subscribes to the call and prints out the
+     * updated certificate operation details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperationWithResponse#string}
+     *
+     * @param certificateName The name of the certificate which is in the process of being created.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
+     * @throws HttpRequestException when the {@code name} is empty string.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateOperation cancelled certificate operation}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CertificateOperation> cancelCertificateOperationWithResponse(String certificateName, Context context) {
+        return client.cancelCertificateOperationWithResponse(certificateName, context).block();
     }
 
     /**

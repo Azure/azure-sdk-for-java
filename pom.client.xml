@@ -104,6 +104,8 @@
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
     <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
     <build.context>azure-client-sdk-parent</build.context>
+    <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
   </properties>
 
   <build>
@@ -132,7 +134,7 @@
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>8.24</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+            <version>8.29</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
           </dependency>
         </dependencies>
         <configuration>
@@ -182,6 +184,8 @@
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
+          <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
+          <includeTests>false</includeTests>
           <fork>true</fork>
         </configuration>
         <executions>
@@ -259,6 +263,7 @@
               <failOnError>true</failOnError>
               <failOnWarnings>true</failOnWarnings>
               <doclint>all</doclint>
+              <quiet>true</quiet>
             </configuration>
           </execution>
         </executions>
@@ -307,7 +312,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.4</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <executions>
         <execution>
           <id>default-instrument</id>
@@ -333,6 +338,31 @@
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
             </configuration>
           </execution>
+          <execution>
+            <id>check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>LINE</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>${jacoco.min.linecoverage}</minimum>
+                    </limit>
+                    <limit>
+                      <counter>BRANCH</counter>
+                      <value>COVEREDRATIO</value>
+                      <minimum>${jacoco.min.branchcoverage}</minimum>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
 
@@ -355,7 +385,7 @@
             </configurationFile>
           </analysisConfigurationFiles>
           <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
-          <checkDependencies>false</checkDependencies>
+          <checkDependencies>true</checkDependencies>
           <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
         </configuration>
         <dependencies>
@@ -398,6 +428,10 @@
               *.implementation*:
               com.azure.tools.checkstyle*
             </excludePackageNames>
+            <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
+            <sourceFileExcludes>
+              <sourceFileExclude>com.azure.cosmos.*BridgeInternal.java</sourceFileExclude>
+            </sourceFileExcludes>
             <groups>
               <group>
                 <title>Azure Core</title>
@@ -458,6 +492,10 @@
                 <packages>com.azure.storage.blob.cryptography*</packages>
               </group>
               <group>
+                <title>Azure Storage Blobs - NIO</title>
+                <packages>com.azure.storage.blob.nio*</packages>
+              </group>
+              <group>
                 <title>Azure Storage - Files</title>
                 <packages>com.azure.storage.file*</packages>
               </group>
@@ -471,8 +509,16 @@
               </group>
               <group>
                 <title>Azure Telemetry</title>
-                <title>Azure Telemetry - OpenCensus</title>
+                <title>Azure Telemetry - OpenTelemetry</title>
                 <packages>com.azure.core.tracing*</packages>
+              </group>
+              <group>
+                <title>Azure Text Analytics</title>
+                <packages>com.azure.ai.textanalytics*</packages>
+              </group>
+              <group>
+                <title>Azure Cosmos</title>
+                <packages>com.azure.cosmos*</packages>
               </group>
             </groups>
             <links>
@@ -486,19 +532,20 @@
             <docletArtifact>
               <groupId>org.apidesign.javadoc</groupId>
               <artifactId>codesnippet-doclet</artifactId>
-              <version>0.32</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
+              <version>0.53</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
             </docletArtifact>
             <additionalOptions>
               <additionalOption>-maxLineLength 120</additionalOption>
               <additionalOption>-snippetpath ${project.basedir}/src/samples/java</additionalOption>
               <additionalOption>-suppressMissingLinkWarnings</additionalOption>
             </additionalOptions>
-            <failOnError>false</failOnError>
-            <failOnWarnings>false</failOnWarnings>
+            <failOnError>true</failOnError>
+            <failOnWarnings>true</failOnWarnings>
             <doclint>all</doclint>
             <sourceFileExcludes>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
+            <quiet>true</quiet>
           </configuration>
         </plugin>
 
@@ -526,6 +573,8 @@
             <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
             <failOnError>true</failOnError>
             <fork>true</fork>
+            <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
+            <includeTests>false</includeTests>
           </configuration>
         </plugin>
 
@@ -557,7 +606,7 @@
       <groupId>org.jacoco</groupId>
       <artifactId>org.jacoco.agent</artifactId>
       <classifier>runtime</classifier>
-      <version>0.8.4</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+      <version>0.8.5</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -610,6 +659,8 @@
           </excludeFilterFile>
           <failOnError>true</failOnError>
           <fork>true</fork>
+          <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
+          <includeTests>false</includeTests>
         </configuration>
       </plugin>
       <plugin>
@@ -647,6 +698,7 @@
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
+                -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
               </additionalOptions>
               <doclint>all</doclint>
             </configuration>
@@ -775,6 +827,7 @@
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
               </sourceFileExcludes>
+              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>
@@ -790,6 +843,7 @@
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
               </sourceFileExcludes>
+              <quiet>true</quiet>
             </configuration>
           </plugin>
         </plugins>
@@ -887,8 +941,11 @@
                 <!-- JUnit5 and Mockito use reflection to create objects. -->
                 --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+                --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
 
                 <!-- AMQP tests fail without this. ArgumentCaptor requires reflection. -->
                 --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
@@ -909,47 +966,6 @@
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
               </systemPropertyVariables>
             </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Due to the codesnippet4javadoc tool using backward incompatible javadoc classes, build has
-      javadoc warnings. Build failures on javadoc warnings are disabled on JDK 9+ for now.
-      Here's the github issue - https://github.com/jtulach/codesnippet4javadoc/issues/14 -->
-    <profile>
-      <id>javadoc-doclet-compatibility</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
-            <configuration>
-              <failOnWarnings>false</failOnWarnings>
-
-              <!-- For codesnippet4javadoc tool to work with JDK9+, it is recommended to add this additional option
-              https://github.com/jtulach/codesnippet4javadoc#use-with-jdk9 -->
-              <additionalJOptions>
-                <opt>-J--add-opens=jdk.javadoc/com.sun.tools.javadoc.main=ALL-UNNAMED</opt>
-              </additionalJOptions>
-
-            </configuration>
-            <executions>
-              <execution>
-                <id>attach-javadocs</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-                <configuration>
-                  <failOnError>false</failOnError>
-                  <failOnWarnings>false</failOnWarnings>
-                </configuration>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -1029,6 +1045,7 @@
             <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration combine.children="append">
               <overview>${project.basedir}/readme_overview.html</overview>
+              <quiet>true</quiet>
             </configuration>
           </plugin>
          </plugins>
@@ -1063,7 +1080,7 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>        
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -1093,7 +1110,7 @@
                   <executable>npx.cmd</executable>
                   <arguments>
                     <argument>embedme</argument>
-                    <argument>sdk/*/azure-*/README.md</argument>
+                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1129,7 +1146,7 @@
                   <executable>npx</executable>
                   <arguments>
                     <argument>embedme</argument>
-                    <argument>sdk/*/azure-*/README.md</argument>
+                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1165,7 +1182,7 @@
                   <arguments>
                     <argument>embedme</argument>
                     <argument>--verify</argument>
-                    <argument>sdk/*/azure-*/README.md</argument>
+                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1202,7 +1219,7 @@
                   <arguments>
                     <argument>embedme</argument>
                     <argument>--verify</argument>
-                    <argument>sdk/*/azure-*/README.md</argument>
+                    <argument>${project.basedir}/README.md</argument>
                   </arguments>
                 </configuration>
               </execution>
@@ -1214,27 +1231,35 @@
   </profiles>
 
   <modules>
+    <module>common/perf-test-core</module>
     <module>sdk/appconfiguration/azure-data-appconfiguration</module>
     <module>sdk/core/azure-core</module>
     <module>sdk/core/azure-core-amqp</module>
-<!--    <module>sdk/core/azure-core-management</module>--> <!-- Removed for now, as this library is unused -->
+    <module>sdk/core/azure-core-management</module>
     <module>sdk/core/azure-core-http-netty</module>
     <module>sdk/core/azure-core-http-okhttp</module>
     <module>sdk/core/azure-core-test</module>
-    <module>sdk/core/azure-core-tracing-opencensus</module>
     <module>sdk/core/azure-core-tracing-opentelemetry</module>
+    <module>sdk/cosmos/azure-cosmos</module>
+    <module>sdk/cosmos/azure-cosmos-benchmark</module> <!-- CosmosSkip - Benchmark will go away, this is temporary -->
+    <module>sdk/cosmos/azure-cosmos-examples</module> <!-- CosmosSkip - Examples will go away, this is temporary -->
+    <module>sdk/e2e</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
     <module>sdk/identity/azure-identity</module>
     <module>sdk/keyvault/azure-security-keyvault-certificates</module>
     <module>sdk/keyvault/azure-security-keyvault-keys</module>
     <module>sdk/keyvault/azure-security-keyvault-secrets</module>
+	  <module>sdk/search/azure-search</module>
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
+    <module>sdk/storage/azure-storage-blob-nio</module>
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
+    <module>sdk/storage/perf-test</module>
+    <module>sdk/textanalytics/azure-ai-textanalytics</module>
   </modules>
 </project>

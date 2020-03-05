@@ -8,13 +8,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Represents a certificate with all of its properties including {@link CertificatePolicy}.
  */
-public final class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
+public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
 
     /**
      * The Certificate policy.
      */
     @JsonProperty("policy")
-    private CertificatePolicy certificatePolicy;
+    private CertificatePolicy policy;
 
     /**
      * Create the certificate
@@ -43,8 +43,8 @@ public final class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
      * Get the certificate policy of the certificate
      * @return the cer content.
      */
-    public CertificatePolicy getCertificatePolicy() {
-        return this.certificatePolicy;
+    public CertificatePolicy getPolicy() {
+        return this.policy;
     }
 
     /**
@@ -53,8 +53,8 @@ public final class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
      * @param certificatePolicy the policy to set.
      * @return the certificateWithPolicy object itself.
      */
-    public KeyVaultCertificateWithPolicy setCertificatePolicy(CertificatePolicy certificatePolicy) {
-        this.certificatePolicy = certificatePolicy;
+    public KeyVaultCertificateWithPolicy setPolicy(CertificatePolicy certificatePolicy) {
+        this.policy = certificatePolicy;
         return this;
     }
 }

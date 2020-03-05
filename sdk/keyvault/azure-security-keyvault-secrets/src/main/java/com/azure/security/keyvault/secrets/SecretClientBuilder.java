@@ -120,7 +120,6 @@ public final class SecretClientBuilder {
      *     {@link SecretClientBuilder#vaultUrl(String)} have not been set.
      */
     public SecretAsyncClient buildAsyncClient() {
-
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);

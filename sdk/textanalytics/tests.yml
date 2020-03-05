@@ -1,0 +1,9 @@
+trigger: none
+
+jobs:
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: textanalytics
+      EnvVars:
+        AZURE_TEST_MODE: RECORD
+        AZURE_LOG_LEVEL: 3

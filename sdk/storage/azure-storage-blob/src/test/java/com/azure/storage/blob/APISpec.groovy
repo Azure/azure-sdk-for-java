@@ -40,15 +40,17 @@ import reactor.core.publisher.Mono
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Timeout
 
 import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.concurrent.TimeUnit
 import java.util.function.Supplier
 
+@Timeout(value = 5, unit = TimeUnit.MINUTES)
 class APISpec extends Specification {
     @Shared
     ClientLogger logger = new ClientLogger(APISpec.class)
@@ -116,11 +118,15 @@ class APISpec extends Specification {
     static def SECONDARY_STORAGE = "SECONDARY_STORAGE_"
     static def BLOB_STORAGE = "BLOB_STORAGE_"
     static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
+    /* Unignore any managed disk tests if a managed disk account is available to be tested. They are difficult to
+     acquire so we do not run them in the nightly live run tests. */
+    static def MANAGED_DISK_STORAGE = "MANAGED_DISK_STORAGE_"
 
     protected static StorageSharedKeyCredential primaryCredential
     static StorageSharedKeyCredential alternateCredential
     static StorageSharedKeyCredential blobCredential
     static StorageSharedKeyCredential premiumCredential
+    static StorageSharedKeyCredential managedDiskCredential
     static TestMode testMode
 
     BlobServiceClient primaryBlobServiceClient
@@ -128,6 +134,7 @@ class APISpec extends Specification {
     BlobServiceClient alternateBlobServiceClient
     BlobServiceClient blobServiceClient
     BlobServiceClient premiumBlobServiceClient
+    BlobServiceClient managedDiskServiceClient
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
@@ -141,29 +148,35 @@ class APISpec extends Specification {
         alternateCredential = getCredential(SECONDARY_STORAGE)
         blobCredential = getCredential(BLOB_STORAGE)
         premiumCredential = getCredential(PREMIUM_STORAGE)
+        managedDiskCredential = getCredential(MANAGED_DISK_STORAGE)
+        // The property is to limit flapMap buffer size of concurrency
+        // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
+        System.out.println(String.format("--------%s---------", testMode))
     }
 
     def setup() {
         String fullTestName = specificationContext.getCurrentIteration().getName().replace(' ', '').toLowerCase()
         String className = specificationContext.getCurrentSpec().getName()
-
         int iterationIndex = fullTestName.lastIndexOf("[")
         int substringIndex = (int) Math.min((iterationIndex != -1) ? iterationIndex : fullTestName.length(), 50)
         this.testName = fullTestName.substring(0, substringIndex)
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
-        // The property is to limit flapMap buffer size of concurrency
-        // in case the upload or download open too many connections.
+
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
+
         // If the test doesn't have the Requires tag record it in live mode.
-        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
+        recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) != null
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
         alternateBlobServiceClient = setClient(alternateCredential)
         blobServiceClient = setClient(blobCredential)
         premiumBlobServiceClient = setClient(premiumCredential)
+        managedDiskServiceClient = setClient(managedDiskCredential)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
@@ -206,14 +219,14 @@ class APISpec extends Specification {
     }
 
     static boolean liveMode() {
-        return setupTestMode() == TestMode.RECORD
+        return setupTestMode() == TestMode.LIVE
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -242,8 +255,8 @@ class APISpec extends Specification {
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD) {
-            if (recordLiveMode) {
+        if (testMode != TestMode.PLAYBACK) {
+            if (testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -290,7 +303,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -310,7 +323,7 @@ class APISpec extends Specification {
             .endpoint(endpoint)
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -323,7 +336,7 @@ class APISpec extends Specification {
             .blobName(blobName)
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -341,7 +354,7 @@ class APISpec extends Specification {
             .snapshot(snapshotId)
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -357,7 +370,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -370,7 +383,7 @@ class APISpec extends Specification {
             .blobName(blobName)
             .httpClient(getHttpClient())
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -386,7 +399,7 @@ class APISpec extends Specification {
             builder.sasToken(sasToken)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -395,7 +408,7 @@ class APISpec extends Specification {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode == TestMode.RECORD) {
+        if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
@@ -506,30 +519,30 @@ class APISpec extends Specification {
     def compareFiles(File file1, File file2, long offset, long count) {
         def pos = 0L
         def readBuffer = 8 * Constants.KB
-        def fileChannel1 = AsynchronousFileChannel.open(file1.toPath())
-        def fileChannel2 = AsynchronousFileChannel.open(file2.toPath())
+        def stream1 = new FileInputStream(file1)
+        stream1.skip(offset)
+        def stream2 = new FileInputStream(file2)
 
-        while (pos < count) {
-            def bufferSize = (int) Math.min(readBuffer, count - pos)
-            def buffer1 = ByteBuffer.allocate(bufferSize)
-            def buffer2 = ByteBuffer.allocate(bufferSize)
+        try {
+            while (pos < count) {
+                def bufferSize = (int) Math.min(readBuffer, count - pos)
+                def buffer1 = new byte[bufferSize]
+                def buffer2 = new byte[bufferSize]
 
-            def readCount1 = fileChannel1.read(buffer1, offset + pos).get()
-            def readCount2 = fileChannel2.read(buffer2, pos).get()
+                def readCount1 = stream1.read(buffer1)
+                def readCount2 = stream2.read(buffer2)
 
-            if (readCount1 != readCount2 || buffer1 != buffer2) {
-                return false
+                assert readCount1 == readCount2 && buffer1 == buffer2
+
+                pos += bufferSize
             }
 
-            pos += bufferSize
+            def verificationRead = stream2.read()
+            return pos == count && verificationRead == -1
+        } finally {
+            stream1.close()
+            stream2.close()
         }
-
-        def verificationRead = fileChannel2.read(ByteBuffer.allocate(1), pos).get()
-
-        fileChannel1.close()
-        fileChannel2.close()
-
-        return pos == count && verificationRead == -1
     }
 
     /**
@@ -728,7 +741,7 @@ class APISpec extends Specification {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }

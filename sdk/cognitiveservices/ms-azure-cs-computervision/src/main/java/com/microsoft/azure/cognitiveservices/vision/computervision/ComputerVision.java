@@ -8,40 +8,74 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision;
 
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageOptionalParameter;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AreaOfInterestResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionErrorException;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescriptionExclude;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.Details;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.DetectResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DomainModelResults;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageAnalysis;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageDescription;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ListModelsResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrLanguages;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.ReadOperationResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextOperationResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextRecognitionMode;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.VisualFeatureTypes;
+import rx.Observable;
+
 import java.io.InputStream;
 import java.util.List;
-import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in ComputerVision.
  */
 public interface ComputerVision {
+
+    /**
+     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art
+      *  Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use
+      *  the Read Document interface, the response contains a field called 'Operation-Location'. The
+      *  'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation'
+      *  to access OCR results.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void batchReadFileInStream(byte[] image);
+
+    /**
+     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art
+      *  Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use
+      *  the Read Document interface, the response contains a field called 'Operation-Location'. The
+      *  'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation'
+      *  to access OCR results.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the deferred computation of this call if successful.
+     */
+    Observable<Void> batchReadFileInStreamAsync(byte[] image);
+
+
 
     /**
      * Recognize Text operation. When you use the Recognize Text interface, the response contains a field
@@ -69,131 +103,119 @@ public interface ComputerVision {
     Observable<Void> recognizeTextInStreamAsync(byte[] image, TextRecognitionMode mode);
 
 
+
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of
-     *   domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET
-     *   request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods
-     *   are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be
-     *   returned in JSON.  If the request failed, the response will contain an error code and a message to help
-     *   understand what went wrong.
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should
+      *  be retrieved from 'Operation-Location' field returned from Batch Read File interface.
      *
-     * @param model The domain-specific content to recognize.
-     * @param image An image stream.
-     * @param analyzeImageByDomainInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the DomainModelResults object if successful.
+     * @return the ReadOperationResult object if successful.
      */
-    @Deprecated
-    DomainModelResults analyzeImageByDomainInStream(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter);
+    ReadOperationResult getReadOperationResult(String operationId);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of
-     *   domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET
-     *   request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods
-     *   are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be
-     *   returned in JSON.  If the request failed, the response will contain an error code and a message to help
-     *   understand what went wrong.
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should
+      *  be retrieved from 'Operation-Location' field returned from Batch Read File interface.
      *
-     * @param model The domain-specific content to recognize.
-     * @param image An image stream.
-     * @param analyzeImageByDomainInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DomainModelResults object
+     * @return the observable to the ReadOperationResult object
      */
-    @Deprecated
-    Observable<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter);
+    Observable<ReadOperationResult> getReadOperationResultAsync(String operationId);
+
+
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of
-     *   domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET
-     *   request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods
-     *   are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be
-     *   returned in JSON.  If the request failed, the response will contain an error code and a message to help
-     *   understand what went wrong.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical
+      *  Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read
+      *  File interface, the response contains a field called 'Operation-Location'. The
+      *  'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult'
+      *  operation to access OCR results.
      *
-     * @return the first stage of the analyzeImageByDomainInStream call
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages.WithModel analyzeImageByDomainInStream();
+    void batchReadFile(String url);
 
     /**
-     * Grouping of analyzeImageByDomainInStream definition stages.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical
+      *  Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read
+      *  File interface, the response contains a field called 'Operation-Location'. The
+      *  'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult'
+      *  operation to access OCR results.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the deferred computation of this call if successful.
      */
-    interface ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages {
-        /**
-         * The stage of the definition to be specify model.
-         */
-        interface WithModel {
-            /**
-             * The domain-specific content to recognize.
-             *
-             * @return next definition stage
-             */
-            WithImage withModel(String model);
-        }
-        /**
-         * The stage of the definition to be specify image.
-         */
-        interface WithImage {
-            /**
-             * An image stream.
-             *
-             * @return next definition stage
-             */
-            ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages.WithExecute withImage(byte[] image);
-        }
+    Observable<Void> batchReadFileAsync(String url);
 
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * The desired language for output generation. If this parameter is not specified, the default value is
-             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
-             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
-             *
-             * @return next definition stage
-             */
-            ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages.WithExecute withLanguage(String language);
 
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the DomainModelResults object if successful.
-             */
-            DomainModelResults execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the DomainModelResults object
-             */
-            Observable<DomainModelResults> executeAsync();
-        }
-    }
 
     /**
-     * The entirety of analyzeImageByDomainInStream definition.
+     * This interface is used for getting text operation result. The URL to this interface should be
+      *  retrieved from 'Operation-Location' field returned from Recognize Text interface.
+     *
+     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TextOperationResult object if successful.
      */
-    interface ComputerVisionAnalyzeImageByDomainInStreamDefinition extends
-        ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages.WithModel,
-        ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages.WithImage,
-        ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages.WithExecute {
-    }
+    TextOperationResult getTextOperationResult(String operationId);
+
+    /**
+     * This interface is used for getting text operation result. The URL to this interface should be
+      *  retrieved from 'Operation-Location' field returned from Recognize Text interface.
+     *
+     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TextOperationResult object
+     */
+    Observable<TextOperationResult> getTextOperationResultAsync(String operationId);
+
+
+
+    /**
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field
+      *  called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
+      *  your Get Recognize Text Operation Result operation.
+     *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void recognizeText(String url, TextRecognitionMode mode);
+
+    /**
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field
+      *  called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
+      *  your Get Recognize Text Operation Result operation.
+     *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the deferred computation of this call if successful.
+     */
+    Observable<Void> recognizeTextAsync(String url, TextRecognitionMode mode);
+
 
     /**
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image.
      *   The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images.
      *   Unlike categories, tags are not organized according to a hierarchical classification system, but correspond
-     *   to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello'
-     *   may be accompanied by the hint 'musical instrument'. All tags are in English.
+     *   to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag
+     *   "ascomycete" may be accompanied by the hint "fungus".
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @param tagImageInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -209,8 +231,11 @@ public interface ComputerVision {
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image.
      *   The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images.
      *   Unlike categories, tags are not organized according to a hierarchical classification system, but correspond
-     *   to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello'
-     *   may be accompanied by the hint 'musical instrument'. All tags are in English.
+     *   to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag
+     *   "ascomycete" may be accompanied by the hint "fungus".
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @param tagImageInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -224,8 +249,11 @@ public interface ComputerVision {
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image.
      *   The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images.
      *   Unlike categories, tags are not organized according to a hierarchical classification system, but correspond
-     *   to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello'
-     *   may be accompanied by the hint 'musical instrument'. All tags are in English.
+     *   to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag
+     *   "ascomycete" may be accompanied by the hint "fungus".
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
      *
      * @return the first stage of the tagImageInStream call
      */
@@ -291,122 +319,12 @@ public interface ComputerVision {
     }
 
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The
-     *   description is based on a collection of content tags, which are also returned by the operation. More than
-     *   one description can be generated for each image.  Descriptions are ordered by their confidence score. All
-     *   descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an
-     *   image URL.A successful response will be returned in JSON.  If the request failed, the response will contain
-     *   an error code and a message to help understand what went wrong.
-     *
-     * @param image An image stream.
-     * @param describeImageInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageDescription object if successful.
-     */
-    @Deprecated
-    ImageDescription describeImageInStream(byte[] image, DescribeImageInStreamOptionalParameter describeImageInStreamOptionalParameter);
-
-    /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The
-     *   description is based on a collection of content tags, which are also returned by the operation. More than
-     *   one description can be generated for each image.  Descriptions are ordered by their confidence score. All
-     *   descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an
-     *   image URL.A successful response will be returned in JSON.  If the request failed, the response will contain
-     *   an error code and a message to help understand what went wrong.
-     *
-     * @param image An image stream.
-     * @param describeImageInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageDescription object
-     */
-    @Deprecated
-    Observable<ImageDescription> describeImageInStreamAsync(byte[] image, DescribeImageInStreamOptionalParameter describeImageInStreamOptionalParameter);
-
-    /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The
-     *   description is based on a collection of content tags, which are also returned by the operation. More than
-     *   one description can be generated for each image.  Descriptions are ordered by their confidence score. All
-     *   descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an
-     *   image URL.A successful response will be returned in JSON.  If the request failed, the response will contain
-     *   an error code and a message to help understand what went wrong.
-     *
-     * @return the first stage of the describeImageInStream call
-     */
-    ComputerVisionDescribeImageInStreamDefinitionStages.WithImage describeImageInStream();
-
-    /**
-     * Grouping of describeImageInStream definition stages.
-     */
-    interface ComputerVisionDescribeImageInStreamDefinitionStages {
-        /**
-         * The stage of the definition to be specify image.
-         */
-        interface WithImage {
-            /**
-             * An image stream.
-             *
-             * @return next definition stage
-             */
-            ComputerVisionDescribeImageInStreamDefinitionStages.WithExecute withImage(byte[] image);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Maximum number of candidate descriptions to be returned.  The default is 1.
-             *
-             * @return next definition stage
-             */
-            ComputerVisionDescribeImageInStreamDefinitionStages.WithExecute withMaxCandidates(String maxCandidates);
-
-            /**
-             * The desired language for output generation. If this parameter is not specified, the default value is
-             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
-             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
-             *
-             * @return next definition stage
-             */
-            ComputerVisionDescribeImageInStreamDefinitionStages.WithExecute withLanguage(String language);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ComputerVisionDescribeImageInStreamDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the ImageDescription object if successful.
-             */
-            ImageDescription execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the ImageDescription object
-             */
-            Observable<ImageDescription> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of describeImageInStream definition.
-     */
-    interface ComputerVisionDescribeImageInStreamDefinition extends
-        ComputerVisionDescribeImageInStreamDefinitionStages.WithImage,
-        ComputerVisionDescribeImageInStreamDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters
-     *   into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the
-     *   error code together with an error message will be returned. The error code can be one of InvalidImageUrl,
-     *   InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a
+     *   machine-usable character stream.
+     *   Upon success, the OCR results will be returned.
+     *   Upon failure, the error code together with an error message will be returned. The error code can be one of
+     *   InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or
+     *   InternalServerError.
      *
      * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to
      *   detect the image orientation and correct it before further processing (e.g. if it's upside-down).
@@ -421,10 +339,12 @@ public interface ComputerVision {
     OcrResult recognizePrintedTextInStream(boolean detectOrientation, byte[] image, RecognizePrintedTextInStreamOptionalParameter recognizePrintedTextInStreamOptionalParameter);
 
     /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters
-     *   into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the
-     *   error code together with an error message will be returned. The error code can be one of InvalidImageUrl,
-     *   InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a
+     *   machine-usable character stream.
+     *   Upon success, the OCR results will be returned.
+     *   Upon failure, the error code together with an error message will be returned. The error code can be one of
+     *   InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or
+     *   InternalServerError.
      *
      * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to
      *   detect the image orientation and correct it before further processing (e.g. if it's upside-down).
@@ -437,10 +357,12 @@ public interface ComputerVision {
     Observable<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, RecognizePrintedTextInStreamOptionalParameter recognizePrintedTextInStreamOptionalParameter);
 
     /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters
-     *   into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the
-     *   error code together with an error message will be returned. The error code can be one of InvalidImageUrl,
-     *   InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a
+     *   machine-usable character stream.
+     *   Upon success, the OCR results will be returned.
+     *   Upon failure, the error code together with an error message will be returned. The error code can be one of
+     *   InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or
+     *   InternalServerError.
      *
      * @return the first stage of the recognizePrintedTextInStream call
      */
@@ -519,14 +441,139 @@ public interface ComputerVision {
     }
 
     /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of
+     *   domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET
+     *   request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON.
+     *   If the request failed, the response will contain an error code and a message to help understand what went
+     *   wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param image An image stream.
+     * @param analyzeImageByDomainInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the DomainModelResults object if successful.
+     */
+    @Deprecated
+    DomainModelResults analyzeImageByDomainInStream(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter);
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of
+     *   domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET
+     *   request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON.
+     *   If the request failed, the response will contain an error code and a message to help understand what went
+     *   wrong.
+     *
+     * @param model The domain-specific content to recognize.
+     * @param image An image stream.
+     * @param analyzeImageByDomainInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DomainModelResults object
+     */
+    @Deprecated
+    Observable<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter);
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of
+     *   domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET
+     *   request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON.
+     *   If the request failed, the response will contain an error code and a message to help understand what went
+     *   wrong.
+     *
+     * @return the first stage of the analyzeImageByDomainInStream call
+     */
+    ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages.WithModel analyzeImageByDomainInStream();
+
+    /**
+     * Grouping of analyzeImageByDomainInStream definition stages.
+     */
+    interface ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages {
+        /**
+         * The stage of the definition to be specify model.
+         */
+        interface WithModel {
+            /**
+             * The domain-specific content to recognize.
+             *
+             * @return next definition stage
+             */
+            WithImage withModel(String model);
+        }
+        /**
+         * The stage of the definition to be specify image.
+         */
+        interface WithImage {
+            /**
+             * An image stream.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages.WithExecute withImage(byte[] image);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The desired language for output generation. If this parameter is not specified, the default value is
+             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
+             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages.WithExecute withLanguage(String language);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the DomainModelResults object if successful.
+             */
+            DomainModelResults execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the DomainModelResults object
+             */
+            Observable<DomainModelResults> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of analyzeImageByDomainInStream definition.
+     */
+    interface ComputerVisionAnalyzeImageByDomainInStreamDefinition extends
+        ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages.WithModel,
+        ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages.WithImage,
+        ComputerVisionAnalyzeImageByDomainInStreamDefinitionStages.WithExecute {
+    }
+
+    /**
      * This operation generates a thumbnail image with the user-specified width and height. By default, the service
      *   analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based
      *   on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
      *   A successful response contains the thumbnail image binary. If the request failed, the response contains an
      *   error code and a message to help determine what went wrong.
+     *   Upon failure, the error code and an error message are returned. The error code could be one of
+     *   InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage,
+     *   FailedToProcess, Timeout, or InternalServerError.
      *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
      * @param image An image stream.
      * @param generateThumbnailInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -543,9 +590,12 @@ public interface ComputerVision {
      *   on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
      *   A successful response contains the thumbnail image binary. If the request failed, the response contains an
      *   error code and a message to help determine what went wrong.
+     *   Upon failure, the error code and an error message are returned. The error code could be one of
+     *   InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage,
+     *   FailedToProcess, Timeout, or InternalServerError.
      *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
      * @param image An image stream.
      * @param generateThumbnailInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -560,6 +610,9 @@ public interface ComputerVision {
      *   on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
      *   A successful response contains the thumbnail image binary. If the request failed, the response contains an
      *   error code and a message to help determine what went wrong.
+     *   Upon failure, the error code and an error message are returned. The error code could be one of
+     *   InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage,
+     *   FailedToProcess, Timeout, or InternalServerError.
      *
      * @return the first stage of the generateThumbnailInStream call
      */
@@ -574,7 +627,7 @@ public interface ComputerVision {
          */
         interface WithWidth {
             /**
-             * Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
+             * Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
              *
              * @return next definition stage
              */
@@ -585,7 +638,7 @@ public interface ComputerVision {
          */
         interface WithHeight {
             /**
-             * Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
+             * Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
              *
              * @return next definition stage
              */
@@ -646,8 +699,195 @@ public interface ComputerVision {
         ComputerVisionGenerateThumbnailInStreamDefinitionStages.WithExecute {
     }
 
+
+    /**
+     * Performs object detection on the specified image.
+      *  Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+      *  A successful response will be returned in JSON. If the request failed, the response will contain
+      *  an error code and a message to help understand what went wrong.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the DetectResult object if successful.
+     */
+    DetectResult detectObjectsInStream(byte[] image);
+
+    /**
+     * Performs object detection on the specified image.
+      *  Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+      *  A successful response will be returned in JSON. If the request failed, the response will contain
+      *  an error code and a message to help understand what went wrong.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DetectResult object
+     */
+    Observable<DetectResult> detectObjectsInStreamAsync(byte[] image);
+
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The
+     *   description is based on a collection of content tags, which are also returned by the operation. More than
+     *   one description can be generated for each image. Descriptions are ordered by their confidence score.
+     *   Descriptions may include results from celebrity and landmark domain models, if applicable.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
+     *
+     * @param image An image stream.
+     * @param describeImageInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImageDescription object if successful.
+     */
+    @Deprecated
+    ImageDescription describeImageInStream(byte[] image, DescribeImageInStreamOptionalParameter describeImageInStreamOptionalParameter);
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The
+     *   description is based on a collection of content tags, which are also returned by the operation. More than
+     *   one description can be generated for each image. Descriptions are ordered by their confidence score.
+     *   Descriptions may include results from celebrity and landmark domain models, if applicable.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
+     *
+     * @param image An image stream.
+     * @param describeImageInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImageDescription object
+     */
+    @Deprecated
+    Observable<ImageDescription> describeImageInStreamAsync(byte[] image, DescribeImageInStreamOptionalParameter describeImageInStreamOptionalParameter);
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The
+     *   description is based on a collection of content tags, which are also returned by the operation. More than
+     *   one description can be generated for each image. Descriptions are ordered by their confidence score.
+     *   Descriptions may include results from celebrity and landmark domain models, if applicable.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
+     *
+     * @return the first stage of the describeImageInStream call
+     */
+    ComputerVisionDescribeImageInStreamDefinitionStages.WithImage describeImageInStream();
+
+    /**
+     * Grouping of describeImageInStream definition stages.
+     */
+    interface ComputerVisionDescribeImageInStreamDefinitionStages {
+        /**
+         * The stage of the definition to be specify image.
+         */
+        interface WithImage {
+            /**
+             * An image stream.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionDescribeImageInStreamDefinitionStages.WithExecute withImage(byte[] image);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Maximum number of candidate descriptions to be returned.  The default is 1.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionDescribeImageInStreamDefinitionStages.WithExecute withMaxCandidates(Integer maxCandidates);
+
+            /**
+             * The desired language for output generation. If this parameter is not specified, the default value is
+             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
+             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionDescribeImageInStreamDefinitionStages.WithExecute withLanguage(String language);
+
+            /**
+             * Turn off specified domain models when generating the description.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionDescribeImageInStreamDefinitionStages.WithExecute withDescriptionExclude(List<DescriptionExclude> descriptionExclude);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ComputerVisionDescribeImageInStreamDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the ImageDescription object if successful.
+             */
+            ImageDescription execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the ImageDescription object
+             */
+            Observable<ImageDescription> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of describeImageInStream definition.
+     */
+    interface ComputerVisionDescribeImageInStreamDefinition extends
+        ComputerVisionDescribeImageInStreamDefinitionStages.WithImage,
+        ComputerVisionDescribeImageInStreamDefinitionStages.WithExecute {
+    }
+
+
+    /**
+     * This operation returns a bounding box around the most important area of the image.
+      *  A successful response will be returned in JSON. If the request failed, the response contains an
+      *  error code and a message to help determine what went wrong.
+      *  Upon failure, the error code and an error message are returned. The error code could be one of
+      *  InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess,
+      *  Timeout, or InternalServerError.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AreaOfInterestResult object if successful.
+     */
+    AreaOfInterestResult getAreaOfInterestInStream(byte[] image);
+
+    /**
+     * This operation returns a bounding box around the most important area of the image.
+      *  A successful response will be returned in JSON. If the request failed, the response contains an
+      *  error code and a message to help determine what went wrong.
+      *  Upon failure, the error code and an error message are returned. The error code could be one of
+      *  InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess,
+      *  Timeout, or InternalServerError.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AreaOfInterestResult object
+     */
+    Observable<AreaOfInterestResult> getAreaOfInterestInStreamAsync(byte[] image);
+
+
     /**
      * This operation extracts a rich set of visual features based on the image content.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your
+     *   request, there is an optional parameter to allow you to choose which features to return. By default, image
+     *   categories are returned in the response.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @param analyzeImageInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -661,6 +901,11 @@ public interface ComputerVision {
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your
+     *   request, there is an optional parameter to allow you to choose which features to return. By default, image
+     *   categories are returned in the response.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @param analyzeImageInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -672,6 +917,11 @@ public interface ComputerVision {
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your
+     *   request, there is an optional parameter to allow you to choose which features to return. By default, image
+     *   categories are returned in the response.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
      *
      * @return the first stage of the analyzeImageInStream call
      */
@@ -699,13 +949,16 @@ public interface ComputerVision {
         interface WithAllOptions {
             /**
              * A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid
-             *   visual feature types include:Categories - categorizes image content according to a taxonomy defined in
+             *   visual feature types include: Categories - categorizes image content according to a taxonomy defined in
              *   documentation. Tags - tags the image with a detailed list of words related to the image content. Description
              *   - describes the image content with a complete English sentence. Faces - detects if faces are present. If
              *   present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing.
-             *   Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects
-             *   if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also
-             *   detected.
+             *   Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult -
+             *   detects if the image is pornographic in nature (depicts nudity or a sex act), or is gory (depicts extreme
+             *   violence or blood). Sexually suggestive content (aka racy content) is also detected. Objects - detects
+             *   various objects within an image, including the approximate location. The Objects argument is only available
+             *   in English. Brands - detects various brands within an image, including the approximate location. The Brands
+             *   argument is only available in English.
              *
              * @return next definition stage
              */
@@ -713,12 +966,12 @@ public interface ComputerVision {
 
             /**
              * A string indicating which domain-specific details to return. Multiple values should be comma-separated.
-             *   Valid visual feature types include:Celebrities - identifies celebrities if detected in the image. Possible
-             *   values include: 'Celebrities', 'Landmarks'.
+             *   Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks
+             *   - identifies notable landmarks in the image.
              *
              * @return next definition stage
              */
-            ComputerVisionAnalyzeImageInStreamDefinitionStages.WithExecute withDetails(String details);
+            ComputerVisionAnalyzeImageInStreamDefinitionStages.WithExecute withDetails(List<Details> details);
 
             /**
              * The desired language for output generation. If this parameter is not specified, the default value is
@@ -728,6 +981,13 @@ public interface ComputerVision {
              * @return next definition stage
              */
             ComputerVisionAnalyzeImageInStreamDefinitionStages.WithExecute withLanguage(String language);
+
+            /**
+             * Turn off specified domain models when generating the description.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionAnalyzeImageInStreamDefinitionStages.WithExecute withDescriptionExclude(List<DescriptionExclude> descriptionExclude);
 
         }
 
@@ -761,117 +1021,117 @@ public interface ComputerVision {
 
 
     /**
-     * This interface is used for getting text operation result. The URL to this interface should be
-      *  retrieved from 'Operation-Location' field returned from Recognize Text interface.
+     * This operation returns a bounding box around the most important area of the image.
+      *  A successful response will be returned in JSON. If the request failed, the response contains an
+      *  error code and a message to help determine what went wrong.
+      *  Upon failure, the error code and an error message are returned. The error code could be one of
+      *  InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess,
+      *  Timeout, or InternalServerError.
      *
-     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TextOperationResult object if successful.
-     */
-    TextOperationResult getTextOperationResult(String operationId);
-
-    /**
-     * This interface is used for getting text operation result. The URL to this interface should be
-      *  retrieved from 'Operation-Location' field returned from Recognize Text interface.
-     *
-     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TextOperationResult object
-     */
-    Observable<TextOperationResult> getTextOperationResultAsync(String operationId);
-
-
-
-    /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field
-      *  called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
-      *  your Get Recognize Text Operation Result operation.
-     *
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
      * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AreaOfInterestResult object if successful.
      */
-    void recognizeText(String url, TextRecognitionMode mode);
+    AreaOfInterestResult getAreaOfInterest(String url);
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field
-      *  called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
-      *  your Get Recognize Text Operation Result operation.
+     * This operation returns a bounding box around the most important area of the image.
+      *  A successful response will be returned in JSON. If the request failed, the response contains an
+      *  error code and a message to help determine what went wrong.
+      *  Upon failure, the error code and an error message are returned. The error code could be one of
+      *  InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess,
+      *  Timeout, or InternalServerError.
      *
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
      * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * @return the observable to the AreaOfInterestResult object
      */
-    Observable<Void> recognizeTextAsync(String url, TextRecognitionMode mode);
+    Observable<AreaOfInterestResult> getAreaOfInterestAsync(String url);
 
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of
-     *   domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET
-     *   request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods
-     *   are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be
-     *   returned in JSON.  If the request failed, the response will contain an error code and a message to help
-     *   understand what went wrong.
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service
+     *   analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based
+     *   on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     *   A successful response contains the thumbnail image binary. If the request failed, the response contains an
+     *   error code and a message to help determine what went wrong.
+     *   Upon failure, the error code and an error message are returned. The error code could be one of
+     *   InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage,
+     *   FailedToProcess, Timeout, or InternalServerError.
      *
-     * @param model The domain-specific content to recognize.
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
      * @param url Publicly reachable URL of an image.
-     * @param analyzeImageByDomainOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param generateThumbnailOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the DomainModelResults object if successful.
+     * @return the InputStream object if successful.
      */
     @Deprecated
-    DomainModelResults analyzeImageByDomain(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter);
+    InputStream generateThumbnail(int width, int height, String url, GenerateThumbnailOptionalParameter generateThumbnailOptionalParameter);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of
-     *   domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET
-     *   request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods
-     *   are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be
-     *   returned in JSON.  If the request failed, the response will contain an error code and a message to help
-     *   understand what went wrong.
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service
+     *   analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based
+     *   on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     *   A successful response contains the thumbnail image binary. If the request failed, the response contains an
+     *   error code and a message to help determine what went wrong.
+     *   Upon failure, the error code and an error message are returned. The error code could be one of
+     *   InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage,
+     *   FailedToProcess, Timeout, or InternalServerError.
      *
-     * @param model The domain-specific content to recognize.
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
      * @param url Publicly reachable URL of an image.
-     * @param analyzeImageByDomainOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param generateThumbnailOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DomainModelResults object
+     * @return the observable to the InputStream object
      */
     @Deprecated
-    Observable<DomainModelResults> analyzeImageByDomainAsync(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter);
+    Observable<InputStream> generateThumbnailAsync(int width, int height, String url, GenerateThumbnailOptionalParameter generateThumbnailOptionalParameter);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of
-     *   domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET
-     *   request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods
-     *   are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be
-     *   returned in JSON.  If the request failed, the response will contain an error code and a message to help
-     *   understand what went wrong.
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service
+     *   analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based
+     *   on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     *   A successful response contains the thumbnail image binary. If the request failed, the response contains an
+     *   error code and a message to help determine what went wrong.
+     *   Upon failure, the error code and an error message are returned. The error code could be one of
+     *   InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage,
+     *   FailedToProcess, Timeout, or InternalServerError.
      *
-     * @return the first stage of the analyzeImageByDomain call
+     * @return the first stage of the generateThumbnail call
      */
-    ComputerVisionAnalyzeImageByDomainDefinitionStages.WithModel analyzeImageByDomain();
+    ComputerVisionGenerateThumbnailDefinitionStages.WithWidth generateThumbnail();
 
     /**
-     * Grouping of analyzeImageByDomain definition stages.
+     * Grouping of generateThumbnail definition stages.
      */
-    interface ComputerVisionAnalyzeImageByDomainDefinitionStages {
+    interface ComputerVisionGenerateThumbnailDefinitionStages {
         /**
-         * The stage of the definition to be specify model.
+         * The stage of the definition to be specify width.
          */
-        interface WithModel {
+        interface WithWidth {
             /**
-             * The domain-specific content to recognize.
+             * Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
              *
              * @return next definition stage
              */
-            WithUrl withModel(String model);
+            WithHeight withWidth(int width);
+        }
+        /**
+         * The stage of the definition to be specify height.
+         */
+        interface WithHeight {
+            /**
+             * Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+             *
+             * @return next definition stage
+             */
+            WithUrl withHeight(int height);
         }
         /**
          * The stage of the definition to be specify url.
@@ -882,7 +1142,7 @@ public interface ComputerVision {
              *
              * @return next definition stage
              */
-            ComputerVisionAnalyzeImageByDomainDefinitionStages.WithExecute withUrl(String url);
+            ComputerVisionGenerateThumbnailDefinitionStages.WithExecute withUrl(String url);
         }
 
         /**
@@ -890,51 +1150,53 @@ public interface ComputerVision {
          */
         interface WithAllOptions {
             /**
-             * The desired language for output generation. If this parameter is not specified, the default value is
-             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
-             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+             * Boolean flag for enabling smart cropping.
              *
              * @return next definition stage
              */
-            ComputerVisionAnalyzeImageByDomainDefinitionStages.WithExecute withLanguage(String language);
+            ComputerVisionGenerateThumbnailDefinitionStages.WithExecute withSmartCropping(Boolean smartCropping);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends ComputerVisionAnalyzeImageByDomainDefinitionStages.WithAllOptions {
+        interface WithExecute extends ComputerVisionGenerateThumbnailDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
-             * @return the DomainModelResults object if successful.
+             * @return the InputStream object if successful.
              */
-            DomainModelResults execute();
+            InputStream execute();
 
             /**
              * Execute the request asynchronously.
              *
-             * @return the observable to the DomainModelResults object
+             * @return the observable to the InputStream object
              */
-            Observable<DomainModelResults> executeAsync();
+            Observable<InputStream> executeAsync();
         }
     }
 
     /**
-     * The entirety of analyzeImageByDomain definition.
+     * The entirety of generateThumbnail definition.
      */
-    interface ComputerVisionAnalyzeImageByDomainDefinition extends
-        ComputerVisionAnalyzeImageByDomainDefinitionStages.WithModel,
-        ComputerVisionAnalyzeImageByDomainDefinitionStages.WithUrl,
-        ComputerVisionAnalyzeImageByDomainDefinitionStages.WithExecute {
+    interface ComputerVisionGenerateThumbnailDefinition extends
+        ComputerVisionGenerateThumbnailDefinitionStages.WithWidth,
+        ComputerVisionGenerateThumbnailDefinitionStages.WithHeight,
+        ComputerVisionGenerateThumbnailDefinitionStages.WithUrl,
+        ComputerVisionGenerateThumbnailDefinitionStages.WithExecute {
     }
 
     /**
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image.
      *   The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images.
      *   Unlike categories, tags are not organized according to a hierarchical classification system, but correspond
-     *   to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello'
-     *   may be accompanied by the hint 'musical instrument'. All tags are in English.
+     *   to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag
+     *   "ascomycete" may be accompanied by the hint "fungus".
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
      *
      * @param url Publicly reachable URL of an image.
      * @param tagImageOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -950,8 +1212,11 @@ public interface ComputerVision {
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image.
      *   The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images.
      *   Unlike categories, tags are not organized according to a hierarchical classification system, but correspond
-     *   to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello'
-     *   may be accompanied by the hint 'musical instrument'. All tags are in English.
+     *   to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag
+     *   "ascomycete" may be accompanied by the hint "fungus".
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
      *
      * @param url Publicly reachable URL of an image.
      * @param tagImageOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -965,8 +1230,11 @@ public interface ComputerVision {
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image.
      *   The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images.
      *   Unlike categories, tags are not organized according to a hierarchical classification system, but correspond
-     *   to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello'
-     *   may be accompanied by the hint 'musical instrument'. All tags are in English.
+     *   to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag
+     *   "ascomycete" may be accompanied by the hint "fungus".
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
      *
      * @return the first stage of the tagImage call
      */
@@ -1032,122 +1300,12 @@ public interface ComputerVision {
     }
 
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The
-     *   description is based on a collection of content tags, which are also returned by the operation. More than
-     *   one description can be generated for each image.  Descriptions are ordered by their confidence score. All
-     *   descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an
-     *   image URL.A successful response will be returned in JSON.  If the request failed, the response will contain
-     *   an error code and a message to help understand what went wrong.
-     *
-     * @param url Publicly reachable URL of an image.
-     * @param describeImageOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageDescription object if successful.
-     */
-    @Deprecated
-    ImageDescription describeImage(String url, DescribeImageOptionalParameter describeImageOptionalParameter);
-
-    /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The
-     *   description is based on a collection of content tags, which are also returned by the operation. More than
-     *   one description can be generated for each image.  Descriptions are ordered by their confidence score. All
-     *   descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an
-     *   image URL.A successful response will be returned in JSON.  If the request failed, the response will contain
-     *   an error code and a message to help understand what went wrong.
-     *
-     * @param url Publicly reachable URL of an image.
-     * @param describeImageOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageDescription object
-     */
-    @Deprecated
-    Observable<ImageDescription> describeImageAsync(String url, DescribeImageOptionalParameter describeImageOptionalParameter);
-
-    /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The
-     *   description is based on a collection of content tags, which are also returned by the operation. More than
-     *   one description can be generated for each image.  Descriptions are ordered by their confidence score. All
-     *   descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an
-     *   image URL.A successful response will be returned in JSON.  If the request failed, the response will contain
-     *   an error code and a message to help understand what went wrong.
-     *
-     * @return the first stage of the describeImage call
-     */
-    ComputerVisionDescribeImageDefinitionStages.WithUrl describeImage();
-
-    /**
-     * Grouping of describeImage definition stages.
-     */
-    interface ComputerVisionDescribeImageDefinitionStages {
-        /**
-         * The stage of the definition to be specify url.
-         */
-        interface WithUrl {
-            /**
-             * Publicly reachable URL of an image.
-             *
-             * @return next definition stage
-             */
-            ComputerVisionDescribeImageDefinitionStages.WithExecute withUrl(String url);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Maximum number of candidate descriptions to be returned.  The default is 1.
-             *
-             * @return next definition stage
-             */
-            ComputerVisionDescribeImageDefinitionStages.WithExecute withMaxCandidates(String maxCandidates);
-
-            /**
-             * The desired language for output generation. If this parameter is not specified, the default value is
-             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
-             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
-             *
-             * @return next definition stage
-             */
-            ComputerVisionDescribeImageDefinitionStages.WithExecute withLanguage(String language);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ComputerVisionDescribeImageDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the ImageDescription object if successful.
-             */
-            ImageDescription execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the ImageDescription object
-             */
-            Observable<ImageDescription> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of describeImage definition.
-     */
-    interface ComputerVisionDescribeImageDefinition extends
-        ComputerVisionDescribeImageDefinitionStages.WithUrl,
-        ComputerVisionDescribeImageDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters
-     *   into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the
-     *   error code together with an error message will be returned. The error code can be one of InvalidImageUrl,
-     *   InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a
+     *   machine-usable character stream.
+     *   Upon success, the OCR results will be returned.
+     *   Upon failure, the error code together with an error message will be returned. The error code can be one of
+     *   InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or
+     *   InternalServerError.
      *
      * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to
      *   detect the image orientation and correct it before further processing (e.g. if it's upside-down).
@@ -1162,10 +1320,12 @@ public interface ComputerVision {
     OcrResult recognizePrintedText(boolean detectOrientation, String url, RecognizePrintedTextOptionalParameter recognizePrintedTextOptionalParameter);
 
     /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters
-     *   into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the
-     *   error code together with an error message will be returned. The error code can be one of InvalidImageUrl,
-     *   InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a
+     *   machine-usable character stream.
+     *   Upon success, the OCR results will be returned.
+     *   Upon failure, the error code together with an error message will be returned. The error code can be one of
+     *   InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or
+     *   InternalServerError.
      *
      * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to
      *   detect the image orientation and correct it before further processing (e.g. if it's upside-down).
@@ -1178,10 +1338,12 @@ public interface ComputerVision {
     Observable<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url, RecognizePrintedTextOptionalParameter recognizePrintedTextOptionalParameter);
 
     /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters
-     *   into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the
-     *   error code together with an error message will be returned. The error code can be one of InvalidImageUrl,
-     *   InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a
+     *   machine-usable character stream.
+     *   Upon success, the OCR results will be returned.
+     *   Upon failure, the error code together with an error message will be returned. The error code can be one of
+     *   InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or
+     *   InternalServerError.
      *
      * @return the first stage of the recognizePrintedText call
      */
@@ -1260,77 +1422,70 @@ public interface ComputerVision {
     }
 
     /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service
-     *   analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based
-     *   on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
-     *   A successful response contains the thumbnail image binary. If the request failed, the response contains an
-     *   error code and a message to help determine what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of
+     *   domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET
+     *   request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON.
+     *   If the request failed, the response will contain an error code and a message to help understand what went
+     *   wrong.
      *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param model The domain-specific content to recognize.
      * @param url Publicly reachable URL of an image.
-     * @param generateThumbnailOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param analyzeImageByDomainOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
+     * @return the DomainModelResults object if successful.
      */
     @Deprecated
-    InputStream generateThumbnail(int width, int height, String url, GenerateThumbnailOptionalParameter generateThumbnailOptionalParameter);
+    DomainModelResults analyzeImageByDomain(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter);
 
     /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service
-     *   analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based
-     *   on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
-     *   A successful response contains the thumbnail image binary. If the request failed, the response contains an
-     *   error code and a message to help determine what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of
+     *   domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET
+     *   request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON.
+     *   If the request failed, the response will contain an error code and a message to help understand what went
+     *   wrong.
      *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param model The domain-specific content to recognize.
      * @param url Publicly reachable URL of an image.
-     * @param generateThumbnailOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param analyzeImageByDomainOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
+     * @return the observable to the DomainModelResults object
      */
     @Deprecated
-    Observable<InputStream> generateThumbnailAsync(int width, int height, String url, GenerateThumbnailOptionalParameter generateThumbnailOptionalParameter);
+    Observable<DomainModelResults> analyzeImageByDomainAsync(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter);
 
     /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service
-     *   analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based
-     *   on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
-     *   A successful response contains the thumbnail image binary. If the request failed, the response contains an
-     *   error code and a message to help determine what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of
+     *   domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET
+     *   request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON.
+     *   If the request failed, the response will contain an error code and a message to help understand what went
+     *   wrong.
      *
-     * @return the first stage of the generateThumbnail call
+     * @return the first stage of the analyzeImageByDomain call
      */
-    ComputerVisionGenerateThumbnailDefinitionStages.WithWidth generateThumbnail();
+    ComputerVisionAnalyzeImageByDomainDefinitionStages.WithModel analyzeImageByDomain();
 
     /**
-     * Grouping of generateThumbnail definition stages.
+     * Grouping of analyzeImageByDomain definition stages.
      */
-    interface ComputerVisionGenerateThumbnailDefinitionStages {
+    interface ComputerVisionAnalyzeImageByDomainDefinitionStages {
         /**
-         * The stage of the definition to be specify width.
+         * The stage of the definition to be specify model.
          */
-        interface WithWidth {
+        interface WithModel {
             /**
-             * Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
+             * The domain-specific content to recognize.
              *
              * @return next definition stage
              */
-            WithHeight withWidth(int width);
-        }
-        /**
-         * The stage of the definition to be specify height.
-         */
-        interface WithHeight {
-            /**
-             * Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-             *
-             * @return next definition stage
-             */
-            WithUrl withHeight(int height);
+            WithUrl withModel(String model);
         }
         /**
          * The stage of the definition to be specify url.
@@ -1341,7 +1496,7 @@ public interface ComputerVision {
              *
              * @return next definition stage
              */
-            ComputerVisionGenerateThumbnailDefinitionStages.WithExecute withUrl(String url);
+            ComputerVisionAnalyzeImageByDomainDefinitionStages.WithExecute withUrl(String url);
         }
 
         /**
@@ -1349,49 +1504,230 @@ public interface ComputerVision {
          */
         interface WithAllOptions {
             /**
-             * Boolean flag for enabling smart cropping.
+             * The desired language for output generation. If this parameter is not specified, the default value is
+             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
+             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
              *
              * @return next definition stage
              */
-            ComputerVisionGenerateThumbnailDefinitionStages.WithExecute withSmartCropping(Boolean smartCropping);
+            ComputerVisionAnalyzeImageByDomainDefinitionStages.WithExecute withLanguage(String language);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends ComputerVisionGenerateThumbnailDefinitionStages.WithAllOptions {
+        interface WithExecute extends ComputerVisionAnalyzeImageByDomainDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
-             * @return the InputStream object if successful.
+             * @return the DomainModelResults object if successful.
              */
-            InputStream execute();
+            DomainModelResults execute();
 
             /**
              * Execute the request asynchronously.
              *
-             * @return the observable to the InputStream object
+             * @return the observable to the DomainModelResults object
              */
-            Observable<InputStream> executeAsync();
+            Observable<DomainModelResults> executeAsync();
         }
     }
 
     /**
-     * The entirety of generateThumbnail definition.
+     * The entirety of analyzeImageByDomain definition.
      */
-    interface ComputerVisionGenerateThumbnailDefinition extends
-        ComputerVisionGenerateThumbnailDefinitionStages.WithWidth,
-        ComputerVisionGenerateThumbnailDefinitionStages.WithHeight,
-        ComputerVisionGenerateThumbnailDefinitionStages.WithUrl,
-        ComputerVisionGenerateThumbnailDefinitionStages.WithExecute {
+    interface ComputerVisionAnalyzeImageByDomainDefinition extends
+        ComputerVisionAnalyzeImageByDomainDefinitionStages.WithModel,
+        ComputerVisionAnalyzeImageByDomainDefinitionStages.WithUrl,
+        ComputerVisionAnalyzeImageByDomainDefinitionStages.WithExecute {
+    }
+
+
+    /**
+     * This operation returns the list of domain-specific models that are supported by the Computer
+      *  Vision API. Currently, the API supports following domain-specific models: celebrity recognizer,
+      *  landmark recognizer.
+      *  A successful response will be returned in JSON. If the request failed, the response will contain
+      *  an error code and a message to help understand what went wrong.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ListModelsResult object if successful.
+     */
+    ListModelsResult listModels();
+
+    /**
+     * This operation returns the list of domain-specific models that are supported by the Computer
+      *  Vision API. Currently, the API supports following domain-specific models: celebrity recognizer,
+      *  landmark recognizer.
+      *  A successful response will be returned in JSON. If the request failed, the response will contain
+      *  an error code and a message to help understand what went wrong.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ListModelsResult object
+     */
+    Observable<ListModelsResult> listModelsAsync();
+
+
+
+    /**
+     * Performs object detection on the specified image.
+      *  Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+      *  A successful response will be returned in JSON. If the request failed, the response will contain
+      *  an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the DetectResult object if successful.
+     */
+    DetectResult detectObjects(String url);
+
+    /**
+     * Performs object detection on the specified image.
+      *  Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+      *  A successful response will be returned in JSON. If the request failed, the response will contain
+      *  an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DetectResult object
+     */
+    Observable<DetectResult> detectObjectsAsync(String url);
+
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The
+     *   description is based on a collection of content tags, which are also returned by the operation. More than
+     *   one description can be generated for each image. Descriptions are ordered by their confidence score.
+     *   Descriptions may include results from celebrity and landmark domain models, if applicable.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param describeImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImageDescription object if successful.
+     */
+    @Deprecated
+    ImageDescription describeImage(String url, DescribeImageOptionalParameter describeImageOptionalParameter);
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The
+     *   description is based on a collection of content tags, which are also returned by the operation. More than
+     *   one description can be generated for each image. Descriptions are ordered by their confidence score.
+     *   Descriptions may include results from celebrity and landmark domain models, if applicable.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param describeImageOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImageDescription object
+     */
+    @Deprecated
+    Observable<ImageDescription> describeImageAsync(String url, DescribeImageOptionalParameter describeImageOptionalParameter);
+
+    /**
+     * This operation generates a description of an image in human readable language with complete sentences. The
+     *   description is based on a collection of content tags, which are also returned by the operation. More than
+     *   one description can be generated for each image. Descriptions are ordered by their confidence score.
+     *   Descriptions may include results from celebrity and landmark domain models, if applicable.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
+     *
+     * @return the first stage of the describeImage call
+     */
+    ComputerVisionDescribeImageDefinitionStages.WithUrl describeImage();
+
+    /**
+     * Grouping of describeImage definition stages.
+     */
+    interface ComputerVisionDescribeImageDefinitionStages {
+        /**
+         * The stage of the definition to be specify url.
+         */
+        interface WithUrl {
+            /**
+             * Publicly reachable URL of an image.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionDescribeImageDefinitionStages.WithExecute withUrl(String url);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * Maximum number of candidate descriptions to be returned.  The default is 1.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionDescribeImageDefinitionStages.WithExecute withMaxCandidates(Integer maxCandidates);
+
+            /**
+             * The desired language for output generation. If this parameter is not specified, the default value is
+             *   &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt -
+             *   Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionDescribeImageDefinitionStages.WithExecute withLanguage(String language);
+
+            /**
+             * Turn off specified domain models when generating the description.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionDescribeImageDefinitionStages.WithExecute withDescriptionExclude(List<DescriptionExclude> descriptionExclude);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ComputerVisionDescribeImageDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the ImageDescription object if successful.
+             */
+            ImageDescription execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the ImageDescription object
+             */
+            Observable<ImageDescription> executeAsync();
+        }
     }
 
     /**
-     * This operation extracts a rich set of visual features based on the image content. Two input methods are
-     *   supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an
-     *   optional parameter to allow you to choose which features to return.  By default, image categories are
-     *   returned in the response.
+     * The entirety of describeImage definition.
+     */
+    interface ComputerVisionDescribeImageDefinition extends
+        ComputerVisionDescribeImageDefinitionStages.WithUrl,
+        ComputerVisionDescribeImageDefinitionStages.WithExecute {
+    }
+
+    /**
+     * This operation extracts a rich set of visual features based on the image content.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your
+     *   request, there is an optional parameter to allow you to choose which features to return. By default, image
+     *   categories are returned in the response.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
      *
      * @param url Publicly reachable URL of an image.
      * @param analyzeImageOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -1404,10 +1740,12 @@ public interface ComputerVision {
     ImageAnalysis analyzeImage(String url, AnalyzeImageOptionalParameter analyzeImageOptionalParameter);
 
     /**
-     * This operation extracts a rich set of visual features based on the image content. Two input methods are
-     *   supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an
-     *   optional parameter to allow you to choose which features to return.  By default, image categories are
-     *   returned in the response.
+     * This operation extracts a rich set of visual features based on the image content.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your
+     *   request, there is an optional parameter to allow you to choose which features to return. By default, image
+     *   categories are returned in the response.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
      *
      * @param url Publicly reachable URL of an image.
      * @param analyzeImageOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -1418,10 +1756,12 @@ public interface ComputerVision {
     Observable<ImageAnalysis> analyzeImageAsync(String url, AnalyzeImageOptionalParameter analyzeImageOptionalParameter);
 
     /**
-     * This operation extracts a rich set of visual features based on the image content. Two input methods are
-     *   supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an
-     *   optional parameter to allow you to choose which features to return.  By default, image categories are
-     *   returned in the response.
+     * This operation extracts a rich set of visual features based on the image content.
+     *   Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your
+     *   request, there is an optional parameter to allow you to choose which features to return. By default, image
+     *   categories are returned in the response.
+     *   A successful response will be returned in JSON. If the request failed, the response will contain an error
+     *   code and a message to help understand what went wrong.
      *
      * @return the first stage of the analyzeImage call
      */
@@ -1449,13 +1789,16 @@ public interface ComputerVision {
         interface WithAllOptions {
             /**
              * A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid
-             *   visual feature types include:Categories - categorizes image content according to a taxonomy defined in
+             *   visual feature types include: Categories - categorizes image content according to a taxonomy defined in
              *   documentation. Tags - tags the image with a detailed list of words related to the image content. Description
              *   - describes the image content with a complete English sentence. Faces - detects if faces are present. If
              *   present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing.
-             *   Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects
-             *   if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also
-             *   detected.
+             *   Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult -
+             *   detects if the image is pornographic in nature (depicts nudity or a sex act), or is gory (depicts extreme
+             *   violence or blood). Sexually suggestive content (aka racy content) is also detected. Objects - detects
+             *   various objects within an image, including the approximate location. The Objects argument is only available
+             *   in English. Brands - detects various brands within an image, including the approximate location. The Brands
+             *   argument is only available in English.
              *
              * @return next definition stage
              */
@@ -1463,7 +1806,8 @@ public interface ComputerVision {
 
             /**
              * A string indicating which domain-specific details to return. Multiple values should be comma-separated.
-             *   Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
+             *   Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks
+             *   - identifies notable landmarks in the image.
              *
              * @return next definition stage
              */
@@ -1477,6 +1821,13 @@ public interface ComputerVision {
              * @return next definition stage
              */
             ComputerVisionAnalyzeImageDefinitionStages.WithExecute withLanguage(String language);
+
+            /**
+             * Turn off specified domain models when generating the description.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionAnalyzeImageDefinitionStages.WithExecute withDescriptionExclude(List<DescriptionExclude> descriptionExclude);
 
         }
 
@@ -1507,31 +1858,5 @@ public interface ComputerVision {
         ComputerVisionAnalyzeImageDefinitionStages.WithUrl,
         ComputerVisionAnalyzeImageDefinitionStages.WithExecute {
     }
-
-
-    /**
-     * This operation returns the list of domain-specific models that are supported by the Computer
-      *  Vision API.  Currently, the API only supports one domain-specific model: a celebrity recognizer. A
-      *  successful response will be returned in JSON.  If the request failed, the response will contain an
-      *  error code and a message to help understand what went wrong.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ListModelsResult object if successful.
-     */
-    ListModelsResult listModels();
-
-    /**
-     * This operation returns the list of domain-specific models that are supported by the Computer
-      *  Vision API.  Currently, the API only supports one domain-specific model: a celebrity recognizer. A
-      *  successful response will be returned in JSON.  If the request failed, the response will contain an
-      *  error code and a message to help understand what went wrong.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ListModelsResult object
-     */
-    Observable<ListModelsResult> listModelsAsync();
-
 
 }

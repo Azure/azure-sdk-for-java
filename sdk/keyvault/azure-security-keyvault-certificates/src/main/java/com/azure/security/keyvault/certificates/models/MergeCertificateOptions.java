@@ -14,7 +14,7 @@ public final class MergeCertificateOptions {
     /**
      * The name of the certificate.
      */
-    private final String certificateName;
+    private final String name;
 
     /**
      * The certificate or the certificate chain to merge.
@@ -34,11 +34,11 @@ public final class MergeCertificateOptions {
     /**
      * Creates a new MergeCertificationOptions instance.
      *
-     * @param certificateName The name of the certificate.
+     * @param name The name of the certificate.
      * @param x509Certificates The certificate or the certificate chain to merge.
      */
-    public MergeCertificateOptions(String certificateName, List<byte[]> x509Certificates) {
-        this.certificateName = certificateName;
+    public MergeCertificateOptions(String name, List<byte[]> x509Certificates) {
+        this.name = name;
         this.x509Certificates = x509Certificates;
     }
 
@@ -87,7 +87,7 @@ public final class MergeCertificateOptions {
      * @return the certificate name.
      */
     public String getName() {
-        return this.certificateName;
+        return this.name;
     }
 
     /**

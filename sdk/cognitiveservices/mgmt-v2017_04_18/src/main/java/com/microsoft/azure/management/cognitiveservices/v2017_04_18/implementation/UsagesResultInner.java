@@ -23,7 +23,7 @@ public class UsagesResultInner {
     private List<Usage> value;
 
     /**
-     * Get the value value.
+     * Get the list of usages for Cognitive Service account.
      *
      * @return the value value
      */

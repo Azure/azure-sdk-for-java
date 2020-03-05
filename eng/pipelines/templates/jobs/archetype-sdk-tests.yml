@@ -10,7 +10,7 @@ parameters:
       DisplayName: 'Linux - Java 8'
     macOS - Java 8:
       OSName: 'macOS'
-      OSVmImage: 'macOS-10.13'
+      OSVmImage: 'macOS-10.15'
       JavaVersion: '1.8'
       DisplayName: 'macOS - Java 8'
     Windows - Java 8:
@@ -25,7 +25,7 @@ parameters:
       DisplayName: 'Linux - Java 11'
     macOS - Java 11:
       OSName: 'macOS'
-      OSVmImage: 'macOS-10.13'
+      OSVmImage: 'macOS-10.15'
       JavaVersion: '1.11'
       DisplayName: 'macOS - Java 11'
     Windows - Java 11:
@@ -34,16 +34,17 @@ parameters:
       JavaVersion: '1.11'
       DisplayName: 'Windows - Java 11'
   PreRunSteps: []
+  PostRunSteps: []
   TestName: LiveTest
   TimeoutInMinutes: 60
   TestStepMavenInputs:
-    options: '-Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3 $(DefaultOptions)'
+    options: '-Dmaven.wagon.http.pool=false $(DefaultOptions)'
     mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '$(JavaVersion)'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
-    goals: 'test'  
+    goals: 'test'
   TestResultsFiles: ''
 
 jobs:
@@ -60,6 +61,32 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
+      - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+        - pwsh: |
+            Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force
+          displayName: Install Az Module
+
+        - pwsh: |
+            $baseName = "t" + [guid]::NewGuid().ToString('n').Substring(0,16)
+            Write-Host "##vso[task.setvariable variable=BaseName;]$baseName"
+          displayName: Generate $(BaseName)
+
+        - pwsh: >-
+            eng/New-TestResources.ps1
+            -BaseName $(BaseName)
+            -ServiceDirectory ${{ parameters.ServiceDirectory }}
+            -TestApplicationId '$(aad-azure-sdk-test-client-id)'
+            -TestApplicationSecret '$(aad-azure-sdk-test-client-secret)'
+            -TestApplicationOid '$(aad-azure-sdk-test-client-oid)'
+            -TenantId '$(aad-azure-sdk-test-tenant-id)'
+            -ProvisionerApplicationId '$(provisioner-aad-id)'
+            -ProvisionerApplicationSecret '$(provisioner-aad-secret)'
+            -DeleteAfterHours 24
+            -CI
+            -Force
+            -Verbose
+          displayName: Provision Test Resources
+
       - ${{ parameters.PreRunSteps }}
 
       - task: Maven@3
@@ -68,6 +95,22 @@ jobs:
           mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
+
+      - ${{ parameters.PostRunSteps }}
+
+      - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+        - pwsh: >-
+            eng/Remove-TestResources.ps1
+            -ResourceGroupName "${env:AZURE_RESOURCEGROUP_NAME}"
+            -TenantId '$(aad-azure-sdk-test-tenant-id)'
+            -ProvisionerApplicationId '$(provisioner-aad-id)'
+            -ProvisionerApplicationSecret '$(provisioner-aad-secret)'
+            -Force
+            -Verbose
+          condition: ne(variables['AZURE_RESOURCEGROUP_NAME'], '')
+          continueOnError: true
+          displayName: Remove Test Resources
+
 
       - task: PublishTestResults@2
         condition: always()

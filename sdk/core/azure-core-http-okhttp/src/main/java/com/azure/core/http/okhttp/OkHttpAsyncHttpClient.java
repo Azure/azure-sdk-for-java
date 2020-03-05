@@ -39,7 +39,6 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private final OkHttpClient httpClient;
     //
     private static final Mono<okio.ByteString> EMPTY_BYTE_STRING_MONO = Mono.just(okio.ByteString.EMPTY);
-    private static final MediaType MEDIA_TYPE_OCTET_STREAM = MediaType.parse("application/octet-stream");
 
     OkHttpAsyncHttpClient(OkHttpClient httpClient) {
         this.httpClient = httpClient;
@@ -63,7 +62,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
             toOkHttpRequest(request).subscribe(okHttpRequest -> {
                 Call call = httpClient.newCall(okHttpRequest);
                 call.enqueue(new OkHttpCallback(sink, request));
-                sink.onCancel(() -> call.cancel());
+                sink.onCancel(call::cancel);
             }, sink::error);
         }));
     }
@@ -100,7 +99,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
                             .map(requestBody -> rb.method(request.getHttpMethod().toString(), requestBody));
                 }
             })
-            .map(rb -> rb.build());
+            .map(Request.Builder::build);
     }
 
     /**
@@ -118,7 +117,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
         return bsMono.map(bs -> {
             String contentType = headers.getValue("Content-Type");
             if (contentType == null) {
-                return RequestBody.create(bs, MEDIA_TYPE_OCTET_STREAM);
+                return RequestBody.create(bs, null);
             } else {
                 return RequestBody.create(bs, MediaType.parse(contentType));
             }
@@ -196,8 +195,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
                 //
                 this.responseBodyMono = Mono.empty();
             } else {
-                this.responseBodyMono = Mono.using(() -> innerResponse.body(),
-                    rb -> Mono.just(rb),
+                this.responseBodyMono = Mono.using(innerResponse::body,
+                    Mono::just,
                     // Resource cleanup
                     // square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
                     ResponseBody::close, /* Change in behavior since reactor-core 3.3.0.RELEASE */ false);

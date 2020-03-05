@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azs-sdk57621187662.search.windows.net/datasources('azs-java-test-sql')?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "8b0471f1-7cb0-44eb-9525-b28ce01734fa",
+      "StatusCode" : "400",
+      "Date" : "Mon, 24 Feb 2020 19:31:08 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "79",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "90",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Data source type 'thistypedoesnotexist' is not supported\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk57621187662" ]
+}

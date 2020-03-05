@@ -80,6 +80,18 @@ public class JobInner extends ProxyResource {
     private Map<String, String> correlationData;
 
     /**
+     * The UTC date and time at which this Job began processing.
+     */
+    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime startTime;
+
+    /**
+     * The UTC date and time at which this Job finished processing.
+     */
+    @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime endTime;
+
+    /**
      * Get the UTC date and time when the Job was created, in 'YYYY-MM-DDThh:mm:ssZ' format.
      *
      * @return the created value
@@ -204,6 +216,24 @@ public class JobInner extends ProxyResource {
     public JobInner withCorrelationData(Map<String, String> correlationData) {
         this.correlationData = correlationData;
         return this;
+    }
+
+    /**
+     * Get the UTC date and time at which this Job began processing.
+     *
+     * @return the startTime value
+     */
+    public DateTime startTime() {
+        return this.startTime;
+    }
+
+    /**
+     * Get the UTC date and time at which this Job finished processing.
+     *
+     * @return the endTime value
+     */
+    public DateTime endTime() {
+        return this.endTime;
     }
 
 }
