@@ -38,7 +38,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Random;
@@ -121,8 +120,7 @@ public class IdentityClient {
             return Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
                     .build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
-                    ZoneOffset.UTC)));
+                .map(ar -> new MsalToken(ar, options));
         } catch (MalformedURLException e) {
             return Mono.error(e);
         }
@@ -153,8 +151,7 @@ public class IdentityClient {
             return applicationBuilder.build();
         }).flatMap(application -> Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build())))
-        .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
-                ZoneOffset.UTC)));
+        .map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -183,8 +180,7 @@ public class IdentityClient {
             return Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
                     .build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
-                    ZoneOffset.UTC)));
+                .map(ar -> new MsalToken(ar, options));
         } catch (IOException e) {
             return Mono.error(e);
         }
@@ -203,7 +199,7 @@ public class IdentityClient {
         return Mono.fromFuture(publicClientApplication.acquireToken(
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()), username, password.toCharArray())
                 .build()))
-            .map(MsalToken::new);
+            .map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -221,7 +217,7 @@ public class IdentityClient {
         }
         return Mono.defer(() -> {
             try {
-                return Mono.fromFuture(publicClientApplication.acquireTokenSilently(parameters)).map(MsalToken::new);
+                return Mono.fromFuture(publicClientApplication.acquireTokenSilently(parameters)).map(ar -> new MsalToken(ar, options));
             } catch (MalformedURLException e) {
                 return Mono.error(e);
             }
@@ -245,7 +241,7 @@ public class IdentityClient {
                 dc -> deviceCodeConsumer.accept(new DeviceCodeInfo(dc.userCode(), dc.deviceCode(),
                     dc.verificationUri(), OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
             return publicClientApplication.acquireToken(parameters);
-        }).map(MsalToken::new);
+        }).map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -262,7 +258,7 @@ public class IdentityClient {
             AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
                 .scopes(new HashSet<>(request.getScopes()))
                 .build()))
-            .map(MsalToken::new);
+            .map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -350,7 +346,9 @@ public class IdentityClient {
             Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
             String result = s.hasNext() ? s.next() : "";
 
-            return Mono.just(SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON));
+            MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+            return Mono.just(new AccessToken(msiToken.getToken(),
+                    msiToken.getExpiresAt().plusMinutes(2).minus(options.getRefreshBeforeExpiry())));
         } catch (IOException e) {
             return Mono.error(e);
         } finally {
@@ -403,7 +401,9 @@ public class IdentityClient {
                             .useDelimiter("\\A");
                     String result = s.hasNext() ? s.next() : "";
 
-                    return SERIALIZER_ADAPTER.<MSIToken>deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                    MSIToken msiToken = SERIALIZER_ADAPTER.<MSIToken>deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                    return new AccessToken(msiToken.getToken(),
+                            msiToken.getExpiresAt().plusMinutes(2).minus(options.getRefreshBeforeExpiry()));
                 } catch (IOException exception) {
                     if (connection == null) {
                         throw logger.logExceptionAsError(new RuntimeException(

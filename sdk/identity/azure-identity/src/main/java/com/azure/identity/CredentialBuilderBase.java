@@ -68,4 +68,17 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
         this.identityClientOptions.setHttpPipeline(httpPipeline);
         return (T) this;
     }
+
+    /**
+     * Sets the duration before the actual expiry of a token to refresh it.
+     * This is useful when network is congested and a request containing the
+     * token takes longer than normal to get to the server.
+     *
+     * @param refreshBeforeExpiry the duration before the actual expiry of a token to refresh it
+     */
+    @SuppressWarnings("unchecked")
+    public T setRefreshBeforeExpiry(Duration refreshBeforeExpiry) {
+        this.identityClientOptions.setRefreshBeforeExpiry(refreshBeforeExpiry);
+        return (T) this;
+    }
 }

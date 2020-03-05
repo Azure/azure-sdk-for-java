@@ -21,6 +21,7 @@ public final class IdentityClientOptions {
     private Function<Duration, Duration> retryTimeout;
     private ProxyOptions proxyOptions;
     private HttpPipeline httpPipeline;
+    private Duration refreshBeforeExpiry;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -114,5 +115,23 @@ public final class IdentityClientOptions {
     public IdentityClientOptions setHttpPipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;
+    }
+
+    /**
+     * @return the duration before the actual expiry of a token to refresh it.
+     */
+    public Duration getRefreshBeforeExpiry() {
+        return refreshBeforeExpiry;
+    }
+
+    /**
+     * Sets the duration before the actual expiry of a token to refresh it.
+     * This is useful when network is congested and a request containing the
+     * token takes longer than normal to get to the server.
+     *
+     * @param refreshBeforeExpiry the duration before the actual expiry of a token to refresh it
+     */
+    public void setRefreshBeforeExpiry(Duration refreshBeforeExpiry) {
+        this.refreshBeforeExpiry = refreshBeforeExpiry;
     }
 }
