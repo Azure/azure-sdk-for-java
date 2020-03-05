@@ -356,7 +356,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * As noted by the NIO docs, this method is not atomic. It is possible to delete a file in use by another process.
+     * As noted by the NIO docs, this method is not atomic. It is possible to delete a file in use by another process,
+     * and doing so will not immediately invalidate any channels open to that file--they will simply start to fail.
      * Root directories cannot be deleted even when empty.
      *
      * {@inheritDoc}
