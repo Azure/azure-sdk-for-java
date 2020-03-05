@@ -3,7 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.Resource;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -15,6 +17,16 @@ import org.apache.commons.lang3.StringUtils;
  * order to access and successfully complete any action using the User APIs.
  */
 public final class Database extends Resource {
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public Database(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     /**
      * Initialize a database object.

@@ -5,9 +5,11 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConflictResolutionPolicy;
 import com.azure.cosmos.IndexingPolicy;
+import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.UniqueKeyPolicy;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 
 import static com.azure.cosmos.BridgeInternal.populatePropertyBagJsonSerializable;
@@ -26,6 +28,16 @@ public final class DocumentCollection extends Resource {
     private IndexingPolicy indexingPolicy;
     private UniqueKeyPolicy uniqueKeyPolicy;
     private PartitionKeyDefinition partitionKeyDefinition;
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public DocumentCollection(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     /**
      * Initialize a document collection object.

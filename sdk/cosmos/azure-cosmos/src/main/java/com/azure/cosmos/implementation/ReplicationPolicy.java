@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.JsonSerializable;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Encapsulates the replication policy in the Azure Cosmos DB database service.
@@ -14,6 +15,16 @@ public class ReplicationPolicy extends JsonSerializable {
     private static final int DEFAULT_MIN_REPLICA_SET_SIZE = 3;
 
     public ReplicationPolicy() {
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public ReplicationPolicy(ObjectNode objectNode) {
+        super(objectNode);
     }
 
     /**
