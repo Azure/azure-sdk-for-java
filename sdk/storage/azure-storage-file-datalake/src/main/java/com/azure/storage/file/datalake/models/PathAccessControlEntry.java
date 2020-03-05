@@ -81,6 +81,7 @@ public class PathAccessControlEntry {
      */
     public PathAccessControlEntry() {
         this.permissions = new RolePermissions();
+        this.accessControlType = new AccessControlType();
     }
 
     @Override
