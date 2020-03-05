@@ -15,14 +15,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
+/**
+ * An implementation of {@link InputStream} that allows users to read blob quick query responses.
+ */
 public class BlobQuickQueryInputStream extends InputStream {
 
+    // The stream that returns parsed avro
     private DataFileStream<GenericRecord> parsedStream;
-    private ByteArrayInputStream userBuffer;
+
+    // The internal user buffer used to hold parsed data.
+    private ByteArrayInputStream buffer;
+
+    // Whether or not the end record has been seen or not.
     private boolean endRecordSeen;
-    private boolean firstRead;
+
+    // The raw avro stream coming from the network.
     private InputStream networkStream;
 
+    // User provided error and progress receivers.
     private final ErrorReceiver<BlobQuickQueryError> errorReceiver;
     private final ProgressReceiver progressReceiver;
 
@@ -38,7 +48,6 @@ public class BlobQuickQueryInputStream extends InputStream {
         this.errorReceiver = errorReceiver;
         this.progressReceiver = progressReceiver;
         this.endRecordSeen = false;
-        this.firstRead = true;
     }
 
     @Override
@@ -53,32 +62,35 @@ public class BlobQuickQueryInputStream extends InputStream {
            the value -1 is returned; otherwise, at least one byte is read and stored into b. */
 
         /* First read? */
-        if (firstRead) {
-            firstRead = false;
+        if (this.parsedStream == null) {
             /* Reads from the network to determine schema. */
             parsedStream = new DataFileStream<>(networkStream, new GenericDatumReader<>());
-            this.userBuffer = new ByteArrayInputStream(new byte[0]);
+            this.buffer = new ByteArrayInputStream(new byte[0]);
         }
 
         /* Now we are guaranteed that buffer is SOMETHING. */
         /* No data is available in the buffer.  */
-        if (this.userBuffer.available() == 0) {
-            /* Try to get more data */
-            while (this.userBuffer.available() == 0 && this.parsedStream.hasNext()) {
+        if (this.buffer.available() == 0) {
+            /* Try to get more data. Note: not every avro record contains data, so we need to keep
+                parsing records until a data record is found. */
+            while (this.buffer.available() == 0 && this.parsedStream.hasNext()) {
                 parseRecord(this.parsedStream.next());
             }
         }
+        /* Now either data is available in the buffer or the end record was hit. */
+
         /* Data is now available in the buffer. */
-        if (this.userBuffer.available() > 0) {
-            return this.userBuffer.read(b, off, len);
+        if (this.buffer.available() > 0) {
+            return this.buffer.read(b, off, len);
         }
 
         /* End record was seen, there is no more data available to be read from the stream. Return -1. */
         if (this.endRecordSeen) {
             return -1;
+        } else {
+            throw new IOException("Error parsing blob quick query stream. No end record was present. This may indicate "
+                + "that not all data was returned.");
         }
-
-        return 0;
     }
 
     @Override
@@ -88,8 +100,11 @@ public class BlobQuickQueryInputStream extends InputStream {
 
     @Override
     public void close() throws IOException {
-        if(this.parsedStream != null) {
+        if (this.parsedStream != null) {
             this.parsedStream.close();
+        }
+        if (this.buffer != null) {
+            buffer.close();
         }
         super.close();
     }
@@ -119,7 +134,7 @@ public class BlobQuickQueryInputStream extends InputStream {
                 Object data = record.get("data");
 
                 if (checkParametersNotNull("result data", data)) {
-                    this.userBuffer = new ByteArrayInputStream(((ByteBuffer) data).array());
+                    this.buffer = new ByteArrayInputStream(((ByteBuffer) data).array());
                 }
                 break;
             } case "end": {

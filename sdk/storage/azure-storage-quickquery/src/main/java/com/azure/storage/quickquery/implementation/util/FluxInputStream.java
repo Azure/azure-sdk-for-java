@@ -25,9 +25,11 @@ public class FluxInputStream extends InputStream {
 
     private ClientLogger logger;
 
+    // The data to subscribe to.
     private Flux<ByteBuffer> data;
 
-    private Subscription subscription; // Subscription to request more data from as needed
+    // Subscription to request more data from as needed
+    private Subscription subscription;
 
     private ByteArrayInputStream buffer;
 
@@ -35,6 +37,11 @@ public class FluxInputStream extends InputStream {
     private boolean fluxComplete;
     private boolean waitingForData;
 
+    /* The following lock and condition variable is to synchronize access between the reader and the
+        reactor thread asynchronously reading data from the Flux. If no data is available, the reader
+        acquires the lock and waits on the dataAvailable condition variable. Once data is available
+        (or an error or completion event occurs) the reactor thread acquires the lock and signals that
+        data is available. */
     private final Lock lock;
     private final Condition dataAvailable;
 
@@ -96,11 +103,8 @@ public class FluxInputStream extends InputStream {
             if (this.fluxComplete) {
                 return -1;
             }
-            /* If we are not waiting for another request to come in, request more data. */
-            if (!waitingForData) {
-                /* Block current thread until data is available. */
-                blockForData();
-            }
+            /* Block current thread until data is available. */
+            blockForData();
         }
 
         /* Data available in buffer, read the buffer. */
@@ -111,6 +115,8 @@ public class FluxInputStream extends InputStream {
         /* If the flux completed, there is no more data available to be read from the stream. Return -1. */
         if (this.fluxComplete) {
             return -1;
+        } else {
+
         }
 
         return 0;
@@ -118,6 +124,10 @@ public class FluxInputStream extends InputStream {
 
     @Override
     public void close() throws IOException {
+        subscription.cancel();
+        if (this.buffer != null) {
+            this.buffer.close();
+        }
         super.close();
     }
 
@@ -186,7 +196,7 @@ public class FluxInputStream extends InputStream {
     }
 
     /**
-     * Signals to the initial subscriber when the flux completes without data (onCompletion or onError)
+     * Signals to the subscriber when the flux completes without data (onCompletion or onError)
      */
     private void signalOnCompleteOrError() {
         lock.lock();

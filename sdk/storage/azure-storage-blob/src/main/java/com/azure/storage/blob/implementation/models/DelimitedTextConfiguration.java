@@ -42,7 +42,7 @@ public final class DelimitedTextConfiguration {
      * has headers
      */
     @JsonProperty(value = "HasHeaders", required = true)
-    private boolean hasHeaders;
+    private boolean headersPresent;
 
     /**
      * Get the columnSeparator property: column separator.
@@ -125,22 +125,22 @@ public final class DelimitedTextConfiguration {
     }
 
     /**
-     * Get the hasHeaders property: has headers.
+     * Get the headersPresent property: has headers.
      *
-     * @return the hasHeaders value.
+     * @return the headersPresent value.
      */
-    public boolean isHasHeaders() {
-        return this.hasHeaders;
+    public boolean isHeadersPresent() {
+        return this.headersPresent;
     }
 
     /**
-     * Set the hasHeaders property: has headers.
+     * Set the headersPresent property: has headers.
      *
-     * @param hasHeaders the hasHeaders value to set.
+     * @param headersPresent the headersPresent value to set.
      * @return the DelimitedTextConfiguration object itself.
      */
-    public DelimitedTextConfiguration setHasHeaders(boolean hasHeaders) {
-        this.hasHeaders = hasHeaders;
+    public DelimitedTextConfiguration setHeadersPresent(boolean headersPresent) {
+        this.headersPresent = headersPresent;
         return this;
     }
 }

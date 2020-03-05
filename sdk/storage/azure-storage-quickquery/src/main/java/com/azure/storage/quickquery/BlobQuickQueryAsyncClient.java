@@ -180,7 +180,7 @@ class BlobQuickQueryAsyncClient {
             .setColumnSeparator(charToString(delimitedSerialization.getColumnSeparator()))
             .setEscapeChar(charToString(delimitedSerialization.getEscapeChar()))
             .setFieldQuote(charToString(delimitedSerialization.getFieldQuote()))
-            .setHasHeaders(delimitedSerialization.isHeadersPresent())
+            .setHeadersPresent(delimitedSerialization.isHeadersPresent())
             .setRecordSeparator(charToString(delimitedSerialization.getRecordSeparator()));
     }
 

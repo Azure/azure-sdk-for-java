@@ -13,6 +13,7 @@ import com.azure.storage.quickquery.models.BlobQuickQueryDelimitedSerialization
 import com.azure.storage.quickquery.models.BlobQuickQueryError
 
 import com.azure.storage.quickquery.models.BlobQuickQueryJsonSerialization
+import spock.lang.Requires
 import spock.lang.Unroll
 
 class BlobQQInputStreamTest extends APISpec {
@@ -159,16 +160,39 @@ class BlobQQInputStreamTest extends APISpec {
             assert queryData[j] == downloadedData[j]
         }
 
+        // To calculate the size of data being tested = numCopies * 32 bytes
         where:
         numCopies | _
-        1         | _
-        32        | _
-        100       | _
-        256       | _
-        400       | _
-        2000      | _
-        4000      | _
+        1         | _ // 32 bytes
+        32        | _ // 1 KB
+        256       | _ // 8 KB
+        400       | _ // 12 ish KB
+        4000      | _ // 125 KB
     }
+
+    @Requires( { liveMode() } )
+    def "Stream can handle very large amounts of data"() {
+        setup:
+        BlobQuickQueryDelimitedSerialization ser = new BlobQuickQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        uploadCsv(ser, 20480) // 20 MB of data.
+
+        when:
+        InputStream qqStream = qqClient.openInputStream("SELECT * from BlobStorage")
+
+        int read = 0
+        while (read != -1) {
+            read = qqStream.read()
+        }
+
+        then:
+        notThrown(IOException)
+    }
+
 
     @Unroll
     def "Input delimited"() {
@@ -300,6 +324,7 @@ class BlobQQInputStreamTest extends APISpec {
         mockReceiver.progressList.contains(sizeofBlobToRead)
     }
 
+    @Requires( { liveMode() } ) // Large amount of data.
     def "Multiple records with progress receiver"() {
         setup:
         BlobQuickQueryDelimitedSerialization ser = new BlobQuickQueryDelimitedSerialization()
@@ -327,7 +352,7 @@ class BlobQQInputStreamTest extends APISpec {
         long temp = 0
         // Make sure theyre all increasingly bigger
         for (long progress : mockReceiver.progressList) {
-            assert progress > temp
+            assert progress >= temp
             temp = progress
         }
     }
