@@ -8,6 +8,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.time.Duration;
+import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
 
 /**

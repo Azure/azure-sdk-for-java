@@ -3,6 +3,8 @@
 
 package com.azure.identity;
 
+import java.util.concurrent.ExecutorService;
+
 /**
  * The base class for credential builders that allow specifying a client ID and tenant ID for an Azure Active Directory.
  * @param <T> the type of the credential builder
@@ -43,6 +45,18 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     @SuppressWarnings("unchecked")
     public T tenantId(String tenantId) {
         this.tenantId = tenantId;
+        return (T) this;
+    }
+
+    /**
+     * Specifies the executor service on which to the authentication request will run.
+     *
+     * @param executorService the executor service to run authentication requests on.
+     * @return itself
+     */
+    @SuppressWarnings("unchecked")
+    public T executorService(ExecutorService executorService) {
+        this.identityClientOptions.setExecutorService(executorService);
         return (T) this;
     }
 }

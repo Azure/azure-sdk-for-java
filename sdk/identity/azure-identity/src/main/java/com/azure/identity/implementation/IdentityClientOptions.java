@@ -7,6 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 
 import java.time.Duration;
+import java.util.concurrent.ExecutorService;
 import java.util.function.Function;
 
 /**
@@ -21,6 +22,7 @@ public final class IdentityClientOptions {
     private Function<Duration, Duration> retryTimeout;
     private ProxyOptions proxyOptions;
     private HttpPipeline httpPipeline;
+    private ExecutorService executorService;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -114,5 +116,24 @@ public final class IdentityClientOptions {
     public IdentityClientOptions setHttpPipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         return this;
+    }
+
+
+    /**
+     * Specifies the executor service on which to the authentication request will run.
+     *
+     * @param executorService the executor service to run authentication requests on.
+     * @return IdentityClientOptions
+     */
+    public IdentityClientOptions setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
+        return this;
+    }
+
+    /**
+     * @return the ExecutorService to run authentication requests on.
+     */
+    public ExecutorService getExecutorService() {
+        return executorService;
     }
 }
