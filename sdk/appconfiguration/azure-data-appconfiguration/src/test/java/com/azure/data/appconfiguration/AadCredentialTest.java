@@ -4,29 +4,21 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ServiceVersion;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static com.azure.data.appconfiguration.TestHelper.getCombinations;
+import static com.azure.data.appconfiguration.ConfigurationClientTestBase.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 /**
@@ -39,7 +31,8 @@ public class AadCredentialTest extends TestBase {
     static String connectionString;
     static TokenCredential tokenCredential;
 
-    public void setup(Object httpClient, Object serviceVersion) throws InvalidKeyException, NoSuchAlgorithmException {
+    public void setup(HttpClient httpClient, ConfigurationServiceVersion serviceVersion)
+        throws InvalidKeyException, NoSuchAlgorithmException {
         if (interceptorManager.isPlaybackMode()) {
             connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
 
@@ -65,10 +58,10 @@ public class AadCredentialTest extends TestBase {
         }
     }
 
-    @ParameterizedTest()
-    @MethodSource("getSources")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
     public void aadAuthenticationAzConfigClient(HttpClient httpClient, ServiceVersion serviceVersion) throws Exception {
-        setup(httpClient, serviceVersion);
+        setup(httpClient, (ConfigurationServiceVersion) serviceVersion);
         final String key = "newKey";
         final String value = "newValue";
 
@@ -76,12 +69,4 @@ public class AadCredentialTest extends TestBase {
         Assertions.assertEquals(addedSetting.getKey(), key);
         Assertions.assertEquals(addedSetting.getValue(), value);
     }
-
-    private Stream<Arguments> getSources(){
-        HttpClient[] httpClients = new HttpClient[]{new NettyAsyncHttpClientBuilder().wiretap(true).build(),
-            new OkHttpAsyncHttpClientBuilder().build()};
-        return getCombinations(httpClients, ConfigurationServiceVersion.values());
-    }
-
-
 }

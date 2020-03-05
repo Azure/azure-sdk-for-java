@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +21,9 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -68,6 +71,14 @@ public class JsonSerializable {
      */
     JsonSerializable(ObjectNode objectNode) {
         this.propertyBag = objectNode;
+    }
+
+    protected JsonSerializable(ByteBuffer byteBuffer) {
+        this.propertyBag = fromJson(byteBuffer);
+    }
+
+    protected JsonSerializable(byte[] bytes) {
+        this.propertyBag = fromJson(bytes);
     }
 
     private static void checkForValidPOJO(Class<?> c) {
@@ -122,7 +133,7 @@ public class JsonSerializable {
         return logger;
     }
 
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
     }
 
     /**
@@ -513,6 +524,15 @@ public class JsonSerializable {
         return null;
     }
 
+    private ObjectNode fromJson(byte[] bytes) {
+        try {
+            return (ObjectNode) getMapper().readTree(bytes);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(
+                String.format("Unable to parse JSON %s", Arrays.toString(bytes)), e);
+        }
+    }
+
     private ObjectNode fromJson(String json) {
         try {
             return (ObjectNode) getMapper().readTree(json);
@@ -520,6 +540,19 @@ public class JsonSerializable {
             throw new IllegalArgumentException(
                 String.format("Unable to parse JSON %s", json), e);
         }
+    }
+
+    private ObjectNode fromJson(ByteBuffer json) {
+        try {
+            return (ObjectNode) getMapper().readTree(new ByteBufferBackedInputStream(json));
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Unable to parse JSON from ByteBuffer", e);
+        }
+    }
+
+    public ByteBuffer serializeJsonToByteBuffer() {
+        this.populatePropertyBag();
+        return Utils.serializeJsonToByteBuffer(getMapper(), propertyBag);
     }
 
     private String toJson(Object object) {

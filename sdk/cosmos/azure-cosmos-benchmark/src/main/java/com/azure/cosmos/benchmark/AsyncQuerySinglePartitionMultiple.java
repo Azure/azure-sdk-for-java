@@ -19,8 +19,8 @@ class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Pojo
     AsyncQuerySinglePartitionMultiple(Configuration cfg) {
         super(cfg);
         options = new FeedOptions();
-        options.partitionKey(new PartitionKey("pk"));
-        options.maxItemCount(10);
+        options.setPartitionKey(new PartitionKey("pk"));
+        options.setMaxItemCount(10);
     }
 
     @Override

@@ -54,8 +54,8 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         int takeCount = 10;
         String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
-        options.populateQueryMetrics(qmEnabled);
+        options.setMaxItemCount(5);
+        options.setPopulateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options,
                                                                                                 CosmosItemProperties.class);
@@ -78,7 +78,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         int takeCount = 2;
         String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
+        options.setMaxItemCount(5);
         CosmosPagedFlux<CosmosItemProperties> queryObservable;
 
         int totalDocsObtained = 0;
@@ -151,9 +151,9 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
 
         do {
             FeedOptions options = new FeedOptions();
-            options.maxItemCount(pageSize);
-            options.maxItemCount(5);
-            options.requestContinuation(requestContinuation);
+            options.setMaxItemCount(pageSize);
+            options.setMaxItemCount(5);
+            options.setRequestContinuation(requestContinuation);
             CosmosPagedFlux<CosmosItemProperties> queryObservable =
                 createdCollection.queryItems(query, options, CosmosItemProperties.class);
 

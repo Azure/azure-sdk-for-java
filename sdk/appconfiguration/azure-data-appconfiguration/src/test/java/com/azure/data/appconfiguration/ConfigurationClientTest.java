@@ -13,6 +13,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -41,24 +42,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         return "";
     }
 
-    protected void initializeClient(HttpClient httpClient) {
+    @Override
+    protected void beforeTest() {
         beforeTestSetup();
-
-        if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(credentials -> new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(httpClient)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .buildClient());
-        } else {
-            client = clientSetup(credentials -> new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .httpClient(httpClient)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .addPolicy(new RetryPolicy())
-                .buildClient());
-        }
     }
 
     @Override
@@ -75,33 +61,50 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         logger.info("Finished cleaning up values.");
     }
 
+    private ConfigurationClient getConfigurationClient(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        return clientSetup(credentials -> {
+            ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
+                .connectionString(connectionString)
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+                .serviceVersion(serviceVersion)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+            if (getTestMode() != TestMode.PLAYBACK) {
+                builder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .addPolicy(new RetryPolicy());
+            }
+            return builder.buildClient();
+        });
+    }
+
     /**
      * Tests that a configuration is able to be added, these are differentiate from each other using a key or key-label identifier.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void addConfigurationSetting(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void addConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         addConfigurationSettingRunner((expected) -> assertConfigurationEquals(expected, client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
     }
 
     /**
      * Tests that we cannot add a configuration setting when the key is an empty string.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void addConfigurationSettingEmptyKey(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void addConfigurationSettingEmptyKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         assertRestException(() -> client.addConfigurationSetting("", null, "A value"), HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     /**
      * Tests that we can add configuration settings when value is not null or an empty string.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void addConfigurationSettingEmptyValue(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void addConfigurationSettingEmptyValue(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         addConfigurationSettingEmptyValueRunner((setting) -> {
             assertConfigurationEquals(setting, client.addConfigurationSetting(setting.getKey(), setting.getLabel(), setting.getValue()));
             assertConfigurationEquals(setting, client.getConfigurationSetting(setting.getKey(), setting.getLabel()));
@@ -111,10 +114,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that an exception is thrown when null key is passed.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void addConfigurationSettingNullKey(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void addConfigurationSettingNullKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         assertRunnableThrowsException(() -> client.addConfigurationSetting(null, null, "A Value"), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.addConfigurationSettingWithResponse(null, Context.NONE), NullPointerException.class);
     }
@@ -122,10 +125,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that a configuration cannot be added twice with the same key. This should return a 412 error.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void addExistingSetting(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void addExistingSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         addExistingSettingRunner((expected) -> {
             client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue();
             assertRestException(() -> client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue(),
@@ -137,10 +140,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests that a configuration is able to be added or updated with set.
      * When the configuration is read-only updates cannot happen, this will result in a 409.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void setConfigurationSetting(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         setConfigurationSettingRunner((expected, update) -> assertConfigurationEquals(expected, client.setConfigurationSettingWithResponse(expected, false, Context.NONE).getValue()));
     }
 
@@ -149,10 +152,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * ETag. If the set ETag doesn't match anything the update won't happen, this will result in a 412. This will
      * prevent set from doing an add as well.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void setConfigurationSettingIfETag(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setConfigurationSettingIfETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         setConfigurationSettingIfETagRunner((initial, update) -> {
             // This ETag is not the correct format. It is not the correct hash that the service is expecting.
             assertRestException(() -> client.setConfigurationSettingWithResponse(initial.setETag("badETag"), true, Context.NONE).getValue(), HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED);
@@ -168,10 +171,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that we cannot set a configuration setting when the key is an empty string.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void setConfigurationSettingEmptyKey(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setConfigurationSettingEmptyKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         assertRestException(() -> client.setConfigurationSetting("", null, "A value"), HttpURLConnection.HTTP_BAD_METHOD);
     }
 
@@ -179,10 +182,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests that we can set configuration settings when value is not null or an empty string.
      * Value is not a required property.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void setConfigurationSettingEmptyValue(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setConfigurationSettingEmptyValue(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         setConfigurationSettingEmptyValueRunner((setting) -> {
             assertConfigurationEquals(setting, client.setConfigurationSetting(setting.getKey(), setting.getLabel(), setting.getValue()));
             assertConfigurationEquals(setting, client.getConfigurationSetting(setting.getKey(), setting.getLabel()));
@@ -192,10 +195,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that an exception is thrown when null key is passed.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void setConfigurationSettingNullKey(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setConfigurationSettingNullKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         assertRunnableThrowsException(() -> client.setConfigurationSetting(null, null, "A Value"), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.setConfigurationSettingWithResponse(null, false, Context.NONE).getValue(), NullPointerException.class);
     }
@@ -203,10 +206,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that a configuration is able to be retrieved when it exists, whether or not it is read-only.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void getConfigurationSetting(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         getConfigurationSettingRunner((expected) -> {
             client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue();
             assertConfigurationEquals(expected, client.getConfigurationSetting(expected.getKey(), expected.getLabel()));
@@ -216,10 +219,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that attempting to retrieve a non-existent configuration doesn't work, this will result in a 404.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void getConfigurationSettingNotFound(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getConfigurationSettingNotFound(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         final String key = getKey();
         final ConfigurationSetting neverRetrievedConfiguration = new ConfigurationSetting().setKey(key).setValue("myNeverRetreivedValue");
         final ConfigurationSetting nonExistentLabel = new ConfigurationSetting().setKey(key).setLabel("myNonExistentLabel");
@@ -235,10 +238,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * After the configuration has been deleted attempting to get it will result in a 404, the same as if the
      * configuration never existed.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void deleteConfigurationSetting(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void deleteConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         deleteConfigurationSettingRunner((expected) -> {
             client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue();
             assertConfigurationEquals(expected, client.getConfigurationSetting(expected.getKey(), expected.getLabel()));
@@ -251,10 +254,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Tests that attempting to delete a non-existent configuration will return a 204.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void deleteConfigurationSettingNotFound(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void deleteConfigurationSettingNotFound(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         final String key = getKey();
         final ConfigurationSetting neverDeletedConfiguation = new ConfigurationSetting().setKey(key).setValue("myNeverDeletedValue");
         final ConfigurationSetting notFoundDelete = new ConfigurationSetting().setKey(key).setLabel("myNonExistentLabel");
@@ -271,10 +274,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests that when an ETag is passed to delete it will only delete if the current representation of the setting has the ETag.
      * If the delete ETag doesn't match anything the delete won't happen, this will result in a 412.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void deleteConfigurationSettingWithETag(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void deleteConfigurationSettingWithETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         deleteConfigurationSettingWithETagRunner((initial, update) -> {
             final ConfigurationSetting initiallyAddedConfig = client.addConfigurationSettingWithResponse(initial, Context.NONE).getValue();
             final ConfigurationSetting updatedConfig = client.setConfigurationSettingWithResponse(update, false, Context.NONE).getValue();
@@ -289,10 +292,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void deleteConfigurationSettingNullKey(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void deleteConfigurationSettingNullKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         assertRunnableThrowsException(() -> client.deleteConfigurationSetting(null, null), IllegalArgumentException.class);
         assertRunnableThrowsException(() -> client.deleteConfigurationSettingWithResponse(null, false, Context.NONE).getValue(), NullPointerException.class);
     }
@@ -300,10 +303,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Tests assert that the setting can not be deleted after set the setting to read-only.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void setReadOnly(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setReadOnly(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
 
         lockUnlockRunner((expected) -> {
             // read-only setting
@@ -320,10 +323,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Tests assert that the setting can be deleted after clear read-only of the setting.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void clearReadOnly(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void clearReadOnly(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         lockUnlockRunner((expected) -> {
             // read-only setting
             client.addConfigurationSettingWithResponse(expected, Context.NONE);
@@ -346,10 +349,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Tests assert that the setting can not be deleted after lock the setting.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void setReadOnlyWithConfigurationSetting(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setReadOnlyWithConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         lockUnlockRunner((expected) -> {
             // lock setting
             client.addConfigurationSettingWithResponse(expected, Context.NONE);
@@ -365,10 +368,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Tests assert that the setting can be deleted after unlock the setting.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void clearReadOnlyWithConfigurationSetting(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void clearReadOnlyWithConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         lockUnlockRunner((expected) -> {
 
             // lock setting
@@ -393,10 +396,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that a ConfigurationSetting can be added with a label, and that we can fetch that ConfigurationSetting
      * from the service when filtering by either its label or just its key.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listWithKeyAndLabel(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listWithKeyAndLabel(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         final String value = "myValue";
         final String key = getKey();
         final String label = getLabel();
@@ -411,10 +414,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that ConfigurationSettings can be added and that we can fetch those ConfigurationSettings from the
      * service when filtering by their keys.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listWithMultipleKeys(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listWithMultipleKeys(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         String key = getKey();
         String key2 = getKey();
 
@@ -430,10 +433,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those ConfigurationSettings
      * from the service when filtering by their labels.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listWithMultipleLabels(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listWithMultipleLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         String key = getKey();
         String label = getLabel();
         String label2 = getLabel();
@@ -449,10 +452,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can select filter results by key, label, and select fields using SettingSelector.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listConfigurationSettingsSelectFields(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listConfigurationSettingsSelectFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         listConfigurationSettingsSelectFieldsRunner((settings, selector) -> {
             settings.forEach(setting -> client.setConfigurationSettingWithResponse(setting, false, Context.NONE).getValue());
             return client.listConfigurationSettings(selector);
@@ -462,50 +465,50 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that throws exception when using SettingSelector with not supported *a key filter.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         filterValueTest("*" + getKey(), getLabel());
     }
 
     /**
      * Verifies that throws exception when using SettingSelector with not supported *a* key filter.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         filterValueTest("*" + getKey() + "*", getLabel());
     }
 
     /**
      * Verifies that throws exception when using SettingSelector with not supported *a label filter.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         filterValueTest(getKey(), "*" + getLabel());
     }
 
     /**
      * Verifies that throws exception when using SettingSelector with not supported *a* label filter.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         filterValueTest(getKey(), "*" + getLabel() + "*");
     }
 
     /**
      * Verifies that we can get a ConfigurationSetting at the provided accept datetime
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listConfigurationSettingsAcceptDateTime(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listConfigurationSettingsAcceptDateTime(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         final String keyName = getKey();
         final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
@@ -537,10 +540,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that we can get all of the revisions for this ConfigurationSetting. Then verifies that we can select
      * specific fields.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listRevisions(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listRevisions(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         final String keyName = getKey();
         final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
@@ -567,10 +570,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can get all the revisions for all settings with the specified keys.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listRevisionsWithMultipleKeys(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listRevisionsWithMultipleKeys(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         String key = getKey();
         String key2 = getKey();
 
@@ -587,10 +590,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can get all revisions for all settings with the specified labels.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listRevisionsWithMultipleLabels(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listRevisionsWithMultipleLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         String key = getKey();
         String label = getLabel();
         String label2 = getLabel();
@@ -608,10 +611,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     /**
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listRevisionsAcceptDateTime(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listRevisionsAcceptDateTime(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         final String keyName = getKey();
         final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue");
         final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
@@ -646,10 +649,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listRevisionsWithPagination(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listRevisionsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         final int numberExpected = 50;
         for (int value = 0; value < numberExpected; value++) {
             client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix), false, Context.NONE).getValue();
@@ -663,10 +666,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of revisions, we can process {@link java.util.stream.Stream} multiple time and get same result.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listRevisionsWithPaginationAndRepeatStream(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listRevisionsWithPaginationAndRepeatStream(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         final int numberExpected = 50;
         for (int value = 0; value < numberExpected; value++) {
             client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix), false, Context.NONE).getValue();
@@ -683,10 +686,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of revisions, we can iterate over multiple time and get same result.
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listRevisionsWithPaginationAndRepeatIterator(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listRevisionsWithPaginationAndRepeatIterator(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         final int numberExpected = 50;
         for (int value = 0; value < numberExpected; value++) {
             client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix), false, Context.NONE).getValue();
@@ -711,10 +714,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void listConfigurationSettingsWithPagination(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listConfigurationSettingsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         final int numberExpected = 50;
         for (int value = 0; value < numberExpected; value++) {
             client.setConfigurationSettingWithResponse(new ConfigurationSetting().setKey(keyPrefix + "-" + value).setValue("myValue").setLabel(labelPrefix), false, Context.NONE).getValue();
@@ -728,10 +731,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies the conditional "GET" scenario where the setting has yet to be updated, resulting in a 304. This GET
      * scenario will return a setting when the ETag provided does not match the one of the current setting.
      */
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void getConfigurationSettingWhenValueNotUpdated(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getConfigurationSettingWhenValueNotUpdated(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         final String key = getKey();
         final ConfigurationSetting expected = new ConfigurationSetting().setKey(key).setValue("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().setKey(key).setValue("myNewValue");
@@ -746,11 +749,11 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertConfigurationEquals(newExpected, client.getConfigurationSettingWithResponse(newExpected, null, true, Context.NONE).getValue());
     }
 
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
     @Disabled
-    public void deleteAllSettings(HttpClient httpClient) {
-        initializeClient(httpClient);
+    public void deleteAllSettings(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
 
         client.listConfigurationSettings(new SettingSelector().setKeyFilter("*")).forEach(configurationSetting -> {
             logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
@@ -758,10 +761,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         });
     }
 
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
-    public void addHeadersFromContextPolicyTest(HttpClient httpClient) {
-        initializeClient(httpClient);
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void addHeadersFromContextPolicyTest(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
         final HttpHeaders headers = getCustomizedHeaders();
         addHeadersFromContextPolicyRunner(expected -> {
                 final Response<ConfigurationSetting> response =

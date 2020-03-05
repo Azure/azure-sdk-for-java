@@ -118,7 +118,7 @@ public class ReadMyWritesConsistencyTest {
             TestConfigurations.MASTER_KEY,
             database.getId(),
             collection.getId(),
-            CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, desiredConsistency),
+            desiredConsistency,
             concurrency,
             numberOfOperationsAsString,
             maxRunningTime,

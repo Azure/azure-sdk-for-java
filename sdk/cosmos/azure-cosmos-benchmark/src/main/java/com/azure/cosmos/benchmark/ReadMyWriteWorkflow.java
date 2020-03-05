@@ -259,7 +259,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      */
     private Flux<Document> singlePartitionQuery(Document d) {
         FeedOptions options = new FeedOptions();
-        options.partitionKey(new PartitionKey(d.get(partitionKey)));
+        options.setPartitionKey(new PartitionKey(d.get(partitionKey)));
 
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(String.format("Select top 100 * from c where c.%s = '%s'",
                                                                    QUERY_FIELD_NAME,

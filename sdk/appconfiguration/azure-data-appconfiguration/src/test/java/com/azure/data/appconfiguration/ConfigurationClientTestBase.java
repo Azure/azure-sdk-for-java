@@ -2,14 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -17,9 +21,6 @@ import com.azure.data.appconfiguration.implementation.ConfigurationClientCredent
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import java.lang.reflect.Field;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -35,18 +36,16 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.params.provider.Arguments;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
-
-@TestInstance(PER_CLASS)
+@TestInstance(Lifecycle.PER_CLASS)
 public abstract class ConfigurationClientTestBase extends TestBase {
+    public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String KEY_PREFIX = "key";
     private static final String LABEL_PREFIX = "label";
@@ -93,8 +92,27 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         return testResourceNamer.randomName(labelPrefix, RESOURCE_LENGTH);
     }
 
+    /**
+     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
+     * service versions that should be tested.
+     *
+     * @return A stream of HttpClient and service version combinations to test.
+     */
+    protected Stream<Arguments> getTestParameters() {
+        // when this issues is closed, the newer version of junit will have better support for
+        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+        List<Arguments> argumentsList = new ArrayList<>();
+        getHttpClients()
+            .forEach(httpClient -> {
+                for (ConfigurationServiceVersion serviceVersion : ConfigurationServiceVersion.values()) {
+                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
+                }
+            });
+        return argumentsList.stream();
+    }
+
     @Test
-    public abstract void addConfigurationSetting(HttpClient httpClient);
+    public abstract void addConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     void addConfigurationSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         final Map<String, String> tags = new HashMap<>();
@@ -112,10 +130,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void addConfigurationSettingEmptyKey(HttpClient httpClient);
+    public abstract void addConfigurationSettingEmptyKey(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void addConfigurationSettingEmptyValue(HttpClient httpClient);
+    public abstract void addConfigurationSettingEmptyValue(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void addConfigurationSettingEmptyValueRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -127,10 +147,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void addConfigurationSettingNullKey(HttpClient httpClient);
+    public abstract void addConfigurationSettingNullKey(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void addExistingSetting(HttpClient httpClient);
+    public abstract void addExistingSetting(HttpClient httpClient,
+	    ConfigurationServiceVersion serviceVersion);
 
     void addExistingSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         final ConfigurationSetting newConfiguration = new ConfigurationSetting().setKey(getKey()).setValue("myNewValue");
@@ -140,7 +162,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void setConfigurationSetting(HttpClient httpClient);
+    public abstract void setConfigurationSetting(HttpClient httpClient,
+	    ConfigurationServiceVersion serviceVersion);
 
     void setConfigurationSettingRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -154,7 +177,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void setConfigurationSettingIfETag(HttpClient httpClient);
+    public abstract void setConfigurationSettingIfETag(HttpClient httpClient,
+	    ConfigurationServiceVersion serviceVersion);
 
     void setConfigurationSettingIfETagRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -168,10 +192,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void setConfigurationSettingEmptyKey(HttpClient httpClient);
+    public abstract void setConfigurationSettingEmptyKey(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void setConfigurationSettingEmptyValue(HttpClient httpClient);
+    public abstract void setConfigurationSettingEmptyValue(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void setConfigurationSettingEmptyValueRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -183,10 +209,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(setting2);
     }
 
-    @Test public abstract void setConfigurationSettingNullKey(HttpClient httpClient);
+    @Test public abstract void setConfigurationSettingNullKey(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void getConfigurationSetting(HttpClient httpClient);
+    public abstract void getConfigurationSetting(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void getConfigurationSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -198,10 +226,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getConfigurationSettingNotFound(HttpClient httpClient);
+    public abstract void getConfigurationSettingNotFound(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void deleteConfigurationSetting(HttpClient httpClient);
+    public abstract void deleteConfigurationSetting(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void deleteConfigurationSettingRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -214,10 +244,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void deleteConfigurationSettingNotFound(HttpClient httpClient);
+    public abstract void deleteConfigurationSettingNotFound(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void deleteConfigurationSettingWithETag(HttpClient httpClient);
+    public abstract void deleteConfigurationSettingWithETag(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void deleteConfigurationSettingWithETagRunner(BiConsumer<ConfigurationSetting, ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -231,19 +263,24 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void deleteConfigurationSettingNullKey(HttpClient httpClient);
+    public abstract void deleteConfigurationSettingNullKey(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void setReadOnly(HttpClient httpClient);
+    public abstract void setReadOnly(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void clearReadOnly(HttpClient httpClient);
+    public abstract void clearReadOnly(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void setReadOnlyWithConfigurationSetting(HttpClient httpClient);
+    public abstract void setReadOnlyWithConfigurationSetting(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void clearReadOnlyWithConfigurationSetting(HttpClient httpClient);
+    public abstract void clearReadOnlyWithConfigurationSetting(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void lockUnlockRunner(Consumer<ConfigurationSetting> testRunner) {
         String key = getKey();
@@ -253,10 +290,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listWithKeyAndLabel(HttpClient httpClient);
+    public abstract void listWithKeyAndLabel(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listWithMultipleKeys(HttpClient httpClient);
+    public abstract void listWithMultipleKeys(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void listWithMultipleKeysRunner(String key, String key2, BiFunction<ConfigurationSetting, ConfigurationSetting, Iterable<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value");
@@ -267,7 +306,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listWithMultipleLabels(HttpClient httpClient);
+    public abstract void listWithMultipleLabels(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void listWithMultipleLabelsRunner(String key, String label, String label2, BiFunction<ConfigurationSetting, ConfigurationSetting, Iterable<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label);
@@ -282,7 +322,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listConfigurationSettingsSelectFields(HttpClient httpClient);
+    public abstract void listConfigurationSettingsSelectFields(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void listConfigurationSettingsSelectFieldsRunner(BiFunction<List<ConfigurationSetting>, SettingSelector, Iterable<ConfigurationSetting>> testRunner) {
         final String label = "my-first-mylabel";
@@ -318,16 +359,20 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter(HttpClient httpClient);
+    public abstract void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter(HttpClient httpClient);
+    public abstract void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter(HttpClient httpClient);
+    public abstract void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter(HttpClient httpClient);
+    public abstract void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void listConfigurationSettingsSelectFieldsWithNotSupportedFilterRunner(String keyFilter, String labelFilter, Consumer<SettingSelector> testRunner) {
         final Map<String, String> tags = new HashMap<>();
@@ -342,10 +387,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listConfigurationSettingsAcceptDateTime(HttpClient httpClient);
+    public abstract void listConfigurationSettingsAcceptDateTime(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listRevisions(HttpClient httpClient);
+    public abstract void listRevisions(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     static void validateListRevisions(ConfigurationSetting expected, ConfigurationSetting actual) {
         assertEquals(expected.getKey(), actual.getKey());
@@ -355,7 +402,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listRevisionsWithMultipleKeys(HttpClient httpClient);
+    public abstract void listRevisionsWithMultipleKeys(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void listRevisionsWithMultipleKeysRunner(String key, String key2, Function<List<ConfigurationSetting>, Iterable<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value");
@@ -373,7 +421,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listRevisionsWithMultipleLabels(HttpClient httpClient);
+    public abstract void listRevisionsWithMultipleLabels(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void listRevisionsWithMultipleLabelsRunner(String key, String label, String label2, Function<List<ConfigurationSetting>, Iterable<ConfigurationSetting>> testRunner) {
         final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label);
@@ -391,29 +440,36 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listRevisionsAcceptDateTime(HttpClient httpClient);
+    public abstract void listRevisionsAcceptDateTime(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listRevisionsWithPagination(HttpClient httpClient);
+    public abstract void listRevisionsWithPagination(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listConfigurationSettingsWithPagination(HttpClient httpClient);
+    public abstract void listConfigurationSettingsWithPagination(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listRevisionsWithPaginationAndRepeatStream(HttpClient httpClient);
+    public abstract void listRevisionsWithPaginationAndRepeatStream(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listRevisionsWithPaginationAndRepeatIterator(HttpClient httpClient);
+    public abstract void listRevisionsWithPaginationAndRepeatIterator(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void getConfigurationSettingWhenValueNotUpdated(HttpClient httpClient);
+    public abstract void getConfigurationSettingWhenValueNotUpdated(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     @Disabled("This test exists to clean up resources missed due to 429s.")
     @Test
-    public abstract void deleteAllSettings(HttpClient httpClient);
+    public abstract void deleteAllSettings(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void addHeadersFromContextPolicyTest(HttpClient httpClient);
+    public abstract void addHeadersFromContextPolicyTest(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
 
     void addHeadersFromContextPolicyRunner(Consumer<ConfigurationSetting> testRunner) {
         final String key = getKey();
@@ -628,14 +684,5 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     static void assertContainsHeaders(HttpHeaders headers, HttpHeaders headerContainer) {
         headers.stream().forEach(httpHeader ->
             assertEquals(headerContainer.getValue(httpHeader.getName()), httpHeader.getValue()));
-    }
-
-    HttpClient[] getHttpClients(){
-        if (getTestMode() == TestMode.PLAYBACK) {
-            return Arrays.asList(interceptorManager.getPlaybackClient()).toArray(HttpClient[]::new);
-        } else {
-            return Arrays.asList(new NettyAsyncHttpClientBuilder().wiretap(true).build(),
-                new OkHttpAsyncHttpClientBuilder().build()).toArray(HttpClient[]::new);
-        }
     }
 }

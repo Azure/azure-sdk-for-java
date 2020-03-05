@@ -4,15 +4,13 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.loganalytics.implementation.LogAnalyticsDataClientImpl;
 import com.microsoft.azure.loganalytics.models.QueryBody;
 import com.microsoft.azure.loganalytics.models.QueryResults;
-import com.microsoft.azure.credentials.AzureTokenCredentials;
-import com.microsoft.azure.arm.core.TestBase;
 import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class LogAnalyticsDataClientTests extends TestBase {
     protected static LogAnalyticsDataClientImpl logAnalyticsClient;
-    
+
     @Override
     protected String baseUri() {
         return AzureEnvironment.AZURE.logAnalyticsEndpoint() + "v1/";
@@ -25,7 +23,6 @@ public class LogAnalyticsDataClientTests extends TestBase {
 
     @Override
     protected void cleanUpResources() {
-        return;
     }
 
     @Test
@@ -34,7 +31,7 @@ public class LogAnalyticsDataClientTests extends TestBase {
         String workspaceId = "cab864ad-d0c1-496b-bc5e-4418315621bf";
         QueryResults queryResults = logAnalyticsClient.query(workspaceId, new QueryBody().withQuery(query));
         Assert.assertNotNull(queryResults);
-        
+
         // Query should return a single table with one row
         Assert.assertEquals(queryResults.tables().size(), 1);
         Assert.assertEquals(queryResults.tables().get(0).rows().size(), 1);

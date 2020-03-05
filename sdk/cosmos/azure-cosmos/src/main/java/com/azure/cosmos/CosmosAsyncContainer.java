@@ -116,12 +116,12 @@ public class CosmosAsyncContainer {
      * the replaced document container. In case of failure the {@link Mono} will
      * error.
      *
-     * @param containerSettings the item container properties
+     * @param containerProperties the item container properties
      * @return an {@link Mono} containing the single cosmos container response with
      * the replaced document container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> replace(CosmosContainerProperties containerSettings) {
-        return replace(containerSettings, null);
+    public Mono<CosmosAsyncContainerResponse> replace(CosmosContainerProperties containerProperties) {
+        return replace(containerProperties, null);
     }
 
     /**
@@ -132,19 +132,19 @@ public class CosmosAsyncContainer {
      * the replaced document container. In case of failure the {@link Mono} will
      * error.
      *
-     * @param containerSettings the item container properties
+     * @param containerProperties the item container properties
      * @param options the cosmos container request options.
      * @return an {@link Mono} containing the single cosmos container response with
      * the replaced document container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> replace(CosmosContainerProperties containerSettings,
+    public Mono<CosmosAsyncContainerResponse> replace(CosmosContainerProperties containerProperties,
                                                       CosmosContainerRequestOptions options) {
-        validateResource(containerSettings);
+        validateResource(containerProperties);
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
         return database.getDocClientWrapper()
-                   .replaceCollection(containerSettings.getV2Collection(), options.toRequestOptions())
+                   .replaceCollection(containerProperties.getV2Collection(), options.toRequestOptions())
                    .map(response -> new CosmosAsyncContainerResponse(response, database)).single();
     }
 
@@ -252,11 +252,11 @@ public class CosmosAsyncContainer {
      * failure the {@link CosmosPagedFlux} will error.
      *
      * @param <T> the type parameter
-     * @param klass the class type
+     * @param classType the class type
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos items or an error.
      */
-    public <T> CosmosPagedFlux<T> readAllItems(Class<T> klass) {
-        return readAllItems(new FeedOptions(), klass);
+    public <T> CosmosPagedFlux<T> readAllItems(Class<T> classType) {
+        return readAllItems(new FeedOptions(), classType);
     }
 
     /**
@@ -268,14 +268,14 @@ public class CosmosAsyncContainer {
      *
      * @param <T> the type parameter
      * @param options the feed options.
-     * @param klass the class type
+     * @param classType the class type
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos items or an error.
      */
-    public <T> CosmosPagedFlux<T> readAllItems(FeedOptions options, Class<T> klass) {
+    public <T> CosmosPagedFlux<T> readAllItems(FeedOptions options, Class<T> classType) {
         return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
-                response -> prepareFeedResponse(response, klass));
+                response -> prepareFeedResponse(response, classType));
         });
     }
 
@@ -288,11 +288,11 @@ public class CosmosAsyncContainer {
      *
      * @param <T> the type parameter
      * @param query the query.
-     * @param klass the class type
+     * @param classType the class type
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an error.
      */
-    public <T> CosmosPagedFlux<T> queryItems(String query, Class<T> klass) {
-        return queryItems(new SqlQuerySpec(query), klass);
+    public <T> CosmosPagedFlux<T> queryItems(String query, Class<T> classType) {
+        return queryItems(new SqlQuerySpec(query), classType);
     }
 
     /**
@@ -305,11 +305,11 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter
      * @param query the query.
      * @param options the feed options.
-     * @param klass the class type
+     * @param classType the class type
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an error.
      */
-    public <T> CosmosPagedFlux<T> queryItems(String query, FeedOptions options, Class<T> klass) {
-        return queryItems(new SqlQuerySpec(query), options, klass);
+    public <T> CosmosPagedFlux<T> queryItems(String query, FeedOptions options, Class<T> classType) {
+        return queryItems(new SqlQuerySpec(query), options, classType);
     }
 
     /**
@@ -321,11 +321,11 @@ public class CosmosAsyncContainer {
      *
      * @param <T> the type parameter
      * @param querySpec the SQL query specification.
-     * @param klass the class type
+     * @param classType the class type
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an error.
      */
-    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, Class<T> klass) {
-        return queryItems(querySpec, new FeedOptions(), klass);
+    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, Class<T> classType) {
+        return queryItems(querySpec, new FeedOptions(), classType);
     }
 
     /**
@@ -338,25 +338,25 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @param klass the class type
+     * @param classType the class type
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an error.
      */
-    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
-        return queryItemsInternal(querySpec, options, klass);
+    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> classType) {
+        return queryItemsInternal(querySpec, options, classType);
     }
 
-    private <T> CosmosPagedFlux<T> queryItemsInternal(SqlQuerySpec sqlQuerySpec, FeedOptions feedOptions, Class<T> klass) {
+    private <T> CosmosPagedFlux<T> queryItemsInternal(SqlQuerySpec sqlQuerySpec, FeedOptions feedOptions, Class<T> classType) {
         return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, feedOptions);
             return getDatabase().getDocClientWrapper().queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, feedOptions)
                                             .map(response ->
-                                                     prepareFeedResponse(response, klass));
+                                                     prepareFeedResponse(response, classType));
         });
     }
 
-    private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> klass){
+    private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType){
         return BridgeInternal.createFeedResponseWithQueryMetrics(
-            (response.getResults().stream().map(document -> document.toObject(klass))
+            (response.getResults().stream().map(document -> document.toObject(classType))
                  .collect(Collectors.toList())), response.getResponseHeaders(),
             response.queryMetrics());
     }

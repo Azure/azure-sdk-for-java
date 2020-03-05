@@ -11,7 +11,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosPagedFlux;
-import com.azure.cosmos.ItemOperations;
+import com.azure.cosmos.implementation.ItemOperations;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
@@ -79,9 +79,9 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     public void queryDocuments(boolean qmEnabled) {
         String query = "SELECT * from c where c.prop = 99";
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
+        options.setMaxItemCount(5);
 
-        options.populateQueryMetrics(qmEnabled);
+        options.setPopulateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
@@ -103,9 +103,9 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     public void queryMetricEquality() throws Exception {
         String query = "SELECT * from c where c.prop = 99";
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
+        options.setMaxItemCount(5);
 
-        options.populateQueryMetrics(true);
+        options.setPopulateQueryMetrics(true);
         options.setMaxDegreeOfParallelism(0);
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
@@ -157,7 +157,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         int pageSize = 3;
-        options.maxItemCount(pageSize);
+        options.setMaxItemCount(pageSize);
         options.setMaxDegreeOfParallelism(-1);
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
@@ -527,10 +527,10 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         List<CosmosItemProperties> receivedDocuments = new ArrayList<CosmosItemProperties>();
         do {
             FeedOptions options = new FeedOptions();
-            options.maxItemCount(pageSize);
+            options.setMaxItemCount(pageSize);
 
             options.setMaxDegreeOfParallelism(2);
-            options.requestContinuation(requestContinuation);
+            options.setRequestContinuation(requestContinuation);
             CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();

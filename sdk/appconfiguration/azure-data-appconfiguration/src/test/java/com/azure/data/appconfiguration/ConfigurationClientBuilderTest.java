@@ -7,17 +7,14 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -29,6 +26,7 @@ import java.util.Objects;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static com.azure.data.appconfiguration.ConfigurationClientTestBase.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ConfigurationClientBuilderTest extends TestBase {
@@ -119,8 +117,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
         assertThrows(RuntimeException.class, () -> client.setConfigurationSetting(key, null, value));
     }
 
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
     public void nullServiceVersion(HttpClient httpClient) {
         final String key = "newKey";
         final String value = "newValue";
@@ -148,8 +146,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
         Assertions.assertEquals(addedSetting.getValue(), value);
     }
 
-    @ParameterizedTest(name="{0}")
-    @MethodSource("getHttpClients")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
     public void defaultPipeline() {
         final String key = "newKey";
         final String value = "newValue";
@@ -193,13 +191,4 @@ public class ConfigurationClientBuilderTest extends TestBase {
         }
     }
 
-    private HttpClient[] getHttpClients(){
-        if (getTestMode() == TestMode.PLAYBACK) {
-            return Arrays.asList(interceptorManager.getPlaybackClient())
-                .toArray(HttpClient[]::new);
-        } else {
-            return Arrays.asList(new NettyAsyncHttpClientBuilder().wiretap(true).build(),
-                new OkHttpAsyncHttpClientBuilder().build()).toArray(HttpClient[]::new);
-        }
-    }
 }

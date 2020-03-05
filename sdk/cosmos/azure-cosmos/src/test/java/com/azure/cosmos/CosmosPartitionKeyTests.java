@@ -96,7 +96,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         URI uri = new URI(resourceUri);
 
         HttpRequest httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), new HttpHeaders(headers));
-        httpRequest.withBody(request.getContent());
+        httpRequest.withBody(request.getContentAsByteBufFlux());
         String body = httpClient.send(httpRequest).block().bodyAsString().block();
         assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_ID + "\"");
 
@@ -117,7 +117,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         uri = new URI(resourceUri);
 
         httpRequest = new HttpRequest(HttpMethod.POST, uri, uri.getPort(), new HttpHeaders(headers));
-        httpRequest.withBody(request.getContent());
+        httpRequest.withBody(request.getContentAsByteBufFlux());
 
         body = httpClient.send(httpRequest).block().bodyAsString().block();
         assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_DOCUEMNT_ID + "\"");
@@ -152,7 +152,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .withId(createdItemId)
                 .build();
         this.validateItemSuccess(readMono, validator);
-        
+
         CosmosItemProperties itemSettingsToReplace = createdContainer.readItem(createdItemId, PartitionKey.NONE,
                                                                                CosmosItemProperties.class)
                                                          .block()
@@ -180,7 +180,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
 
         // one document was created during setup, one with create (which was replaced) and one with upsert
         FeedOptions feedOptions = new FeedOptions();
-        feedOptions.partitionKey(PartitionKey.NONE);
+        feedOptions.setPartitionKey(PartitionKey.NONE);
         ArrayList<String> expectedIds = new ArrayList<String>();
         expectedIds.add(NON_PARTITIONED_CONTAINER_DOCUEMNT_ID);
         expectedIds.add(replacedItemId);

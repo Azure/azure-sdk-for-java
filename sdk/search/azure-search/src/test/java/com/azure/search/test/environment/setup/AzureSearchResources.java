@@ -16,6 +16,7 @@ import com.microsoft.azure.management.search.SearchService;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
 
+import java.security.SecureRandom;
 import java.util.Objects;
 
 public class AzureSearchResources {
@@ -24,7 +25,7 @@ public class AzureSearchResources {
     private static final String BLOB_DATASOURCE_NAME_PREFIX = "azsblob";
     private static final String STORAGE_NAME_PREFIX = "azsstor";
     private static final String AZURE_RESOURCEGROUP_NAME = "AZURE_RESOURCEGROUP_NAME";
-
+    private static final char[] ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
 
     private String searchServiceName;
     private String searchAdminKey;
@@ -117,7 +118,12 @@ public class AzureSearchResources {
      */
     public void createResourceGroup() {
         String resourceGroupName = Configuration.getGlobalConfiguration().get(AZURE_RESOURCEGROUP_NAME);
-        if (azure.resourceGroups().checkExistence(resourceGroupName)) {
+        boolean resourceGroupNameSet = !CoreUtils.isNullOrEmpty(resourceGroupName);
+        if (!resourceGroupNameSet) {
+            resourceGroupName = randomResourceGroupName();
+        }
+
+        if (resourceGroupNameSet && azure.resourceGroups().checkExistence(resourceGroupName)) {
             System.out.println("Fetching Resource Group: " + resourceGroupName);
             resourceGroup = azure.resourceGroups()
                 .getByName(resourceGroupName);
@@ -184,5 +190,17 @@ public class AzureSearchResources {
         blobServiceClient.createBlobContainer(blobContainerDatasourceName);
 
         return blobContainerDatasourceName;
+    }
+
+    private static String randomResourceGroupName() {
+        StringBuilder builder = new StringBuilder(RESOURCE_GROUP_NAME_PREFIX);
+        SecureRandom random = new SecureRandom();
+
+        while (builder.length() < 18) {
+            int index = (int) (random.nextFloat() * ALLOWED_CHARS.length);
+            builder.append(ALLOWED_CHARS[index]);
+        }
+
+        return builder.toString();
     }
 }

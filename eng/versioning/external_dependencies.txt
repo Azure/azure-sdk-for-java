@@ -11,9 +11,9 @@ com.github.spotbugs:spotbugs-maven-plugin;3.1.12.2
 com.google.code.gson:gson;2.8.5
 com.google.guava:guava;24.1.1-jre
 com.microsoft.azure:azure-annotations;1.7.0
-com.microsoft.azure:azure-arm-client-runtime;1.6.15
-com.microsoft.azure:azure-client-authentication;1.6.15
-com.microsoft.azure:azure-client-runtime;1.6.15
+com.microsoft.azure:azure-arm-client-runtime;1.7.2
+com.microsoft.azure:azure-client-authentication;1.7.2
+com.microsoft.azure:azure-client-runtime;1.7.2
 com.microsoft.azure:azure-core;0.9.8
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:client-runtime;1.6.15
@@ -165,11 +165,6 @@ org.revapi:revapi-maven-plugin;0.11.2
 # sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
-# sdk\applicationinsights\microsoft-azure-applicationinsights-query\pom.xml
-applicationinsights_com.microsoft.azure:azure-arm-client-runtime;1.6.3
-applicationinsights_com.microsoft.azure:azure-client-runtime;1.6.3
-applicationinsights_com.microsoft.azure:azure-client-authentication;1.6.3
-
 # everything under sdk\cosmos
 cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.10.1
 cosmos_com.google.guava:guava;25.0-jre
@@ -187,8 +182,6 @@ cosmos_io.projectreactor:reactor-core;3.3.2.RELEASE
 cosmos_org.mockito:mockito-core;1.10.19
 
 # sdk\eventgrid\microsoft-azure-eventgrid\pom.xml
-eventgrid_com.microsoft.azure:azure-client-runtime;1.7.1
-eventgrid_com.microsoft.azure:azure-client-authentication;1.7.1
 eventgrid_commons-io:commons-io;2.6
 
 # sdk\eventhubs\microsoft-azure-eventhubs-eph\pom.xml
@@ -199,11 +192,6 @@ eventhubs_com.microsoft.azure:msal4j;0.4.0-preview
 keyvault_org.mockito:mockito-core;1.10.19
 # sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
 keyvault_com.microsoft.azure:azure-storage;4.4.0
-
-# sdk\loganalytics\microsoft-azure-loganalytics\pom.xml
-loganalytics_com.microsoft.azure:azure-arm-client-runtime;1.6.3
-loganalytics_com.microsoft.azure:azure-client-authentication;1.6.3
-loganalytics_com.microsoft.azure:azure-client-runtime;1.6.3
 
 # sdk\mediaservices\microsoft-azure-media\pom.xml which hasn't been released for 2 years
 # all of these unique references below are listed here because they're old, some are over 10 years old
@@ -216,9 +204,6 @@ media_commons-logging:commons-logging;1.1.1
 media_io.jsonwebtoken:jjwt;0.5.1
 media_org.mockito:mockito-all;1.9.0
 media_com.microsoft.azure:adal4j;1.2.0
-
-# sdk\servicebus\microsoft-azure-servicebus\pom.xml
-servicebus_com.microsoft.azure:azure-client-authentication;1.7.0
 
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0

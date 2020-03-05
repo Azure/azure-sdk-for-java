@@ -43,7 +43,7 @@ public final class SearchServiceAsyncClient {
     /**
      * Search REST API Version
      */
-    private final SearchServiceVersion searchServiceVersion;
+    private final SearchServiceVersion serviceVersion;
 
     /**
      * The endpoint for the Azure Cognitive Search service.
@@ -65,25 +65,16 @@ public final class SearchServiceAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    SearchServiceAsyncClient(String endpoint, SearchServiceVersion searchServiceVersion, HttpPipeline httpPipeline) {
-
+    SearchServiceAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
         SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
-
-        if (searchServiceVersion == null) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid apiVersion"));
-        }
-        if (httpPipeline == null) {
-            throw logger.logExceptionAsError(new NullPointerException("Invalid httpPipeline"));
-        }
-
         this.endpoint = endpoint;
-        this.searchServiceVersion = searchServiceVersion;
+        this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
 
         this.restClient = new SearchServiceRestClientBuilder()
             .searchServiceName(parts.serviceName)
             .searchDnsSuffix(parts.dnsSuffix)
-            .apiVersion(searchServiceVersion.getVersion())
+            .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
             .build();
     }
@@ -105,7 +96,7 @@ public final class SearchServiceAsyncClient {
      * @return a {@link SearchIndexAsyncClient} created from the service client configuration
      */
     public SearchIndexAsyncClient getIndexClient(String indexName) {
-        return new SearchIndexAsyncClient(endpoint, indexName, searchServiceVersion, httpPipeline);
+        return new SearchIndexAsyncClient(endpoint, indexName, serviceVersion, httpPipeline);
     }
 
     /**
@@ -114,7 +105,7 @@ public final class SearchServiceAsyncClient {
      * @return the search service version value.
      */
     public SearchServiceVersion getServiceVersion() {
-        return this.searchServiceVersion;
+        return this.serviceVersion;
     }
 
     /**
