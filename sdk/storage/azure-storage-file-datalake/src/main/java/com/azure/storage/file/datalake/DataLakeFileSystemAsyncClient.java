@@ -72,7 +72,7 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
 @ServiceClient(builder = DataLakeFileSystemClientBuilder.class, isAsync = true)
 public class DataLakeFileSystemAsyncClient {
 
-    static final String ROOT_FILESYSTEM_NAME = "$root";
+    public static final String ROOT_FILESYSTEM_NAME = "$root";
 
     private static final String ROOT_DIRECTORY_NAME = "";
 
