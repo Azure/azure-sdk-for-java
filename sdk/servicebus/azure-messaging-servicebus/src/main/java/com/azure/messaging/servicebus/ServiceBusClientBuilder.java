@@ -68,19 +68,17 @@ public final class ServiceBusClientBuilder {
     private AmqpTransportType transport = AmqpTransportType.AMQP;
     private String fullyQualifiedNamespace;
     private String serviceBusResourceName;
-    private ServiceBusConnectionProcessor serviceBusConnectionProcessor;
-    private final String connectionId;
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
      */
     public ServiceBusClientBuilder() {
-        this.connectionId = StringUtil.getRandomString("MF");
     }
 
     /**
+     * Sets the connection string for a Service Bus resource.
      *
-     * @param connectionStringWithResourceName to connect to Queue.
+     * @param connectionStringWithResourceName Connection string with name of Service Bus resource in it.
      * @return The updated {@link ServiceBusClientBuilder} object.
      */
     public ServiceBusClientBuilder connectionString(String connectionStringWithResourceName) {
@@ -99,6 +97,7 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
+     * Sets the credential for the Service Bus resource.
      *
      * @param fullyQualifiedNamespace for the Service Bus.
      * @param topicOrQueueName The name of the queue.
@@ -122,59 +121,6 @@ public final class ServiceBusClientBuilder {
                 "'topicOrQueueName' cannot be an empty string."));
         }
         return this;
-    }
-
-    /**
-     * Creates an {@link ServiceBusSenderAsyncClient} for transmitting {@link ServiceBusMessage}
-     * to the Service Bus Queue.
-     *
-     * @return A new {@link ServiceBusSenderAsyncClient}.
-     */
-    ServiceBusSenderAsyncClient buildAsyncSenderClient() {
-        if (retryOptions == null) {
-            retryOptions = DEFAULT_RETRY;
-        }
-
-        if (scheduler == null) {
-            scheduler = Schedulers.elastic();
-        }
-        final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
-
-        if (serviceBusConnectionProcessor == null) {
-            serviceBusConnectionProcessor = createConnectionProcessor(messageSerializer);
-        }
-
-        final ServiceBusConnectionProcessor connectionProcessor = createConnectionProcessor(messageSerializer);
-
-        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-
-        return new ServiceBusSenderAsyncClient(serviceBusResourceName, connectionProcessor,
-            retryOptions, tracerProvider, messageSerializer);
-    }
-    /**
-     * Creates an Service Bus Queue receiver responsible for reading {@link ServiceBusMessage} from a specific Queue.
-     *
-     * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from the Queue.
-     */
-    ServiceBusReceiverAsyncClient buildAsyncReceiverClient() {
-        if (retryOptions == null) {
-            retryOptions = DEFAULT_RETRY;
-        }
-
-        if (scheduler == null) {
-            scheduler = Schedulers.elastic();
-        }
-        final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
-
-        if (serviceBusConnectionProcessor == null) {
-            serviceBusConnectionProcessor = createConnectionProcessor(messageSerializer);
-        }
-
-        final ServiceBusConnectionProcessor connectionProcessor = createConnectionProcessor(messageSerializer);
-        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-
-        return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
-            serviceBusResourceName, connectionProcessor, tracerProvider, messageSerializer, receiveMessageOptions);
     }
 
     /**
@@ -230,9 +176,66 @@ public final class ServiceBusClientBuilder {
         return this;
     }
 
-    /** package- private method
+    /**
      *
-     * @param scheduler to be used.
+     * @param retryOptions to manage AMQP connection.
+     * @return The {@link ServiceBusClientBuilder}.
+     */
+    public ServiceBusClientBuilder retry(AmqpRetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Creates an {@link ServiceBusSenderAsyncClient} for transmitting {@link ServiceBusMessage}
+     * to the Service Bus Queue.
+     *
+     * @return A new {@link ServiceBusSenderAsyncClient}.
+     */
+    public ServiceBusSenderAsyncClient buildAsyncSenderClient() {
+        if (retryOptions == null) {
+            retryOptions = DEFAULT_RETRY;
+        }
+
+        if (scheduler == null) {
+            scheduler = Schedulers.elastic();
+        }
+
+        final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
+        final ServiceBusConnectionProcessor connectionProcessor = createConnectionProcessor(messageSerializer);
+
+        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
+
+        return new ServiceBusSenderAsyncClient(serviceBusResourceName, connectionProcessor,
+            retryOptions, tracerProvider, messageSerializer);
+    }
+
+    /**
+     * Creates an Service Bus Queue receiver responsible for reading {@link ServiceBusMessage} from a specific Queue.
+     *
+     * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from the Queue.
+     */
+    public ServiceBusReceiverAsyncClient buildAsyncReceiverClient() {
+        if (retryOptions == null) {
+            retryOptions = DEFAULT_RETRY;
+        }
+
+        if (scheduler == null) {
+            scheduler = Schedulers.elastic();
+        }
+
+        final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
+        final ServiceBusConnectionProcessor connectionProcessor = createConnectionProcessor(messageSerializer);
+        final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
+
+        return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
+            serviceBusResourceName, connectionProcessor, tracerProvider, messageSerializer, receiveMessageOptions);
+    }
+
+    /**
+     * Sets the scheduler to use.
+     *
+     * @param scheduler Scheduler to be used.
      * @return The {@link ServiceBusClientBuilder}.
      */
     ServiceBusClientBuilder scheduler(Scheduler scheduler) {
@@ -263,16 +266,6 @@ public final class ServiceBusClientBuilder {
         return connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
             connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getEntityPath(),
             connectionOptions.getRetry()));
-    }
-
-    /**
-     *
-     * @param retryOptions to manage AMQP connection.
-     * @return The {@link ServiceBusClientBuilder}.
-     */
-    public ServiceBusClientBuilder retry(AmqpRetryOptions retryOptions) {
-        this.retryOptions = retryOptions;
-        return this;
     }
 
     private ConnectionOptions getConnectionOptions() {
