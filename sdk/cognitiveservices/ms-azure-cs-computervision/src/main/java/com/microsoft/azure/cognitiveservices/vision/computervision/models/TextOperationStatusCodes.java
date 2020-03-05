@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for TextOperationStatusCodes.
  */
 public enum TextOperationStatusCodes {
-    /** Enum value Not Started. */
-    NOT_STARTED("Not Started"),
+    /** Enum value NotStarted. */
+    NOT_STARTED("NotStarted"),
 
     /** Enum value Running. */
     RUNNING("Running"),

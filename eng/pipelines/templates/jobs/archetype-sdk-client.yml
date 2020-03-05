@@ -12,7 +12,7 @@ parameters:
       RunTitle: 'Linux on Java 1.8'
     macOS - Java 8:
       OSName: 'macOS'
-      OSVmImage: 'macOS-10.13'
+      OSVmImage: 'macOS-10.15'
       JavaVersion: '1.8'
       RunTitle: 'macOS on Java 1.8'
     Windows - Java 8:
@@ -27,7 +27,7 @@ parameters:
       RunTitle: 'Linux on Java 1.11'
     macOS - Java 11:
       OSName: 'macOS'
-      OSVmImage: 'macOS-10.13'
+      OSVmImage: 'macOS-10.15'
       JavaVersion: '1.11'
       RunTitle: 'macOS on Java 1.11'
     Windows - Java 11:

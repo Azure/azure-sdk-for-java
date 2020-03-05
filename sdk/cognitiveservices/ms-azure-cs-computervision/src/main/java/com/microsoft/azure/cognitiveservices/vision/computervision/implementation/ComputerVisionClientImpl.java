@@ -141,7 +141,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
      * @param credentials the management credentials for Azure
      */
     public ComputerVisionClientImpl(ServiceClientCredentials credentials) {
-        this("https://{Endpoint}/vision/v2.0", credentials);
+        this("https://{Endpoint}/vision/v2.1", credentials);
     }
 
     /**
@@ -180,6 +180,6 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "ComputerVisionClient", "2.0");
+        return String.format("%s (%s, %s)", super.userAgent(), "ComputerVisionClient", "2.1");
     }
 }

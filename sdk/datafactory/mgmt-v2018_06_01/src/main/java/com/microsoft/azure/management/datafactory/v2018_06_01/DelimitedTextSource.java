@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datafactory.v2018_06_01;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -29,6 +30,13 @@ public class DelimitedTextSource extends CopySource {
      */
     @JsonProperty(value = "formatSettings")
     private DelimitedTextReadSettings formatSettings;
+
+    /**
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects (or Expression with resultType array of objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private List<AdditionalColumns> additionalColumns;
 
     /**
      * Get delimitedText store settings.
@@ -67,6 +75,26 @@ public class DelimitedTextSource extends CopySource {
      */
     public DelimitedTextSource withFormatSettings(DelimitedTextReadSettings formatSettings) {
         this.formatSettings = formatSettings;
+        return this;
+    }
+
+    /**
+     * Get specifies the additional columns to be added to source data. Type: array of objects (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value
+     */
+    public List<AdditionalColumns> additionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set specifies the additional columns to be added to source data. Type: array of objects (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set
+     * @return the DelimitedTextSource object itself.
+     */
+    public DelimitedTextSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 

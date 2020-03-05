@@ -5,11 +5,11 @@ package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
+import com.azure.search.util.SearchPagedFlux;
 
 /**
  * This example shows how to handle errors when the Azure Cognitive Search service
@@ -79,7 +79,7 @@ public class HttpResponseExceptionExample {
         SearchOptions searchOptions = new SearchOptions()
             .setFilter("Non_Existent_Field eq 'Luxury'");
 
-        PagedFluxBase<SearchResult, SearchPagedResponse> results = client.search("hotel", searchOptions, null);
+        SearchPagedFlux results = client.search("hotel", searchOptions, null);
         results
             .subscribe(
                 foo -> {

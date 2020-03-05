@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.JsonSerializable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.Comparator;
 
@@ -19,6 +20,16 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     private T minValue;
     private T maxValue;
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public Range(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     public Range() {
         super();

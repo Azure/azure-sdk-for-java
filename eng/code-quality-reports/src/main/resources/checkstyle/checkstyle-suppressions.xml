@@ -36,6 +36,7 @@
   <suppress checks="Header" files=".*KeyVaultKeyResolverBCProviderTest.java"/>
   <suppress checks="Header" files=".*KeyVaultKeyResolverDefaultProviderTest.java"/>
   <suppress checks="Header" files="com.azure.core.http.netty.implementation.HttpProxyHandler"/>
+  <suppress checks="Header" files="eventgrid[/\\](models|implementation)[/\\].*\.java"/>
 
   <!-- Cryptography Client exception for service client instantiation as it provides client side crypto and is not entirely based on REST service -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*CryptographyAsyncClient.java"/>

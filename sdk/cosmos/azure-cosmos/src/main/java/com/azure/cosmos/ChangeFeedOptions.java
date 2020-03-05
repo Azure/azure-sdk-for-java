@@ -75,7 +75,7 @@ public final class ChangeFeedOptions {
      * @return a boolean value indicating change feed should start from beginning or
      * not
      */
-    public boolean getStartFromBeginning() {
+    public boolean isStartFromBeginning() {
         return startFromBeginning;
     }
 

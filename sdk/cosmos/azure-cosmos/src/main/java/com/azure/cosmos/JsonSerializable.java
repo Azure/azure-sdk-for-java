@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
@@ -69,7 +68,7 @@ public class JsonSerializable {
      *
      * @param objectNode the {@link ObjectNode} that represent the {@link JsonSerializable}
      */
-    JsonSerializable(ObjectNode objectNode) {
+    protected JsonSerializable(ObjectNode objectNode) {
         this.propertyBag = objectNode;
     }
 
@@ -133,7 +132,7 @@ public class JsonSerializable {
         return logger;
     }
 
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
     }
 
     /**
@@ -340,17 +339,7 @@ public class JsonSerializable {
                     throw new IllegalStateException("Failed to create enum.", e);
                 }
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
-                try {
-                    Constructor<T> constructor = c.getDeclaredConstructor(String.class);
-                    if (Modifier.isPrivate(constructor.getModifiers())) {
-                        constructor.setAccessible(true);
-                    }
-                    return constructor.newInstance(toJson(jsonObj));
-                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                             | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                    throw new IllegalStateException(
-                        "Failed to instantiate class object.", e);
-                }
+                return (T) BridgeInternal.instantiateJsonSerializable((ObjectNode) jsonObj, c);
             } else {
                 // POJO
                 JsonSerializable.checkForValidPOJO(c);
@@ -415,17 +404,9 @@ public class JsonSerializable {
                     }
                 } else if (isJsonSerializable) {
                     // JsonSerializable
-                    try {
-                        Constructor<T> constructor = c.getDeclaredConstructor(String.class);
-                        if (Modifier.isPrivate(constructor.getModifiers())) {
-                            constructor.setAccessible(true);
-                        }
-                        result.add(constructor.newInstance(toJson(n)));
-                    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                                 | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                        throw new IllegalStateException(
-                            "Failed to instantiate class object.", e);
-                    }
+                    T t = (T) BridgeInternal.instantiateJsonSerializable((ObjectNode) n, c);
+                    result.add(t);
+
                 } else {
                     // POJO
                     try {
@@ -551,6 +532,7 @@ public class JsonSerializable {
     }
 
     public ByteBuffer serializeJsonToByteBuffer() {
+        this.populatePropertyBag();
         return Utils.serializeJsonToByteBuffer(getMapper(), propertyBag);
     }
 

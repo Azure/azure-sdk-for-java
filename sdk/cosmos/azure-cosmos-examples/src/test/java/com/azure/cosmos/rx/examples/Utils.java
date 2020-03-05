@@ -6,7 +6,7 @@ package com.azure.cosmos.rx.examples;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.RetryOptions;
+import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
@@ -24,8 +24,8 @@ public class Utils {
     public void cleanupStaleDatabase() {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
-        RetryOptions options = new RetryOptions();
-        connectionPolicy.setRetryOptions(options);
+        ThrottlingRetryOptions options = new ThrottlingRetryOptions();
+        connectionPolicy.setThrottlingRetryOptions(options);
         AsyncDocumentClient client = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)

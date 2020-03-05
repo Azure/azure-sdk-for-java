@@ -25,9 +25,13 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
         this.queryInfo = queryInfo;
         this.queryRanges = queryRanges;
 
-        BridgeInternal.setProperty(this, 
+        BridgeInternal.setProperty(this,
                 PartitionedQueryExecutionInfoInternal.PARTITIONED_QUERY_EXECUTION_INFO_VERSION_PROPERTY,
                 Constants.PartitionedQueryExecutionInfo.VERSION_1);
+    }
+
+    public PartitionedQueryExecutionInfo(byte[] bytes) {
+        super(bytes);
     }
 
     public PartitionedQueryExecutionInfo(String jsonString) {

@@ -7,8 +7,11 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -17,17 +20,25 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
+import com.azure.cosmos.implementation.query.QueryInfo;
+import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
+import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Flux;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
@@ -127,7 +138,7 @@ public class BridgeInternal {
         String ifNoneMatchValue = null;
         if (options.getRequestContinuation() != null) {
             ifNoneMatchValue = options.getRequestContinuation();
-        } else if (!options.getStartFromBeginning()) {
+        } else if (!options.isStartFromBeginning()) {
             ifNoneMatchValue = "*";
         }
         // On REST level, change feed is using IF_NONE_MATCH/ETag instead of
@@ -162,13 +173,13 @@ public class BridgeInternal {
                 headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, options.getSessionToken());
             }
 
-            if (options.getEnableScanInQuery() != null) {
-                headers.put(HttpConstants.HttpHeaders.ENABLE_SCAN_IN_QUERY, options.getEnableScanInQuery().toString());
+            if (options.isScanInQueryEnabled() != null) {
+                headers.put(HttpConstants.HttpHeaders.ENABLE_SCAN_IN_QUERY, options.isScanInQueryEnabled().toString());
             }
 
-            if (options.getEmitVerboseTracesInQuery() != null) {
+            if (options.isEmitVerboseTracesInQuery() != null) {
                 headers.put(HttpConstants.HttpHeaders.EMIT_VERBOSE_TRACES_IN_QUERY,
-                    options.getEmitVerboseTracesInQuery().toString());
+                    options.isEmitVerboseTracesInQuery().toString());
             }
 
             if (options.getMaxDegreeOfParallelism() != 0) {
@@ -239,7 +250,7 @@ public class BridgeInternal {
     }
 
     public static boolean getUseMultipleWriteLocations(ConnectionPolicy policy) {
-        return policy.getUsingMultipleWriteLocations();
+        return policy.isUsingMultipleWriteLocations();
     }
 
     public static void setUseMultipleWriteLocations(ConnectionPolicy policy, boolean value) {
@@ -506,5 +517,39 @@ public class BridgeInternal {
 
     public static Object getPartitionKeyObject(PartitionKey right) {
         return right.getKeyObject();
+    }
+
+
+    public static int getHashCode(CosmosKeyCredential keyCredential) {
+        return keyCredential.getKeyHashCode();
+    }
+
+
+    public static String toLower(RequestVerb verb) {
+        return verb.toLowerCase();
+    }
+
+    public static String getLink(CosmosAsyncContainer cosmosAsyncContainer) {
+        return cosmosAsyncContainer.getLink();
+    }
+
+    public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class klassType) {
+        try {
+            // the hot path should come through here to avoid serialization/deserialization
+            if (klassType.equals(Document.class) || klassType.equals(OrderByRowResult.class) || klassType.equals(CosmosItemProperties.class)
+                || klassType.equals(PartitionKeyRange.class) || klassType.equals(Range.class)
+                || klassType.equals(QueryInfo.class) || klassType.equals(PartitionedQueryExecutionInfoInternal.class)
+                || klassType.equals(QueryItem.class)
+                || klassType.equals(Address.class)
+                || klassType.equals(DatabaseAccount.class) || klassType.equals(DatabaseAccountLocation.class)
+                || klassType.equals(ReplicationPolicy.class) || klassType.equals(ConsistencyPolicy.class)
+                || klassType.equals(DocumentCollection.class) || klassType.equals(Database.class)) {
+                return (JsonSerializable) klassType.getDeclaredConstructor(ObjectNode.class).newInstance(objectNode);
+            } else {
+                return (JsonSerializable) klassType.getDeclaredConstructor(String.class).newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), objectNode));
+            }
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 }
