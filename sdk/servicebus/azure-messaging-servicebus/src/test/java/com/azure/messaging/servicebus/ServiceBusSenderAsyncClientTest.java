@@ -11,6 +11,7 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
@@ -40,6 +41,8 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
@@ -55,17 +58,20 @@ public class ServiceBusSenderAsyncClientTest {
 
     @Mock
     private AmqpSendLink sendLink;
-
     @Mock
     private ServiceBusAmqpConnection connection;
-
     @Mock
     private TokenCredential tokenCredential;
+    @Mock
+    private ErrorContextProvider errorContextProvider;
 
     @Captor
     private ArgumentCaptor<org.apache.qpid.proton.message.Message> singleMessageCaptor;
     @Captor
     private ArgumentCaptor<List<org.apache.qpid.proton.message.Message>> messagesCaptor;
+
+    private MessageSerializer serializer = new ServiceBusMessageSerializer();
+    private TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
     private final ClientLogger logger = new ClientLogger(ServiceBusSenderAsyncClient.class);
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
@@ -77,7 +83,6 @@ public class ServiceBusSenderAsyncClientTest {
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusConnectionProcessor connectionProcessor;
-    private TracerProvider tracerProvider;
     private ConnectionOptions connectionOptions;
 
     private static final String TEST_CONTENTS = "My message for service bus queue!";
@@ -123,16 +128,19 @@ public class ServiceBusSenderAsyncClientTest {
     }
 
     /**
-     * Verifies that sending multiple message will result in calling sender.send(List&lt;Message&gt;).
+     * Verifies that sending multiple message will result in calling sender.send(MessageBatch).
      */
     @Test
     void sendMultipleMessages() {
         // Arrange
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final Flux<ServiceBusMessage> testData = Flux.range(0, count).flatMap(number -> {
-            final ServiceBusMessage data = new ServiceBusMessage(contents);
-            return Flux.just(data);
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
+            errorContextProvider, tracerProvider, serializer);
+
+        IntStream.range(0, count).forEach(index -> {
+            final ServiceBusMessage message = new ServiceBusMessage(contents);
+            Assertions.assertTrue(batch.tryAdd(message));
         });
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
@@ -141,7 +149,7 @@ public class ServiceBusSenderAsyncClientTest {
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
         // Act
-        StepVerifier.create(sender.send(testData))
+        StepVerifier.create(sender.send(batch))
             .verifyComplete();
 
         // Assert
