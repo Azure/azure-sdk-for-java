@@ -45,6 +45,8 @@ public class ReceiveMessageOptions {
 
     /**
      * Gets the receive mode for the message.
+     *
+     * @return the receive mode for the message.
      */
     public ReceiveMode getReceiveMode() {
         return receiveMode;
