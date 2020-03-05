@@ -166,8 +166,16 @@ public class IdentityClient {
                 output.append(line);
             }
             String processOutput = output.toString();
+
             if (process.exitValue() != 0) {
-                throw logger.logExceptionAsError(new ClientAuthenticationException(processOutput, null));
+                if (processOutput.length() > 0) {
+                    String redactedOutput = redactInfo("\"accessToken\": \"(.*?)(\"|$)", processOutput);
+                    throw logger.logExceptionAsError(new ClientAuthenticationException(processOutput
+                                                               .replaceAll(redactedOutput, "****"), null));
+                } else {
+                    throw logger.logExceptionAsError(
+                        new ClientAuthenticationException("Failed to invoke Azure CLI ", null));
+                }
             }
             Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(processOutput, Map.class,
                         SerializerEncoding.JSON);
@@ -193,10 +201,6 @@ public class IdentityClient {
             }
         }
         return Mono.just(token);
-    }
-
-    private boolean isWindowsPlatform() {
-        return System.getProperty("os.name").contains("Windows");
     }
 
 
@@ -228,20 +232,6 @@ public class IdentityClient {
         } finally {
             service.shutdown();
         }
-    }
-
-    private String getSafeWorkingDirectory() {
-        String path = System.getenv("PATH");
-        if (CoreUtils.isNullOrEmpty(path)) {
-            return null;
-        }
-
-        String[] paths = isWindowsPlatform() ? path.split(";") : path.split(":");
-
-        if (paths.length >= 1) {
-            return paths[0];
-        }
-        return null;
     }
 
     /**
@@ -605,5 +595,27 @@ public class IdentityClient {
             default:
                 return new Proxy(Type.HTTP, options.getAddress());
         }
+    }
+
+    private String getSafeWorkingDirectory() {
+        String path = System.getenv("PATH");
+        if (CoreUtils.isNullOrEmpty(path)) {
+            return null;
+        }
+
+        String[] paths = isWindowsPlatform() ? path.split(";") : path.split(":");
+
+        if (paths.length >= 1) {
+            return paths[0];
+        }
+        return null;
+    }
+
+    private boolean isWindowsPlatform() {
+        return System.getProperty("os.name").contains("Windows");
+    }
+
+    private String redactInfo(String regex, String input) {
+        return input.replaceAll(regex, "****");
     }
 }
