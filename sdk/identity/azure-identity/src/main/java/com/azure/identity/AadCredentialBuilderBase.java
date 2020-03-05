@@ -16,7 +16,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     /**
      * Specifies the Azure Active Directory endpoint to acquire tokens.
      * @param authorityHost the Azure Active Directory endpoint
-     * @return itself
+     * @return An updated instance of this builder with the authority host set as specified.
      */
     @SuppressWarnings("unchecked")
     public T authorityHost(String authorityHost) {
@@ -28,7 +28,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      * Sets the client ID of the application.
      *
      * @param clientId the client ID of the application.
-     * @return itself
+     * @return An updated instance of this builder with the client id set as specified.
      */
     @SuppressWarnings("unchecked")
     public T clientId(String clientId) {
@@ -40,7 +40,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      * Sets the tenant ID of the application.
      *
      * @param tenantId the tenant ID of the application.
-     * @return itself
+     * @return An updated instance of this builder with the tenant id set as specified.
      */
     @SuppressWarnings("unchecked")
     public T tenantId(String tenantId) {
@@ -49,10 +49,11 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     }
 
     /**
-     * Specifies the executor service on which to the authentication request will run.
+     * Specifies the  ExecutorService to be used to execute the requests.
+     * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
-     * @param executorService the executor service to run authentication requests on.
-     * @return itself
+     * @param executorService the executor service to use for executing authentication requests.
+     * @return An updated instance of this builder with the executor service set as specified.
      */
     @SuppressWarnings("unchecked")
     public T executorService(ExecutorService executorService) {
