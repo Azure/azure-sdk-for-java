@@ -4,6 +4,7 @@
 package com.azure.identity.util;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
@@ -82,7 +83,7 @@ public final class TestUtils {
      */
     public static Mono<MsalToken> getMockMsalToken(String accessToken, OffsetDateTime expiresOn) {
         return Mono.fromFuture(getMockAuthenticationResult(accessToken, expiresOn))
-            .map(MsalToken::new);
+            .map(ar -> new MsalToken(ar, new IdentityClientOptions()));
     }
 
     /**

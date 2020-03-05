@@ -21,7 +21,7 @@ public final class IdentityClientOptions {
     private Function<Duration, Duration> retryTimeout;
     private ProxyOptions proxyOptions;
     private HttpPipeline httpPipeline;
-    private Duration refreshBeforeExpiry;
+    private Duration refreshBeforeExpiry = Duration.ofMinutes(2);
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
