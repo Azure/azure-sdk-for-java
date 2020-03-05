@@ -20,6 +20,7 @@ public class HttpLogOptions {
     private HttpLogDetailLevel logLevel;
     private Set<String> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
+    private boolean prettyPrintJson;
     private final ClientLogger logger = new ClientLogger(HttpLogOptions.class);
 
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
@@ -181,6 +182,27 @@ public class HttpLogOptions {
                 this.applicationId = applicationId;
             }
         }
+        return this;
+    }
+
+    /**
+     * Gets flag to allow pretty printing of JSON message bodies.
+     *
+     * @return true if pretty printing of JSON message bodies is allowed.
+     */
+    public boolean isPrettyPrintJson() {
+        return prettyPrintJson;
+    }
+
+    /**
+     * Sets flag to allow pretty printing of JSON message bodies.
+     *
+     * @param prettyPrintJson If true, pretty prints JSON message bodies when logging. If the detailLevel does not
+     *                        include body logging, this flag does nothing.
+     * @return The updated HttpLogOptions object.
+     */
+    public HttpLogOptions setPrettyPrintJson(boolean prettyPrintJson) {
+        this.prettyPrintJson = prettyPrintJson;
         return this;
     }
 }

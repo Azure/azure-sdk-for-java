@@ -43,26 +43,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     /**
      * Creates an HttpLoggingPolicy with the given log configurations.
      *
-     * @param httpLogOptions The HTTP logging configurations.
+     * @param httpLogOptions The HTTP logging configuration options.
      */
     public HttpLoggingPolicy(HttpLogOptions httpLogOptions) {
-        this(httpLogOptions, false);
-    }
-
-    /**
-     * Creates an HttpLoggingPolicy with the given log configuration and pretty printing setting.
-     *
-     * @param httpLogOptions The HTTP logging configuration options.
-     * @param prettyPrintJson If true, pretty prints JSON message bodies when logging. If the detailLevel does not
-     * include body logging, this flag does nothing.
-     */
-    private HttpLoggingPolicy(HttpLogOptions httpLogOptions, boolean prettyPrintJson) {
-        this.prettyPrintJson = prettyPrintJson;
-
         if (httpLogOptions == null) {
             this.httpLogDetailLevel = HttpLogDetailLevel.NONE;
             this.allowedHeaderNames = Collections.emptySet();
             this.allowedQueryParameterNames = Collections.emptySet();
+            this.prettyPrintJson = false;
         } else {
             this.httpLogDetailLevel = httpLogOptions.getLogLevel();
             this.allowedHeaderNames = httpLogOptions.getAllowedHeaderNames()
@@ -73,6 +61,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .stream()
                 .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toSet());
+            this.prettyPrintJson = httpLogOptions.isPrettyPrintJson();
         }
     }
 
