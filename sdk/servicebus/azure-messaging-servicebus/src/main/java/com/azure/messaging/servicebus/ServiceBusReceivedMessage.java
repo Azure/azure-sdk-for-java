@@ -9,7 +9,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 /***
- * This class represent the received Message.
+ * This class represents a received message from Service Bus.
  */
 public final class ServiceBusReceivedMessage extends ServiceBusMessage {
     private UUID lockToken;

@@ -100,41 +100,36 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     }
 
     /**
-     * @param message to be sent Service Bus Queue.
+     * Sends a message to a Service Bus queue or topic.
+     *
+     * @param message Message to be sent to Service Bus queue or topic.
      *
      * @return The {@link Mono} the finishes this operation on service bus resource.
+     *
+     * @throws NullPointerException if {@code message} is {@code null}.
      */
     public Mono<Void> send(ServiceBusMessage message) {
         Objects.requireNonNull(message, "'message' cannot be null.");
-        return send(Flux.just(message));
+
+        return sendInternal(Flux.just(message));
     }
 
     /**
      * Sends a message to a Service Bus queue or topic.
      *
-     * @param message to be sent to Service Bus queue or topic.
+     * @param message Message to be sent to Service Bus queue or topic.
      * @param sessionId the session id to associate with the message.
      *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
+     * @return A {@link Mono} the finishes this operation on service bus resource.
+     *
+     * @throws NullPointerException if {@code message} or {@code sessionId} is {@code null}.
      */
     public Mono<Void> send(ServiceBusMessage message, String sessionId) {
+        Objects.requireNonNull(message, "'message' cannot be null.");
+        Objects.requireNonNull(sessionId, "'sessionId' cannot be null.");
+
         //TODO (hemanttanwar): Implement session id feature.
         return Mono.error(new IllegalStateException("Not implemented."));
-    }
-
-    /**
-     * Sends a set of messages to the associated Service Bus using a batched approach. If the size of messages exceed
-     * the maximum size of a single batch, an exception will be triggered and the send will fail. By default, the
-     * message size is the max amount allowed on the link.
-     *
-     * @param messages to send to the Service Bus. *
-     *
-     * @return A {@link Mono} that completes when all messages are pushed to the service.
-     */
-    public Mono<Void> send(Flux<ServiceBusMessage> messages) {
-        Objects.requireNonNull(messages, "'messages' cannot be null.");
-
-        return sendInternal(messages);
     }
 
     /**
@@ -142,10 +137,13 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
      *
      * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
      *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
+     * @return A {@link Mono} the finishes this operation on service bus resource.
+     *
+     * @throws NullPointerException if {@code batch} is {@code null}.
      */
     public Mono<Void> send(ServiceBusMessageBatch batch) {
         Objects.requireNonNull(batch, "'batch' cannot be null.");
+
         final boolean isTracingEnabled = tracerProvider.isEnabled();
         final AtomicReference<Context> parentContext = isTracingEnabled
             ? new AtomicReference<>(Context.NONE)
@@ -212,26 +210,31 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
      * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is
      * enqueued and made available to receivers only at the scheduled enqueue time.
      *
-     * @param serviceBusMessage to be sent to the Service Bus Queue.
-     * @param scheduledEnqueueTimeUtc Declares at which time the message should appear on the Service Bus Queue.
+     * @param message Message to be sent to the Service Bus Queue.
+     * @param scheduledEnqueueTime Instant at which the message should appear in the Service Bus queue or topic.
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
+     *
+     * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
      */
-    public Mono<Long> schedule(ServiceBusMessage serviceBusMessage, Instant scheduledEnqueueTimeUtc) {
-        //TODO(feature-to-implement)
-        return null;
+    public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime) {
+        Objects.requireNonNull(message, "'message' cannot be null.");
+        Objects.requireNonNull(scheduledEnqueueTime, "'scheduledEnqueueTime' cannot be null.");
+
+        //TODO (hemanttanwar): Implement session id feature.
+        return Mono.error(new IllegalStateException("Not implemented."));
     }
 
     /**
-     * Cancels the enqueuing of an already sent scheduled message, if it was not already enqueued.
+     * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
      *
      * @param sequenceNumber of the scheduled message to cancel.
      *
      * @return The {@link Mono} that finishes this operation on service bus resource.
      */
     public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
-        //TODO(feature-to-implement)
-        return null;
+        //TODO (hemanttanwar): Implement session id feature.
+        return Mono.error(new IllegalStateException("Not implemented."));
     }
 
     /**
