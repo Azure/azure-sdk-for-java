@@ -237,7 +237,6 @@ public class IdentityClient {
      */
     public Mono<AccessToken> authenticateWithClientSecret(String clientSecret, TokenRequestContext request) {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId;
-        ExecutorService service = Executors.newSingleThreadExecutor();
         try {
             ConfidentialClientApplication.Builder applicationBuilder =
                 ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromSecret(clientSecret))
@@ -259,8 +258,6 @@ public class IdentityClient {
 
         } catch (MalformedURLException e) {
             return Mono.error(e);
-        } finally {
-            service.shutdown();
         }
     }
 
