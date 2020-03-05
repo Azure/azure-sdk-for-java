@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.Permission;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -12,11 +13,13 @@ import com.azure.cosmos.Resource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +106,7 @@ public class RxDocumentServiceResponse {
     }
 
     public <T extends Resource> List<T> getQueryResponse(Class<T> c) {
-        String responseBody = this.getResponseBodyAsString();
+        byte[] responseBody = this.getResponseBodyAsByteArray();
         if (responseBody == null) {
             return new ArrayList<T>();
         }
@@ -126,18 +129,12 @@ public class RxDocumentServiceResponse {
                 // Aggregate on single partition collection may return the aggregated value only
                 // In that case it needs to encapsulated in a special document
 
-                String resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
-                        ? String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString())
-                                : toJson(jToken);
-                        T resource = null;
-                        try {
-                            resource = c.getConstructor(String.class).newInstance(resourceJson);
-                        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                            throw new IllegalStateException("Failed to instantiate class object.", e);
-                        }
+                JsonNode resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
+                        ? fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString()))
+                                : jToken;
 
-                        queryResults.add(resource);
+               T resource = (T) BridgeInternal.instantiateJsonSerializable((ObjectNode) resourceJson, c);
+               queryResults.add(resource);
             }
         }
 
@@ -157,6 +154,14 @@ public class RxDocumentServiceResponse {
             return Utils.getSimpleObjectMapper().readTree(json);
         } catch (IOException e) {
             throw new IllegalStateException(String.format("Unable to parse JSON %s", json), e);
+        }
+    }
+
+    private static JsonNode fromJson(byte[] json){
+        try {
+            return Utils.getSimpleObjectMapper().readTree(json);
+        } catch (IOException e) {
+            throw new IllegalStateException(String.format("Unable to parse JSON %s", Arrays.toString(json)), e);
         }
     }
 

@@ -6,8 +6,10 @@ import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.FeedOptions;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.fasterxml.uuid.EthernetAddress;
 import com.fasterxml.uuid.Generators;
@@ -22,6 +24,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -70,19 +73,12 @@ public class Utils {
             return null;
         }
 
-        try {
-            return str.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        return str.getBytes(StandardCharsets.UTF_8);
     }
 
     public static byte[] getUTF8Bytes(String str) {
-        try {
-            return str.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        return str.getBytes(StandardCharsets.UTF_8);
+
     }
 
     public static String encodeBase64String(byte[] binaryData) {
@@ -629,5 +625,13 @@ public class Utils {
         byte[] bytes = new byte[buf.readableBytes()];
         buf.readBytes(bytes);
         return bytes;
+    }
+
+    public static String toJson(ObjectMapper mapper, ObjectNode object) {
+        try {
+            return mapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Unable to convert JSON to STRING", e);
+        }
     }
 }
