@@ -59,7 +59,7 @@ public class MaintenanceRedeployStatus {
     private String lastOperationMessage;
 
     /**
-     * Get the isCustomerInitiatedMaintenanceAllowed value.
+     * Get true, if customer is allowed to perform Maintenance.
      *
      * @return the isCustomerInitiatedMaintenanceAllowed value
      */
@@ -68,7 +68,7 @@ public class MaintenanceRedeployStatus {
     }
 
     /**
-     * Set the isCustomerInitiatedMaintenanceAllowed value.
+     * Set true, if customer is allowed to perform Maintenance.
      *
      * @param isCustomerInitiatedMaintenanceAllowed the isCustomerInitiatedMaintenanceAllowed value to set
      * @return the MaintenanceRedeployStatus object itself.
@@ -79,7 +79,7 @@ public class MaintenanceRedeployStatus {
     }
 
     /**
-     * Get the preMaintenanceWindowStartTime value.
+     * Get start Time for the Pre Maintenance Window.
      *
      * @return the preMaintenanceWindowStartTime value
      */
@@ -88,7 +88,7 @@ public class MaintenanceRedeployStatus {
     }
 
     /**
-     * Set the preMaintenanceWindowStartTime value.
+     * Set start Time for the Pre Maintenance Window.
      *
      * @param preMaintenanceWindowStartTime the preMaintenanceWindowStartTime value to set
      * @return the MaintenanceRedeployStatus object itself.
@@ -99,7 +99,7 @@ public class MaintenanceRedeployStatus {
     }
 
     /**
-     * Get the preMaintenanceWindowEndTime value.
+     * Get end Time for the Pre Maintenance Window.
      *
      * @return the preMaintenanceWindowEndTime value
      */
@@ -108,7 +108,7 @@ public class MaintenanceRedeployStatus {
     }
 
     /**
-     * Set the preMaintenanceWindowEndTime value.
+     * Set end Time for the Pre Maintenance Window.
      *
      * @param preMaintenanceWindowEndTime the preMaintenanceWindowEndTime value to set
      * @return the MaintenanceRedeployStatus object itself.
@@ -119,7 +119,7 @@ public class MaintenanceRedeployStatus {
     }
 
     /**
-     * Get the maintenanceWindowStartTime value.
+     * Get start Time for the Maintenance Window.
      *
      * @return the maintenanceWindowStartTime value
      */
@@ -128,7 +128,7 @@ public class MaintenanceRedeployStatus {
     }
 
     /**
-     * Set the maintenanceWindowStartTime value.
+     * Set start Time for the Maintenance Window.
      *
      * @param maintenanceWindowStartTime the maintenanceWindowStartTime value to set
      * @return the MaintenanceRedeployStatus object itself.
@@ -139,7 +139,7 @@ public class MaintenanceRedeployStatus {
     }
 
     /**
-     * Get the maintenanceWindowEndTime value.
+     * Get end Time for the Maintenance Window.
      *
      * @return the maintenanceWindowEndTime value
      */
@@ -148,7 +148,7 @@ public class MaintenanceRedeployStatus {
     }
 
     /**
-     * Set the maintenanceWindowEndTime value.
+     * Set end Time for the Maintenance Window.
      *
      * @param maintenanceWindowEndTime the maintenanceWindowEndTime value to set
      * @return the MaintenanceRedeployStatus object itself.
@@ -159,7 +159,7 @@ public class MaintenanceRedeployStatus {
     }
 
     /**
-     * Get the lastOperationResultCode value.
+     * Get the Last Maintenance Operation Result Code. Possible values include: 'None', 'RetryLater', 'MaintenanceAborted', 'MaintenanceCompleted'.
      *
      * @return the lastOperationResultCode value
      */
@@ -168,7 +168,7 @@ public class MaintenanceRedeployStatus {
     }
 
     /**
-     * Set the lastOperationResultCode value.
+     * Set the Last Maintenance Operation Result Code. Possible values include: 'None', 'RetryLater', 'MaintenanceAborted', 'MaintenanceCompleted'.
      *
      * @param lastOperationResultCode the lastOperationResultCode value to set
      * @return the MaintenanceRedeployStatus object itself.
@@ -179,7 +179,7 @@ public class MaintenanceRedeployStatus {
     }
 
     /**
-     * Get the lastOperationMessage value.
+     * Get message returned for the last Maintenance Operation.
      *
      * @return the lastOperationMessage value
      */
@@ -188,7 +188,7 @@ public class MaintenanceRedeployStatus {
     }
 
     /**
-     * Set the lastOperationMessage value.
+     * Set message returned for the last Maintenance Operation.
      *
      * @param lastOperationMessage the lastOperationMessage value to set
      * @return the MaintenanceRedeployStatus object itself.
