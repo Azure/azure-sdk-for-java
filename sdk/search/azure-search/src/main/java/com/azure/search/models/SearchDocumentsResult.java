@@ -111,7 +111,7 @@ public final class SearchDocumentsResult {
      *
      * @return the nextPageParameters value.
      */
-    SearchRequest getNextPageParameters() {
+    public SearchRequest getNextPageParameters() {
         return this.nextPageParameters;
     }
 

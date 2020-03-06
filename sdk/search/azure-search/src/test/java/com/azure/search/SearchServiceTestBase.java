@@ -581,7 +581,7 @@ public abstract class SearchServiceTestBase extends TestBase {
      * @return a RequestOptions object with ClientRequestId.
      */
     protected RequestOptions generateRequestOptions() {
-        return new RequestOptions().setClientRequestId(UUID.randomUUID());
+        return new RequestOptions().setXMsClientRequestId(UUID.randomUUID());
     }
 
     void assertHttpResponseException(Runnable exceptionThrower, HttpResponseStatus expectedResponseStatus,
