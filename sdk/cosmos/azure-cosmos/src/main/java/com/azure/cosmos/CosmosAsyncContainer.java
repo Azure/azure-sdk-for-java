@@ -8,6 +8,10 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.model.CosmosAsyncContainerResponse;
+import com.azure.cosmos.model.CosmosConflictProperties;
+import com.azure.cosmos.model.CosmosContainerProperties;
+import com.azure.cosmos.model.ModelBridgeInternal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -72,7 +76,7 @@ public class CosmosAsyncContainer {
             options = new CosmosContainerRequestOptions();
         }
         return database.getDocClientWrapper().readCollection(getLink(), options.toRequestOptions())
-                   .map(response -> new CosmosAsyncContainerResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
     }
 
     /**
@@ -91,7 +95,7 @@ public class CosmosAsyncContainer {
             options = new CosmosContainerRequestOptions();
         }
         return database.getDocClientWrapper().deleteCollection(getLink(), options.toRequestOptions())
-                   .map(response -> new CosmosAsyncContainerResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
     }
 
     /**
@@ -145,8 +149,8 @@ public class CosmosAsyncContainer {
             options = new CosmosContainerRequestOptions();
         }
         return database.getDocClientWrapper()
-                   .replaceCollection(containerProperties.getV2Collection(), options.toRequestOptions())
-                   .map(response -> new CosmosAsyncContainerResponse(response, database)).single();
+                   .replaceCollection(ModelBridgeInternal.getV2Collection(containerProperties), options.toRequestOptions())
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
     }
 
     /* CosmosAsyncItem operations */
@@ -549,7 +553,7 @@ public class CosmosAsyncContainer {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper().readConflicts(getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           CosmosConflictProperties.getFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosConflictPropertiesFromV2Results(response.getResults()),
                            response.getResponseHeaders()));
         });
     }
@@ -578,7 +582,7 @@ public class CosmosAsyncContainer {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper().queryConflicts(getLink(), query, options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           CosmosConflictProperties.getFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosConflictPropertiesFromV2Results(response.getResults()),
                            response.getResponseHeaders()));
         });
     }

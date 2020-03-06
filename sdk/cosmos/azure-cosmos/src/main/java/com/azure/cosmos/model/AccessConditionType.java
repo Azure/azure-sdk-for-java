@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
 /**
  * Specifies the set of access condition types that can be used for operations in the Azure Cosmos DB database service.

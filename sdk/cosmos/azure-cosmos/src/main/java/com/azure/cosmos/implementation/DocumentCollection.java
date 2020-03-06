@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConflictResolutionPolicy;
+import com.azure.cosmos.model.ConflictResolutionPolicy;
 import com.azure.cosmos.IndexingPolicy;
 import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.PartitionKeyDefinition;
@@ -14,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import static com.azure.cosmos.BridgeInternal.populatePropertyBagJsonSerializable;
 import static com.azure.cosmos.BridgeInternal.setProperty;
-import static com.azure.cosmos.BridgeInternal.remove;
 
 /**
  * Represents a document collection in the Azure Cosmos DB database service. A collection is a named logical container
@@ -162,7 +161,7 @@ public final class DocumentCollection extends Resource {
         if (timeToLive != null) {
             setProperty(this, Constants.Properties.DEFAULT_TTL, timeToLive);
         } else if (super.has(Constants.Properties.DEFAULT_TTL)) {
-            remove(this, Constants.Properties.DEFAULT_TTL);
+            remove(Constants.Properties.DEFAULT_TTL);
         }
     }
 

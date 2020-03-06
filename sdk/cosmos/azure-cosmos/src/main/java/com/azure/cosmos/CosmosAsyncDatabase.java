@@ -6,6 +6,9 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
+import com.azure.cosmos.model.CosmosAsyncContainerResponse;
+import com.azure.cosmos.model.CosmosContainerProperties;
+import com.azure.cosmos.model.ModelBridgeInternal;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -167,8 +170,8 @@ public class CosmosAsyncDatabase {
             options = new CosmosContainerRequestOptions();
         }
         return getDocClientWrapper()
-                   .createCollection(this.getLink(), containerProperties.getV2Collection(), options.toRequestOptions())
-                   .map(response -> new CosmosAsyncContainerResponse(response, this)).single();
+                   .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties), options.toRequestOptions())
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, this)).single();
     }
 
     /**
@@ -344,7 +347,7 @@ public class CosmosAsyncDatabase {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readCollections(getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           CosmosContainerProperties.getFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosContainerPropertiesFromV2Results(response.getResults()),
                            response.getResponseHeaders()));
         });
     }
@@ -426,7 +429,7 @@ public class CosmosAsyncDatabase {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryCollections(getLink(), querySpec, options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           CosmosContainerProperties.getFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosContainerPropertiesFromV2Results(response.getResults()),
                            response.getResponseHeaders()));
         });
     }

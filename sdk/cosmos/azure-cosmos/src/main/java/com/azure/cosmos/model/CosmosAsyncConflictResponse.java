@@ -1,7 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncConflict;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosResponse;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ResourceResponse;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +27,7 @@ public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictPr
         } else {
             CosmosConflictProperties props = new CosmosConflictProperties(bodyAsString);
             super.setProperties(props);
-            conflictClient = new CosmosAsyncConflict(props.getId(), container);
+            conflictClient = BridgeInternal.createCosmosAsyncConflict(props.getId(), container);
         }
     }
 

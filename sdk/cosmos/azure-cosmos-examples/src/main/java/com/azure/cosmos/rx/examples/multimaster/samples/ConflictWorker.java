@@ -4,9 +4,9 @@
 package com.azure.cosmos.rx.examples.multimaster.samples;
 
 import com.azure.cosmos.model.AccessCondition;
-import com.azure.cosmos.AccessConditionType;
+import com.azure.cosmos.model.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConflictResolutionPolicy;
+import com.azure.cosmos.model.ConflictResolutionPolicy;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.Resource;

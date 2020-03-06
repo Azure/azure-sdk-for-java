@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.StoredProcedure;
+import com.azure.cosmos.model.ConflictResolutionPolicy;
 
 /**
  * The enum Conflict resolution mode.

@@ -14,9 +14,9 @@ import java.util.Map;
  */
 public class CosmosResponse<T extends Resource> {
     private T properties;
-    final ResourceResponse resourceResponseWrapper;
+    protected final ResourceResponse resourceResponseWrapper;
 
-    CosmosResponse(ResourceResponse resourceResponse) {
+    protected CosmosResponse(ResourceResponse resourceResponse) {
         this.resourceResponseWrapper = resourceResponse;
     }
 
@@ -44,7 +44,7 @@ public class CosmosResponse<T extends Resource> {
         return properties;
     }
 
-    CosmosResponse<T> setProperties(T resourceSettings) {
+    protected CosmosResponse<T> setProperties(T resourceSettings) {
         this.properties = resourceSettings;
         return this;
     }

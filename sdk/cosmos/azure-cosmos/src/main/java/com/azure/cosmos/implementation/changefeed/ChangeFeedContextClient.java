@@ -4,11 +4,11 @@ package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncContainerResponse;
+import com.azure.cosmos.model.CosmosAsyncContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.CosmosAsyncItemResponse;
-import com.azure.cosmos.CosmosContainerProperties;
+import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.CosmosItemRequestOptions;

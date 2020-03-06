@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.model.AccessCondition;
-import com.azure.cosmos.AccessConditionType;
+import com.azure.cosmos.model.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -140,7 +140,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
 
         return this.client.deleteItem(lockId, new PartitionKey(lockId), requestOptions)
             .map(documentResourceResponse -> {
-                if (documentResourceResponse.getResource() != null) {
+                if (documentResourceResponse.getItem() != null) {
                     this.lockETag = null;
                     return true;
                 } else {

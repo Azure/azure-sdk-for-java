@@ -4,7 +4,7 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.model.CompositePath;
-import com.azure.cosmos.CompositePathSortOrder;
+import com.azure.cosmos.model.CompositePathSortOrder;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
@@ -19,7 +19,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosContainerProperties;
+import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabase;
@@ -480,7 +480,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                          List<CosmosItemProperties> documentDefinitionList) {
         return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
-            .map(itemResponse -> (CosmosItemProperties)itemResponse.getResource())
+            .map(itemResponse -> (CosmosItemProperties)itemResponse.getItem())
             .collectList()
             .block();
     }

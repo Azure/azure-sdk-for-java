@@ -33,7 +33,7 @@ public class CosmosAsyncItemResponse<T> {
      *
      * @return the resource
      */
-    public T getResource() {
+    public T getItem() {
         if (item != null) {
             return item;
         }

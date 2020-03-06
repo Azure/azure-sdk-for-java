@@ -159,7 +159,7 @@ public class JsonSerializable {
      *
      * @param propertyName the property to remove.
      */
-    void remove(String propertyName) {
+    protected void remove(String propertyName) {
         this.propertyBag.remove(propertyName);
     }
 

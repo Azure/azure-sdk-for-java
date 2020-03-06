@@ -27,7 +27,7 @@ public class CosmosItemResponse<T> {
      */
     @SuppressWarnings("unchecked")
     public T getResource() {
-        return (T) responseWrapper.getResource();
+        return (T) responseWrapper.getItem();
     }
 
     /**

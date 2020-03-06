@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.model;
 
-import com.azure.cosmos.AccessConditionType;
-
 /**
  * Represents a set of access conditions to be used for operations against the Azure Cosmos DB database service.
  */

@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 
-import static com.azure.cosmos.BridgeInternal.remove;
 import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.BridgeInternal.setMapper;
 
@@ -120,7 +119,7 @@ public class Document extends Resource {
         if (timeToLive != null) {
             setProperty(this, Constants.Properties.TTL, timeToLive);
         } else if (super.has(Constants.Properties.TTL)) {
-            remove(this, Constants.Properties.TTL);
+            remove(Constants.Properties.TTL);
         }
     }
 }

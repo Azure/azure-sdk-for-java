@@ -4,14 +4,14 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.model.CompositePath;
-import com.azure.cosmos.CompositePathSortOrder;
+import com.azure.cosmos.model.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncContainerResponse;
+import com.azure.cosmos.model.CosmosAsyncContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContainerProperties;
+import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.implementation.CosmosItemProperties;

@@ -1,7 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosResponse;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ResourceResponse;
 import org.apache.commons.lang3.StringUtils;
@@ -23,7 +27,7 @@ public class CosmosAsyncContainerResponse extends CosmosResponse<CosmosContainer
         } else {
             CosmosContainerProperties props = new CosmosContainerProperties(bodyAsString);
             super.setProperties(props);
-            container = new CosmosAsyncContainer(this.getProperties().getId(), database);
+            container = BridgeInternal.createCosmosAsyncContainer(this.getProperties().getId(), database);
         }
     }
 

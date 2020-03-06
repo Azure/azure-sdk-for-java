@@ -3,6 +3,8 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.model.CosmosAsyncContainerResponse;
+import com.azure.cosmos.model.CosmosContainerProperties;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 

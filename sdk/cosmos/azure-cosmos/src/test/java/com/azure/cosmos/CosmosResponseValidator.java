@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.model.CompositePath;
+import com.azure.cosmos.model.CosmosAsyncContainerResponse;
 import org.assertj.core.api.Assertions;
 
 import java.util.ArrayList;
