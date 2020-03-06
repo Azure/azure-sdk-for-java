@@ -40,8 +40,8 @@ import java.util.Map;
 public class DataLakePathClient {
     private final ClientLogger logger = new ClientLogger(DataLakePathClient.class);
 
-    protected final DataLakePathAsyncClient dataLakePathAsyncClient;
-    protected final BlockBlobClient blockBlobClient;
+    final DataLakePathAsyncClient dataLakePathAsyncClient;
+    final BlockBlobClient blockBlobClient;
 
     DataLakePathClient(DataLakePathAsyncClient dataLakePathAsyncClient, BlockBlobClient blockBlobClient) {
         this.dataLakePathAsyncClient = dataLakePathAsyncClient;

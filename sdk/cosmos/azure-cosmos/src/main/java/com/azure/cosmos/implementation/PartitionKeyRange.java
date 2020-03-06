@@ -3,9 +3,11 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.Resource;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.List;
 
@@ -18,6 +20,16 @@ public class PartitionKeyRange extends Resource {
     public static final String MASTER_PARTITION_KEY_RANGE_ID = "M";
 
     /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public PartitionKeyRange(ObjectNode objectNode) {
+        super(objectNode);
+    }
+
+    /**
      * Initialize a partition key range object.
      */
     public PartitionKeyRange() {
@@ -26,7 +38,7 @@ public class PartitionKeyRange extends Resource {
 
     /**
      * Initialize a partition key range object from json string.
-     * 
+     *
      * @param jsonString
      *            the json string that represents the partition key range
      *            object.
