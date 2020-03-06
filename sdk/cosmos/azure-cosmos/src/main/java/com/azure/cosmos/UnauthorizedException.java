@@ -11,12 +11,23 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import java.net.URI;
 import java.util.Map;
 
+/**
+ * The type Unauthorized exception.
+ */
 public class UnauthorizedException extends CosmosClientException {
 
     UnauthorizedException() {
         this(RMResources.Unauthorized);
     }
 
+    /**
+     * Instantiates a new Unauthorized exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public UnauthorizedException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
                                  Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.UNAUTHORIZED, cosmosError, responseHeaders);
@@ -32,6 +43,13 @@ public class UnauthorizedException extends CosmosClientException {
         this(message, null, headers, requestUriString);
     }
 
+    /**
+     * Instantiates a new Unauthorized exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUri the request uri
+     */
     public UnauthorizedException(String message, HttpHeaders headers, URI requestUri) {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }

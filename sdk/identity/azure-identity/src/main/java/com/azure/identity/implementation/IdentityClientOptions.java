@@ -3,6 +3,7 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 
@@ -21,6 +22,7 @@ public final class IdentityClientOptions {
     private Function<Duration, Duration> retryTimeout;
     private ProxyOptions proxyOptions;
     private HttpPipeline httpPipeline;
+    private HttpClient httpClient;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -107,12 +109,29 @@ public final class IdentityClientOptions {
     }
 
     /**
+     * @return the HttpClient to use for requests
+     */
+    public HttpClient getHttpClient() {
+        return httpClient;
+    }
+
+    /**
      * Specifies the HttpPipeline to send all requests. This setting overrides the others.
      * @param httpPipeline the HttpPipeline to send all requests
      * @return IdentityClientOptions
      */
     public IdentityClientOptions setHttpPipeline(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Specifies the HttpClient to send use for requests.
+     * @param httpClient the http client to use for requests
+     * @return IdentityClientOptions
+     */
+    public IdentityClientOptions setHttpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
         return this;
     }
 }

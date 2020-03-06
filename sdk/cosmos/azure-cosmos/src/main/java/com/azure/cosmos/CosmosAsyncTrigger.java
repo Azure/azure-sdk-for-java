@@ -6,6 +6,9 @@ import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.Trigger;
 import reactor.core.publisher.Mono;
 
+/**
+ * The type Cosmos async trigger. This contains methods to operate on a cosmos trigger asynchronously
+ */
 public class CosmosAsyncTrigger {
 
     private final CosmosAsyncContainer container;

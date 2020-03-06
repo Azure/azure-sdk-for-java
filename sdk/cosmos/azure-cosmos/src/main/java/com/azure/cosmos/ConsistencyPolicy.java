@@ -5,8 +5,8 @@ package com.azure.cosmos;
 
 
 import com.azure.cosmos.implementation.Constants;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.CaseFormat;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Encapsulates the properties for consistency policy in the Azure Cosmos DB database service.
@@ -18,11 +18,20 @@ public final class ConsistencyPolicy extends JsonSerializable {
     private static final int DEFAULT_MAX_STALENESS_INTERVAL = 5;
     private static final int DEFAULT_MAX_STALENESS_PREFIX = 100;
 
-
     /**
      * Constructor.
      */
     public ConsistencyPolicy() {
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    ConsistencyPolicy(ObjectNode objectNode) {
+        super(objectNode);
     }
 
     /**
@@ -44,7 +53,8 @@ public final class ConsistencyPolicy extends JsonSerializable {
         ConsistencyLevel result = ConsistencyPolicy.DEFAULT_DEFAULT_CONSISTENCY_LEVEL;
         String consistencyLevelString = super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL);
         try {
-            result = ConsistencyLevel.valueOf(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, consistencyLevelString));
+            result = ConsistencyLevel
+                         .valueOf(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, consistencyLevelString));
         } catch (IllegalArgumentException e) {
             // ignore the exception and return the default
             this.getLogger().warn("Unknown consistency level {}, value ignored.", consistencyLevelString);

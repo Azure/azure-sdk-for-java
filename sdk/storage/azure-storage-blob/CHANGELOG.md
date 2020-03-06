@@ -2,6 +2,9 @@
 
 ## 12.5.0-beta.1 (Unreleased)
 - Fixed a bug that was adding an invalid 'include' query-parameter for list blob item requests if no dataset-include options were specified.
+- Fixed a bug in ReliableDownload that would cause multiple subscriber errors.
+- Added logic to ReliableDownload to retry on TimeoutException
+- Added default timeout to download stream to timeout if a certain amount of time passes without seeing any data. 
 
 ## 12.4.0 (2020-02-12)
 - Added ability to access BlobProperties from BlobInputStream.

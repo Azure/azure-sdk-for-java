@@ -11,11 +11,22 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import java.net.URI;
 import java.util.Map;
 
+/**
+ * The type Service unavailable exception.
+ */
 public class ServiceUnavailableException extends CosmosClientException {
     ServiceUnavailableException() {
         this(RMResources.ServiceUnavailable);
     }
 
+    /**
+     * Instantiates a new Service unavailable exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public ServiceUnavailableException(CosmosError cosmosError,
                                        long lsn,
                                        String partitionKeyRangeId,
@@ -33,6 +44,13 @@ public class ServiceUnavailableException extends CosmosClientException {
         this(message, null, headers, requestUriString);
     }
 
+    /**
+     * Instantiates a new Service unavailable exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUri the request uri
+     */
     public ServiceUnavailableException(String message, HttpHeaders headers, URI requestUri) {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }
@@ -41,6 +59,14 @@ public class ServiceUnavailableException extends CosmosClientException {
         this(RMResources.ServiceUnavailable, innerException, null, null);
     }
 
+    /**
+     * Instantiates a new Service unavailable exception.
+     *
+     * @param message the message
+     * @param innerException the inner exception
+     * @param headers the headers
+     * @param requestUriString the request uri string
+     */
     public ServiceUnavailableException(String message,
                                        Exception innerException,
                                        HttpHeaders headers,
