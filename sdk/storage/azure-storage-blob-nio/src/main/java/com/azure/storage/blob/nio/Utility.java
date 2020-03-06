@@ -5,7 +5,6 @@ package com.azure.storage.blob.nio;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.nio.AzureFileSystemProvider;
 
 import java.nio.file.attribute.FileAttribute;
 import java.util.HashMap;

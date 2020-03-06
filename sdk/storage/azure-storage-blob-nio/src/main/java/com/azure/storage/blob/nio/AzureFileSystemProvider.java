@@ -288,8 +288,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 Map<String, String> metadata = Utility.convertAttributesToMetadata(attributeList);
                 putDirectoryBlob(client, headers, metadata, new BlobRequestConditions().setIfNoneMatch("*"));
             } catch (BlobStorageException e) {
-                if (e.getStatusCode() == HttpURLConnection.HTTP_CONFLICT &&
-                    e.getErrorCode().equals(BlobErrorCode.BLOB_ALREADY_EXISTS)) {
+                if (e.getStatusCode() == HttpURLConnection.HTTP_CONFLICT
+                    && e.getErrorCode().equals(BlobErrorCode.BLOB_ALREADY_EXISTS)) {
                     throw Utility.logError(logger, new FileAlreadyExistsException(path.toString()));
                 } else {
                     throw Utility.logError(logger, new IOException("An error occured when creating the directory", e));
