@@ -27,6 +27,7 @@ import com.azure.search.models.ResourceCounter;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.ScoringProfile;
+import com.azure.search.models.SearchErrorException;
 import com.azure.search.models.ServiceCounters;
 import com.azure.search.models.ServiceLimits;
 import com.azure.search.models.ServiceStatistics;
@@ -604,7 +605,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     private void verifyHttpResponseError(
         Throwable ex, HttpResponseStatus expectedResponseStatus, String expectedMessage) {
 
-        assertEquals(HttpResponseException.class, ex.getClass());
+        assertEquals(SearchErrorException.class, ex.getClass());
 
         if (expectedResponseStatus != null) {
             assertEquals(
