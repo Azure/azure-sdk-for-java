@@ -3,7 +3,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ChangeFeedOptions;
+import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.PartitionKeyDefinition;
@@ -112,7 +112,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
         ChangeFeedOptions changeFeedOption = new ChangeFeedOptions();
         changeFeedOption.setMaxItemCount(3);
-        partitionKeyRangeIdInternal(changeFeedOption, pkRangeId);
+        changeFeedOption.setPartitionKeyRangeId(pkRangeId);
         changeFeedOption.setStartFromBeginning(true);
         List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(getCollectionLink(), changeFeedOption)
                 .collectList().block();

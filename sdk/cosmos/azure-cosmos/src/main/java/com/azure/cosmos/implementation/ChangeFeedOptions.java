@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.PartitionKey;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -55,7 +55,7 @@ public final class ChangeFeedOptions {
      * @return a string indicating the partition key range ID
      * @see PartitionKeyRange
      */
-    String getPartitionKeyRangeId() {
+    public String getPartitionKeyRangeId() {
         return partitionKeyRangeId;
     }
 
@@ -71,7 +71,7 @@ public final class ChangeFeedOptions {
      * @return the ChangeFeedOptions.
      * @see PartitionKeyRange
      */
-    ChangeFeedOptions setPartitionKeyRangeId(String partitionKeyRangeId) {
+    public ChangeFeedOptions setPartitionKeyRangeId(String partitionKeyRangeId) {
         this.partitionKeyRangeId = partitionKeyRangeId;
         return this;
     }

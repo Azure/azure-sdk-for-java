@@ -4,7 +4,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.AccessCondition;
+import com.azure.cosmos.model.AccessCondition;
 import com.azure.cosmos.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;

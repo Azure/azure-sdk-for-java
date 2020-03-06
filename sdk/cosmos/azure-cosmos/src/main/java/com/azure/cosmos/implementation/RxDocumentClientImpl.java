@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ChangeFeedOptions;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;

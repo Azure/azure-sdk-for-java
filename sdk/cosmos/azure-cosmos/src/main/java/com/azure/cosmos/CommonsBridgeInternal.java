@@ -23,16 +23,6 @@ public class CommonsBridgeInternal {
     }
 
     /**
-     * Gets the partitionKeyRangeId.
-     *
-     * @param options the feed options
-     * @return the partitionKeyRangeId.
-     */
-    public static String partitionKeyRangeIdInternal(ChangeFeedOptions options) {
-        return options.getPartitionKeyRangeId();
-    }
-
-    /**
      * Sets the PartitionKeyRangeId.
      *
      * @param options the feed options
@@ -41,16 +31,5 @@ public class CommonsBridgeInternal {
      */
     public static FeedOptions partitionKeyRangeIdInternal(FeedOptions options, String partitionKeyRangeId) {
         return options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
-    }
-
-    /**
-     * Sets the partitionKeyRangeId.
-     *
-     * @param options the options
-     * @param partitionKeyRangeId the partition key range id
-     * @return the change feed options
-     */
-    public static ChangeFeedOptions partitionKeyRangeIdInternal(ChangeFeedOptions options, String partitionKeyRangeId) {
-        return options.setPartitionKeyRangeId(partitionKeyRangeId);
     }
 }

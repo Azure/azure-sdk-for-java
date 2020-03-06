@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.model.AccessCondition;
 
 /**
  * Contains the request options of CosmosAsyncPermission

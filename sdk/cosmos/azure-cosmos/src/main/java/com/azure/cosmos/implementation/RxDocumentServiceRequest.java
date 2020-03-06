@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ChangeFeedOptions;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;

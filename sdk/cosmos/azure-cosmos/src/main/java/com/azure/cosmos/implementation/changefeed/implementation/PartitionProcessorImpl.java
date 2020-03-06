@@ -3,9 +3,8 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ChangeFeedOptions;
+import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -56,7 +55,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
         this.options = new ChangeFeedOptions();
         this.options.setMaxItemCount(settings.getMaxItemCount());
-        partitionKeyRangeIdInternal(this.options, settings.getPartitionKeyRangeId());
+        this.options.setPartitionKeyRangeId(settings.getPartitionKeyRangeId());
         // this.setOptions.getSessionToken(getProperties.getSessionToken());
         this.options.setStartFromBeginning(settings.isStartFromBeginning());
         this.options.setRequestContinuation(settings.getStartContinuation());

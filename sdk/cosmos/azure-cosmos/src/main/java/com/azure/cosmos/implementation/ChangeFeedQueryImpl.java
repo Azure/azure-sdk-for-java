@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ChangeFeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.query.Paginator;
@@ -41,12 +40,12 @@ class ChangeFeedQueryImpl<T extends Resource> {
         changeFeedOptions = changeFeedOptions != null ? changeFeedOptions: new ChangeFeedOptions();
 
 
-        if (resourceType.isPartitioned() && partitionKeyRangeIdInternal(changeFeedOptions) == null && changeFeedOptions.getPartitionKey() == null) {
+        if (resourceType.isPartitioned() && changeFeedOptions.getPartitionKeyRangeId() == null && changeFeedOptions.getPartitionKey() == null) {
             throw new IllegalArgumentException(RMResources.PartitionKeyRangeIdOrPartitionKeyMustBeSpecified);
         }
 
         if (changeFeedOptions.getPartitionKey() != null &&
-                !Strings.isNullOrEmpty(partitionKeyRangeIdInternal(changeFeedOptions))) {
+                !Strings.isNullOrEmpty(changeFeedOptions.getPartitionKeyRangeId())) {
 
             throw new IllegalArgumentException(String.format(
                     RMResources.PartitionKeyAndParitionKeyRangeIdBothSpecified
@@ -103,8 +102,8 @@ class ChangeFeedQueryImpl<T extends Resource> {
             headers.put(HttpConstants.HttpHeaders.IF_MODIFIED_SINCE, dateTimeInHttpFormat);
         }
 
-        if (partitionKeyRangeIdInternal(options) != null) {
-            req.routeTo(new PartitionKeyRangeIdentity(partitionKeyRangeIdInternal(this.options)));
+        if (options.getPartitionKeyRangeId() != null) {
+            req.routeTo(new PartitionKeyRangeIdentity(this.options.getPartitionKeyRangeId()));
         }
 
         return req;

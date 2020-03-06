@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.model.AccessCondition;
 
 /**
  * The type Cosmos conflict request options.
