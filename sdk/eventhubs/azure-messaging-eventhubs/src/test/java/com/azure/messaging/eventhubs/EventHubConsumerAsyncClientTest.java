@@ -232,7 +232,7 @@ class EventHubConsumerAsyncClientTest {
 
         // Scheduling on elastic to simulate a user passed in scheduler (this is the default in EventHubClientBuilder).
         final EventHubConsumerAsyncClient myConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, testScheduler, false, onClientClosed);
+            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.elastic(), false, onClientClosed);
         final Flux<PartitionEvent> eventsFlux = myConsumer.receiveFromPartition(PARTITION_ID, EventPosition.earliest())
             .take(numberOfEvents);
 
@@ -517,7 +517,7 @@ class EventHubConsumerAsyncClientTest {
             .thenReturn(Mono.just(new EventHubProperties(EVENT_HUB_NAME, Instant.EPOCH, partitions)));
 
         EventHubConsumerAsyncClient asyncClient = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, parallelScheduler, false);
+            eventHubConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, parallelScheduler, false, onClientClosed);
 
         EmitterProcessor<Message> processor2 = EmitterProcessor.create();
         FluxSink<Message> processor2sink = processor2.sink();
