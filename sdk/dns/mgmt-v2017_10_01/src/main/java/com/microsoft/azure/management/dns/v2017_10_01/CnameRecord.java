@@ -21,7 +21,7 @@ public class CnameRecord {
     private String cname;
 
     /**
-     * Get the cname value.
+     * Get the canonical name for this CNAME record.
      *
      * @return the cname value
      */
@@ -30,7 +30,7 @@ public class CnameRecord {
     }
 
     /**
-     * Set the cname value.
+     * Set the canonical name for this CNAME record.
      *
      * @param cname the cname value to set
      * @return the CnameRecord object itself.
