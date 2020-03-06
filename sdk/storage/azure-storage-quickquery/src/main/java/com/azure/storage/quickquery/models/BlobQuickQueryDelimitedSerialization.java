@@ -7,7 +7,7 @@ package com.azure.storage.quickquery.models;
  * Defines the input or output delimited (CSV) serialization for a blob quick query request.
  */
 public class BlobQuickQueryDelimitedSerialization extends
-    BlobQuickQuerySerialization<BlobQuickQueryDelimitedSerialization> {
+    BlobQuickQuerySerialization {
 
     private char columnSeparator;
     private char fieldQuote;
@@ -83,6 +83,17 @@ public class BlobQuickQueryDelimitedSerialization extends
      */
     public BlobQuickQueryDelimitedSerialization setHeadersPresent(boolean headersPresent) {
         this.headersPresent = headersPresent;
+        return this;
+    }
+
+    /**
+     * Sets the record separator.
+     * @param recordSeparator the record separator.
+     * @return the updated BlobQuickQueryDelimitedSerialization object.
+     */
+    @Override
+    public BlobQuickQueryDelimitedSerialization setRecordSeparator(char recordSeparator) {
+        this.recordSeparator = recordSeparator;
         return this;
     }
 }

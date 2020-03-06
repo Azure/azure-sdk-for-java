@@ -14,6 +14,7 @@ import com.azure.storage.common.ErrorReceiver;
 import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.quickquery.implementation.util.FluxInputStream;
+import com.azure.storage.quickquery.models.BlobQuickQueryAsyncResponse;
 import com.azure.storage.quickquery.models.BlobQuickQueryError;
 import com.azure.storage.quickquery.models.BlobQuickQueryResponse;
 import com.azure.storage.quickquery.models.BlobQuickQuerySerialization;
@@ -73,7 +74,7 @@ public class BlobQuickQueryClient {
      * @param input {@link BlobQuickQuerySerialization Serialization input}.
      * @param output {@link BlobQuickQuerySerialization Serialization output}.
      * @param requestConditions {@link BlobRequestConditions}
-     * @param nonFatalErrorReceiver {@link ErrorReceiver<BlobQuickQueryError>}
+     * @param nonFatalErrorReceiver {@link ErrorReceiver} of {@link BlobQuickQueryError}
      * @param progressReceiver {@link ProgressReceiver}
      */
     public final BlobQuickQueryInputStream openInputStream(String expression, BlobQuickQuerySerialization input,
@@ -82,7 +83,7 @@ public class BlobQuickQueryClient {
 
         // Data to subscribe to and read from.
         Flux<ByteBuffer> data = client.queryWithResponse(expression, input, output, requestConditions)
-            .flatMapMany(ResponseBase::getValue);
+            .flatMapMany(BlobQuickQueryAsyncResponse::getValue);
 
         // Create input stream from the data.
         FluxInputStream fluxInputStream = new FluxInputStream(data, logger);

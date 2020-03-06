@@ -13,6 +13,7 @@ import com.azure.storage.quickquery.models.BlobQuickQueryDelimitedSerialization
 import com.azure.storage.quickquery.models.BlobQuickQueryError
 
 import com.azure.storage.quickquery.models.BlobQuickQueryJsonSerialization
+import com.azure.storage.quickquery.models.BlobQuickQuerySerialization
 import spock.lang.Requires
 import spock.lang.Unroll
 
@@ -399,7 +400,19 @@ class BlobQQInputStreamTest extends APISpec {
     @Unroll
     def "Query input output IA"() {
         when:
-        InputStream stream = qqClient.openInputStream("SELECT * from BlobStorage", input, output, null, null, null)
+        BlobQuickQuerySerialization ser = Spy() {
+            return '\n'
+        }
+        def inSer = null;
+        def outSer = null
+        if (input) {
+            inSer = ser
+        }
+        if (output) {
+            outSer = ser
+        }
+
+        InputStream stream = qqClient.openInputStream("SELECT * from BlobStorage", inSer, outSer, null, null, null)
 
         stream.read()
 
@@ -409,9 +422,9 @@ class BlobQQInputStreamTest extends APISpec {
         thrown(IOException)
 
         where:
-        input                                                    | output                                                   || _
-        new MockSerialization().setRecordSeparator('\n' as char) | null                                                     || _
-        null                                                     | new MockSerialization().setRecordSeparator('\n' as char) || _
+        input   | output   || _
+        true    | false    || _
+        false   | true     || _
     }
 
     @Unroll

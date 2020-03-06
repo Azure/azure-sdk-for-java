@@ -10,6 +10,7 @@ import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.quickquery.implementation.util.FluxInputStream
+import com.azure.storage.quickquery.models.BlobQuickQuerySerialization
 import org.eclipse.jetty.util.IO
 import reactor.core.publisher.Flux
 import spock.lang.Unroll
@@ -144,8 +145,19 @@ class FluxInputStreamAPITest extends APISpec {
     @Unroll
     def "NetworkIS error IA"() {
         setup:
+        BlobQuickQuerySerialization ser = Spy() {
+            return '\n'
+        }
+        def inSer = null
+        def outSer = null
+        if (input) {
+            inSer = ser
+        }
+        if (output) {
+            outSer = ser
+        }
         def qqAsyncClient = new BlobQuickQueryClientBuilder(bcAsync).buildAsyncClient()
-        def data = qqAsyncClient.queryWithResponse("SELECT * from BlobStorage", input, output, null)
+        def data = qqAsyncClient.queryWithResponse("SELECT * from BlobStorage", inSer, outSer, null)
             .flatMapMany(ResponseBase.&getValue)
 
         when:
@@ -159,9 +171,9 @@ class FluxInputStreamAPITest extends APISpec {
         thrown(IOException)
 
         where:
-        input                                                    | output                                                   || _
-        new MockSerialization().setRecordSeparator('\n' as char) | null                                                     || _
-        null                                                     | new MockSerialization().setRecordSeparator('\n' as char) || _
+        input   | output   || _
+        true    | false    || _
+        false   | true     || _
     }
 
 }

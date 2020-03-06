@@ -5,11 +5,11 @@ package com.azure.storage.quickquery.models;
 
 /**
  * Defines the input and output serialization for a blob quick query request.
- * @param <T> either {@link BlobQuickQueryJsonSerialization} or {@link BlobQuickQueryDelimitedSerialization}
+ * either {@link BlobQuickQueryJsonSerialization} or {@link BlobQuickQueryDelimitedSerialization}
  */
-public class BlobQuickQuerySerialization <T extends BlobQuickQuerySerialization<T>> {
+public abstract class BlobQuickQuerySerialization {
 
-    private char recordSeparator;
+    protected char recordSeparator;
 
     /**
      * Gets the record separator.
@@ -19,14 +19,6 @@ public class BlobQuickQuerySerialization <T extends BlobQuickQuerySerialization<
         return recordSeparator;
     }
 
-    /**
-     * Sets the record separator.
-     * @param recordSeparator the record separator.
-     * @return the updated BlobQuickQuerySerialization object.
-     */
-    public T setRecordSeparator(char recordSeparator) {
-        this.recordSeparator = recordSeparator;
-        return (T) this;
-    }
+    abstract BlobQuickQuerySerialization setRecordSeparator(char recordSeparator);
 
 }
