@@ -127,6 +127,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     public static final String CACHE_CONTROL = "Cache-Control";
 
     private static final String ACCOUNT_QUERY_KEY = "account";
+    private static final int COPY_TIMEOUT_SECONDS = 30;
     static final String DIR_METADATA_MARKER = "is_hdi_folder";
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
@@ -287,7 +288,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 Map<String, String> metadata = Utility.convertAttributesToMetadata(attributeList);
                 putDirectoryBlob(client, headers, metadata, new BlobRequestConditions().setIfNoneMatch("*"));
             } catch (BlobStorageException e) {
-                if (e.getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
+                if (e.getStatusCode() == HttpURLConnection.HTTP_CONFLICT &&
+                    e.getErrorCode().equals(BlobErrorCode.BLOB_ALREADY_EXISTS)) {
                     throw Utility.logError(logger, new FileAlreadyExistsException(path.toString()));
                 } else {
                     throw Utility.logError(logger, new IOException("An error occured when creating the directory", e));
@@ -476,7 +478,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         try {
             SyncPoller<BlobCopyInfo, Void> pollResponse =
                 destinationBlob.beginCopy(sourceBlob.getBlobUrl(), null, null, null, null, requestConditions, null);
-            pollResponse.waitForCompletion(Duration.ofSeconds(30));
+            pollResponse.waitForCompletion(Duration.ofSeconds(COPY_TIMEOUT_SECONDS));
         } catch (BlobStorageException e) {
             // If the source was not found, it could be because it's a virtual directory. Check the status.
             // If a non-dir resource existed, it would have been copied above. This check is therefore sufficient.
