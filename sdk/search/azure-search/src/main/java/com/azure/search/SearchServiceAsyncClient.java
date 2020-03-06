@@ -11,7 +11,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.SearchServiceUrlParser.SearchServiceUrlParts;
 import com.azure.search.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.implementation.SearchServiceRestClientImpl;
 import com.azure.search.models.AccessCondition;
@@ -66,7 +65,6 @@ public final class SearchServiceAsyncClient {
     private final HttpPipeline httpPipeline;
 
     SearchServiceAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
-        SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;

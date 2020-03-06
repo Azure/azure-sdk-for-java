@@ -34,7 +34,6 @@ import com.azure.search.util.SearchPagedResponse;
 import com.azure.search.util.SuggestPagedFlux;
 import com.azure.search.util.SuggestPagedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Map;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
