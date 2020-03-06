@@ -6,6 +6,9 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ResourceResponse;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * The type Cosmos async container response.
+ */
 @SuppressWarnings("enforcefinalfields")
 public class CosmosAsyncContainerResponse extends CosmosResponse<CosmosContainerProperties> {
 

@@ -4,7 +4,6 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.ResourceResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,7 +141,7 @@ public class CosmosContainerProperties extends Resource {
 
             if (super.has(Constants.Properties.PARTITION_KEY)) {
                 this.partitionKeyDefinition = super.getObject(Constants.Properties.PARTITION_KEY,
-                    PartitionKeyDefinition.class);
+                                                              PartitionKeyDefinition.class);
             } else {
                 this.partitionKeyDefinition = new PartitionKeyDefinition();
             }
@@ -212,16 +211,21 @@ public class CosmosContainerProperties extends Resource {
     /**
      * Sets the collection's default time-to-live value.
      * <p>
-     * The default time-to-live value on a collection is an optional property. If set, the documents within the collection
-     * expires after the specified number of seconds since their last write time. The value of this property should be one of the following:
+     * The default time-to-live value on a collection is an optional property. If set, the documents within the 
+     * collection
+     * expires after the specified number of seconds since their last write time. The value of this property should 
+     * be one of the following:
      * <p>
-     * null - indicates evaluation of time-to-live is disabled and documents within the collection will never expire, regardless whether
+     * null - indicates evaluation of time-to-live is disabled and documents within the collection will never expire,
+     * regardless whether
      * individual documents have their time-to-live set.
      * <p>
-     * nonzero positive integer - indicates the default time-to-live value for all documents within the collection. This value can be overridden
+     * nonzero positive integer - indicates the default time-to-live value for all documents within the collection. 
+     * This value can be overridden
      * by individual documents' time-to-live value.
      * <p>
-     * -1 - indicates by default all documents within the collection never expire. This value can be overridden by individual documents'
+     * -1 - indicates by default all documents within the collection never expire. This value can be overridden by 
+     * individual documents'
      * time-to-live value.
      *
      * @param timeToLive the default time-to-live value in seconds.

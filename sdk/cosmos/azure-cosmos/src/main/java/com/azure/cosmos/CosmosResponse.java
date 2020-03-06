@@ -8,6 +8,10 @@ import com.azure.cosmos.implementation.StoredProcedureResponse;
 import java.time.Duration;
 import java.util.Map;
 
+/**
+ * The cosmos response
+ * @param <T> the type of resource
+ */
 public class CosmosResponse<T extends Resource> {
     private T properties;
     final ResourceResponse resourceResponseWrapper;
@@ -31,6 +35,11 @@ public class CosmosResponse<T extends Resource> {
         this.resourceResponseWrapper = null;
     }
 
+    /**
+     * Gets properties.
+     *
+     * @return the properties
+     */
     public T getProperties() {
         return properties;
     }

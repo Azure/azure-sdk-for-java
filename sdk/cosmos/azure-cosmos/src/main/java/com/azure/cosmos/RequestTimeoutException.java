@@ -12,12 +12,26 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import java.net.URI;
 import java.util.Map;
 
+/**
+ * The type Request timeout exception.
+ */
 public class RequestTimeoutException extends CosmosClientException {
 
+    /**
+     * Instantiates a new Request timeout exception.
+     */
     public RequestTimeoutException() {
         this(RMResources.RequestTimeout, null);
     }
 
+    /**
+     * Instantiates a new Request timeout exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public RequestTimeoutException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
                                    Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.REQUEST_TIMEOUT, cosmosError, responseHeaders);
@@ -25,6 +39,12 @@ public class RequestTimeoutException extends CosmosClientException {
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
+    /**
+     * Instantiates a new Request timeout exception.
+     *
+     * @param message the message
+     * @param requestUri the request uri
+     */
     public RequestTimeoutException(String message, URI requestUri) {
         this(message, null, null, requestUri);
     }
@@ -40,6 +60,13 @@ public class RequestTimeoutException extends CosmosClientException {
         this(RMResources.Gone, innerException, (HttpHeaders) null, null);
     }
 
+    /**
+     * Instantiates a new Request timeout exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUrl the request url
+     */
     public RequestTimeoutException(String message, HttpHeaders headers, URI requestUrl) {
         super(message, 
             null,

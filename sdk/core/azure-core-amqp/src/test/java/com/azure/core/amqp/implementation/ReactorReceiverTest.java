@@ -25,6 +25,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -33,7 +34,9 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -54,6 +57,11 @@ class ReactorReceiverTest {
     private Selectable selectable;
     @Mock
     private Record record;
+    @Mock
+    private ReactorDispatcher dispatcher;
+
+    @Captor
+    private ArgumentCaptor<Runnable> dispatcherCaptor;
 
     private ReceiveLinkHandler receiverHandler;
     private ReactorReceiver reactorReceiver;
@@ -85,7 +93,6 @@ class ReactorReceiverTest {
             "test-receiver-name", entityPath);
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(Mono.just(cbsNode),
             "test-tokenAudience", "test-scopes");
-        final ReactorDispatcher dispatcher = new ReactorDispatcher(reactor);
 
         reactorReceiver = new ReactorReceiver(entityPath, receiver, receiverHandler, tokenManager, dispatcher);
     }
@@ -103,11 +110,20 @@ class ReactorReceiverTest {
      * Verify we can add credits to the link.
      */
     @Test
-    void addCredits() {
+    void addCredits() throws IOException {
         final int credits = 15;
         reactorReceiver.addCredits(credits);
 
-        verify(receiver, times(1)).flow(credits);
+        // Assert
+        verify(dispatcher).invoke(dispatcherCaptor.capture());
+
+        final List<Runnable> invocations = dispatcherCaptor.getAllValues();
+        assertEquals(1, invocations.size());
+
+        // Apply the invocation. This should actually set the credits.
+        invocations.get(0).run();
+
+        verify(receiver).flow(credits);
     }
 
     /**

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos;
 
 import com.azure.core.util.paging.ContinuablePagedFlux;
@@ -5,7 +7,8 @@ import com.azure.core.util.paging.ContinuablePagedFlux;
 /**
  * Cosmos implementation of {@link ContinuablePagedIterable}.
  * <p>
- * This type is a {@link com.azure.core.util.IterableStream} that provides the ability to operate on pages of type {@link FeedResponse}
+ * This type is a {@link com.azure.core.util.IterableStream} that provides the ability to operate on pages of type
+ * {@link FeedResponse}
  * and individual items in such pages. This type supports {@link String} type continuation tokens,
  * allowing for restarting from a previously-retrieved continuation token.
  * <p>

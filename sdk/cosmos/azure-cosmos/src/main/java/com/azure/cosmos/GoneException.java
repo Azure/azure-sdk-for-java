@@ -13,16 +13,35 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Gone exception.
+ */
 public class GoneException extends CosmosClientException {
 
+    /**
+     * Instantiates a new Gone exception.
+     *
+     * @param msg the msg
+     */
     public GoneException(String msg) {
         this(msg, null);
     }
 
+    /**
+     * Instantiates a new Gone exception.
+     */
     public GoneException() {
         this(RMResources.Gone, null);
     }
 
+    /**
+     * Instantiates a new Gone exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public GoneException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
                          Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.GONE, cosmosError, responseHeaders);
@@ -30,6 +49,12 @@ public class GoneException extends CosmosClientException {
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
+    /**
+     * Instantiates a new Gone exception.
+     *
+     * @param message the message
+     * @param requestUri the request uri
+     */
     public GoneException(String message, String requestUri) {
         this(message, null, new HashMap<>(), requestUri);
     }
@@ -45,6 +70,13 @@ public class GoneException extends CosmosClientException {
         this(RMResources.Gone, innerException, new HashMap<>(), null);
     }
 
+    /**
+     * Instantiates a new Gone exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUrl the request url
+     */
     public GoneException(String message, HttpHeaders headers, URI requestUrl) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUrl != null
                                                                                            ? requestUrl.toString()
@@ -55,6 +87,14 @@ public class GoneException extends CosmosClientException {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUriString);
     }
 
+    /**
+     * Instantiates a new Gone exception.
+     *
+     * @param message the message
+     * @param innerException the inner exception
+     * @param headers the headers
+     * @param requestUrl the request url
+     */
     public GoneException(String message,
                          Exception innerException,
                          HttpHeaders headers,
@@ -68,6 +108,14 @@ public class GoneException extends CosmosClientException {
                 : null);
     }
 
+    /**
+     * Instantiates a new Gone exception.
+     *
+     * @param message the message
+     * @param innerException the inner exception
+     * @param headers the headers
+     * @param requestUriString the request uri string
+     */
     public GoneException(String message,
                          Exception innerException,
                          Map<String, String> headers,

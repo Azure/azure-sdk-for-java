@@ -7,7 +7,6 @@ import com.azure.core.http.rest.PagedIterable
 import com.azure.core.http.rest.Response
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
-import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils
 import com.azure.storage.file.datalake.models.DataLakeStorageException
@@ -35,8 +34,8 @@ class ServiceAPITest extends APISpec {
             assert c.getProperties().getLeaseState() != null
             assert c.getProperties().getLeaseDuration() == null
             assert c.getProperties().getPublicAccess() == null
-            assert !c.getProperties().isHasLegalHold()
-            assert !c.getProperties().isHasImmutabilityPolicy()
+            assert !c.getProperties().hasLegalHold()
+            assert !c.getProperties().hasImmutabilityPolicy()
         }
     }
 

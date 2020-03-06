@@ -3,8 +3,6 @@
 
 package com.azure.cosmos;
 
-import org.apache.commons.text.WordUtils;
-
 /**
  * Specifies whether or not the resource is to be indexed in the Azure Cosmos DB database service.
  */

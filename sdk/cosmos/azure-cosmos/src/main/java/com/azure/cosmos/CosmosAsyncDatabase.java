@@ -131,8 +131,9 @@ public class CosmosAsyncDatabase {
      * the created container or an error.
      * @throws IllegalArgumentException thown if containerProerties are null
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(CosmosContainerProperties containerProperties,
-                                                              int throughput) {
+    public Mono<CosmosAsyncContainerResponse> createContainer(
+        CosmosContainerProperties containerProperties,
+        int throughput) {
         if (containerProperties == null) {
             throw new IllegalArgumentException("containerProperties");
         }
@@ -155,8 +156,9 @@ public class CosmosAsyncDatabase {
      * created container or an error.
      * @throws IllegalArgumentException containerProperties can not be null
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(CosmosContainerProperties containerProperties,
-                                                              CosmosContainerRequestOptions options) {
+    public Mono<CosmosAsyncContainerResponse> createContainer(
+        CosmosContainerProperties containerProperties,
+        CosmosContainerRequestOptions options) {
         if (containerProperties == null) {
             throw new IllegalArgumentException("containerProperties");
         }
@@ -183,9 +185,10 @@ public class CosmosAsyncDatabase {
      * created container or an error.
      * @throws IllegalArgumentException containerProperties cannot be null
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(CosmosContainerProperties containerProperties,
-                                                              int throughput,
-                                                              CosmosContainerRequestOptions options) {
+    public Mono<CosmosAsyncContainerResponse> createContainer(
+        CosmosContainerProperties containerProperties,
+        int throughput,
+        CosmosContainerRequestOptions options) {
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
@@ -241,7 +244,7 @@ public class CosmosAsyncDatabase {
      * created or existing container or an error.
      */
     public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
-                                                    CosmosContainerProperties containerProperties) {
+        CosmosContainerProperties containerProperties) {
         CosmosAsyncContainer container = getContainer(containerProperties.getId());
         return createContainerIfNotExistsInternal(containerProperties, container, null);
     }
@@ -259,8 +262,9 @@ public class CosmosAsyncDatabase {
      * @return a {@link Mono} containing the cosmos container response with the
      * created or existing container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(CosmosContainerProperties containerProperties,
-                                                                         int throughput) {
+    public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
+        CosmosContainerProperties containerProperties,
+        int throughput) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         options.setOfferThroughput(throughput);
         CosmosAsyncContainer container = getContainer(containerProperties.getId());
@@ -282,8 +286,8 @@ public class CosmosAsyncDatabase {
     public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(String id, String partitionKeyPath) {
         CosmosAsyncContainer container = getContainer(id);
         return createContainerIfNotExistsInternal(new CosmosContainerProperties(id, partitionKeyPath),
-                                                                                            container,
-                                                                                            null);
+                                                  container,
+                                                  null);
     }
 
     /**
@@ -299,13 +303,14 @@ public class CosmosAsyncDatabase {
      * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(String id, String partitionKeyPath,
-                                                                         int throughput) {
+    public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
+        String id, String partitionKeyPath,
+        int throughput) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         options.setOfferThroughput(throughput);
         CosmosAsyncContainer container = getContainer(id);
         return createContainerIfNotExistsInternal(new CosmosContainerProperties(id, partitionKeyPath), container,
-            options);
+                                                  options);
     }
 
     private Mono<CosmosAsyncContainerResponse> createContainerIfNotExistsInternal(
@@ -338,9 +343,9 @@ public class CosmosAsyncDatabase {
         return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readCollections(getLink(), options)
-                                        .map(response -> BridgeInternal.createFeedResponse(
-                                            CosmosContainerProperties.getFromV2Results(response.getResults()),
-                                            response.getResponseHeaders()));
+                       .map(response -> BridgeInternal.createFeedResponse(
+                           CosmosContainerProperties.getFromV2Results(response.getResults()),
+                           response.getResponseHeaders()));
         });
     }
 
@@ -420,9 +425,9 @@ public class CosmosAsyncDatabase {
         return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryCollections(getLink(), querySpec, options)
-                   .map(response -> BridgeInternal.createFeedResponse(
-                       CosmosContainerProperties.getFromV2Results(response.getResults()),
-                       response.getResponseHeaders()));
+                       .map(response -> BridgeInternal.createFeedResponse(
+                           CosmosContainerProperties.getFromV2Results(response.getResults()),
+                           response.getResponseHeaders()));
         });
     }
 
@@ -498,8 +503,10 @@ public class CosmosAsyncDatabase {
     public CosmosPagedFlux<CosmosUserProperties> readAllUsers(FeedOptions options) {
         return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
-            return getDocClientWrapper().readUsers(getLink(), options).map(response -> BridgeInternal.createFeedResponse(
-                CosmosUserProperties.getFromV2Results(response.getResults()), response.getResponseHeaders()));
+            return getDocClientWrapper().readUsers(getLink(), options)
+                       .map(response -> BridgeInternal.createFeedResponse(
+                           CosmosUserProperties.getFromV2Results(response.getResults()), response
+                                                                                             .getResponseHeaders()));
         });
     }
 
@@ -565,12 +572,18 @@ public class CosmosAsyncDatabase {
         return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryUsers(getLink(), querySpec, options)
-                                        .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
-                                            CosmosUserProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(),
-                                            response.queryMetrics()));
+                       .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
+                           CosmosUserProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(),
+                           response.queryMetrics()));
         });
     }
 
+    /**
+     * Gets user.
+     *
+     * @param id the id
+     * @return the user
+     */
     public CosmosAsyncUser getUser(String id) {
         return new CosmosAsyncUser(id, this);
     }
@@ -583,23 +596,27 @@ public class CosmosAsyncDatabase {
     public Mono<Integer> readProvisionedThroughput() {
         return this.read()
                    .flatMap(cosmosDatabaseResponse -> getDocClientWrapper()
-                               .queryOffers("select * from c where c.offerResourceId = '"
-                                                + cosmosDatabaseResponse
-                                                      .getProperties()
-                                                      .getResourceId() + "'", new FeedOptions())
-                               .single()
-                               .flatMap(offerFeedResponse -> {
-                                   if (offerFeedResponse.getResults().isEmpty()) {
-                                       return Mono.error(BridgeInternal.createCosmosClientException(
-                                           HttpConstants.StatusCodes.BADREQUEST,
-                                           "No offers found for the resource"));
-                                   }
-                                   return getDocClientWrapper().readOffer(offerFeedResponse.getResults()
-                                                                              .get(0)
-                                                                              .getSelfLink())
-                                              .single();
-                               }).map(cosmosContainerResponse1 -> cosmosContainerResponse1.getResource()
-                                                                                          .getThroughput()));
+                                                          .queryOffers("select * from c where c.offerResourceId = '"
+                                                                           + cosmosDatabaseResponse
+                                                                                 .getProperties()
+                                                                                 .getResourceId() + "'",
+                                                                       new FeedOptions())
+                                                          .single()
+                                                          .flatMap(offerFeedResponse -> {
+                                                              if (offerFeedResponse.getResults().isEmpty()) {
+                                                                  return Mono.error(BridgeInternal
+                                                                            .createCosmosClientException(
+                                                                                HttpConstants.StatusCodes.BADREQUEST,
+                                                                                "No offers found for the resource"));
+                                                              }
+                                                              return getDocClientWrapper()
+                                                                         .readOffer(offerFeedResponse.getResults()
+                                                                                        .get(0)
+                                                                                        .getSelfLink())
+                                                                         .single();
+                                                          }).map(cosmosContainerResponse1 -> cosmosContainerResponse1
+                                                                                                 .getResource()
+                                                                                                 .getThroughput()));
     }
 
     /**
@@ -613,21 +630,25 @@ public class CosmosAsyncDatabase {
     public Mono<Integer> replaceProvisionedThroughput(int requestUnitsPerSecond) {
         return this.read()
                    .flatMap(cosmosDatabaseResponse -> this.getDocClientWrapper()
-                               .queryOffers("select * from c where c.offerResourceId = '"
-                                                + cosmosDatabaseResponse.getProperties().getResourceId()
-                                                + "'", new FeedOptions())
-                               .single()
-                               .flatMap(offerFeedResponse -> {
-                                   if (offerFeedResponse.getResults().isEmpty()) {
-                                       return Mono.error(BridgeInternal.createCosmosClientException(
-                                           HttpConstants.StatusCodes.BADREQUEST,
-                                           "No offers found for the resource"));
-                                   }
-                                   Offer offer = offerFeedResponse.getResults().get(0);
-                                   offer.setThroughput(requestUnitsPerSecond);
-                                   return this.getDocClientWrapper().replaceOffer(offer).single();
-                               }).map(offerResourceResponse -> offerResourceResponse.getResource()
-                                                                                    .getThroughput()));
+                                                          .queryOffers("select * from c where c.offerResourceId = '"
+                                                                           + cosmosDatabaseResponse.getProperties()
+                                                                                 .getResourceId()
+                                                                           + "'", new FeedOptions())
+                                                          .single()
+                                                          .flatMap(offerFeedResponse -> {
+                                                              if (offerFeedResponse.getResults().isEmpty()) {
+                                                                  return Mono.error(BridgeInternal
+                                                                            .createCosmosClientException(
+                                                                                HttpConstants.StatusCodes.BADREQUEST,
+                                                                                "No offers found for the resource"));
+                                                              }
+                                                              Offer offer = offerFeedResponse.getResults().get(0);
+                                                              offer.setThroughput(requestUnitsPerSecond);
+                                                              return this.getDocClientWrapper().replaceOffer(offer)
+                                                                         .single();
+                                                          }).map(offerResourceResponse -> offerResourceResponse
+                                                                                              .getResource()
+                                                                                              .getThroughput()));
     }
 
     CosmosAsyncClient getClient() {
