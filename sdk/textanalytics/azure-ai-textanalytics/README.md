@@ -231,7 +231,7 @@ documentSentiment.getSentences().forEach(sentenceSentiment ->
 ```java
 String inputText = "Bonjour tout le monde";
 DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(inputText);
-System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %.2f.%n",
+System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %f.%n",
     detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
 ```
 
@@ -240,8 +240,8 @@ System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %.2f.%n
 ```java
 String text = "Satya Nadella is the CEO of Microsoft";
 textAnalyticsClient.recognizeEntities(text).forEach(entity ->
-    System.out.printf("Recognized entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
-        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()));
+    System.out.printf("Recognized entity: %s, category: %s, subCategory: %s, score: %f.%n",
+        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
 ```
 
 ### Recognize PII (Personally Identifiable Information) entity
@@ -249,8 +249,8 @@ textAnalyticsClient.recognizeEntities(text).forEach(entity ->
 ```java
 String text = "My SSN is 555-55-5555";
 textAnalyticsClient.recognizePiiEntities(text).forEach(piiEntity ->
-    System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
-        piiEntity.getText(), piiEntity.getCategory(), piiEntity.getSubCategory(), piiEntity.getScore()));
+    System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %f.%n",
+        piiEntity.getText(), piiEntity.getCategory(), piiEntity.getSubCategory(), piiEntity.getConfidenceScore()));
 ```
 
 ### Recognize linked entity
@@ -263,7 +263,7 @@ textAnalyticsClient.recognizeLinkedEntities(text).forEach(linkedEntity -> {
     System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
         linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
     linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
-        System.out.printf("Text: %s, score: %.2f.%n", linkedEntityMatch.getText(), linkedEntityMatch.getScore()));
+        System.out.printf("Text: %s, score: %f.%n", linkedEntityMatch.getText(), linkedEntityMatch.getConfidenceScore()));
 });
 ```
 ### Extract key phrases
