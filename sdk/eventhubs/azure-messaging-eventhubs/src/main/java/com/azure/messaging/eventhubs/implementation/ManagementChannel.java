@@ -96,7 +96,7 @@ public class ManagementChannel implements EventHubManagementNode {
                 logger.info("Management endpoint state: {}", e);
                 endpointStateSink.next(e);
             }, error -> {
-                    logger.error("Exception occurred: {}", error);
+                    logger.error("Exception occurred:", error);
                     endpointStateSink.error(error);
                     close();
                 }, () -> {

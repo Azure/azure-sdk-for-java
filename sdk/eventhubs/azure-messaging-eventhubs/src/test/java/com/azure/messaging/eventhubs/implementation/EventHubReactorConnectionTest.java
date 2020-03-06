@@ -14,10 +14,16 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.amqp.implementation.handler.SendLinkHandler;
+import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
-import java.util.Map;
 import org.apache.qpid.proton.engine.Connection;
+import org.apache.qpid.proton.engine.Receiver;
+import org.apache.qpid.proton.engine.Record;
+import org.apache.qpid.proton.engine.Sender;
+import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
 import org.junit.jupiter.api.AfterEach;
@@ -32,7 +38,13 @@ import reactor.core.scheduler.Scheduler;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.util.Map;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class EventHubReactorConnectionTest {
@@ -57,6 +69,9 @@ public class EventHubReactorConnectionTest {
     private ReactorProvider reactorProvider;
     @Mock
     private ReactorHandlerProvider handlerProvider;
+    @Mock
+    private Session session;
+
     private ConnectionOptions connectionOptions;
     private static String product;
     private static String clientVersion;
@@ -91,9 +106,18 @@ public class EventHubReactorConnectionTest {
         when(reactorProvider.createReactor(connectionHandler.getConnectionId(), connectionHandler.getMaxFrameSize()))
             .thenReturn(reactor);
 
+        final SessionHandler sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, "EVENT_HUB",
+            reactorDispatcher, Duration.ofSeconds(20));
+
         when(handlerProvider.createConnectionHandler(CONNECTION_ID, HOSTNAME, AmqpTransportType.AMQP, proxy, product,
             clientVersion))
             .thenReturn(connectionHandler);
+        when(handlerProvider.createSessionHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), any(Duration.class)))
+            .thenReturn(sessionHandler);
+
+        when(reactorConnection.session()).thenReturn(session);
+        final Record record = mock(Record.class);
+        when(session.attachments()).thenReturn(record);
     }
 
     @AfterEach
@@ -105,6 +129,21 @@ public class EventHubReactorConnectionTest {
     @Test
     public void getsManagementChannel() {
         // Arrange
+        final Sender sender = mock(Sender.class);
+        final Receiver receiver = mock(Receiver.class);
+        final Record linkRecord = mock(Record.class);
+        when(session.sender(any())).thenReturn(sender);
+        when(session.receiver(any())).thenReturn(receiver);
+
+        when(sender.attachments()).thenReturn(linkRecord);
+        when(receiver.attachments()).thenReturn(linkRecord);
+
+        when(handlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), anyString()))
+            .thenReturn(new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, "receiver-name", "test-entity-path"));
+
+        when(handlerProvider.createSendLinkHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), anyString()))
+            .thenReturn(new SendLinkHandler(CONNECTION_ID, HOSTNAME, "sender-name", "test-entity-path"));
+
         final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(CONNECTION_ID,
             connectionOptions, "event-hub-name", reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion);
