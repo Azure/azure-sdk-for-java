@@ -3,6 +3,8 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.model.CosmosStoredProcedureProperties;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 

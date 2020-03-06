@@ -4,6 +4,9 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.StoredProcedure;
+import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.model.CosmosStoredProcedureProperties;
+import com.azure.cosmos.model.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 /**
@@ -71,7 +74,7 @@ public class CosmosAsyncStoredProcedure {
         }
         return cosmosContainer.getDatabase().getDocClientWrapper().readStoredProcedure(getLink(),
             options.toRequestOptions())
-                   .map(response -> new CosmosAsyncStoredProcedureResponse(response, cosmosContainer)).single();
+                              .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer)).single();
     }
 
     /**
@@ -106,7 +109,7 @@ public class CosmosAsyncStoredProcedure {
         return cosmosContainer.getDatabase()
                    .getDocClientWrapper()
                    .deleteStoredProcedure(getLink(), options.toRequestOptions())
-                   .map(response -> new CosmosAsyncStoredProcedureResponse(response, cosmosContainer))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer))
                    .single();
     }
 
@@ -130,7 +133,7 @@ public class CosmosAsyncStoredProcedure {
         return cosmosContainer.getDatabase()
                    .getDocClientWrapper()
                    .executeStoredProcedure(getLink(), options.toRequestOptions(), procedureParams)
-                   .map(response -> new CosmosAsyncStoredProcedureResponse(response, cosmosContainer, this.id))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer, this.id))
                    .single();
     }
 
@@ -170,7 +173,7 @@ public class CosmosAsyncStoredProcedure {
                    .getDocClientWrapper()
                    .replaceStoredProcedure(new StoredProcedure(storedProcedureSettings.toJson()),
                        options.toRequestOptions())
-                   .map(response -> new CosmosAsyncStoredProcedureResponse(response, cosmosContainer))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer))
                    .single();
     }
 

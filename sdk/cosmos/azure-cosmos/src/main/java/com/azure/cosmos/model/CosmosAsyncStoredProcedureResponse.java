@@ -1,7 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncStoredProcedure;
+import com.azure.cosmos.CosmosResponse;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
@@ -24,7 +28,7 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
 
         } else {
             super.setProperties(new CosmosStoredProcedureProperties(bodyAsString));
-            storedProcedure = new CosmosAsyncStoredProcedure(this.getProperties().getId(), cosmosContainer);
+            storedProcedure = BridgeInternal.createCosmosAsyncStoredProcedure(this.getProperties().getId(), cosmosContainer);
         }
         storedProcedureResponse = null;
     }
@@ -33,7 +37,7 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
         StoredProcedureResponse response, CosmosAsyncContainer cosmosContainer, String storedProcedureId) {
         super(response);
         this.storedProcedureResponse = response;
-        this.storedProcedure = new CosmosAsyncStoredProcedure(storedProcedureId, cosmosContainer);
+        this.storedProcedure = BridgeInternal.createCosmosAsyncStoredProcedure(storedProcedureId, cosmosContainer);
 
     }
 

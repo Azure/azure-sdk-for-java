@@ -6,6 +6,7 @@ import com.azure.cosmos.model.CompositePath;
 import com.azure.cosmos.model.CosmosAsyncContainerResponse;
 import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.model.CosmosAsyncPermissionResponse;
+import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
 import org.assertj.core.api.Assertions;
 
 import java.util.ArrayList;

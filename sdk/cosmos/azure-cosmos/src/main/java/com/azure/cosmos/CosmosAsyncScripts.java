@@ -5,6 +5,9 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.UserDefinedFunction;
+import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.model.CosmosStoredProcedureProperties;
+import com.azure.cosmos.model.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -61,7 +64,7 @@ public class CosmosAsyncScripts {
         sProc.setBody(properties.getBody());
         return database.getDocClientWrapper()
                    .createStoredProcedure(container.getLink(), sProc, options.toRequestOptions())
-                   .map(response -> new CosmosAsyncStoredProcedureResponse(response, this.container))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, this.container))
                    .single();
     }
 
@@ -84,7 +87,7 @@ public class CosmosAsyncScripts {
             return database.getDocClientWrapper()
                        .readStoredProcedures(container.getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           CosmosStoredProcedureProperties.getFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosStoredProcedurePropertiesFromV2Results(response.getResults()),
                            response.getResponseHeaders()));
         });
     }
@@ -129,7 +132,7 @@ public class CosmosAsyncScripts {
             return database.getDocClientWrapper()
                        .queryStoredProcedures(container.getLink(), querySpec, options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           CosmosStoredProcedureProperties.getFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosStoredProcedurePropertiesFromV2Results(response.getResults()),
                            response.getResponseHeaders()));
         });
     }

@@ -20,18 +20,18 @@ public class CosmosResponse<T extends Resource> {
         this.resourceResponseWrapper = resourceResponse;
     }
 
-    CosmosResponse(T properties) {
+    protected CosmosResponse(T properties) {
         this.properties = properties;
         this.resourceResponseWrapper = null;
     }
 
-    CosmosResponse(ResourceResponse resourceResponse, T properties) {
+    protected CosmosResponse(ResourceResponse resourceResponse, T properties) {
         this.resourceResponseWrapper = resourceResponse;
         this.properties = properties;
     }
 
     // Only used in CosmosAsyncStoredProcedureResponse compatibility with StoredProcedureResponse
-    CosmosResponse(StoredProcedureResponse response) {
+    protected CosmosResponse(StoredProcedureResponse response) {
         this.resourceResponseWrapper = null;
     }
 

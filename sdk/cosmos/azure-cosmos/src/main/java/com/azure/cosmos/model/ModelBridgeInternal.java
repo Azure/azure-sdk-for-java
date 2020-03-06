@@ -14,6 +14,8 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.StoredProcedure;
+import com.azure.cosmos.implementation.StoredProcedureResponse;
 
 import java.util.List;
 
@@ -51,6 +53,21 @@ public class ModelBridgeInternal {
         return new CosmosAsyncPermissionResponse(response, cosmosUser);
     }
 
+    public static CosmosAsyncStoredProcedureResponse createCosmosAsyncStoredProcedureResponse(ResourceResponse<StoredProcedure> response,
+                                                                                              CosmosAsyncContainer cosmosContainer) {
+        return new CosmosAsyncStoredProcedureResponse(response, cosmosContainer);
+    }
+
+    public static CosmosAsyncStoredProcedureResponse createCosmosAsyncStoredProcedureResponse(StoredProcedureResponse response,
+                                                                                              CosmosAsyncContainer cosmosContainer,
+                                                                                              String storedProcedureId) {
+        return new CosmosAsyncStoredProcedureResponse(response, cosmosContainer, storedProcedureId);
+    }
+
+    public static CosmosStoredProcedureProperties createCosmosStoredProcedureProperties(String jsonString) {
+        return new CosmosStoredProcedureProperties(jsonString);
+    }
+
     public static List<CosmosConflictProperties> getCosmosConflictPropertiesFromV2Results(List<Conflict> results) {
         return CosmosConflictProperties.getFromV2Results(results);
     }
@@ -77,5 +94,9 @@ public class ModelBridgeInternal {
 
     public static List<CosmosPermissionProperties> getCosmosPermissionPropertiesFromV2Results(List<Permission> results) {
         return CosmosPermissionProperties.getFromV2Results(results);
+    }
+
+    public static List<CosmosStoredProcedureProperties> getCosmosStoredProcedurePropertiesFromV2Results(List<StoredProcedure> results) {
+        return CosmosStoredProcedureProperties.getFromV2Results(results);
     }
 }

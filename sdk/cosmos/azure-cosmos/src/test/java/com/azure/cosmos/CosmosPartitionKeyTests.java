@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.model.CosmosAsyncItemResponse;
 import com.azure.cosmos.model.CosmosContainerProperties;
+import com.azure.cosmos.model.CosmosStoredProcedureProperties;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -205,7 +206,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         validateQuerySuccess(queryFlux.byPage(), queryValidator);
 
         String documentCreatedBySprocId = "testDoc";
-        CosmosStoredProcedureProperties sproc = new CosmosStoredProcedureProperties(
+        CosmosStoredProcedureProperties sproc = ModelBridgeInternal.createCosmosStoredProcedureProperties(
                 "{" +
                         "  'id': '" +UUID.randomUUID().toString() + "'," +
                         "  'body':'" +
