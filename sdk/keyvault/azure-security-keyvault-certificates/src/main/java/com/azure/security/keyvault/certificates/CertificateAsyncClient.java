@@ -25,6 +25,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.DeletedCertificate;
@@ -40,6 +41,7 @@ import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
@@ -1709,14 +1711,33 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<KeyVaultCertificateWithPolicy>> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
+
         CertificateImportParameters parameters = new CertificateImportParameters()
-            .base64EncodedCertificate(Base64.getEncoder().encodeToString(importCertificateOptions.getCertificate()))
+            .base64EncodedCertificate(transformCertificateForImport(importCertificateOptions))
             .certificateAttributes(new CertificateRequestAttributes(importCertificateOptions))
-            .certificatePolicy(importCertificateOptions.getPolicy())
+            .certificatePolicy(new CertificatePolicyRequest(importCertificateOptions.getPolicy()))
             .password(importCertificateOptions.getPassword())
             .tags(importCertificateOptions.getTags());
 
         return service.importCertificate(vaultUrl, importCertificateOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    private String transformCertificateForImport(ImportCertificateOptions options) {
+        CertificatePolicy policy = options.getPolicy();
+        if (policy != null) {
+            CertificateContentType contentType = policy.getContentType();
+            if (contentType != null) {
+                switch (contentType.toString()) {
+                    case "application/x-pem-file":
+                        return new String(options.getCertificate(), StandardCharsets.US_ASCII);
+                    case "application/x-pkcs12":
+                        return Base64.getEncoder().encodeToString(options.getCertificate());
+                    default:
+                        return new String(options.getCertificate(), StandardCharsets.US_ASCII);
+                }
+            }
+        }
+        return new String(options.getCertificate(), StandardCharsets.US_ASCII);
     }
 }
