@@ -127,7 +127,6 @@ public final class IdentityClientOptions {
     }
 
     /**
-<<<<<<< HEAD
      * @return how long before the actual token expiry to refresh the token.
      */
     public Duration getTokenRefreshOffset() {
@@ -145,7 +144,9 @@ public final class IdentityClientOptions {
      * @param tokenRefreshOffset the duration before the actual expiry of a token to refresh it
      */
     public IdentityClientOptions setTokenRefreshOffset(Duration tokenRefreshOffset) {
-        this.tokenRefreshOffset = tokenRefreshOffset;
+        if (tokenRefreshOffset != null) {
+            this.tokenRefreshOffset = tokenRefreshOffset;
+        }
         return this;
     }
 

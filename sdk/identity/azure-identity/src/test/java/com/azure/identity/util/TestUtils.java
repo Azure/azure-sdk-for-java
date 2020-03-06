@@ -10,6 +10,7 @@ import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.UUID;
@@ -94,6 +95,17 @@ public final class TestUtils {
      */
     public static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn) {
         return Mono.just(new AccessToken(accessToken, expiresOn.plusMinutes(2)));
+    }
+
+    /**
+     * Creates a mock {@link AccessToken} instance.
+     * @param accessToken the access token to return
+     * @param expiresOn the expiration time
+     * @param tokenRefreshOffset how long before the actual expiry to refresh the token
+     * @return a Mono publisher of the result
+     */
+    public static Mono<AccessToken> getMockAccessToken(String accessToken, OffsetDateTime expiresOn, Duration tokenRefreshOffset) {
+        return Mono.just(new AccessToken(accessToken, expiresOn.plusMinutes(2).minus(tokenRefreshOffset)));
     }
 
     private TestUtils() {

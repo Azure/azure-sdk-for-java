@@ -94,6 +94,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      * token takes longer than normal to get to the server.
      *
      * @param tokenRefreshOffset the duration before the actual expiry of a token to refresh it
+     * @return An updated instance of this builder with the token refresh offset set as specified.
      */
     @SuppressWarnings("unchecked")
     public T tokenRefreshOffset(Duration tokenRefreshOffset) {
