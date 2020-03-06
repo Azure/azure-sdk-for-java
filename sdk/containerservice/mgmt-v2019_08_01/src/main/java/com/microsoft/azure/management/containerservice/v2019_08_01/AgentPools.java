@@ -71,10 +71,9 @@ public interface AgentPools extends SupportsCreating<AgentPool.DefinitionStages.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<AgentPoolAvailableVersions> getAvailableAgentPoolVersionsAsync(String resourceGroupName, String resourceName, String agentPoolName);
+    Observable<AgentPoolAvailableVersions> getAvailableAgentPoolVersionsAsync(String resourceGroupName, String resourceName);
 
 }
