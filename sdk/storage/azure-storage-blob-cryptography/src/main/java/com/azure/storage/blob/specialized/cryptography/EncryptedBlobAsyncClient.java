@@ -104,7 +104,6 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         AsyncKeyEncryptionKey key, String keyWrapAlgorithm) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             null);
-        // Note encryption scope is always null when passed in from the client builder.
 
         this.keyWrapper = key;
         this.keyWrapAlgorithm = keyWrapAlgorithm;
