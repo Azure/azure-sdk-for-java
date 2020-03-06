@@ -64,7 +64,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             isRequested.set(true);
             subscription.request(1);
         } else {
-            logger.warning("Processors can only be subscribed to once.");
+            logger.warning("connectionId[{}]: Processors can only be subscribed to once.", connectionId);
         }
     }
 
@@ -100,9 +100,9 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 },
                 () -> {
                     if (isDisposed()) {
-                        logger.info("Channel is disposed.");
+                        logger.info("connectionId[{}]: Channel is disposed.", connectionId);
                     } else {
-                        logger.info("Channel closed.");
+                        logger.info("connectionId[{}]: Channel closed.", connectionId);
                         setAndClearChannel();
                     }
                 });
@@ -122,7 +122,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         Objects.requireNonNull(throwable, "'throwable' is required.");
 
         if (isRetryPending.get() && retryPolicy.calculateRetryDelay(throwable, retryAttempts.get()) != null) {
-            logger.warning("Retry is already pending. Ignoring transient error.", throwable);
+            logger.warning("connectionId[{}]: Retry is already pending. Ignoring transient error.",
+                connectionId, throwable);
             return;
         }
 
@@ -137,14 +138,15 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 return;
             }
 
-            logger.warning("Retry #{}. Transient error occurred. Retrying after {} ms.",
-                attempt, retryInterval.toMillis(), throwable);
+            logger.warning("connectionId[{}]: Retry #{}. Transient error occurred. Retrying after {} ms.",
+                connectionId, attempt, retryInterval.toMillis(), throwable);
 
             retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
                 if (isDisposed()) {
-                    logger.info("Retry #{}. Not requesting from upstream. Processor is disposed.", attempt);
+                    logger.info("connectionId[{}]: Retry #{}. Not requesting from upstream. Processor is disposed.",
+                        connectionId, attempt);
                 } else {
-                    logger.info("Retry #{}. Requesting from upstream.", attempt);
+                    logger.info("connectionId[{}]: Retry #{}. Requesting from upstream.", connectionId, attempt);
 
                     requestUpstream();
                     isRetryPending.set(false);
@@ -154,7 +156,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             return;
         }
 
-        logger.warning("Non-retryable error occurred in connection.", throwable);
+        logger.warning("connectionId[{}]: Non-retryable error occurred in connection.", connectionId, throwable);
         lastError = throwable;
         isDisposed.set(true);
         dispose();
@@ -169,7 +171,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
 
     @Override
     public void onComplete() {
-        logger.info("Upstream connection publisher was completed. Terminating processor.");
+        logger.info("connectionId[{}]: Upstream connection publisher was completed. Terminating processor.",
+            connectionId);
 
         isDisposed.set(true);
         synchronized (lock) {
@@ -274,7 +277,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             try {
                 ((AutoCloseable) channel).close();
             } catch (Exception error) {
-                logger.warning("Error occurred closing item.", channel);
+                logger.warning("connectionId[{}]: Error occurred closing item.", connectionId, error);
             }
         } else if (channel instanceof Disposable) {
             ((Disposable) channel).dispose();

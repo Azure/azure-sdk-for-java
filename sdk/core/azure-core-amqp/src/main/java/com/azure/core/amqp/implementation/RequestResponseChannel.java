@@ -51,11 +51,11 @@ public class RequestResponseChannel implements Disposable {
 
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
         new ConcurrentSkipListMap<>();
-    private final ClientLogger logger = new ClientLogger(RequestResponseChannel.class);
     private final ReplayProcessor<AmqpEndpointState> endpointStates =
         ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
     private final FluxSink<AmqpEndpointState> endpointStatesSink =
         endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final ClientLogger logger;
 
     private final Sender sendLink;
     private final Receiver receiveLink;
@@ -92,6 +92,7 @@ public class RequestResponseChannel implements Disposable {
             String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
             ReactorProvider provider, MessageSerializer messageSerializer,
             SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
+        this.logger = new ClientLogger(String.format("%s<%s>", RequestResponseChannel.class, linkName));
         this.provider = provider;
         this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);

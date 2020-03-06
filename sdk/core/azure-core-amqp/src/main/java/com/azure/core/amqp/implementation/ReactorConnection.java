@@ -319,9 +319,9 @@ public class ReactorConnection implements AmqpConnection {
             })
             .repeat();
 
-        final String loggerName = String.format("%s<%s> [%s]", RequestResponseChannel.class, sessionName, getId());
         return createChannel.subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
-            channel -> channel.getEndpointStates(), retryPolicy, new ClientLogger(loggerName)));
+            channel -> channel.getEndpointStates(), retryPolicy,
+            new ClientLogger(String.format("%s<%s>", RequestResponseChannel.class, sessionName))));
     }
 
     private synchronized ClaimsBasedSecurityNode getOrCreateCBSNode() {
