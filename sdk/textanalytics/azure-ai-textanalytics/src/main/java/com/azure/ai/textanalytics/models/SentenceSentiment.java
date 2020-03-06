@@ -26,7 +26,7 @@ public final class SentenceSentiment {
      * @param graphemeOffset The grapheme offset, start position for the sentence sentiment.
      */
     public SentenceSentiment(TextSentiment sentiment, SentimentConfidenceScores confidenceScores,
-                             int graphemeLength, int graphemeOffset) {
+        int graphemeLength, int graphemeOffset) {
         this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
         this.graphemeLength = graphemeLength;
