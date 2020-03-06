@@ -6,6 +6,8 @@ package com.azure.cosmos.model;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosAsyncUser;
+import com.azure.cosmos.Permission;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Database;
@@ -44,6 +46,11 @@ public class ModelBridgeInternal {
         return new CosmosAsyncItemResponse(response, classType);
     }
 
+    public static CosmosAsyncPermissionResponse createCosmosAsyncPermissionResponse(ResourceResponse<Permission> response,
+                                                                                    CosmosAsyncUser cosmosUser) {
+        return new CosmosAsyncPermissionResponse(response, cosmosUser);
+    }
+
     public static List<CosmosConflictProperties> getCosmosConflictPropertiesFromV2Results(List<Conflict> results) {
         return CosmosConflictProperties.getFromV2Results(results);
     }
@@ -62,5 +69,13 @@ public class ModelBridgeInternal {
 
     public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.getProperties();
+    }
+
+    public static Permission getV2Permissions(CosmosPermissionProperties permissionSettings) {
+        return permissionSettings.getV2Permissions();
+    }
+
+    public static List<CosmosPermissionProperties> getCosmosPermissionPropertiesFromV2Results(List<Permission> results) {
+        return CosmosPermissionProperties.getFromV2Results(results);
     }
 }

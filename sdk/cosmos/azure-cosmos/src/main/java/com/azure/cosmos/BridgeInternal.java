@@ -568,4 +568,8 @@ public class BridgeInternal {
     public static CosmosAsyncDatabase createCosmosAsyncDatabase(String id, CosmosAsyncClient client) {
         return new CosmosAsyncDatabase(id, client);
     }
+
+    public static CosmosAsyncPermission createCosmosAsyncPermission(String id, CosmosAsyncUser user) {
+        return new CosmosAsyncPermission(id, user);
+    }
 }

@@ -1,7 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncPermission;
+import com.azure.cosmos.CosmosAsyncUser;
+import com.azure.cosmos.CosmosResponse;
+import com.azure.cosmos.Permission;
 import com.azure.cosmos.implementation.ResourceResponse;
 import org.apache.commons.lang3.StringUtils;
 
@@ -20,7 +25,7 @@ public class CosmosAsyncPermissionResponse extends CosmosResponse<CosmosPermissi
         } else {
             CosmosPermissionProperties props = new CosmosPermissionProperties(bodyAsString);
             super.setProperties(props);
-            permissionClient = new CosmosAsyncPermission(props.getId(), cosmosUser);
+            permissionClient = BridgeInternal.createCosmosAsyncPermission(props.getId(), cosmosUser);
         }
     }
 

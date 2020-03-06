@@ -1,7 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.Permission;
+import com.azure.cosmos.PermissionMode;
+import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.Constants;
 import org.apache.commons.lang3.StringUtils;
 
@@ -111,7 +116,7 @@ public class CosmosPermissionProperties extends Resource {
      * @return the current {@link CosmosPermissionProperties} object
      */
     public CosmosPermissionProperties setResourcePartitionKey(PartitionKey partitionKey) {
-        super.set(Constants.Properties.RESOURCE_PARTITION_KEY, partitionKey.getInternalPartitionKey().toJson());
+        super.set(Constants.Properties.RESOURCE_PARTITION_KEY, BridgeInternal.getPartitionKeyInternal(partitionKey).toJson());
         return this;
     }
 
