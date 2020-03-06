@@ -269,8 +269,9 @@ public final class ServiceBusClientBuilder {
         final Flux<ServiceBusAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
 
-            return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId, connectionOptions,
-                provider, handlerProvider, tokenManagerProvider, messageSerializer, product, clientVersion);
+            return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId, serviceBusResourceName,
+                connectionOptions, provider, handlerProvider, tokenManagerProvider, messageSerializer, product,
+                clientVersion);
         }).repeat();
 
         return connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
@@ -309,8 +310,8 @@ public final class ServiceBusClientBuilder {
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
-            transport, retryOptions, proxyOptions, scheduler);
+        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
+            proxyOptions, scheduler);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
