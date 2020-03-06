@@ -10,8 +10,19 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import java.net.URI;
 import java.util.Map;
 
+/**
+ * The type Retry with exception.
+ */
 public class RetryWithException extends CosmosClientException {
 
+    /**
+     * Instantiates a new Retry with exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public RetryWithException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
                               Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.RETRY_WITH, cosmosError, responseHeaders);
@@ -29,6 +40,13 @@ public class RetryWithException extends CosmosClientException {
         this(message, innerException, null, requestUri);
     }
 
+    /**
+     * Instantiates a new Retry with exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUri the request uri
+     */
     public RetryWithException(String message, HttpHeaders headers, URI requestUri) {
         super(message,
             null,

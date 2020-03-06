@@ -6,6 +6,9 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.ResourceResponse;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * The type Cosmos async database response.
+ */
 public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabaseProperties> {
     private final CosmosAsyncDatabase database;
 

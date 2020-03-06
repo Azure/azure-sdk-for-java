@@ -7,6 +7,9 @@ import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * The type Cosmos async stored procedure response.
+ */
 public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosStoredProcedureProperties> {
 
     private final CosmosAsyncStoredProcedure storedProcedure;
@@ -26,7 +29,8 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
         storedProcedureResponse = null;
     }
 
-    CosmosAsyncStoredProcedureResponse(StoredProcedureResponse response, CosmosAsyncContainer cosmosContainer, String storedProcedureId) {
+    CosmosAsyncStoredProcedureResponse(
+        StoredProcedureResponse response, CosmosAsyncContainer cosmosContainer, String storedProcedureId) {
         super(response);
         this.storedProcedureResponse = response;
         this.storedProcedure = new CosmosAsyncStoredProcedure(storedProcedureId, cosmosContainer);

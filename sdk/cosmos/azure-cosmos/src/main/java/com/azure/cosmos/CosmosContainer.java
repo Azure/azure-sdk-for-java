@@ -193,7 +193,8 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public <T> CosmosItemResponse<T> upsertItem(Object item, CosmosItemRequestOptions options) throws CosmosClientException {
+    public <T> CosmosItemResponse<T> upsertItem(Object item, CosmosItemRequestOptions options) throws
+        CosmosClientException {
         return (CosmosItemResponse<T>) this.mapItemResponseAndBlock(this.asyncContainer.upsertItem(item, options));
     }
 
@@ -204,11 +205,12 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    <T> CosmosItemResponse<T> mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse<T>> itemMono) throws CosmosClientException {
+    <T> CosmosItemResponse<T> mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse<T>> itemMono) throws
+        CosmosClientException {
         try {
             return (CosmosItemResponse<T>) itemMono
-                       .map(this::convertResponse)
-                       .block();
+                                               .map(this::convertResponse)
+                                               .block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
@@ -283,7 +285,8 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) throws CosmosClientException {
+    public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) throws
+        CosmosClientException {
         return this.mapItemResponseAndBlock(asyncContainer.readItem(itemId,
                                                                     partitionKey,
                                                                     new CosmosItemRequestOptions(),
@@ -301,8 +304,9 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey,
-                                          CosmosItemRequestOptions options, Class<T> itemType) throws CosmosClientException {
+    public <T> CosmosItemResponse<T> readItem(
+        String itemId, PartitionKey partitionKey,
+        CosmosItemRequestOptions options, Class<T> itemType) throws CosmosClientException {
         return this.mapItemResponseAndBlock(asyncContainer.readItem(itemId, partitionKey, options, itemType));
     }
 

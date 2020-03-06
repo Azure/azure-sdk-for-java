@@ -4,6 +4,9 @@
 
 package com.azure.cosmos;
 
+/**
+ * The enum RequestVerb.
+ */
 public enum  RequestVerb {
 
     GET("GET"),

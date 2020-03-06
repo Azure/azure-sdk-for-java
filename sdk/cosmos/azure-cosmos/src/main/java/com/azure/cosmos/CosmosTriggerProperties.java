@@ -3,13 +3,15 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.Trigger;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Cosmos trigger properties.
+ */
 public class CosmosTriggerProperties extends Resource {
 
     /**

@@ -3,12 +3,18 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Represents a stored procedure in the Azure Cosmos DB database service.
+ * <p>
+ * Cosmos DB allows stored procedures to be executed in the storage tier, directly against a container. The
+ * script gets executed under ACID transactions on the primary storage partition of the specified collection. For
+ * additional details, refer to the server-side JavaScript API documentation.
+ */
 public class CosmosStoredProcedureProperties extends Resource {
 
     /**

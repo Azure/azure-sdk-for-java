@@ -324,4 +324,56 @@
   <!-- Don't enforce non-static ClientLogger instances in azure-core-mgmt PollerFactory and PollingState types-->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)" files="com.azure.core.management.implementation.polling.PollerFactory.java"/>
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)" files="com.azure.core.management.implementation.polling.PollingState.java"/>
+  
+  <!-- Cosmos sdk suppressions -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos[/\\]src[/\\]test[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]examples[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]implementation[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.cosmos.BridgeInternal.java"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.cosmos.CosmosBridgeInternal.java"/>
+  <suppress checks="[a-zA-Z0-9]*" files="com.azure.cosmos.CommonsBridgeInternal.java"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]rx[/\\]examples[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-benchmark[/\\]"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.GoodLoggingCheck"
+            files="com.azure.cosmos.CosmosResponseDiagnostics"/>  
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.CosmosClient"/>  
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.CosmosScripts"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.CosmosAsyncDatabase"/>  
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.PartitionKeyDefinition"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.JsonSerializable"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.CosmosContainer"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.DatabaseAccount"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.CosmosContainerProperties"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.UniqueKeyPolicy"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.IncludedPath"/>  
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.CosmosConflictProperties"/>  
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.CosmosDatabase"/>  
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.ConnectionPolicy"/>
+   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.ThrottlingRetryOptions"/>   
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.ThrowFromClientLoggerCheck"
+            files="com.azure.cosmos.ClientSideRequestStatistics"/>
+  <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(GoodLoggingCheck|ExternalDependencyExposedCheck)"
+            files="com.azure.cosmos.JsonSerializable"/>  <!-- exposes logger from slf4j-->
+  <suppress checks="javadoc" files="com.azure.cosmos.CompositePathSortOrder"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" 
+            files="com.azure.cosmos.PartitionKey"/>
+   <suppress checks="com.azure.tools.checkstyle.checks.(EnforceFinalFieldsCheck|ExternalDependencyExposedCheck)" 
+            files="com.azure.cosmos.ClientSideRequestStatistics"/>   
+  <suppress checks="IllegalImport" 
+            files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain 
+            cpu info -->
 </suppressions>

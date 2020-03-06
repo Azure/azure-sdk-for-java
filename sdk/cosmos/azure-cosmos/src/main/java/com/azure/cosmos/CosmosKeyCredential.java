@@ -15,6 +15,11 @@ public class CosmosKeyCredential {
     //  Stores key's hashcode for performance improvements
     private int keyHashCode;
 
+    /**
+     * Instantiates a new Cosmos key credential.
+     *
+     * @param key the key
+     */
     public CosmosKeyCredential(String key) {
         this.key = key;
         this.keyHashCode = key.hashCode();

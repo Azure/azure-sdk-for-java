@@ -6,6 +6,9 @@ import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * The type Cosmos async user defined function response.
+ */
 public class CosmosAsyncUserDefinedFunctionResponse extends CosmosResponse<CosmosUserDefinedFunctionProperties> {
 
     private final CosmosUserDefinedFunctionProperties cosmosUserDefinedFunctionProperties;
@@ -21,7 +24,8 @@ public class CosmosAsyncUserDefinedFunctionResponse extends CosmosResponse<Cosmo
         } else {
             cosmosUserDefinedFunctionProperties = new CosmosUserDefinedFunctionProperties(bodyAsString);
             super.setProperties(cosmosUserDefinedFunctionProperties);
-            cosmosUserDefinedFunction = new CosmosAsyncUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId(), container);
+            cosmosUserDefinedFunction = new CosmosAsyncUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId(),
+                                                                           container);
         }
     }
 

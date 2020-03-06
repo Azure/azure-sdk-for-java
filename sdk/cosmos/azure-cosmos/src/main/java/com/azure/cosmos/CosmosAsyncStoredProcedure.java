@@ -6,6 +6,9 @@ import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.StoredProcedure;
 import reactor.core.publisher.Mono;
 
+/**
+ * The type Cosmos async stored procedure.
+ */
 public class CosmosAsyncStoredProcedure {
 
     @SuppressWarnings("EnforceFinalFields")

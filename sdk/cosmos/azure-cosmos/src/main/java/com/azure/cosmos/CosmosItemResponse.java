@@ -8,6 +8,11 @@ import com.azure.cosmos.implementation.CosmosItemProperties;
 import java.time.Duration;
 import java.util.Map;
 
+/**
+ * The synchronous Cosmos item response. Contains methods to access the Item and other response methods
+ *
+ * @param <T> the type parameter
+ */
 public class CosmosItemResponse<T> {
     private final CosmosAsyncItemResponse responseWrapper;
 
@@ -15,11 +20,16 @@ public class CosmosItemResponse<T> {
         this.responseWrapper = response;
     }
 
+    /**
+     * Gets resource.
+     *
+     * @return the resource
+     */
     @SuppressWarnings("unchecked")
-    public T getResource(){
+    public T getResource() {
         return (T) responseWrapper.getResource();
     }
-    
+
     /**
      * Gets the itemSettings
      *

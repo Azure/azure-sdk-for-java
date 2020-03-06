@@ -64,6 +64,11 @@ public final class PartitionKeyDefinition extends JsonSerializable {
         return this;
     }
 
+    /**
+     * Gets version.
+     *
+     * @return the {@link PartitionKeyDefinitionVersion}
+     */
     public PartitionKeyDefinitionVersion getVersion() {
         if (this.versionOptional == null) {
             Object versionObject = super.getObject(Constants.Properties.PARTITION_KEY_DEFINITION_VERSION, Object.class);
@@ -76,8 +81,8 @@ public final class PartitionKeyDefinition extends JsonSerializable {
                         Integer.parseInt(versionStr))));
                 } else {
                     this.versionOptional = !Strings.isNullOrEmpty(versionStr)
-                                       ? Optional.of(PartitionKeyDefinitionVersion.valueOf(StringUtils.upperCase(versionStr)))
-                                       : Optional.empty();
+                               ? Optional.of(PartitionKeyDefinitionVersion.valueOf(StringUtils.upperCase(versionStr)))
+                               : Optional.empty();
                 }
             }
 
@@ -87,6 +92,12 @@ public final class PartitionKeyDefinition extends JsonSerializable {
         return this.versionOptional.isPresent() ? this.versionOptional.get() : null;
     }
 
+    /**
+     * Sets version.
+     *
+     * @param version the version
+     * @return the version
+     */
     public PartitionKeyDefinition setVersion(PartitionKeyDefinitionVersion version) {
         this.versionOptional = Optional.of(version);
         return this;
