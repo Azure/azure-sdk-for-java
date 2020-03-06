@@ -176,8 +176,9 @@ public class BlobClient extends BlobClientBase {
             StorageImplUtils.copyToOutputStream(data, length, blobOutputStream);
             blobOutputStream.close();
         } catch (IOException e) {
-            if (e.getCause() instanceof BlobStorageException) {
-                throw logger.logExceptionAsError((BlobStorageException) e.getCause());
+            Throwable cause = e.getCause();
+            if (cause instanceof BlobStorageException) {
+                throw logger.logExceptionAsError((BlobStorageException) cause);
             } else {
                 throw logger.logExceptionAsError(new UncheckedIOException(e));
             }
