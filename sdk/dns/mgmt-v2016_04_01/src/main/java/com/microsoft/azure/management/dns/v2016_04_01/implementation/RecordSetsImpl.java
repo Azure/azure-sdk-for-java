@@ -103,7 +103,8 @@ class RecordSetsImpl extends WrapperImpl<RecordSetsInner> implements RecordSets 
             public Iterable<RecordSetInner> call(Page<RecordSetInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<RecordSetInner, RecordSet>() {
+        })
+        .map(new Func1<RecordSetInner, RecordSet>() {
             @Override
             public RecordSet call(RecordSetInner inner) {
                 return new RecordSetImpl(inner, manager());
