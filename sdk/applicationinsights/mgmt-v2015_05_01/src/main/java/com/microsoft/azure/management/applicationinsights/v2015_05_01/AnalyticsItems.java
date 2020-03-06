@@ -21,7 +21,7 @@ public interface AnalyticsItems extends HasInner<AnalyticsItemsInner> {
     /**
      * Gets a list of Analytics Items defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all users with access to the Application Insights component. Possible values include: 'analyticsItems', 'myanalyticsItems'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -32,7 +32,7 @@ public interface AnalyticsItems extends HasInner<AnalyticsItemsInner> {
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all users with access to the Application Insights component. Possible values include: 'analyticsItems', 'myanalyticsItems'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -43,7 +43,7 @@ public interface AnalyticsItems extends HasInner<AnalyticsItemsInner> {
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all users with access to the Application Insights component. Possible values include: 'analyticsItems', 'myanalyticsItems'
      * @param itemProperties Properties that need to be specified to create a new item and add it to an Application Insights component.
@@ -55,7 +55,7 @@ public interface AnalyticsItems extends HasInner<AnalyticsItemsInner> {
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param scopePath Enum indicating if this item definition is owned by a specific user or is shared between all users with access to the Application Insights component. Possible values include: 'analyticsItems', 'myanalyticsItems'
      * @throws IllegalArgumentException thrown if parameters fail the validation
