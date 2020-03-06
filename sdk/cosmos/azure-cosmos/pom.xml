@@ -272,14 +272,15 @@ Licensed under the MIT License.
   <build>
     <plugins>
 
-      <!-- CosmosSkip - Needed temporary false values to not fail. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <configuration>
-          <failsOnError>false</failsOnError>
-          <failOnViolation>false</failOnViolation>
+          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml
+          </suppressionsLocation>
+          <failsOnError>true</failsOnError>
+          <failOnViolation>true</failOnViolation>
         </configuration>
       </plugin>
 

@@ -34,7 +34,7 @@ import java.util.Map;
  */
 public class JsonSerializable {
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
-    private final static Logger logger = LoggerFactory.getLogger(JsonSerializable.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonSerializable.class);
     transient ObjectNode propertyBag = null;
     private ObjectMapper om;
 
@@ -129,7 +129,7 @@ public class JsonSerializable {
 
     @JsonIgnore
     protected Logger getLogger() {
-        return logger;
+        return LOGGER;
     }
 
     protected void populatePropertyBag() {
@@ -531,6 +531,11 @@ public class JsonSerializable {
         }
     }
 
+    /**
+     * Serialize json to byte buffer byte buffer.
+     *
+     * @return the byte buffer
+     */
     public ByteBuffer serializeJsonToByteBuffer() {
         this.populatePropertyBag();
         return Utils.serializeJsonToByteBuffer(getMapper(), propertyBag);
@@ -560,6 +565,7 @@ public class JsonSerializable {
      * (and not an anonymous or local) and a static one.
      * @return the POJO.
      * @throws IllegalArgumentException thrown if an error occurs
+     * @throws IllegalStateException thrown when objectmapper is unable to read tree
      */
     public <T> T toObject(Class<T> c) {
         // TODO: We have to remove this if we do not want to support CosmosItemProperties anymore, and change all the
@@ -581,7 +587,7 @@ public class JsonSerializable {
         }
         if (JsonNode.class.isAssignableFrom(c) || ObjectNode.class.isAssignableFrom(c)) {
             // JsonNode
-            if( JsonNode.class != c) {
+            if (JsonNode.class != c) {
                 if (ObjectNode.class != c) {
                     throw new IllegalArgumentException(
                         "We support JsonNode but not its sub-classes.");

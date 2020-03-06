@@ -6,6 +6,9 @@ import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import reactor.core.publisher.Mono;
 
+/**
+ * The type Cosmos async user defined function.
+ */
 public class CosmosAsyncUserDefinedFunction {
 
     @SuppressWarnings("EnforceFinalFields")

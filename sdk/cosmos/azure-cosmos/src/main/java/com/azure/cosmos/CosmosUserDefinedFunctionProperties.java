@@ -8,6 +8,9 @@ import com.azure.cosmos.implementation.UserDefinedFunction;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Cosmos user defined function properties.
+ */
 public class CosmosUserDefinedFunctionProperties extends Resource {
 
     /**

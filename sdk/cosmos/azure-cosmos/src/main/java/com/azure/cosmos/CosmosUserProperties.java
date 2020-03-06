@@ -4,12 +4,14 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The Cosmos user properties.
+ */
 public class CosmosUserProperties extends Resource {
     /**
      * Initialize a user object.
