@@ -89,20 +89,23 @@ public class ManagementChannel implements EventHubManagementNode {
         this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
 
+        //@formatter:off
         this.subscription = responseChannelMono
             .flatMapMany(e -> e.getEndpointStates().distinct())
             .subscribe(e -> {
                 logger.info("Management endpoint state: {}", e);
                 endpointStateSink.next(e);
             }, error -> {
-                logger.error("Exception occurred: {}", error);
-                endpointStateSink.error(error);
-                close();
-            }, () -> {
-                logger.info("Complete.");
-                endpointStateSink.complete();
-                close();
-            });
+                    logger.error("Exception occurred: {}", error);
+                    endpointStateSink.error(error);
+                    close();
+                }, () -> {
+                    logger.info("Complete.");
+                    endpointStateSink.complete();
+                    close();
+                });
+
+        //@formatter:on
     }
 
     /**
