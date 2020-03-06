@@ -19,7 +19,7 @@ public final class ListSynonymMapsResult {
     /*
      * The synonym maps in the Search service.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SynonymMap> synonymMaps;
 
     /**

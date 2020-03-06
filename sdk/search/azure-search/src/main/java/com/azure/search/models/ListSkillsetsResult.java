@@ -19,7 +19,7 @@ public final class ListSkillsetsResult {
     /*
      * The skillsets defined in the Search service.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<Skillset> skillsets;
 
     /**

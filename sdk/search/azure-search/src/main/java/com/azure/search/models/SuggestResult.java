@@ -24,7 +24,7 @@ public final class SuggestResult {
     /*
      * The text of the suggestion result.
      */
-    @JsonProperty(value = "@search.text", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String text;
 
     /**

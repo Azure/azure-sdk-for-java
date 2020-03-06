@@ -28,7 +28,7 @@ public final class SearchResult {
      * The relevance score of the document compared to other documents returned
      * by the query.
      */
-    @JsonProperty(value = "@search.score", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double score;
 
     /*
@@ -46,7 +46,7 @@ public final class SearchResult {
      * @return the additionalProperties value.
      */
     @JsonIgnore
-    public Document getDocument() {
+public Document getDocument() {
         return this.additionalProperties;
     }
 
