@@ -80,7 +80,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     private List<SubResource> loadBalancerInboundNatPools;
 
     /**
-     * Get the name value.
+     * Get the IP configuration name.
      *
      * @return the name value
      */
@@ -89,7 +89,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set the IP configuration name.
      *
      * @param name the name value to set
      * @return the VirtualMachineScaleSetIPConfiguration object itself.
@@ -100,7 +100,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Get the subnet value.
+     * Get specifies the identifier of the subnet.
      *
      * @return the subnet value
      */
@@ -109,7 +109,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Set the subnet value.
+     * Set specifies the identifier of the subnet.
      *
      * @param subnet the subnet value to set
      * @return the VirtualMachineScaleSetIPConfiguration object itself.
@@ -120,7 +120,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Get the primary value.
+     * Get specifies the primary network interface in case the virtual machine has more than 1 network interface.
      *
      * @return the primary value
      */
@@ -129,7 +129,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Set the primary value.
+     * Set specifies the primary network interface in case the virtual machine has more than 1 network interface.
      *
      * @param primary the primary value to set
      * @return the VirtualMachineScaleSetIPConfiguration object itself.
@@ -140,7 +140,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Get the publicIPAddressConfiguration value.
+     * Get the publicIPAddressConfiguration.
      *
      * @return the publicIPAddressConfiguration value
      */
@@ -149,7 +149,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Set the publicIPAddressConfiguration value.
+     * Set the publicIPAddressConfiguration.
      *
      * @param publicIPAddressConfiguration the publicIPAddressConfiguration value to set
      * @return the VirtualMachineScaleSetIPConfiguration object itself.
@@ -160,7 +160,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Get the privateIPAddressVersion value.
+     * Get available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.  Possible values are: 'IPv4' and 'IPv6'. Possible values include: 'IPv4', 'IPv6'.
      *
      * @return the privateIPAddressVersion value
      */
@@ -169,7 +169,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Set the privateIPAddressVersion value.
+     * Set available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.  Possible values are: 'IPv4' and 'IPv6'. Possible values include: 'IPv4', 'IPv6'.
      *
      * @param privateIPAddressVersion the privateIPAddressVersion value to set
      * @return the VirtualMachineScaleSetIPConfiguration object itself.
@@ -180,7 +180,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Get the applicationGatewayBackendAddressPools value.
+     * Get specifies an array of references to backend address pools of application gateways. A scale set can reference backend address pools of multiple application gateways. Multiple scale sets cannot use the same application gateway.
      *
      * @return the applicationGatewayBackendAddressPools value
      */
@@ -189,7 +189,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Set the applicationGatewayBackendAddressPools value.
+     * Set specifies an array of references to backend address pools of application gateways. A scale set can reference backend address pools of multiple application gateways. Multiple scale sets cannot use the same application gateway.
      *
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set
      * @return the VirtualMachineScaleSetIPConfiguration object itself.
@@ -200,7 +200,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Get the loadBalancerBackendAddressPools value.
+     * Get specifies an array of references to backend address pools of load balancers. A scale set can reference backend address pools of one public and one internal load balancer. Multiple scale sets cannot use the same load balancer.
      *
      * @return the loadBalancerBackendAddressPools value
      */
@@ -209,7 +209,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Set the loadBalancerBackendAddressPools value.
+     * Set specifies an array of references to backend address pools of load balancers. A scale set can reference backend address pools of one public and one internal load balancer. Multiple scale sets cannot use the same load balancer.
      *
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set
      * @return the VirtualMachineScaleSetIPConfiguration object itself.
@@ -220,7 +220,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Get the loadBalancerInboundNatPools value.
+     * Get specifies an array of references to inbound Nat pools of the load balancers. A scale set can reference inbound nat pools of one public and one internal load balancer. Multiple scale sets cannot use the same load balancer.
      *
      * @return the loadBalancerInboundNatPools value
      */
@@ -229,7 +229,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
     }
 
     /**
-     * Set the loadBalancerInboundNatPools value.
+     * Set specifies an array of references to inbound Nat pools of the load balancers. A scale set can reference inbound nat pools of one public and one internal load balancer. Multiple scale sets cannot use the same load balancer.
      *
      * @param loadBalancerInboundNatPools the loadBalancerInboundNatPools value to set
      * @return the VirtualMachineScaleSetIPConfiguration object itself.
