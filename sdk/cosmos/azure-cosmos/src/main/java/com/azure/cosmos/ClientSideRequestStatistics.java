@@ -41,13 +41,16 @@ class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
     private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
         DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US);
-    private final List<StoreResponseStatistics> responseStatisticsList;
-    private final List<StoreResponseStatistics> supplementalResponseStatisticsList;
-    private final Map<String, AddressResolutionStatistics> addressResolutionStatistics;
-    private final ZonedDateTime requestStartTime;
+
     private ConnectionMode connectionMode;
+
+    private List<StoreResponseStatistics> responseStatisticsList;
+    private List<StoreResponseStatistics> supplementalResponseStatisticsList;
+    private Map<String, AddressResolutionStatistics> addressResolutionStatistics;
+
     private List<URI> contactedReplicas;
     private Set<URI> failedReplicas;
+    private ZonedDateTime requestStartTime;
     private ZonedDateTime requestEndTime;
     private Set<URI> regionsContacted;
     private RetryContext retryContext;
@@ -124,8 +127,8 @@ class ClientSideRequestStatistics {
                 this.requestEndTime = responseTime;
             }
 
-            if (rxDocumentServiceRequest != null
-                    && rxDocumentServiceRequest.requestContext != null
+            if (rxDocumentServiceRequest != null 
+                    && rxDocumentServiceRequest.requestContext != null 
                     && rxDocumentServiceRequest.requestContext.retryContext != null) {
                 rxDocumentServiceRequest.requestContext.retryContext.retryEndTime = ZonedDateTime.now(ZoneOffset.UTC);
                 this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
@@ -136,10 +139,10 @@ class ClientSideRequestStatistics {
             if (storeResponse != null) {
                 this.gatewayStatistics.statusCode = storeResponse.getStatus();
                 this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
-                this.gatewayStatistics.sessionToken =
-                    storeResponse.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
-                this.gatewayStatistics.requestCharge =
-                    storeResponse.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+                this.gatewayStatistics.sessionToken = storeResponse
+                                                          .getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                this.gatewayStatistics.requestCharge = storeResponse
+                                                           .getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
                 this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
             } else if (exception != null) {
                 this.gatewayStatistics.statusCode = exception.getStatusCode();
@@ -235,6 +238,22 @@ class ClientSideRequestStatistics {
         String availableMemory;
         String processCpuLoad;
         String systemCpuLoad;
+
+        public String getUsedMemory() {
+            return usedMemory;
+        }
+
+        public String getAvailableMemory() {
+            return availableMemory;
+        }
+
+        public String getProcessCpuLoad() {
+            return processCpuLoad;
+        }
+
+        public String getSystemCpuLoad() {
+            return systemCpuLoad;
+        }
     }
 
     private static class ZonedDateTimeSerializer extends StdSerializer<ZonedDateTime> {
@@ -323,5 +342,29 @@ class ClientSideRequestStatistics {
         int subStatusCode;
         String requestCharge;
         RequestTimeline requestTimeline;
+
+        public String getSessionToken() {
+            return sessionToken;
+        }
+
+        public OperationType getOperationType() {
+            return operationType;
+        }
+
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        public int getSubStatusCode() {
+            return subStatusCode;
+        }
+
+        public String getRequestCharge() {
+            return requestCharge;
+        }
+
+        public RequestTimeline getRequestTimeline() {
+            return requestTimeline;
+        }
     }
 }

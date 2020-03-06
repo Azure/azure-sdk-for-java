@@ -272,7 +272,6 @@ Licensed under the MIT License.
   <build>
     <plugins>
 
-      <!-- CosmosSkip - Needed temporary false values to not fail. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
