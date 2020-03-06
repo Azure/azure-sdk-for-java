@@ -37,7 +37,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         // Recognizing batch entities
         client.recognizeLinkedEntitiesBatch(inputs, requestOptions).byPage().subscribe(
@@ -63,7 +63,7 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                                 linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                                 linkedEntity.getDataSource());
                             linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                                "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getScore()));
+                                "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
                         });
                     }
                 });

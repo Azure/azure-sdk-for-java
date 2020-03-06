@@ -14,7 +14,7 @@ public final class LinkedEntityMatch {
      * If a well-known item is recognized, a decimal number denoting the
      * confidence level between 0 and 1 will be returned.
      */
-    private final double score;
+    private final double confidenceScore;
 
     /*
      * Entity text as appears in the request.
@@ -35,14 +35,14 @@ public final class LinkedEntityMatch {
      * Creates a {@link LinkedEntityMatch} model that describes linked entity match.
      *
      * @param text The entity text as appears in the request.
-     * @param score If a well-known item is recognized, a decimal number denoting the
+     * @param confidenceScore If a well-known item is recognized, a decimal number denoting the
      * confidence level between 0 and 1 will be returned.
      * @param graphemeOffset Grapheme start position for the entity match text.
      * @param graphemeLength Grapheme length for the entity match text.
      */
-    public LinkedEntityMatch(String text, double score, int graphemeOffset, int graphemeLength) {
+    public LinkedEntityMatch(String text, double confidenceScore, int graphemeOffset, int graphemeLength) {
         this.text = text;
-        this.score = score;
+        this.confidenceScore = confidenceScore;
         this.graphemeOffset = graphemeOffset;
         this.graphemeLength = graphemeLength;
     }
@@ -53,8 +53,8 @@ public final class LinkedEntityMatch {
      *
      * @return The score value.
      */
-    public double getScore() {
-        return this.score;
+    public double getConfidenceScore() {
+        return this.confidenceScore;
     }
 
     /**

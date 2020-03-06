@@ -57,7 +57,7 @@ class RecognizePiiEntityAsyncClient {
      * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
      * @param text A single document.
-     * @param language The language hint.
+     * @param language The language code.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link PiiEntity}.
      */
@@ -105,7 +105,7 @@ class RecognizePiiEntityAsyncClient {
                 service.entitiesRecognitionPiiWithRestResponseAsync(
                     new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                     options == null ? null : options.getModelVersion(),
-                    options == null ? null : options.isStatisticsShown(), context)
+                    options == null ? null : options.isIncludeStatistics(), context)
                     .doOnSubscribe(ignoredValue ->
                         logger.info("Processing a batch of Personally Identifiable Information entities input"))
                     .doOnSuccess(response ->
@@ -139,7 +139,7 @@ class RecognizePiiEntityAsyncClient {
             service.entitiesRecognitionPiiWithRestResponseAsync(
                 new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                 options == null ? null : options.getModelVersion(),
-                options == null ? null : options.isStatisticsShown(), context)
+                options == null ? null : options.isIncludeStatistics(), context)
                 .doOnSubscribe(ignoredValue ->
                     logger.info("Processing a batch of Personally Identifiable Information entities input"))
                 .doOnSuccess(response ->

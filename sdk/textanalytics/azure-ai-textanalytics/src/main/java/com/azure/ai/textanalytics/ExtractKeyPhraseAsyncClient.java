@@ -56,7 +56,7 @@ class ExtractKeyPhraseAsyncClient {
      * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
      * @param text A document.
-     * @param language The language hint.
+     * @param language The language code.
      *
      * @return The {@link TextAnalyticsPagedFlux} of extracted key phrases strings.
      */
@@ -104,7 +104,7 @@ class ExtractKeyPhraseAsyncClient {
                 service.keyPhrasesWithRestResponseAsync(
                     new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                     options == null ? null : options.getModelVersion(),
-                    options == null ? null : options.isStatisticsShown(), context)
+                    options == null ? null : options.isIncludeStatistics(), context)
                     .doOnSubscribe(ignoredValue ->
                         logger.info("A batch of key phrases input - {}", textInputs.toString()))
                     .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
@@ -135,7 +135,7 @@ class ExtractKeyPhraseAsyncClient {
             service.keyPhrasesWithRestResponseAsync(
                 new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                 options == null ? null : options.getModelVersion(),
-                options == null ? null : options.isStatisticsShown(), context)
+                options == null ? null : options.isIncludeStatistics(), context)
                 .doOnSubscribe(ignoredValue -> logger.info("A batch of key phrases input - {}", textInputs.toString()))
                 .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
                 .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))

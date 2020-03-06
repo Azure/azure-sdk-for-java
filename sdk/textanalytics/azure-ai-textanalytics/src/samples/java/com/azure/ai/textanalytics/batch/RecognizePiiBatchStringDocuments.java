@@ -46,8 +46,8 @@ public class RecognizePiiBatchStringDocuments {
             }
             // Valid document
             entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                "PII entity: %s, entity category: %s, entity sub-category: %s, score: %.2f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()));
+                "PII entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
+                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
         });
     }
 }

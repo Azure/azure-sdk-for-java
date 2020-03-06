@@ -484,7 +484,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test analyzing sentiment for a list of string input with language hint.
+     * Test analyzing sentiment for a list of string input with language code.
      */
     @Test
     public void analyseSentimentForListLanguageHint() {

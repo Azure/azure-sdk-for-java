@@ -44,8 +44,8 @@ public class RecognizeEntitiesBatchDocuments {
             } else {
                 // Valid document
                 entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                    "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %.2f.%n",
-                    entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore())
+                    "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
+                    entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore())
                 );
             }
         });

@@ -327,7 +327,7 @@ public final class TextAnalyticsAsyncClient {
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Recognize entities in a document with provided language hint. Subscribes to the call asynchronously and prints
+     * <p>Recognize entities in a document with provided language code. Subscribes to the call asynchronously and prints
      * out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string-string}
@@ -501,7 +501,7 @@ public final class TextAnalyticsAsyncClient {
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
      *
      * <p><strong>Code sample</strong></p>
-     * <p>Recognize Personally Identifiable Information entities in a document with provided language hint. Subscribes
+     * <p>Recognize Personally Identifiable Information entities in a document with provided language code. Subscribes
      * to the call asynchronously and prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string}
@@ -683,7 +683,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided document. See
      * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
-     * <p>Recognize linked entities in a text with provided language hint. Subscribes to the call asynchronously
+     * <p>Recognize linked entities in a text with provided language code. Subscribes to the call asynchronously
      * and prints out the entity details when a response is received.</p>
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string-string}

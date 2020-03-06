@@ -49,7 +49,7 @@ public class RecognizeLinkedEntitiesBatchDocuments {
                         linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                         linkedEntity.getDataSource());
                     linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                        "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getScore()));
+                        "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
                 });
             }
         });

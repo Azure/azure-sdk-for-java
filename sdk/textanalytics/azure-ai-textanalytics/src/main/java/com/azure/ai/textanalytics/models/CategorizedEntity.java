@@ -38,7 +38,7 @@ public final class CategorizedEntity {
     /*
      * Confidence score between 0 and 1 of the extracted entity.
      */
-    private final double score;
+    private final double confidenceScore;
 
     /**
      * Creates a {@link CategorizedEntity} model that describes entity.
@@ -48,16 +48,16 @@ public final class CategorizedEntity {
      * @param subCategory The entity subcategory, such as Age/Year/TimeRange etc.
      * @param offset The grapheme start position for the entity text.
      * @param length The grapheme length for the entity text.
-     * @param score A confidence score between 0 and 1 of the extracted entity.
+     * @param confidenceScore A confidence score between 0 and 1 of the extracted entity.
      */
     public CategorizedEntity(String text, EntityCategory category, String subCategory,
-        int offset, int length, double score) {
+        int offset, int length, double confidenceScore) {
         this.text = text;
         this.category = category;
         this.subCategory = subCategory;
         this.offset = offset;
         this.length = length;
-        this.score = score;
+        this.confidenceScore = confidenceScore;
     }
 
     /**
@@ -110,7 +110,7 @@ public final class CategorizedEntity {
      *
      * @return The score value.
      */
-    public double getScore() {
-        return this.score;
+    public double getConfidenceScore() {
+        return this.confidenceScore;
     }
 }

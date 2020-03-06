@@ -70,10 +70,10 @@ class AnalyzeSentimentAsyncClient {
                 service.sentimentWithRestResponseAsync(
                     new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                     options == null ? null : options.getModelVersion(),
-                    options == null ? null : options.isStatisticsShown(), context)
+                    options == null ? null : options.isIncludeStatistics(), context)
                     .doOnSubscribe(ignoredValue ->
-                        logger.info("A batch of text sentiment input - {}", textInputs.toString()))
-                    .doOnSuccess(response -> logger.info("A batch of text sentiment output - {}", response))
+                        logger.info("A batch of documents - {}", textInputs.toString()))
+                    .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
                     .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
                     .map(this::toTextAnalyticsPagedResponse))
                     .flux());
@@ -102,10 +102,10 @@ class AnalyzeSentimentAsyncClient {
             service.sentimentWithRestResponseAsync(
                 new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                 options == null ? null : options.getModelVersion(),
-                options == null ? null : options.isStatisticsShown(), context)
+                options == null ? null : options.isIncludeStatistics(), context)
                 .doOnSubscribe(ignoredValue ->
-                    logger.info("A batch of text sentiment input - {}", textInputs.toString()))
-                .doOnSuccess(response -> logger.info("A batch of text sentiment output - {}", response))
+                    logger.info("A batch of documents - {}", textInputs.toString()))
+                .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
                 .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
                 .map(response -> toTextAnalyticsPagedResponse(response))
                 .flux());

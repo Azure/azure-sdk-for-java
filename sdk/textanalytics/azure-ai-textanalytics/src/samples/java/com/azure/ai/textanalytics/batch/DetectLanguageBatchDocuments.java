@@ -45,7 +45,7 @@ public class DetectLanguageBatchDocuments {
             } else {
                 // Valid document
                 final DetectedLanguage language = detectLanguageResult.getPrimaryLanguage();
-                System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %.2f.%n",
+                System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %f.%n",
                     language.getName(), language.getIso6391Name(), language.getScore());
             }
         });

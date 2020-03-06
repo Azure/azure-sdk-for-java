@@ -38,7 +38,7 @@ public final class PiiEntity {
     /*
      * Confidence score between 0 and 1 of the extracted entity.
      */
-    private final double score;
+    private final double confidenceScore;
 
     /**
      * Creates a Personally Identifiable Information entity model that describes entity.
@@ -48,15 +48,16 @@ public final class PiiEntity {
      * @param subCategory Personally Identifiable Information entity sub category, such as Age/Year/TimeRange etc
      * @param offset Grapheme start position for the entity text
      * @param length Grapheme length for the entity text
-     * @param score Confidence score between 0 and 1 of the extracted entity
+     * @param confidenceScore Confidence score between 0 and 1 of the extracted entity
      */
-    public PiiEntity(String text, EntityCategory category, String subCategory, int offset, int length, double score) {
+    public PiiEntity(String text, EntityCategory category, String subCategory, int offset, int length,
+        double confidenceScore) {
         this.text = text;
         this.category = category;
         this.subCategory = subCategory;
         this.offset = offset;
         this.length = length;
-        this.score = score;
+        this.confidenceScore = confidenceScore;
     }
 
     /**
@@ -111,7 +112,7 @@ public final class PiiEntity {
      *
      * @return The score value.
      */
-    public double getScore() {
-        return this.score;
+    public double getConfidenceScore() {
+        return this.confidenceScore;
     }
 }

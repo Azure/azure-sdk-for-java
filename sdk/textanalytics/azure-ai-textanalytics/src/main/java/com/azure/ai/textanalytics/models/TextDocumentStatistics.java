@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * If {@link TextAnalyticsRequestOptions#isStatisticsShown()} is set to {@code true} this class will will contain
+ * If {@link TextAnalyticsRequestOptions#isIncludeStatistics()} is set to {@code true} this class will will contain
  * information about the document payload.
  */
 @Immutable

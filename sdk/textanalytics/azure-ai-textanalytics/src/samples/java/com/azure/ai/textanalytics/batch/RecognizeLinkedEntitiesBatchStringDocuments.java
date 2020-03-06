@@ -48,7 +48,7 @@ public class RecognizeLinkedEntitiesBatchStringDocuments {
                 System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                     entity.getName(), entity.getDataSourceEntityId(), entity.getUrl(), entity.getDataSource());
                 entity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                    "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getScore()));
+                    "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
             });
         });
     }

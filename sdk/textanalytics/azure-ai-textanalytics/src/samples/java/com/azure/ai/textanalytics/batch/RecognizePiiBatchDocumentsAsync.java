@@ -39,7 +39,7 @@ public class RecognizePiiBatchDocumentsAsync {
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         // Recognizing batch entities
         client.recognizePiiEntitiesBatch(inputs, requestOptions).byPage().subscribe(
@@ -60,8 +60,8 @@ public class RecognizePiiBatchDocumentsAsync {
                     } else {
                         // Valid document
                         entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                            "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, score: %.2f.%n",
-                            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()));
+                            "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
                     }
                 });
             },

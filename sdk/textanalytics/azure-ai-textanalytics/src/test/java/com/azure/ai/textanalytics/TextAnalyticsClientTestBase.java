@@ -252,7 +252,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextAnalyticsRequestOptions> testRunner) {
         final List<DetectLanguageInput> detectLanguageInputs = TestUtils.getDetectLanguageInputs();
 
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
+        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
         testRunner.accept(detectLanguageInputs, options);
     }
 
@@ -267,7 +267,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void detectLanguagesBatchListCountryHintWithOptionsRunner(BiConsumer<List<String>,
         TextAnalyticsRequestOptions> testRunner) {
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
+        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
         testRunner.accept(TestUtils.DETECT_LANGUAGE_INPUTS, options);
     }
 
@@ -300,14 +300,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void recognizeBatchCategorizedEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(CATEGORIZED_ENTITY_INPUTS);
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
+        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         testRunner.accept(textDocumentInputs, options);
     }
 
     void recognizeStringBatchCategorizedEntitiesShowStatsRunner(
         BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
-        testRunner.accept(CATEGORIZED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setStatisticsShown(true));
+        testRunner.accept(CATEGORIZED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
     }
 
     // Personally Identifiable Information Entity runner
@@ -326,25 +326,25 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void recognizeBatchPiiEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(PII_ENTITY_INPUTS);
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
+        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         testRunner.accept(textDocumentInputs, options);
     }
 
     void recognizeStringBatchPiiEntitiesShowStatsRunner(
         BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
-        testRunner.accept(PII_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setStatisticsShown(true));
+        testRunner.accept(PII_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
     }
 
     // Linked Entity runner
     void recognizeBatchStringLinkedEntitiesShowStatsRunner(
         BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
-        testRunner.accept(LINKED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setStatisticsShown(true));
+        testRunner.accept(LINKED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
     }
 
     void recognizeBatchLinkedEntitiesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
+        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         testRunner.accept(TestUtils.getTextDocumentInputs(LINKED_ENTITY_INPUTS), options);
     }
@@ -363,13 +363,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     // Key Phrases runner
     void extractBatchStringKeyPhrasesShowStatsRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
-        testRunner.accept(KEY_PHRASE_INPUTS, new TextAnalyticsRequestOptions().setStatisticsShown(true));
+        testRunner.accept(KEY_PHRASE_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
     }
 
     void extractBatchKeyPhrasesShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(KEY_PHRASE_INPUTS);
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
+        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
         testRunner.accept(textDocumentInputs, options);
     }
 
@@ -399,14 +399,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     void analyseBatchStringSentimentShowStatsRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
-        testRunner.accept(SENTIMENT_INPUTS, new TextAnalyticsRequestOptions().setStatisticsShown(true));
+        testRunner.accept(SENTIMENT_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
     }
 
     void analyseBatchSentimentShowStatsRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(SENTIMENT_INPUTS);
 
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setStatisticsShown(true);
+        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
         testRunner.accept(textDocumentInputs, options);
     }
 
@@ -496,7 +496,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedCategorizedEntity.getSubCategory(), actualCategorizedEntity.getSubCategory());
         assertEquals(expectedCategorizedEntity.getText(), actualCategorizedEntity.getText());
         assertEquals(expectedCategorizedEntity.getCategory(), actualCategorizedEntity.getCategory());
-        assertNotNull(actualCategorizedEntity.getScore());
+        assertNotNull(actualCategorizedEntity.getConfidenceScore());
     }
 
     /**
@@ -512,7 +512,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedPiiEntity.getSubCategory(), actualPiiEntity.getSubCategory());
         assertEquals(expectedPiiEntity.getText(), actualPiiEntity.getText());
         assertEquals(expectedPiiEntity.getCategory(), actualPiiEntity.getCategory());
-        assertNotNull(actualPiiEntity.getScore());
+        assertNotNull(actualPiiEntity.getConfidenceScore());
     }
 
     /**
@@ -727,7 +727,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             assertEquals(expectedLinkedEntity.getText(), actualLinkedEntity.getText());
             assertEquals(expectedLinkedEntity.getGraphemeLength() > 0, actualLinkedEntity.getGraphemeLength() > 0);
             assertEquals(expectedLinkedEntity.getGraphemeOffset(), actualLinkedEntity.getGraphemeOffset());
-            assertNotNull(actualLinkedEntity.getScore());
+            assertNotNull(actualLinkedEntity.getConfidenceScore());
         }
     }
 

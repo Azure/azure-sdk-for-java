@@ -26,7 +26,7 @@ public class DetectLanguage {
         String text = "hello world";
 
         final DetectedLanguage detectedLanguage = client.detectLanguage(text);
-        System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %.2f.%n",
+        System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %f.%n",
             detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
     }
 }

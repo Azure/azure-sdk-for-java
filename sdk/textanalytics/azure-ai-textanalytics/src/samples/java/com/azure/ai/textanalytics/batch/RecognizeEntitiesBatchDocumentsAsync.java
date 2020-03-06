@@ -37,7 +37,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         // Recognizing batch entities
         client.recognizeEntitiesBatch(inputs, requestOptions).byPage().subscribe(
@@ -58,8 +58,8 @@ public class RecognizeEntitiesBatchDocumentsAsync {
                     } else {
                         // Valid document
                         entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                            "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %.2f.%n",
-                            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()));
+                            "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
                     }
                 });
             },

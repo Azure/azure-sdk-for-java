@@ -41,7 +41,7 @@ public class AnalyzeSentimentBatchDocuments {
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true).setModelVersion("latest");
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Analyzing batch sentiments
         final Iterable<TextAnalyticsPagedResponse<AnalyzeSentimentResult>> sentimentBatchResult =
@@ -65,12 +65,12 @@ public class AnalyzeSentimentBatchDocuments {
                     // Valid document
                     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                     SentimentConfidenceScores scores = documentSentiment.getConfidenceScores();
-                    System.out.printf("Analyzed document sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
+                    System.out.printf("Analyzed document sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
                         documentSentiment.getSentiment(), scores.getPositive(), scores.getNeutral(), scores.getNegative());
                     documentSentiment.getSentences().forEach(sentenceSentiment -> {
                         SentimentConfidenceScores sentenceScores = sentenceSentiment.getConfidenceScores();
                         System.out.printf(
-                            "Analyzed sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
+                            "Analyzed sentence sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
                             sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative());
                     });
                 }

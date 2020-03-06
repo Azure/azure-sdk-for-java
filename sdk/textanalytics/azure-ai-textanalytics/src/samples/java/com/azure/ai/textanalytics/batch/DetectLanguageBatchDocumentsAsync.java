@@ -38,7 +38,7 @@ public class DetectLanguageBatchDocumentsAsync {
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setStatisticsShown(true);
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         // Detecting batch languages
         client.detectLanguageBatch(inputs, requestOptions).byPage().subscribe(
@@ -59,7 +59,7 @@ public class DetectLanguageBatchDocumentsAsync {
                     } else {
                         // Valid document
                         final DetectedLanguage language = detectLanguageResult.getPrimaryLanguage();
-                        System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %.2f.%n",
+                        System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %f.%n",
                             language.getName(), language.getIso6391Name(), language.getScore());
                     }
                 });

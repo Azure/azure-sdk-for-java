@@ -57,7 +57,7 @@ class RecognizeLinkedEntityAsyncClient {
      * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
      * @param text A single document.
-     * @param language The language hint.
+     * @param language The language code.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link LinkedEntity}.
      */
@@ -105,7 +105,7 @@ class RecognizeLinkedEntityAsyncClient {
                 service.entitiesLinkingWithRestResponseAsync(
                     new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                     options == null ? null : options.getModelVersion(),
-                    options == null ? null : options.isStatisticsShown(), context)
+                    options == null ? null : options.isIncludeStatistics(), context)
                     .doOnSubscribe(ignoredValue ->
                         logger.info("A batch of linked entities input - {}", textInputs.toString()))
                     .doOnSuccess(response -> logger.info("A batch of linked entities output - {}", response.getValue()))
@@ -135,7 +135,7 @@ class RecognizeLinkedEntityAsyncClient {
             service.entitiesLinkingWithRestResponseAsync(
                 new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
                 options == null ? null : options.getModelVersion(),
-                options == null ? null : options.isStatisticsShown(), context)
+                options == null ? null : options.isIncludeStatistics(), context)
                 .doOnSubscribe(ignoredValue ->
                     logger.info("A batch of linked entities input - {}", textInputs.toString()))
                 .doOnSuccess(response -> logger.info("A batch of linked entities output - {}", response.getValue()))
