@@ -90,8 +90,8 @@ public class AgentPoolsInner {
         Observable<Response<ResponseBody>> getUpgradeProfile(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Path("agentPoolName") String agentPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerservice.v2019_06_01.AgentPools getAvailableAgentPoolVersions" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/availableAgentPoolVersions")
-        Observable<Response<ResponseBody>> getAvailableAgentPoolVersions(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Path("agentPoolName") String agentPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/availableAgentPoolVersions")
+        Observable<Response<ResponseBody>> getAvailableAgentPoolVersions(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerservice.v2019_06_01.AgentPools listNext" })
         @GET
@@ -783,14 +783,13 @@ public class AgentPoolsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AgentPoolAvailableVersionsInner object if successful.
      */
-    public AgentPoolAvailableVersionsInner getAvailableAgentPoolVersions(String resourceGroupName, String resourceName, String agentPoolName) {
-        return getAvailableAgentPoolVersionsWithServiceResponseAsync(resourceGroupName, resourceName, agentPoolName).toBlocking().single().body();
+    public AgentPoolAvailableVersionsInner getAvailableAgentPoolVersions(String resourceGroupName, String resourceName) {
+        return getAvailableAgentPoolVersionsWithServiceResponseAsync(resourceGroupName, resourceName).toBlocking().single().body();
     }
 
     /**
@@ -799,13 +798,12 @@ public class AgentPoolsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsAsync(String resourceGroupName, String resourceName, String agentPoolName, final ServiceCallback<AgentPoolAvailableVersionsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getAvailableAgentPoolVersionsWithServiceResponseAsync(resourceGroupName, resourceName, agentPoolName), serviceCallback);
+    public ServiceFuture<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsAsync(String resourceGroupName, String resourceName, final ServiceCallback<AgentPoolAvailableVersionsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getAvailableAgentPoolVersionsWithServiceResponseAsync(resourceGroupName, resourceName), serviceCallback);
     }
 
     /**
@@ -814,12 +812,11 @@ public class AgentPoolsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AgentPoolAvailableVersionsInner object
      */
-    public Observable<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsAsync(String resourceGroupName, String resourceName, String agentPoolName) {
-        return getAvailableAgentPoolVersionsWithServiceResponseAsync(resourceGroupName, resourceName, agentPoolName).map(new Func1<ServiceResponse<AgentPoolAvailableVersionsInner>, AgentPoolAvailableVersionsInner>() {
+    public Observable<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsAsync(String resourceGroupName, String resourceName) {
+        return getAvailableAgentPoolVersionsWithServiceResponseAsync(resourceGroupName, resourceName).map(new Func1<ServiceResponse<AgentPoolAvailableVersionsInner>, AgentPoolAvailableVersionsInner>() {
             @Override
             public AgentPoolAvailableVersionsInner call(ServiceResponse<AgentPoolAvailableVersionsInner> response) {
                 return response.body();
@@ -833,11 +830,10 @@ public class AgentPoolsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AgentPoolAvailableVersionsInner object
      */
-    public Observable<ServiceResponse<AgentPoolAvailableVersionsInner>> getAvailableAgentPoolVersionsWithServiceResponseAsync(String resourceGroupName, String resourceName, String agentPoolName) {
+    public Observable<ServiceResponse<AgentPoolAvailableVersionsInner>> getAvailableAgentPoolVersionsWithServiceResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -847,11 +843,8 @@ public class AgentPoolsInner {
         if (resourceName == null) {
             throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
         }
-        if (agentPoolName == null) {
-            throw new IllegalArgumentException("Parameter agentPoolName is required and cannot be null.");
-        }
         final String apiVersion = "2019-06-01";
-        return service.getAvailableAgentPoolVersions(this.client.subscriptionId(), resourceGroupName, resourceName, agentPoolName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getAvailableAgentPoolVersions(this.client.subscriptionId(), resourceGroupName, resourceName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AgentPoolAvailableVersionsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AgentPoolAvailableVersionsInner>> call(Response<ResponseBody> response) {
