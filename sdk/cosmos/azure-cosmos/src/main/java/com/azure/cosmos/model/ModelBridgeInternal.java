@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
+import com.azure.cosmos.implementation.Trigger;
 
 import java.util.List;
 
@@ -68,6 +69,11 @@ public class ModelBridgeInternal {
         return new CosmosStoredProcedureProperties(jsonString);
     }
 
+    public static CosmosAsyncTriggerResponse createCosmosAsyncTriggerResponse(ResourceResponse<Trigger> response,
+                                                                              CosmosAsyncContainer container) {
+        return new CosmosAsyncTriggerResponse(response, container);
+    }
+
     public static List<CosmosConflictProperties> getCosmosConflictPropertiesFromV2Results(List<Conflict> results) {
         return CosmosConflictProperties.getFromV2Results(results);
     }
@@ -84,7 +90,7 @@ public class ModelBridgeInternal {
         return CosmosDatabaseProperties.getFromV2Results(results);
     }
 
-    public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
+    public static <T> CosmosItemProperties getCosmosItemProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.getProperties();
     }
 
@@ -98,5 +104,9 @@ public class ModelBridgeInternal {
 
     public static List<CosmosStoredProcedureProperties> getCosmosStoredProcedurePropertiesFromV2Results(List<StoredProcedure> results) {
         return CosmosStoredProcedureProperties.getFromV2Results(results);
+    }
+
+    public static List<CosmosTriggerProperties> getCosmosTriggerPropertiesFromV2Results(List<Trigger> results) {
+        return CosmosTriggerProperties.getFromV2Results(results);
     }
 }

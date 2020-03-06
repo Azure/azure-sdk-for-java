@@ -35,7 +35,6 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.model.ConsistencyPolicy;
 import com.azure.cosmos.model.CosmosAsyncItemResponse;
-import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -514,7 +513,7 @@ public class BridgeInternal {
     }
 
     public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
-        return ModelBridgeInternal.getProperties(cosmosItemResponse);
+        return ModelBridgeInternal.getCosmosItemProperties(cosmosItemResponse);
     }
 
     public static PartitionKey partitionKeyfromJsonString(String jsonString) {
@@ -577,5 +576,9 @@ public class BridgeInternal {
 
     public static CosmosAsyncStoredProcedure createCosmosAsyncStoredProcedure(String id, CosmosAsyncContainer cosmosContainer) {
         return new CosmosAsyncStoredProcedure(id, cosmosContainer);
+    }
+
+    public static CosmosAsyncTrigger createCosmosAsyncTrigger(String id, CosmosAsyncContainer container) {
+        return new CosmosAsyncTrigger(id, container);
     }
 }

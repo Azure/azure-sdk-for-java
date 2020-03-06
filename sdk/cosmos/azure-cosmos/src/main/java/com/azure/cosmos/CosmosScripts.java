@@ -4,7 +4,9 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
+import com.azure.cosmos.model.CosmosTriggerProperties;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 

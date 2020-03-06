@@ -160,7 +160,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         CosmosAsyncItemResponse<CosmosItemProperties> response = createdContainer.readItem(createdItemId, PartitionKey.NONE,
                                                                                CosmosItemProperties.class)
                                                                                               .block();
-        CosmosItemProperties itemSettingsToReplace = ModelBridgeInternal.getProperties(response);
+        CosmosItemProperties itemSettingsToReplace = ModelBridgeInternal.getCosmosItemProperties(response);
         String replacedItemId = UUID.randomUUID().toString();
         itemSettingsToReplace.setId(replacedItemId);
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> replaceMono = createdContainer.replaceItem(itemSettingsToReplace,

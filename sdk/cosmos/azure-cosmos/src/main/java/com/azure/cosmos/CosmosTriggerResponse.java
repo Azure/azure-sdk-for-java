@@ -3,6 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.model.CosmosTriggerProperties;
+
 /**
  * The type Cosmos sync trigger response.
  */

@@ -38,7 +38,7 @@ public class CosmosItemResponse<T> {
      * @return the itemSettings
      */
     CosmosItemProperties getProperties() {
-        return ModelBridgeInternal.getProperties(responseWrapper);
+        return ModelBridgeInternal.getCosmosItemProperties(responseWrapper);
     }
 
     /**

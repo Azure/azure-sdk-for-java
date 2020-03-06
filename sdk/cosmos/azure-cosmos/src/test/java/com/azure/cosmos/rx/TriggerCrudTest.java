@@ -5,16 +5,15 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncTrigger;
-import com.azure.cosmos.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
-import com.azure.cosmos.CosmosTriggerProperties;
+import com.azure.cosmos.model.CosmosTriggerProperties;
 import com.azure.cosmos.TriggerOperation;
 import com.azure.cosmos.TriggerType;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 

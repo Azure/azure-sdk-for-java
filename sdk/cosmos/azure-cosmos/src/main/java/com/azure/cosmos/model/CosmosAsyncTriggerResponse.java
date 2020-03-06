@@ -1,7 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncTrigger;
+import com.azure.cosmos.CosmosResponse;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.Trigger;
 import org.apache.commons.lang3.StringUtils;
@@ -22,7 +26,7 @@ public class CosmosAsyncTriggerResponse extends CosmosResponse<CosmosTriggerProp
             cosmosTrigger = null;
         } else {
             cosmosTriggerProperties = new CosmosTriggerProperties(bodyAsString);
-            cosmosTrigger = new CosmosAsyncTrigger(cosmosTriggerProperties.getId(), container);
+            cosmosTrigger = BridgeInternal.createCosmosAsyncTrigger(cosmosTriggerProperties.getId(), container);
         }
     }
 

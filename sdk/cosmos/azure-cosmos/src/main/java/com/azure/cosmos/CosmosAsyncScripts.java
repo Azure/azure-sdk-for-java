@@ -6,7 +6,9 @@ import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
+import com.azure.cosmos.model.CosmosTriggerProperties;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
@@ -269,7 +271,7 @@ public class CosmosAsyncScripts {
 
         return database.getDocClientWrapper()
                    .createTrigger(container.getLink(), trigger, null)
-                   .map(response -> new CosmosAsyncTriggerResponse(response, this.container))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, this.container))
                    .single();
     }
 
@@ -292,7 +294,7 @@ public class CosmosAsyncScripts {
             return database.getDocClientWrapper()
                        .readTriggers(container.getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           CosmosTriggerProperties.getFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosTriggerPropertiesFromV2Results(response.getResults()),
                            response.getResponseHeaders()));
         });
     }
@@ -333,7 +335,7 @@ public class CosmosAsyncScripts {
             return database.getDocClientWrapper()
                        .queryTriggers(container.getLink(), querySpec, options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           CosmosTriggerProperties.getFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosTriggerPropertiesFromV2Results(response.getResults()),
                            response.getResponseHeaders()));
         });
     }
