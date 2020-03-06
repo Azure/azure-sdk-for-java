@@ -3,10 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.GatewayTestUtils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.assertj.core.api.Assertions;
@@ -59,9 +57,7 @@ public class SessionContainerTest {
         assertThat(sessionToken.getLSN()).isEqualTo(1);
 
         DocumentServiceRequestContext dsrContext = new DocumentServiceRequestContext();
-        PartitionKeyRange resolvedPKRange = new PartitionKeyRange();
-        resolvedPKRange.setId("range_" + (numPartitionKeyRangeIds + 10));
-        GatewayTestUtils.setParent(resolvedPKRange, ImmutableList.of("range_2", "range_x"));
+        PartitionKeyRange resolvedPKRange = new PartitionKeyRange("range_" + (numPartitionKeyRangeIds + 10), "", "", ImmutableList.of("range_2", "range_x"));
         dsrContext.resolvedPartitionKeyRange = resolvedPKRange;
         request.requestContext = dsrContext;
 
@@ -293,8 +289,8 @@ public class SessionContainerTest {
                 ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_0:1#100#1=20#2=5#3=30"));
         sessionContainer.setSessionToken(documentCollectionId, collectionFullName,
                 ImmutableMap.of(HttpConstants.HttpHeaders.SESSION_TOKEN, "range_1:1#101#1=20#2=5#3=30"));
-        request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange();
-        GatewayTestUtils.setParent(request.requestContext.resolvedPartitionKeyRange, ImmutableList.of("range_1"));
+        request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange("", "", "", ImmutableList.of("range_1"));
+
         ISessionToken sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, "range_2");
         assertThat(sessionToken.getLSN()).isEqualTo(101);
     }
@@ -641,9 +637,7 @@ public class SessionContainerTest {
         assertThat(sessionToken).isNull();
 
         DocumentServiceRequestContext dsrContext = new DocumentServiceRequestContext();
-        PartitionKeyRange resolvedPKRange = new PartitionKeyRange();
-        resolvedPKRange.setId("range_" + (numPartitionKeyRangeIds + 10));
-        GatewayTestUtils.setParent(resolvedPKRange, ImmutableList.of("range_2", "range_x"));
+        PartitionKeyRange resolvedPKRange = new PartitionKeyRange("range_" + (numPartitionKeyRangeIds + 10), "", "", ImmutableList.of("range_2", "range_x"));
         dsrContext.resolvedPartitionKeyRange = resolvedPKRange;
         request.requestContext = dsrContext;
 

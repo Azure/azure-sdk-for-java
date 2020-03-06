@@ -19,6 +19,8 @@ public class PartitionKeyRange extends Resource {
     public static final String MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY = "FF";
     public static final String MASTER_PARTITION_KEY_RANGE_ID = "M";
 
+    private Range<String> range;
+
     /**
      * Constructor.
      *
@@ -76,7 +78,7 @@ public class PartitionKeyRange extends Resource {
         return super.getString("minInclusive");
     }
 
-    public void setMinInclusive(String minInclusive) {
+    private void setMinInclusive(String minInclusive) {
         BridgeInternal.setProperty(this, "minInclusive", minInclusive);
     }
 
@@ -84,12 +86,18 @@ public class PartitionKeyRange extends Resource {
         return super.getString("maxExclusive");
     }
 
-    public void setMaxExclusive(String maxExclusive) {
+    private void setMaxExclusive(String maxExclusive) {
         BridgeInternal.setProperty(this, "maxExclusive", maxExclusive);
     }
 
     public Range<String> toRange() {
-        return new Range<String>(this.getMinInclusive(), this.getMaxExclusive(), true, false);
+        if (this.range == null) {
+            synchronized (this) {
+                this.range = new Range<String>(this.getMinInclusive(), this.getMaxExclusive(), true, false);
+            }
+        }
+
+        return this.range;
     }
 
     @Override
@@ -114,7 +122,7 @@ public class PartitionKeyRange extends Resource {
         return hash;
     }
 
-    public void setParents(List<String> parents) {
+    private void setParents(List<String> parents) {
         BridgeInternal.setProperty(this, Constants.Properties.PARENTS, parents);
     }
 
