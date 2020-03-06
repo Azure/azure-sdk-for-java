@@ -11,29 +11,29 @@ public PollerFlux<OperationResult, TrainedLabeledModel> beginLabeledModelTrainin
 public PollerFlux<OperationResult, TrainedLabeledModel> beginLabeledModelTraining(String sourceUrl, String filePrefix, boolean includeSubFolders) { }
 
 // Analyze form with custom models
-public PollerFlux<OperationResult, FormResult> beginAnalyzeForm(Flux<ByteBuffer> data, String modelId, boolean includeTextDetails) { }
+public PollerFlux<OperationResult, FormResult> beginAnalyzeForm(InputStream data, String modelId, boolean includeTextDetails) { }
 public PollerFlux<OperationResult, FormResult> beginAnalyzeForm(String uploadFilePath, String modelId, boolean includeTextDetails) { }
 
 // Analyze with supervised models
-public PollerFlux<OperationResult, LabeledFormResult> beginAnalyzeLabeledForm(Flux<ByteBuffer> data, String modelId, boolean includeTextDetails) { }
+public PollerFlux<OperationResult, LabeledFormResult> beginAnalyzeLabeledForm(InputStream data, String modelId, boolean includeTextDetails) { }
 public PollerFlux<OperationResult, LabeledFormResult> beginAnalyzeLabeledForm(String uploadFilePath, String modelId, boolean includeTextDetails) { }
 
 // List custom Models
-public PagedFlux<ModelInfo> listModels() {}
+public PagedFlux<ModelInfo> getModels() {}
 public Mono<ModelListSummary> getModelListSummary() {}
 public Mono<Response<ModelListSummary>> getModelListSummaryWithResponse() {}
 
 // Delete model
-public Mono<Void> delete(String modelId) { }
-public Mono<Response<Void>> deleteWithResponse(String modelId) { }
+public Mono<Void> deleteModel(String modelId) { }
+public Mono<Response<Void>> deleteModelWithResponse(String modelId) { }
 
 // Analyze receipt 
-public PollerFlux<OperationResult, ExtractedReceiptResult> beginAnalyzeReceipt(Flux<ByteBuffer> data, boolean includeTextDetails) { }
+public PollerFlux<OperationResult, ExtractedReceiptResult> beginAnalyzeReceipt(InputStream data, boolean includeTextDetails) { }
 public PollerFlux<OperationResult, ExtractedReceiptResult> beginAnalyzeReceipt(String uploadFilePath, boolean includeTextDetails) { }
 
 // Analyze Layout
 public PollerFlux<OperationResult, ExtractedLayoutResult> beginAnalyzeLayout(String uploadFilePath, boolean includeTextDetails) { }
-public PollerFlux<OperationResult, ExtractedLayoutResult> beginAnalyzeLayout(Flux<ByteBuffer> data, boolean includeTextDetails) { }
+public PollerFlux<OperationResult, ExtractedLayoutResult> beginAnalyzeLayout(InputStream data, boolean includeTextDetails) { }
 ```
 
 ### Models
@@ -46,46 +46,46 @@ public class OperationResult {
 // Unsupervised Model
 public class TrainedModel {
     private TrainedModelInfo modelInfo;
-    private List<FormRecognizerError> trainingErrors;
-    private List<TrainingInput> trainingInputResult;
+    private IterableStream<FormRecognizerError> trainingErrors;
+    private IterableStream<TrainingInput> trainingInputResult;
 }
 
 public class TrainedModelInfo extends ModelInfo {
-    private List<FormCluster> formClusters;
+    private IterableStream<FormCluster> formClusters;
 }
 
 public class FormCluster {
-    private List<String> fieldNames;
+    private IterableStream<String> fieldNames;
     private int formClusterId;
 }
 
 // Unsupervised model analyze form result
 public class FormResult {
-    private List<ExtractedPage> pages ;
-    private List<RawPageExtraction> rawPageExtractions ;
+    private IterableStream<ExtractedPage> pages ;
+    private IterableStream<RawPageExtraction> rawPageExtractions ;
 }
 
 public class ExtractedPage {
-    private List<ExtractedField> fields ;
+    private IterableStream<ExtractedField> fields ;
     private int clusterId ;
     private int pageNumber ;
-    private List<ExtractedTable> tables ;
+    private IterableStream<ExtractedTable> tables ;
 }
 
 public class ExtractedField {
     private double confidence ;
     private ExtractedText extractedKey ;
     private ExtractedText extractedValue ;
-    private List<String> elements; // When includeTextDetails is set to true, a list of references to the text elements constituting this key or value.
+    private IterableStream<String> elements; // When includeTextDetails is set to true, a list of references to the text elements constituting this key or value.
 }
 
 public class ExtractedText {
-    private List<double> boundingBox ;
+    private IterableStream<double> boundingBox ;
     private String text ;
 }
 
 public class ExtractedTable {
-    private List<ExtractedTableCell> cells;
+    private IterableStream<ExtractedTableCell> cells;
     private int columnCount;
     private int rowCount;
 }
@@ -98,25 +98,25 @@ public class ExtractedTableCell extends ExtractedText {
     private boolean isHeader;
     private int rowIndex;
     private int rowSpan;
-    private List<String> referenceElements; // only included if text details true. Confirm others.
+    private IterableStream<String> referenceElements; // only included if text details true. Confirm others.
 }
 
 // Supervised analyze result
 public class LabeledFormResult {
-    private List<LabeledFieldForm> forms ;
-    private List<RawPageExtraction> rawPageExtractions ;
+    private IterableStream<LabeledFieldForm> forms ;
+    private IterableStream<RawPageExtraction> rawPageExtractions ;
 }
 
 public class LabeledFieldForm {
     private String formType ;
     private PageRange pageRange ;
-    private List<LabeledPageInfo> pages ;
+    private IterableStream<LabeledPageInfo> pages ;
 }
 
 public class LabeledPageInfo {
-    private List<PredefinedField> fields ;
+    private IterableStream<PredefinedField> fields ;
     private int pageNumber ;
-    private List<ExtractedTable> tables ;
+    private IterableStream<ExtractedTable> tables ;
 }
 
 public class PredefinedField {
@@ -124,7 +124,7 @@ public class PredefinedField {
     private String name ;
     private ValueType valueType ;
     private ExtractedText extractedValue ;
-    List<String> referenceElements;
+    IterableStream<String> referenceElements;
 }
 
 public class PageRange {
@@ -134,7 +134,7 @@ public class PageRange {
 
 public class RawPageExtraction {
     private TextLanguage language;
-    private List<ExtractedLine> lines;
+    private IterableStream<ExtractedLine> lines;
     private double pageHeight;
     private int pageNumber;
     private double pageWidth;
@@ -145,20 +145,20 @@ public class RawPageExtraction {
 // Train supervised model
 public class TrainedLabeledModel {
     private LabeledModelInfo modelInfo;
-    public List<FormRecognizerError> trainingErrors;
-    public List<TrainingInput> trainingInputResult;
+    public IterableStream<FormRecognizerError> trainingErrors;
+    public IterableStream<TrainingInput> trainingInputResult;
 }
 
 public class TrainingInput {
     private String documentName ;
     private TrainingStatus status ;
     private int totalTrainedPages ;
-    private List<FormRecognizerError> trainingInputErrors ;
+    private IterableStream<FormRecognizerError> trainingInputErrors ;
 }
 
 public class LabeledModelInfo extends ModelInfo{
     private double averageFieldAccuracy ;
-    private List<FieldDetails> fieldDetails ;
+    private IterableStream<FieldDetails> fieldDetails ;
 }
 
 public class FieldDetails {
@@ -182,12 +182,12 @@ public final class ModelInfo {
 
 // Analyze Receipt
 public class ExtractedReceiptResult {
-    private List<ExtractedReceipt> receiptResultItems;
-    private List<RawPageExtraction> rawPageExtractions;
+    private IterableStream<ExtractedReceipt> receiptResultItems;
+    private IterableStream<RawPageExtraction> rawPageExtractions;
 }
 
 public class ExtractedReceipt {
-    public List<ReceiptItem> items;
+    public IterableStream<ReceiptItem> items;
     public String merchantAddress;
     public String merchantName;
     public String merchantPhoneNumber;
@@ -197,8 +197,8 @@ public class ExtractedReceipt {
     public double tax;
     public double tip;
     public double total;
-    public String/DateTime transactionDate;
-    public String/DateTime transactionTime;
+    public DateTime transactionDate;
+    public DateTime transactionTime;
 }
 
 public class ReceiptItem {
@@ -213,7 +213,7 @@ public enum ReceiptType {
 }
 
 public class RawReceiptExtraction {
-    public List<RawReceiptItemExtraction> items;
+    public IterableStream<RawReceiptItemExtraction> items;
     public PredefinedField merchantAddress;
     public PredefinedField merchantName;
     public PredefinedField merchantPhoneNumber;
@@ -240,12 +240,12 @@ public class RawReceiptItemExtraction {
 public class LabeledFieldForm {
     public String formType;
     public PageRange PageRange;
-    public List<LabeledPageInfo> pages;
+    public IterableStream<LabeledPageInfo> pages;
 }
 public class LabeledPageInfo {
-    public List<PredefinedField> fields;
+    public IterableStream<PredefinedField> fields;
     public int PageNumber;
-    public List<ExtractedTable> Tables;
+    public IterableStream<ExtractedTable> Tables;
 }
 
 public enum ValueType {
@@ -261,18 +261,18 @@ public enum ValueType {
 
 // Analyze Layout
 public class ExtractedLayoutResult {
-    private List<LayoutPage> pages;
-    private List<RawPageExtraction> rawPageExtractions;
+    private IterableStream<LayoutPage> pages;
+    private IterableStream<RawPageExtraction> rawPageExtractions;
 }
 
 public class LayoutPage {
     private int pageNumber;
-    private List<ExtractedTable> tables;
+    private IterableStream<ExtractedTable> tables;
 }
 
 public class ExtractedLine extends ExtractedText {
     private TextLanguage language;
-    private List<ExtractedWord> words;
+    private IterableStream<ExtractedWord> words;
 }
 
 public enum TrainingStatus {
@@ -307,7 +307,7 @@ TrainedModel unsupervisedModel = trainingPoller
             throw new RuntimeException("Polling completed unsuccessfully with status:"
                 + trainingOperationResponse.getStatus());
         }
-    }).block();
+    });
 
 // Analyze with custom model
 String formFileUrl = "https://templates.invoicehome.com/invoice-template-us-neat-750px.png";
@@ -324,7 +324,7 @@ FormResult analyzeFormResult = analyzePoller
             throw new RuntimeException("Polling completed unsuccessfully with status:"
                 + analyzePollResponse.getStatus());
         }
-    }).block();
+    });
 
 for(ExtractedPage extractedPage : analyzeFormResult.getPages()) {
     System.out.printf("Page Number:%s", extractedPage.getPageNumber());
@@ -355,7 +355,7 @@ TrainedLabeledModel supervisedModel = trainingPoller
             throw new RuntimeException("Polling completed unsuccessfully with status:"
                 + trainingOperationResponse.getStatus());
         }
-    }).block();
+    });
 
 // Analyze with custom model
 String formFileUrl = "https://templates.invoicehome.com/invoice-template-us-neat-750px.png";
@@ -372,7 +372,7 @@ LabeledFormResult labeledFormResult = analyzePoller
             throw new RuntimeException("Polling completed unsuccessfully with status:"
                 + analyzePollResponse.getStatus());
         }
-    }).block();
+    });
 
 for(LabeledFieldForm extractedForm : labeledFormResult.getForms()) {
     System.out.printf("Form Type: %s", extractedForm.getFormType());
@@ -410,7 +410,7 @@ ExtractedReceiptResult extractedReceiptResult = analyzePoller
             throw new RuntimeException("Polling completed unsuccessfully with status:"
                 + analyzePollResponse.getStatus());
         }
-    }).block();
+    });
 
 System.out.println("Receipt contained the following values:");
 for(ExtractedReceipt receiptResultItem : extractedReceiptResult.getReceiptResultItems()) {
@@ -446,7 +446,7 @@ ExtractedLayoutResult extractedLayoutResult = analyzePoller
             throw new RuntimeException("Polling completed unsuccessfully with status:"
                 + analyzePollResponse.getStatus());
         }
-    }).block();
+    });
 
 for(RawPageExtraction rawPageExtraction : extractedLayoutResult.getRawPageExtractions()) {
     System.out.println("Extracted Layout page number: %s", rawPageExtractions.getPageNumber());
