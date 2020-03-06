@@ -44,15 +44,14 @@ public class LifecycleSetupExample {
     private static final String COSMOS_CONNECTION_STRING = "AccountEndpoint=https://hotels-docbb.documents.azure.com:443/;AccountKey=4UPsNZyFAjgZ1tzHPGZaxS09XcwLrIawbXBWk6IixcxJoSePTcjBn0mi53XiKWu8MaUgowUhIovOv7kjksqAug==;Database=SampleData";
     private static final String COSMOS_COLLECTION_NAME = "hotels";
 
-    private static final String INDEX_NAME = "hotels-sample-index";
-    private static final String DATASOURCE_NAME = "hotels-sample-datasource";
-    private static final String SKILLSET_NAME = "hotels-sample-skillset";
-    private static final String INDEXER_NAME = "hotels-sample-indexer";
+    private static final String INDEX_NAME = "hotels-sample-index1";
+    private static final String DATASOURCE_NAME = "hotels-sample-datasource1";
+    private static final String SKILLSET_NAME = "hotels-sample-skillset1";
+    private static final String INDEXER_NAME = "hotels-sample-indexer1";
     private static final String SUGGESTER_NAME = "sg";
 
     public static void main(String[] args) {
         SearchServiceClient client = createServiceClient();
-
         // Create a data source for a Cosmos DB database
         DataSource dataSource = createCosmosDataSource(client);
         System.out.println("Created DataSource " + dataSource.getName());
@@ -72,6 +71,10 @@ public class LifecycleSetupExample {
         // Update indexer schedule
         updateIndexerSchedule(client, indexer);
         System.out.println("Updated Indexer Schedule " + indexer.getName());
+
+        // Clean up resources.
+        client.deleteIndex(INDEX_NAME);
+        client.deleteIndexer(INDEXER_NAME);
     }
 
     private static SearchServiceClient createServiceClient() {

@@ -17,7 +17,7 @@ public class CreateIndexExample {
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
     private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
-
+    private static final String INDEX_NAME = "good-food";
 
     public static void main(String[] args) {
         SearchApiKeyCredential searchApiKeyCredential = new SearchApiKeyCredential(ADMIN_KEY);
@@ -28,7 +28,7 @@ public class CreateIndexExample {
             .buildClient();
 
         Index newIndex = new Index()
-            .setName("good-food")
+            .setName(INDEX_NAME)
             .setFields(
                 Arrays.asList(new Field()
                         .setName("Name")
@@ -37,7 +37,10 @@ public class CreateIndexExample {
                     new Field()
                         .setName("Cuisine")
                         .setType(DataType.EDM_STRING)));
-
+        // Create index.
         client.createIndex(newIndex);
+
+        // Cleanup index resource.
+        client.deleteIndex(INDEX_NAME);
     }
 }

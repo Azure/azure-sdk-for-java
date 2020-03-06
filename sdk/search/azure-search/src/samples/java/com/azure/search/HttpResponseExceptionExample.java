@@ -62,7 +62,7 @@ public class HttpResponseExceptionExample {
             // returned from the search service
             HttpResponse response = ex.getResponse();
             System.out.println("Status Code: " + response.getStatusCode());
-            System.out.println("Message: " + response.getBodyAsString().block());
+            System.out.println("Message: " + ex.getMessage());
         }
     }
 
