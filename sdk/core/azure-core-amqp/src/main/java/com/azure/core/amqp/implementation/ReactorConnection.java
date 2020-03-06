@@ -313,11 +313,15 @@ public class ReactorConnection implements AmqpConnection {
             .map(reactorSession -> new RequestResponseChannel(getId(), getFullyQualifiedNamespace(), linkName,
                 entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
                 messageSerializer, senderSettleMode, receiverSettleMode))
+            .doOnNext(e -> {
+                logger.info("Emitting new response channel. connectionId: {}. entityPath: {}. linkName: {}.",
+                    getId(), entityPath, linkName);
+            })
             .repeat();
 
+        final String loggerName = String.format("%s<%s> [%s]", RequestResponseChannel.class, sessionName, getId());
         return createChannel.subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
-            channel -> channel.getEndpointStates(), retryPolicy,
-            new ClientLogger(RequestResponseChannel.class + "<" + sessionName + ">")));
+            channel -> channel.getEndpointStates(), retryPolicy, new ClientLogger(loggerName)));
     }
 
     private synchronized ClaimsBasedSecurityNode getOrCreateCBSNode() {

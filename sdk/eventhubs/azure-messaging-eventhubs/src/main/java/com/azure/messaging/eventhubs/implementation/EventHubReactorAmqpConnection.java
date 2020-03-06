@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.implementation.AmqpChannelProcessor;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -44,14 +45,12 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      */
     private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
     private final String connectionId;
-    private final String eventHubName;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
     private final TokenManagerProvider tokenManagerProvider;
     private final AmqpRetryOptions retryOptions;
     private final MessageSerializer messageSerializer;
-    private final TokenCredential tokenCredential;
-    private final Scheduler scheduler;
+    private final Mono<EventHubManagementNode> managementCreation;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -70,14 +69,23 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
         this.connectionId = connectionId;
-        this.eventHubName = eventHubName;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = tokenManagerProvider;
         this.retryOptions = connectionOptions.getRetry();
         this.messageSerializer = messageSerializer;
-        this.tokenCredential = connectionOptions.getTokenCredential();
-        this.scheduler = connectionOptions.getScheduler();
+
+        final TokenCredential tokenCredential = connectionOptions.getTokenCredential();
+        final Scheduler scheduler = connectionOptions.getScheduler();
+        final AmqpRetryPolicy policy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
+
+        this.managementCreation = getReactorConnection()
+            .thenReturn(new ManagementChannel(
+                createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
+                eventHubName, tokenCredential, tokenManagerProvider, this.messageSerializer, scheduler))
+            .repeat()
+            .subscribeWith(new AmqpChannelProcessor<>(connectionId, eventHubName, state -> state.getEndpointStates(),
+                policy, new ClientLogger(String.format("%s [%s]", ManagementChannel.class, connectionId))));
     }
 
     @Override
@@ -87,9 +95,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
                 "connectionId[%s]: Connection is disposed. Cannot get management instance", connectionId))));
         }
 
-        return Mono.defer(() -> getReactorConnection().thenReturn(new ManagementChannel(
-                createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
-                eventHubName, tokenCredential, tokenManagerProvider, this.messageSerializer, scheduler)));
+        return managementCreation;
     }
 
     /**
