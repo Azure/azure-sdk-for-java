@@ -258,6 +258,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                 rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(), nextFlux,
                     new BlobDownloadHeaders());
                 response = new ReliableDownload(rawResponse, options, info, this::getter);
+                return Mono.just(response);
             default:
                 return Mono.just(response);
         }

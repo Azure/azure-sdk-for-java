@@ -78,8 +78,8 @@ final class ReliableDownload {
 
     private Flux<ByteBuffer> tryContinueFlux(Throwable t, int retryCount, DownloadRetryOptions options) {
         // If all the errors are exhausted or the error is not retryable, return this error to the user.
-        if (retryCount >= options.getMaxRetryRequests() ||
-            !(t instanceof IOException || t instanceof TimeoutException)) {
+        if (retryCount >= options.getMaxRetryRequests()
+            || !(t instanceof IOException || t instanceof TimeoutException)) {
             return Flux.error(t);
         } else {
             /*
@@ -112,13 +112,13 @@ final class ReliableDownload {
             Update how much data we have received in case we need to retry and propagate to the user the data we
             have received.
              */
-            this.info.setOffset(this.info.getOffset() + buffer.remaining());
-            if (this.info.getCount() != null) {
-                this.info.setCount(this.info.getCount() - buffer.remaining());
-            }
-        }).onErrorResume(t2 -> {
+                this.info.setOffset(this.info.getOffset() + buffer.remaining());
+                if (this.info.getCount() != null) {
+                    this.info.setCount(this.info.getCount() - buffer.remaining());
+                }
+            }).onErrorResume(t2 -> {
             // Increment the retry count and try again with the new exception.
-            return tryContinueFlux(t2, currentRetryCount + 1, options);
-        });
+                return tryContinueFlux(t2, currentRetryCount + 1, options);
+            });
     }
 }
