@@ -53,7 +53,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private ConnectionStringProperties properties;
     private String testName;
-    private final Scheduler scheduler = Schedulers.parallel();
+    private final Scheduler scheduler = Schedulers.newParallel("eh-integration");
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
@@ -78,6 +78,7 @@ public abstract class IntegrationTestBase extends TestBase {
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
         logger.info("[{}]: Performing test clean-up.", testInfo.getDisplayName());
+        scheduler.dispose();
         StepVerifier.resetDefaultTimeout();
         afterTest();
 
