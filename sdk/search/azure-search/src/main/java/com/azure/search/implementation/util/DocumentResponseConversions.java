@@ -5,7 +5,7 @@ package com.azure.search.implementation.util;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.search.Document;
+import com.azure.search.SearchDocument;
 
 /**
  * Utility class for Document Response conversions.
@@ -28,10 +28,10 @@ public final class DocumentResponseConversions {
     private static final String DOCUMENT_NOT_FOUND = "Document not found.";
 
     /**
-     * Converts the {@link Throwable} into a more descriptive exception type if the {@link Document} isn't found.
+     * Converts the {@link Throwable} into a more descriptive exception type if the {@link SearchDocument} isn't found.
      *
      * @param throwable Throwable thrown during a API call.
-     * @return The {@link Throwable} mapped to a more descriptive exception type if the {@link Document} isn't found,
+     * @return The {@link Throwable} mapped to a more descriptive exception type if the {@link SearchDocument} isn't found,
      * otherwise the passed {@link Throwable} unmodified.
      */
     public static Throwable exceptionMapper(Throwable throwable) {
@@ -43,9 +43,9 @@ public final class DocumentResponseConversions {
     /**
      * Removes {@code @odata.context} from the returned document. This field shouldn't be returned.
      *
-     * @param document The {@link Document} returned from the service.
+     * @param document The {@link SearchDocument} returned from the service.
      */
-    public static void cleanupDocument(Document document) {
+    public static void cleanupDocument(SearchDocument document) {
         document.remove(ODATA_CONTEXT);
     }
 

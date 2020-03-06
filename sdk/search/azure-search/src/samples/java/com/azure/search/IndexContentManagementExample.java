@@ -4,7 +4,7 @@
 package com.azure.search;
 
 import com.azure.core.util.Configuration;
-import com.azure.search.models.IndexBatch;
+import com.azure.search.models.IndexDocumentsBatch;
 import com.azure.search.models.Hotel;
 import com.azure.search.models.IndexDocumentsResult;
 
@@ -64,12 +64,12 @@ public class IndexContentManagementExample {
             .indexName(INDEX_NAME)
             .buildClient();
 
-        IndexBatch<Hotel> batch = new IndexBatch<Hotel>()
+        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
             .addMergeOrUploadAction(new Hotel().setHotelId("100"))
             .addDeleteAction(new Hotel().setHotelId("200"));
 
         // Send a single batch that performs many different actions
-        IndexDocumentsResult result = client.index(batch);
+        IndexDocumentsResult result = client.indexDocuments(batch);
         System.out.printf("Indexed %s documents%n", result.getResults().size());
     }
 }

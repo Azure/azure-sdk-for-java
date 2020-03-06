@@ -5,7 +5,7 @@
 // regenerated.
 
 package com.azure.search.implementation;
-import com.azure.search.Document;
+import com.azure.search.SearchDocument;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
@@ -25,7 +25,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.search.models.IndexBatch;
+import com.azure.search.models.IndexDocumentsBatch;
 import com.azure.search.models.AutocompleteMode;
 import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
@@ -92,7 +92,7 @@ public final class DocumentsImpl {
 
         @Get("docs('{key}')")
         @ExpectedResponses({200})
-        Mono<SimpleResponse<Document>> get(@PathParam("key") String key, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        Mono<SimpleResponse<SearchDocument>> get(@PathParam("key") String key, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Get("docs/search.suggest")
         @ExpectedResponses({200})
@@ -104,7 +104,7 @@ public final class DocumentsImpl {
 
         @Post("docs/search.index")
         @ExpectedResponses({200, 207})
-        <T> Mono<SimpleResponse<IndexDocumentsResult>> index(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @BodyParam("application/json; charset=utf-8") IndexBatch<T> batch, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        <T> Mono<SimpleResponse<IndexDocumentsResult>> index(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @HostParam("indexName") String indexName, @BodyParam("application/json; charset=utf-8") IndexDocumentsBatch<T> batch, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
 
         @Get("docs/search.autocomplete")
         @ExpectedResponses({200})
@@ -305,7 +305,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Document>> getWithRestResponseAsync(String key, Context context) {
+    public Mono<SimpleResponse<SearchDocument>> getWithRestResponseAsync(String key, Context context) {
         final UUID clientRequestId = null;
         String selectedFieldsConverted = null;
         return service.get(key, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), selectedFieldsConverted, this.client.getApiVersion(), clientRequestId, context);
@@ -322,7 +322,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Document>> getWithRestResponseAsync(String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<SearchDocument>> getWithRestResponseAsync(String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
         if (requestOptions != null) {
             clientRequestId = requestOptions.getClientRequestId();
@@ -455,7 +455,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<SimpleResponse<IndexDocumentsResult>> indexWithRestResponseAsync(IndexBatch<T> batch, Context context) {
+    public <T> Mono<SimpleResponse<IndexDocumentsResult>> indexWithRestResponseAsync(IndexDocumentsBatch<T> batch, Context context) {
         final UUID clientRequestId = null;
         return service.index(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getIndexName(), batch, this.client.getApiVersion(), clientRequestId, context);
     }
@@ -470,7 +470,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<SimpleResponse<IndexDocumentsResult>> indexWithRestResponseAsync(IndexBatch<T> batch, RequestOptions requestOptions, Context context) {
+    public <T> Mono<SimpleResponse<IndexDocumentsResult>> indexWithRestResponseAsync(IndexDocumentsBatch<T> batch, RequestOptions requestOptions, Context context) {
         UUID clientRequestId = null;
         if (requestOptions != null) {
             clientRequestId = requestOptions.getClientRequestId();

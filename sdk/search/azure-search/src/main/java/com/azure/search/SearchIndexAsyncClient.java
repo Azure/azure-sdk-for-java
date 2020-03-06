@@ -22,7 +22,7 @@ import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
 import com.azure.search.models.IndexAction;
 import com.azure.search.models.IndexActionType;
-import com.azure.search.models.IndexBatch;
+import com.azure.search.models.IndexDocumentsBatch;
 import com.azure.search.models.IndexDocumentsResult;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
@@ -168,7 +168,7 @@ public final class SearchIndexAsyncClient {
 
     Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
         try {
-            return indexWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), context);
+            return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -224,7 +224,7 @@ public final class SearchIndexAsyncClient {
 
     Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
         try {
-            return this.indexWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), context);
+            return this.indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -282,7 +282,7 @@ public final class SearchIndexAsyncClient {
 
     Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
         try {
-            return this.indexWithResponse(buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD), context);
+            return this.indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD), context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -324,7 +324,7 @@ public final class SearchIndexAsyncClient {
 
     Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
         try {
-            return this.indexWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), context);
+            return this.indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -442,7 +442,7 @@ public final class SearchIndexAsyncClient {
      * @return the document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
-    public Mono<Document> getDocument(String key) {
+    public Mono<SearchDocument> getDocument(String key) {
         return getDocumentWithResponse(key, null, null).map(Response::getValue);
     }
 
@@ -460,18 +460,18 @@ public final class SearchIndexAsyncClient {
      * @return a response containing the document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
-    public Mono<Response<Document>> getDocumentWithResponse(String key, List<String> selectedFields,
+    public Mono<Response<SearchDocument>> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions) {
         return withContext(context -> getDocumentWithResponse(key, selectedFields, requestOptions, context));
     }
 
-    Mono<Response<Document>> getDocumentWithResponse(String key, List<String> selectedFields,
+    Mono<Response<SearchDocument>> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.documents()
                 .getWithRestResponseAsync(key, selectedFields, requestOptions, context)
                 .map(res -> {
-                    Document doc = res.getValue();
+                    SearchDocument doc = res.getValue();
                     DocumentResponseConversions.cleanupDocument(doc);
                     return new SimpleResponse<>(res, doc);
                 })
@@ -545,8 +545,8 @@ public final class SearchIndexAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
-    public Mono<IndexDocumentsResult> index(IndexBatch<?> batch) {
-        return indexWithResponse(batch).map(Response::getValue);
+    public Mono<IndexDocumentsResult> indexDocuments(IndexDocumentsBatch<?> batch) {
+        return indexDocumentsWithResponse(batch).map(Response::getValue);
     }
 
     /**
@@ -562,11 +562,11 @@ public final class SearchIndexAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
-    public Mono<Response<IndexDocumentsResult>> indexWithResponse(IndexBatch<?> batch) {
-        return withContext(context -> indexWithResponse(batch, context));
+    public Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch) {
+        return withContext(context -> indexDocumentsWithResponse(batch, context));
     }
 
-    Mono<Response<IndexDocumentsResult>> indexWithResponse(IndexBatch<?> batch, Context context) {
+    Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch, Context context) {
         try {
             return restClient.documents()
                 .indexWithRestResponseAsync(batch, context)
@@ -749,8 +749,8 @@ public final class SearchIndexAsyncClient {
     }
 
 
-    private static <T> IndexBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
-        IndexBatch<T> batch = new IndexBatch<>();
+    private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
+        IndexDocumentsBatch<T> batch = new IndexDocumentsBatch<>();
         List<IndexAction<T>> actions = batch.getActions();
         documents.forEach(d -> actions.add(new IndexAction<T>()
             .setActionType(actionType)

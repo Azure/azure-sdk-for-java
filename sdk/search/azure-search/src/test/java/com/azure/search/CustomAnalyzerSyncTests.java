@@ -133,13 +133,13 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
         SearchIndexClient searchIndexClient = searchServiceClient.getIndexClient(index.getName());
 
-        Document document1 = new Document();
+        SearchDocument document1 = new SearchDocument();
         document1.put("id", "1");
         document1.put("message", "My email is someone@somewhere.something.");
-        Document document2 = new Document();
+        SearchDocument document2 = new SearchDocument();
         document2.put("id", "2");
         document2.put("message", "His email is someone@nowhere.nothing.");
-        List<Document> documents = Arrays.asList(document1, document2);
+        List<SearchDocument> documents = Arrays.asList(document1, document2);
 
         searchIndexClient.uploadDocuments(documents);
         waitForIndexing();
