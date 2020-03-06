@@ -21,7 +21,6 @@ trigger:
     include:
       - sdk/servicebus/
     exclude:
-      - sdk/servicebus/microsoft-azure
       - sdk/servicebus/mgmt-
 
 pr:
@@ -35,14 +34,14 @@ pr:
     include:
       - sdk/servicebus/
     exclude:
-      - sdk/servicebus/microsoft-azure
+      - sdk/servicebus/azure
       - sdk/servicebus/mgmt-
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: servicebus
       Artifacts:
-        - name: azure-messaging-servicebus
-          groupId: com.azure
-          safeName: azuremessagingservicebus
+        - name: azure-servicebus
+          groupId: com.microsoft.azure
+          safeName: azuremicrosoftservicebus
