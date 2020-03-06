@@ -8,7 +8,8 @@ package com.azure.search.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.azure.search.Document;
+import java.util.Map;
+
 /**
  * A result containing a document found by a suggestion query, plus associated
  * metadata.
@@ -19,7 +20,7 @@ public final class SuggestResult {
      * Unmatched properties from the message are deserialized this collection
      */
     @JsonProperty(value = "")
-    private Document additionalProperties;
+    private Map<String, Object> additionalProperties;
 
     /*
      * The text of the suggestion result.
@@ -33,7 +34,7 @@ public final class SuggestResult {
      *
      * @return the additionalProperties value.
      */
-    public Document getDocument() {
+    public Map<String, Object> getDocument() {
         return this.additionalProperties;
     }
 
@@ -44,7 +45,7 @@ public final class SuggestResult {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SuggestResult object itself.
      */
-    SuggestResult setDocument(Document additionalProperties) {
+    SuggestResult setDocument(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

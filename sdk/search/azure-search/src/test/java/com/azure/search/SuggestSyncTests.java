@@ -359,7 +359,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         assertNotNull(suggestResultPagedResponse);
         List<Document> docs = suggestResultPagedResponse.getValue()
             .stream()
-            .map(SuggestResult::getDocument)
+            .map(suggestResult -> new Document(suggestResult.getDocument()))
             .collect(Collectors.toList());
         List<SuggestResult> hotelsList = suggestResultPagedResponse.getValue();
 
@@ -409,7 +409,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         List<SuggestResult> books = suggestResultPagedResponse.getValue();
         List<Document> docs = suggestResultPagedResponse.getValue()
             .stream()
-            .map(SuggestResult::getDocument)
+            .map(suggestResult -> new Document(suggestResult.getDocument()))
             .collect(Collectors.toList());
 
         assertEquals(1, docs.size());
@@ -419,7 +419,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
     @SuppressWarnings("unchecked")
     void verifySuggestWithSelectedFields(PagedResponse<SuggestResult> suggestResultPagedResponse) {
         assertEquals(1, suggestResultPagedResponse.getValue().size());
-        Document result = suggestResultPagedResponse.getValue().get(0).getDocument();
+        Document result = new Document(suggestResultPagedResponse.getValue().get(0).getDocument());
 
         assertEquals("Secret Point Motel", result.get("HotelName"));
         assertEquals(4, result.get("Rating"));

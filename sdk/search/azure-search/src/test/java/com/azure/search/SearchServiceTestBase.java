@@ -234,7 +234,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Tags")
-                    .setType(DataType.Collection(DataType.EDM_STRING))
+                    .setType(DataType.collection(DataType.EDM_STRING))
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
@@ -319,7 +319,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Rooms")
-                    .setType(DataType.Collection(DataType.EDM_COMPLEX_TYPE))
+                    .setType(DataType.collection(DataType.EDM_COMPLEX_TYPE))
                     .setFields(Arrays.asList(
                         new Field()
                             .setName("Description")
@@ -368,7 +368,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                             .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("Tags")
-                            .setType(DataType.Collection(DataType.EDM_STRING))
+                            .setType(DataType.collection(DataType.EDM_STRING))
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)

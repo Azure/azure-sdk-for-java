@@ -35,6 +35,7 @@ import com.azure.search.util.SearchPagedResponse;
 import com.azure.search.util.SuggestPagedFlux;
 import com.azure.search.util.SuggestPagedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Map;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -466,7 +467,7 @@ public final class SearchIndexAsyncClient {
             return restClient.documents()
                 .getWithRestResponseAsync(key, selectedFields, requestOptions, context)
                 .map(res -> {
-                    Document doc = res.getValue();
+                    Document doc = (Document) res.getValue();
                     DocumentResponseConversions.cleanupDocument(doc);
                     return new SimpleResponse<>(res, doc);
                 })

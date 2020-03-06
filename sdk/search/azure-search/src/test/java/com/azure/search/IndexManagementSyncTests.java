@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -19,6 +18,7 @@ import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.ScoringProfile;
+import com.azure.search.models.SearchErrorException;
 import com.azure.search.models.Suggester;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.test.AccessConditionTests;
@@ -129,8 +129,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
             client.createIndex(index);
             fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
-            assertEquals(HttpResponseException.class, ex.getClass());
-            assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
+            assertEquals(SearchErrorException.class, ex.getClass());
+            assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((SearchErrorException) ex).getResponse().getStatusCode());
             assertTrue(ex.getMessage().contains(expectedMessage));
         }
     }
@@ -183,8 +183,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
             deleteIndexFunc.accept(HOTEL_INDEX_NAME, accessOptions);
             fail("deleteFunc should have failed due to selected AccessCondition");
         } catch (Exception exc) {
-            assertEquals(HttpResponseException.class, exc.getClass());
-            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(SearchErrorException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((SearchErrorException) exc).getResponse().getStatusCode());
         }
 
         // Get the new eTag
@@ -231,7 +231,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         client.createIndex(index);
         client.deleteIndex(index.getName());
 
-        assertThrows(HttpResponseException.class, () -> client.getIndex(index.getName()));
+        assertThrows(SearchErrorException.class, () -> client.getIndex(index.getName()));
     }
 
     @Test

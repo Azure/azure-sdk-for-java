@@ -104,7 +104,7 @@ public class RunningSearchSolutionExample {
 
         System.out.println("Search query results:");
         searchResults.forEach(result -> {
-            Document doc = result.getDocument();
+            Document doc = new Document(result.getDocument());
             String hotelName = (String) doc.get("HotelName");
             System.out.printf("     Hotel: %s%n", hotelName);
         });
