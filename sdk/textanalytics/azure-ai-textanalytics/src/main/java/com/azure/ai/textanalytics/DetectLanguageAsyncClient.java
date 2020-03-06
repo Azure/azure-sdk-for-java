@@ -7,7 +7,6 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
@@ -18,6 +17,7 @@ import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
+import static com.azure.ai.textanalytics.Transforms.toLanguageInput;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -58,23 +59,9 @@ class DetectLanguageAsyncClient {
         TextAnalyticsRequestOptions options) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
-        final List<LanguageInput> multiLanguageInputs = new ArrayList<>();
-        textInputs.forEach(textDocumentInput -> multiLanguageInputs.add(new LanguageInput()
-            .setId(textDocumentInput.getId())
-            .setText(textDocumentInput.getText())
-            .setCountryHint(textDocumentInput.getCountryHint())));
-
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-                service.languagesWithRestResponseAsync(new LanguageBatchInput().setDocuments(multiLanguageInputs),
-                    options == null ? null : options.getModelVersion(),
-                    options == null ? null : options.isIncludeStatistics(), context)
-                    .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", textInputs.toString()))
-                    .doOnSuccess(response ->
-                        logger.info("A batch of detected language output - {}", response.getValue()))
-                    .doOnError(error -> logger.warning("Failed to detect language - {}", error))
-                    .map(this::toTextAnalyticsPagedResponse))
-                    .flux());
+                getDetectedLanguageResponseInPage(textInputs, options, context)).flux());
         } catch (RuntimeException ex) {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
@@ -93,22 +80,8 @@ class DetectLanguageAsyncClient {
     TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatchWithContext(
         Iterable<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-        final List<LanguageInput> multiLanguageInputs = new ArrayList<>();
-        textInputs.forEach(textDocumentInput -> multiLanguageInputs.add(new LanguageInput()
-            .setId(textDocumentInput.getId())
-            .setText(textDocumentInput.getText())
-            .setCountryHint(textDocumentInput.getCountryHint())));
-
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            service.languagesWithRestResponseAsync(
-                new LanguageBatchInput().setDocuments(multiLanguageInputs),
-                options == null ? null : options.getModelVersion(),
-                options == null ? null : options.isIncludeStatistics(), context)
-                .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", textInputs.toString()))
-                .doOnSuccess(response -> logger.info("A batch of detected language output - {}", response.getValue()))
-                .doOnError(error -> logger.warning("Failed to detect language - {}", error))
-                .map(this::toTextAnalyticsPagedResponse)
-                .flux());
+            getDetectedLanguageResponseInPage(textInputs, options, context).flux());
     }
 
     /**
@@ -162,5 +135,28 @@ class DetectLanguageAsyncClient {
             null,
             languageResult.getModelVersion(),
             languageResult.getStatistics() == null ? null : toBatchStatistics(languageResult.getStatistics()));
+    }
+
+    /**
+     * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
+     * {@link DetectLanguageResult} from a {@link SimpleResponse} of {@link LanguageResult}.
+     *
+     * @param textInputs The list of documents to detect languages for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link DetectLanguageResult}.
+     */
+    private Mono<TextAnalyticsPagedResponse<DetectLanguageResult>> getDetectedLanguageResponseInPage(
+        Iterable<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        return service.languagesWithRestResponseAsync(
+            new LanguageBatchInput().setDocuments(toLanguageInput(textInputs)),
+            options == null ? null : options.getModelVersion(),
+            options == null ? null : options.isIncludeStatistics(), context)
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", textInputs.toString()))
+            .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
+                response.getValue()))
+            .doOnError(error -> logger.warning("Failed to detect language - {}", error))
+            .map(this::toTextAnalyticsPagedResponse);
     }
 }

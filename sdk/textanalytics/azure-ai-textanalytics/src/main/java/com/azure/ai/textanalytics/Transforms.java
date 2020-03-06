@@ -4,9 +4,11 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
+import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -115,5 +117,21 @@ final class Transforms {
     static TextAnalyticsException toTextAnalyticsException(
         com.azure.ai.textanalytics.models.TextAnalyticsError error) {
         return new TextAnalyticsException(error.getMessage(), error.getCode().toString(), error.getTarget());
+    }
+
+    /**
+     * Convert to a list of {@link LanguageInput} from {@link DetectLanguageInput}.
+     *
+     * @param textInputs The list of documents to detect languages for.
+     *
+     * @return a list of {@link LanguageInput}.
+     */
+    static List<LanguageInput> toLanguageInput(Iterable<DetectLanguageInput> textInputs) {
+        final List<LanguageInput> multiLanguageInputs = new ArrayList<>();
+        textInputs.forEach(textDocumentInput -> multiLanguageInputs.add(new LanguageInput()
+            .setId(textDocumentInput.getId())
+            .setText(textDocumentInput.getText())
+            .setCountryHint(textDocumentInput.getCountryHint())));
+        return multiLanguageInputs;
     }
 }

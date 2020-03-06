@@ -17,6 +17,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +27,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
+import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.fluxError;
@@ -97,17 +99,7 @@ class RecognizeEntityAsyncClient {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-                service.entitiesRecognitionGeneralWithRestResponseAsync(
-                    new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
-                    options == null ? null : options.getModelVersion(),
-                    options == null ? null : options.isIncludeStatistics(), context)
-                    .doOnSubscribe(ignoredValue -> logger.info("A batch of categorized entities input - {}",
-                        textInputs.toString()))
-                    .doOnSuccess(response ->
-                        logger.info("A batch of categorized entities output - {}", response.getValue()))
-                    .doOnError(error -> logger.warning("Failed to recognize categorized entities - {}", error))
-                    .map(this::toTextAnalyticsPagedResponse))
-                .flux());
+                getRecognizedEntitiesResponseInPage(textInputs, options, context)).flux());
         } catch (RuntimeException ex) {
             return new TextAnalyticsPagedFlux<>(() ->
                 (continuationToken, pageSize) -> fluxError(logger, ex));
@@ -127,21 +119,9 @@ class RecognizeEntityAsyncClient {
      */
     TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatchWithContext(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            service.entitiesRecognitionGeneralWithRestResponseAsync(
-                new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
-                options == null ? null : options.getModelVersion(),
-                options == null ? null : options.isIncludeStatistics(), context)
-                .doOnSubscribe(ignoredValue -> logger.info("A batch of categorized entities input - {}",
-                    textInputs.toString()))
-                .doOnSuccess(response -> logger.info("A batch of categorized entities output - {}",
-                    response.getValue()))
-                .doOnError(error -> logger.warning("Failed to recognize categorized entities - {}", error))
-                .map(this::toTextAnalyticsPagedResponse)
-                .flux());
+            getRecognizedEntitiesResponseInPage(textInputs, options, context).flux());
     }
 
     /**
@@ -177,5 +157,28 @@ class RecognizeEntityAsyncClient {
             response.getRequest(), response.getStatusCode(), response.getHeaders(),
             recognizeCategorizedEntitiesResults, null, entitiesResult.getModelVersion(),
             entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics()));
+    }
+
+    /**
+     * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
+     * {@link RecognizeCategorizedEntitiesResult} from a {@link SimpleResponse} of {@link EntitiesResult}.
+     *
+     * @param textInputs A list of documents to recognize PII entities for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link RecognizeCategorizedEntitiesResult}.
+     */
+    private Mono<TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult>> getRecognizedEntitiesResponseInPage(
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        return service.entitiesRecognitionGeneralWithRestResponseAsync(
+            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(textInputs)),
+            options == null ? null : options.getModelVersion(),
+            options == null ? null : options.isIncludeStatistics(), context)
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", textInputs.toString()))
+            .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
+                response.getValue()))
+            .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
+            .map(this::toTextAnalyticsPagedResponse);
     }
 }

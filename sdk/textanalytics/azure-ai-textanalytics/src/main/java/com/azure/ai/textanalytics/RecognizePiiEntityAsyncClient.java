@@ -17,6 +17,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,19 +98,7 @@ class RecognizePiiEntityAsyncClient {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-                service.entitiesRecognitionPiiWithRestResponseAsync(
-                    new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
-                    options == null ? null : options.getModelVersion(),
-                    options == null ? null : options.isIncludeStatistics(), context)
-                    .doOnSubscribe(ignoredValue ->
-                        logger.info("Processing a batch of Personally Identifiable Information entities input"))
-                    .doOnSuccess(response ->
-                        logger.info("A batch of Personally Identifiable Information entities output - {}",
-                        response.getValue()))
-                    .doOnError(error ->
-                        logger.warning("Failed to recognize Personally Identifiable Information entities - {}", error))
-                    .map(this::toTextAnalyticsPagedResponse))
-                .flux());
+                getRecognizedPiiEntitiesResponseInPage(textInputs, options, context)).flux());
         } catch (RuntimeException ex) {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
@@ -127,23 +116,9 @@ class RecognizePiiEntityAsyncClient {
      */
     TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatchWithContext(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            service.entitiesRecognitionPiiWithRestResponseAsync(
-                new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
-                options == null ? null : options.getModelVersion(),
-                options == null ? null : options.isIncludeStatistics(), context)
-                .doOnSubscribe(ignoredValue ->
-                    logger.info("Processing a batch of Personally Identifiable Information entities input"))
-                .doOnSuccess(response ->
-                    logger.info("A batch of Personally Identifiable Information entities output - {}",
-                        response.getValue()))
-                .doOnError(error ->
-                    logger.warning("Failed to recognize Personally Identifiable Information entities - {}", error))
-                .map(this::toTextAnalyticsPagedResponse)
-                .flux());
+            getRecognizedPiiEntitiesResponseInPage(textInputs, options, context).flux());
     }
 
     /**
@@ -178,5 +153,30 @@ class RecognizePiiEntityAsyncClient {
             response.getRequest(), response.getStatusCode(), response.getHeaders(),
             recognizePiiEntitiesResults, null, entitiesResult.getModelVersion(),
             entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics()));
+    }
+
+    /**
+     * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
+     * {@link RecognizePiiEntitiesResult} from a {@link SimpleResponse} of {@link EntitiesResult}.
+     *
+     * @param textInputs A list of documents to recognize PII entities for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link RecognizePiiEntitiesResult}.
+     */
+    private Mono<TextAnalyticsPagedResponse<RecognizePiiEntitiesResult>> getRecognizedPiiEntitiesResponseInPage(
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        return service.entitiesRecognitionPiiWithRestResponseAsync(
+            new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
+            options == null ? null : options.getModelVersion(),
+            options == null ? null : options.isIncludeStatistics(), context)
+            .doOnSubscribe(ignoredValue ->
+                logger.info("Processing a batch of document that contains Personally Identifiable Information"))
+            .doOnSuccess(response ->
+                logger.info("Recognized Personally Identifiable Information entities for a batch of documents"))
+            .doOnError(error ->
+                logger.warning("Failed to recognize Personally Identifiable Information entities - {}", error))
+            .map(this::toTextAnalyticsPagedResponse);
     }
 }

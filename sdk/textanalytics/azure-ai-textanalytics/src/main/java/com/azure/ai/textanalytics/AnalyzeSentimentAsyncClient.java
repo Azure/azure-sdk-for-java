@@ -21,6 +21,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,16 +66,7 @@ class AnalyzeSentimentAsyncClient {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-                service.sentimentWithRestResponseAsync(
-                    new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
-                    options == null ? null : options.getModelVersion(),
-                    options == null ? null : options.isIncludeStatistics(), context)
-                    .doOnSubscribe(ignoredValue ->
-                        logger.info("A batch of documents - {}", textInputs.toString()))
-                    .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
-                    .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
-                    .map(this::toTextAnalyticsPagedResponse))
-                    .flux());
+                getAnalyzedSentimentResponseInPage(textInputs, options, context)).flux());
         } catch (RuntimeException ex) {
             return new TextAnalyticsPagedFlux<>(() ->
                 (continuationToken, pageSize) -> fluxError(logger, ex));
@@ -97,16 +89,7 @@ class AnalyzeSentimentAsyncClient {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
 
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            service.sentimentWithRestResponseAsync(
-                new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
-                options == null ? null : options.getModelVersion(),
-                options == null ? null : options.isIncludeStatistics(), context)
-                .doOnSubscribe(ignoredValue ->
-                    logger.info("A batch of documents - {}", textInputs.toString()))
-                .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
-                .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
-                .map(response -> toTextAnalyticsPagedResponse(response))
-                .flux());
+            getAnalyzedSentimentResponseInPage(textInputs, options, context).flux());
     }
 
     /**
@@ -191,5 +174,27 @@ class AnalyzeSentimentAsyncClient {
                     confidenceScorePerLabel.getNeutral(),
                     confidenceScorePerLabel.getPositive()),
                 new IterableStream<>(sentenceSentiments)));
+    }
+
+    /**
+     * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
+     * {@link AnalyzeSentimentResult} from a {@link SimpleResponse} of {@link SentimentResponse}.
+     *
+     * @param textInputs A list of documents to recognize PII entities for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link AnalyzeSentimentResult}.
+     */
+    private Mono<TextAnalyticsPagedResponse<AnalyzeSentimentResult>> getAnalyzedSentimentResponseInPage(
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        return service.sentimentWithRestResponseAsync(
+            new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
+            options == null ? null : options.getModelVersion(),
+            options == null ? null : options.isIncludeStatistics(), context)
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", textInputs.toString()))
+            .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
+            .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
+            .map(this::toTextAnalyticsPagedResponse);
     }
 }

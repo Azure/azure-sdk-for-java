@@ -17,6 +17,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,13 +27,14 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
+import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Helper class for managing extract keyphrase endpoint.
+ * Helper class for managing extract key phrase endpoint.
  */
 class ExtractKeyPhraseAsyncClient {
     private final ClientLogger logger = new ClientLogger(ExtractKeyPhraseAsyncClient.class);
@@ -96,16 +98,7 @@ class ExtractKeyPhraseAsyncClient {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-                service.keyPhrasesWithRestResponseAsync(
-                    new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
-                    options == null ? null : options.getModelVersion(),
-                    options == null ? null : options.isIncludeStatistics(), context)
-                    .doOnSubscribe(ignoredValue ->
-                        logger.info("A batch of key phrases input - {}", textInputs.toString()))
-                    .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
-                    .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
-                    .map(this::toTextAnalyticsPagedResponse))
-                .flux());
+                getExtractedKeyPhrasesResponseInPage(textInputs, options, context)).flux());
         } catch (RuntimeException ex) {
             return new TextAnalyticsPagedFlux<>(() ->
                 (continuationToken, pageSize) -> fluxError(logger, ex));
@@ -125,17 +118,8 @@ class ExtractKeyPhraseAsyncClient {
     TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrasesBatchWithContext(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            service.keyPhrasesWithRestResponseAsync(
-                new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
-                options == null ? null : options.getModelVersion(),
-                options == null ? null : options.isIncludeStatistics(), context)
-                .doOnSubscribe(ignoredValue -> logger.info("A batch of key phrases input - {}", textInputs.toString()))
-                .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
-                .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
-                .map(this::toTextAnalyticsPagedResponse)
-                .flux());
+            getExtractedKeyPhrasesResponseInPage(textInputs, options, context).flux());
     }
 
     /**
@@ -179,5 +163,27 @@ class ExtractKeyPhraseAsyncClient {
             null,
             keyPhraseResult.getModelVersion(), keyPhraseResult.getStatistics() == null ? null
             : toBatchStatistics(keyPhraseResult.getStatistics()));
+    }
+
+    /**
+     * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
+     * {@link ExtractKeyPhraseResult} from a {@link SimpleResponse} of {@link KeyPhraseResult}.
+     *
+     * @param textInputs A list of documents to extract key phrases for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link ExtractKeyPhraseResult}.
+     */
+    private Mono<TextAnalyticsPagedResponse<ExtractKeyPhraseResult>> getExtractedKeyPhrasesResponseInPage(
+        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        return service.keyPhrasesWithRestResponseAsync(
+            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(textInputs)),
+            options == null ? null : options.getModelVersion(),
+            options == null ? null : options.isIncludeStatistics(), context)
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of key phrases input - {}", textInputs.toString()))
+            .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
+            .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
+            .map(this::toTextAnalyticsPagedResponse);
     }
 }
