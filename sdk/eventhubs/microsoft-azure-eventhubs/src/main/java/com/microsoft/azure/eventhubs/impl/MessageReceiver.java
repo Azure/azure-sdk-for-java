@@ -75,6 +75,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private volatile CompletableFuture<?> closeTimer;
     private int prefetchCount;
     private Exception lastKnownLinkError;
+    private volatile long lastDeliveryReceivedTime;
     private String linkCreationTime;        // Used when looking at Java dumps, do not remove.
 
     private MessageReceiver(final MessagingFactory factory,
@@ -184,6 +185,11 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 },
                 ClientConstants.TOKEN_REFRESH_INTERVAL,
                 this.underlyingFactory);
+
+        this.underlyingFactory.registerForWatchdog(this);
+        // Set last-received time to receiver creation time. This means that a newly-created receiver will get
+        // the watchdog time to receive the first message before it is declared to be failed.
+        this.lastDeliveryReceivedTime = Instant.now().getEpochSecond();
     }
 
     // @param connection Connection on which the MessageReceiver's receive AMQP link need to be created on.
@@ -310,6 +316,15 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
 
             this.underlyingFactory.getRetryPolicy().resetRetryCount(this.underlyingFactory.getClientId());
 
+            // Resetting the watchdog time here means that when the watchdog has forced a connection closed, the
+            // new connection gets the watchdog time to receive a first message before it is declared to be dead.
+            // Without this, the watchdog would continue to measure from the last message received and the new
+            // connection would only get the watchdog scan time, which is normally a lot shorter. Using the longer
+            // time avoids the situation where the network or the service is slow and the client gets trapped in
+            // a loop killing connections because it doesn't wait long enough for a response.
+            TRACE_LOGGER.info("Watchdog reset timer for new connection on receiver " + this.getClientId());
+            this.lastDeliveryReceivedTime = Instant.now().getEpochSecond();
+
             this.nextCreditToFlow = 0;
             this.sendFlow(this.prefetchCount - this.prefetchedMessages.size());
 
@@ -380,6 +395,10 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
         }
     }
 
+    public long getLastReceivedTime() {
+        return this.lastDeliveryReceivedTime;
+    }
+
     @Override
     public void onReceiveComplete(Delivery delivery) {
         int msgSize = delivery.pending();
@@ -393,6 +412,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
         delivery.settle();
 
         this.prefetchedMessages.add(message);
+        this.lastDeliveryReceivedTime = Instant.now().getEpochSecond();
         this.underlyingFactory.getRetryPolicy().resetRetryCount(this.getClientId());
 
         this.receiveWork.onEvent();
@@ -796,6 +816,8 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     protected CompletableFuture<Void> onClose() {
         if (!this.getIsClosed()) {
             try {
+                this.underlyingFactory.unregisterForWatchdog(this);
+                
                 this.activeClientTokenManager.cancel();
                 scheduleLinkCloseTimeout(TimeoutTracker.create(operationTimeout, this.receiveLink.getName()));
 

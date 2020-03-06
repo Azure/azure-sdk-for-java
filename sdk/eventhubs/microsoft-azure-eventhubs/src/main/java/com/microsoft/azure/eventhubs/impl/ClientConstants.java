@@ -19,6 +19,7 @@ public final class ClientConstants {
     public static final Symbol STORE_LOCK_LOST_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":store-lock-lost");
     public static final Symbol PUBLISHER_REVOKED_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":publisher-revoked");
     public static final Symbol TIMEOUT_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
+    public static final Symbol WATCHDOG_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":watchdog");
     public static final Symbol PROTON_IO_ERROR = Symbol.getSymbol(AmqpConstants.PROTON + ":io");
     public static final Symbol TRACKING_ID_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":tracking-id");
     public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;

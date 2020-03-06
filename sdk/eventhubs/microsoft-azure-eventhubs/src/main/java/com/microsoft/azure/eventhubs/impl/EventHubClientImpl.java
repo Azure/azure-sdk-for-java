@@ -64,6 +64,18 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor,
         final ProxyConfiguration proxyConfiguration)
             throws IOException {
+        return create(connectionString, retryPolicy, executor, proxyConfiguration, EventHubClientOptions.WATCHDOG_OFF,
+                EventHubClientOptions.WATCHDOG_SCAN_DEFAULT);
+    }
+
+    public static CompletableFuture<EventHubClient> create(
+        final String connectionString,
+        final RetryPolicy retryPolicy,
+        final ScheduledExecutorService executor,
+        final ProxyConfiguration proxyConfiguration,
+        final int watchdogTimeoutSeconds,
+        final int watchdogScanSeconds)
+            throws IOException {
         if (StringUtil.isNullOrWhiteSpace(connectionString)) {
             throw new IllegalArgumentException("Connection string cannot be null or empty");
         }
@@ -72,7 +84,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(connStr.getEventHubName(), executor);
 
-        return MessagingFactory.createFromConnectionString(connectionString, retryPolicy, executor, proxyConfiguration)
+        return MessagingFactory.createFromConnectionString(connectionString, retryPolicy, executor, proxyConfiguration, watchdogTimeoutSeconds, watchdogScanSeconds)
                 .thenApplyAsync(new Function<MessagingFactory, EventHubClient>() {
                     @Override
                     public EventHubClient apply(MessagingFactory factory) {
@@ -103,7 +115,9 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
             builder.setOperationTimeout(options.getOperationTimeout())
                 .setTransportType(options.getTransportType())
                 .setRetryPolicy(options.getRetryPolicy())
-                .setProxyConfiguration(options.getProxyConfiguration());
+                .setProxyConfiguration(options.getProxyConfiguration())
+                .setWatchdogTimeout(options.getWatchdogTimeout())
+                .setWatchdogScan(options.getWatchdogScan());
         }
 
         return builder.build()

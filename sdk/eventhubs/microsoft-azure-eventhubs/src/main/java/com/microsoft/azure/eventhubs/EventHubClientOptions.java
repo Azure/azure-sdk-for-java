@@ -10,10 +10,15 @@ import java.time.Duration;
  * All options default to not specified (null)
  */
 public class EventHubClientOptions {
+    public static final int WATCHDOG_OFF = 0;
+    public static final int WATCHDOG_SCAN_DEFAULT = 10; // seconds
+
     private Duration operationTimeout = null;
     private TransportType transportType = null;
     private RetryPolicy retryPolicy = null;
     private ProxyConfiguration proxyConfiguration = null;
+    private int watchdogTimeoutSeconds = WATCHDOG_OFF;
+    private int watchdogScanSeconds = WATCHDOG_SCAN_DEFAULT;
 
     /**
      * Create with all defaults
@@ -92,6 +97,47 @@ public class EventHubClientOptions {
      * @return Gets the proxy configuration.
      */
     public ProxyConfiguration getProxyConfiguration() {
-        return proxyConfiguration;
+        return this.proxyConfiguration;
+    }
+
+    /**
+     * Sets the watchdog timeout in seconds.
+     * 
+     * @param watchdogTimeoutSeconds The timeout in seconds, or WATCHDOG_OFF.
+     * @return The updated options object.
+     */
+    public EventHubClientOptions setWatchdogTimeout(int watchdogTimeoutSeconds) {
+        this.watchdogTimeoutSeconds = watchdogTimeoutSeconds;
+        return this;
+    }
+
+    /**
+     * Gets the watchdog timeout in seconds.
+     * 
+     * @return The watchdog timeout.
+     */
+    public int getWatchdogTimeout() {
+        return this.watchdogTimeoutSeconds;
+    }
+
+    /**
+     * Sets the watchdog scan period in seconds. Ignored if the watchdog timeout is WATCHDOG_OFF.
+     * Defaults to WATCHDOG_SCAN_DEFAULT.
+     * 
+     * @param watchdogScanSeconds The watchdog scan period in seconds
+     * @return The updated options object.
+     */
+    public EventHubClientOptions setWatchdogScan(int watchdogScanSeconds) {
+        this.watchdogScanSeconds = watchdogScanSeconds;
+        return this;
+    }
+
+    /**
+     * Gets the watchdog scan period in seconds.
+     * 
+     * @return The watchdog scan period.
+     */
+    public int getWatchdogScan() {
+        return this.watchdogScanSeconds;
     }
 }
