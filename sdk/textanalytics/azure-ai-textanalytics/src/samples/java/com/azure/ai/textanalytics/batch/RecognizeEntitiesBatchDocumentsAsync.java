@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously recognize the entities of a batch input text.
+ * Sample demonstrates how to asynchronously recognize the entities of documents.
  */
-public class RecognizeCategorizedEntitiesBatchDocumentsAsync {
+public class RecognizeEntitiesBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to recognize the entities of a batch input text.
+     * Main method to invoke this demo about how to recognize the entities of documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -58,8 +58,8 @@ public class RecognizeCategorizedEntitiesBatchDocumentsAsync {
                     } else {
                         // Valid document
                         entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                            "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getGraphemeOffset(), entity.getGraphemeLength(), entity.getScore()));
+                            "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %.2f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()));
                     }
                 });
             },

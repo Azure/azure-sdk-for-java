@@ -19,11 +19,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates how to analyze the sentiments of a batch input text.
+ * Sample demonstrates how to analyze the sentiments of documents.
  */
 public class AnalyzeSentimentBatchDocuments {
     /**
-     * Main method to invoke this demo about how to analyze the sentiments of a batch input text.
+     * Main method to invoke this demo about how to analyze the sentiments of documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -70,9 +70,8 @@ public class AnalyzeSentimentBatchDocuments {
                     documentSentiment.getSentences().forEach(sentenceSentiment -> {
                         SentimentConfidenceScores sentenceScores = sentenceSentiment.getConfidenceScores();
                         System.out.printf(
-                            "Analyzed sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
-                            sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative(),
-                            sentenceSentiment.getGraphemeLength(), sentenceSentiment.getGraphemeOffset());
+                            "Analyzed sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
+                            sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative());
                     });
                 }
             });

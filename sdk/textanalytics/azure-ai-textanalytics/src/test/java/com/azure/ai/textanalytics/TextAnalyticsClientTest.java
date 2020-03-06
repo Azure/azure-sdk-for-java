@@ -15,7 +15,7 @@ import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-import com.azure.ai.textanalytics.models.TextSentimentLabel;
+import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedIterable;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -60,7 +60,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     // Detect language
 
     /**
-     * Verify that we can get statistics on the collection result when given a batch input with options.
+     * Verify that we can get statistics on the collection result when given a batch of documents with options.
      */
     @Test
     public void detectLanguagesBatchInputShowStatistics() {
@@ -70,7 +70,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test Detect batch input languages.
+     * Test Detect batch of documents languages.
      */
     @Test
     public void detectLanguagesBatchInput() {
@@ -149,7 +149,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageInvalidCountryHint() {
         Exception exception = assertThrows(TextAnalyticsException.class, () ->
-            client.detectLanguage("Este es un document escrito en Español.", "en"));
+            client.detectLanguage("Este es un documento  escrito en Español.", "en"));
         assertTrue(exception.getMessage().equals(INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
@@ -159,7 +159,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageEmptyCountryHint() {
         validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0),
-            client.detectLanguage("Este es un document escrito en Español", ""));
+            client.detectLanguage("Este es un documento  escrito en Español", ""));
     }
 
     /**
@@ -168,7 +168,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageNoneCountryHint() {
         validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0),
-            client.detectLanguage("Este es un document escrito en Español", "none"));
+            client.detectLanguage("Este es un documento  escrito en Español", "none"));
     }
 
     /**
@@ -183,7 +183,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         });
     }
 
-    // Recognize categorized Entity
+    // Recognize Entity
 
     @Test
     public void recognizeEntitiesForTextInput() {
@@ -435,11 +435,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void analyseSentimentForTextInput() {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
-            TextSentimentLabel.MIXED,
+            TextSentiment.MIXED,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentimentLabel.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(TextSentimentLabel.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentiment(TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentiment(TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 32)
             )));
         DocumentSentiment analyzeSentimentResult =
             client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.");
@@ -457,15 +457,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test analyzing sentiment for a faulty input text.
+     * Test analyzing sentiment for a faulty document.
      */
     @Test
     public void analyseSentimentForFaultyText() {
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentimentLabel.NEUTRAL,
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.NEUTRAL,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentimentLabel.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentiment(TextSentimentLabel.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 4, 1)
+                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 1, 0),
+                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 4, 1)
             )));
 
         DocumentSentiment analyzeSentimentResult = client.analyzeSentiment("!@#%%");
@@ -494,7 +494,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verify that we can get statistics on the collection result when given a batch input with request options.
+     * Verify that we can get statistics on the collection result when given a batch of documents with request options.
      */
     @Test
     public void analyseSentimentForListStringWithOptions() {
@@ -504,7 +504,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test analyzing sentiment for batch input.
+     * Test analyzing sentiment for batch of documents.
      */
     @Test
     public void analyseSentimentForBatchInput() {
@@ -514,7 +514,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verify that we can get statistics on the collection result when given a batch input with request options.
+     * Verify that we can get statistics on the collection result when given a batch of documents with request options.
      */
     @Test
     public void analyseSentimentForBatchInputShowStatistics() {

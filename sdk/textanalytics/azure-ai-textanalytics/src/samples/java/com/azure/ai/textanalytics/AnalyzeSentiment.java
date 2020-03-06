@@ -8,11 +8,11 @@ import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
- * Sample demonstrates how to analyze the sentiment of an input text.
+ * Sample demonstrates how to analyze the sentiment of document.
  */
 public class AnalyzeSentiment {
     /**
-     * Main method to invoke this demo about how to analyze the sentiment of an input text.
+     * Main method to invoke this demo about how to analyze the sentiment of document.
      *
      * @param args Unused arguments to the program.
      */

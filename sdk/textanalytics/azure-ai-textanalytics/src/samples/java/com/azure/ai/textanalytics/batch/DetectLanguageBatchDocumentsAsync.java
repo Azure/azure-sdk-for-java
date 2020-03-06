@@ -16,11 +16,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously detect the languages of a batch input text.
+ * Sample demonstrates how to asynchronously detect the languages of documents.
  */
 public class DetectLanguageBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to detect the languages of a batch input text.
+     * Main method to invoke this demo about how to detect the languages of documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -34,7 +34,7 @@ public class DetectLanguageBatchDocumentsAsync {
         // The texts that need be analyzed.
         List<DetectLanguageInput> inputs = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English.", "us"),
-            new DetectLanguageInput("2", "Este es un document escrito en Español.", "es")
+            new DetectLanguageInput("2", "Este es un documento  escrito en Español.", "es")
         );
 
         // Request options: show statistics and model version
@@ -50,7 +50,7 @@ public class DetectLanguageBatchDocumentsAsync {
                 System.out.printf("Batch statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                // Detected languages for a document from a batch of documents
+                // Detected languages for each document
                 pagedResponse.getElements().forEach(detectLanguageResult -> {
                     System.out.printf("%nDocument ID: %s%n", detectLanguageResult.getId());
                     if (detectLanguageResult.isError()) {

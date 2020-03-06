@@ -705,7 +705,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actual the value returned by API.
      */
     private static void validateDocumentStatistics(TextDocumentStatistics expected, TextDocumentStatistics actual) {
-        assertEquals(expected.getCharacterCount(), actual.getCharacterCount());
+        assertEquals(expected.getGraphemeCount(), actual.getGraphemeCount());
         assertEquals(expected.getTransactionCount(), actual.getTransactionCount());
     }
 

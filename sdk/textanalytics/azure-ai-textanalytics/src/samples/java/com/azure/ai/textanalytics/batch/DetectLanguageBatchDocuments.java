@@ -14,11 +14,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates how to detect the languages of a batch input text.
+ * Sample demonstrates how to detect the languages of documents.
  */
 public class DetectLanguageBatchDocuments {
     /**
-     * Main method to invoke this demo about how to detect the languages of a batch input text.
+     * Main method to invoke this demo about how to detect the languages of documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -32,7 +32,7 @@ public class DetectLanguageBatchDocuments {
         // The texts that need be analyzed.
         List<DetectLanguageInput> inputs = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English.", "US"),
-            new DetectLanguageInput("2", "Este es un document escrito en Español.", "ES")
+            new DetectLanguageInput("2", "Este es un documento  escrito en Español.", "ES")
         );
 
         // Detecting batch languages

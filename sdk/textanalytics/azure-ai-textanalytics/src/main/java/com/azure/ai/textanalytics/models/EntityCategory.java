@@ -16,9 +16,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
 
     /**
-     * Specifies that the entity corresponds to a Person.
+     * Specifies that the entity corresponds to a person.
      */
     public static final EntityCategory PERSON = fromString("Person");
+
+    /**
+     * Specifies that the entity corresponds to a person type.
+     */
+    public static final EntityCategory PERSON_TYPE = fromString("PersonType");
 
     /**
      * Specifies that entity contains natural or human-made landmarks, structures, or geographical features.
@@ -31,9 +36,19 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
     public static final EntityCategory ORGANIZATION = fromString("Organization");
 
     /**
-     * Specifies that the entity contains a date, time or duration.
+     * Specifies that the entity contains historical, social and natural-occuring events.
      */
-    public static final EntityCategory DATE_TIME = fromString("DateTime");
+    public static final EntityCategory EVENT = fromString("Event");
+
+    /**
+     * Specifies that the entity contains a physical objects of various categories.
+     */
+    public static final EntityCategory PRODUCT = fromString("Product");
+
+    /**
+     * Specifies that the entity contains an entity describing a capability or expertise.
+     */
+    public static final EntityCategory SKILL = fromString("Skill");
 
     /**
      * Specifies that the entity contains a phone number (US phone numbers only).
@@ -49,6 +64,16 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
      * Specifies that the entity contains an Internet URL.
      */
     public static final EntityCategory URL = fromString("URL");
+
+    /**
+     * Specifies that the entity contains an Internet Protocol address
+     */
+    public static final EntityCategory IP_ADDRESS = fromString("IP Address");
+
+    /**
+     * Specifies that the entity contains a date, time or duration.
+     */
+    public static final EntityCategory DATE_TIME = fromString("DateTime");
 
     /**
      * Specifies that the entity contains a number or numeric quantity.

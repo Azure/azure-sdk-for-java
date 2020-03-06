@@ -55,7 +55,7 @@ public final class TextAnalyticsAsyncClient {
     final DetectLanguageAsyncClient detectLanguageAsyncClient;
     final AnalyzeSentimentAsyncClient analyzeSentimentAsyncClient;
     final ExtractKeyPhraseAsyncClient extractKeyPhraseAsyncClient;
-    final RecognizeCategorizedEntityAsyncClient recognizeCategorizedEntityAsyncClient;
+    final RecognizeEntityAsyncClient recognizeEntityAsyncClient;
     final RecognizePiiEntityAsyncClient recognizePiiEntityAsyncClient;
     final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
 
@@ -77,7 +77,7 @@ public final class TextAnalyticsAsyncClient {
         this.detectLanguageAsyncClient = new DetectLanguageAsyncClient(service);
         this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(service);
         this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(service);
-        this.recognizeCategorizedEntityAsyncClient = new RecognizeCategorizedEntityAsyncClient(service);
+        this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service);
         this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
         this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
     }
@@ -138,7 +138,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a {@link Response} containing the detected language and a confidence score between zero and one. Scores
+     * Returns a {@link Response} contains the detected language and a confidence score between zero and one. Scores
      * close to one indicate 100% certainty that the identified language is true.
      *
      * <p><strong>Code sample</strong></p>
@@ -152,9 +152,9 @@ public final class TextAnalyticsAsyncClient {
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified. To remove this behavior you can reset this parameter by setting this value to empty string
-     * {@code countryHint} = "".
+     * {@code countryHint} = "" or "none".
      *
-     * @return A {@link Mono} containing a {@link DetectedLanguage detected language} of the document.
+     * @return A {@link Mono} contains a {@link DetectedLanguage detected language} of the document.
      *
      * @throws NullPointerException if the document is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -173,7 +173,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns the detected language for a batch of documents.
+     * Returns the detected language for each of documents.
      *
      * This method will use the default country hint that sets up in
      * {@link TextAnalyticsClientBuilder#defaultCountryHint(String)}. If none is specified, service will use 'US' as
@@ -185,11 +185,11 @@ public final class TextAnalyticsAsyncClient {
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable}
      *
-     * @param textInputs The list of documents to be analyzed.
+     * @param textInputs The list of documents to detect languages for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -200,7 +200,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns the detected language for a batch of documents with the provided country hint.
+     * Returns the detected language for each of documents with the provided country hint.
      *
      * <p><strong>Code sample</strong></p>
      * <p>Detects language in a list of documents with a provided country hint for the batch. Subscribes to the
@@ -208,14 +208,14 @@ public final class TextAnalyticsAsyncClient {
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-String}
      *
-     * @param textInputs The list of documents to be analyzed.
+     * @param textInputs The list of documents to detect languages for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified. To remove this behavior you can reset this parameter by setting this value to empty string
-     * {@code countryHint} = "".
+     * {@code countryHint} = "" or "none".
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -227,7 +227,7 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns the detected language for a batch of documents with the provided country hint and request option.
+     * Returns the detected language for each of documents with the provided country hint and request option.
      *
      * <p><strong>Code sample</strong></p>
      * <p>Detects language in a list of documents with a provided country hint and request option for the batch.
@@ -236,16 +236,16 @@ public final class TextAnalyticsAsyncClient {
      *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
-     * @param textInputs The list of documents to be analyzed.
+     * @param textInputs The list of documents to detect languages for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified. To remove this behavior you can reset this parameter by setting this value to empty string
-     * {@code countryHint} = "".
+     * {@code countryHint} = "" or "none".
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -277,7 +277,7 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -309,7 +309,7 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link CategorizedEntity recognized categorized entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -338,7 +338,7 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
      * default.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link CategorizedEntity recognized categorized entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -346,7 +346,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String text, String language) {
-        return recognizeCategorizedEntityAsyncClient.recognizeEntities(text, language);
+        return recognizeEntityAsyncClient.recognizeEntities(text, language);
     }
 
     /**
@@ -366,7 +366,7 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -392,7 +392,7 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
      * default.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -421,7 +421,7 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -449,7 +449,7 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -457,7 +457,7 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
-        return recognizeCategorizedEntityAsyncClient.recognizeEntitiesBatch(textInputs, options);
+        return recognizeEntityAsyncClient.recognizeEntitiesBatch(textInputs, options);
     }
 
     // Personally Identifiable Information Entity
@@ -482,7 +482,7 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link PiiEntity Personally Identifiable Information entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -512,7 +512,7 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link PiiEntity Personally Identifiable Information entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -543,7 +543,7 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -573,7 +573,7 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -606,7 +606,7 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -639,7 +639,7 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -669,7 +669,7 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of {@link LinkedEntity recognized linked entities}.
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of {@link LinkedEntity recognized linked entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -694,7 +694,7 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of {@link LinkedEntity recognized linked entities}.
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of {@link LinkedEntity recognized linked entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -721,7 +721,7 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link LinkedEntity recognized linked entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -749,7 +749,7 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link LinkedEntity recognized linked entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -779,7 +779,7 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link LinkedEntity recognized linked entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -809,7 +809,7 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link LinkedEntity recognized linked entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -838,7 +838,7 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of extracted key phrases.
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of extracted key phrases.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -863,7 +863,7 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of extracted key phrases.
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of extracted key phrases.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -889,7 +889,7 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -915,7 +915,7 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -945,7 +945,7 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -973,7 +973,7 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -1003,7 +1003,7 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link Mono} containing the {@link DocumentSentiment analyzed document sentiment} of the document.
+     * @return A {@link Mono} contains the {@link DocumentSentiment analyzed document sentiment} of the document.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -1032,7 +1032,7 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing the {@link DocumentSentiment analyzed document sentiment} of the document.
+     * @return A {@link Mono} contains the {@link DocumentSentiment analyzed document sentiment} of the document.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -1066,7 +1066,7 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -1091,7 +1091,7 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -1119,7 +1119,7 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -1146,7 +1146,7 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedFlux} containing the list of
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.

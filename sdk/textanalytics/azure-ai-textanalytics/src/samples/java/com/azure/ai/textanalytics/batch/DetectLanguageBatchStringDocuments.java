@@ -12,11 +12,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates how to detect the languages of a batch input text.
+ * Sample demonstrates how to detect the languages of documents.
  */
 public class DetectLanguageBatchStringDocuments {
     /**
-     * Main method to invoke this demo about how to detect the languages of a batch input text.
+     * Main method to invoke this demo about how to detect the languages of documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -30,14 +30,14 @@ public class DetectLanguageBatchStringDocuments {
         // The texts that need be analyzed.
         List<String> inputs = Arrays.asList(
             "This is written in English.",
-            "Este es un document escrito en Español."
+            "Este es un documento  escrito en Español."
         );
 
         // Detecting batch languages
         client.detectLanguageBatch(inputs).forEach(detectLanguageResult -> {
             // Detected languages for a document from a batch of documents
             System.out.printf("%nDocument ID: %s%n", detectLanguageResult.getId());
-            System.out.printf("Input text: %s%n", inputs.get(Integer.parseInt(detectLanguageResult.getId())));
+            System.out.printf("Document: %s%n", inputs.get(Integer.parseInt(detectLanguageResult.getId())));
             if (detectLanguageResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot detect language. Error: %s%n", detectLanguageResult.getError().getMessage());

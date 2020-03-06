@@ -85,7 +85,7 @@ public class ReadmeSamples {
     public void handlingException() {
         List<DetectLanguageInput> inputs = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English.", "us"),
-            new DetectLanguageInput("1", "Este es un document escrito en Español.", "es")
+            new DetectLanguageInput("1", "Este es un documento  escrito en Español.", "es")
         );
 
         try {
@@ -119,10 +119,10 @@ public class ReadmeSamples {
     /**
      * Code snippet for recognizing category entity in a text.
      */
-    public void recognizeCategorizedEntity() {
+    public void recognizeEntity() {
         String text = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsClient.recognizeEntities(text).forEach(entity ->
-            System.out.printf("Recognized categorized entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
+            System.out.printf("Recognized entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()));
     }
 
@@ -146,8 +146,7 @@ public class ReadmeSamples {
             System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
             linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
-                System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n", linkedEntityMatch.getText(),
-                    linkedEntityMatch.getGraphemeOffset(), linkedEntityMatch.getGraphemeLength(), linkedEntityMatch.getScore()));
+                System.out.printf("Text: %s, score: %.2f.%n", linkedEntityMatch.getText(), linkedEntityMatch.getScore()));
         });
     }
 

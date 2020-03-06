@@ -13,12 +13,12 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates how to recognize the PII(Personally Identifiable Information) entities of a batch input text.
+ * Sample demonstrates how to recognize the PII(Personally Identifiable Information) entities of documents.
  */
 public class RecognizePiiBatchDocuments {
     /**
-     * Main method to invoke this demo about how to recognize the Personally Identifiable Information entities of a
-     * batch input text.
+     * Main method to invoke this demo about how to recognize the Personally Identifiable Information entities of
+     * documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -45,8 +45,8 @@ public class RecognizePiiBatchDocuments {
             } else {
                 // Valid document
                 entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                    "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                    entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getGraphemeOffset(), entity.getGraphemeLength(), entity.getScore()));
+                    "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, score: %.2f.%n",
+                    entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()));
             }
         });
     }

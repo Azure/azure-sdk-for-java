@@ -9,11 +9,11 @@ import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously analyze the sentiment of an input text.
+ * Sample demonstrates how to asynchronously analyze the sentiment of document.
  */
 public class AnalyzeSentimentAsync {
     /**
-     * Main method to invoke this demo about how to analyze the sentiment of an input text.
+     * Main method to invoke this demo about how to analyze the sentiment of document.
      *
      * @param args Unused arguments to the program.
      */

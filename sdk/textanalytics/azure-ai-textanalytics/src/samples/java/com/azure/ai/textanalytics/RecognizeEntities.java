@@ -6,11 +6,11 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
- * Sample demonstrates how to recognize the entities of an input text.
+ * Sample demonstrates how to recognize the entities of document.
  */
-public class RecognizeCategorizedEntities {
+public class RecognizeEntities {
     /**
-     * Main method to invoke this demo about how to recognize the entities of an input text.
+     * Main method to invoke this demo about how to recognize the entities of document.
      *
      * @param args Unused arguments to the program.
      */
@@ -25,7 +25,7 @@ public class RecognizeCategorizedEntities {
         String text = "Satya Nadella is the CEO of Microsoft";
 
         client.recognizeEntities(text).forEach(entity -> System.out.printf(
-            "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getGraphemeOffset(), entity.getGraphemeLength(), entity.getScore()));
+            "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %.2f.%n",
+            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()));
     }
 }

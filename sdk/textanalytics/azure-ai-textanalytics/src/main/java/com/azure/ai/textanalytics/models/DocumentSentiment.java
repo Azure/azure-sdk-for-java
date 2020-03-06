@@ -12,7 +12,7 @@ import com.azure.core.util.IterableStream;
  */
 @Immutable
 public final class DocumentSentiment {
-    private final TextSentimentLabel sentiment;
+    private final TextSentiment sentiment;
     private final SentimentConfidenceScores confidenceScores;
     private final IterableStream<SentenceSentiment> sentences;
 
@@ -24,7 +24,7 @@ public final class DocumentSentiment {
      *   Higher values signify higher confidence.
      * @param sentences a list of sentence sentiments.
      */
-    public DocumentSentiment(TextSentimentLabel sentiment, SentimentConfidenceScores confidenceScores,
+    public DocumentSentiment(TextSentiment sentiment, SentimentConfidenceScores confidenceScores,
         IterableStream<SentenceSentiment> sentences) {
         this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
@@ -34,9 +34,9 @@ public final class DocumentSentiment {
     /**
      * Get the text sentiment label: POSITIVE, NEGATIVE, NEUTRAL, or MIXED.
      *
-     * @return the {@link TextSentimentLabel}.
+     * @return the {@link TextSentiment}.
      */
-    public TextSentimentLabel getSentiment() {
+    public TextSentiment getSentiment() {
         return sentiment;
     }
 

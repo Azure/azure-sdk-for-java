@@ -19,7 +19,7 @@ public final class TextDocumentInput {
     private final String id;
 
     /*
-     * The input text to process.
+     * The document to process.
      */
     private final String text;
 
@@ -34,7 +34,7 @@ public final class TextDocumentInput {
      * Creates a {@code TextDocumentInput} model that describes the documents.
      *
      * @param id A unique, non-empty document identifier.
-     * @param text The input text to process.
+     * @param text The document to process.
      */
     public TextDocumentInput(String id, String text) {
         this(id, text, null);
@@ -44,7 +44,7 @@ public final class TextDocumentInput {
      * Creates a {@link TextDocumentInput} model that describes the documents.
      *
      * @param id A unique, non-empty document identifier.
-     * @param text The input text to process.
+     * @param text The document to process.
      * @param language Optional. This is the 2 letter ISO 639-1 representation of a language.
      */
     public TextDocumentInput(String id, String text, String language) {
@@ -63,7 +63,7 @@ public final class TextDocumentInput {
     }
 
     /**
-     * Get the text property: The input text to process.
+     * Get the text property: The document to process.
      *
      * @return The text value.
      */

@@ -13,11 +13,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates how to recognize the linked entities of a batch input text.
+ * Sample demonstrates how to recognize the linked entities of documents.
  */
 public class RecognizeLinkedEntitiesBatchDocuments {
     /**
-     * Main method to invoke this demo about how to recognize the linked entities of a batch input text.
+     * Main method to invoke this demo about how to recognize the linked entities of documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -36,7 +36,7 @@ public class RecognizeLinkedEntitiesBatchDocuments {
 
         // Recognizing batch entities
         client.recognizeLinkedEntitiesBatch(inputs, null, Context.NONE).forEach(entitiesResult -> {
-            // Recognized linked entities from a batch of documents
+            // Recognized linked entities from documents
             System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
             if (entitiesResult.isError()) {
                 // Erroneous document
@@ -46,10 +46,10 @@ public class RecognizeLinkedEntitiesBatchDocuments {
                 entitiesResult.getEntities().forEach(linkedEntity -> {
                     System.out.println("Linked Entities:");
                     System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                        linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
-                    linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch -> System.out.printf(
-                        "(Linked Entity Match) Text: %s, offset: %s, length: %s, score: %.2f.%n",
-                        linkedEntityMatch.getText(), linkedEntityMatch.getGraphemeOffset(), linkedEntityMatch.getGraphemeLength(), linkedEntityMatch.getScore()));
+                        linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
+                        linkedEntity.getDataSource());
+                    linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                        "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getScore()));
                 });
             }
         });

@@ -117,7 +117,7 @@ public final class TextAnalyticsClient {
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified. To remove this behavior you can reset this parameter by setting this value to empty string
-     * {@code countryHint} = "".
+     * {@code countryHint} = "" or "none".
      *
      * @return The {@link DetectedLanguage detected language} of the document.
      *
@@ -139,11 +139,11 @@ public final class TextAnalyticsClient {
      * <p>Detects the languages in a list of documents.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#Iterable}
      *
-     * @param textInputs The list of documents to be analyzed.
+     * @param textInputs The list of documents to detect languages for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -160,14 +160,14 @@ public final class TextAnalyticsClient {
      * <p>Detects the language in a list of documents with a provided country hint.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#Iterable-String}
      *
-     * @param textInputs The list of documents to be analyzed.
+     * @param textInputs The list of documents to detect languages for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified. To remove this behavior you can reset this parameter by setting this value to empty string
-     * {@code countryHint} = "".
+     * {@code countryHint} = "" or "none".
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -185,16 +185,16 @@ public final class TextAnalyticsClient {
      * <p>Detects the language in a list of documents with a provided country hint and request options.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
-     * @param textInputs The list of documents to be analyzed.
+     * @param textInputs The list of documents to detect languages for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified. To remove this behavior you can reset this parameter by setting this value to empty string
-     * {@code countryHint} = "".
+     * {@code countryHint} = "" or "none".
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -220,7 +220,7 @@ public final class TextAnalyticsClient {
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link DetectLanguageResult detected language document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -250,7 +250,7 @@ public final class TextAnalyticsClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link CategorizedEntity recognized categorized entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -276,7 +276,7 @@ public final class TextAnalyticsClient {
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      *
-     * @return The {@link TextAnalyticsPagedIterable} containing the list of
+     * @return The {@link TextAnalyticsPagedIterable} contains a list of
      * {@link CategorizedEntity recognized categorized entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -302,7 +302,7 @@ public final class TextAnalyticsClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return The {@link TextAnalyticsPagedIterable} containing the list of
+     * @return The {@link TextAnalyticsPagedIterable} contains a list of
      * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -325,7 +325,7 @@ public final class TextAnalyticsClient {
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      *
-     * @return The {@link TextAnalyticsPagedIterable} containing the list of
+     * @return The {@link TextAnalyticsPagedIterable} contains a list of
      * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -351,7 +351,7 @@ public final class TextAnalyticsClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return The {@link TextAnalyticsPagedIterable} containing the list of
+     * @return The {@link TextAnalyticsPagedIterable} contains a list of
      * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -379,7 +379,7 @@ public final class TextAnalyticsClient {
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return The {@link TextAnalyticsPagedIterable} containing the list of
+     * @return The {@link TextAnalyticsPagedIterable} contains a list of
      * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -388,7 +388,7 @@ public final class TextAnalyticsClient {
     public TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
         return new TextAnalyticsPagedIterable<>(
-            client.recognizeCategorizedEntityAsyncClient.recognizeEntitiesBatchWithContext(textInputs, options,
+            client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithContext(textInputs, options,
                 context));
     }
 
@@ -411,7 +411,7 @@ public final class TextAnalyticsClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link PiiEntity Personally Identifiable Information entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -440,7 +440,7 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link PiiEntity Personally Identifiable Information entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -589,7 +589,7 @@ public final class TextAnalyticsClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link LinkedEntity recognized linked entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -616,7 +616,7 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link LinkedEntity recognized linked entities}.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
@@ -759,7 +759,7 @@ public final class TextAnalyticsClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing a list of extracted key phrases.
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of extracted key phrases.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -783,7 +783,7 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing a list of extracted key phrases.
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of extracted key phrases.
      *
      * @throws NullPointerException if {@code text} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
@@ -808,7 +808,7 @@ public final class TextAnalyticsClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -833,7 +833,7 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -862,7 +862,7 @@ public final class TextAnalyticsClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -890,7 +890,7 @@ public final class TextAnalyticsClient {
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -969,7 +969,7 @@ public final class TextAnalyticsClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link AnalyzeSentimentResult analyzed sentiment document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -993,7 +993,7 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default..
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link AnalyzeSentimentResult analyzed sentiment document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -1020,7 +1020,7 @@ public final class TextAnalyticsClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link AnalyzeSentimentResult analyzed sentiment document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.
@@ -1047,7 +1047,7 @@ public final class TextAnalyticsClient {
      * and show statistics.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link TextAnalyticsPagedIterable} containing the list of
+     * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link AnalyzeSentimentResult analyzed sentiment document result}.
      *
      * @throws NullPointerException if {@code textInputs} is {@code null}.

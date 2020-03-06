@@ -22,7 +22,7 @@ import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
-import com.azure.ai.textanalytics.models.TextSentimentLabel;
+import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.util.IterableStream;
 
@@ -60,7 +60,7 @@ final class TestUtils {
         "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check.");
 
     static final List<String> DETECT_LANGUAGE_INPUTS = Arrays.asList(
-        "This is written in English", "Este es un document escrito en Español.", "~@!~:)");
+        "This is written in English", "Este es un documento  escrito en Español.", "~@!~:)");
 
     static List<DetectLanguageInput> getDetectLanguageInputs() {
         return Arrays.asList(
@@ -244,18 +244,18 @@ final class TestUtils {
     static TextAnalyticsPagedResponse<AnalyzeSentimentResult> getExpectedBatchTextSentiment() {
         final TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(67, 1);
 
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentimentLabel.MIXED,
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.MIXED,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentimentLabel.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(TextSentimentLabel.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentiment(TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentiment(TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 32)
             )));
 
-        final DocumentSentiment expectedDocumentSentiment2 = new DocumentSentiment(TextSentimentLabel.MIXED,
+        final DocumentSentiment expectedDocumentSentiment2 = new DocumentSentiment(TextSentiment.MIXED,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentimentLabel.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 0),
-                new SentenceSentiment(TextSentimentLabel.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 36)
+                new SentenceSentiment(TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 0),
+                new SentenceSentiment(TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 36)
             )));
 
         final AnalyzeSentimentResult analyzeSentimentResult1 = new AnalyzeSentimentResult("0",

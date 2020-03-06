@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
@@ -34,25 +35,27 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * Helper class for managing recognize entity endpoint.
  */
-class RecognizeCategorizedEntityAsyncClient {
-    private final ClientLogger logger = new ClientLogger(RecognizeCategorizedEntityAsyncClient.class);
+class RecognizeEntityAsyncClient {
+    private final ClientLogger logger = new ClientLogger(RecognizeEntityAsyncClient.class);
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@link RecognizeCategorizedEntityAsyncClient} that sends requests to the Text Analytics services's
+     * Create a {@link RecognizeEntityAsyncClient} that sends requests to the Text Analytics services's
      * recognize entity endpoint.
      *
      * @param service The proxy service used to perform REST calls.
      */
-    RecognizeCategorizedEntityAsyncClient(TextAnalyticsClientImpl service) {
+    RecognizeEntityAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
     }
 
     /**
      * Helper function that recognize a single of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
      * flux containing {@link CategorizedEntity}.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
-     * @param text A single input text.
+     * @param text A single document.
      * @param language The language hint.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link CategorizedEntity}.
@@ -84,11 +87,13 @@ class RecognizeCategorizedEntityAsyncClient {
     }
 
     /**
-     * Helper function that recognizes a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a
+     * Helper function that recognizes documents and returns {@link TextAnalyticsPagedFlux} that is a
      * paged flux containing {@link RecognizeCategorizedEntitiesResult}.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
-     * @param textInputs A batch of documents.
-     * @param options The request options, such as the training model version and to show statistics.
+     * @param textInputs The list of documents to recognize entities for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link RecognizeCategorizedEntitiesResult}.
      */
@@ -115,11 +120,11 @@ class RecognizeCategorizedEntityAsyncClient {
     }
 
     /**
-     * Helper function that calling service with max overloaded parameters and returns
-     * {@link TextAnalyticsPagedFlux} that is the collection of entity document results.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link RecognizeCategorizedEntitiesResult}.
      *
-     * @param textInputs A batch of documents.
-     * @param options The request options, such as the training model version and to show statistics.
+     * @param textInputs The list of documents to recognize entities for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return the {@link TextAnalyticsPagedFlux} of {@link RecognizeCategorizedEntitiesResult} to be returned by

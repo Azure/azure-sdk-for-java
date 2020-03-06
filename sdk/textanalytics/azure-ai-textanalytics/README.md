@@ -235,12 +235,12 @@ System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %.2f.%n
     detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
 ```
 
-### Recognize categorized entity
+### Recognize entity
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L123-L126 -->
 ```java
 String text = "Satya Nadella is the CEO of Microsoft";
 textAnalyticsClient.recognizeEntities(text).forEach(entity ->
-    System.out.printf("Recognized categorized entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
+    System.out.printf("Recognized entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
         entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()));
 ```
 
@@ -254,7 +254,7 @@ textAnalyticsClient.recognizePiiEntities(text).forEach(piiEntity ->
 ```
 
 ### Recognize linked entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L143-L151 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L143-L150 -->
 
 ```java
 String text = "Old Faithful is a geyser at Yellowstone Park.";
@@ -263,12 +263,11 @@ textAnalyticsClient.recognizeLinkedEntities(text).forEach(linkedEntity -> {
     System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
         linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
     linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
-        System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n", linkedEntityMatch.getText(),
-            linkedEntityMatch.getGraphemeOffset(), linkedEntityMatch.getGraphemeLength(), linkedEntityMatch.getScore()));
+        System.out.printf("Text: %s, score: %.2f.%n", linkedEntityMatch.getText(), linkedEntityMatch.getScore()));
 });
 ```
 ### Extract key phrases
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L158-L160 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L157-L159 -->
 ```java
 String text = "My cat might need to see a veterinarian.";
 System.out.println("Extracted phrases:");
@@ -288,7 +287,7 @@ gracefully by catching the exception and display the additional information abou
 ```java
 List<DetectLanguageInput> inputs = Arrays.asList(
     new DetectLanguageInput("1", "This is written in English.", "us"),
-    new DetectLanguageInput("1", "Este es un document escrito en Español.", "es")
+    new DetectLanguageInput("1", "Este es un documento  escrito en Español.", "es")
 );
 
 try {

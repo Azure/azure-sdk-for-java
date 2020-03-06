@@ -11,11 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates how to recognize the linked entities of a batch input text.
+ * Sample demonstrates how to recognize the linked entities of documents.
  */
 public class RecognizeLinkedEntitiesBatchStringDocuments {
     /**
-     * Main method to invoke this demo about how to recognize the linked entities of a batch input text.
+     * Main method to invoke this demo about how to recognize the linked entities of documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -36,7 +36,7 @@ public class RecognizeLinkedEntitiesBatchStringDocuments {
         client.recognizeLinkedEntitiesBatch(inputs).forEach(entitiesResult -> {
             // Recognized linked entities from a batch of documents
             System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
-            System.out.printf("Input text: %s%n", inputs.get(Integer.parseInt(entitiesResult.getId())));
+            System.out.printf("Document: %s%n", inputs.get(Integer.parseInt(entitiesResult.getId())));
             if (entitiesResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot recognize linked entities. Error: %s%n", entitiesResult.getError().getMessage());
@@ -48,8 +48,7 @@ public class RecognizeLinkedEntitiesBatchStringDocuments {
                 System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                     entity.getName(), entity.getDataSourceEntityId(), entity.getUrl(), entity.getDataSource());
                 entity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                    "Matched Entity: %s, offset: %s, length: %s, score: %.2f.%n",
-                    entityMatch.getText(), entityMatch.getGraphemeOffset(), entityMatch.getGraphemeLength(), entityMatch.getScore()));
+                    "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getScore()));
             });
         });
     }

@@ -13,11 +13,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates how to extract the key phrases of a batch input text.
+ * Sample demonstrates how to extract the key phrases of documents.
  */
 public class ExtractKeyPhrasesBatchDocuments {
     /**
-     * Main method to invoke this demo about how to extract the key phrases of a batch input text.
+     * Main method to invoke this demo about how to extract the key phrases of documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -36,7 +36,7 @@ public class ExtractKeyPhrasesBatchDocuments {
 
         // Extracting batch key phrases
         client.extractKeyPhrasesBatch(inputs, null, Context.NONE).forEach(extractKeyPhraseResult -> {
-            // Extracted key phrase for each of documents from a batch of documents
+            // Extracted key phrase for each of documents
             System.out.printf("%nDocument ID: %s%n", extractKeyPhraseResult.getId());
             if (extractKeyPhraseResult.isError()) {
                 // Erroneous document

@@ -13,7 +13,7 @@ import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-import com.azure.ai.textanalytics.models.TextSentimentLabel;
+import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -63,7 +63,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Detected Languages
 
     /**
-     * Verify that we can get statistics on the collection result when given a batch input with request options.
+     * Verify that we can get statistics on the collection result when given a batch of documents with request options.
      */
     @Test
     public void detectLanguagesBatchInputShowStatistics() {
@@ -133,7 +133,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageInvalidCountryHint() {
-        StepVerifier.create(client.detectLanguage("Este es un document escrito en Español.", "en"))
+        StepVerifier.create(client.detectLanguage("Este es un documento  escrito en Español.", "en"))
             .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
                 && throwable.getMessage().equals(INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE));
     }
@@ -174,7 +174,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageEmptyCountryHint() {
-        StepVerifier.create(client.detectLanguage("Este es un document escrito en Español", ""))
+        StepVerifier.create(client.detectLanguage("Este es un documento  escrito en Español", ""))
             .assertNext(response -> validatePrimaryLanguage(
                 new DetectedLanguage("Spanish", "es", 0.0), response))
             .verifyComplete();
@@ -185,7 +185,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageNoneCountryHint() {
-        StepVerifier.create(client.detectLanguage("Este es un document escrito en Español", "none"))
+        StepVerifier.create(client.detectLanguage("Este es un documento  escrito en Español", "none"))
             .assertNext(response -> validatePrimaryLanguage(
                 new DetectedLanguage("Spanish", "es", 0.0), response))
             .verifyComplete();
@@ -461,11 +461,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForTextInput() {
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentimentLabel.MIXED,
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.MIXED,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentimentLabel.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(TextSentimentLabel.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 32)
+                new SentenceSentiment(TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentiment(TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 32)
             )));
 
         StepVerifier
@@ -484,16 +484,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test analyzing sentiment for a faulty input text.
+     * Test analyzing sentiment for a faulty document.
      */
     @Test
     public void analyseSentimentForFaultyText() {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
-            TextSentimentLabel.NEUTRAL,
+            TextSentiment.NEUTRAL,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentimentLabel.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentiment(TextSentimentLabel.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 4, 1)
+                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 1, 0),
+                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 4, 1)
             )));
 
         StepVerifier.create(client.analyzeSentiment("!@#%%"))

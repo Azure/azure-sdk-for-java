@@ -14,7 +14,7 @@ import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextSentimentLabel;
+import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.http.rest.SimpleResponse;
@@ -52,11 +52,13 @@ class AnalyzeSentimentAsyncClient {
     }
 
     /**
-     * Helper function that analyzes a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
+     * Helper function that analyzes documents and returns {@link TextAnalyticsPagedFlux} that is a paged
      * flux containing {@link AnalyzeSentimentResult}.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
-     * @param textInputs A batch of documents.
-     * @param options The request options, such as the training model version and to show statistics.
+     * @param textInputs The list of documents to analyze sentiments for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
      * @return {@link TextAnalyticsPagedFlux} of {@link AnalyzeSentimentResult}.
      */
@@ -72,7 +74,7 @@ class AnalyzeSentimentAsyncClient {
                     .doOnSubscribe(ignoredValue ->
                         logger.info("A batch of text sentiment input - {}", textInputs.toString()))
                     .doOnSuccess(response -> logger.info("A batch of text sentiment output - {}", response))
-                    .doOnError(error -> logger.warning("Failed to analyze text sentiment - {}", error))
+                    .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
                     .map(this::toTextAnalyticsPagedResponse))
                     .flux());
         } catch (RuntimeException ex) {
@@ -82,11 +84,11 @@ class AnalyzeSentimentAsyncClient {
     }
 
     /**
-     * Helper function that calling service with max overloaded parameters and returns {@link TextAnalyticsPagedFlux}
-     * that is a paged flux containing {@link AnalyzeSentimentResult}.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
-     * @param textInputs A batch of documents.
-     * @param options The request options, such as the training model version and to show statistics.
+     * @param textInputs The list of documents to analyze sentiments for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link AnalyzeSentimentResult}.
@@ -104,7 +106,7 @@ class AnalyzeSentimentAsyncClient {
                 .doOnSubscribe(ignoredValue ->
                     logger.info("A batch of text sentiment input - {}", textInputs.toString()))
                 .doOnSuccess(response -> logger.info("A batch of text sentiment output - {}", response))
-                .doOnError(error -> logger.warning("Failed to analyze text sentiment - {}", error))
+                .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
                 .map(response -> toTextAnalyticsPagedResponse(response))
                 .flux());
     }
@@ -144,7 +146,7 @@ class AnalyzeSentimentAsyncClient {
      */
     private AnalyzeSentimentResult convertToAnalyzeSentimentResult(DocumentSentiment documentSentiment) {
         // Document text sentiment
-        final TextSentimentLabel documentSentimentLabel = TextSentimentLabel.fromString(
+        final TextSentiment documentSentimentLabel = TextSentiment.fromString(
             documentSentiment.getSentiment().toString());
         if (documentSentimentLabel == null) {
             // Not throw exception for an invalid Sentiment type because we should not skip processing the
@@ -159,7 +161,7 @@ class AnalyzeSentimentAsyncClient {
         // Sentence text sentiment
         final List<SentenceSentiment> sentenceSentiments = documentSentiment.getSentences().stream()
             .map(sentenceSentiment -> {
-                final TextSentimentLabel sentenceSentimentLabel = TextSentimentLabel.fromString(
+                final TextSentiment sentenceSentimentLabel = TextSentiment.fromString(
                     sentenceSentiment.getSentiment().toString());
                 if (sentenceSentimentLabel == null) {
                     // Not throw exception for an invalid Sentiment type because we should not skip processing the

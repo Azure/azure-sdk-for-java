@@ -8,11 +8,11 @@ import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously recognize the linked entities of an input text.
+ * Sample demonstrates how to asynchronously recognize the linked entities of document.
  */
 public class RecognizeLinkedEntitiesAsync {
     /**
-     * Main method to invoke this demo about how to recognize the linked entities of an input text.
+     * Main method to invoke this demo about how to recognize the linked entities of document.
      *
      * @param args Unused arguments to the program.
      */
@@ -30,10 +30,10 @@ public class RecognizeLinkedEntitiesAsync {
             linkedEntity -> {
                 System.out.println("Linked Entities:");
                 System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                    linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+                    linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
+                    linkedEntity.getDataSource());
                 linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                    "(Linked Entity Match) Text: %s, offset: %s, length: %s, score: %.2f.%n",
-                    entityMatch.getText(), entityMatch.getGraphemeOffset(), entityMatch.getGraphemeLength(), entityMatch.getScore()));
+                    "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getScore()));
             },
             error -> System.err.println("There was an error recognizing linked entity of the text." + error),
             () -> System.out.println("Linked entity recognized."));

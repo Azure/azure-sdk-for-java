@@ -9,7 +9,6 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -91,7 +90,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public void detectLanguageStringList() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable
         final List<String> textInputs = Arrays.asList(
-            "This is written in English", "Este es un document escrito en Español.");
+            "This is written in English", "Este es un documento  escrito en Español.");
         textAnalyticsAsyncClient.detectLanguageBatch(textInputs).byPage().subscribe(batchResult -> {
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = batchResult.getStatistics();
@@ -114,7 +113,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-String
         List<String> textInputs1 = Arrays.asList(
             "This is written in English",
-            "Este es un document escrito en Español."
+            "Este es un documento  escrito en Español."
         );
         textAnalyticsAsyncClient.detectLanguageBatch(textInputs1, "US").byPage().subscribe(
             batchResult -> {
@@ -139,7 +138,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-String-TextAnalyticsRequestOptions
         List<String> textInputs1 = Arrays.asList(
             "This is written in English",
-            "Este es un document escrito en Español."
+            "Este es un documento  escrito en Español."
         );
         textAnalyticsAsyncClient.detectLanguageBatch(textInputs1, "US", null).byPage().subscribe(
             batchResult -> {
@@ -164,7 +163,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-TextAnalyticsRequestOptions
         List<DetectLanguageInput> detectLanguageInputs1 = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English.", "US"),
-            new DetectLanguageInput("2", "Este es un document escrito en Español.", "ES")
+            new DetectLanguageInput("2", "Este es un documento  escrito en Español.", "ES")
         );
 
         // Request options: show statistics and model version
@@ -234,15 +233,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             // Batch result of categorized entities
             batchResult.getElements().forEach(recognizeEntitiesResult ->
                 recognizeEntitiesResult.getEntities().forEach(entity -> System.out.printf(
-                    "Recognized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s,"
-                        + " score: %.2f.%n",
-                    entity.getText(),
-                    entity.getCategory(),
-                    entity.getSubCategory() == null || entity.getSubCategory().isEmpty()
-                        ? "N/A" : entity.getSubCategory(),
-                    entity.getGraphemeOffset(),
-                    entity.getGraphemeLength(),
-                    entity.getScore())));
+                    "Recognized entity: %s, entity category: %s, entity sub-category: %s, score: %.2f.%n",
+                    entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore())));
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable
     }
@@ -469,17 +461,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         textAnalyticsAsyncClient.recognizeLinkedEntities(inputText).subscribe(linkedEntity -> {
             System.out.println("Linked Entities:");
             System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                linkedEntity.getName(),
-                linkedEntity.getDataSourceEntityId(),
-                linkedEntity.getUrl(),
+                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                 linkedEntity.getDataSource());
-            for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
-                System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
-                    linkedEntityMatch.getText(),
-                    linkedEntityMatch.getGraphemeOffset(),
-                    linkedEntityMatch.getGraphemeLength(),
-                    linkedEntityMatch.getScore());
-            }
+            linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getScore()));
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string
     }
@@ -495,17 +480,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(linkedEntity -> {
                 System.out.println("Linked Entities:");
                 System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                    linkedEntity.getName(),
-                    linkedEntity.getDataSourceEntityId(),
-                    linkedEntity.getUrl(),
+                    linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                     linkedEntity.getDataSource());
-                for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
-                    System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
-                        linkedEntityMatch.getText(),
-                        linkedEntityMatch.getGraphemeOffset(),
-                        linkedEntityMatch.getGraphemeLength(),
-                        linkedEntityMatch.getScore());
-                }
+                linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                    "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getScore()));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string-string
     }
@@ -531,16 +509,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 recognizeLinkedEntitiesResult.getEntities().forEach(linkedEntity -> {
                     System.out.println("Linked Entities:");
                     System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                        linkedEntity.getName(),
-                        linkedEntity.getDataSourceEntityId(),
-                        linkedEntity.getUrl(),
+                        linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                         linkedEntity.getDataSource());
-                    linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
-                        System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
-                            linkedEntityMatch.getText(),
-                            linkedEntityMatch.getGraphemeOffset(),
-                            linkedEntityMatch.getGraphemeLength(),
-                            linkedEntityMatch.getScore()));
+                    linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                        "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getScore()));
                 }));
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable
@@ -569,16 +541,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     recognizeLinkedEntitiesResult.getEntities().forEach(linkedEntity -> {
                         System.out.println("Linked Entities:");
                         System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                            linkedEntity.getName(),
-                            linkedEntity.getDataSourceEntityId(),
-                            linkedEntity.getUrl(),
+                            linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                             linkedEntity.getDataSource());
-                        linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
-                            System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
-                                linkedEntityMatch.getText(),
-                                linkedEntityMatch.getGraphemeOffset(),
-                                linkedEntityMatch.getGraphemeLength(),
-                                linkedEntityMatch.getScore()));
+                        linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                            "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getScore()));
                     }));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-String
@@ -606,16 +572,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     recognizeLinkedEntitiesResult.getEntities().forEach(linkedEntity -> {
                         System.out.println("Linked Entities:");
                         System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                            linkedEntity.getName(),
-                            linkedEntity.getDataSourceEntityId(),
-                            linkedEntity.getUrl(),
+                            linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                             linkedEntity.getDataSource());
-                        linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
-                            System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
-                                linkedEntityMatch.getText(),
-                                linkedEntityMatch.getGraphemeOffset(),
-                                linkedEntityMatch.getGraphemeLength(),
-                                linkedEntityMatch.getScore()));
+                        linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                            "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getScore()));
                     }));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
@@ -645,16 +605,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     recognizeLinkedEntitiesResult.getEntities().forEach(linkedEntity -> {
                         System.out.println("Linked Entities:");
                         System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                            linkedEntity.getName(),
-                            linkedEntity.getDataSourceEntityId(),
-                            linkedEntity.getUrl(),
+                            linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                             linkedEntity.getDataSource());
-                        linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
-                            System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
-                                linkedEntityMatch.getText(),
-                                linkedEntityMatch.getGraphemeOffset(),
-                                linkedEntityMatch.getGraphemeLength(),
-                                linkedEntityMatch.getScore()));
+                        linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                            "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getScore()));
                     }));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-TextAnalyticsRequestOptions

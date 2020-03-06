@@ -8,6 +8,7 @@ import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
@@ -51,8 +52,10 @@ class ExtractKeyPhraseAsyncClient {
     /**
      * Helper function that extracts a single documents and returns {@link TextAnalyticsPagedFlux} that is a paged
      * flux containing extract key phrases.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
-     * @param text An input text.
+     * @param text A document.
      * @param language The language hint.
      *
      * @return The {@link TextAnalyticsPagedFlux} of extracted key phrases strings.
@@ -83,11 +86,13 @@ class ExtractKeyPhraseAsyncClient {
     }
 
     /**
-     * Helper function that extracts a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
+     * Helper function that extracts documents and returns {@link TextAnalyticsPagedFlux} that is a paged
      * flux containing {@link ExtractKeyPhraseResult}.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
-     * @param textInputs A batch of documents.
-     * @param options The request options, such as the training model version and to show statistics boolean.
+     * @param textInputs A list of documents to extract key phrases for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link ExtractKeyPhraseResult}.
      */
@@ -113,11 +118,11 @@ class ExtractKeyPhraseAsyncClient {
     }
 
     /**
-     * Helper function that calling service with max overloaded parameters and returns {@link TextAnalyticsPagedFlux}
-     * that is a paged flux containing {@link ExtractKeyPhraseResult}.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link ExtractKeyPhraseResult}.
      *
-     * @param textInputs A batch of documents.
-     * @param options The request options, such as the training model version and to show statistics boolean.
+     * @param textInputs A list of documents to extract key phrases for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link ExtractKeyPhraseResult}.

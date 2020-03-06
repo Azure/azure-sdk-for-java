@@ -37,7 +37,7 @@ public class RecognizePiiBatchStringDocuments {
         client.recognizePiiEntitiesBatch(inputs).forEach(entitiesResult -> {
             // Recognized Personally Identifiable Information entities for each of documents from a batch of documents
             System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
-            System.out.printf("Input text: %s%n", inputs.get(Integer.parseInt(entitiesResult.getId())));
+            System.out.printf("Document: %s%n", inputs.get(Integer.parseInt(entitiesResult.getId())));
             if (entitiesResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n",
@@ -46,8 +46,8 @@ public class RecognizePiiBatchStringDocuments {
             }
             // Valid document
             entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                "PII entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getGraphemeOffset(), entity.getGraphemeLength(), entity.getScore()));
+                "PII entity: %s, entity category: %s, entity sub-category: %s, score: %.2f.%n",
+                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()));
         });
     }
 }

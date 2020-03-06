@@ -6,11 +6,11 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
- * Sample demonstrates how to recognize the linked entities of an input text.
+ * Sample demonstrates how to recognize the linked entities of document.
  */
 public class RecognizeLinkedEntities {
     /**
-     * Main method to invoke this demo about how to recognize the linked entities of an input text.
+     * Main method to invoke this demo about how to recognize the linked entities of document.
      *
      * @param args Unused arguments to the program.
      */
@@ -27,10 +27,10 @@ public class RecognizeLinkedEntities {
         client.recognizeLinkedEntities(text).forEach(linkedEntity -> {
             System.out.println("Linked Entities:");
             System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
+                linkedEntity.getDataSource());
             linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                "(Linked Entity Match) Text: %s, offset: %s, length: %s, score: %.2f.%n",
-                entityMatch.getText(), entityMatch.getGraphemeOffset(), entityMatch.getGraphemeLength(), entityMatch.getScore()));
+                "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getScore()));
         });
     }
 }

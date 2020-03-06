@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -46,11 +47,13 @@ class DetectLanguageAsyncClient {
     }
 
     /**
-     * Helper function that detects a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
+     * Helper function that detects documents and returns {@link TextAnalyticsPagedFlux} that is a paged
      * flux containing {@link DetectLanguageResult}.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
-     * @param textInputs A batch of documents.
-     * @param options The request options, such as the training model version and to show statistics boolean.
+     * @param textInputs The list of documents to detect languages for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link DetectLanguageResult}.
      */
@@ -81,11 +84,13 @@ class DetectLanguageAsyncClient {
     }
 
     /**
-     * Helper function that detects a batch of documents with {@link Context} and returns
+     * Helper function that detects documents with {@link Context} and returns
      * {@link TextAnalyticsPagedFlux} that is a paged flux containing {@link DetectLanguageResult}.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
-     * @param textInputs A batch of documents.
-     * @param options The request options, such as the training model version and to show statistics.
+     * @param textInputs The list of documents to detect languages for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link DetectLanguageResult}.

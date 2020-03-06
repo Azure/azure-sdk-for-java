@@ -11,11 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates how to recognize the entities of a batch input text.
+ * Sample demonstrates how to recognize the entities of documents.
  */
-public class RecognizedCategorizedEntitiesBatchStringDocuments {
+public class RecognizeEntitiesBatchStringDocuments {
     /**
-     * Main method to invoke this demo about how to recognize the entities of a batch input text.
+     * Main method to invoke this demo about how to recognize the entities of documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -36,7 +36,7 @@ public class RecognizedCategorizedEntitiesBatchStringDocuments {
         client.recognizeEntitiesBatch(inputs).forEach(entitiesResult -> {
             // Recognized entities for each of documents from a batch of documents
             System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
-            System.out.printf("Input text: %s%n", inputs.get(Integer.parseInt(entitiesResult.getId())));
+            System.out.printf("Document: %s%n", inputs.get(Integer.parseInt(entitiesResult.getId())));
             if (entitiesResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot recognize entities. Error: %s%n", entitiesResult.getError().getMessage());
@@ -44,8 +44,8 @@ public class RecognizedCategorizedEntitiesBatchStringDocuments {
             }
             // Valid document
             entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getGraphemeOffset(), entity.getGraphemeLength(), entity.getScore()));
+                "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %.2f.%n",
+                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()));
         });
     }
 }

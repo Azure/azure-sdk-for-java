@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
@@ -52,8 +53,10 @@ class RecognizeLinkedEntityAsyncClient {
     /**
      * Helper function that recognize a single of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
      * flux containing {@link LinkedEntity}.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
-     * @param text A single input text.
+     * @param text A single document.
      * @param language The language hint.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link LinkedEntity}.
@@ -84,11 +87,13 @@ class RecognizeLinkedEntityAsyncClient {
     }
 
     /**
-     * Helper function that recognizes a batch of documents and returns {@link TextAnalyticsPagedFlux} that is a
+     * Helper function that recognizes documents and returns {@link TextAnalyticsPagedFlux} that is a
      * paged flux containing {@link RecognizeLinkedEntitiesResult}.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
-     * @param textInputs A batch of documents.
-     * @param options The request options, such as the training model version and to show statistics.
+     * @param textInputs The list of documents to recognize linked entities for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link RecognizeLinkedEntitiesResult}.
      */
@@ -114,11 +119,11 @@ class RecognizeLinkedEntityAsyncClient {
     }
 
     /**
-     * Helper function that calling service with max overloaded parameters and returns
-     * {@link TextAnalyticsPagedFlux} that is the collection of entity document results.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link RecognizeLinkedEntitiesResult}.
      *
-     * @param textInputs A batch of documents.
-     * @param options The request options, such as the training model version and to show statistics.
+     * @param textInputs The list of documents to recognize linked entities for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return the {@link TextAnalyticsPagedFlux} of {@link RecognizeLinkedEntitiesResult} to be returned by the SDK.

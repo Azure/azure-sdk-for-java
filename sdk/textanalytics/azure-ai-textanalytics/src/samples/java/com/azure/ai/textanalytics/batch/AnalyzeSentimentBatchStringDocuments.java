@@ -13,11 +13,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates how to analyze the sentiments of a batch input text.
+ * Sample demonstrates how to analyze the sentiments of documents.
  */
 public class AnalyzeSentimentBatchStringDocuments {
     /**
-     * Main method to invoke this demo about how to analyze the sentiments of a batch input text.
+     * Main method to invoke this demo about how to analyze the sentiments of documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -38,7 +38,7 @@ public class AnalyzeSentimentBatchStringDocuments {
         // Analyzing batch sentiments
         client.analyzeSentimentBatch(inputs).forEach(analyzeSentimentResult -> {
             System.out.printf("%nDocument ID: %s%n", analyzeSentimentResult.getId());
-            System.out.printf("Input text: %s%n", inputs.get(Integer.parseInt(analyzeSentimentResult.getId())));
+            System.out.printf("document: %s%n", inputs.get(Integer.parseInt(analyzeSentimentResult.getId())));
             if (analyzeSentimentResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot analyze sentiment. Error: %s%n", analyzeSentimentResult.getError().getMessage());
@@ -52,10 +52,8 @@ public class AnalyzeSentimentBatchStringDocuments {
             // Each sentence sentiment
             documentSentiment.getSentences().forEach(sentiment -> {
                 SentimentConfidenceScores sentencesScores = sentiment.getConfidenceScores();
-                System.out.printf("Sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, "
-                        + "length of sentence: %s, offset of sentence: %s.%n",
-                    sentiment.getSentiment(), sentencesScores.getPositive(), sentencesScores.getNeutral(),
-                    sentencesScores.getNegative(), sentiment.getGraphemeLength(), sentiment.getGraphemeOffset());
+                System.out.printf("Sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
+                    sentiment.getSentiment(), sentencesScores.getPositive(), sentencesScores.getNeutral(), sentencesScores.getNegative());
             });
         });
     }

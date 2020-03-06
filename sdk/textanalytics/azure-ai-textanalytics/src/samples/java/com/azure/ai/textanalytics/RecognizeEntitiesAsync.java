@@ -8,11 +8,11 @@ import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously recognize the entities of an input text.
+ * Sample demonstrates how to asynchronously recognize the entities of document.
  */
-public class RecognizeCategorizedEntitiesAsync {
+public class RecognizeEntitiesAsync {
     /**
-     * Main method to invoke this demo about how to recognize the entities of an input text.
+     * Main method to invoke this demo about how to recognize the entities of document.
      *
      * @param args Unused arguments to the program.
      */
@@ -28,8 +28,8 @@ public class RecognizeCategorizedEntitiesAsync {
 
         client.recognizeEntities(text).subscribe(
             entity -> System.out.printf(
-                "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getGraphemeOffset(), entity.getGraphemeLength(), entity.getScore()),
+                "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %.2f.%n",
+                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore()),
             error -> System.err.println("There was an error recognizing entities of the text." + error),
             () -> System.out.println("Entities recognized."));
 

@@ -7,11 +7,11 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
- * Sample demonstrates how to detect the language of an input text.
+ * Sample demonstrates how to detect the language of document.
  */
 public class DetectLanguage {
     /**
-     * Main method to invoke this demo about how to detect the language of an input text.
+     * Main method to invoke this demo about how to detect the language of document.
      *
      * @param args Unused arguments to the program.
      */

@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously extract the key phrases of a batch input text.
+ * Sample demonstrates how to asynchronously extract the key phrases of documents.
  */
 public class ExtractKeyPhrasesBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to extract the key phrases of a batch input text.
+     * Main method to invoke this demo about how to extract the key phrases of documents.
      *
      * @param args Unused arguments to the program.
      */

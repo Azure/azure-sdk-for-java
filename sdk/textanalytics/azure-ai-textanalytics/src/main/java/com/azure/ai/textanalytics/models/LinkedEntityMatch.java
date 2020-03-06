@@ -24,27 +24,27 @@ public final class LinkedEntityMatch {
     /*
      * Grapheme start position for the entity match text.
      */
-    private final int offset;
+    private final int graphemeOffset;
 
     /*
      * Grapheme length for the entity match text.
      */
-    private final int length;
+    private final int graphemeLength;
 
     /**
      * Creates a {@link LinkedEntityMatch} model that describes linked entity match.
      *
      * @param text The entity text as appears in the request.
-     * @param score If a well-known item is recognized, a decimal number denoting the.
+     * @param score If a well-known item is recognized, a decimal number denoting the
      * confidence level between 0 and 1 will be returned.
-     * @param offset Grapheme start position for the entity match text.
-     * @param length Grapheme length for the entity match text.
+     * @param graphemeOffset Grapheme start position for the entity match text.
+     * @param graphemeLength Grapheme length for the entity match text.
      */
-    public LinkedEntityMatch(String text, double score, int offset, int length) {
+    public LinkedEntityMatch(String text, double score, int graphemeOffset, int graphemeLength) {
         this.text = text;
         this.score = score;
-        this.offset = offset;
-        this.length = length;
+        this.graphemeOffset = graphemeOffset;
+        this.graphemeLength = graphemeLength;
     }
 
     /**
@@ -72,7 +72,7 @@ public final class LinkedEntityMatch {
      * @return The offset value.
      */
     public int getGraphemeOffset() {
-        return this.offset;
+        return this.graphemeOffset;
     }
 
     /**
@@ -81,6 +81,6 @@ public final class LinkedEntityMatch {
      * @return The length value.
      */
     public int getGraphemeLength() {
-        return this.length;
+        return this.graphemeLength;
     }
 }

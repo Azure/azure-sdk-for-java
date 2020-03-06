@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously analyze the sentiments of a batch input text.
+ * Sample demonstrates how to asynchronously analyze the sentiments of documents.
  */
 public class AnalyzeSentimentBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to analyze the sentiments of a batch input text.
+     * Main method to invoke this demo about how to analyze the sentiments of documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -48,10 +48,10 @@ public class AnalyzeSentimentBatchDocumentsAsync {
 
                 // Batch statistics
                 final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
-                System.out.printf("A batch of documents statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
+                System.out.printf("Documents statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                // Analyzed sentiment for each of documents from a batch of documents
+                // Analyzed sentiment for each of documents from documents
                 pagedResponse.getElements().forEach(analyzeSentimentResult -> {
                     System.out.printf("%nDocument ID: %s%n", analyzeSentimentResult.getId());
                     if (analyzeSentimentResult.isError()) {
@@ -66,9 +66,8 @@ public class AnalyzeSentimentBatchDocumentsAsync {
                         documentSentiment.getSentences().forEach(sentenceSentiment -> {
                             SentimentConfidenceScores sentenceScores = sentenceSentiment.getConfidenceScores();
                             System.out.printf(
-                                "Analyzed sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f, length of sentence: %s, offset of sentence: %s.%n",
-                                sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative(),
-                                sentenceSentiment.getGraphemeLength(), sentenceSentiment.getGraphemeOffset());
+                                "Analyzed sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
+                                sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative());
                         });
                     }
                 });
