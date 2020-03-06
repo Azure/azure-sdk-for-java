@@ -6,7 +6,7 @@
 
 package com.azure.search.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.azure.search.Document;
+import com.azure.search.SearchDocument;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,13 +22,13 @@ public final class SearchResult {
      * Unmatched properties from the message are deserialized this collection
      */
     @JsonProperty(value = "")
-    private Document additionalProperties;
+    private SearchDocument additionalProperties;
 
     /*
      * The relevance score of the document compared to other documents returned
      * by the query.
      */
-    @JsonProperty(value = "@search.score", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double score;
 
     /*
@@ -45,8 +45,7 @@ public final class SearchResult {
      *
      * @return the additionalProperties value.
      */
-    @JsonIgnore
-    public Document getDocument() {
+    public SearchDocument getDocument() {
         return this.additionalProperties;
     }
 
@@ -57,7 +56,7 @@ public final class SearchResult {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SearchResult object itself.
      */
-    SearchResult setDocument(Document additionalProperties) {
+    SearchResult setDocument(SearchDocument additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

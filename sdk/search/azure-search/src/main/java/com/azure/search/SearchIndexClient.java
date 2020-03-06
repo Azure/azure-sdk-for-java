@@ -314,7 +314,7 @@ public final class SearchIndexClient {
      * @return document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
-    public Document getDocument(String key) {
+    public SearchDocument getDocument(String key) {
         return getDocumentWithResponse(key, null, null, Context.NONE).getValue();
     }
 
@@ -333,7 +333,7 @@ public final class SearchIndexClient {
      * @return response containing a document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
-    public Response<Document> getDocumentWithResponse(String key, List<String> selectedFields,
+    public Response<SearchDocument> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions, Context context) {
         return asyncClient.getDocumentWithResponse(key, selectedFields, requestOptions, context).block();
     }

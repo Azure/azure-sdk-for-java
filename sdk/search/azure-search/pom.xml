@@ -145,6 +145,7 @@
             <configuration>
               <argLine>
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
                 --add-opens com.azure.search/com.azure.search=ALL-UNNAMED
                 --add-opens com.azure.search/com.azure.search.models=ALL-UNNAMED
                 --add-opens com.azure.search/com.azure.search.implementation=ALL-UNNAMED

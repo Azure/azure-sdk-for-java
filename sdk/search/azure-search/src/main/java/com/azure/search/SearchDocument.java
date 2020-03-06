@@ -13,13 +13,13 @@ import java.util.Map;
  * <p>
  * If the schema is known, user can convert the properties to a specific object type
  */
-public final class Document extends HashMap<String, Object> {
+public final class SearchDocument extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
     /**
      * Default empty constructor
      */
-    public Document() {
+    public SearchDocument() {
         super();
     }
 
@@ -28,7 +28,7 @@ public final class Document extends HashMap<String, Object> {
      *
      * @param propertyMap the map whose mappings are to be placed in this map
      */
-    public Document(Map<? extends String, ?> propertyMap) {
+    public SearchDocument(Map<? extends String, ?> propertyMap) {
         super(propertyMap);
     }
 }

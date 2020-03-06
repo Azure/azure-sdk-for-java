@@ -19,27 +19,27 @@ public final class RequestOptions {
      * The tracking ID sent with the request to help with debugging.
      */
     @JsonProperty(value = "")
-    private UUID clientRequestId;
+    private UUID xMsClientRequestId;
 
     /**
-     * Get the clientRequestId property: The tracking ID sent with the request
-     * to help with debugging.
+     * Get the xMsClientRequestId property: The tracking ID sent with the
+     * request to help with debugging.
      *
-     * @return the clientRequestId value.
+     * @return the xMsClientRequestId value.
      */
-    public UUID getClientRequestId() {
-        return this.clientRequestId;
+    public UUID getXMsClientRequestId() {
+        return this.xMsClientRequestId;
     }
 
     /**
-     * Set the clientRequestId property: The tracking ID sent with the request
-     * to help with debugging.
+     * Set the xMsClientRequestId property: The tracking ID sent with the
+     * request to help with debugging.
      *
-     * @param clientRequestId the clientRequestId value to set.
+     * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the RequestOptions object itself.
      */
-    public RequestOptions setClientRequestId(UUID clientRequestId) {
-        this.clientRequestId = clientRequestId;
+    public RequestOptions setXMsClientRequestId(UUID xMsClientRequestId) {
+        this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
 }

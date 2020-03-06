@@ -14,7 +14,7 @@ import java.util.List;
  * Contains a batch of document write actions to send to the index.
  */
 @Fluent
-public class IndexBatchImpl<T> {
+public class IndexBatchBase<T> {
     /*
      * The actions in the batch.
      */
@@ -34,9 +34,9 @@ public class IndexBatchImpl<T> {
      * Set the actions property: The actions in the batch.
      *
      * @param actions the actions value to set.
-     * @return the IndexBatchImpl object itself.
+     * @return the IndexBatchBase object itself.
      */
-    protected IndexBatchImpl<T> setActions(List<IndexAction<T>> actions) {
+    protected IndexBatchBase<T> setActions(List<IndexAction<T>> actions) {
         this.actions = actions;
         return this;
     }

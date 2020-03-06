@@ -19,7 +19,7 @@ public final class AnalyzeResult {
     /*
      * The list of tokens returned by the analyzer specified in the request.
      */
-    @JsonProperty(value = "tokens")
+    @JsonProperty(value = "tokens", required = true)
     private List<TokenInfo> tokens;
 
     /**

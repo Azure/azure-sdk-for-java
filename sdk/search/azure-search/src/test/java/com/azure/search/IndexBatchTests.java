@@ -19,42 +19,42 @@ public class IndexBatchTests {
 
     @Test
     public void uploadDocument() {
-        Document document = new Document();
-        document.put("Id", "1");
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("Id", "1");
 
-        IndexAction<Document> indexAction = new IndexAction<Document>()
+        IndexAction<SearchDocument> indexAction = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.UPLOAD)
-            .setDocument(document);
+            .setDocument(searchDocument);
 
-        IndexBatch<Document> expected = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> expected = new IndexBatch<SearchDocument>()
             .actions(Collections.singletonList(indexAction));
 
-        IndexBatch<Document> actual = new IndexBatch<Document>()
-            .addUploadAction(document);
+        IndexBatch<SearchDocument> actual = new IndexBatch<SearchDocument>()
+            .addUploadAction(searchDocument);
 
         validate(expected, actual);
     }
 
     @Test
     public void uploadDocuments() {
-        Document doc1 = new Document();
+        SearchDocument doc1 = new SearchDocument();
         doc1.put("Id", "1");
 
-        Document doc2 = new Document();
+        SearchDocument doc2 = new SearchDocument();
         doc2.put("Id", "2");
 
-        Document doc3 = new Document();
+        SearchDocument doc3 = new SearchDocument();
         doc3.put("Id", "3");
 
-        List<Document> docs = Arrays.asList(doc1, doc2, doc3);
-        List<IndexAction<Document>> indexActions = docs.stream()
-            .map(doc -> new IndexAction<Document>().setActionType(IndexActionType.UPLOAD).setDocument(doc))
+        List<SearchDocument> docs = Arrays.asList(doc1, doc2, doc3);
+        List<IndexAction<SearchDocument>> indexActions = docs.stream()
+            .map(doc -> new IndexAction<SearchDocument>().setActionType(IndexActionType.UPLOAD).setDocument(doc))
             .collect(Collectors.toList());
 
-        IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> expectedBatch = new IndexBatch<SearchDocument>()
             .actions(indexActions);
 
-        IndexBatch<Document> actualBatch = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> actualBatch = new IndexBatch<SearchDocument>()
             .addUploadAction(docs);
 
         validate(expectedBatch, actualBatch);
@@ -62,42 +62,42 @@ public class IndexBatchTests {
 
     @Test
     public void mergeDocument() {
-        Document document = new Document();
-        document.put("Id", "1");
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("Id", "1");
 
-        IndexAction<Document> indexAction = new IndexAction<Document>()
+        IndexAction<SearchDocument> indexAction = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.MERGE)
-            .setDocument(document);
+            .setDocument(searchDocument);
 
-        IndexBatch<Document> expected = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> expected = new IndexBatch<SearchDocument>()
             .actions(Collections.singletonList(indexAction));
 
-        IndexBatch<Document> actual = new IndexBatch<Document>()
-            .addMergeAction(document);
+        IndexBatch<SearchDocument> actual = new IndexBatch<SearchDocument>()
+            .addMergeAction(searchDocument);
 
         validate(expected, actual);
     }
 
     @Test
     public void mergeDocuments() {
-        Document doc1 = new Document();
+        SearchDocument doc1 = new SearchDocument();
         doc1.put("Id", "1");
 
-        Document doc2 = new Document();
+        SearchDocument doc2 = new SearchDocument();
         doc2.put("Id", "2");
 
-        Document doc3 = new Document();
+        SearchDocument doc3 = new SearchDocument();
         doc3.put("Id", "3");
 
-        List<Document> docs = Arrays.asList(doc1, doc2, doc3);
-        List<IndexAction<Document>> indexActions = docs.stream()
-            .map(doc -> new IndexAction<Document>().setActionType(IndexActionType.MERGE).setDocument(doc))
+        List<SearchDocument> docs = Arrays.asList(doc1, doc2, doc3);
+        List<IndexAction<SearchDocument>> indexActions = docs.stream()
+            .map(doc -> new IndexAction<SearchDocument>().setActionType(IndexActionType.MERGE).setDocument(doc))
             .collect(Collectors.toList());
 
-        IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> expectedBatch = new IndexBatch<SearchDocument>()
             .actions(indexActions);
 
-        IndexBatch<Document> actualBatch = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> actualBatch = new IndexBatch<SearchDocument>()
             .addMergeAction(docs);
 
         validate(expectedBatch, actualBatch);
@@ -105,42 +105,42 @@ public class IndexBatchTests {
 
     @Test
     public void mergeOrUploadDocument() {
-        Document document = new Document();
-        document.put("Id", "1");
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("Id", "1");
 
-        IndexAction<Document> indexAction = new IndexAction<Document>()
+        IndexAction<SearchDocument> indexAction = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.MERGE_OR_UPLOAD)
-            .setDocument(document);
+            .setDocument(searchDocument);
 
-        IndexBatch<Document> expected = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> expected = new IndexBatch<SearchDocument>()
             .actions(Collections.singletonList(indexAction));
 
-        IndexBatch<Document> actual = new IndexBatch<Document>()
-            .addMergeOrUploadAction(document);
+        IndexBatch<SearchDocument> actual = new IndexBatch<SearchDocument>()
+            .addMergeOrUploadAction(searchDocument);
 
         validate(expected, actual);
     }
 
     @Test
     public void mergeOrUploadDocuments() {
-        Document doc1 = new Document();
+        SearchDocument doc1 = new SearchDocument();
         doc1.put("Id", "1");
 
-        Document doc2 = new Document();
+        SearchDocument doc2 = new SearchDocument();
         doc2.put("Id", "2");
 
-        Document doc3 = new Document();
+        SearchDocument doc3 = new SearchDocument();
         doc3.put("Id", "3");
 
-        List<Document> docs = Arrays.asList(doc1, doc2, doc3);
-        List<IndexAction<Document>> indexActions = docs.stream()
-            .map(doc -> new IndexAction<Document>().setActionType(IndexActionType.MERGE_OR_UPLOAD).setDocument(doc))
+        List<SearchDocument> docs = Arrays.asList(doc1, doc2, doc3);
+        List<IndexAction<SearchDocument>> indexActions = docs.stream()
+            .map(doc -> new IndexAction<SearchDocument>().setActionType(IndexActionType.MERGE_OR_UPLOAD).setDocument(doc))
             .collect(Collectors.toList());
 
-        IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> expectedBatch = new IndexBatch<SearchDocument>()
             .actions(indexActions);
 
-        IndexBatch<Document> actualBatch = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> actualBatch = new IndexBatch<SearchDocument>()
             .addMergeOrUploadAction(docs);
 
         validate(expectedBatch, actualBatch);
@@ -148,42 +148,42 @@ public class IndexBatchTests {
 
     @Test
     public void deleteDocument() {
-        Document document = new Document();
-        document.put("Id", "1");
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("Id", "1");
 
-        IndexAction<Document> indexAction = new IndexAction<Document>()
+        IndexAction<SearchDocument> indexAction = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.DELETE)
-            .setDocument(document);
+            .setDocument(searchDocument);
 
-        IndexBatch<Document> expected = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> expected = new IndexBatch<SearchDocument>()
             .actions(Collections.singletonList(indexAction));
 
-        IndexBatch<Document> actual = new IndexBatch<Document>()
-            .addDeleteAction(document);
+        IndexBatch<SearchDocument> actual = new IndexBatch<SearchDocument>()
+            .addDeleteAction(searchDocument);
 
         validate(expected, actual);
     }
 
     @Test
     public void deleteDocuments() {
-        Document doc1 = new Document();
+        SearchDocument doc1 = new SearchDocument();
         doc1.put("Id", "1");
 
-        Document doc2 = new Document();
+        SearchDocument doc2 = new SearchDocument();
         doc2.put("Id", "2");
 
-        Document doc3 = new Document();
+        SearchDocument doc3 = new SearchDocument();
         doc3.put("Id", "3");
 
-        List<Document> docs = Arrays.asList(doc1, doc2, doc3);
-        List<IndexAction<Document>> indexActions = docs.stream()
-            .map(doc -> new IndexAction<Document>().setActionType(IndexActionType.DELETE).setDocument(doc))
+        List<SearchDocument> docs = Arrays.asList(doc1, doc2, doc3);
+        List<IndexAction<SearchDocument>> indexActions = docs.stream()
+            .map(doc -> new IndexAction<SearchDocument>().setActionType(IndexActionType.DELETE).setDocument(doc))
             .collect(Collectors.toList());
 
-        IndexBatch<Document> expectedBatch = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> expectedBatch = new IndexBatch<SearchDocument>()
             .actions(indexActions);
 
-        IndexBatch<Document> actualBatch = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> actualBatch = new IndexBatch<SearchDocument>()
             .addDeleteAction(docs);
 
         validate(expectedBatch, actualBatch);
@@ -191,39 +191,39 @@ public class IndexBatchTests {
 
     @Test
     public void canBuildIndexBatchWithMultipleActionsAndSingleDocument() {
-        Document documentToMerge = new Document();
+        SearchDocument documentToMerge = new SearchDocument();
         documentToMerge.put("Id", "merge");
 
-        Document documentToMergeOrUpload = new Document();
+        SearchDocument documentToMergeOrUpload = new SearchDocument();
         documentToMergeOrUpload.put("Id", "mergeOrUpload");
 
-        Document documentToUpload = new Document();
+        SearchDocument documentToUpload = new SearchDocument();
         documentToUpload.put("Id", "upload");
 
-        Document documentToDelete = new Document();
+        SearchDocument documentToDelete = new SearchDocument();
         documentToDelete.put("Id", "delete");
 
-        IndexAction<Document> mergeAction = new IndexAction<Document>()
+        IndexAction<SearchDocument> mergeAction = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.MERGE)
             .setDocument(documentToMerge);
 
-        IndexAction<Document> mergeOrUploadAction = new IndexAction<Document>()
+        IndexAction<SearchDocument> mergeOrUploadAction = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.MERGE_OR_UPLOAD)
             .setDocument(documentToMergeOrUpload);
 
-        IndexAction<Document> deleteAction = new IndexAction<Document>()
+        IndexAction<SearchDocument> deleteAction = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.DELETE)
             .setDocument(documentToDelete);
 
-        IndexAction<Document> uploadAction = new IndexAction<Document>()
+        IndexAction<SearchDocument> uploadAction = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.UPLOAD)
             .setDocument(documentToUpload);
 
 
-        IndexBatch<Document> expected = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> expected = new IndexBatch<SearchDocument>()
             .actions(Arrays.asList(mergeAction, mergeOrUploadAction, deleteAction, uploadAction));
 
-        IndexBatch<Document> actual = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> actual = new IndexBatch<SearchDocument>()
             .addMergeAction(documentToMerge)
             .addMergeOrUploadAction(documentToMergeOrUpload)
             .addDeleteAction(documentToDelete)
@@ -234,79 +234,79 @@ public class IndexBatchTests {
 
     @Test
     public void canBuildIndexBatchWithMultipleActionsAndMultipleDocuments() {
-        List<Document> documentsToMerge = new ArrayList<>();
+        List<SearchDocument> documentsToMerge = new ArrayList<>();
 
-        Document merge1 = new Document();
+        SearchDocument merge1 = new SearchDocument();
         merge1.put("Id", "merge1");
         documentsToMerge.add(merge1);
 
-        Document merge2 = new Document();
+        SearchDocument merge2 = new SearchDocument();
         merge2.put("Id", "merge2");
         documentsToMerge.add(merge2);
 
-        List<Document> documentsToDelete = new ArrayList<>();
+        List<SearchDocument> documentsToDelete = new ArrayList<>();
 
-        Document delete1 = new Document();
+        SearchDocument delete1 = new SearchDocument();
         delete1.put("Id", "delete1");
         documentsToDelete.add(delete1);
 
-        Document delete2 = new Document();
+        SearchDocument delete2 = new SearchDocument();
         delete2.put("Id", "delete2");
         documentsToDelete.add(delete2);
 
-        List<Document> documentsToMergeOrUpload = new ArrayList<>();
+        List<SearchDocument> documentsToMergeOrUpload = new ArrayList<>();
 
-        Document mergeOrUpload1 = new Document();
+        SearchDocument mergeOrUpload1 = new SearchDocument();
         mergeOrUpload1.put("Id", "mergeOrUpload1");
         documentsToMergeOrUpload.add(mergeOrUpload1);
 
-        Document mergeOrUpload2 = new Document();
+        SearchDocument mergeOrUpload2 = new SearchDocument();
         mergeOrUpload2.put("Id", "mergeOrUpload2");
         documentsToMergeOrUpload.add(mergeOrUpload2);
 
-        List<Document> documentsToUpload = new ArrayList<>();
+        List<SearchDocument> documentsToUpload = new ArrayList<>();
 
-        Document upload1 = new Document();
+        SearchDocument upload1 = new SearchDocument();
         upload1.put("Id", "upload1");
         documentsToUpload.add(upload1);
 
-        Document upload2 = new Document();
+        SearchDocument upload2 = new SearchDocument();
         upload2.put("Id", "upload2");
         documentsToUpload.add(upload2);
 
-        IndexAction<Document> mergeAction1 = new IndexAction<Document>()
+        IndexAction<SearchDocument> mergeAction1 = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.MERGE)
             .setDocument(documentsToMerge.get(0));
 
-        IndexAction<Document> mergeAction2 = new IndexAction<Document>()
+        IndexAction<SearchDocument> mergeAction2 = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.MERGE)
             .setDocument(documentsToMerge.get(1));
 
-        IndexAction<Document> mergeOrUploadAction1 = new IndexAction<Document>()
+        IndexAction<SearchDocument> mergeOrUploadAction1 = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.MERGE_OR_UPLOAD)
             .setDocument(documentsToMergeOrUpload.get(0));
 
-        IndexAction<Document> mergeOrUploadAction2 = new IndexAction<Document>()
+        IndexAction<SearchDocument> mergeOrUploadAction2 = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.MERGE_OR_UPLOAD)
             .setDocument(documentsToMergeOrUpload.get(1));
 
-        IndexAction<Document> deleteAction1 = new IndexAction<Document>()
+        IndexAction<SearchDocument> deleteAction1 = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.DELETE)
             .setDocument(documentsToDelete.get(0));
 
-        IndexAction<Document> deleteAction2 = new IndexAction<Document>()
+        IndexAction<SearchDocument> deleteAction2 = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.DELETE)
             .setDocument(documentsToDelete.get(1));
 
-        IndexAction<Document> uploadAction1 = new IndexAction<Document>()
+        IndexAction<SearchDocument> uploadAction1 = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.UPLOAD)
             .setDocument(documentsToUpload.get(0));
 
-        IndexAction<Document> uploadAction2 = new IndexAction<Document>()
+        IndexAction<SearchDocument> uploadAction2 = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.UPLOAD)
             .setDocument(documentsToUpload.get(1));
 
-        IndexBatch<Document> expected = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> expected = new IndexBatch<SearchDocument>()
             .actions(
                 Arrays.asList(
                     mergeAction1,
@@ -320,7 +320,7 @@ public class IndexBatchTests {
                 )
             );
 
-        IndexBatch<Document> actual = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> actual = new IndexBatch<SearchDocument>()
             .addMergeAction(documentsToMerge)
             .addMergeOrUploadAction(documentsToMergeOrUpload)
             .addDeleteAction(documentsToDelete)
@@ -329,12 +329,12 @@ public class IndexBatchTests {
         validate(expected, actual);
     }
 
-    private void validate(IndexBatch<Document> expected, IndexBatch<Document> actual) {
+    private void validate(IndexBatch<SearchDocument> expected, IndexBatch<SearchDocument> actual) {
         assertEquals(expected.getActions().size(), actual.getActions().size());
 
         for (int i = 0; i < actual.getActions().size(); i++) {
-            IndexAction<Document> expectedIndexAction = expected.getActions().get(i);
-            IndexAction<Document> actualIndexAction = actual.getActions().get(i);
+            IndexAction<SearchDocument> expectedIndexAction = expected.getActions().get(i);
+            IndexAction<SearchDocument> actualIndexAction = actual.getActions().get(i);
 
             assertEquals(expectedIndexAction.getActionType(), actualIndexAction.getActionType());
             assertEquals(expectedIndexAction.getDocument(), actualIndexAction.getDocument());

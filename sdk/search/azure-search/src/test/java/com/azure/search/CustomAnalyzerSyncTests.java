@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeRequest;
 import com.azure.search.models.Analyzer;
 import com.azure.search.models.AnalyzerName;
@@ -133,13 +133,13 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
         SearchIndexClient searchIndexClient = searchServiceClient.getIndexClient(index.getName());
 
-        Document document1 = new Document();
+        SearchDocument document1 = new SearchDocument();
         document1.put("id", "1");
         document1.put("message", "My email is someone@somewhere.something.");
-        Document document2 = new Document();
+        SearchDocument document2 = new SearchDocument();
         document2.put("id", "2");
         document2.put("message", "His email is someone@nowhere.nothing.");
-        List<Document> documents = Arrays.asList(document1, document2);
+        List<SearchDocument> documents = Arrays.asList(document1, document2);
 
         searchIndexClient.uploadDocuments(documents);
         waitForIndexing();
@@ -263,7 +263,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
         addAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
         Index updatedIndex = searchServiceClient.createOrUpdateIndexWithResponse(index,
-            true, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
+            true, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
 
         assertAnalysisComponentsEqual(index, updatedIndex);
     }
@@ -495,7 +495,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
         // All analyzer names can be set on the analyzer property.
         for (int i = 0; i < allAnalyzerNames.size(); i++) {
-            DataType fieldType = (i % 2 == 0) ? DataType.EDM_STRING : DataType.Collection(DataType.EDM_STRING);
+            DataType fieldType = (i % 2 == 0) ? DataType.EDM_STRING : DataType.collection(DataType.EDM_STRING);
             fields.add(new Field()
                 .setName("field" + (fieldNumber++))
                 .setType(fieldType)
@@ -505,7 +505,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         List<AnalyzerName> searchAnalyzersAndIndexAnalyzers = getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer();
 
         for (int i = 0; i < searchAnalyzersAndIndexAnalyzers.size(); i++) {
-            DataType fieldType = (i % 2 == 0) ? DataType.EDM_STRING : DataType.Collection(DataType.EDM_STRING);
+            DataType fieldType = (i % 2 == 0) ? DataType.EDM_STRING : DataType.collection(DataType.EDM_STRING);
             fields.add(new Field()
                 .setName("field" + (fieldNumber++))
                 .setType(fieldType)

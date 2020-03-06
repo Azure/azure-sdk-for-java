@@ -20,12 +20,15 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.search.models.AccessCondition;
-import com.azure.search.models.ListSkillsetsResult;
+import com.azure.core.http.MatchConditions;
+import com.azure.search.implementation.models.ListSkillsetsResult;
 import com.azure.search.models.RequestOptions;
+import com.azure.search.models.SearchErrorException;
 import com.azure.search.models.Skillset;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -60,28 +63,33 @@ public final class SkillsetsImpl {
      * SearchServiceRestClientSkillsets to be used by the proxy service to
      * perform REST calls.
      */
-    @Host("https://{searchServiceName}.{searchDnsSuffix}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "SearchServiceRestClientSkillsets")
     private interface SkillsetsService {
         @Put("skillsets('{skillsetName}')")
         @ExpectedResponses({200, 201})
-        Mono<SimpleResponse<Skillset>> createOrUpdate(@PathParam("skillsetName") String skillsetName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @BodyParam("application/json; charset=utf-8") Skillset skillset, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        Mono<SimpleResponse<Skillset>> createOrUpdate(@PathParam("skillsetName") String skillsetName, @HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") Skillset skillset, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Delete("skillsets('{skillsetName}')")
         @ExpectedResponses({204, 404})
-        Mono<SimpleResponse<Void>> delete(@PathParam("skillsetName") String skillsetName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        Mono<Response<Void>> delete(@PathParam("skillsetName") String skillsetName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
 
         @Get("skillsets('{skillsetName}')")
         @ExpectedResponses({200})
-        Mono<SimpleResponse<Skillset>> get(@PathParam("skillsetName") String skillsetName, @HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        Mono<SimpleResponse<Skillset>> get(@PathParam("skillsetName") String skillsetName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("skillsets")
         @ExpectedResponses({200})
-        Mono<SimpleResponse<ListSkillsetsResult>> list(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        Mono<SimpleResponse<ListSkillsetsResult>> list(@HostParam("endpoint") String endpoint, @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Post("skillsets")
         @ExpectedResponses({201})
-        Mono<SimpleResponse<Skillset>> create(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @BodyParam("application/json; charset=utf-8") Skillset skillset, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        Mono<SimpleResponse<Skillset>> create(@HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") Skillset skillset, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
     }
 
     /**
@@ -96,10 +104,10 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Skillset>> createOrUpdateWithRestResponseAsync(String skillsetName, Skillset skillset, Context context) {
         final String prefer = "return=representation";
-        final UUID clientRequestId = null;
+        final UUID xMsClientRequestId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return service.createOrUpdate(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), skillset, prefer, this.client.getApiVersion(), clientRequestId, ifMatch, ifNoneMatch, context);
+        return service.createOrUpdate(skillsetName, this.client.getEndpoint(), skillset, prefer, this.client.getApiVersion(), xMsClientRequestId, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -114,11 +122,11 @@ public final class SkillsetsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Skillset>> createOrUpdateWithRestResponseAsync(String skillsetName, Skillset skillset, RequestOptions requestOptions, AccessCondition accessCondition, Context context) {
+    public Mono<SimpleResponse<Skillset>> createOrUpdateWithRestResponseAsync(String skillsetName, Skillset skillset, RequestOptions requestOptions, MatchConditions accessCondition, Context context) {
         final String prefer = "return=representation";
-        UUID clientRequestId = null;
+        UUID xMsClientRequestId = null;
         if (requestOptions != null) {
-            clientRequestId = requestOptions.getClientRequestId();
+            xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
         String ifMatch = null;
         if (accessCondition != null) {
@@ -128,7 +136,7 @@ public final class SkillsetsImpl {
         if (accessCondition != null) {
             ifNoneMatch = accessCondition.getIfNoneMatch();
         }
-        return service.createOrUpdate(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), skillset, prefer, this.client.getApiVersion(), clientRequestId, ifMatch, ifNoneMatch, context);
+        return service.createOrUpdate(skillsetName, this.client.getEndpoint(), skillset, prefer, this.client.getApiVersion(), xMsClientRequestId, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -140,11 +148,11 @@ public final class SkillsetsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String skillsetName, Context context) {
-        final UUID clientRequestId = null;
+    public Mono<Response<Void>> deleteWithRestResponseAsync(String skillsetName, Context context) {
+        final UUID xMsClientRequestId = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return service.delete(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, ifMatch, ifNoneMatch, context);
+        return service.delete(skillsetName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -158,10 +166,10 @@ public final class SkillsetsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Void>> deleteWithRestResponseAsync(String skillsetName, RequestOptions requestOptions, AccessCondition accessCondition, Context context) {
-        UUID clientRequestId = null;
+    public Mono<Response<Void>> deleteWithRestResponseAsync(String skillsetName, RequestOptions requestOptions, MatchConditions accessCondition, Context context) {
+        UUID xMsClientRequestId = null;
         if (requestOptions != null) {
-            clientRequestId = requestOptions.getClientRequestId();
+            xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
         String ifMatch = null;
         if (accessCondition != null) {
@@ -171,7 +179,7 @@ public final class SkillsetsImpl {
         if (accessCondition != null) {
             ifNoneMatch = accessCondition.getIfNoneMatch();
         }
-        return service.delete(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, ifMatch, ifNoneMatch, context);
+        return service.delete(skillsetName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, ifMatch, ifNoneMatch, context);
     }
 
     /**
@@ -184,8 +192,8 @@ public final class SkillsetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Skillset>> getWithRestResponseAsync(String skillsetName, Context context) {
-        final UUID clientRequestId = null;
-        return service.get(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
+        final UUID xMsClientRequestId = null;
+        return service.get(skillsetName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -199,11 +207,11 @@ public final class SkillsetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Skillset>> getWithRestResponseAsync(String skillsetName, RequestOptions requestOptions, Context context) {
-        UUID clientRequestId = null;
+        UUID xMsClientRequestId = null;
         if (requestOptions != null) {
-            clientRequestId = requestOptions.getClientRequestId();
+            xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.get(skillsetName, this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), this.client.getApiVersion(), clientRequestId, context);
+        return service.get(skillsetName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -216,8 +224,8 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ListSkillsetsResult>> listWithRestResponseAsync(Context context) {
         final String select = null;
-        final UUID clientRequestId = null;
-        return service.list(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), select, this.client.getApiVersion(), clientRequestId, context);
+        final UUID xMsClientRequestId = null;
+        return service.list(this.client.getEndpoint(), select, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -231,11 +239,11 @@ public final class SkillsetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ListSkillsetsResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
-        UUID clientRequestId = null;
+        UUID xMsClientRequestId = null;
         if (requestOptions != null) {
-            clientRequestId = requestOptions.getClientRequestId();
+            xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.list(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), select, this.client.getApiVersion(), clientRequestId, context);
+        return service.list(this.client.getEndpoint(), select, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -248,8 +256,8 @@ public final class SkillsetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Skillset>> createWithRestResponseAsync(Skillset skillset, Context context) {
-        final UUID clientRequestId = null;
-        return service.create(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), skillset, this.client.getApiVersion(), clientRequestId, context);
+        final UUID xMsClientRequestId = null;
+        return service.create(this.client.getEndpoint(), skillset, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -263,10 +271,10 @@ public final class SkillsetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Skillset>> createWithRestResponseAsync(Skillset skillset, RequestOptions requestOptions, Context context) {
-        UUID clientRequestId = null;
+        UUID xMsClientRequestId = null;
         if (requestOptions != null) {
-            clientRequestId = requestOptions.getClientRequestId();
+            xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.create(this.client.getSearchServiceName(), this.client.getSearchDnsSuffix(), skillset, this.client.getApiVersion(), clientRequestId, context);
+        return service.create(this.client.getEndpoint(), skillset, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 }
