@@ -5,32 +5,32 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.DocumentSentimentLabel;
+import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.SentenceSentimentLabel;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
+import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedIterable;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,23 +57,25 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             .buildClient());
     }
 
+    // Detect language
+
     /**
-     * Verify that we can get statistics on the collection result when given a batch input with options.
+     * Verify that we can get statistics on the collection result when given a batch of documents with options.
      */
     @Test
     public void detectLanguagesBatchInputShowStatistics() {
         detectLanguageShowStatisticsRunner((inputs, options) -> validateDetectLanguage(true,
             getExpectedBatchDetectedLanguages(),
-            client.detectLanguageBatchWithResponse(inputs, options, Context.NONE).getValue()));
+            client.detectLanguageBatch(inputs, options, Context.NONE).streamByPage().findFirst().get()));
     }
 
     /**
-     * Test Detect batch input languages.
+     * Test Detect batch of documents languages.
      */
     @Test
     public void detectLanguagesBatchInput() {
         detectLanguageRunner((inputs) -> validateDetectLanguage(false,
-            getExpectedBatchDetectedLanguages(), client.detectLanguageBatchWithResponse(inputs, null, Context.NONE).getValue()));
+            getExpectedBatchDetectedLanguages(), client.detectLanguageBatch(inputs, null, Context.NONE).streamByPage().findFirst().get()));
     }
 
     /**
@@ -83,7 +85,17 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguagesBatchListCountryHint() {
         detectLanguagesCountryHintRunner((inputs, countryHint) -> validateDetectLanguage(
             false, getExpectedBatchDetectedLanguages(),
-            client.detectLanguageBatch(inputs, countryHint, null)));
+            client.detectLanguageBatch(inputs, countryHint).streamByPage().findFirst().get()));
+    }
+
+    /**
+     * Test detect batch languages for a list of string input with request options
+     */
+    @Test
+    public void detectLanguagesBatchListCountryHintWithOptions() {
+        detectLanguagesBatchListCountryHintWithOptionsRunner((inputs, options) -> validateDetectLanguage(true,
+            getExpectedBatchDetectedLanguages(),
+            client.detectLanguageBatch(inputs, null, options).streamByPage().findFirst().get()));
     }
 
     /**
@@ -92,11 +104,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguagesBatchStringInput() {
         detectLanguageStringInputRunner((inputs) -> validateDetectLanguage(
-            false, getExpectedBatchDetectedLanguages(), client.detectLanguageBatch(inputs)));
+            false, getExpectedBatchDetectedLanguages(), client.detectLanguageBatch(inputs).streamByPage().findFirst().get()));
     }
 
     /**
-     * Verifies that a single DetectLanguageResult is returned for a text input to detectLanguages.
+     * Verifies that a single DetectLanguageResult is returned for a document to detect language.
      */
     @Test
     public void detectSingleTextLanguage() {
@@ -109,12 +121,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguagesNullInput() {
-        assertThrows(NullPointerException.class, () -> client.detectLanguageBatchWithResponse(null, null,
-            Context.NONE).getValue());
+        assertThrows(NullPointerException.class, () -> client.detectLanguageBatch(null, null,
+            Context.NONE).streamByPage().findFirst().get());
     }
 
     /**
-     * Verifies that a TextAnalyticsException is thrown for an empty text input.
+     * Verifies that a TextAnalyticsException is thrown for an empty document.
      */
     @Test
     public void detectLanguageEmptyText() {
@@ -132,13 +144,31 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that a TextAnalyticsException is thrown for a text input with invalid country hint.
+     * Verifies that a TextAnalyticsException is thrown for a document with invalid country hint.
      */
     @Test
     public void detectLanguageInvalidCountryHint() {
         Exception exception = assertThrows(TextAnalyticsException.class, () ->
-            client.detectLanguage("Este es un document escrito en Español.", "en"));
+            client.detectLanguage("Este es un documento  escrito en Español.", "en"));
         assertTrue(exception.getMessage().equals(INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE));
+    }
+
+    /**
+     * Verify that with countryHint with empty string will not throw exception.
+     */
+    @Test
+    public void detectLanguageEmptyCountryHint() {
+        validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0),
+            client.detectLanguage("Este es un documento  escrito en Español", ""));
+    }
+
+    /**
+     * Verify that with countryHint with "none" will not throw exception.
+     */
+    @Test
+    public void detectLanguageNoneCountryHint() {
+        validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0),
+            client.detectLanguage("Este es un documento  escrito en Español", "none"));
     }
 
     /**
@@ -148,15 +178,17 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguageDuplicateIdInput() {
         detectLanguageDuplicateIdRunner((inputs, options) -> {
             HttpResponseException response = assertThrows(HttpResponseException.class,
-                () -> client.detectLanguageBatchWithResponse(inputs, options, Context.NONE));
+                () -> client.detectLanguageBatch(inputs, options, Context.NONE).stream().findFirst().get());
             assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
         });
     }
 
+    // Recognize Entity
+
     @Test
     public void recognizeEntitiesForTextInput() {
-        final CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
-        final CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
+        final CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 26, 7, 0.0);
+        final CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
 
         final List<CategorizedEntity> entities = client.recognizeEntities("I had a wonderful trip to Seattle last week.").stream().collect(Collectors.toList());
         validateCategorizedEntity(categorizedEntity1, entities.get(0));
@@ -177,45 +209,63 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesBatchInputSingleError() {
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) -> {
-            Response<DocumentResultCollection<RecognizeEntitiesResult>> response = client.recognizeEntitiesBatchWithResponse(inputs, null, Context.NONE);
-            for (RecognizeEntitiesResult recognizeEntitiesResult : response.getValue()) {
+            TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> response = client.recognizeEntitiesBatch(inputs, null, Context.NONE);
+            response.forEach(recognizeEntitiesResult -> {
                 Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getEntities());
                 assertTrue(exception.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE));
-            }
+            });
         });
     }
 
     @Test
     public void recognizeEntitiesForBatchInput() {
-        recognizeBatchCategorizedEntityRunner((inputs) -> validateCategorizedEntity(false,
-            getExpectedBatchCategorizedEntities(), client.recognizeEntitiesBatchWithResponse(inputs, null, Context.NONE).getValue()));
+        recognizeBatchCategorizedEntityRunner((inputs) ->
+            client.recognizeEntitiesBatch(inputs, null, Context.NONE).iterableByPage().forEach(
+                pagedResponse ->
+                    validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
 
     @Test
     public void recognizeEntitiesForBatchInputShowStatistics() {
         recognizeBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
-            validateCategorizedEntity(true, getExpectedBatchCategorizedEntities(),
-                client.recognizeEntitiesBatchWithResponse(inputs, options, Context.NONE).getValue()));
+            client.recognizeEntitiesBatch(inputs, options, Context.NONE).iterableByPage().forEach(
+                pagedResponse ->
+                    validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
 
     @Test
     public void recognizeEntitiesForBatchStringInput() {
-        recognizeCategorizedEntityStringInputRunner((inputs) ->
-            validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), client.recognizeEntitiesBatch(inputs)));
+        recognizeCategorizedEntityStringInputRunner((inputs) -> client.recognizeEntitiesBatch(inputs).iterableByPage()
+            .forEach(pagedResponse ->
+                validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
 
     @Test
     public void recognizeEntitiesForListLanguageHint() {
-        recognizeCatgeorizedEntitiesLanguageHintRunner((inputs, language) ->
-            validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(),
-                client.recognizeEntitiesBatch(inputs, language, null)));
+        recognizeCategorizedEntitiesLanguageHintRunner((inputs, language) ->
+            client.recognizeEntitiesBatch(inputs, language).iterableByPage().forEach(
+                pagedResponse ->
+                    validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
 
     @Test
+    public void recognizeEntitiesForListWithOptions() {
+        recognizeStringBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
+            client.recognizeEntitiesBatch(inputs, null, options).iterableByPage().forEach(
+                pagedResponse ->
+                    validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
+    }
+
+    // Recognize PII entity
+
+    @Test
     public void recognizePiiEntitiesForTextInput() {
-        final PiiEntity piiEntity = new PiiEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
-        final PagedIterable<PiiEntity> entities = client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.");
-        validatePiiEntity(piiEntity, entities.iterator().next());
+        final PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0, 9, 1.0);
+        final PiiEntity piiEntity = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 28, 11, 0.0);
+        final TextAnalyticsPagedIterable<PiiEntity> entities = client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.");
+        Iterator<PiiEntity> iterator = entities.iterator();
+        validatePiiEntity(piiEntity0, iterator.next());
+        validatePiiEntity(piiEntity, iterator.next());
     }
 
     @Test
@@ -232,35 +282,48 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizePiiEntitiesForBatchInput() {
         recognizeBatchPiiRunner((inputs) ->
-            validatePiiEntity(false, getExpectedBatchPiiEntities(),
-                client.recognizePiiEntitiesBatchWithResponse(inputs, null, Context.NONE).getValue()));
+            client.recognizePiiEntitiesBatch(inputs, null, Context.NONE).iterableByPage().forEach(pagedResponse ->
+                validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), pagedResponse)));
     }
 
     @Test
     public void recognizePiiEntitiesForBatchInputShowStatistics() {
         recognizeBatchPiiEntitiesShowStatsRunner((inputs, options) ->
-            validatePiiEntity(true, getExpectedBatchPiiEntities(),
-                client.recognizePiiEntitiesBatchWithResponse(inputs, options, Context.NONE).getValue()));
+            client.recognizePiiEntitiesBatch(inputs, options, Context.NONE).iterableByPage().forEach(pagedResponse ->
+                validatePiiEntityWithPagedResponse(true, getExpectedBatchPiiEntities(), pagedResponse)));
     }
 
     @Test
     public void recognizePiiEntitiesForBatchStringInput() {
         recognizePiiStringInputRunner((inputs) ->
-            validatePiiEntity(false, getExpectedBatchPiiEntities(), client.recognizePiiEntitiesBatch(inputs)));
+            client.recognizePiiEntitiesBatch(inputs).iterableByPage().forEach(pagedResponse ->
+                validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), pagedResponse)));
     }
 
     @Test
     public void recognizePiiEntitiesForListLanguageHint() {
         recognizePiiLanguageHintRunner((inputs, language) ->
-            validatePiiEntity(false, getExpectedBatchPiiEntities(),
-                client.recognizePiiEntitiesBatch(inputs, language, null)));
+            client.recognizePiiEntitiesBatch(inputs, language).iterableByPage().forEach(pagedResponse ->
+                validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), pagedResponse)));
     }
+
+    @Test
+    public void recognizePiiEntitiesForListStringWithOptions() {
+        recognizeStringBatchPiiEntitiesShowStatsRunner((inputs, options) ->
+            client.recognizePiiEntitiesBatch(inputs, null, options).iterableByPage().forEach(pagedResponse ->
+                validatePiiEntityWithPagedResponse(true, getExpectedBatchPiiEntities(), pagedResponse)));
+    }
+
+    // Recognize linked entity
 
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
         final LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
-        final LinkedEntity linkedEntity1 = new LinkedEntity("Seattle", Collections.singletonList(linkedEntityMatch1), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
-        final List<LinkedEntity> linkedEntities = client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week.").stream().collect(Collectors.toList());
+        final LinkedEntity linkedEntity1 = new LinkedEntity("Seattle",
+            new IterableStream<>(Collections.singletonList(linkedEntityMatch1)),
+            "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
+        final List<LinkedEntity> linkedEntities = client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week.")
+            .stream().collect(Collectors.toList());
         validateLinkedEntity(linkedEntity1, linkedEntities.get(0));
     }
 
@@ -278,28 +341,40 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeLinkedEntitiesForBatchInput() {
         recognizeBatchLinkedEntityRunner((inputs) ->
-            validateLinkedEntity(false, getExpectedBatchLinkedEntities(), client.recognizeLinkedEntitiesBatchWithResponse(inputs, null, Context.NONE).getValue()));
+            client.recognizeLinkedEntitiesBatch(inputs, null, Context.NONE).iterableByPage().forEach(pagedResponse ->
+                validateLinkedEntitiesWithPagedResponse(false, getExpectedBatchLinkedEntities(), pagedResponse)));
     }
 
     @Test
     public void recognizeLinkedEntitiesForBatchInputShowStatistics() {
         recognizeBatchLinkedEntitiesShowStatsRunner((inputs, options) ->
-            validateLinkedEntity(true, getExpectedBatchLinkedEntities(),
-                client.recognizeLinkedEntitiesBatchWithResponse(inputs, options, Context.NONE).getValue()));
+            client.recognizeLinkedEntitiesBatch(inputs, options, Context.NONE).iterableByPage().forEach(pagedResponse ->
+                validateLinkedEntitiesWithPagedResponse(true, getExpectedBatchLinkedEntities(), pagedResponse)));
     }
 
     @Test
     public void recognizeLinkedEntitiesForBatchStringInput() {
         recognizeLinkedStringInputRunner((inputs) ->
-            validateLinkedEntity(false, getExpectedBatchLinkedEntities(), client.recognizeLinkedEntitiesBatch(inputs)));
+            client.recognizeLinkedEntitiesBatch(inputs).iterableByPage().forEach(pagedResponse ->
+                validateLinkedEntitiesWithPagedResponse(false, getExpectedBatchLinkedEntities(), pagedResponse)));
     }
 
     @Test
     public void recognizeLinkedEntitiesForListLanguageHint() {
         recognizeLinkedLanguageHintRunner((inputs, language) ->
-            validateLinkedEntity(false, getExpectedBatchLinkedEntities(),
-                client.recognizeLinkedEntitiesBatch(inputs, language, null)));
+            client.recognizeLinkedEntitiesBatch(inputs, language).iterableByPage().forEach(pagedResponse ->
+                validateLinkedEntitiesWithPagedResponse(false, getExpectedBatchLinkedEntities(), pagedResponse)));
     }
+
+    @Test
+    public void recognizeLinkedEntitiesForListStringWithOptions() {
+        recognizeBatchStringLinkedEntitiesShowStatsRunner((inputs, options) ->
+            client.recognizeLinkedEntitiesBatch(inputs, null, options).iterableByPage().forEach(pagedResponse ->
+                validateLinkedEntitiesWithPagedResponse(true, getExpectedBatchLinkedEntities(), pagedResponse)));
+    }
+
+
+    // Extract key phrase
 
     @Test
     public void extractKeyPhrasesForTextInput() {
@@ -320,27 +395,36 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void extractKeyPhrasesForBatchInput() {
         extractBatchKeyPhrasesRunner((inputs) ->
-            validateExtractKeyPhrase(false, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatchWithResponse(inputs, null, Context.NONE).getValue()));
+            client.extractKeyPhrasesBatch(inputs, null, Context.NONE).iterableByPage().forEach(pagedResponse ->
+                validateExtractKeyPhraseWithPagedResponse(false, getExpectedBatchKeyPhrases(), pagedResponse)));
     }
 
     @Test
     public void extractKeyPhrasesForBatchInputShowStatistics() {
         extractBatchKeyPhrasesShowStatsRunner((inputs, options) ->
-            validateExtractKeyPhrase(true, getExpectedBatchKeyPhrases(),
-                client.extractKeyPhrasesBatchWithResponse(inputs, options, Context.NONE).getValue()));
+            client.extractKeyPhrasesBatch(inputs, options, Context.NONE).iterableByPage().forEach(pagedResponse ->
+                validateExtractKeyPhraseWithPagedResponse(true, getExpectedBatchKeyPhrases(), pagedResponse)));
     }
 
     @Test
     public void extractKeyPhrasesForBatchStringInput() {
         extractKeyPhrasesStringInputRunner((inputs) ->
-            validateExtractKeyPhrase(false, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs)));
+            client.extractKeyPhrasesBatch(inputs).iterableByPage().forEach(pagedResponse ->
+                validateExtractKeyPhraseWithPagedResponse(false, getExpectedBatchKeyPhrases(), pagedResponse)));
     }
 
     @Test
     public void extractKeyPhrasesForListLanguageHint() {
         extractKeyPhrasesLanguageHintRunner((inputs, language) ->
-            validateExtractKeyPhrase(false, getExpectedBatchKeyPhrases(),
-                client.extractKeyPhrasesBatch(inputs, language, null)));
+            client.extractKeyPhrasesBatch(inputs, language).iterableByPage().forEach(pagedResponse ->
+                validateExtractKeyPhraseWithPagedResponse(false, getExpectedBatchKeyPhrases(), pagedResponse)));
+    }
+
+    @Test
+    public void extractKeyPhrasesForListStringWithOptions() {
+        extractBatchStringKeyPhrasesShowStatsRunner((inputs, options) ->
+            client.extractKeyPhrasesBatch(inputs, null, options).iterableByPage().forEach(pagedResponse ->
+                validateExtractKeyPhraseWithPagedResponse(true, getExpectedBatchKeyPhrases(), pagedResponse)));
     }
 
     // Sentiment
@@ -351,12 +435,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void analyseSentimentForTextInput() {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
-            DocumentSentimentLabel.MIXED,
-            new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
-            Arrays.asList(
-                new SentenceSentiment(SentenceSentimentLabel.NEGATIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(SentenceSentimentLabel.POSITIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 35, 32)
-            ));
+            TextSentiment.MIXED,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0),
+            new IterableStream<>(Arrays.asList(
+                new SentenceSentiment(TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentiment(TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 32)
+            )));
         DocumentSentiment analyzeSentimentResult =
             client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.");
 
@@ -364,7 +448,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that a TextAnalyticsException is thrown for an empty text input.
+     * Verifies that a TextAnalyticsException is thrown for an empty document.
      */
     @Test
     public void analyseSentimentForEmptyText() {
@@ -373,16 +457,16 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test analyzing sentiment for a faulty input text.
+     * Test analyzing sentiment for a faulty document.
      */
     @Test
     public void analyseSentimentForFaultyText() {
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(DocumentSentimentLabel.NEUTRAL,
-            new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
-            Arrays.asList(
-                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 4, 1)
-            ));
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.NEUTRAL,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0),
+            new IterableStream<>(Arrays.asList(
+                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 1, 0),
+                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 4, 1)
+            )));
 
         DocumentSentiment analyzeSentimentResult = client.analyzeSentiment("!@#%%");
 
@@ -395,36 +479,48 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void analyseSentimentForBatchStringInput() {
         analyseSentimentStringInputRunner(inputs ->
-            validateSentiment(false, getExpectedBatchTextSentiment(), client.analyzeSentimentBatch(inputs)));
+            client.analyzeSentimentBatch(inputs).iterableByPage().forEach(pagedResponse ->
+                validateSentimentWithPagedResponse(false, getExpectedBatchTextSentiment(), pagedResponse)));
     }
 
     /**
-     * Test analyzing sentiment for a list of string input with language hint.
+     * Test analyzing sentiment for a list of string input with language code.
      */
     @Test
     public void analyseSentimentForListLanguageHint() {
         analyseSentimentLanguageHintRunner((inputs, language) ->
-            validateSentiment(false, getExpectedBatchTextSentiment(),
-                client.analyzeSentimentBatch(inputs, language, null)));
+            client.analyzeSentimentBatch(inputs, language).iterableByPage().forEach(pagedResponse ->
+                validateSentimentWithPagedResponse(false, getExpectedBatchTextSentiment(), pagedResponse)));
     }
 
     /**
-     * Test analyzing sentiment for batch input.
+     * Verify that we can get statistics on the collection result when given a batch of documents with request options.
+     */
+    @Test
+    public void analyseSentimentForListStringWithOptions() {
+        analyseBatchStringSentimentShowStatsRunner((inputs, options) ->
+            client.analyzeSentimentBatch(inputs, null, options).iterableByPage().forEach(pagedResponse ->
+                validateSentimentWithPagedResponse(true, getExpectedBatchTextSentiment(), pagedResponse)));
+    }
+
+    /**
+     * Test analyzing sentiment for batch of documents.
      */
     @Test
     public void analyseSentimentForBatchInput() {
-        analyseBatchSentimentRunner(inputs -> validateSentiment(false, getExpectedBatchTextSentiment(),
-            client.analyzeSentimentBatchWithResponse(inputs, null, Context.NONE).getValue()));
+        analyseBatchSentimentRunner(inputs ->
+            client.analyzeSentimentBatch(inputs, null, Context.NONE).iterableByPage().forEach(pagedResponse ->
+                validateSentimentWithPagedResponse(false, getExpectedBatchTextSentiment(), pagedResponse)));
     }
 
     /**
-     * Verify that we can get statistics on the collection result when given a batch input with options.
+     * Verify that we can get statistics on the collection result when given a batch of documents with request options.
      */
     @Test
     public void analyseSentimentForBatchInputShowStatistics() {
         analyseBatchSentimentShowStatsRunner((inputs, options) ->
-            validateSentiment(true, getExpectedBatchTextSentiment(),
-                client.analyzeSentimentBatchWithResponse(inputs, options, Context.NONE).getValue()));
+            client.analyzeSentimentBatch(inputs, options, Context.NONE).iterableByPage().forEach(pagedResponse ->
+                validateSentimentWithPagedResponse(true, getExpectedBatchTextSentiment(), pagedResponse)));
     }
 
     /**

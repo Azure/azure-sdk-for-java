@@ -6,23 +6,22 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The SentimentConfidenceScorePerLabel model
+ * The {@link SentimentConfidenceScores} model
  */
 @Immutable
-public final class SentimentConfidenceScorePerLabel {
+public final class SentimentConfidenceScores {
     private final double negativeScore;
     private final double neutralScore;
     private final double positiveScore;
 
     /**
-     * Creates a {@code SentimentConfidenceScorePerLabel} model that describes the sentiment score of the sentiment
-     * label.
+     * Creates a {@link SentimentConfidenceScores} model that describes the sentiment score of the sentiment label.
      *
-     * @param negativeScore negative score value, range in between 0 and 1.0
-     * @param neutralScore neutral score value, range in between 0 and 1.0
-     * @param positiveScore positive score value, range in between 0 and 1.0
+     * @param negativeScore The negative score value, range in between 0 and 1.0.
+     * @param neutralScore The neutral score value, range in between 0 and 1.0.
+     * @param positiveScore The positive score value, range in between 0 and 1.0.
      */
-    public SentimentConfidenceScorePerLabel(double negativeScore, double neutralScore, double positiveScore) {
+    public SentimentConfidenceScores(double negativeScore, double neutralScore, double positiveScore) {
         this.negativeScore = negativeScore;
         this.neutralScore = neutralScore;
         this.positiveScore = positiveScore;
@@ -31,7 +30,7 @@ public final class SentimentConfidenceScorePerLabel {
     /**
      * The negative score value, range in between 0 and 1.0.
      *
-     * @return negative score value
+     * @return the negative score value.
      */
     public double getNegative() {
         return negativeScore;
@@ -40,7 +39,7 @@ public final class SentimentConfidenceScorePerLabel {
     /**
      * The neutral score value, range in between 0 and 1.0.
      *
-     * @return neutral score value
+     * @return The neutral score value.
      */
     public double getNeutral() {
         return neutralScore;
@@ -49,7 +48,7 @@ public final class SentimentConfidenceScorePerLabel {
     /**
      * The positive score value, range in between 0 and 1.0.
      *
-     * @return positive score value
+     * @return The positive score value.
      */
     public double getPositive() {
         return positiveScore;
