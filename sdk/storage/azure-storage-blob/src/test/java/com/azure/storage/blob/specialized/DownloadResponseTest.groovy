@@ -36,14 +36,6 @@ class DownloadResponseTest extends APISpec {
         outputStream.toByteArray() == defaultData.array()
     }
 
-    /*def "TimeoutTest"() {
-        setup:
-        bu.upload(defaultInputStream.get(), defaultDataSize)
-
-        expect:
-        primaryBlobServiceClient.getConta.getBlobAsyncClient(bu.getBlobName()).download().timeout(Duration.ofSeconds(5)).then().block()
-    }*/
-
     @Unroll
     def "Successful"() {
         setup:
@@ -167,7 +159,6 @@ class DownloadResponseTest extends APISpec {
         setup:
         DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_TIMEOUT,
             this)
-        // We test retry count elsewhere. Only one retry speeds up the test.
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(retryCount)
         HttpGetterInfo info = new HttpGetterInfo().setETag("etag")
 
@@ -180,6 +171,7 @@ class DownloadResponseTest extends APISpec {
         e.getCause() instanceof TimeoutException
 
         where:
+        // We test retry count elsewhere. Just using small numbers to speed up the test.
         retryCount | _
         0          | _
         1          | _

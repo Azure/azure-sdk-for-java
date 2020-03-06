@@ -124,6 +124,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                     toSend.position((this.tryNumber - 1) * 256);
                     toSend.limit(this.tryNumber * 256);
                     subscriber.onNext(toSend);
+                    // A slightly odd but sufficient means of exercising the different retriable exceptions.
                     Exception e = tryNumber % 2 == 0 ? new IOException() : new TimeoutException();
                     Operators.error(subscriber, e);
                     break;
@@ -251,6 +252,7 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
                 }
                 return Mono.just(response);
             case DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION:
+                // Construct a new flux each time to mimic getting a new download stream.
                 DownloadResponseMockFlux nextFlux = new DownloadResponseMockFlux(this.scenario, this.tryNumber,
                     this.scenarioData, this.info, this.options);
                 rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(), nextFlux,

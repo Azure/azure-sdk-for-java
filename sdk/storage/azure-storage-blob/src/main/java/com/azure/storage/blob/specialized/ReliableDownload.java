@@ -77,12 +77,11 @@ final class ReliableDownload {
     }
 
     private Flux<ByteBuffer> tryContinueFlux(Throwable t, int retryCount, DownloadRetryOptions options) {
-        // If all the errors are exhausted, return this error to the user.
+        // If all the errors are exhausted or the error is not retryable, return this error to the user.
         if (retryCount >= options.getMaxRetryRequests() ||
             !(t instanceof IOException || t instanceof TimeoutException)) {
             return Flux.error(t);
         } else {
-            System.out.println("Retrying");
             /*
             We wrap this in a try catch because we don't know the behavior of the getter. Most errors would probably
             come from an unsuccessful request, which would be propagated through the onError methods. However, it is
@@ -90,8 +89,8 @@ final class ReliableDownload {
             call time rather than at subscription time.
              */
             try {
-                /*Get a new response and try reading from it.
-                Do not compound the number of retries by passing in another set of downloadOptions; just get
+                /*Get a new stream from the new response and try reading from it.
+                Do not compound the number of retries by calling getValue on the DownloadResponse; just get
                 the raw body.
                 */
                 return getter.apply(info)
