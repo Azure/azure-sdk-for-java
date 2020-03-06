@@ -4,7 +4,7 @@
 package com.azure.search.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.Document;
+import com.azure.search.SearchDocument;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -89,7 +89,7 @@ public class IndexBatch<T> extends IndexBatchBase<T> {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public IndexBatch<T> addDeleteAction(String keyName, Iterable<String> keyValues) {
         for (String val : keyValues) {
-            Document doc = new Document();
+            SearchDocument doc = new SearchDocument();
             doc.put(keyName, val);
             IndexAction indexAction = new IndexAction()
                 .setActionType(IndexActionType.DELETE)

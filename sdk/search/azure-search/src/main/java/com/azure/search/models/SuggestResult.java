@@ -5,6 +5,7 @@
 // regenerated.
 
 package com.azure.search.models;
+import com.azure.search.SearchDocument;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,7 +21,7 @@ public final class SuggestResult {
      * Unmatched properties from the message are deserialized this collection
      */
     @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
+    private SearchDocument additionalProperties;
 
     /*
      * The text of the suggestion result.
@@ -34,7 +35,7 @@ public final class SuggestResult {
      *
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getDocument() {
+    public SearchDocument getDocument() {
         return this.additionalProperties;
     }
 
@@ -45,7 +46,7 @@ public final class SuggestResult {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SuggestResult object itself.
      */
-    SuggestResult setDocument(Map<String, Object> additionalProperties) {
+    SuggestResult setDocument(SearchDocument additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

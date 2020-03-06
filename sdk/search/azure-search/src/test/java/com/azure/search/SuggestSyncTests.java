@@ -357,9 +357,9 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
     void verifyCanSuggestStaticallyTypedDocuments(SuggestPagedResponse suggestResultPagedResponse, List<Map<String, Object>> expectedHotels) {
         //sanity
         assertNotNull(suggestResultPagedResponse);
-        List<Document> docs = suggestResultPagedResponse.getValue()
+        List<SearchDocument> docs = suggestResultPagedResponse.getValue()
             .stream()
-            .map(suggestResult -> new Document(suggestResult.getDocument()))
+            .map(suggestResult -> new SearchDocument(suggestResult.getDocument()))
             .collect(Collectors.toList());
         List<SuggestResult> hotelsList = suggestResultPagedResponse.getValue();
 
@@ -407,9 +407,9 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
     void verifyCanSuggestWithDateTimeInStaticModel(SuggestPagedResponse suggestResultPagedResponse) {
         List<SuggestResult> books = suggestResultPagedResponse.getValue();
-        List<Document> docs = suggestResultPagedResponse.getValue()
+        List<SearchDocument> docs = suggestResultPagedResponse.getValue()
             .stream()
-            .map(suggestResult -> new Document(suggestResult.getDocument()))
+            .map(suggestResult -> new SearchDocument(suggestResult.getDocument()))
             .collect(Collectors.toList());
 
         assertEquals(1, docs.size());
@@ -419,7 +419,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
     @SuppressWarnings("unchecked")
     void verifySuggestWithSelectedFields(PagedResponse<SuggestResult> suggestResultPagedResponse) {
         assertEquals(1, suggestResultPagedResponse.getValue().size());
-        Document result = new Document(suggestResultPagedResponse.getValue().get(0).getDocument());
+        SearchDocument result = suggestResultPagedResponse.getValue().get(0).getDocument();
 
         assertEquals("Secret Point Motel", result.get("HotelName"));
         assertEquals(4, result.get("Rating"));

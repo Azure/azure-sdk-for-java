@@ -106,7 +106,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
         uploadDocument(asyncClient, expectedDoc);
 
-        Mono<Document> futureDoc = asyncClient.getDocument("1");
+        Mono<SearchDocument> futureDoc = asyncClient.getDocument("1");
 
         StepVerifier.create(futureDoc)
             .assertNext(result -> assertEquals(expectedDoc, result))
@@ -136,10 +136,10 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
     @Test
     public void canGetPaginatedDocuments() throws Exception {
-        List<Document> docs = new LinkedList<>();
+        List<SearchDocument> docs = new LinkedList<>();
 
         for (int i = 1; i <= 200; i++) {
-            Document doc = new Document();
+            SearchDocument doc = new SearchDocument();
             doc.put("HotelId", String.valueOf(i));
             doc.put("HotelName", "Hotel " + i);
             docs.add(doc);
@@ -193,10 +193,10 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
     @Test
     public void canGetPaginatedDocumentsWithSearchOptions() throws Exception {
-        List<Document> docs = new LinkedList<>();
+        List<SearchDocument> docs = new LinkedList<>();
 
         for (int i = 1; i <= 200; i++) {
-            Document doc = new Document();
+            SearchDocument doc = new SearchDocument();
             doc.put("HotelId", String.valueOf(i));
             doc.put("HotelName", "Hotel " + i);
             docs.add(doc);

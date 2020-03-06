@@ -436,7 +436,7 @@ public final class SearchIndexAsyncClient {
      * @return the document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
-    public Mono<Document> getDocument(String key) {
+    public Mono<SearchDocument> getDocument(String key) {
         return getDocumentWithResponse(key, null, null).map(Response::getValue);
     }
 
@@ -454,18 +454,18 @@ public final class SearchIndexAsyncClient {
      * @return a response containing the document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
-    public Mono<Response<Document>> getDocumentWithResponse(String key, List<String> selectedFields,
+    public Mono<Response<SearchDocument>> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions) {
         return withContext(context -> getDocumentWithResponse(key, selectedFields, requestOptions, context));
     }
 
-    Mono<Response<Document>> getDocumentWithResponse(String key, List<String> selectedFields,
+    Mono<Response<SearchDocument>> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.documents()
                 .getWithRestResponseAsync(key, selectedFields, requestOptions, context)
                 .map(res -> {
-                    Document doc = new Document(res.getValue());
+                    SearchDocument doc = new SearchDocument(res.getValue());
                     DocumentResponseConversions.cleanupDocument(doc);
                     return new SimpleResponse<>(res, doc);
                 })

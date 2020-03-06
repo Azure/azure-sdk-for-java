@@ -29,11 +29,6 @@ public enum VisualFeature {
     CATEGORIES("categories"),
 
     /**
-     * Enum value color.
-     */
-    COLOR("color"),
-
-    /**
      * Enum value description.
      */
     DESCRIPTION("description"),
@@ -42,11 +37,6 @@ public enum VisualFeature {
      * Enum value faces.
      */
     FACES("faces"),
-
-    /**
-     * Enum value imageType.
-     */
-    IMAGE_TYPE("imageType"),
 
     /**
      * Enum value objects.
