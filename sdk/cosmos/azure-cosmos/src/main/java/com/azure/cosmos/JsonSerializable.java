@@ -48,7 +48,7 @@ public class JsonSerializable {
      * @param jsonString the json string that represents the JsonSerializable.
      * @param objectMapper the custom object mapper
      */
-    JsonSerializable(String jsonString, ObjectMapper objectMapper) {
+    protected JsonSerializable(String jsonString, ObjectMapper objectMapper) {
         // TODO: Made package private due to #153. #171 adding custom serialization options back.
         this.propertyBag = fromJson(jsonString);
         this.om = objectMapper;
@@ -171,7 +171,7 @@ public class JsonSerializable {
      * @param value the value of the property.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    <T> void set(String propertyName, T value) {
+    protected <T> void set(String propertyName, T value) {
         if (value == null) {
             // Sets null.
             this.propertyBag.putNull(propertyName);

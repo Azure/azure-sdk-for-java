@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CompositePath;
+import com.azure.cosmos.model.CompositePath;
 import com.azure.cosmos.IndexingMode;
 import com.azure.cosmos.Permission;
 import com.azure.cosmos.PermissionMode;

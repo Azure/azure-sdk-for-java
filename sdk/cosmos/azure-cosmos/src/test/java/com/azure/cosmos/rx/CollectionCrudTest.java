@@ -3,7 +3,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CompositePath;
+import com.azure.cosmos.model.CompositePath;
 import com.azure.cosmos.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.model.CompositePath;
 import org.assertj.core.api.Assertions;
 
 import java.util.ArrayList;
