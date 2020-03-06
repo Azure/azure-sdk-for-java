@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.model.CosmosAsyncContainerResponse;
+import com.azure.cosmos.model.CosmosAsyncItemResponse;
 import com.azure.cosmos.model.CosmosConflictProperties;
 import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.model.ModelBridgeInternal;
@@ -215,7 +216,7 @@ public class CosmosAsyncContainer {
                                    item,
                                    requestOptions,
                                    true)
-                   .map(response -> new CosmosAsyncItemResponse<T>(response, itemType))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
                    .single();
     }
 
@@ -255,7 +256,7 @@ public class CosmosAsyncContainer {
                    .upsertDocument(this.getLink(), item,
                                    options.toRequestOptions(),
                                    true)
-                   .map(response -> new CosmosAsyncItemResponse<T>(response, itemType))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
                    .single();
     }
 
@@ -426,7 +427,7 @@ public class CosmosAsyncContainer {
         RequestOptions requestOptions = options.toRequestOptions();
         return this.getDatabase().getDocClientWrapper()
                    .readDocument(getItemLink(itemId), requestOptions)
-                   .map(response -> new CosmosAsyncItemResponse<T>(response, itemType))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
                    .single();
     }
 
@@ -473,7 +474,7 @@ public class CosmosAsyncContainer {
         return this.getDatabase()
                    .getDocClientWrapper()
                    .replaceDocument(getItemLink(itemId), doc, options.toRequestOptions())
-                   .map(response -> new CosmosAsyncItemResponse<T>(response, itemType))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
                    .single();
     }
 
@@ -515,7 +516,7 @@ public class CosmosAsyncContainer {
         return this.getDatabase()
                    .getDocClientWrapper()
                    .deleteDocument(getItemLink(itemId), requestOptions)
-                   .map(response -> new CosmosAsyncItemResponse(response, Object.class))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response, Object.class))
                    .single();
     }
 

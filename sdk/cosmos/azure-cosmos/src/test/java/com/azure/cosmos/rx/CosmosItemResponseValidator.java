@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.CosmosAsyncItemResponse;
+import com.azure.cosmos.model.CosmosAsyncItemResponse;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 
 import java.util.ArrayList;

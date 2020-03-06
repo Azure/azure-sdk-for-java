@@ -8,6 +8,9 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
+import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.model.CosmosDatabaseProperties;
+import com.azure.cosmos.model.ModelBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -214,7 +217,7 @@ public class CosmosAsyncClient implements Closeable {
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
         return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions())
-                   .map(databaseResourceResponse -> new CosmosAsyncDatabaseResponse(databaseResourceResponse,
+                   .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
                        this))
                    .single();
     }
@@ -272,7 +275,7 @@ public class CosmosAsyncClient implements Closeable {
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
         return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions())
-                   .map(databaseResourceResponse -> new CosmosAsyncDatabaseResponse(databaseResourceResponse,
+                   .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
                        this))
                    .single();
     }
@@ -329,7 +332,7 @@ public class CosmosAsyncClient implements Closeable {
             return getDocClientWrapper().readDatabases(options)
                                         .map(response ->
                                             BridgeInternal.createFeedResponse(
-                                                CosmosDatabaseProperties.getFromV2Results(response.getResults()),
+                                                ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
                                                 response.getResponseHeaders()));
         });
     }
@@ -379,7 +382,7 @@ public class CosmosAsyncClient implements Closeable {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                                         .map(response -> BridgeInternal.createFeedResponse(
-                                            CosmosDatabaseProperties.getFromV2Results(response.getResults()),
+                                            ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
                                             response.getResponseHeaders()));
         });
     }

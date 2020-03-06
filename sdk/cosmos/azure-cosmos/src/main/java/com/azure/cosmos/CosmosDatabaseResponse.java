@@ -3,6 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.model.CosmosDatabaseProperties;
+
 /**
  * The type Cosmos database response. This contains get the methods to obtain database properties and other response 
  * methods

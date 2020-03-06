@@ -3,9 +3,13 @@
 
 package com.azure.cosmos.model;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.Conflict;
+import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ResourceResponse;
 
@@ -27,6 +31,19 @@ public class ModelBridgeInternal {
         return new CosmosAsyncContainerResponse(response, database);
     }
 
+    public static CosmosAsyncDatabaseResponse createCosmosAsyncDatabaseResponse(ResourceResponse<Database> response,
+                                                                                 CosmosAsyncClient client) {
+        return new CosmosAsyncDatabaseResponse(response, client);
+    }
+
+    public static <T> CosmosAsyncItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
+        return new CosmosAsyncItemResponse<>(response, classType);
+    }
+
+    public static CosmosAsyncItemResponse createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response, Class classType) {
+        return new CosmosAsyncItemResponse(response, classType);
+    }
+
     public static List<CosmosConflictProperties> getCosmosConflictPropertiesFromV2Results(List<Conflict> results) {
         return CosmosConflictProperties.getFromV2Results(results);
     }
@@ -37,5 +54,13 @@ public class ModelBridgeInternal {
 
     public static List<CosmosContainerProperties> getCosmosContainerPropertiesFromV2Results(List<DocumentCollection> results) {
         return CosmosContainerProperties.getFromV2Results(results);
+    }
+
+    public static List<CosmosDatabaseProperties> getCosmosDatabasePropertiesFromV2Results(List<Database> results) {
+        return CosmosDatabaseProperties.getFromV2Results(results);
+    }
+
+    public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
+        return cosmosItemResponse.getProperties();
     }
 }

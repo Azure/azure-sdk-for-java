@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.model.CosmosAsyncContainerResponse;
+import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import org.apache.commons.lang3.StringUtils;
@@ -69,7 +70,7 @@ public class CosmosAsyncDatabase {
             options = new CosmosDatabaseRequestOptions();
         }
         return getDocClientWrapper().readDatabase(getLink(), options.toRequestOptions())
-                   .map(response -> new CosmosAsyncDatabaseResponse(response, getClient())).single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
     }
 
     /**
@@ -100,7 +101,7 @@ public class CosmosAsyncDatabase {
             options = new CosmosDatabaseRequestOptions();
         }
         return getDocClientWrapper().deleteDatabase(getLink(), options.toRequestOptions())
-                   .map(response -> new CosmosAsyncDatabaseResponse(response, getClient())).single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
     }
 
     /* CosmosAsyncContainer operations */

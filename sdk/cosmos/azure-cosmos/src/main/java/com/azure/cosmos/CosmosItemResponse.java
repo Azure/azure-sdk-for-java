@@ -4,6 +4,8 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.model.CosmosAsyncItemResponse;
+import com.azure.cosmos.model.ModelBridgeInternal;
 
 import java.time.Duration;
 import java.util.Map;
@@ -36,7 +38,7 @@ public class CosmosItemResponse<T> {
      * @return the itemSettings
      */
     CosmosItemProperties getProperties() {
-        return responseWrapper.getProperties();
+        return ModelBridgeInternal.getProperties(responseWrapper);
     }
 
     /**

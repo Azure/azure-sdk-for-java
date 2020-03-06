@@ -4,6 +4,8 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.model.CosmosDatabaseProperties;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
