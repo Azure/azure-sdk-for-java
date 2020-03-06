@@ -95,16 +95,14 @@ public final class SearchIndexAsyncClient {
     SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
         HttpPipeline httpPipeline) {
 
-        SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
 
         restClient = new SearchIndexRestClientBuilder()
-            .searchServiceName(parts.serviceName)
+            .endpoint(endpoint)
             .indexName(indexName)
-            .searchDnsSuffix(parts.dnsSuffix)
             .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
             .serializer(SERIALIZER)

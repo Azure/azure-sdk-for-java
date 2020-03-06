@@ -72,8 +72,7 @@ public final class SearchServiceAsyncClient {
         this.httpPipeline = httpPipeline;
 
         this.restClient = new SearchServiceRestClientBuilder()
-            .searchServiceName(parts.serviceName)
-            .searchDnsSuffix(parts.dnsSuffix)
+            .endpoint(endpoint)
             .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
             .build();
