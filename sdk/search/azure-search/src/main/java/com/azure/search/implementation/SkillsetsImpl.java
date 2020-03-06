@@ -25,8 +25,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.http.MatchConditions;
 import com.azure.search.implementation.models.ListSkillsetsResult;
-import com.azure.search.models.AccessCondition;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchErrorException;
 import com.azure.search.models.Skillset;
@@ -122,7 +122,7 @@ public final class SkillsetsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Skillset>> createOrUpdateWithRestResponseAsync(String skillsetName, Skillset skillset, RequestOptions requestOptions, AccessCondition accessCondition, Context context) {
+    public Mono<SimpleResponse<Skillset>> createOrUpdateWithRestResponseAsync(String skillsetName, Skillset skillset, RequestOptions requestOptions, MatchConditions accessCondition, Context context) {
         final String prefer = "return=representation";
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
@@ -166,7 +166,7 @@ public final class SkillsetsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithRestResponseAsync(String skillsetName, RequestOptions requestOptions, AccessCondition accessCondition, Context context) {
+    public Mono<Response<Void>> deleteWithRestResponseAsync(String skillsetName, RequestOptions requestOptions, MatchConditions accessCondition, Context context) {
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();

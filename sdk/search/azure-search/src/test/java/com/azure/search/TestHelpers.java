@@ -3,8 +3,8 @@
 
 package com.azure.search;
 
+import com.azure.core.http.MatchConditions;
 import com.azure.core.util.CoreUtils;
-import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.Index;
 import com.azure.search.models.Indexer;
@@ -127,9 +127,9 @@ public final class TestHelpers {
      *
      * @return an AccessCondition object that represents a condition where a resource does not exist
      */
-    public static AccessCondition generateIfNotExistsAccessCondition() {
+    public static MatchConditions generateIfNotExistsAccessCondition() {
         // Setting this access condition modifies the request to include the HTTP If-None-Match conditional header set to "*"
-        return new AccessCondition().setIfNoneMatch("*");
+        return new MatchConditions().setIfNoneMatch("*");
     }
 
     /**
@@ -137,9 +137,9 @@ public final class TestHelpers {
      *
      * @return an AccessCondition object that represents a condition where a resource exists
      */
-    public static AccessCondition generateIfExistsAccessCondition() {
+    public static MatchConditions generateIfExistsAccessCondition() {
 
-        return new AccessCondition().setIfMatch("*");
+        return new MatchConditions().setIfMatch("*");
     }
 
     /**
@@ -149,7 +149,7 @@ public final class TestHelpers {
      * @param eTag the ETag value to check against the resource's ETag
      * @return An AccessCondition object that represents the If-Match condition
      */
-    public static AccessCondition generateIfNotChangedAccessCondition(String eTag) {
-        return new AccessCondition().setIfMatch(eTag);
+    public static MatchConditions generateIfNotChangedAccessCondition(String eTag) {
+        return new MatchConditions().setIfMatch(eTag);
     }
 }

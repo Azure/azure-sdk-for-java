@@ -25,9 +25,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.http.MatchConditions;
 import com.azure.search.implementation.models.AnalyzeResult;
 import com.azure.search.implementation.models.ListIndexesResult;
-import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeRequest;
 import com.azure.search.models.GetIndexStatisticsResult;
 import com.azure.search.models.Index;
@@ -201,7 +201,7 @@ public final class IndexesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Index>> createOrUpdateWithRestResponseAsync(String indexName, Index index, Boolean allowIndexDowntime, RequestOptions requestOptions, AccessCondition accessCondition, Context context) {
+    public Mono<SimpleResponse<Index>> createOrUpdateWithRestResponseAsync(String indexName, Index index, Boolean allowIndexDowntime, RequestOptions requestOptions, MatchConditions accessCondition, Context context) {
         final String prefer = "return=representation";
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
@@ -245,7 +245,7 @@ public final class IndexesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithRestResponseAsync(String indexName, RequestOptions requestOptions, AccessCondition accessCondition, Context context) {
+    public Mono<Response<Void>> deleteWithRestResponseAsync(String indexName, RequestOptions requestOptions, MatchConditions accessCondition, Context context) {
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
