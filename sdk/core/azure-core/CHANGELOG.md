@@ -4,6 +4,7 @@
 
 - Enhanced and extended 'PagedIterable' implementation to cover additional use cases.
 - Added additional constants to 'Tracer'.
+- Added a factory method to create 'PollerFlux' that can avoid unnecessary poll if the LRO completed synchronously.
 - Fixed race condition when loading 'BeforeRetryPolicyProvider' and 'AfterRetryPolicyProvider' implementations with 'ServiceLoader'.
 - Fixed race condition when loading 'Tracer' implementations with 'ServiceLoader'.
 - Fixed XML deserialization issue when byte order mark wasn't properly handled.

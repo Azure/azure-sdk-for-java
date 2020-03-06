@@ -2,6 +2,7 @@
 
 ## 1.0.2 (2020-03-06)
 
+- Fix bug where management channel would not be re-created upon closing.
 
 ## 1.0.1 (2020-02-11)
 
