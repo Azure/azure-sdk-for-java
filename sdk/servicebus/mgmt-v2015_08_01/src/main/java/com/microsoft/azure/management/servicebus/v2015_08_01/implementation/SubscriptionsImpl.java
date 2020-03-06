@@ -64,10 +64,14 @@ class SubscriptionsImpl extends WrapperImpl<SubscriptionsInner> implements Subsc
     public Observable<SubscriptionResource> getAsync(String resourceGroupName, String namespaceName, String topicName, String subscriptionName) {
         SubscriptionsInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, topicName, subscriptionName)
-        .map(new Func1<SubscriptionResourceInner, SubscriptionResource>() {
+        .flatMap(new Func1<SubscriptionResourceInner, Observable<SubscriptionResource>>() {
             @Override
-            public SubscriptionResource call(SubscriptionResourceInner inner) {
-                return wrapModel(inner);
+            public Observable<SubscriptionResource> call(SubscriptionResourceInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SubscriptionResource)wrapModel(inner));
+                }
             }
        });
     }
