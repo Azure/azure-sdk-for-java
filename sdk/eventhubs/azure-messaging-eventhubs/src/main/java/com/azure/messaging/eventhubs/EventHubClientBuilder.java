@@ -39,6 +39,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * This class provides a fluent builder API to aid the instantiation of {@link EventHubProducerAsyncClient},
@@ -459,7 +460,7 @@ public class EventHubClientBuilder {
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    EventHubAsyncClient buildAsyncClient() {
+    synchronized EventHubAsyncClient buildAsyncClient() {
         if (retryOptions == null) {
             retryOptions = DEFAULT_RETRY;
         }
