@@ -47,10 +47,8 @@ class DetectLanguageAsyncClient {
     }
 
     /**
-     * Helper function that detects documents and returns {@link TextAnalyticsPagedFlux} that is a paged
-     * flux containing {@link DetectLanguageResult}.
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
+     * which is a paged flux that contains {@link DetectLanguageResult}.
      *
      * @param textInputs The list of documents to detect languages for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
@@ -84,10 +82,8 @@ class DetectLanguageAsyncClient {
     }
 
     /**
-     * Helper function that detects documents with {@link Context} and returns
-     * {@link TextAnalyticsPagedFlux} that is a paged flux containing {@link DetectLanguageResult}.
-     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
+     * Helper function for calling service with max overloaded parameters with {@link Context} that a returns
+     * {@link TextAnalyticsPagedFlux} which is a paged flux that contains {@link DetectLanguageResult}.
      *
      * @param textInputs The list of documents to detect languages for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.

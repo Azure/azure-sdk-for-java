@@ -51,10 +51,8 @@ class RecognizeLinkedEntityAsyncClient {
     }
 
     /**
-     * Helper function that recognize a single of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
-     * flux containing {@link LinkedEntity}.
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
+     * which is a paged flux that contains {@link LinkedEntity}.
      *
      * @param text A single document.
      * @param language The language code.
@@ -87,10 +85,8 @@ class RecognizeLinkedEntityAsyncClient {
     }
 
     /**
-     * Helper function that recognizes documents and returns {@link TextAnalyticsPagedFlux} that is a
-     * paged flux containing {@link RecognizeLinkedEntitiesResult}.
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
+     * which is a paged flux that contains {@link RecognizeLinkedEntitiesResult}.
      *
      * @param textInputs The list of documents to recognize linked entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.

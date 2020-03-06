@@ -51,10 +51,8 @@ class RecognizePiiEntityAsyncClient {
     }
 
     /**
-     * Helper function that recognize a single of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
-     * flux containing {@link PiiEntity}.
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
+     * which is a paged flux that contains {@link PiiEntity}.
      *
      * @param text A single document.
      * @param language The language code.
@@ -87,10 +85,8 @@ class RecognizePiiEntityAsyncClient {
     }
 
     /**
-     * Helper function that recognizes documents and returns {@link TextAnalyticsPagedFlux} that is a
-     * paged flux containing {@link RecognizePiiEntitiesResult}.
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
+     * which is a paged flux that contains {@link RecognizePiiEntitiesResult}.
      *
      * @param textInputs A list of documents to recognize PII entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.

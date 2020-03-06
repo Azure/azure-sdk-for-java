@@ -50,10 +50,8 @@ class RecognizeEntityAsyncClient {
     }
 
     /**
-     * Helper function that recognize a single of documents and returns {@link TextAnalyticsPagedFlux} that is a paged
-     * flux containing {@link CategorizedEntity}.
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
+     * which is a paged flux that contains {@link CategorizedEntity}.
      *
      * @param text A single document.
      * @param language The language code.
@@ -87,10 +85,8 @@ class RecognizeEntityAsyncClient {
     }
 
     /**
-     * Helper function that recognizes documents and returns {@link TextAnalyticsPagedFlux} that is a
-     * paged flux containing {@link RecognizeCategorizedEntitiesResult}.
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
+     * which is a paged flux that contains {@link RecognizeCategorizedEntitiesResult}.
      *
      * @param textInputs The list of documents to recognize entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.

@@ -52,8 +52,6 @@ class AnalyzeSentimentAsyncClient {
     }
 
     /**
-     * Helper function that analyzes documents and returns {@link TextAnalyticsPagedFlux} that is a paged
-     * flux containing {@link AnalyzeSentimentResult}.
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
      * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *

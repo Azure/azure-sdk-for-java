@@ -50,10 +50,8 @@ class ExtractKeyPhraseAsyncClient {
     }
 
     /**
-     * Helper function that extracts a single documents and returns {@link TextAnalyticsPagedFlux} that is a paged
-     * flux containing extract key phrases.
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
+     * which is a paged flux that contains extracted key phrases.
      *
      * @param text A document.
      * @param language The language code.
@@ -86,10 +84,8 @@ class ExtractKeyPhraseAsyncClient {
     }
 
     /**
-     * Helper function that extracts documents and returns {@link TextAnalyticsPagedFlux} that is a paged
-     * flux containing {@link ExtractKeyPhraseResult}.
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link AnalyzeSentimentResult}.
+     * which is a paged flux that contains {@link ExtractKeyPhraseResult}.
      *
      * @param textInputs A list of documents to extract key phrases for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
