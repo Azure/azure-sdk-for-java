@@ -42,6 +42,7 @@ import com.azure.search.models.SuggestDocumentsResult;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestRequest;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -97,7 +98,7 @@ public final class DocumentsImpl {
         @Get("docs('{key}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Object>> get(@PathParam("key") String key, @HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<Map<? extends String, Object>>> get(@PathParam("key") String key, @HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("docs/search.suggest")
         @ExpectedResponses({200})
@@ -315,7 +316,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Object>> getWithRestResponseAsync(String key, Context context) {
+    public Mono<SimpleResponse<Map<? extends String, Object>>> getWithRestResponseAsync(String key, Context context) {
         final UUID xMsClientRequestId = null;
         String selectedFieldsConverted = null;
         return service.get(key, this.client.getEndpoint(), this.client.getIndexName(), selectedFieldsConverted, this.client.getApiVersion(), xMsClientRequestId, context);
@@ -332,7 +333,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Object>> getWithRestResponseAsync(String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<Map<? extends String, Object>>> getWithRestResponseAsync(String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
