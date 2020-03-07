@@ -24,9 +24,17 @@ public final class FeedOptions {
     private Map<String, Object> properties;
     private boolean emptyPagesAllowed;
 
+    /**
+     * Instantiates a new Feed options.
+     */
     public FeedOptions() {
     }
 
+    /**
+     * Instantiates a new Feed options.
+     *
+     * @param options the options
+     */
     public FeedOptions(FeedOptions options) {
         this.sessionToken = options.sessionToken;
         this.partitionKeyRangeId = options.partitionKeyRangeId;

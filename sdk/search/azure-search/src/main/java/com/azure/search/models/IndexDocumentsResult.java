@@ -20,7 +20,7 @@ public final class IndexDocumentsResult {
      * The list of status information for each document in the indexing
      * request.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<IndexingResult> results;
 
     /**

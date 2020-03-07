@@ -5,10 +5,10 @@
 // regenerated.
 
 package com.azure.search.models;
+import com.azure.search.SearchDocument;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.azure.search.SearchDocument;
 /**
  * A result containing a document found by a suggestion query, plus associated
  * metadata.
@@ -24,7 +24,7 @@ public final class SuggestResult {
     /*
      * The text of the suggestion result.
      */
-    @JsonProperty(value = "@search.text", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String text;
 
     /**

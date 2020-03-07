@@ -22,8 +22,8 @@ public class RangeFacetResult {
      */
     public RangeFacetResult(FacetResult facetResult) {
         count = facetResult.getCount();
-        from = facetResult.getDocument().get("from");
-        to = facetResult.getDocument().get("to");
+        from = facetResult.getAdditionalProperties().get("from");
+        to = facetResult.getAdditionalProperties().get("to");
     }
 
     /**

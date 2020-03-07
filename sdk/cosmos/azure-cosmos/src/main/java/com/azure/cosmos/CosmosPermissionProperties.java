@@ -8,6 +8,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Cosmos permission properties.
+ */
 public class CosmosPermissionProperties extends Resource {
 
     static List<CosmosPermissionProperties> getFromV2Results(List<Permission> results) {

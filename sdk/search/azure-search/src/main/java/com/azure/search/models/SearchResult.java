@@ -5,11 +5,11 @@
 // regenerated.
 
 package com.azure.search.models;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.azure.search.SearchDocument;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.SearchDocument;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public final class SearchResult {
      * The relevance score of the document compared to other documents returned
      * by the query.
      */
-    @JsonProperty(value = "@search.score", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double score;
 
     /*
@@ -45,7 +45,6 @@ public final class SearchResult {
      *
      * @return the additionalProperties value.
      */
-    @JsonIgnore
     public SearchDocument getDocument() {
         return this.additionalProperties;
     }

@@ -19,18 +19,18 @@ public class IndexBatchTests {
 
     @Test
     public void uploadDocument() {
-        SearchDocument document = new SearchDocument();
-        document.put("Id", "1");
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("Id", "1");
 
         IndexAction<SearchDocument> indexAction = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.UPLOAD)
-            .setDocument(document);
+            .setDocument(searchDocument);
 
         IndexDocumentsBatch<SearchDocument> expected = new IndexDocumentsBatch<SearchDocument>()
             .actions(Collections.singletonList(indexAction));
 
         IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
-            .addUploadAction(document);
+            .addUploadAction(searchDocument);
 
         validate(expected, actual);
     }
@@ -62,18 +62,18 @@ public class IndexBatchTests {
 
     @Test
     public void mergeDocument() {
-        SearchDocument document = new SearchDocument();
-        document.put("Id", "1");
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("Id", "1");
 
         IndexAction<SearchDocument> indexAction = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.MERGE)
-            .setDocument(document);
+            .setDocument(searchDocument);
 
         IndexDocumentsBatch<SearchDocument> expected = new IndexDocumentsBatch<SearchDocument>()
             .actions(Collections.singletonList(indexAction));
 
         IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
-            .addMergeAction(document);
+            .addMergeAction(searchDocument);
 
         validate(expected, actual);
     }
@@ -105,18 +105,18 @@ public class IndexBatchTests {
 
     @Test
     public void mergeOrUploadDocument() {
-        SearchDocument document = new SearchDocument();
-        document.put("Id", "1");
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("Id", "1");
 
         IndexAction<SearchDocument> indexAction = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.MERGE_OR_UPLOAD)
-            .setDocument(document);
+            .setDocument(searchDocument);
 
         IndexDocumentsBatch<SearchDocument> expected = new IndexDocumentsBatch<SearchDocument>()
             .actions(Collections.singletonList(indexAction));
 
         IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
-            .addMergeOrUploadAction(document);
+            .addMergeOrUploadAction(searchDocument);
 
         validate(expected, actual);
     }
@@ -148,18 +148,18 @@ public class IndexBatchTests {
 
     @Test
     public void deleteDocument() {
-        SearchDocument document = new SearchDocument();
-        document.put("Id", "1");
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("Id", "1");
 
         IndexAction<SearchDocument> indexAction = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.DELETE)
-            .setDocument(document);
+            .setDocument(searchDocument);
 
         IndexDocumentsBatch<SearchDocument> expected = new IndexDocumentsBatch<SearchDocument>()
             .actions(Collections.singletonList(indexAction));
 
         IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
-            .addDeleteAction(document);
+            .addDeleteAction(searchDocument);
 
         validate(expected, actual);
     }
@@ -218,7 +218,6 @@ public class IndexBatchTests {
         IndexAction<SearchDocument> uploadAction = new IndexAction<SearchDocument>()
             .setActionType(IndexActionType.UPLOAD)
             .setDocument(documentToUpload);
-
 
         IndexDocumentsBatch<SearchDocument> expected = new IndexDocumentsBatch<SearchDocument>()
             .actions(Arrays.asList(mergeAction, mergeOrUploadAction, deleteAction, uploadAction));

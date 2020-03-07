@@ -148,18 +148,17 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
         List<SearchDocument> docs = new ArrayList<>();
 
-
-        SearchDocument document = new SearchDocument();
-        document.put("HotelId", "1");
-        document.put("Category", "Luxury");
-        docs.add(document);
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("HotelId", "1");
+        searchDocument.put("Category", "Luxury");
+        docs.add(searchDocument);
 
         client.uploadDocuments(docs);
 
         waitForIndexing();
         assertEquals(1, client.getDocumentCount());
 
-        document.put("Category", "ignored");
+        searchDocument.put("Category", "ignored");
         IndexDocumentsResult documentIndexResult = client.deleteDocuments(docs);
         waitForIndexing();
 

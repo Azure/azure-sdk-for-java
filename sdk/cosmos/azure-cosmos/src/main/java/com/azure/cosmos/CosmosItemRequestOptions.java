@@ -30,7 +30,7 @@ public class CosmosItemRequestOptions {
      *
      * @param partitionKey the partition key
      */
-    CosmosItemRequestOptions(PartitionKey partitionKey){
+    CosmosItemRequestOptions(PartitionKey partitionKey) {
         super();
         setPartitionKey(partitionKey);
     }
@@ -156,6 +156,15 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * Gets the partition key
+     *
+     * @return the partition key
+     */
+    PartitionKey getPartitionKey() {
+        return partitionKey;
+    }
+
+    /**
      * Sets the partition key
      *
      * @param partitionKey the partition key
@@ -164,15 +173,6 @@ public class CosmosItemRequestOptions {
     CosmosItemRequestOptions setPartitionKey(PartitionKey partitionKey) {
         this.partitionKey = partitionKey;
         return this;
-    }
-
-    /**
-     * Gets the partition key
-     *
-     * @return the partition key
-     */
-    PartitionKey getPartitionKey() {
-        return partitionKey;
     }
 
     RequestOptions toRequestOptions() {

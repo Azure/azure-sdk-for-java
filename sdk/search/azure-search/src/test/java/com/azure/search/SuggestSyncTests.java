@@ -359,7 +359,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         assertNotNull(suggestResultPagedResponse);
         List<SearchDocument> docs = suggestResultPagedResponse.getValue()
             .stream()
-            .map(SuggestResult::getDocument)
+            .map(suggestResult -> new SearchDocument(suggestResult.getDocument()))
             .collect(Collectors.toList());
         List<SuggestResult> hotelsList = suggestResultPagedResponse.getValue();
 
@@ -409,7 +409,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
         List<SuggestResult> books = suggestResultPagedResponse.getValue();
         List<SearchDocument> docs = suggestResultPagedResponse.getValue()
             .stream()
-            .map(SuggestResult::getDocument)
+            .map(suggestResult -> new SearchDocument(suggestResult.getDocument()))
             .collect(Collectors.toList());
 
         assertEquals(1, docs.size());

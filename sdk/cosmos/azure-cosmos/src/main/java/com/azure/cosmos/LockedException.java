@@ -20,6 +20,14 @@ public class LockedException extends CosmosClientException {
         this(RMResources.Locked);
     }
 
+    /**
+     * Instantiates a new Locked exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public LockedException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
                            Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.LOCKED, cosmosError, responseHeaders);
@@ -35,6 +43,13 @@ public class LockedException extends CosmosClientException {
         super(msg, null, null, HttpConstants.StatusCodes.LOCKED, resourceAddress);
     }
 
+    /**
+     * Instantiates a new Locked exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUriString the request uri string
+     */
     public LockedException(String message, HttpHeaders headers, String requestUriString) {
         this(message, null, headers, requestUriString);
     }

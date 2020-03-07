@@ -15,8 +15,6 @@ import com.azure.search.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.implementation.SearchIndexRestClientImpl;
 import com.azure.search.implementation.SerializationUtil;
 import com.azure.search.implementation.util.DocumentResponseConversions;
-import com.azure.search.implementation.util.SearchServiceUrlParser;
-import com.azure.search.implementation.util.SearchServiceUrlParser.SearchServiceUrlParts;
 import com.azure.search.implementation.util.SuggestOptionsHandler;
 import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
@@ -98,16 +96,14 @@ public final class SearchIndexAsyncClient {
     SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
         HttpPipeline httpPipeline) {
 
-        SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
 
         restClient = new SearchIndexRestClientBuilder()
-            .searchServiceName(parts.getServiceName())
+            .endpoint(endpoint)
             .indexName(indexName)
-            .searchDnsSuffix(parts.getDnsSuffix())
             .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
             .serializer(SERIALIZER)
@@ -167,11 +163,7 @@ public final class SearchIndexAsyncClient {
     }
 
     Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
-        try {
-            return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), context);
     }
 
     /**
@@ -223,11 +215,7 @@ public final class SearchIndexAsyncClient {
     }
 
     Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
-        try {
-            return this.indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), context);
     }
 
     /**
@@ -281,11 +269,7 @@ public final class SearchIndexAsyncClient {
     }
 
     Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
-        try {
-            return this.indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD), context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD), context);
     }
 
     /**
@@ -323,11 +307,7 @@ public final class SearchIndexAsyncClient {
     }
 
     Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
-        try {
-            return this.indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), context);
     }
 
     /**
@@ -471,7 +451,7 @@ public final class SearchIndexAsyncClient {
             return restClient.documents()
                 .getWithRestResponseAsync(key, selectedFields, requestOptions, context)
                 .map(res -> {
-                    SearchDocument doc = res.getValue();
+                    SearchDocument doc = new SearchDocument(res.getValue());
                     DocumentResponseConversions.cleanupDocument(doc);
                     return new SimpleResponse<>(res, doc);
                 })

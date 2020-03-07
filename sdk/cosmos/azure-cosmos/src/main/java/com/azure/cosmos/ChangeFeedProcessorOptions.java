@@ -28,6 +28,9 @@ public class ChangeFeedProcessorOptions {
     private int maxScaleCount;
     private boolean discardExistingLeases;
 
+    /**
+     * Instantiates a new Change feed processor options.
+     */
     public ChangeFeedProcessorOptions() {
         this.maxItemCount = 100;
         this.startFromBeginning = false;

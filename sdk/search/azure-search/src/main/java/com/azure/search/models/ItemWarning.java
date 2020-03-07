@@ -24,7 +24,7 @@ public final class ItemWarning {
      * The message describing the warning that occurred while processing the
      * item.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*

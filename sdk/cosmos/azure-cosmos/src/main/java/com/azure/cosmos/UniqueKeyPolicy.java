@@ -5,7 +5,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Constants;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,6 +14,9 @@ import java.util.List;
 public class UniqueKeyPolicy extends JsonSerializable {
     private List<UniqueKey> uniqueKeys;
 
+    /**
+     * Instantiates a new Unique key policy.
+     */
     public UniqueKeyPolicy() {
         super();
     }

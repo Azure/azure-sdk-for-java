@@ -3,8 +3,6 @@
 
 package com.azure.cosmos;
 
-import org.apache.commons.text.WordUtils;
-
 /**
  * These are the indexing types available for indexing a path in the Azure Cosmos DB database service.
  * For additional details, refer to

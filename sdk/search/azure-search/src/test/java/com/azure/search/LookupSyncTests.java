@@ -517,31 +517,31 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                     .setRetrievable(true),
                 new Field()
                     .setName("Bools")
-                    .setType(DataType.Collection(DataType.EDM_BOOLEAN))
+                    .setType(DataType.collection(DataType.EDM_BOOLEAN))
                     .setRetrievable(true),
                 new Field()
                     .setName("Dates")
-                    .setType(DataType.Collection(DataType.EDM_DATE_TIME_OFFSET))
+                    .setType(DataType.collection(DataType.EDM_DATE_TIME_OFFSET))
                     .setRetrievable(true),
                 new Field()
                     .setName("Doubles")
-                    .setType(DataType.Collection(DataType.EDM_DOUBLE))
+                    .setType(DataType.collection(DataType.EDM_DOUBLE))
                     .setRetrievable(true),
                 new Field()
                     .setName("Points")
-                    .setType(DataType.Collection(DataType.EDM_GEOGRAPHY_POINT))
+                    .setType(DataType.collection(DataType.EDM_GEOGRAPHY_POINT))
                     .setRetrievable(true),
                 new Field()
                     .setName("Ints")
-                    .setType(DataType.Collection(DataType.EDM_INT32))
+                    .setType(DataType.collection(DataType.EDM_INT32))
                     .setRetrievable(true),
                 new Field()
                     .setName("Longs")
-                    .setType(DataType.Collection(DataType.EDM_INT64))
+                    .setType(DataType.collection(DataType.EDM_INT64))
                     .setRetrievable(true),
                 new Field()
                     .setName("Strings")
-                    .setType(DataType.Collection(DataType.EDM_STRING))
+                    .setType(DataType.collection(DataType.EDM_STRING))
                     .setRetrievable(true)
             ));
 

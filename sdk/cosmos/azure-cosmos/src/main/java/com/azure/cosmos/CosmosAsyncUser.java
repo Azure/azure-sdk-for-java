@@ -8,6 +8,9 @@ import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
+/**
+ * The type Cosmos async user.
+ */
 public class CosmosAsyncUser {
     private final CosmosAsyncDatabase database;
     private String id;
@@ -82,8 +85,9 @@ public class CosmosAsyncUser {
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the created permission or an error.
      */
-    public Mono<CosmosAsyncPermissionResponse> createPermission(CosmosPermissionProperties permissionSettings,
-                                                                CosmosPermissionRequestOptions options) {
+    public Mono<CosmosAsyncPermissionResponse> createPermission(
+        CosmosPermissionProperties permissionSettings,
+        CosmosPermissionRequestOptions options) {
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }
@@ -105,8 +109,9 @@ public class CosmosAsyncUser {
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the upserted permission or an error.
      */
-    public Mono<CosmosAsyncPermissionResponse> upsertPermission(CosmosPermissionProperties permissionSettings,
-                                                                CosmosPermissionRequestOptions options) {
+    public Mono<CosmosAsyncPermissionResponse> upsertPermission(
+        CosmosPermissionProperties permissionSettings,
+        CosmosPermissionRequestOptions options) {
         Permission permission = permissionSettings.getV2Permissions();
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
@@ -126,16 +131,17 @@ public class CosmosAsyncUser {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an 
+     * error.
      */
     public CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(FeedOptions options) {
         return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
-                                .readPermissions(getLink(), options)
-                                .map(response -> BridgeInternal.createFeedResponse(
-                                    CosmosPermissionProperties.getFromV2Results(response.getResults()),
-                                    response.getResponseHeaders()));
+                       .readPermissions(getLink(), options)
+                       .map(response -> BridgeInternal.createFeedResponse(
+                           CosmosPermissionProperties.getFromV2Results(response.getResults()),
+                           response.getResponseHeaders()));
         });
     }
 
@@ -147,7 +153,8 @@ public class CosmosAsyncUser {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained permissions or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained permissions or
+     * an error.
      */
     public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query) {
         return queryPermissions(query, new FeedOptions());
@@ -162,16 +169,17 @@ public class CosmosAsyncUser {
      *
      * @param query the query.
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained permissions or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained permissions or
+     * an error.
      */
     public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query, FeedOptions options) {
         return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
-                                .queryPermissions(getLink(), query, options)
-                                .map(response -> BridgeInternal.createFeedResponse(
-                                    CosmosPermissionProperties.getFromV2Results(response.getResults()),
-                                    response.getResponseHeaders()));
+                       .queryPermissions(getLink(), query, options)
+                       .map(response -> BridgeInternal.createFeedResponse(
+                           CosmosPermissionProperties.getFromV2Results(response.getResults()),
+                           response.getResponseHeaders()));
         });
     }
 
