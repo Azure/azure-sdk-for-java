@@ -1,5 +1,8 @@
 # Release History
 
+## 1.4.0-beta.1 (Unreleased)
+
+
 ## 1.3.0 (2020-03-06)
 
 - Enhanced and extended 'PagedIterable' implementation to cover additional use cases.
