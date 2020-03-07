@@ -43,6 +43,7 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -114,6 +115,7 @@ class EventHubProducerAsyncClientTest {
     private EventHubConnectionProcessor connectionProcessor;
     private TracerProvider tracerProvider;
     private ConnectionOptions connectionOptions;
+    private final Scheduler testScheduler = Schedulers.newSingle("test");
 
     @BeforeAll
     static void beforeAll() {
@@ -132,7 +134,7 @@ class EventHubProducerAsyncClientTest {
         tracerProvider = new TracerProvider(Collections.emptyList());
         connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
+            ProxyOptions.SYSTEM_DEFAULTS, testScheduler);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -141,7 +143,7 @@ class EventHubProducerAsyncClientTest {
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getEntityPath(), connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
+            tracerProvider, messageSerializer, testScheduler, false, onClientClosed);
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
         when(sendLink2.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
@@ -150,6 +152,7 @@ class EventHubProducerAsyncClientTest {
 
     @AfterEach
     void teardown() {
+        testScheduler.dispose();
         Mockito.framework().clearInlineMocks();
         sendLink = null;
         connection = null;
