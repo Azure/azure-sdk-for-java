@@ -5,7 +5,9 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.model.CosmosAsyncPermissionResponse;
+import com.azure.cosmos.model.CosmosAsyncUserResponse;
 import com.azure.cosmos.model.CosmosPermissionProperties;
+import com.azure.cosmos.model.CosmosUserProperties;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
@@ -51,7 +53,7 @@ public class CosmosAsyncUser {
     public Mono<CosmosAsyncUserResponse> read() {
         return this.database.getDocClientWrapper()
                    .readUser(getLink(), null)
-                   .map(response -> new CosmosAsyncUserResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, database)).single();
     }
 
     /**
@@ -62,8 +64,8 @@ public class CosmosAsyncUser {
      */
     public Mono<CosmosAsyncUserResponse> replace(CosmosUserProperties userSettings) {
         return this.database.getDocClientWrapper()
-                   .replaceUser(userSettings.getV2User(), null)
-                   .map(response -> new CosmosAsyncUserResponse(response, database)).single();
+                   .replaceUser(ModelBridgeInternal.getV2User(userSettings), null)
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, database)).single();
     }
 
     /**
@@ -74,7 +76,7 @@ public class CosmosAsyncUser {
     public Mono<CosmosAsyncUserResponse> delete() {
         return this.database.getDocClientWrapper()
                    .deleteUser(getLink(), null)
-                   .map(response -> new CosmosAsyncUserResponse(response, database)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, database)).single();
     }
 
     /**

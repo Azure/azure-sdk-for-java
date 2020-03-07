@@ -4,7 +4,9 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.model.CosmosAsyncContainerResponse;
+import com.azure.cosmos.model.CosmosAsyncUserResponse;
 import com.azure.cosmos.model.CosmosContainerProperties;
+import com.azure.cosmos.model.CosmosUserProperties;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 

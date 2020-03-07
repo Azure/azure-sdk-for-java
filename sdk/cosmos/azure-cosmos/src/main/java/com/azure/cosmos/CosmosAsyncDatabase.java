@@ -8,7 +8,9 @@ import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.model.CosmosAsyncContainerResponse;
 import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.model.CosmosAsyncUserResponse;
 import com.azure.cosmos.model.CosmosContainerProperties;
+import com.azure.cosmos.model.CosmosUserProperties;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.Exceptions;
@@ -458,8 +460,8 @@ public class CosmosAsyncDatabase {
      * created cosmos user or an error.
      */
     public Mono<CosmosAsyncUserResponse> createUser(CosmosUserProperties userProperties) {
-        return getDocClientWrapper().createUser(this.getLink(), userProperties.getV2User(), null)
-                   .map(response -> new CosmosAsyncUserResponse(response, this)).single();
+        return getDocClientWrapper().createUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, this)).single();
     }
 
 
@@ -475,8 +477,8 @@ public class CosmosAsyncDatabase {
      * upserted user or an error.
      */
     public Mono<CosmosAsyncUserResponse> upsertUser(CosmosUserProperties userProperties) {
-        return getDocClientWrapper().upsertUser(this.getLink(), userProperties.getV2User(), null)
-                   .map(response -> new CosmosAsyncUserResponse(response, this)).single();
+        return getDocClientWrapper().upsertUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, this)).single();
     }
 
     /**
@@ -509,7 +511,7 @@ public class CosmosAsyncDatabase {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readUsers(getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           CosmosUserProperties.getFromV2Results(response.getResults()), response
+                           ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()), response
                                                                                              .getResponseHeaders()));
         });
     }
@@ -577,7 +579,7 @@ public class CosmosAsyncDatabase {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryUsers(getLink(), querySpec, options)
                        .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
-                           CosmosUserProperties.getFromV2Results(response.getResults()), response.getResponseHeaders(),
+                           ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()), response.getResponseHeaders(),
                            response.queryMetrics()));
         });
     }

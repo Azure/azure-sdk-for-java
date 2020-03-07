@@ -585,4 +585,8 @@ public class BridgeInternal {
     public static CosmosAsyncUserDefinedFunction createCosmosAsyncUserDefinedFunction(String id, CosmosAsyncContainer container) {
         return new CosmosAsyncUserDefinedFunction(id, container);
     }
+
+    public static CosmosAsyncUser createCosmosAsyncUser(String id, CosmosAsyncDatabase database) {
+        return new CosmosAsyncUser(id, database);
+    }
 }

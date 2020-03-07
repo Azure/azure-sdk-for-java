@@ -9,6 +9,7 @@ import com.azure.cosmos.model.CosmosAsyncPermissionResponse;
 import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
 import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.model.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.model.CosmosAsyncUserResponse;
 import org.assertj.core.api.Assertions;
 
 import java.util.ArrayList;
