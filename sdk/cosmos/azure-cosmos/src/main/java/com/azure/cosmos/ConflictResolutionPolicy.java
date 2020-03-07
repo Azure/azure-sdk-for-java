@@ -109,14 +109,14 @@ public class ConflictResolutionPolicy extends JsonSerializable {
      * <li>The user can provide the stored procedure @see {@link Resource#getId()} </li>
      * </ul>
      *
-     * @param conflictResolutionSprocName stored procedure to perform conflict resolution.
+     * @param conflictResolutionStoredProcName stored procedure to perform conflict resolution.
      * @return ConflictResolutionPolicy.
      */
-    public static ConflictResolutionPolicy createCustomPolicy(String conflictResolutionSprocName) {
+    public static ConflictResolutionPolicy createCustomPolicy(String conflictResolutionStoredProcName) {
         ConflictResolutionPolicy policy = new ConflictResolutionPolicy();
         policy.setMode(ConflictResolutionMode.CUSTOM);
-        if (conflictResolutionSprocName != null) {
-            policy.setConflictResolutionProcedure(conflictResolutionSprocName);
+        if (conflictResolutionStoredProcName != null) {
+            policy.setConflictResolutionProcedure(conflictResolutionStoredProcName);
         }
         return policy;
     }
@@ -141,6 +141,11 @@ public class ConflictResolutionPolicy extends JsonSerializable {
     ConflictResolutionPolicy() {
     }
 
+    /**
+     * Instantiates a new Conflict resolution policy.
+     *
+     * @param jsonString the json string
+     */
     public ConflictResolutionPolicy(String jsonString) {
         super(jsonString);
     }

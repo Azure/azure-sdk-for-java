@@ -26,7 +26,7 @@ public final class AutocompleteResult {
     /*
      * The list of returned Autocompleted items.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<AutocompleteItem> results;
 
     /**

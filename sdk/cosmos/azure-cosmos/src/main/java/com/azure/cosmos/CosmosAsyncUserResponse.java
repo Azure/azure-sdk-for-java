@@ -7,6 +7,9 @@ import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.User;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * The type Cosmos async user response. Contains methods to get cosmos user and properties
+ */
 public class CosmosAsyncUserResponse extends CosmosResponse<CosmosUserProperties> {
     @SuppressWarnings("EnforceFinalFields")
     private final CosmosAsyncUser user;

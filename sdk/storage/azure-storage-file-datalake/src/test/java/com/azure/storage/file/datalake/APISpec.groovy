@@ -660,11 +660,11 @@ class APISpec extends Specification {
 
     def entryIsInAcl(PathAccessControlEntry entry, List<PathAccessControlEntry> acl) {
         for (PathAccessControlEntry e : acl) {
-            if (e.defaultScope() == entry.defaultScope() &&
-                e.accessControlType().equals(entry.accessControlType()) &&
-                (e.entityID() == null && entry.entityID() == null ||
-                    e.entityID().equals(entry.entityID())) &&
-                e.permissions().equals(entry.permissions())) {
+            if (e.isInDefaultScope() == entry.isInDefaultScope() &&
+                e.getAccessControlType().equals(entry.getAccessControlType()) &&
+                (e.getEntityID() == null && entry.getEntityID() == null ||
+                    e.getEntityID().equals(entry.getEntityID())) &&
+                e.getPermissions().equals(entry.getPermissions())) {
                 return true
             }
         }

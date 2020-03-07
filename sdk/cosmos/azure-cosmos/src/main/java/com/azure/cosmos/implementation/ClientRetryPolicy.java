@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosResponseDiagnostics;
-import com.azure.cosmos.RetryOptions;
+import com.azure.cosmos.ThrottlingRetryOptions;
 import org.apache.commons.collections4.list.UnmodifiableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,11 +44,11 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     public ClientRetryPolicy(GlobalEndpointManager globalEndpointManager,
                              boolean enableEndpointDiscovery,
-                             RetryOptions retryOptions) {
+                             ThrottlingRetryOptions throttlingRetryOptions) {
 
         this.throttlingRetry = new ResourceThrottleRetryPolicy(
-                retryOptions.getMaxRetryAttemptsOnThrottledRequests(),
-                retryOptions.getMaxRetryWaitTimeInSeconds());
+                throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
+                throttlingRetryOptions.getMaxRetryWaitTimeInSeconds());
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
         this.enableEndpointDiscovery = enableEndpointDiscovery;

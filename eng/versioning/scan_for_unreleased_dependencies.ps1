@@ -51,6 +51,13 @@ Get-ChildItem -Path $serviceDirectory -Filter pom*.xml -Recurse -File | ForEach-
                 $versionUpdateTag = $versionNode.NextSibling.Value.Trim()
                 if ($versionUpdateTag -match "{x-version-update;unreleased_$($groupId)")
                 {
+                    # before reporting an error, check to see if there's a scope element and
+                    # if the scope is test then don't fail
+                    $scopeNode = $dependencyNode.GetElementsByTagName("scope")[0]
+                    if ($scopeNode -and $scopeNode.InnerText.Trim() -eq "test")
+                    {
+                        continue
+                    }
                     $script:FoundError = $true
                     Write-Error-With-Color "Error: Cannot release libraries with unreleased dependencies. dependency=$($versionUpdateTag)"
                     continue

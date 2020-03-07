@@ -38,11 +38,11 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
     public void readTriggers() throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
+        options.setMaxItemCount(2);
 
         CosmosPagedFlux<CosmosTriggerProperties> feedObservable = createdCollection.getScripts().readAllTriggers(options);
         int maxItemCount = 2;
-        int expectedPageSize = (createdTriggers.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (createdTriggers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
                 .totalSize(createdTriggers.size())

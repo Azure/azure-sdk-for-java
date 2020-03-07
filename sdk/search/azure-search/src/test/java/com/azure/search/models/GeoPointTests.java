@@ -3,12 +3,12 @@
 
 package com.azure.search.models;
 
-import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.Context;
 import com.azure.search.SearchIndexClient;
 import com.azure.search.SearchIndexClientTestBase;
-import com.azure.search.SearchPagedResponse;
+import com.azure.search.util.SearchPagedResponse;
 import com.azure.search.implementation.SerializationUtil;
+import com.azure.search.util.SearchPagedIterable;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
@@ -54,7 +54,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
 
         uploadDocuments();
         SearchOptions searchOptions = new SearchOptions().setFilter("HotelId eq '1'");
-        PagedIterableBase<SearchResult, SearchPagedResponse> results = client.search("Location",
+        SearchPagedIterable results = client.search("Location",
             searchOptions, new RequestOptions(), Context.NONE);
         assertNotNull(results);
 
@@ -105,13 +105,13 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         assertTrue(indexResult.getResults().get(0).isSucceeded());
     }
 
-    private List<Map<String, Object>> getSearchResults(PagedIterableBase<SearchResult, SearchPagedResponse> results) {
+    private List<Map<String, Object>> getSearchResults(SearchPagedIterable results) {
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
         List<Map<String, Object>> searchResults = new ArrayList<>();
         while (iterator.hasNext()) {
             SearchPagedResponse result = iterator.next();
-            assertNotNull(result.getItems());
-            result.getItems().forEach(item -> searchResults.add(item.getDocument()));
+            assertNotNull(result.getElements());
+            result.getElements().forEach(item -> searchResults.add(item.getDocument()));
         }
 
         return searchResults;

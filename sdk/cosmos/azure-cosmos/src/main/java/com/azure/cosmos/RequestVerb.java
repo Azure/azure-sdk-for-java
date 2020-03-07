@@ -4,6 +4,9 @@
 
 package com.azure.cosmos;
 
+/**
+ * The enum RequestVerb.
+ */
 public enum  RequestVerb {
 
     GET("GET"),
@@ -23,7 +26,7 @@ public enum  RequestVerb {
      * e.g, get, put, post, delete, head
      * @return lower case form of the verb
      */
-    public String toLowerCase() {
+    String toLowerCase() {
         return lowerCaseStringValue;
     }
 

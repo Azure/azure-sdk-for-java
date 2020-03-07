@@ -22,10 +22,18 @@ public final class ChangeFeedOptions {
     private final boolean populateQueryMetrics;
     private Map<String, Object> properties;
 
+    /**
+     * Instantiates a new Change feed options.
+     */
     public ChangeFeedOptions() {
         this.populateQueryMetrics = false;
     }
 
+    /**
+     * Instantiates a new Change feed options.
+     *
+     * @param options the options
+     */
     public ChangeFeedOptions(ChangeFeedOptions options) {
         this.partitionKeyRangeId = options.partitionKeyRangeId;
         this.startFromBeginning = options.startFromBeginning;
@@ -75,7 +83,7 @@ public final class ChangeFeedOptions {
      * @return a boolean value indicating change feed should start from beginning or
      * not
      */
-    public boolean getStartFromBeginning() {
+    public boolean isStartFromBeginning() {
         return startFromBeginning;
     }
 

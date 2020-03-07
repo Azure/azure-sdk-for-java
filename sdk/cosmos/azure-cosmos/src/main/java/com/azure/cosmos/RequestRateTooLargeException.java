@@ -11,12 +11,26 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import java.net.URI;
 import java.util.Map;
 
+/**
+ * The type Request rate too large exception.
+ */
 public class RequestRateTooLargeException extends CosmosClientException {
 
+    /**
+     * Instantiates a new Request rate too large exception.
+     */
     public RequestRateTooLargeException() {
         this(RMResources.TooManyRequests, null);
     }
 
+    /**
+     * Instantiates a new Request rate too large exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public RequestRateTooLargeException(CosmosError cosmosError,
                                         long lsn,
                                         String partitionKeyRangeId,
@@ -40,6 +54,13 @@ public class RequestRateTooLargeException extends CosmosClientException {
         this(RMResources.TooManyRequests, innerException, null, null);
     }
 
+    /**
+     * Instantiates a new Request rate too large exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUri the request uri
+     */
     public RequestRateTooLargeException(String message, HttpHeaders headers, URI requestUri) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
             requestUri != null ? requestUri.toString() : null);

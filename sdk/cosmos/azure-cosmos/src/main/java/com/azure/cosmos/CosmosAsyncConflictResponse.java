@@ -6,6 +6,9 @@ import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ResourceResponse;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * The type Cosmos async conflict response.
+ */
 public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictProperties> {
     private final CosmosAsyncContainer container;
     private final CosmosAsyncConflict conflictClient;

@@ -555,6 +555,7 @@ public final class AzurePath implements Path {
 
         String blobName = this.withoutRoot();
         if (blobName.isEmpty()) {
+<<<<<<< HEAD
             throw new IOException("Cannot get a blob client to a path that only contains the root or is an empty path");
         }
 
@@ -566,6 +567,12 @@ public final class AzurePath implements Path {
      */
     boolean isRoot() {
         return this.equals(this.getRoot());
+=======
+            throw new IOException("Cannot get a blob client to a path that only contains the root");
+        }
+
+        return containerClient.getBlobClient(blobName);
+>>>>>>> upstream/master
     }
 
     private String withoutRoot() {

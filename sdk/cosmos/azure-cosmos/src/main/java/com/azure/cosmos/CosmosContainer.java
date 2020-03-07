@@ -193,7 +193,8 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public <T> CosmosItemResponse<T> upsertItem(Object item, CosmosItemRequestOptions options) throws CosmosClientException {
+    public <T> CosmosItemResponse<T> upsertItem(Object item, CosmosItemRequestOptions options) throws
+        CosmosClientException {
         return (CosmosItemResponse<T>) this.mapItemResponseAndBlock(this.asyncContainer.upsertItem(item, options));
     }
 
@@ -204,11 +205,12 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    <T> CosmosItemResponse<T> mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse<T>> itemMono) throws CosmosClientException {
+    <T> CosmosItemResponse<T> mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse<T>> itemMono) throws
+        CosmosClientException {
         try {
             return (CosmosItemResponse<T>) itemMono
-                       .map(this::convertResponse)
-                       .block();
+                                               .map(this::convertResponse)
+                                               .block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
@@ -240,11 +242,11 @@ public class CosmosContainer {
      *
      * @param <T> the type parameter
      * @param options the options
-     * @param klass the klass
+     * @param classType the classType
      * @return the {@link CosmosPagedIterable}
      */
-    public <T> CosmosPagedIterable<T> readAllItems(FeedOptions options, Class<T> klass) {
-        return getCosmosPagedIterable(this.asyncContainer.readAllItems(options, klass));
+    public <T> CosmosPagedIterable<T> readAllItems(FeedOptions options, Class<T> classType) {
+        return getCosmosPagedIterable(this.asyncContainer.readAllItems(options, classType));
     }
 
     /**
@@ -253,11 +255,11 @@ public class CosmosContainer {
      * @param <T> the type parameter
      * @param query the query
      * @param options the options
-     * @param klass the class type
+     * @param classType the class type
      * @return the {@link CosmosPagedIterable}
      */
-    public <T> CosmosPagedIterable<T> queryItems(String query, FeedOptions options, Class<T> klass) {
-        return getCosmosPagedIterable(this.asyncContainer.queryItems(query, options, klass));
+    public <T> CosmosPagedIterable<T> queryItems(String query, FeedOptions options, Class<T> classType) {
+        return getCosmosPagedIterable(this.asyncContainer.queryItems(query, options, classType));
     }
 
     /**
@@ -266,11 +268,11 @@ public class CosmosContainer {
      * @param <T> the type parameter
      * @param querySpec the query spec
      * @param options the options
-     * @param klass the class type
+     * @param classType the class type
      * @return the {@link CosmosPagedIterable}
      */
-    public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
-        return getCosmosPagedIterable(this.asyncContainer.queryItems(querySpec, options, klass));
+    public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> classType) {
+        return getCosmosPagedIterable(this.asyncContainer.queryItems(querySpec, options, classType));
     }
 
     /**
@@ -283,7 +285,8 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) throws CosmosClientException {
+    public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) throws
+        CosmosClientException {
         return this.mapItemResponseAndBlock(asyncContainer.readItem(itemId,
                                                                     partitionKey,
                                                                     new CosmosItemRequestOptions(),
@@ -301,8 +304,9 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey,
-                                          CosmosItemRequestOptions options, Class<T> itemType) throws CosmosClientException {
+    public <T> CosmosItemResponse<T> readItem(
+        String itemId, PartitionKey partitionKey,
+        CosmosItemRequestOptions options, Class<T> itemType) throws CosmosClientException {
         return this.mapItemResponseAndBlock(asyncContainer.readItem(itemId, partitionKey, options, itemType));
     }
 

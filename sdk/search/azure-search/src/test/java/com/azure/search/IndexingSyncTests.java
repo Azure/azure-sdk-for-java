@@ -146,20 +146,20 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        List<Document> docs = new ArrayList<>();
+        List<SearchDocument> docs = new ArrayList<>();
 
 
-        Document document = new Document();
-        document.put("HotelId", "1");
-        document.put("Category", "Luxury");
-        docs.add(document);
+        SearchDocument searchDocument = new SearchDocument();
+        searchDocument.put("HotelId", "1");
+        searchDocument.put("Category", "Luxury");
+        docs.add(searchDocument);
 
         client.uploadDocuments(docs);
 
         waitForIndexing();
         assertEquals(1, client.getDocumentCount());
 
-        document.put("Category", "ignored");
+        searchDocument.put("Category", "ignored");
         IndexDocumentsResult documentIndexResult = client.deleteDocuments(docs);
         waitForIndexing();
 
@@ -217,13 +217,13 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        Document hotel1 = prepareDynamicallyTypedHotel("1");
-        Document hotel2 = prepareDynamicallyTypedHotel("2");
-        Document hotel3 = prepareDynamicallyTypedHotel("3");
-        Document nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
-        Document randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
+        SearchDocument hotel1 = prepareDynamicallyTypedHotel("1");
+        SearchDocument hotel2 = prepareDynamicallyTypedHotel("2");
+        SearchDocument hotel3 = prepareDynamicallyTypedHotel("3");
+        SearchDocument nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
+        SearchDocument randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexBatch<Document> batch = new IndexBatch<Document>()
+        IndexBatch<SearchDocument> batch = new IndexBatch<SearchDocument>()
             .addUploadAction(hotel1)
             .addDeleteAction(randomHotel)
             .addMergeAction(nonExistingHotel)
@@ -246,13 +246,13 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
             fail(String.format("indexing failed with an unexpected Exception: %s", ex.getMessage()));
         }
 
-        Document actualHotel1 = client.getDocument(hotel1.get("HotelId").toString());
+        SearchDocument actualHotel1 = client.getDocument(hotel1.get("HotelId").toString());
         assertEquals(hotel1, actualHotel1);
 
-        Document actualHotel2 = client.getDocument(hotel2.get("HotelId").toString());
+        SearchDocument actualHotel2 = client.getDocument(hotel2.get("HotelId").toString());
         assertEquals(hotel2, actualHotel2);
 
-        Document actualHotel3 = client.getDocument(hotel3.get("HotelId").toString());
+        SearchDocument actualHotel3 = client.getDocument(hotel3.get("HotelId").toString());
         assertEquals(hotel3, actualHotel3);
     }
 
@@ -261,8 +261,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        List<Document> docs = new ArrayList<>();
-        docs.add(new Document());
+        List<SearchDocument> docs = new ArrayList<>();
+        docs.add(new SearchDocument());
 
         assertHttpResponseException(
             () -> client.uploadDocuments(docs),
@@ -296,7 +296,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
         client.uploadDocuments(docs);
 
-        Document actual = client.getDocument("1");
+        SearchDocument actual = client.getDocument("1");
         assertNotNull(actual);
     }
 
@@ -311,7 +311,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         waitForIndexing();
 
         for (Hotel expected : boundaryConditionDocs) {
-            Document doc = client.getDocument(expected.hotelId());
+            SearchDocument doc = client.getDocument(expected.hotelId());
             Hotel actual = convertToType(doc, Hotel.class);
             TestHelpers.assertHotelsEqual(expected, actual);
         }
@@ -347,11 +347,11 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         client.uploadDocuments(books);
         waitForIndexing();
 
-        Document actualBook1 = client.getDocument("1");
+        SearchDocument actualBook1 = client.getDocument("1");
         assertEquals(utcTime, actualBook1.get("PublishDate"));
 
         // Azure Cognitive Search normalizes to UTC, so we compare instants
-        Document actualBook2 = client.getDocument("2");
+        SearchDocument actualBook2 = client.getDocument("2");
         assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC), ((OffsetDateTime) actualBook2.get("PublishDate")).withOffsetSameInstant(ZoneOffset.UTC));
     }
 
@@ -377,11 +377,11 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
         client.uploadDocuments(books);
 
-        Document actualBook1 = client.getDocument("1");
+        SearchDocument actualBook1 = client.getDocument("1");
         assertEquals(books.get(0).publishDate(), convertToType(actualBook1, Book.class).publishDate());
 
         // Azure Cognitive Search normalizes to UTC, so we compare instants
-        Document actualBook2 = client.getDocument("2");
+        SearchDocument actualBook2 = client.getDocument("2");
         assertEquals(books.get(1).publishDate().withOffsetSameInstant(ZoneOffset.UTC), convertToType(actualBook2, Book.class).publishDate().withOffsetSameInstant(ZoneOffset.UTC));
     }
 
@@ -625,7 +625,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         client.mergeDocuments(updatedDocs);
         waitForIndexing();
 
-        Document result = client.getDocument("1");
+        SearchDocument result = client.getDocument("1");
         LoudHotel actualDoc = convertToType(result, LoudHotel.class);
         TestHelpers.assertLoudHotelsEqual(expectedDoc, actualDoc);
 
@@ -642,7 +642,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         createHotelIndex();
         client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
 
-        Document originalDoc = new Document();
+        SearchDocument originalDoc = new SearchDocument();
         originalDoc.put("HotelId", "1");
         originalDoc.put("HotelName", "Secret Point Motel");
         originalDoc.put("Description", "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.");
@@ -655,7 +655,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         originalDoc.put("Rating", 4);
         originalDoc.put("Location", GeoPoint.create(40.760586, -73.965403));
 
-        Document originalAddress = new Document();
+        SearchDocument originalAddress = new SearchDocument();
         originalAddress.put("StreetAddress", "677 5th Ave");
         originalAddress.put("City", "New York");
         originalAddress.put("StateProvince", "NY");
@@ -663,7 +663,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         originalAddress.put("Country", "USA");
         originalDoc.put("Address", originalAddress);
 
-        Document originalRoom1 = new Document();
+        SearchDocument originalRoom1 = new SearchDocument();
         originalRoom1.put("Description", "Budget Room, 1 Queen Bed (Cityside)");
         originalRoom1.put("Description_fr", "Chambre Économique, 1 grand lit (côté ville)");
         originalRoom1.put("Type", "Budget Room");
@@ -673,7 +673,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         originalRoom1.put("SmokingAllowed", true);
         originalRoom1.put("Tags", Collections.singletonList("vcr/dvd"));
 
-        Document originalRoom2 = new Document();
+        SearchDocument originalRoom2 = new SearchDocument();
         originalRoom2.put("Description", "Budget Room, 1 King Bed (Mountain View)");
         originalRoom2.put("Description_fr", "Chambre Économique, 1 très grand lit (Mountain View)");
         originalRoom2.put("Type", "Budget Room");
@@ -685,7 +685,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
         originalDoc.put("Rooms", Arrays.asList(originalRoom1, originalRoom2));
 
-        Document updatedDoc = new Document();
+        SearchDocument updatedDoc = new SearchDocument();
         updatedDoc.put("HotelId", "1");
         updatedDoc.put("Description", null);
         updatedDoc.put("Category", "Economy");
@@ -694,9 +694,9 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         updatedDoc.put("LastRenovationDate", null);
         updatedDoc.put("Rating", 3);
         updatedDoc.put("Location", null);
-        updatedDoc.put("Address", new Document());
+        updatedDoc.put("Address", new SearchDocument());
 
-        Document updatedRoom1 = new Document();
+        SearchDocument updatedRoom1 = new SearchDocument();
         updatedRoom1.put("Description", null);
         updatedRoom1.put("Type", "Budget Room");
         updatedRoom1.put("BaseRate", 10.5);
@@ -706,7 +706,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         updatedRoom1.put("Tags", Arrays.asList("vcr/dvd", "balcony"));
         updatedDoc.put("Rooms", Collections.singletonList(updatedRoom1));
 
-        Document expectedDoc = new Document();
+        SearchDocument expectedDoc = new SearchDocument();
         expectedDoc.put("HotelId", "1");
         expectedDoc.put("HotelName", "Secret Point Motel");
         expectedDoc.put("Description", null);
@@ -743,17 +743,17 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         expectedRooms.add(expectedRoom);
         expectedDoc.put("Rooms", expectedRooms);
 
-        List<Document> originalDocs = new ArrayList<>();
+        List<SearchDocument> originalDocs = new ArrayList<>();
         originalDocs.add(originalDoc);
         client.mergeOrUploadDocuments(originalDocs);
         waitForIndexing();
 
-        List<Document> updatedDocs = new ArrayList<>();
+        List<SearchDocument> updatedDocs = new ArrayList<>();
         updatedDocs.add(updatedDoc);
         client.mergeDocuments(updatedDocs);
         waitForIndexing();
 
-        Document actualDoc = client.getDocument("1");
+        SearchDocument actualDoc = client.getDocument("1");
         assertEquals(expectedDoc, actualDoc);
 
         client.mergeOrUploadDocuments(originalDocs);
@@ -831,10 +831,10 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         result = batchResponse.getValue();
         assertEquals(4, result.getResults().size());
 
-        Response<Document> documentResponse = client.getDocumentWithResponse("3",
+        Response<SearchDocument> documentResponse = client.getDocumentWithResponse("3",
             null, generateRequestOptions(), Context.NONE);
         assertEquals(200, documentResponse.getStatusCode());
-        Document doc = documentResponse.getValue();
+        SearchDocument doc = documentResponse.getValue();
         assertEquals(4, doc.get("Rating"));
 
         Response<Long> countResponse = client.getDocumentCountWithResponse(Context.NONE);
@@ -870,9 +870,9 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
             );
     }
 
-    Document prepareDynamicallyTypedHotel(String hotelId) {
+    SearchDocument prepareDynamicallyTypedHotel(String hotelId) {
 
-        Document room1 = new Document();
+        SearchDocument room1 = new SearchDocument();
         room1.put("Description", "Budget Room, 1 Queen Bed");
         room1.put("Description_fr", null);
         room1.put("Type", "Budget Room");
@@ -882,7 +882,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         room1.put("SmokingAllowed", true);
         room1.put("Tags", Arrays.asList("vcr/dvd", "great view"));
 
-        Document room2 = new Document();
+        SearchDocument room2 = new SearchDocument();
         room2.put("Description", "Budget Room, 1 King Bed");
         room2.put("Description_fr", null);
         room2.put("Type", "Budget Room");
@@ -892,9 +892,9 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         room2.put("SmokingAllowed", true);
         room2.put("Tags", Arrays.asList("vcr/dvd", "seaside view"));
 
-        List<Document> rooms = Arrays.asList(room1, room2);
+        List<SearchDocument> rooms = Arrays.asList(room1, room2);
 
-        Document address = new Document();
+        SearchDocument address = new SearchDocument();
         address.put("StreetAddress", "One Microsoft way");
         address.put("City", "Redmond");
         address.put("StateProvince", "Washington");
@@ -902,12 +902,12 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         address.put("Country", "US");
 
         // TODO (alzimmer): Determine if this should be used to create the hotel document.
-        Document location = new Document();
+        SearchDocument location = new SearchDocument();
         location.put("type", "Point");
         location.put("coordinates", Arrays.asList(-122.131577, 47.678581));
         location.put("crs", null);
 
-        Document hotel = new Document();
+        SearchDocument hotel = new SearchDocument();
         hotel.put("HotelId", hotelId);
         hotel.put("HotelName", "Fancy Stay Hotel");
         hotel.put("Description", "Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.");

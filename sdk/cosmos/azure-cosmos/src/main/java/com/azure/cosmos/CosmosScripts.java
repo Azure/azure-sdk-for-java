@@ -167,6 +167,8 @@ public class CosmosScripts {
                                              asyncScripts.getUserDefinedFunction(id));
     }
 
+    /* Trigger Operations */
+
     /**
      * Create trigger
      *
@@ -174,7 +176,6 @@ public class CosmosScripts {
      * @return the cosmos sync trigger response
      * @throws CosmosClientException the cosmos client exception
      */
-    /* Trigger Operations */
     public CosmosTriggerResponse createTrigger(CosmosTriggerProperties properties) throws CosmosClientException {
         return mapTriggerResponseAndBlock(asyncScripts.createTrigger(properties));
     }

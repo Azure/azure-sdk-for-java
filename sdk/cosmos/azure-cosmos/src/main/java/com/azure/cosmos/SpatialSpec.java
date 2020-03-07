@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * The type Spatial spec.
+ */
 public class SpatialSpec extends JsonSerializable {
 
     private List<SpatialType> spatialTypes;

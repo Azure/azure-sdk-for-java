@@ -51,7 +51,7 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
                 //this.clientCollectionCache.Refresh(clientException.ResourceAddress);
                 // TODO: this is blocking. is that fine?
                 if(this.feedOptions != null) {
-                    this.clientCollectionCache.refresh(collectionLink,this.feedOptions.properties());
+                    this.clientCollectionCache.refresh(collectionLink,this.feedOptions.getProperties());
                 } else {
                     this.clientCollectionCache.refresh(collectionLink,null);
                 }

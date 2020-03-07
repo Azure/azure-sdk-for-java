@@ -6,6 +6,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncItemResponse;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainerProperties;
 import com.azure.cosmos.CosmosPagedFlux;
@@ -30,7 +31,7 @@ public class BasicDemo {
 
     private void start() {
         // Get client
-        client = CosmosAsyncClient.cosmosClientBuilder()
+        client = new CosmosClientBuilder()
                      .setEndpoint(AccountSettings.HOST)
                      .setKey(AccountSettings.MASTER_KEY)
                      .buildAsyncClient();
@@ -128,11 +129,11 @@ public class BasicDemo {
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
         FeedOptions options = new FeedOptions();
-        options.populateQueryMetrics(true);
-        options.maxItemCount(1);
+        options.setPopulateQueryMetrics(true);
+        options.setMaxItemCount(1);
         String continuation = null;
         do {
-            options.requestContinuation(continuation);
+            options.setRequestContinuation(continuation);
             CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
             FeedResponse<TestObject> page = queryFlux.byPage().blockFirst();
             assert page != null;

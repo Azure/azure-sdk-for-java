@@ -27,6 +27,7 @@ import com.azure.search.models.ResourceCounter;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.ScoringProfile;
+import com.azure.search.models.SearchErrorException;
 import com.azure.search.models.ServiceCounters;
 import com.azure.search.models.ServiceLimits;
 import com.azure.search.models.ServiceStatistics;
@@ -113,11 +114,14 @@ public abstract class SearchServiceTestBase extends TestBase {
     @BeforeAll
     public static void beforeAll() {
         initializeAzureResources();
+        if (!playbackMode()) {
+            azureSearchResources.initialize();
+            azureSearchResources.createResourceGroup();
+        }
     }
 
     @AfterAll
     public static void afterAll() {
-        azureSearchResources.deleteResourceGroup();
     }
 
     @Override
@@ -125,8 +129,6 @@ public abstract class SearchServiceTestBase extends TestBase {
         searchDnsSuffix = testEnvironment.equals("DOGFOOD") ? DOGFOOD_DNS_SUFFIX : DEFAULT_DNS_SUFFIX;
 
         if (!interceptorManager.isPlaybackMode()) {
-            azureSearchResources.initialize();
-            azureSearchResources.createResourceGroup(testResourceNamer);
             azureSearchResources.createService(testResourceNamer);
             searchApiKeyCredential = new SearchApiKeyCredential(azureSearchResources.getSearchAdminKey());
         }
@@ -232,7 +234,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Tags")
-                    .setType(DataType.Collection(DataType.EDM_STRING))
+                    .setType(DataType.collection(DataType.EDM_STRING))
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
@@ -317,7 +319,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Rooms")
-                    .setType(DataType.Collection(DataType.EDM_COMPLEX_TYPE))
+                    .setType(DataType.collection(DataType.EDM_COMPLEX_TYPE))
                     .setFields(Arrays.asList(
                         new Field()
                             .setName("Description")
@@ -366,7 +368,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                             .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("Tags")
-                            .setType(DataType.Collection(DataType.EDM_STRING))
+                            .setType(DataType.collection(DataType.EDM_STRING))
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
@@ -461,7 +463,7 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     DataSource createTestSqlDataSourceObject(DataDeletionDetectionPolicy deletionDetectionPolicy,
         DataChangeDetectionPolicy changeDetectionPolicy) {
-        return DataSources.azureSql(
+        return DataSources.createFromAzureSql(
             SearchServiceTestBase.SQL_DATASOURCE_NAME,
             AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND,
             "GeoNamesRI",
@@ -492,7 +494,7 @@ public abstract class SearchServiceTestBase extends TestBase {
         }
 
         // create the new data source object for this storage account and container
-        return DataSources.azureBlobStorage(
+        return DataSources.createFromAzureBlobStorage(
             BLOB_DATASOURCE_NAME,
             storageConnString,
             blobContainerDatasourceName,
@@ -580,7 +582,7 @@ public abstract class SearchServiceTestBase extends TestBase {
      * @return a RequestOptions object with ClientRequestId.
      */
     protected RequestOptions generateRequestOptions() {
-        return new RequestOptions().setClientRequestId(UUID.randomUUID());
+        return new RequestOptions().setXMsClientRequestId(UUID.randomUUID());
     }
 
     void assertHttpResponseException(Runnable exceptionThrower, HttpResponseStatus expectedResponseStatus,
@@ -603,7 +605,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     private void verifyHttpResponseError(
         Throwable ex, HttpResponseStatus expectedResponseStatus, String expectedMessage) {
 
-        assertEquals(HttpResponseException.class, ex.getClass());
+        assertEquals(SearchErrorException.class, ex.getClass());
 
         if (expectedResponseStatus != null) {
             assertEquals(
@@ -638,6 +640,10 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     static boolean liveMode() {
         return setupTestMode() == TestMode.LIVE;
+    }
+
+    static boolean playbackMode() {
+        return setupTestMode() == TestMode.PLAYBACK;
     }
 
     static TestMode setupTestMode() {

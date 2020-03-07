@@ -13,13 +13,12 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
-import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.Permission;
 import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.User;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
@@ -53,14 +52,14 @@ public class PermissionQueryTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", filterId);
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(5);
+        options.setMaxItemCount(5);
         Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 
         List<Permission> expectedDocs = createdPermissions.stream().filter(sp -> filterId.equals(sp.getId()) ).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
-        int expectedPageSize = (expectedDocs.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<Permission> validator = new FeedResponseListValidator.Builder<Permission>()
                 .totalSize(expectedDocs.size())
@@ -77,7 +76,7 @@ public class PermissionQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        
+
         Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 
@@ -95,12 +94,12 @@ public class PermissionQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(3);
-        
+        options.setMaxItemCount(3);
+
         Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 
-        int expectedPageSize = (createdPermissions.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (createdPermissions.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<Permission> validator = new FeedResponseListValidator
                 .Builder<Permission>()
@@ -119,7 +118,7 @@ public class PermissionQueryTest extends TestSuiteBase {
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
-        
+
         Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 

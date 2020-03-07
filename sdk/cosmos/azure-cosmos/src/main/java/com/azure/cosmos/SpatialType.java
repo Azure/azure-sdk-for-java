@@ -3,9 +3,6 @@
 
 package com.azure.cosmos;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
-
 /**
  * Defines the target data type of an index path specification in the Azure Cosmos DB service.
  */

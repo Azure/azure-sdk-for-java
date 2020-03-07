@@ -6,21 +6,25 @@ import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.Utils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 import java.util.Map;
 
+/**
+ * The type Cosmos async item response. This contains the item and response methods
+ *
+ * @param <T> the type parameter
+ */
 public class CosmosAsyncItemResponse<T> {
     private final Class<T> itemClassType;
-    private final String responseBodyString;
+    private final byte[] responseBodyAsByteArray;
     private T item;
     private final ResourceResponse<Document> resourceResponse;
     private CosmosItemProperties props;
 
-    CosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> klass) {
-        this.itemClassType = klass;
-        this.responseBodyString = response.getBodyAsString();
+    CosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
+        this.itemClassType = classType;
+        this.responseBodyAsByteArray = response.getBodyAsByteArray();
         this.resourceResponse = response;
     }
 
@@ -29,7 +33,7 @@ public class CosmosAsyncItemResponse<T> {
      *
      * @return the resource
      */
-    public T getResource(){
+    public T getResource() {
         if (item != null) {
             return item;
         }
@@ -41,8 +45,8 @@ public class CosmosAsyncItemResponse<T> {
 
         if (item == null) {
             synchronized (this) {
-                if (item == null && !StringUtils.isEmpty(responseBodyString)) {
-                    item = Utils.parse(responseBodyString, itemClassType);
+                if (item == null && !Utils.isEmpty(responseBodyAsByteArray)) {
+                    item = Utils.parse(responseBodyAsByteArray, itemClassType);
                 }
             }
         }
@@ -62,10 +66,10 @@ public class CosmosAsyncItemResponse<T> {
 
     private void ensureCosmosItemPropertiesInitialized() {
         synchronized (this) {
-            if (StringUtils.isEmpty(responseBodyString)) {
+            if (Utils.isEmpty(responseBodyAsByteArray)) {
                 props = null;
             } else {
-                props = new CosmosItemProperties(responseBodyString);
+                props = new CosmosItemProperties(responseBodyAsByteArray);
             }
 
         }

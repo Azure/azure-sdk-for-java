@@ -88,7 +88,7 @@ public final class RntbdRequest {
 
         if (this.payload.length > 0) {
             out.writeIntLE(this.payload.length);
-            out.writeBytes(this.payload);
+            out.writeBytes(payload);
         }
     }
 
@@ -103,6 +103,6 @@ public final class RntbdRequest {
 
         final RntbdRequestHeaders headers = new RntbdRequestHeaders(args, frame);
 
-        return new RntbdRequest(frame, headers, serviceRequest.getContent());
+        return new RntbdRequest(frame, headers, serviceRequest.getContentAsByteArray());
     }
 }

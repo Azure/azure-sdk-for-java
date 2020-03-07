@@ -78,7 +78,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     }
 
     protected PartitionKeyInternal getPartitionKeyInternal() {
-        return this.feedOptions.partitionKey() == null ? null : BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey());
+        return this.feedOptions.getPartitionKey() == null ? null : BridgeInternal.getPartitionKeyInternal(feedOptions.getPartitionKey());
     }
 
     @Override
@@ -95,15 +95,15 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         // The workaround is to try and parse the continuation token as a composite continuation token.
         // If it is, then we send the query to the gateway with max degree of parallelism to force getting back the query plan
 
-        String originalContinuation = newFeedOptions.requestContinuation();
+        String originalContinuation = newFeedOptions.getRequestContinuation();
 
         if (isClientSideContinuationToken(originalContinuation)) {
             // At this point we know we want back a query plan
-            newFeedOptions.requestContinuation(null);
+            newFeedOptions.setRequestContinuation(null);
             newFeedOptions.setMaxDegreeOfParallelism(Integer.MAX_VALUE);
         }
 
-        int maxPageSize = newFeedOptions.maxItemCount() != null ? newFeedOptions.maxItemCount() : Constants.Properties.DEFAULT_MAX_PAGE_SIZE;
+        int maxPageSize = newFeedOptions.getMaxItemCount() != null ? newFeedOptions.getMaxItemCount() : Constants.Properties.DEFAULT_MAX_PAGE_SIZE;
 
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> this.createRequestAsync(continuationToken, pageSize);
 
@@ -181,7 +181,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         // The code leaves some temporary garbage in request (in RequestContext etc.),
         // which shold be erased during retries.
 
-        RxDocumentServiceRequest request = this.createRequestAsync(continuationToken, this.feedOptions.maxItemCount());
+        RxDocumentServiceRequest request = this.createRequestAsync(continuationToken, this.feedOptions.getMaxItemCount());
         if (retryPolicyInstance != null) {
             retryPolicyInstance.onBeforeSendRequest(request);
         }

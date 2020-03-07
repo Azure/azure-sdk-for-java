@@ -3,10 +3,9 @@
 package com.azure.search;
 
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.search.models.GeoPoint;
 import com.azure.search.models.SearchOptions;
-import com.azure.search.models.SearchResult;
+import com.azure.search.util.SearchPagedFlux;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -107,7 +106,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
         uploadDocument(asyncClient, expectedDoc);
 
-        Mono<Document> futureDoc = asyncClient.getDocument("1");
+        Mono<SearchDocument> futureDoc = asyncClient.getDocument("1");
 
         StepVerifier.create(futureDoc)
             .assertNext(result -> assertEquals(expectedDoc, result))
@@ -137,10 +136,10 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
     @Test
     public void canGetPaginatedDocuments() throws Exception {
-        List<Document> docs = new LinkedList<>();
+        List<SearchDocument> docs = new LinkedList<>();
 
         for (int i = 1; i <= 200; i++) {
-            Document doc = new Document();
+            SearchDocument doc = new SearchDocument();
             doc.put("HotelId", String.valueOf(i));
             doc.put("HotelName", "Hotel " + i);
             docs.add(doc);
@@ -194,10 +193,10 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
 
     @Test
     public void canGetPaginatedDocumentsWithSearchOptions() throws Exception {
-        List<Document> docs = new LinkedList<>();
+        List<SearchDocument> docs = new LinkedList<>();
 
         for (int i = 1; i <= 200; i++) {
-            Document doc = new Document();
+            SearchDocument doc = new SearchDocument();
             doc.put("HotelId", String.valueOf(i));
             doc.put("HotelName", "Hotel " + i);
             docs.add(doc);
@@ -253,7 +252,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         }
     }
 
-    private void processResult(PagedFluxBase<SearchResult, SearchPagedResponse> result, Integer expectedCount) throws Exception {
+    private void processResult(SearchPagedFlux result, Integer expectedCount) throws Exception {
         if (result == null) {
             throw new Exception("Result is null");
         }

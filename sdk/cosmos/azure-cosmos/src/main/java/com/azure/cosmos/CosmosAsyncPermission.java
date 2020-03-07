@@ -5,6 +5,9 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Paths;
 import reactor.core.publisher.Mono;
 
+/**
+ *  Has methods to operate on a per-User Permission to access a specific resource 
+ */
 public class CosmosAsyncPermission {
 
     private final CosmosAsyncUser cosmosUser;

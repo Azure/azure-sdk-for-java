@@ -50,9 +50,9 @@ public class TopQueryTests extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         
-        options.maxItemCount(9);
+        options.setMaxItemCount(9);
         options.setMaxDegreeOfParallelism(2);
-        options.populateQueryMetrics(qmEnabled);
+        options.setPopulateQueryMetrics(qmEnabled);
 
         int expectedTotalSize = 20;
         int expectedNumberOfPages = 3;
@@ -86,7 +86,7 @@ public class TopQueryTests extends TestSuiteBase {
             validateQuerySuccess(queryObservable3.byPage(), validator3, TIMEOUT);
 
             if (i == 0) {
-                options.partitionKey(new PartitionKey(firstPk));
+                options.setPartitionKey(new PartitionKey(firstPk));
                 expectedTotalSize = 10;
                 expectedNumberOfPages = 2;
                 expectedPageLengths = new int[] { 9, 1 };
@@ -144,10 +144,10 @@ public class TopQueryTests extends TestSuiteBase {
 
         do {
             FeedOptions options = new FeedOptions();
-            options.maxItemCount(pageSize);
+            options.setMaxItemCount(pageSize);
             
             options.setMaxDegreeOfParallelism(2);
-            options.requestContinuation(requestContinuation);
+            options.setRequestContinuation(requestContinuation);
             CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();

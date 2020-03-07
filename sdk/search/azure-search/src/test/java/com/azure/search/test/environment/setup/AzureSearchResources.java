@@ -4,6 +4,7 @@
 package com.azure.search.test.environment.setup;
 
 import com.azure.core.test.utils.TestResourceNamer;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -15,6 +16,7 @@ import com.microsoft.azure.management.search.SearchService;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
 
+import java.security.SecureRandom;
 import java.util.Objects;
 
 public class AzureSearchResources {
@@ -22,7 +24,8 @@ public class AzureSearchResources {
     private static final String SEARCH_SERVICE_NAME_PREFIX = "azs-sdk";
     private static final String BLOB_DATASOURCE_NAME_PREFIX = "azsblob";
     private static final String STORAGE_NAME_PREFIX = "azsstor";
-
+    private static final String AZURE_RESOURCEGROUP_NAME = "AZURE_RESOURCEGROUP_NAME";
+    private static final char[] ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
 
     private String searchServiceName;
     private String searchAdminKey;
@@ -32,7 +35,7 @@ public class AzureSearchResources {
     private Region location;
 
     private Azure azure = null;
-    private ResourceGroup resourceGroup = null;
+    private static ResourceGroup resourceGroup;
     private SearchService searchService = null;
 
     /**
@@ -113,9 +116,18 @@ public class AzureSearchResources {
     /**
      * Creates the Resource Group in Azure. This should be run at @BeforeAll
      */
-    public void createResourceGroup(TestResourceNamer testResourceNamer) {
-        if (resourceGroup == null) {
-            String resourceGroupName = testResourceNamer.randomName(RESOURCE_GROUP_NAME_PREFIX, 24);
+    public void createResourceGroup() {
+        String resourceGroupName = Configuration.getGlobalConfiguration().get(AZURE_RESOURCEGROUP_NAME);
+        boolean resourceGroupNameSet = !CoreUtils.isNullOrEmpty(resourceGroupName);
+        if (!resourceGroupNameSet) {
+            resourceGroupName = randomResourceGroupName();
+        }
+
+        if (resourceGroupNameSet && azure.resourceGroups().checkExistence(resourceGroupName)) {
+            System.out.println("Fetching Resource Group: " + resourceGroupName);
+            resourceGroup = azure.resourceGroups()
+                .getByName(resourceGroupName);
+        } else {
             System.out.println("Creating Resource Group: " + resourceGroupName);
             resourceGroup = azure.resourceGroups()
                 .define(resourceGroupName)
@@ -178,5 +190,17 @@ public class AzureSearchResources {
         blobServiceClient.createBlobContainer(blobContainerDatasourceName);
 
         return blobContainerDatasourceName;
+    }
+
+    private static String randomResourceGroupName() {
+        StringBuilder builder = new StringBuilder(RESOURCE_GROUP_NAME_PREFIX);
+        SecureRandom random = new SecureRandom();
+
+        while (builder.length() < 18) {
+            int index = (int) (random.nextFloat() * ALLOWED_CHARS.length);
+            builder.append(ALLOWED_CHARS[index]);
+        }
+
+        return builder.toString();
     }
 }

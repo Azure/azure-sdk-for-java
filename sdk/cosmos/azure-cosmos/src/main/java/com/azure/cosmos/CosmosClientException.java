@@ -35,7 +35,7 @@ public class CosmosClientException extends RuntimeException {
     private final Map<String, String> responseHeaders;
 
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
-    private RequestTimeline requestTimeline;
+    private final RequestTimeline requestTimeline;
     private CosmosError cosmosError;
 
     long lsn;
@@ -277,7 +277,7 @@ public class CosmosClientException extends RuntimeException {
         return null;
     }
 
-    public void setResourceAddress(String resourceAddress) {
+    void setResourceAddress(String resourceAddress) {
         this.resourceAddress = resourceAddress;
     }
 }

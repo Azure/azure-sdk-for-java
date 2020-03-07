@@ -11,52 +11,52 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class SentenceSentiment {
-    private final int length;
-    private final int offset;
-    private final SentimentConfidenceScorePerLabel confidenceScores;
-    private final SentenceSentimentLabel sentiment;
+    private final int graphemeLength;
+    private final int graphemeOffset;
+    private final SentimentConfidenceScores confidenceScores;
+    private final TextSentiment sentiment;
 
     /**
      * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
      *
-     * @param sentiment sentiment label of the sentence.
-     * @param confidenceScores the sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
+     * @param sentiment The sentiment label of the sentence.
+     * @param confidenceScores The sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      *   Higher values signify higher confidence.
-     * @param length length of the sentence.
-     * @param offset the offset from the start of the sentence.
+     * @param graphemeLength The grapheme length of the sentence.
+     * @param graphemeOffset The grapheme offset, start position for the sentence sentiment.
      */
-    public SentenceSentiment(SentenceSentimentLabel sentiment, SentimentConfidenceScorePerLabel confidenceScores,
-        int length, int offset) {
+    public SentenceSentiment(TextSentiment sentiment, SentimentConfidenceScores confidenceScores,
+        int graphemeLength, int graphemeOffset) {
         this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
-        this.length = length;
-        this.offset = offset;
+        this.graphemeLength = graphemeLength;
+        this.graphemeOffset = graphemeOffset;
     }
 
     /**
-     * Get the length of the sentence by Unicode standard.
+     * Get the grapheme length of the sentence.
      *
-     * @return the length of the sentence by Unicode standard.
+     * @return The grapheme length of the sentence.
      */
-    public int getLength() {
-        return length;
+    public int getGraphemeLength() {
+        return graphemeLength;
     }
 
     /**
-     * Get the offset of the sentence sentiment.
+     * Get the grapheme offset property: start position for the sentence sentiment.
      *
-     * @return the offset of sentence sentiment.
+     * @return The grapheme offset of sentence sentiment.
      */
-    public int getOffset() {
-        return offset;
+    public int getGraphemeOffset() {
+        return graphemeOffset;
     }
 
     /**
      * Get the text sentiment label: POSITIVE, NEGATIVE, or NEUTRAL.
      *
-     * @return the {@link SentenceSentimentLabel}.
+     * @return The {@link TextSentiment}.
      */
-    public SentenceSentimentLabel getSentiment() {
+    public TextSentiment getSentiment() {
         return sentiment;
     }
 
@@ -64,9 +64,9 @@ public final class SentenceSentiment {
      * Get the confidence score of the sentiment label. All score values sum up to 1, higher the score value means
      * higher confidence the sentiment label represents.
      *
-     * @return the {@link SentimentConfidenceScorePerLabel}.
+     * @return The {@link SentimentConfidenceScores}.
      */
-    public SentimentConfidenceScorePerLabel getConfidenceScores() {
+    public SentimentConfidenceScores getConfidenceScores() {
         return confidenceScores;
     }
 }

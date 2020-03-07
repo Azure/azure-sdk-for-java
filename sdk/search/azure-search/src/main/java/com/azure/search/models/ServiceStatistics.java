@@ -18,13 +18,13 @@ public final class ServiceStatistics {
     /*
      * Service level resource counters.
      */
-    @JsonProperty(value = "counters")
+    @JsonProperty(value = "counters", required = true)
     private ServiceCounters counters;
 
     /*
      * Service level general limits.
      */
-    @JsonProperty(value = "limits")
+    @JsonProperty(value = "limits", required = true)
     private ServiceLimits limits;
 
     /**

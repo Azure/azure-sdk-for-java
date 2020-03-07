@@ -183,7 +183,7 @@ public class IndexAndServiceStatisticsExample {
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Tags")
-                    .setType(DataType.Collection(DataType.EDM_STRING))
+                    .setType(DataType.collection(DataType.EDM_STRING))
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setSortable(Boolean.FALSE)
@@ -270,7 +270,7 @@ public class IndexAndServiceStatisticsExample {
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Rooms")
-                    .setType(DataType.Collection(DataType.EDM_COMPLEX_TYPE))
+                    .setType(DataType.collection(DataType.EDM_COMPLEX_TYPE))
                     .setFields(Arrays.asList(
                         new Field()
                             .setName("Description")
@@ -320,7 +320,7 @@ public class IndexAndServiceStatisticsExample {
                             .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("Tags")
-                            .setType(DataType.Collection(DataType.EDM_STRING))
+                            .setType(DataType.collection(DataType.EDM_STRING))
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setSortable(Boolean.FALSE)

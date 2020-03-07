@@ -5,7 +5,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Constants;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,6 +14,9 @@ import java.util.List;
 public class UniqueKeyPolicy extends JsonSerializable {
     private List<UniqueKey> uniqueKeys;
 
+    /**
+     * Instantiates a new Unique key policy.
+     */
     public UniqueKeyPolicy() {
         super();
     }
@@ -34,7 +36,7 @@ public class UniqueKeyPolicy extends JsonSerializable {
      *
      * @return the unique keys.
      */
-    public Collection<UniqueKey> uniqueKeys() {
+    public List<UniqueKey> getUniqueKeys() {
         if (this.uniqueKeys == null) {
             this.uniqueKeys = super.getList(Constants.Properties.UNIQUE_KEYS, UniqueKey.class);
             if (this.uniqueKeys == null) {
@@ -44,7 +46,6 @@ public class UniqueKeyPolicy extends JsonSerializable {
         return this.uniqueKeys;
     }
 
-
     /**
      * Unique keys unique key policy.
      *
@@ -52,7 +53,7 @@ public class UniqueKeyPolicy extends JsonSerializable {
      * @return the unique key policy
      * @throws IllegalArgumentException thrown if an error occurs
      */
-    public UniqueKeyPolicy uniqueKeys(List<UniqueKey> uniqueKeys) {
+    public UniqueKeyPolicy setUniqueKeys(List<UniqueKey> uniqueKeys) {
         if (uniqueKeys == null) {
             throw new IllegalArgumentException("uniqueKeys cannot be null.");
         }
@@ -61,7 +62,8 @@ public class UniqueKeyPolicy extends JsonSerializable {
     }
 
     @Override
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
+        super.populatePropertyBag();
         if (this.uniqueKeys != null) {
             for (UniqueKey uniqueKey : uniqueKeys) {
                 uniqueKey.populatePropertyBag();

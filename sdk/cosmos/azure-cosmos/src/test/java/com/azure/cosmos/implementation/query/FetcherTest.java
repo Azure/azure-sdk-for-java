@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -29,23 +28,23 @@ public class FetcherTest {
     public static Object[][] queryParamProvider() {
 
         FeedOptions options1 = new FeedOptions();
-        options1.maxItemCount(100);
-        options1.requestContinuation("cp-init"); // initial continuation token
+        options1.setMaxItemCount(100);
+        options1.setRequestContinuation("cp-init"); // initial continuation token
         int top1 = -1; // no top
 
         // no continuation token
         FeedOptions options2 = new FeedOptions();
-        options2.maxItemCount(100);
+        options2.setMaxItemCount(100);
         int top2 = -1; // no top
 
         // top more than max item count
         FeedOptions options3 = new FeedOptions();
-        options3.maxItemCount(100);
+        options3.setMaxItemCount(100);
         int top3 = 200;
 
         // top less than max item count
         FeedOptions options4 = new FeedOptions();
-        options4.maxItemCount(100);
+        options4.setMaxItemCount(100);
         int top4 = 20;
 
         return new Object[][] {
@@ -78,7 +77,7 @@ public class FetcherTest {
             assertThat(maxItemCount).describedAs("max item count").isEqualTo(
                     getExpectedMaxItemCountInRequest(options, top, feedResponseList, requestIndex.get()));
             assertThat(token).describedAs("continuation token").isEqualTo(
-                    getExpectedContinuationTokenInRequest(options.requestContinuation(), feedResponseList, requestIndex.get()));
+                    getExpectedContinuationTokenInRequest(options.getRequestContinuation(), feedResponseList, requestIndex.get()));
             requestIndex.getAndIncrement();
 
             return mock(RxDocumentServiceRequest.class);
@@ -93,8 +92,8 @@ public class FetcherTest {
         };
 
         Fetcher<Document> fetcher =
-                new Fetcher<>(createRequestFunc, executeFunc, options.requestContinuation(), false, top,
-                        options.maxItemCount());
+                new Fetcher<>(createRequestFunc, executeFunc, options.getRequestContinuation(), false, top,
+                        options.getMaxItemCount());
 
         validateFetcher(fetcher, options, top, feedResponseList);
     }
@@ -201,12 +200,12 @@ public class FetcherTest {
                                                  List<FeedResponse<Document>> feedResponseList,
                                                  int requestIndex) {
         if (top == -1) {
-            return options.maxItemCount();
+            return options.getMaxItemCount();
         }
 
         int numberOfReceivedItemsSoFar  =
                 feedResponseList.subList(0, requestIndex).stream().mapToInt(rsp -> rsp.getResults().size()).sum();
 
-        return Math.min(top - numberOfReceivedItemsSoFar, options.maxItemCount());
+        return Math.min(top - numberOfReceivedItemsSoFar, options.getMaxItemCount());
     }
 }

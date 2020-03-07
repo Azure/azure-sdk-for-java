@@ -310,7 +310,6 @@ class AzureFileSystemProviderSpec extends APISpec {
         def fs = createFS(config)
         basicSetupForCopyTest(fs)
 
-        // Generate resource names.
         // Don't use default directory to ensure we honor the root.
         def sourceChildClient = null
         def destChildClient = null
@@ -407,6 +406,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         setup:
         def fs = createFS(config)
         basicSetupForCopyTest(fs)
+
         def destChildClient
 
         // Create resources as necessary
@@ -806,7 +806,6 @@ class AzureFileSystemProviderSpec extends APISpec {
         expect:
         // No parent means the parent is implicitly the default root, which always exists
         ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(fs.getPath("foo"))
-
     }
 
     def "FileSystemProvider parent dir exists non default root"() {

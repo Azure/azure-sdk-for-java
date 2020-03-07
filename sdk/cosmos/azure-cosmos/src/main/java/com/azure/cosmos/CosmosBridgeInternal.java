@@ -51,4 +51,8 @@ public class CosmosBridgeInternal {
     public static AsyncDocumentClient getContextClient(CosmosAsyncContainer container) {
         return container.getDatabase().getClient().getContextClient();
     }
+
+    public static CosmosAsyncContainer getCosmosAsyncContainer(CosmosContainer container) {
+        return container.asyncContainer;
+    }
 }

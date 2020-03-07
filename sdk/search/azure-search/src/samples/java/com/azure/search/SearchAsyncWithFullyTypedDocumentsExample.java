@@ -3,10 +3,9 @@
 
 package com.azure.search;
 
-import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.util.Configuration;
-import com.azure.search.models.SearchResult;
 import com.azure.search.models.Hotel;
+import com.azure.search.util.SearchPagedFlux;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -47,12 +46,12 @@ public class SearchAsyncWithFullyTypedDocumentsExample {
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        PagedFluxBase<SearchResult, SearchPagedResponse> results = searchClient.search("searchText");
+        SearchPagedFlux results = searchClient.search("searchText");
         results
             .subscribe(item -> {
-                Document document = item.getDocument();
+                SearchDocument searchDocument = item.getDocument();
                 // Convert the property bag received from the search query to an object of type Hotel
-                Hotel hotel = objectMapper.convertValue(document, Hotel.class);
+                Hotel hotel = objectMapper.convertValue(searchDocument, Hotel.class);
                 System.out.println("Hotel " + hotel.getHotelId());
             });
 

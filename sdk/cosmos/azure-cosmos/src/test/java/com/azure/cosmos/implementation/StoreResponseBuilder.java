@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.cosmos.implementation.Utils.getUTF8BytesOrNull;
+
 public class StoreResponseBuilder {
     private int status;
     private List<Map.Entry<String, String>> headerEntries;
@@ -91,6 +93,6 @@ public class StoreResponseBuilder {
     }
 
     public StoreResponse build() {
-        return new StoreResponse(status, headerEntries, content);
+        return new StoreResponse(status, headerEntries, getUTF8BytesOrNull(content));
     }
 }

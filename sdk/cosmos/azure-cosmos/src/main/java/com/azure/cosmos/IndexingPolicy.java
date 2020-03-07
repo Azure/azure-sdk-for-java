@@ -46,7 +46,9 @@ public final class IndexingPolicy extends JsonSerializable {
      * }
      * </pre>
      *
-     * @param defaultIndexOverrides comma separated set of indexes that serve as default index specifications for the root path.
+     * @param defaultIndexOverrides comma separated set of indexes that serve as default index specifications for the
+     * root path.
+     * @throws IllegalArgumentException throws when defaultIndexOverrides is null
      */
     public IndexingPolicy(Index[] defaultIndexOverrides) {
         this();
@@ -140,8 +142,15 @@ public final class IndexingPolicy extends JsonSerializable {
         return this.includedPaths;
     }
 
-    public void setIncludedPaths(List<IncludedPath> includedPaths) {
+    /**
+     * Sets included paths.
+     *
+     * @param includedPaths the included paths
+     * @return the included paths
+     */
+    public IndexingPolicy setIncludedPaths(List<IncludedPath> includedPaths) {
         this.includedPaths = includedPaths;
+        return this;
     }
 
     /**
@@ -161,6 +170,12 @@ public final class IndexingPolicy extends JsonSerializable {
         return this.excludedPaths;
     }
 
+    /**
+     * Sets excluded paths.
+     *
+     * @param excludedPaths the excluded paths
+     * @return the excluded paths
+     */
     public IndexingPolicy setExcludedPaths(List<ExcludedPath> excludedPaths) {
         this.excludedPaths = excludedPaths;
         return this;
@@ -231,7 +246,8 @@ public final class IndexingPolicy extends JsonSerializable {
     }
 
     @Override
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
+        super.populatePropertyBag();
         // If indexing mode is not 'none' and not paths are set, set them to the defaults
         if (this.getIndexingMode() != IndexingMode.NONE && this.getIncludedPaths().size() == 0
                 && this.getExcludedPaths().size() == 0) {

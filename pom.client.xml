@@ -468,6 +468,10 @@
                 <packages>com.azure.messaging.eventhubs*</packages>
               </group>
               <group>
+                <title>Azure Service Bus</title>
+                <packages>com.azure.messaging.servicebus*</packages>
+              </group>
+              <group>
                 <title>Azure Identity</title>
                 <packages>com.azure.identity*</packages>
               </group>
@@ -692,6 +696,7 @@
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
+                -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-cryptography/src/samples/java
@@ -941,6 +946,7 @@
                 <!-- JUnit5 and Mockito use reflection to create objects. -->
                 --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
@@ -1250,6 +1256,7 @@
     <module>sdk/keyvault/azure-security-keyvault-keys</module>
     <module>sdk/keyvault/azure-security-keyvault-secrets</module>
 	  <module>sdk/search/azure-search</module>
+    <module>sdk/servicebus/azure-messaging-servicebus</module>
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>

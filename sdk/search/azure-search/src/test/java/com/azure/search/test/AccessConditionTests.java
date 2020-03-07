@@ -3,9 +3,9 @@
 
 package com.azure.search.test;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.TestHelpers;
+import com.azure.search.models.SearchErrorException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 
 import java.util.function.BiConsumer;
@@ -51,9 +51,9 @@ public class AccessConditionTests {
             createOrUpdateDefinition.apply(mutatedResource, accessOptions);
             fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
         } catch (Exception exc) {
-            assertEquals(HttpResponseException.class, exc.getClass());
+            assertEquals(SearchErrorException.class, exc.getClass());
             assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(),
-                ((HttpResponseException) exc).getResponse().getStatusCode());
+                ((SearchErrorException) exc).getResponse().getStatusCode());
         }
     }
 
@@ -108,8 +108,8 @@ public class AccessConditionTests {
             deleteFunc.accept(resourceName, accessOptions);
             fail("deleteFunc should have failed due to non existent resource");
         } catch (Exception exc) {
-            assertEquals(HttpResponseException.class, exc.getClass());
-            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(SearchErrorException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((SearchErrorException) exc).getResponse().getStatusCode());
         }
     }
 
@@ -142,8 +142,8 @@ public class AccessConditionTests {
             deleteFunc.accept(resourceName, accessOptions);
             fail("deleteFunc should have failed due to selected AccessCondition");
         } catch (Exception exc) {
-            assertEquals(HttpResponseException.class, exc.getClass());
-            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(SearchErrorException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((SearchErrorException) exc).getResponse().getStatusCode());
         }
 
         // Get the new eTag
@@ -169,8 +169,8 @@ public class AccessConditionTests {
             createOrUpdateDefinition.apply(newResource, accessOptions);
             fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
         } catch (Exception exc) {
-            assertEquals(HttpResponseException.class, exc.getClass());
-            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(SearchErrorException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((SearchErrorException) exc).getResponse().getStatusCode());
         }
 
         // The resource should never have been created on the server, and thus it should not have an ETag
@@ -245,8 +245,8 @@ public class AccessConditionTests {
             createOrUpdateDefinition.apply(mutateResource, accessOptions);
             fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
         } catch (Exception exc) {
-            assertEquals(HttpResponseException.class, exc.getClass());
-            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(SearchErrorException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((SearchErrorException) exc).getResponse().getStatusCode());
         }
 
         // Check eTags
