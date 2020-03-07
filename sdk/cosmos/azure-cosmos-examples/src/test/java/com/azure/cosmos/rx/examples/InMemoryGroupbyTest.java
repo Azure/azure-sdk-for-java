@@ -10,7 +10,7 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.SqlParameter;
 import com.azure.cosmos.SqlParameterList;

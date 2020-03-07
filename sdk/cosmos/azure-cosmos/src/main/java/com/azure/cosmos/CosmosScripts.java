@@ -13,6 +13,7 @@ import com.azure.cosmos.model.CosmosTriggerProperties;
 import com.azure.cosmos.model.CosmosTriggerResponse;
 import com.azure.cosmos.model.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.model.CosmosUserDefinedFunctionResponse;
+import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;

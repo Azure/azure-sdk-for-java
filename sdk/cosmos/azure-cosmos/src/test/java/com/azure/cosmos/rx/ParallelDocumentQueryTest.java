@@ -13,7 +13,7 @@ import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.implementation.ItemOperations;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.Resource;
@@ -46,7 +46,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
+import static com.azure.cosmos.model.ModelBridgeInternal.partitionKeyRangeIdInternal;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.testng.Assert.fail;

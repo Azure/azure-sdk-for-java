@@ -39,6 +39,7 @@ import com.azure.cosmos.model.CosmosItemResponse;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
 import com.azure.cosmos.model.DatabaseAccount;
 import com.azure.cosmos.model.DatabaseAccountLocation;
+import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

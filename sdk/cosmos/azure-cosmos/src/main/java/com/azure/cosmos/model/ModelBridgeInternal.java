@@ -255,4 +255,25 @@ public class ModelBridgeInternal {
     public static ConsistencyPolicy getConsistencyPolicy(DatabaseAccount databaseAccount) {
         return databaseAccount.getConsistencyPolicy();
     }
+
+    /**
+     * Gets the partitionKeyRangeId.
+     *
+     * @param options the feed options
+     * @return the partitionKeyRangeId.
+     */
+    public static String partitionKeyRangeIdInternal(FeedOptions options) {
+        return options.getPartitionKeyRangeIdInternal();
+    }
+
+    /**
+     * Sets the PartitionKeyRangeId.
+     *
+     * @param options the feed options
+     * @param partitionKeyRangeId the partition key range id
+     * @return the partitionKeyRangeId.
+     */
+    public static FeedOptions partitionKeyRangeIdInternal(FeedOptions options, String partitionKeyRangeId) {
+        return options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
+    }
 }

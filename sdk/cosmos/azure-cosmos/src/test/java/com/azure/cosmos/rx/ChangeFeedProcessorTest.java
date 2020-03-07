@@ -12,7 +12,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.model.CosmosContainerRequestOptions;
 import com.azure.cosmos.model.CosmosItemRequestOptions;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.SqlParameter;
 import com.azure.cosmos.SqlParameterList;

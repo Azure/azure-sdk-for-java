@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.NotFoundException;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.SqlParameter;

@@ -26,7 +26,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 
-import static com.azure.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
 import static java.time.temporal.ChronoUnit.MILLIS;
 
 /**

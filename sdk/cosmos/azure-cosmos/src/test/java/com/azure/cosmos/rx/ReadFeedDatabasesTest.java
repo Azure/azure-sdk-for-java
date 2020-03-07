@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.model.CosmosDatabaseProperties;
 import com.azure.cosmos.model.CosmosDatabaseRequestOptions;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;

@@ -35,7 +35,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import static com.azure.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 //TODO: change to use external TestSuiteBase

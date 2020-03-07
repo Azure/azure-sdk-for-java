@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.model.CosmosTriggerProperties;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.TriggerOperation;
 import com.azure.cosmos.TriggerType;

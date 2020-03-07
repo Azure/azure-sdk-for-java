@@ -16,8 +16,6 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static com.azure.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
-
 class ChangeFeedQueryImpl<T extends Resource> {
 
     private static final String IfNonMatchAllHeaderValue = "*";

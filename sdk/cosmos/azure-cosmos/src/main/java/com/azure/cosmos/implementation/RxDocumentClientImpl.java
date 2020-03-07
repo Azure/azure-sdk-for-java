@@ -10,7 +10,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.model.CosmosResourceType;
 import com.azure.cosmos.model.DatabaseAccount;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.PartitionKey;

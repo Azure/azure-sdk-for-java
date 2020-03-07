@@ -11,25 +11,4 @@ public class CommonsBridgeInternal {
     public static void setV2(PartitionKeyDefinition pkd) {
         pkd.setVersion(PartitionKeyDefinitionVersion.V2);
     }
-
-    /**
-     * Gets the partitionKeyRangeId.
-     *
-     * @param options the feed options
-     * @return the partitionKeyRangeId.
-     */
-    public static String partitionKeyRangeIdInternal(FeedOptions options) {
-        return options.getPartitionKeyRangeIdInternal();
-    }
-
-    /**
-     * Sets the PartitionKeyRangeId.
-     *
-     * @param options the feed options
-     * @param partitionKeyRangeId the partition key range id
-     * @return the partitionKeyRangeId.
-     */
-    public static FeedOptions partitionKeyRangeIdInternal(FeedOptions options, String partitionKeyRangeId) {
-        return options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
-    }
 }

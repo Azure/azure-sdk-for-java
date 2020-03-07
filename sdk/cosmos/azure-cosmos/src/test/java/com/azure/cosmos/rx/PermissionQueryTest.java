@@ -3,7 +3,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.model.PermissionMode;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
