@@ -38,7 +38,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private final HttpLogDetailLevel httpLogDetailLevel;
     private final Set<String> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
-    private final boolean prettyPrintJson;
+    private final boolean prettyPrintBody;
 
     /**
      * Creates an HttpLoggingPolicy with the given log configurations.
@@ -50,7 +50,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             this.httpLogDetailLevel = HttpLogDetailLevel.NONE;
             this.allowedHeaderNames = Collections.emptySet();
             this.allowedQueryParameterNames = Collections.emptySet();
-            this.prettyPrintJson = false;
+            this.prettyPrintBody = false;
         } else {
             this.httpLogDetailLevel = httpLogOptions.getLogLevel();
             this.allowedHeaderNames = httpLogOptions.getAllowedHeaderNames()
@@ -61,7 +61,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .stream()
                 .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toSet());
-            this.prettyPrintJson = httpLogOptions.isPrettyPrintJson();
+            this.prettyPrintBody = httpLogOptions.isPrettyPrintBody();
         }
     }
 
@@ -320,7 +320,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     private String prettyPrintIfNeeded(ClientLogger logger, String contentType, String body) {
         String result = body;
-        if (prettyPrintJson && contentType != null
+        if (prettyPrintBody && contentType != null
             && (contentType.startsWith(ContentType.APPLICATION_JSON) || contentType.startsWith("text/json"))) {
             try {
                 final Object deserialized = PRETTY_PRINTER.readTree(body);

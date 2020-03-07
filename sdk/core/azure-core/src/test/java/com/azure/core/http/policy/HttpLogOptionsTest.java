@@ -29,7 +29,7 @@ public class HttpLogOptionsTest {
     }
 
     @Test
-    public void testSetPrettyPrintJson() {
-        assertTrue(new HttpLogOptions().setPrettyPrintJson(true).isPrettyPrintJson());
+    public void testSetPrettyPrintBody() {
+        assertTrue(new HttpLogOptions().setPrettyPrintBody(true).isPrettyPrintBody());
     }
 }
