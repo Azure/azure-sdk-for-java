@@ -55,6 +55,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public class EventHubConsumerClientTest {
@@ -85,6 +86,8 @@ public class EventHubConsumerClientTest {
 
     @Mock
     private TokenCredential tokenCredential;
+    @Mock
+    private Runnable onClientClosed;
 
     private EventHubConsumerClient consumer;
     private EventHubConnectionProcessor connectionProcessor;
@@ -115,7 +118,7 @@ public class EventHubConsumerClientTest {
             }));
 
         asyncConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.parallel(), false);
+            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.parallel(), false, onClientClosed);
         consumer = new EventHubConsumerClient(asyncConsumer, Duration.ofSeconds(10));
     }
 
@@ -123,6 +126,7 @@ public class EventHubConsumerClientTest {
     public void teardown() {
         Mockito.framework().clearInlineMocks();
         consumer.close();
+        verifyZeroInteractions(onClientClosed);
     }
 
     @AfterAll
@@ -139,7 +143,7 @@ public class EventHubConsumerClientTest {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
             HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, CONSUMER_GROUP,
-            PREFETCH, Schedulers.parallel(), false);
+            PREFETCH, Schedulers.parallel(), false, onClientClosed);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
         final int numberOfEvents = 10;
         sendMessages(sink, numberOfEvents, PARTITION_ID);
@@ -156,6 +160,8 @@ public class EventHubConsumerClientTest {
         for (PartitionEvent event : receive) {
             Assertions.assertNull(event.getLastEnqueuedEventProperties());
         }
+
+        verifyZeroInteractions(onClientClosed);
     }
 
     /**
@@ -166,7 +172,8 @@ public class EventHubConsumerClientTest {
         // Arrange
         final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(true);
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, Schedulers.parallel(), false);
+            HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH,
+            Schedulers.parallel(), false, onClientClosed);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
 
         final int numberOfEvents = 10;
