@@ -46,6 +46,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Flux;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -522,9 +523,14 @@ public class BridgeInternal {
                 || klassType.equals(DatabaseAccount.class) || klassType.equals(DatabaseAccountLocation.class)
                 || klassType.equals(ReplicationPolicy.class) || klassType.equals(ConsistencyPolicy.class)
                 || klassType.equals(DocumentCollection.class) || klassType.equals(Database.class)) {
-                return (JsonSerializable) klassType.getDeclaredConstructor(ObjectNode.class).newInstance(objectNode);
+                Constructor declaredConstructor =
+                    klassType.getDeclaredConstructor(ObjectNode.class);
+                declaredConstructor.setAccessible(true);
+                return (JsonSerializable) declaredConstructor.newInstance(objectNode);
             } else {
-                return (JsonSerializable) klassType.getDeclaredConstructor(String.class).newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), objectNode));
+                Constructor declaredConstructor = klassType.getDeclaredConstructor(String.class);
+                declaredConstructor.setAccessible(true);
+                return (JsonSerializable) declaredConstructor.newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), objectNode));
             }
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
             throw new IllegalArgumentException(e);
