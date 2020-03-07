@@ -14,11 +14,13 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.implementation.SearchIndexRestClientImpl;
 import com.azure.search.implementation.SerializationUtil;
+import com.azure.search.implementation.util.DocumentResponseConversions;
+import com.azure.search.implementation.util.SuggestOptionsHandler;
 import com.azure.search.models.AutocompleteOptions;
 import com.azure.search.models.AutocompleteRequest;
 import com.azure.search.models.IndexAction;
 import com.azure.search.models.IndexActionType;
-import com.azure.search.models.IndexBatch;
+import com.azure.search.models.IndexDocumentsBatch;
 import com.azure.search.models.IndexDocumentsResult;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
@@ -161,11 +163,7 @@ public final class SearchIndexAsyncClient {
     }
 
     Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
-        try {
-            return indexWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), context);
     }
 
     /**
@@ -217,11 +215,7 @@ public final class SearchIndexAsyncClient {
     }
 
     Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
-        try {
-            return this.indexWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), context);
     }
 
     /**
@@ -275,11 +269,7 @@ public final class SearchIndexAsyncClient {
     }
 
     Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
-        try {
-            return this.indexWithResponse(buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD), context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD), context);
     }
 
     /**
@@ -317,11 +307,7 @@ public final class SearchIndexAsyncClient {
     }
 
     Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
-        try {
-            return this.indexWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), context);
     }
 
     /**
@@ -539,8 +525,8 @@ public final class SearchIndexAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
-    public Mono<IndexDocumentsResult> index(IndexBatch<?> batch) {
-        return indexWithResponse(batch).map(Response::getValue);
+    public Mono<IndexDocumentsResult> indexDocuments(IndexDocumentsBatch<?> batch) {
+        return indexDocumentsWithResponse(batch).map(Response::getValue);
     }
 
     /**
@@ -556,11 +542,11 @@ public final class SearchIndexAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
-    public Mono<Response<IndexDocumentsResult>> indexWithResponse(IndexBatch<?> batch) {
-        return withContext(context -> indexWithResponse(batch, context));
+    public Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch) {
+        return withContext(context -> indexDocumentsWithResponse(batch, context));
     }
 
-    Mono<Response<IndexDocumentsResult>> indexWithResponse(IndexBatch<?> batch, Context context) {
+    Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch, Context context) {
         try {
             return restClient.documents()
                 .indexWithRestResponseAsync(batch, context)
@@ -743,8 +729,8 @@ public final class SearchIndexAsyncClient {
     }
 
 
-    private static <T> IndexBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
-        IndexBatch<T> batch = new IndexBatch<>();
+    private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
+        IndexDocumentsBatch<T> batch = new IndexDocumentsBatch<>();
         List<IndexAction<T>> actions = batch.getActions();
         documents.forEach(d -> actions.add(new IndexAction<T>()
             .setActionType(actionType)

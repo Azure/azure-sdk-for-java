@@ -4,7 +4,7 @@ package com.azure.search;
 
 import com.azure.search.models.IndexAction;
 import com.azure.search.models.IndexActionType;
-import com.azure.search.models.IndexBatch;
+import com.azure.search.models.IndexDocumentsBatch;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -26,10 +26,10 @@ public class IndexBatchTests {
             .setActionType(IndexActionType.UPLOAD)
             .setDocument(searchDocument);
 
-        IndexBatch<SearchDocument> expected = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> expected = new IndexDocumentsBatch<SearchDocument>()
             .actions(Collections.singletonList(indexAction));
 
-        IndexBatch<SearchDocument> actual = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
             .addUploadAction(searchDocument);
 
         validate(expected, actual);
@@ -51,10 +51,10 @@ public class IndexBatchTests {
             .map(doc -> new IndexAction<SearchDocument>().setActionType(IndexActionType.UPLOAD).setDocument(doc))
             .collect(Collectors.toList());
 
-        IndexBatch<SearchDocument> expectedBatch = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> expectedBatch = new IndexDocumentsBatch<SearchDocument>()
             .actions(indexActions);
 
-        IndexBatch<SearchDocument> actualBatch = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> actualBatch = new IndexDocumentsBatch<SearchDocument>()
             .addUploadAction(docs);
 
         validate(expectedBatch, actualBatch);
@@ -69,10 +69,10 @@ public class IndexBatchTests {
             .setActionType(IndexActionType.MERGE)
             .setDocument(searchDocument);
 
-        IndexBatch<SearchDocument> expected = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> expected = new IndexDocumentsBatch<SearchDocument>()
             .actions(Collections.singletonList(indexAction));
 
-        IndexBatch<SearchDocument> actual = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
             .addMergeAction(searchDocument);
 
         validate(expected, actual);
@@ -94,10 +94,10 @@ public class IndexBatchTests {
             .map(doc -> new IndexAction<SearchDocument>().setActionType(IndexActionType.MERGE).setDocument(doc))
             .collect(Collectors.toList());
 
-        IndexBatch<SearchDocument> expectedBatch = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> expectedBatch = new IndexDocumentsBatch<SearchDocument>()
             .actions(indexActions);
 
-        IndexBatch<SearchDocument> actualBatch = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> actualBatch = new IndexDocumentsBatch<SearchDocument>()
             .addMergeAction(docs);
 
         validate(expectedBatch, actualBatch);
@@ -112,10 +112,10 @@ public class IndexBatchTests {
             .setActionType(IndexActionType.MERGE_OR_UPLOAD)
             .setDocument(searchDocument);
 
-        IndexBatch<SearchDocument> expected = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> expected = new IndexDocumentsBatch<SearchDocument>()
             .actions(Collections.singletonList(indexAction));
 
-        IndexBatch<SearchDocument> actual = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
             .addMergeOrUploadAction(searchDocument);
 
         validate(expected, actual);
@@ -137,10 +137,10 @@ public class IndexBatchTests {
             .map(doc -> new IndexAction<SearchDocument>().setActionType(IndexActionType.MERGE_OR_UPLOAD).setDocument(doc))
             .collect(Collectors.toList());
 
-        IndexBatch<SearchDocument> expectedBatch = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> expectedBatch = new IndexDocumentsBatch<SearchDocument>()
             .actions(indexActions);
 
-        IndexBatch<SearchDocument> actualBatch = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> actualBatch = new IndexDocumentsBatch<SearchDocument>()
             .addMergeOrUploadAction(docs);
 
         validate(expectedBatch, actualBatch);
@@ -155,10 +155,10 @@ public class IndexBatchTests {
             .setActionType(IndexActionType.DELETE)
             .setDocument(searchDocument);
 
-        IndexBatch<SearchDocument> expected = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> expected = new IndexDocumentsBatch<SearchDocument>()
             .actions(Collections.singletonList(indexAction));
 
-        IndexBatch<SearchDocument> actual = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
             .addDeleteAction(searchDocument);
 
         validate(expected, actual);
@@ -180,10 +180,10 @@ public class IndexBatchTests {
             .map(doc -> new IndexAction<SearchDocument>().setActionType(IndexActionType.DELETE).setDocument(doc))
             .collect(Collectors.toList());
 
-        IndexBatch<SearchDocument> expectedBatch = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> expectedBatch = new IndexDocumentsBatch<SearchDocument>()
             .actions(indexActions);
 
-        IndexBatch<SearchDocument> actualBatch = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> actualBatch = new IndexDocumentsBatch<SearchDocument>()
             .addDeleteAction(docs);
 
         validate(expectedBatch, actualBatch);
@@ -219,11 +219,10 @@ public class IndexBatchTests {
             .setActionType(IndexActionType.UPLOAD)
             .setDocument(documentToUpload);
 
-
-        IndexBatch<SearchDocument> expected = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> expected = new IndexDocumentsBatch<SearchDocument>()
             .actions(Arrays.asList(mergeAction, mergeOrUploadAction, deleteAction, uploadAction));
 
-        IndexBatch<SearchDocument> actual = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
             .addMergeAction(documentToMerge)
             .addMergeOrUploadAction(documentToMergeOrUpload)
             .addDeleteAction(documentToDelete)
@@ -306,7 +305,7 @@ public class IndexBatchTests {
             .setActionType(IndexActionType.UPLOAD)
             .setDocument(documentsToUpload.get(1));
 
-        IndexBatch<SearchDocument> expected = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> expected = new IndexDocumentsBatch<SearchDocument>()
             .actions(
                 Arrays.asList(
                     mergeAction1,
@@ -320,7 +319,7 @@ public class IndexBatchTests {
                 )
             );
 
-        IndexBatch<SearchDocument> actual = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
             .addMergeAction(documentsToMerge)
             .addMergeOrUploadAction(documentsToMergeOrUpload)
             .addDeleteAction(documentsToDelete)
@@ -329,7 +328,7 @@ public class IndexBatchTests {
         validate(expected, actual);
     }
 
-    private void validate(IndexBatch<SearchDocument> expected, IndexBatch<SearchDocument> actual) {
+    private void validate(IndexDocumentsBatch<SearchDocument> expected, IndexDocumentsBatch<SearchDocument> actual) {
         assertEquals(expected.getActions().size(), actual.getActions().size());
 
         for (int i = 0; i < actual.getActions().size(); i++) {
