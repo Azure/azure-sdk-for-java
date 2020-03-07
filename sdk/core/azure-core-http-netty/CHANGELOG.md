@@ -1,5 +1,8 @@
 # Release History
 
+## 1.5.0-beta.1 (Unreleased)
+
+
 ## 1.4.0 (2020-03-06)
 
 - Updated to latest version of Azure Core.
