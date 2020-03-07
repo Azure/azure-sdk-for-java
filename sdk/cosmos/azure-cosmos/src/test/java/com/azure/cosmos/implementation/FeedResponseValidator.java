@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.Resource;
 
 import java.util.ArrayList;
 import java.util.List;

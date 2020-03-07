@@ -15,7 +15,7 @@ import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.model.PartitionKeyDefinition;
 import com.azure.cosmos.model.SqlParameterList;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.Resource;
 import com.azure.cosmos.model.SqlQuerySpec;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.TestConfigurations;

@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.model.SerializationFormattingPolicy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

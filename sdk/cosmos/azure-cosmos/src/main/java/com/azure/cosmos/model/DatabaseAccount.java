@@ -4,8 +4,6 @@
 package com.azure.cosmos.model;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.JsonSerializable;
-import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.Utils;
@@ -275,7 +273,7 @@ public class DatabaseAccount extends Resource {
     protected void populatePropertyBag() {
         super.populatePropertyBag();
         if (this.consistencyPolicy != null) {
-            BridgeInternal.populatePropertyBagJsonSerializable(this.consistencyPolicy);
+            ModelBridgeInternal.populatePropertyBagJsonSerializable(this.consistencyPolicy);
             BridgeInternal.setProperty(this, Constants.Properties.USER_CONSISTENCY_POLICY, this.consistencyPolicy);
         }
     }

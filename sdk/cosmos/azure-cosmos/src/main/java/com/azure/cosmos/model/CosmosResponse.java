@@ -3,7 +3,6 @@
 package com.azure.cosmos.model;
 
 import com.azure.cosmos.CosmosResponseDiagnostics;
-import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 

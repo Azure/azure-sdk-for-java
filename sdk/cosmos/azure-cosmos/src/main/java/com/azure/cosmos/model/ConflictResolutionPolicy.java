@@ -4,8 +4,6 @@
 package com.azure.cosmos.model;
 
 
-import com.azure.cosmos.JsonSerializable;
-import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.StoredProcedure;

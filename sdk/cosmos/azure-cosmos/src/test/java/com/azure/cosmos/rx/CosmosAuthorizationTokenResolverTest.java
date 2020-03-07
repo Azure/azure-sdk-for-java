@@ -14,7 +14,7 @@ import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.model.PermissionMode;
 import com.azure.cosmos.model.RequestVerb;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.Resource;
 import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;

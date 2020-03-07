@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.model;
 
-import com.azure.cosmos.JsonSerializable;
-
 /**
  * Represents a SQL parameter in the SqlQuerySpec used for queries in the Azure Cosmos DB database service.
  */

@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.model.CosmosError;
 
 import java.net.URI;
 import java.util.Map;

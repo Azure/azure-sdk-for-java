@@ -13,7 +13,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.model.PartitionKeyDefinition;
 import com.azure.cosmos.model.PartitionKind;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.Resource;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;

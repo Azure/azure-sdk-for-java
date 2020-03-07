@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.model;
 
-import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.implementation.Constants;
 import org.apache.commons.lang3.StringUtils;
 

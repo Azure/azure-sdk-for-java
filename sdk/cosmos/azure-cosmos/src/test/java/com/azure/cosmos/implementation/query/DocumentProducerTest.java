@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosError;
+import com.azure.cosmos.model.CosmosError;
 import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.GlobalEndpointManager;

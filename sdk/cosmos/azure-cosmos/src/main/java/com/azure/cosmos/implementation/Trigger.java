@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.Resource;
 import com.azure.cosmos.model.TriggerOperation;
 import com.azure.cosmos.model.TriggerType;
 import org.apache.commons.lang3.StringUtils;

@@ -13,6 +13,7 @@ import com.azure.cosmos.model.CosmosAsyncUserResponse;
 import com.azure.cosmos.model.CosmosResponse;
 import com.azure.cosmos.model.IndexingMode;
 import com.azure.cosmos.model.PermissionMode;
+import com.azure.cosmos.model.Resource;
 import com.azure.cosmos.model.SpatialSpec;
 import com.azure.cosmos.model.SpatialType;
 import com.azure.cosmos.model.TriggerOperation;

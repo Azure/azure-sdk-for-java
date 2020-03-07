@@ -9,7 +9,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.model.ConflictResolutionPolicy;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.Resource;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.Document;

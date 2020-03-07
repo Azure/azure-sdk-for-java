@@ -3,15 +3,15 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.JsonSerializable;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.JsonSerializable;
+import com.azure.cosmos.model.Resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
-import static com.azure.cosmos.BridgeInternal.setMapper;
+import static com.azure.cosmos.model.ModelBridgeInternal.setMapper;
 
 /**
  * Represents a document in the Azure Cosmos DB database service.

@@ -35,14 +35,17 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.model.ConsistencyPolicy;
 import com.azure.cosmos.model.CosmosAsyncItemResponse;
+import com.azure.cosmos.model.CosmosError;
 import com.azure.cosmos.model.CosmosItemResponse;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
 import com.azure.cosmos.model.DatabaseAccount;
 import com.azure.cosmos.model.DatabaseAccountLocation;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
+import com.azure.cosmos.model.JsonSerializable;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import com.azure.cosmos.model.PartitionKey;
+import com.azure.cosmos.model.Resource;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -67,14 +70,6 @@ import java.util.function.Function;
  * com.azure.cosmos
  **/
 public class BridgeInternal {
-
-    public static CosmosError createCosmosError(ObjectNode objectNode) {
-        return new CosmosError(objectNode);
-    }
-
-    public static CosmosError createCosmosError(String jsonString) {
-        return new CosmosError(jsonString);
-    }
 
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
         return Document.FromObject(document, mapper);
@@ -264,11 +259,11 @@ public class BridgeInternal {
     }
 
     public static String getAltLink(Resource resource) {
-        return resource.getAltLink();
+        return ModelBridgeInternal.getAltLink(resource);
     }
 
     public static void setAltLink(Resource resource, String altLink) {
-        resource.setAltLink(altLink);
+        ModelBridgeInternal.setAltLink(resource, altLink);
     }
 
     public static void setMaxReplicaSetSize(ReplicationPolicy replicationPolicy, int value) {
@@ -306,15 +301,15 @@ public class BridgeInternal {
     }
 
     public static <T> void setProperty(JsonSerializable jsonSerializable, String propertyName, T value) {
-        jsonSerializable.set(propertyName, value);
+        ModelBridgeInternal.setProperty(jsonSerializable, propertyName, value);
     }
 
     public static ObjectNode getObject(JsonSerializable jsonSerializable, String propertyName) {
-        return jsonSerializable.getObject(propertyName);
+        return ModelBridgeInternal.getObject(jsonSerializable, propertyName);
     }
 
     public static void remove(JsonSerializable jsonSerializable, String propertyName) {
-        jsonSerializable.remove(propertyName);
+        ModelBridgeInternal.remove(jsonSerializable, propertyName);
     }
 
     public static CosmosStoredProcedureProperties createCosmosStoredProcedureProperties(String jsonString) {
@@ -322,7 +317,7 @@ public class BridgeInternal {
     }
 
     public static Object getValue(JsonNode value) {
-        return JsonSerializable.getValue(value);
+        return ModelBridgeInternal.getValue(value);
     }
 
     public static CosmosClientException setCosmosResponseDiagnostics(
@@ -338,7 +333,7 @@ public class BridgeInternal {
     public static CosmosClientException createCosmosClientException(int statusCode, String errorMessage) {
         CosmosClientException cosmosClientException = new CosmosClientException(statusCode, errorMessage, null, null);
         cosmosClientException.setError(new CosmosError());
-        cosmosClientException.getError().set(Constants.Properties.MESSAGE, errorMessage);
+        ModelBridgeInternal.setProperty(cosmosClientException.getError(), Constants.Properties.MESSAGE, errorMessage);
         return cosmosClientException;
     }
 
@@ -390,19 +385,11 @@ public class BridgeInternal {
     }
 
     public static void setResourceSelfLink(Resource resource, String selfLink) {
-        resource.setSelfLink(selfLink);
-    }
-
-    public static void populatePropertyBagJsonSerializable(JsonSerializable jsonSerializable) {
-        jsonSerializable.populatePropertyBag();
-    }
-
-    public static void setMapper(JsonSerializable jsonSerializable, ObjectMapper om) {
-        jsonSerializable.setMapper(om);
+        ModelBridgeInternal.setResourceSelfLink(resource, selfLink);
     }
 
     public static void setTimestamp(Resource resource, OffsetDateTime date) {
-        resource.setTimestamp(date);
+        ModelBridgeInternal.setTimestamp(resource, date);
     }
 
     public static CosmosResponseDiagnostics createCosmosResponseDiagnostics() {

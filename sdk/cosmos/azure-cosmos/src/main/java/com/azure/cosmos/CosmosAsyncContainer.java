@@ -24,7 +24,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.Resource.validateResource;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
@@ -151,7 +150,7 @@ public class CosmosAsyncContainer {
     public Mono<CosmosAsyncContainerResponse> replace(
         CosmosContainerProperties containerProperties,
         CosmosContainerRequestOptions options) {
-        validateResource(containerProperties);
+        ModelBridgeInternal.validateResource(containerProperties);
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }

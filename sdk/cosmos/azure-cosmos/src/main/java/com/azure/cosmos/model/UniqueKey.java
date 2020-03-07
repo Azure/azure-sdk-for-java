@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.model;
 
-import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.implementation.Constants;
 
 import java.util.ArrayList;

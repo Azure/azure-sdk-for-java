@@ -15,7 +15,7 @@ import com.azure.cosmos.model.CosmosItemRequestOptions;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.model.PartitionKey;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.Resource;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.ResourceValidator;

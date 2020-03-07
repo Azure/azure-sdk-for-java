@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosResponseDiagnostics;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.Resource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;

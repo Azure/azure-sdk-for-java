@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.model.Resource;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**

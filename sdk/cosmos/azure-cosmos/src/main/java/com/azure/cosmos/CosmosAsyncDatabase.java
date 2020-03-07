@@ -20,7 +20,6 @@ import org.apache.commons.lang3.StringUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import static com.azure.cosmos.Resource.validateResource;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
@@ -147,7 +146,7 @@ public class CosmosAsyncDatabase {
         if (containerProperties == null) {
             throw new IllegalArgumentException("containerProperties");
         }
-        validateResource(containerProperties);
+        ModelBridgeInternal.validateResource(containerProperties);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         ModelBridgeInternal.setOfferThroughput(options, throughput);
         return createContainer(containerProperties, options);
@@ -172,7 +171,7 @@ public class CosmosAsyncDatabase {
         if (containerProperties == null) {
             throw new IllegalArgumentException("containerProperties");
         }
-        validateResource(containerProperties);
+        ModelBridgeInternal.validateResource(containerProperties);
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }

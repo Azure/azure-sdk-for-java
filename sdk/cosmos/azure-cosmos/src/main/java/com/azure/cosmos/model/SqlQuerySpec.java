@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.model;
 
-import com.azure.cosmos.JsonSerializable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 

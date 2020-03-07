@@ -6,7 +6,7 @@ import com.azure.cosmos.model.CompositePath;
 import com.azure.cosmos.model.IndexingMode;
 import com.azure.cosmos.model.Permission;
 import com.azure.cosmos.model.PermissionMode;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.Resource;
 import com.azure.cosmos.model.SpatialSpec;
 import com.azure.cosmos.model.SpatialType;
 import com.azure.cosmos.model.TriggerOperation;

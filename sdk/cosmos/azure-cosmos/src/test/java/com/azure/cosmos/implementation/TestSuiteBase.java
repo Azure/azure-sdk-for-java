@@ -18,7 +18,7 @@ import com.azure.cosmos.model.Index;
 import com.azure.cosmos.model.IndexingPolicy;
 import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.model.PartitionKeyDefinition;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.Resource;
 import com.azure.cosmos.model.ThrottlingRetryOptions;
 import com.azure.cosmos.model.SqlQuerySpec;
 import com.azure.cosmos.TestNGLogListener;

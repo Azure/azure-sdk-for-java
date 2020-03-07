@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.Resource;
 import com.azure.cosmos.model.SqlQuerySpec;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;

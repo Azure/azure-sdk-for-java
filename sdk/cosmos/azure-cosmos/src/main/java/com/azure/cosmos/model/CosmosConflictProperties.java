@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.model;
 
-import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Strings;

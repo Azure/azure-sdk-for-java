@@ -5,7 +5,6 @@ package com.azure.cosmos.model;
 
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.CaseFormat;

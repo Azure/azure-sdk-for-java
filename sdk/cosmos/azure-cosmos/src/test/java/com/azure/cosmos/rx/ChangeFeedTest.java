@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.model.PartitionKeyDefinition;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.Resource;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;

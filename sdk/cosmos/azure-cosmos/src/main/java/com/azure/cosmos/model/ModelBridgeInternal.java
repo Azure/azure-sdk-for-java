@@ -8,12 +8,13 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosStoredProcedure;
 import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.CosmosUserDefinedFunction;
-import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.Conflict;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
@@ -30,7 +31,11 @@ import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -344,5 +349,57 @@ public class ModelBridgeInternal {
 
     public static Object getPartitionKeyObject(PartitionKey right) {
         return right.getKeyObject();
+    }
+
+    public static String getAltLink(Resource resource) {
+        return resource.getAltLink();
+    }
+
+    public static void setAltLink(Resource resource, String altLink) {
+        resource.setAltLink(altLink);
+    }
+
+    public static void setResourceSelfLink(Resource resource, String selfLink) {
+        resource.setSelfLink(selfLink);
+    }
+
+    public static void setTimestamp(Resource resource, OffsetDateTime date) {
+        resource.setTimestamp(date);
+    }
+
+    public static void validateResource(Resource resource) {
+        Resource.validateResource(resource);
+    }
+
+    public static <T> void setProperty(JsonSerializable jsonSerializable, String propertyName, T value) {
+        jsonSerializable.set(propertyName, value);
+    }
+
+    public static ObjectNode getObject(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.getObject(propertyName);
+    }
+
+    public static void remove(JsonSerializable jsonSerializable, String propertyName) {
+        jsonSerializable.remove(propertyName);
+    }
+
+    public static Object getValue(JsonNode value) {
+        return JsonSerializable.getValue(value);
+    }
+
+    public static CosmosError createCosmosError(ObjectNode objectNode) {
+        return new CosmosError(objectNode);
+    }
+
+    public static CosmosError createCosmosError(String jsonString) {
+        return new CosmosError(jsonString);
+    }
+
+    public static void populatePropertyBagJsonSerializable(JsonSerializable jsonSerializable) {
+        jsonSerializable.populatePropertyBag();
+    }
+
+    public static void setMapper(JsonSerializable jsonSerializable, ObjectMapper om) {
+        jsonSerializable.setMapper(om);
     }
 }
