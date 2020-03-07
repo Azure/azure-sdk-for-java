@@ -9,7 +9,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.DataType;
+import com.azure.cosmos.model.DataType;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
@@ -24,6 +24,7 @@ import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import com.azure.cosmos.model.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -437,7 +438,7 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     public static ConsistencyLevel getAccountDefaultConsistencyLevel(AsyncDocumentClient client) {
-        return BridgeInternal.getConsistencyPolicy(client.getDatabaseAccount().single().block()).getDefaultConsistencyLevel();
+        return ModelBridgeInternal.getConsistencyPolicy(client.getDatabaseAccount().single().block()).getDefaultConsistencyLevel();
     }
 
     public static User createUser(AsyncDocumentClient client, String databaseId, User user) {

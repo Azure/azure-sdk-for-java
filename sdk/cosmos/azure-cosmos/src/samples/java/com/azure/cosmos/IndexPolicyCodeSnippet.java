@@ -3,6 +3,8 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.model.DataType;
+
 /**
  * Code snippets for {@link IndexingPolicy}
  */

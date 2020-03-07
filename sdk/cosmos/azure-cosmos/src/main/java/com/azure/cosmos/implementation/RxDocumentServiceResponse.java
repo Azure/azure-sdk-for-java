@@ -3,8 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.JsonSerializable;
-import com.azure.cosmos.Permission;
+import com.azure.cosmos.model.Permission;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.BridgeInternal;

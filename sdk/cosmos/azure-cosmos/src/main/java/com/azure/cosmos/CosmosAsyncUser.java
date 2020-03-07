@@ -10,6 +10,7 @@ import com.azure.cosmos.model.CosmosPermissionProperties;
 import com.azure.cosmos.model.CosmosPermissionRequestOptions;
 import com.azure.cosmos.model.CosmosUserProperties;
 import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.model.Permission;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;

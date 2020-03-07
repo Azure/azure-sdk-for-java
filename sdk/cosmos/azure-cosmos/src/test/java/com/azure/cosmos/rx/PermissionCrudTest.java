@@ -12,7 +12,7 @@ import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.model.CosmosPermissionProperties;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.model.CosmosUserProperties;
-import com.azure.cosmos.PermissionMode;
+import com.azure.cosmos.model.PermissionMode;
 import com.azure.cosmos.implementation.FailureValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;

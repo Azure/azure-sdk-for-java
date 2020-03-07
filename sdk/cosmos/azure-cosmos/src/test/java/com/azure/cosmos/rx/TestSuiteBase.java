@@ -32,7 +32,7 @@ import com.azure.cosmos.model.CosmosResponse;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.model.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.model.CosmosUserProperties;
-import com.azure.cosmos.DataType;
+import com.azure.cosmos.model.DataType;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.IncludedPath;

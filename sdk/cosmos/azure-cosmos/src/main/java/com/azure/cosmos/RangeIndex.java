@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.model.DataType;
 import org.apache.commons.lang3.StringUtils;
 
 /**

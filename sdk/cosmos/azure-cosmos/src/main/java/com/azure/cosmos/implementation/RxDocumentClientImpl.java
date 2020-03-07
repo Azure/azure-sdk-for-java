@@ -8,14 +8,14 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.CosmosResourceType;
-import com.azure.cosmos.DatabaseAccount;
+import com.azure.cosmos.model.CosmosResourceType;
+import com.azure.cosmos.model.DatabaseAccount;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.FeedResponse;
 import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.Permission;
+import com.azure.cosmos.model.Permission;
 import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SqlQuerySpec;
@@ -69,11 +69,11 @@ import java.util.stream.Collectors;
 
 import static com.azure.cosmos.BridgeInternal.documentFromObject;
 import static com.azure.cosmos.BridgeInternal.getAltLink;
-import static com.azure.cosmos.BridgeInternal.toDatabaseAccount;
 import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
 import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
 import static com.azure.cosmos.BridgeInternal.serializeJsonToByteBuffer;
+import static com.azure.cosmos.model.ModelBridgeInternal.toDatabaseAccount;
 
 /**
  * While this class is public, but it is not part of our published public APIs.

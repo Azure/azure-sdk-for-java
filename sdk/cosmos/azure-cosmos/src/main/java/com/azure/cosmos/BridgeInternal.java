@@ -37,6 +37,8 @@ import com.azure.cosmos.model.ConsistencyPolicy;
 import com.azure.cosmos.model.CosmosAsyncItemResponse;
 import com.azure.cosmos.model.CosmosItemResponse;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
+import com.azure.cosmos.model.DatabaseAccount;
+import com.azure.cosmos.model.DatabaseAccountLocation;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -109,24 +111,6 @@ public class BridgeInternal {
 
     public static StoredProcedureResponse toStoredProcedureResponse(RxDocumentServiceResponse response) {
         return new StoredProcedureResponse(response);
-    }
-
-    public static DatabaseAccount toDatabaseAccount(RxDocumentServiceResponse response) {
-        DatabaseAccount account = response.getResource(DatabaseAccount.class);
-
-        // read the headers and set to the account
-        Map<String, String> responseHeader = response.getResponseHeaders();
-
-        account.setMaxMediaStorageUsageInMB(
-            Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.MAX_MEDIA_STORAGE_USAGE_IN_MB)));
-        account.setMediaStorageUsageInMB(
-            Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.CURRENT_MEDIA_STORAGE_USAGE_IN_MB)));
-
-        return account;
-    }
-
-    public static String getAddressesLink(DatabaseAccount databaseAccount) {
-        return databaseAccount.getAddressesLink();
     }
 
     public static Map<String, String> getFeedHeaders(ChangeFeedOptions options) {
@@ -275,22 +259,6 @@ public class BridgeInternal {
     public static <E extends CosmosClientException> Map<String, String> getRequestHeaders(
         CosmosClientException cosmosClientException) {
         return cosmosClientException.requestHeaders;
-    }
-
-    public static Map<String, Object> getQueryEngineConfiuration(DatabaseAccount databaseAccount) {
-        return databaseAccount.getQueryEngineConfiguration();
-    }
-
-    public static ReplicationPolicy getReplicationPolicy(DatabaseAccount databaseAccount) {
-        return databaseAccount.getReplicationPolicy();
-    }
-
-    public static ReplicationPolicy getSystemReplicationPolicy(DatabaseAccount databaseAccount) {
-        return databaseAccount.getSystemReplicationPolicy();
-    }
-
-    public static ConsistencyPolicy getConsistencyPolicy(DatabaseAccount databaseAccount) {
-        return databaseAccount.getConsistencyPolicy();
     }
 
     public static String getAltLink(Resource resource) {

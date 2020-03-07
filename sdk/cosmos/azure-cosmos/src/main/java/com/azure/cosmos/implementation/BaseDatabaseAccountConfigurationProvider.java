@@ -5,7 +5,8 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.DatabaseAccount;
+import com.azure.cosmos.model.DatabaseAccount;
+import com.azure.cosmos.model.ModelBridgeInternal;
 
 /**
  * Used internally to provides functionality to work with database account configuration in the Azure Cosmos DB database service.
@@ -20,7 +21,7 @@ public class BaseDatabaseAccountConfigurationProvider implements DatabaseAccount
     }
 
     public ConsistencyLevel getStoreConsistencyPolicy() {
-        ConsistencyLevel databaseAccountConsistency =  BridgeInternal.getConsistencyPolicy(this.databaseAccount).getDefaultConsistencyLevel();
+        ConsistencyLevel databaseAccountConsistency =  ModelBridgeInternal.getConsistencyPolicy(this.databaseAccount).getDefaultConsistencyLevel();
         if (this.desiredConsistencyLevel == null) {
             return databaseAccountConsistency;
         } else if (!Utils.isValidConsistency(databaseAccountConsistency, this.desiredConsistencyLevel)) {
@@ -34,7 +35,7 @@ public class BaseDatabaseAccountConfigurationProvider implements DatabaseAccount
     }
 
     public int getMaxReplicaSetSize() {
-        return BridgeInternal.getReplicationPolicy(this.databaseAccount).getMaxReplicaSetSize();
+        return ModelBridgeInternal.getReplicationPolicy(this.databaseAccount).getMaxReplicaSetSize();
     }
 
     @Override

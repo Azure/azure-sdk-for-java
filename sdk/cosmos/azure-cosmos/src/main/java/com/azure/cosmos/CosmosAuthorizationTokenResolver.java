@@ -3,6 +3,8 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.model.CosmosResourceType;
+
 import java.util.Map;
 
 /**

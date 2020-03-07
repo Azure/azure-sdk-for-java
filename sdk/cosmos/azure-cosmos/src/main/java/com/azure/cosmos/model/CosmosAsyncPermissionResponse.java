@@ -5,7 +5,6 @@ package com.azure.cosmos.model;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncPermission;
 import com.azure.cosmos.CosmosAsyncUser;
-import com.azure.cosmos.Permission;
 import com.azure.cosmos.implementation.ResourceResponse;
 import org.apache.commons.lang3.StringUtils;
 

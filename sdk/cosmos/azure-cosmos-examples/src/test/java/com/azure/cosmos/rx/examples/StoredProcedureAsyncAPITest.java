@@ -8,7 +8,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.DataType;
+import com.azure.cosmos.model.DataType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.implementation.DocumentCollection;

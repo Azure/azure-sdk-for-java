@@ -4,8 +4,8 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.model.CompositePath;
 import com.azure.cosmos.IndexingMode;
-import com.azure.cosmos.Permission;
-import com.azure.cosmos.PermissionMode;
+import com.azure.cosmos.model.Permission;
+import com.azure.cosmos.model.PermissionMode;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.SpatialSpec;
 import com.azure.cosmos.SpatialType;

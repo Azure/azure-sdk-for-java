@@ -4,8 +4,6 @@ package com.azure.cosmos.model;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.Permission;
-import com.azure.cosmos.PermissionMode;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.Constants;
 import org.apache.commons.lang3.StringUtils;

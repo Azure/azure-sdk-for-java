@@ -4,7 +4,7 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.DataType;
+import com.azure.cosmos.model.DataType;
 import com.azure.cosmos.IncludedPath;
 import com.azure.cosmos.Index;
 import com.azure.cosmos.IndexingPolicy;
@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.beust.jcommander.JCommander;
-import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

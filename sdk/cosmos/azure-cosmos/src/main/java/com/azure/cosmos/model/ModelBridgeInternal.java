@@ -13,14 +13,16 @@ import com.azure.cosmos.CosmosStoredProcedure;
 import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.Permission;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Trigger;
@@ -28,6 +30,7 @@ import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * This is meant to be used only internally as a bridge access to classes in
@@ -217,5 +220,39 @@ public class ModelBridgeInternal {
 
     public static RequestOptions toRequestOptions(CosmosStoredProcedureRequestOptions cosmosStoredProcedureRequestOptions) {
         return cosmosStoredProcedureRequestOptions.toRequestOptions();
+    }
+
+    public static String getAddressesLink(DatabaseAccount databaseAccount) {
+        return databaseAccount.getAddressesLink();
+    }
+
+    public static DatabaseAccount toDatabaseAccount(RxDocumentServiceResponse response) {
+        DatabaseAccount account = response.getResource(DatabaseAccount.class);
+
+        // read the headers and set to the account
+        Map<String, String> responseHeader = response.getResponseHeaders();
+
+        account.setMaxMediaStorageUsageInMB(
+            Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.MAX_MEDIA_STORAGE_USAGE_IN_MB)));
+        account.setMediaStorageUsageInMB(
+            Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.CURRENT_MEDIA_STORAGE_USAGE_IN_MB)));
+
+        return account;
+    }
+
+    public static Map<String, Object> getQueryEngineConfiuration(DatabaseAccount databaseAccount) {
+        return databaseAccount.getQueryEngineConfiguration();
+    }
+
+    public static ReplicationPolicy getReplicationPolicy(DatabaseAccount databaseAccount) {
+        return databaseAccount.getReplicationPolicy();
+    }
+
+    public static ReplicationPolicy getSystemReplicationPolicy(DatabaseAccount databaseAccount) {
+        return databaseAccount.getSystemReplicationPolicy();
+    }
+
+    public static ConsistencyPolicy getConsistencyPolicy(DatabaseAccount databaseAccount) {
+        return databaseAccount.getConsistencyPolicy();
     }
 }

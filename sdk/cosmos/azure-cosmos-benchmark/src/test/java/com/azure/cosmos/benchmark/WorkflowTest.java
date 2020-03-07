@@ -4,7 +4,7 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.DataType;
+import com.azure.cosmos.model.DataType;
 import com.azure.cosmos.IncludedPath;
 import com.azure.cosmos.Index;
 import com.azure.cosmos.IndexingPolicy;

@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.model;
 
+import java.util.List;
+
 /**
  * This is a helper class for testing.
  */
@@ -10,6 +12,26 @@ public class ModelBridgeUtils {
 
     public static ConflictResolutionPolicy createConflictResolutionPolicy() {
         return new ConflictResolutionPolicy();
+    }
+
+    public static DatabaseAccount createDatabaseAccount(List<DatabaseAccountLocation> readLocations,
+                                                        List<DatabaseAccountLocation> writeLocations,
+                                                        boolean useMultipleWriteLocations) {
+        DatabaseAccount dbAccount = new DatabaseAccount();
+        dbAccount.setEnableMultipleWriteLocations(useMultipleWriteLocations);
+
+        dbAccount.setReadableLocations(readLocations);
+        dbAccount.setWritableLocations(writeLocations);
+
+        return dbAccount;
+    }
+
+    public static DatabaseAccountLocation createDatabaseAccountLocation(String name, String endpoint) {
+        DatabaseAccountLocation dal = new DatabaseAccountLocation();
+        dal.setName(name);
+        dal.setEndpoint(endpoint);
+
+        return dal;
     }
 
     public static ConflictResolutionPolicy setMode(ConflictResolutionPolicy policy, ConflictResolutionMode mode) {

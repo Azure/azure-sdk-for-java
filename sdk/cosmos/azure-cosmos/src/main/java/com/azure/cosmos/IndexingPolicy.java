@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.model.CompositePath;
+import com.azure.cosmos.model.ExcludedPath;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.StringUtils;
 

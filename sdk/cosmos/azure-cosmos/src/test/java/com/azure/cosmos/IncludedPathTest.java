@@ -2,14 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.google.common.collect.ArrayListMultimap;
+import com.azure.cosmos.model.DataType;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
