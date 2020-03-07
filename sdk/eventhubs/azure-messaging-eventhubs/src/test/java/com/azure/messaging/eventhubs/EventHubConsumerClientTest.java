@@ -135,8 +135,8 @@ public class EventHubConsumerClientTest {
     }
 
     /**
-     * Verify that by default, lastEnqueuedInformation is null if
-     * {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()} is not set.
+     * Verify that by default, lastEnqueuedInformation is null if {@link ReceiveOptions#getTrackLastEnqueuedEventProperties()}
+     * is not set.
      */
     @Test
     public void lastEnqueuedEventInformationIsNull() {
@@ -180,19 +180,25 @@ public class EventHubConsumerClientTest {
         sendMessages(sink, numberOfEvents, PARTITION_ID);
 
         // Act
-        final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID, numberOfEvents,
-            EventPosition.earliest(), TIMEOUT, options);
+        final IterableStream<PartitionEvent> receive;
+        try {
+            receive = consumer.receiveFromPartition(PARTITION_ID, numberOfEvents,
+                EventPosition.earliest(), TIMEOUT, options);
 
-        // Assert
-        Assertions.assertNotNull(receive);
+            // Assert
+            Assertions.assertNotNull(receive);
 
-        for (PartitionEvent event : receive) {
-            final LastEnqueuedEventProperties properties = event.getLastEnqueuedEventProperties();
-            Assertions.assertNotNull(properties);
-            Assertions.assertNull(properties.getOffset());
-            Assertions.assertNull(properties.getSequenceNumber());
-            Assertions.assertNull(properties.getRetrievalTime());
-            Assertions.assertNull(properties.getEnqueuedTime());
+            for (PartitionEvent event : receive) {
+                final LastEnqueuedEventProperties properties = event.getLastEnqueuedEventProperties();
+                Assertions.assertNotNull(properties);
+                Assertions.assertNull(properties.getOffset());
+                Assertions.assertNull(properties.getSequenceNumber());
+                Assertions.assertNull(properties.getRetrievalTime());
+                Assertions.assertNull(properties.getEnqueuedTime());
+            }
+
+        } finally {
+            consumer.close();
         }
     }
 
@@ -308,26 +314,19 @@ public class EventHubConsumerClientTest {
             .prefetchCount(100)
             .buildConsumerClient();
 
-        Assertions.assertEquals("dummy-event-hub", consumer.getEventHubName());
-        Assertions.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
-        Assertions.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
+        try {
+            Assertions.assertEquals("dummy-event-hub", consumer.getEventHubName());
+            Assertions.assertEquals("doesnotexist.servicebus.windows.net", consumer.getFullyQualifiedNamespace());
+            Assertions.assertEquals(CONSUMER_GROUP, consumer.getConsumerGroup());
+        } finally {
+            consumer.close();
+        }
     }
 
     private static Integer getPositionId(PartitionEvent partitionEvent) {
         EventData event = partitionEvent.getData();
         final String value = String.valueOf(event.getProperties().get(MESSAGE_POSITION_ID));
         return Integer.valueOf(value);
-    }
-
-    private void assertPartition(String partitionId, PartitionEvent event) {
-        System.out.println("Event received: " + event.getPartitionContext().getPartitionId());
-        final Object value = event.getData().getProperties().get(PARTITION_ID_HEADER);
-        Assertions.assertTrue(value instanceof String);
-        Assertions.assertEquals(partitionId, value);
-
-        Assertions.assertEquals(partitionId, event.getPartitionContext().getPartitionId());
-        Assertions.assertEquals(EVENT_HUB_NAME, event.getPartitionContext().getEventHubName());
-        Assertions.assertEquals(CONSUMER_GROUP, event.getPartitionContext().getConsumerGroup());
     }
 
     private void sendMessages(FluxSink<Message> sink, int numberOfEvents, String partitionId) {

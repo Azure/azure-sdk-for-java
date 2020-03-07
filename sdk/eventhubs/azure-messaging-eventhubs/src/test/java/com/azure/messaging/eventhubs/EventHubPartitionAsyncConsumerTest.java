@@ -75,9 +75,6 @@ class EventHubPartitionAsyncConsumerTest {
     @Mock
     private Disposable parentConnection;
 
-    @Captor
-    private ArgumentCaptor<Supplier<Integer>> creditSupplierCaptor;
-
     private final EventPosition originalPosition = EventPosition.latest();
     private final AtomicReference<Supplier<EventPosition>> currentPosition = new AtomicReference<>(() -> originalPosition);
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();

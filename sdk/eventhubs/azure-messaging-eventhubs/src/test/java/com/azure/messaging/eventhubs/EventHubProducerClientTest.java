@@ -116,6 +116,7 @@ public class EventHubProducerClientTest {
         sendLink = null;
         singleMessageCaptor = null;
         messagesCaptor = null;
+        asyncProducer.close();
     }
 
     /**
@@ -132,7 +133,11 @@ public class EventHubProducerClientTest {
             .thenReturn(Mono.just(sendLink));
 
         // Act
-        producer.send(eventData);
+        try {
+            producer.send(eventData);
+        } finally {
+            producer.close();
+        }
 
         // Assert
         verify(sendLink, times(1)).send(any(Message.class));
