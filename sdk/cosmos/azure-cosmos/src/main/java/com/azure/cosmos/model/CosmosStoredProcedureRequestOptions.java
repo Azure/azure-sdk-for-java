@@ -3,7 +3,6 @@
 package com.azure.cosmos.model;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.implementation.RequestOptions;
 
 /**

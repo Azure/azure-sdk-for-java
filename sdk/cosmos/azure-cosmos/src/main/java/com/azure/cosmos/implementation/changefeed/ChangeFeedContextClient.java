@@ -14,7 +14,7 @@ import com.azure.cosmos.model.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.model.CosmosItemRequestOptions;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.model.SqlQuerySpec;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.fasterxml.jackson.databind.JsonNode;

@@ -8,7 +8,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.model.CosmosItemRequestOptions;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLease;

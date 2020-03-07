@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.model.CosmosItemRequestOptions;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.model.PartitionKey;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;

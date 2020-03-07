@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.model.PartitionKey;
 import org.apache.commons.lang3.tuple.Pair;
 import reactor.core.publisher.Mono;
 

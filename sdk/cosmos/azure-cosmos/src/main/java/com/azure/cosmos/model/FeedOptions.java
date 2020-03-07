@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.model;
 
-import com.azure.cosmos.PartitionKey;
-
 import java.util.Map;
 
 /**

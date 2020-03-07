@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.model.SqlParameter;
 import com.azure.cosmos.model.SqlParameterList;
 import com.azure.cosmos.model.SqlQuerySpec;

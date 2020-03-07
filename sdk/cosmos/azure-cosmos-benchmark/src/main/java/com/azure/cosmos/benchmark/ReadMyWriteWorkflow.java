@@ -10,7 +10,7 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.NotFoundException;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.model.SqlParameter;
 import com.azure.cosmos.model.SqlParameterList;
 import com.azure.cosmos.model.SqlQuerySpec;

@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import org.testng.annotations.AfterClass;

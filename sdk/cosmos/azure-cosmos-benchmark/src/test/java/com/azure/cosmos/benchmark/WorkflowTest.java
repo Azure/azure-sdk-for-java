@@ -8,7 +8,7 @@ import com.azure.cosmos.model.DataType;
 import com.azure.cosmos.model.IncludedPath;
 import com.azure.cosmos.model.Index;
 import com.azure.cosmos.model.IndexingPolicy;
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.model.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DocumentCollection;

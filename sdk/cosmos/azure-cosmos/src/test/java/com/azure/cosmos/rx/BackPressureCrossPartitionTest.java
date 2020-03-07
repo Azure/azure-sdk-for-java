@@ -19,7 +19,7 @@ import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.model.IncludedPath;
 import com.azure.cosmos.model.Index;
 import com.azure.cosmos.model.IndexingPolicy;
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.model.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.RxDocumentClientUnderTest;
 import com.azure.cosmos.implementation.TestUtils;
 import io.reactivex.subscribers.TestSubscriber;

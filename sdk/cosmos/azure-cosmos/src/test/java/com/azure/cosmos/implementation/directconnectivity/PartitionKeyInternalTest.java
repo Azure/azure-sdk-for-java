@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.CommonsBridgeInternal;
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.model.PartitionKeyDefinition;
+import com.azure.cosmos.model.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.model.PartitionKind;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.Undefined;
@@ -420,7 +420,7 @@ public class PartitionKeyInternalTest {
 
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         partitionKeyDefinition.setKind(PartitionKind.HASH);
-        CommonsBridgeInternal.setV2(partitionKeyDefinition);
+        partitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
         ArrayList<String> paths = new ArrayList<String>();
         for (int i = 0; i < partitionKey.getComponents().size(); i++) {
             paths.add("/path" + i);
@@ -443,7 +443,7 @@ public class PartitionKeyInternalTest {
         PartitionKeyDefinition pkDefinition = new PartitionKeyDefinition();
         pkDefinition.setPaths(ImmutableList.of("/field1"));
         if (v2) {
-            CommonsBridgeInternal.setV2(pkDefinition);
+            pkDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
         }
 
         PartitionKeyInternal pk = PartitionKeyInternalUtils.createPartitionKeyInternal(buffer.substring(0, length));

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.model.Permission;
 import com.azure.cosmos.model.PermissionMode;
 import org.testng.annotations.Test;

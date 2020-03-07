@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.model.ThrottlingRetryOptions;
 import org.assertj.core.api.Assertions;
 import org.mockito.stubbing.Answer;
 import org.testng.annotations.AfterClass;

@@ -13,7 +13,7 @@ import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.model.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.model.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.model.ModelBridgeUtils;

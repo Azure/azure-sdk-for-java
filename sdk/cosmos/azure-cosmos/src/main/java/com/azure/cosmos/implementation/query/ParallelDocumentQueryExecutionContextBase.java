@@ -6,7 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.model.SqlQuerySpec;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;

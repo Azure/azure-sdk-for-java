@@ -7,7 +7,7 @@ import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.DocumentClientTest;
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.model.PartitionKeyDefinition;
 import com.azure.cosmos.model.UniqueKey;
 import com.azure.cosmos.model.UniqueKeyPolicy;
 import com.azure.cosmos.implementation.AsyncDocumentClient;

@@ -11,7 +11,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.model.CosmosResourceType;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.model.PermissionMode;
 import com.azure.cosmos.model.RequestVerb;
 import com.azure.cosmos.Resource;

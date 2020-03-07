@@ -13,8 +13,9 @@ import com.azure.cosmos.model.DatabaseAccount;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.JsonSerializable;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.model.PartitionKey;
+import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.model.PartitionKeyDefinition;
 import com.azure.cosmos.model.Permission;
 import com.azure.cosmos.model.RequestVerb;
 import com.azure.cosmos.Resource;
@@ -914,7 +915,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         PartitionKeyInternal partitionKeyInternal = null;
         if (options != null && options.getPartitionKey() != null && options.getPartitionKey().equals(PartitionKey.NONE)){
-            partitionKeyInternal = BridgeInternal.getNonePartitionKey(partitionKeyDefinition);
+            partitionKeyInternal = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
         } else if (options != null && options.getPartitionKey() != null) {
             partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(options.getPartitionKey());
         } else if (partitionKeyDefinition == null || partitionKeyDefinition.getPaths().size() == 0) {
@@ -948,7 +949,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (parts.size() >= 1) {
                 Object value = document.getObjectByPath(parts);
                 if (value == null || value.getClass() == ObjectNode.class) {
-                    value = BridgeInternal.getNonePartitionKey(partitionKeyDefinition);
+                    value = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
                 }
 
                 if (value instanceof PartitionKeyInternal) {
@@ -1477,7 +1478,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String idParamName = "@param" + i;
 
             PartitionKey pkValueAsPartitionKey = pair.getRight();
-            Object pkValue = BridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
+            Object pkValue = ModelBridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
 
             if (!Objects.equals(idValue, pkValue)) {
                 // this is sanity check to ensure id and pk are the same
@@ -1505,7 +1506,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Pair<String, PartitionKey> pair = idPartitionKeyPairList.get(i);
 
             PartitionKey pkValueAsPartitionKey = pair.getRight();
-            Object pkValue = BridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
+            Object pkValue = ModelBridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
             String pkParamName = "@param" + (2 * i);
             parameters.add(new SqlParameter(pkParamName, pkValue));
 

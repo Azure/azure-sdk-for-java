@@ -1,7 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
+import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosAsyncStoredProcedure;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosKeyCredential;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -27,6 +35,7 @@ import com.azure.cosmos.model.CosmosStoredProcedureProperties;
 import com.azure.cosmos.model.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.model.RequestVerb;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;

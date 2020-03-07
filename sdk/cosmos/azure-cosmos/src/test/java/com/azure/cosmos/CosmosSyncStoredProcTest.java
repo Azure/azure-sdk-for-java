@@ -8,6 +8,7 @@ import com.azure.cosmos.model.CosmosStoredProcedureProperties;
 import com.azure.cosmos.model.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.model.CosmosStoredProcedureResponse;
 import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.model.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;

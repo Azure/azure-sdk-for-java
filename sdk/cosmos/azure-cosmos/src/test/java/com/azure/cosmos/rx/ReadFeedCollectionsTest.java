@@ -11,7 +11,7 @@ import com.azure.cosmos.model.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.model.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;

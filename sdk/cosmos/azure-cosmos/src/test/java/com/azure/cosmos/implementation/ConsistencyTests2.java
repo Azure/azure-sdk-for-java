@@ -10,7 +10,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import org.apache.commons.lang3.Range;

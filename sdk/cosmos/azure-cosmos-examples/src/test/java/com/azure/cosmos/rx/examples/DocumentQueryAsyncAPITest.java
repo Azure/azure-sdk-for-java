@@ -12,7 +12,7 @@ import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.model.PartitionKeyDefinition;
 import com.azure.cosmos.model.SqlParameterList;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.Resource;

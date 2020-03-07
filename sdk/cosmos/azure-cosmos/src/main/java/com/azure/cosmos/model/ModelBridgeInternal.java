@@ -12,7 +12,6 @@ import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosStoredProcedure;
 import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.CosmosUserDefinedFunction;
-import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -30,6 +29,7 @@ import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserDefinedFunction;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.util.Collections;
 import java.util.List;
@@ -324,5 +324,25 @@ public class ModelBridgeInternal {
 
     public static String toLower(RequestVerb verb) {
         return verb.toLowerCase();
+    }
+
+    public static boolean isV2(PartitionKeyDefinition pkd) {
+        return pkd.getVersion() != null && PartitionKeyDefinitionVersion.V2.val == pkd.getVersion().val;
+    }
+
+    public static PartitionKeyInternal getNonePartitionKey(PartitionKeyDefinition partitionKeyDefinition) {
+        return partitionKeyDefinition.getNonePartitionKeyValue();
+    }
+
+    public static PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey) {
+        return partitionKey.getInternalPartitionKey();
+    }
+
+    public static PartitionKey partitionKeyfromJsonString(String jsonString) {
+        return PartitionKey.fromJsonString(jsonString);
+    }
+
+    public static Object getPartitionKeyObject(PartitionKey right) {
+        return right.getKeyObject();
     }
 }

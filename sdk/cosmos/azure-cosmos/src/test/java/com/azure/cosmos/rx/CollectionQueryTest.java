@@ -10,7 +10,7 @@ import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.model.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.apache.commons.lang3.StringUtils;

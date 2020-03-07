@@ -1,10 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.model.PartitionKey;
+import com.azure.cosmos.model.PartitionKeyDefinition;
+import com.azure.cosmos.model.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.model.PartitionKind;
 import com.fasterxml.jackson.databind.node.NullNode;
 import org.testng.annotations.Test;

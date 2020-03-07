@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.model.PartitionKey;
 
 import java.time.OffsetDateTime;
 import java.util.Map;

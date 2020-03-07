@@ -5,6 +5,8 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.model.IndexingPolicy;
+import com.azure.cosmos.model.PartitionKeyDefinition;
+import com.azure.cosmos.model.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.model.SpatialSpec;
 import com.google.common.collect.ImmutableList;
 import org.assertj.core.api.Assertions;

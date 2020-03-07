@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.model.CosmosItemRequestOptions;
 import com.azure.cosmos.model.CosmosItemResponse;
 import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.model.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

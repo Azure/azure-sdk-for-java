@@ -15,6 +15,8 @@ import com.azure.cosmos.model.CosmosResponse;
 import com.azure.cosmos.model.IndexingMode;
 import com.azure.cosmos.model.IndexingPolicy;
 import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.model.PartitionKey;
+import com.azure.cosmos.model.PartitionKeyDefinition;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.TestConfigurations;

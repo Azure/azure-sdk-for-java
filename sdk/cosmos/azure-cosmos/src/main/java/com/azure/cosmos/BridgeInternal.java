@@ -42,7 +42,7 @@ import com.azure.cosmos.model.DatabaseAccountLocation;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.model.ModelBridgeInternal;
-import com.azure.cosmos.model.RequestVerb;
+import com.azure.cosmos.model.PartitionKey;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -301,10 +301,6 @@ public class BridgeInternal {
         return cosmosClientException.innerErrorMessage();
     }
 
-    public static PartitionKeyInternal getNonePartitionKey(PartitionKeyDefinition partitionKeyDefinition) {
-        return partitionKeyDefinition.getNonePartitionKeyValue();
-    }
-
     public static PartitionKey getPartitionKey(PartitionKeyInternal partitionKeyInternal) {
         return new PartitionKey(partitionKeyInternal);
     }
@@ -463,7 +459,7 @@ public class BridgeInternal {
     }
 
     public static PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey) {
-        return partitionKey.getInternalPartitionKey();
+        return ModelBridgeInternal.getPartitionKeyInternal(partitionKey);
     }
 
     public static void setFeedOptionsContinuationTokenAndMaxItemCount(FeedOptions feedOptions, String continuationToken, Integer maxItemCount) {
@@ -490,15 +486,6 @@ public class BridgeInternal {
     public static <T> CosmosItemProperties getProperties(CosmosItemResponse<T> cosmosItemResponse) {
         return ModelBridgeInternal.getCosmosItemProperties(cosmosItemResponse);
     }
-
-    public static PartitionKey partitionKeyfromJsonString(String jsonString) {
-        return PartitionKey.fromJsonString(jsonString);
-    }
-
-    public static Object getPartitionKeyObject(PartitionKey right) {
-        return right.getKeyObject();
-    }
-
 
     public static int getHashCode(CosmosKeyCredential keyCredential) {
         return keyCredential.getKeyHashCode();

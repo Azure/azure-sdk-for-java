@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.routing;
 
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.model.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.Strings;
