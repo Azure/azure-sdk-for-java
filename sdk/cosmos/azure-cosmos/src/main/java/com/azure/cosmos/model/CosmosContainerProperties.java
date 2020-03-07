@@ -2,10 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.model;
 
-import com.azure.cosmos.IndexingPolicy;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.Resource;
-import com.azure.cosmos.UniqueKeyPolicy;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
 

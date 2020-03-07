@@ -14,6 +14,7 @@ import com.azure.cosmos.model.CosmosUserProperties;
 import com.azure.cosmos.model.CosmosUserResponse;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.model.SqlQuerySpec;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 

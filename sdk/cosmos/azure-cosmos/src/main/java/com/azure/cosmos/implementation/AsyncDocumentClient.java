@@ -10,7 +10,7 @@ import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.model.Permission;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.model.SqlQuerySpec;
 import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;

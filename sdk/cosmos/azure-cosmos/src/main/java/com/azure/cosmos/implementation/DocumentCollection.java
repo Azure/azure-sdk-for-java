@@ -4,11 +4,11 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.model.ConflictResolutionPolicy;
-import com.azure.cosmos.IndexingPolicy;
+import com.azure.cosmos.model.IndexingPolicy;
 import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.Resource;
-import com.azure.cosmos.UniqueKeyPolicy;
+import com.azure.cosmos.model.UniqueKeyPolicy;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 

@@ -12,6 +12,8 @@ import com.azure.cosmos.model.CosmosDatabaseProperties;
 import com.azure.cosmos.model.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.model.CosmosItemRequestOptions;
 import com.azure.cosmos.model.CosmosResponse;
+import com.azure.cosmos.model.IndexingMode;
+import com.azure.cosmos.model.IndexingPolicy;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;

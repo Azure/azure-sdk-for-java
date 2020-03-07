@@ -3,8 +3,6 @@
 package com.azure.cosmos.model;
 
 import com.azure.cosmos.Resource;
-import com.azure.cosmos.TriggerOperation;
-import com.azure.cosmos.TriggerType;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Trigger;
 import org.apache.commons.lang3.StringUtils;

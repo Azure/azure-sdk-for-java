@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.model.PartitionKind;
 import com.fasterxml.jackson.databind.node.NullNode;
 import org.testng.annotations.Test;
 

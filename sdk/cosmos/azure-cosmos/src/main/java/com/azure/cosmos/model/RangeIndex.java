@@ -1,53 +1,49 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.model.DataType;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Represents a hash index in the Azure Cosmos DB database service.
+ * Represents a range index in the Azure Cosmos DB database service.
  */
-public final class HashIndex extends Index {
+public final class RangeIndex extends Index {
 
     /**
-     * Specifies an instance of HashIndex class with specified DataType.
+     * Initializes a new instance of the RangeIndex class with specified DataType.
      * <p>
-     * Here is an example to instantiate HashIndex class passing in the DataType:
-     * <p>
-     * {@code HashIndex hashIndex = new HashIndex(DataType.STRING);}
+     * Here is an example to instantiate RangeIndex class passing in the DataType:
+     * {@code RangeIndex rangeIndex = new RangeIndex(DataType.NUMBER);}
      *
      * @param dataType the data type.
      */
-    public HashIndex(DataType dataType) {
-        super(IndexKind.HASH);
+    public RangeIndex(DataType dataType) {
+        super(IndexKind.RANGE);
         this.setDataType(dataType);
     }
 
     /**
-     * Initializes a new instance of the HashIndex class with specified DataType and precision.
-     * <p>
-     * Here is an example to instantiate HashIndex class passing in the DataType:
-     * {@code HashIndex hashIndex = new HashIndex(DataType.STRING, 3);}
+     * Initializes a new instance of the RangeIndex class with specified DataType and precision.
+     * {@code RangeIndex rangeIndex = new RangeIndex(DataType.NUMBER, -1);}
      *
-     * @param dataType the data type.
-     * @param precision the precision.
+     * @param dataType the data type of the RangeIndex
+     * @param precision the precision of the RangeIndex
      */
-    public HashIndex(DataType dataType, int precision) {
-        super(IndexKind.HASH);
+    public RangeIndex(DataType dataType, int precision) {
+        super(IndexKind.RANGE);
         this.setDataType(dataType);
         this.setPrecision(precision);
     }
 
     /**
-     * Initializes a new instance of the HashIndex class with json string.
+     * Initializes a new instance of the RangeIndex class with json string.
      *
      * @param jsonString the json string that represents the index.
      */
-    HashIndex(String jsonString) {
-        super(jsonString, IndexKind.HASH);
+    RangeIndex(String jsonString) {
+        super(jsonString, IndexKind.RANGE);
         if (this.getDataType() == null) {
             throw new IllegalArgumentException("The jsonString doesn't contain a valid 'dataType'.");
         }
@@ -63,7 +59,6 @@ public final class HashIndex extends Index {
         try {
             result = DataType.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.DATA_TYPE)));
         } catch (IllegalArgumentException e) {
-            // Ignore exception and let the caller handle null value.
             this.getLogger().warn("INVALID index dataType value {}.",
                 super.getString(Constants.Properties.DATA_TYPE));
         }
@@ -74,9 +69,9 @@ public final class HashIndex extends Index {
      * Sets data type.
      *
      * @param dataType the data type.
-     * @return the Hash Index.
+     * @return the RangeIndex.
      */
-    public HashIndex setDataType(DataType dataType) {
+    public RangeIndex setDataType(DataType dataType) {
         super.set(Constants.Properties.DATA_TYPE, dataType.toString());
         return this;
     }
@@ -94,9 +89,9 @@ public final class HashIndex extends Index {
      * Sets precision.
      *
      * @param precision the precision.
-     * @return the Hash Index.
+     * @return the RangeIndex.
      */
-    public HashIndex setPrecision(int precision) {
+    public RangeIndex setPrecision(int precision) {
         super.set(Constants.Properties.PRECISION, precision);
         return this;
     }

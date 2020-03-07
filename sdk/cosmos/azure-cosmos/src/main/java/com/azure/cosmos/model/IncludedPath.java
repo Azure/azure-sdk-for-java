@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
+import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -82,8 +83,8 @@ public class IncludedPath extends JsonSerializable {
     }
 
     private Collection<Index> getIndexCollection() {
-        if (this.propertyBag != null && this.propertyBag.has(Constants.Properties.INDEXES)) {
-            ArrayNode jsonArray = (ArrayNode) this.propertyBag.get(Constants.Properties.INDEXES);
+        if (this.getPropertyBag() != null && this.getPropertyBag().has(Constants.Properties.INDEXES)) {
+            ArrayNode jsonArray = (ArrayNode) this.getPropertyBag().get(Constants.Properties.INDEXES);
             Collection<Index> result = new ArrayList<Index>();
 
             for (int i = 0; i < jsonArray.size(); i++) {

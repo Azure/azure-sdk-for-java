@@ -4,11 +4,10 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CommonsBridgeInternal;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.model.SqlQuerySpec;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;

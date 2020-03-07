@@ -640,4 +640,8 @@ public class JsonSerializable {
     public String toString() {
         return toJson(propertyBag);
     }
+
+    protected ObjectNode getPropertyBag() {
+        return this.propertyBag;
+    }
 }

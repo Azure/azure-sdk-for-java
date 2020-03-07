@@ -15,6 +15,7 @@ import com.azure.cosmos.model.DatabaseAccount;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import com.azure.cosmos.model.Permission;
+import com.azure.cosmos.model.SqlQuerySpec;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;

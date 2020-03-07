@@ -13,7 +13,7 @@ import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.model.PermissionMode;
-import com.azure.cosmos.RequestVerb;
+import com.azure.cosmos.model.RequestVerb;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.AsyncDocumentClient;

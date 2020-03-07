@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
 /**
  * The enum RequestVerb.

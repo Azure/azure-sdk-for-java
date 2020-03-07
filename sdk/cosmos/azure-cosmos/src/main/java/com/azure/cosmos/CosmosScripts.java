@@ -15,6 +15,7 @@ import com.azure.cosmos.model.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.model.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.model.SqlQuerySpec;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 

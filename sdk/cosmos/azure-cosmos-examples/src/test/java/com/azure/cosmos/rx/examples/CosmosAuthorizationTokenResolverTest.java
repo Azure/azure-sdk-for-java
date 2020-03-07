@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.rx.examples;
 
-import com.azure.cosmos.RequestVerb;
+import com.azure.cosmos.model.RequestVerb;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;

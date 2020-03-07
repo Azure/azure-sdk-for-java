@@ -42,6 +42,7 @@ import com.azure.cosmos.model.DatabaseAccountLocation;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.model.RequestVerb;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -54,7 +55,6 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -502,11 +502,6 @@ public class BridgeInternal {
 
     public static int getHashCode(CosmosKeyCredential keyCredential) {
         return keyCredential.getKeyHashCode();
-    }
-
-
-    public static String toLower(RequestVerb verb) {
-        return verb.toLowerCase();
     }
 
     public static String getLink(CosmosAsyncContainer cosmosAsyncContainer) {

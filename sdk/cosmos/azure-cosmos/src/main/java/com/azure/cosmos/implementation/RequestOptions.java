@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.model.AccessCondition;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.IndexingDirective;
+import com.azure.cosmos.model.IndexingDirective;
 import com.azure.cosmos.PartitionKey;
 
 import java.util.HashMap;

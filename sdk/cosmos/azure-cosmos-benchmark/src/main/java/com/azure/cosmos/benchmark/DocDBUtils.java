@@ -7,9 +7,9 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.SqlParameter;
-import com.azure.cosmos.SqlParameterList;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.model.SqlParameter;
+import com.azure.cosmos.model.SqlParameterList;
+import com.azure.cosmos.model.SqlQuerySpec;
 
 class DocDBUtils {
 

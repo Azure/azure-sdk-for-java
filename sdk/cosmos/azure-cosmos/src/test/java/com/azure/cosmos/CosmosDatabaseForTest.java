@@ -5,6 +5,9 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.model.CosmosDatabaseProperties;
+import com.azure.cosmos.model.SqlParameter;
+import com.azure.cosmos.model.SqlParameterList;
+import com.azure.cosmos.model.SqlQuerySpec;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

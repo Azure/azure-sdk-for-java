@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
 /**
  * Specifies the partition scheme for an multiple-partitioned collection in the Azure Cosmos DB database service.

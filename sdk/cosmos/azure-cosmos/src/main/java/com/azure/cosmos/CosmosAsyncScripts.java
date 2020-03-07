@@ -14,6 +14,7 @@ import com.azure.cosmos.model.CosmosTriggerProperties;
 import com.azure.cosmos.model.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.model.SqlQuerySpec;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;

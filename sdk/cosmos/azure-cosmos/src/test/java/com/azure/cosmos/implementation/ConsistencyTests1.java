@@ -8,7 +8,7 @@ import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.PartitionKind;
+import com.azure.cosmos.model.PartitionKind;
 import org.testng.SkipException;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;

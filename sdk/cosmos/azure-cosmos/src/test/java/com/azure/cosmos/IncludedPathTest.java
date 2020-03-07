@@ -3,6 +3,9 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.model.DataType;
+import com.azure.cosmos.model.IncludedPath;
+import com.azure.cosmos.model.Index;
+import com.azure.cosmos.model.RangeIndex;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 

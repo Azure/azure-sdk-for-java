@@ -321,4 +321,8 @@ public class ModelBridgeInternal {
     public static <T> ConcurrentMap<String, QueryMetrics> queryMetrics(FeedResponse<T> feedResponse) {
         return feedResponse.queryMetrics();
     }
+
+    public static String toLower(RequestVerb verb) {
+        return verb.toLowerCase();
+    }
 }

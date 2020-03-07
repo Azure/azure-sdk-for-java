@@ -46,4 +46,9 @@ public class ExcludedPath extends JsonSerializable {
         super.set(Constants.Properties.PATH, path);
         return this;
     }
+
+    @Override
+    protected void populatePropertyBag() {
+        super.populatePropertyBag();
+    }
 }
