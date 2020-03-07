@@ -1,4 +1,7 @@
 # Release History
+## 1.0.2 (2020-03-09)
+- Updated javadoc to support the changes that App Configuration service no longer support `*a*` and `*a` setting filter.
+  For more information: see [Filtering](https://github.com/Azure/AppConfiguration/blob/master/docs/REST/kv.md#filtering).
 
 ## 1.0.1 (2020-01-07)
 - Added support for setting `x-ms-client-request-id`, `x-ms-correlation-request-id` and `correlation-context` http header values.
