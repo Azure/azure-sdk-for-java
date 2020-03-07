@@ -14,6 +14,7 @@ import com.azure.cosmos.model.CosmosConflictProperties;
 import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.model.CosmosContainerRequestOptions;
 import com.azure.cosmos.model.CosmosItemRequestOptions;
+import com.azure.cosmos.model.CosmosPagedFlux;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.model.ModelBridgeInternal;
@@ -295,7 +296,7 @@ public class CosmosAsyncContainer {
      * error.
      */
     public <T> CosmosPagedFlux<T> readAllItems(FeedOptions options, Class<T> classType) {
-        return new CosmosPagedFlux<>(pagedFluxOptions -> {
+        return ModelBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
                 response -> prepareFeedResponse(response, classType));
@@ -374,7 +375,7 @@ public class CosmosAsyncContainer {
 
     private <T> CosmosPagedFlux<T> queryItemsInternal(
         SqlQuerySpec sqlQuerySpec, FeedOptions feedOptions, Class<T> classType) {
-        return new CosmosPagedFlux<>(pagedFluxOptions -> {
+        return ModelBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, feedOptions);
             return getDatabase().getDocClientWrapper()
                        .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, feedOptions)
@@ -555,7 +556,7 @@ public class CosmosAsyncContainer {
      * obtained conflicts or an error.
      */
     public CosmosPagedFlux<CosmosConflictProperties> readAllConflicts(FeedOptions options) {
-        return new CosmosPagedFlux<>(pagedFluxOptions -> {
+        return ModelBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper().readConflicts(getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
@@ -584,7 +585,7 @@ public class CosmosAsyncContainer {
      * obtained conflicts or an error.
      */
     public CosmosPagedFlux<CosmosConflictProperties> queryConflicts(String query, FeedOptions options) {
-        return new CosmosPagedFlux<>(pagedFluxOptions -> {
+        return ModelBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper().queryConflicts(getLink(), query, options)
                        .map(response -> BridgeInternal.createFeedResponse(

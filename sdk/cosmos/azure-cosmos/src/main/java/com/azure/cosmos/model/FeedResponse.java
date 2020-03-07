@@ -5,6 +5,8 @@ package com.azure.cosmos.model;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePage;
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -61,7 +63,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this.useEtagAsContinuation = useEtagAsContinuation;
         this.nochanges = nochanges;
         this.queryMetricsMap = new ConcurrentHashMap<>(queryMetricsMap);
-        this.feedResponseDiagnostics = new FeedResponseDiagnostics(queryMetricsMap);
+        this.feedResponseDiagnostics = BridgeInternal.createFeedResponseDiagnostics(queryMetricsMap);
     }
 
     /**

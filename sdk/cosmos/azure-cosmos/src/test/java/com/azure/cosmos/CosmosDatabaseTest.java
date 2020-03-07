@@ -9,6 +9,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.model.CosmosDatabaseProperties;
 import com.azure.cosmos.model.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.model.CosmosDatabaseResponse;
+import com.azure.cosmos.model.CosmosPagedIterable;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;

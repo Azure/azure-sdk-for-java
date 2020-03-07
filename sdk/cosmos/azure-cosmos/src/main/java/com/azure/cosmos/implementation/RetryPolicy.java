@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.model.ThrottlingRetryOptions;
+import com.azure.cosmos.ThrottlingRetryOptions;
 
 /**
  * While this class is public, but it is not part of our published public APIs.

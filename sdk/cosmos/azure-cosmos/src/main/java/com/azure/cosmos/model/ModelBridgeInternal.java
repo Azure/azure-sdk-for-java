@@ -3,23 +3,24 @@
 
 package com.azure.cosmos.model;
 
+import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosStoredProcedure;
 import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.implementation.Conflict;
-import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestOptions;
@@ -30,16 +31,25 @@ import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserDefinedFunction;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.Address;
+import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
+import com.azure.cosmos.implementation.query.QueryInfo;
+import com.azure.cosmos.implementation.query.QueryItem;
+import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import reactor.core.publisher.Flux;
 
+import java.lang.reflect.InvocationTargetException;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 /**
  * This is meant to be used only internally as a bridge access to classes in
@@ -399,7 +409,31 @@ public class ModelBridgeInternal {
         jsonSerializable.populatePropertyBag();
     }
 
-    public static void setMapper(JsonSerializable jsonSerializable, ObjectMapper om) {
-        jsonSerializable.setMapper(om);
+    public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class klassType) {
+        try {
+            // the hot path should come through here to avoid serialization/deserialization
+            if (klassType.equals(Document.class) || klassType.equals(OrderByRowResult.class) || klassType.equals(CosmosItemProperties.class)
+                || klassType.equals(PartitionKeyRange.class) || klassType.equals(Range.class)
+                || klassType.equals(QueryInfo.class) || klassType.equals(PartitionedQueryExecutionInfoInternal.class)
+                || klassType.equals(QueryItem.class)
+                || klassType.equals(Address.class)
+                || klassType.equals(DatabaseAccount.class) || klassType.equals(DatabaseAccountLocation.class)
+                || klassType.equals(ReplicationPolicy.class) || klassType.equals(ConsistencyPolicy.class)
+                || klassType.equals(DocumentCollection.class) || klassType.equals(Database.class)) {
+                return (JsonSerializable) klassType.getDeclaredConstructor(ObjectNode.class).newInstance(objectNode);
+            } else {
+                return (JsonSerializable) klassType.getDeclaredConstructor(String.class).newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), objectNode));
+            }
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
+        return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction);
+    }
+
+    public static <T> CosmosPagedIterable<T> createCosmosPagedIterable(ContinuablePagedFlux<String, T, FeedResponse<T>> pagedFlux) {
+        return new CosmosPagedIterable<>(pagedFlux);
     }
 }

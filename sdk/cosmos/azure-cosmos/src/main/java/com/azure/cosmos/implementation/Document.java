@@ -11,8 +11,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
-import static com.azure.cosmos.model.ModelBridgeInternal.setMapper;
-
 /**
  * Represents a document in the Azure Cosmos DB database service.
  * <p>
@@ -47,18 +45,6 @@ public class Document extends Resource {
     public Document setId(String id){
         super.setId(id);
         return this;
-    }
-
-    /**
-     * Initialize a document object from json string.
-     *
-     * @param jsonString the json string that represents the document object.
-     * @param objectMapper the custom object mapper
-     */
-    Document(String jsonString, ObjectMapper objectMapper) {
-        // TODO: Made package private due to #153. #171 adding custom serialization options back.
-        super(jsonString);
-        setMapper(this, objectMapper);
     }
 
     /**

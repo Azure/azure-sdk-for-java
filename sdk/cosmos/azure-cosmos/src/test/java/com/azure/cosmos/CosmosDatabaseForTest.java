@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.model.CosmosDatabaseProperties;
+import com.azure.cosmos.model.CosmosPagedFlux;
 import com.azure.cosmos.model.SqlParameter;
 import com.azure.cosmos.model.SqlParameterList;
 import com.azure.cosmos.model.SqlQuerySpec;

@@ -340,7 +340,7 @@ public class JsonSerializable {
                     throw new IllegalStateException("Failed to create enum.", e);
                 }
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
-                return (T) BridgeInternal.instantiateJsonSerializable((ObjectNode) jsonObj, c);
+                return (T) ModelBridgeInternal.instantiateJsonSerializable((ObjectNode) jsonObj, c);
             } else {
                 // POJO
                 JsonSerializable.checkForValidPOJO(c);
@@ -405,7 +405,7 @@ public class JsonSerializable {
                     }
                 } else if (isJsonSerializable) {
                     // JsonSerializable
-                    T t = (T) BridgeInternal.instantiateJsonSerializable((ObjectNode) n, c);
+                    T t = (T) ModelBridgeInternal.instantiateJsonSerializable((ObjectNode) n, c);
                     result.add(t);
 
                 } else {

@@ -8,6 +8,8 @@ import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.model.CosmosDatabaseProperties;
 import com.azure.cosmos.model.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.model.CosmosDatabaseResponse;
+import com.azure.cosmos.model.CosmosPagedFlux;
+import com.azure.cosmos.model.CosmosPagedIterable;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import com.azure.cosmos.model.SqlQuerySpec;
@@ -214,7 +216,7 @@ public class CosmosClient implements Closeable {
     }
 
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
-        return new CosmosPagedIterable<>(cosmosPagedFlux);
+        return ModelBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
     }
 
 }

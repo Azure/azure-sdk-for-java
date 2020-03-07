@@ -3,8 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.model.ThrottlingRetryOptions;
-
 import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.List;

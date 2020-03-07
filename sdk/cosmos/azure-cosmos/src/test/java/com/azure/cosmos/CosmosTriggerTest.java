@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.model.CosmosPagedIterable;
 import com.azure.cosmos.model.CosmosTriggerProperties;
 import com.azure.cosmos.model.CosmosTriggerResponse;
 import com.azure.cosmos.model.FeedOptions;

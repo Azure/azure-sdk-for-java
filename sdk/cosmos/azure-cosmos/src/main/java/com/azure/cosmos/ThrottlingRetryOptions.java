@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.model;
+package com.azure.cosmos;
 
 /**
  * Encapsulates retry options in the Azure Cosmos DB database service.

@@ -6,6 +6,8 @@ package com.azure.cosmos;
 import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
 import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.model.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.model.CosmosPagedFlux;
+import com.azure.cosmos.model.CosmosPagedIterable;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
 import com.azure.cosmos.model.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.model.CosmosStoredProcedureResponse;
@@ -356,6 +358,6 @@ public class CosmosScripts {
     }
 
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
-        return new CosmosPagedIterable<>(cosmosPagedFlux);
+        return ModelBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
     }
 }

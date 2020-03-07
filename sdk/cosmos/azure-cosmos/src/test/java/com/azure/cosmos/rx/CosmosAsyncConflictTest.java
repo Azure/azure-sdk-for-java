@@ -6,7 +6,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.model.CosmosConflictProperties;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.model.CosmosPagedFlux;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.implementation.HttpConstants;

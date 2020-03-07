@@ -8,11 +8,8 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
-import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -21,25 +18,17 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
-import com.azure.cosmos.implementation.query.QueryInfo;
-import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
-import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.model.ConsistencyPolicy;
 import com.azure.cosmos.model.CosmosAsyncItemResponse;
 import com.azure.cosmos.model.CosmosError;
 import com.azure.cosmos.model.CosmosItemResponse;
+import com.azure.cosmos.model.CosmosPagedFlux;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
 import com.azure.cosmos.model.DatabaseAccount;
-import com.azure.cosmos.model.DatabaseAccountLocation;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.model.JsonSerializable;
@@ -52,8 +41,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Flux;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
@@ -203,6 +190,10 @@ public class BridgeInternal {
     public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
             Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         return ModelBridgeInternal.createFeedResponseWithQueryMetrics(results, headers, queryMetricsMap);
+    }
+
+    public static FeedResponseDiagnostics createFeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
+        return new FeedResponseDiagnostics(queryMetricsMap);
     }
 
     public static <E extends CosmosClientException> E setResourceAddress(E e, String resourceAddress) {
@@ -462,10 +453,6 @@ public class BridgeInternal {
         feedOptions.setMaxItemCount(maxItemCount);
     }
 
-    public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
-        return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction);
-    }
-
     public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
         return ModelBridgeInternal.getCosmosItemProperties(cosmosItemResponse);
     }
@@ -480,31 +467,6 @@ public class BridgeInternal {
 
     public static String getLink(CosmosAsyncContainer cosmosAsyncContainer) {
         return cosmosAsyncContainer.getLink();
-    }
-
-    public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class klassType) {
-        try {
-            // the hot path should come through here to avoid serialization/deserialization
-            if (klassType.equals(Document.class) || klassType.equals(OrderByRowResult.class) || klassType.equals(CosmosItemProperties.class)
-                || klassType.equals(PartitionKeyRange.class) || klassType.equals(Range.class)
-                || klassType.equals(QueryInfo.class) || klassType.equals(PartitionedQueryExecutionInfoInternal.class)
-                || klassType.equals(QueryItem.class)
-                || klassType.equals(Address.class)
-                || klassType.equals(DatabaseAccount.class) || klassType.equals(DatabaseAccountLocation.class)
-                || klassType.equals(ReplicationPolicy.class) || klassType.equals(ConsistencyPolicy.class)
-                || klassType.equals(DocumentCollection.class) || klassType.equals(Database.class)) {
-                Constructor declaredConstructor =
-                    klassType.getDeclaredConstructor(ObjectNode.class);
-                declaredConstructor.setAccessible(true);
-                return (JsonSerializable) declaredConstructor.newInstance(objectNode);
-            } else {
-                Constructor declaredConstructor = klassType.getDeclaredConstructor(String.class);
-                declaredConstructor.setAccessible(true);
-                return (JsonSerializable) declaredConstructor.newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), objectNode));
-            }
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
-            throw new IllegalArgumentException(e);
-        }
     }
 
     public static CosmosAsyncConflict createCosmosAsyncConflict(String id, CosmosAsyncContainer container) {
