@@ -13,25 +13,17 @@ import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- * Builder to configure and build an implementation of {@link HttpClient} for OkHttp.
+ * Builder to configure and build an implementation of {@link HttpClient} for JDK 11 HttpClient.
  */
 public class Jdk11AsyncHttpClientBuilder {
     private final ClientLogger logger = new ClientLogger(Jdk11AsyncHttpClientBuilder.class);
 
-    private final java.net.http.HttpClient jdk11HttpClient;
-
-//    private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(120);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
 
-//    private List<Interceptor> networkInterceptors = new ArrayList<>();
-//    private Duration readTimeout;
     private Duration connectionTimeout;
-//    private ConnectionPool connectionPool;
-//    private Dispatcher dispatcher;
     private ProxyOptions proxyOptions;
     private Configuration configuration;
 
@@ -39,57 +31,8 @@ public class Jdk11AsyncHttpClientBuilder {
      * Creates OkHttpAsyncHttpClientBuilder.
      */
     public Jdk11AsyncHttpClientBuilder() {
-        this.jdk11HttpClient = null;
     }
 
-    /**
-     * Creates OkHttpAsyncHttpClientBuilder from the builder of an existing OkHttpClient.
-     *
-     * @param jdk11HttpClient the httpclient
-     */
-    public Jdk11AsyncHttpClientBuilder(java.net.http.HttpClient jdk11HttpClient) {
-        this.jdk11HttpClient = Objects.requireNonNull(jdk11HttpClient, "'jdk11HttpClient' cannot be null.");
-    }
-
-//    /**
-//     * Add a network layer interceptor to Http request pipeline.
-//     *
-//     * @param networkInterceptor the interceptor to add
-//     * @return the updated OkHttpAsyncHttpClientBuilder object
-//     */
-//    public Jdk11AsyncHttpClientBuilder addNetworkInterceptor(Interceptor networkInterceptor) {
-//        Objects.requireNonNull(networkInterceptor, "'networkInterceptor' cannot be null.");
-//        this.networkInterceptors.add(networkInterceptor);
-//        return this;
-//    }
-//
-//    /**
-//     * Add network layer interceptors to Http request pipeline.
-//     *
-//     * This replaces all previously-set interceptors.
-//     *
-//     * @param networkInterceptors the interceptors to add
-//     * @return the updated OkHttpAsyncHttpClientBuilder object
-//     */
-//    public Jdk11AsyncHttpClientBuilder networkInterceptors(List<Interceptor> networkInterceptors) {
-//        this.networkInterceptors = Objects.requireNonNull(networkInterceptors, "'networkInterceptors' cannot be null.");
-//        return this;
-//    }
-//
-//    /**
-//     * Sets the read timeout.
-//     *
-//     * The default read timeout is 120 seconds.
-//     *
-//     * @param readTimeout the read timeout
-//     * @return the updated OkHttpAsyncHttpClientBuilder object
-//     */
-//    public Jdk11AsyncHttpClientBuilder readTimeout(Duration readTimeout) {
-//        // setReadTimeout can be null
-//        this.readTimeout = readTimeout;
-//        return this;
-//    }
-//
     /**
      * Sets the connection timeout.
      *
@@ -103,31 +46,7 @@ public class Jdk11AsyncHttpClientBuilder {
         this.connectionTimeout = connectionTimeout;
         return this;
     }
-//
-//    /**
-//     * Sets the Http connection pool.
-//     *
-//     * @param connectionPool the OkHttp connection pool to use
-//     * @return the updated OkHttpAsyncHttpClientBuilder object
-//     */
-//    public Jdk11AsyncHttpClientBuilder connectionPool(ConnectionPool connectionPool) {
-//        // Null ConnectionPool is not allowed
-//        this.connectionPool = Objects.requireNonNull(connectionPool, "'connectionPool' cannot be null.");
-//        return this;
-//    }
-//
-//    /**
-//     * Sets the dispatcher that also composes the thread pool for executing HTTP requests.
-//     *
-//     * @param dispatcher the dispatcher to use
-//     * @return the updated OkHttpAsyncHttpClientBuilder object
-//     */
-//    public Jdk11AsyncHttpClientBuilder dispatcher(Dispatcher dispatcher) {
-//        // Null Dispatcher is not allowed
-//        this.dispatcher = Objects.requireNonNull(dispatcher, "'dispatcher' cannot be null.");
-//        return this;
-//    }
-//
+
     /**
      * Sets the proxy.
      *
@@ -165,8 +84,6 @@ public class Jdk11AsyncHttpClientBuilder {
      */
     public HttpClient build() {
         java.net.http.HttpClient.Builder httpClientBuilder = java.net.http.HttpClient.newBuilder();
-
-        // Use the configured connection timeout if set, otherwise use the default (60s).
         httpClientBuilder = (this.connectionTimeout != null)
             ? httpClientBuilder.connectTimeout(this.connectionTimeout)
             : httpClientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT);
@@ -193,14 +110,9 @@ public class Jdk11AsyncHttpClientBuilder {
                 });
             }
         }
-
         return new Jdk11AsyncHttpClient(httpClientBuilder.build());
     }
 
-    /*
-     * Maps a 'ProxyOptions.Type' to a 'ProxyProvider.Proxy', if the type is unknown or cannot be mapped an
-     * IllegalStateException will be thrown.
-     */
     private static Proxy.Type mapProxyType(ProxyOptions.Type type, ClientLogger logger) {
         Objects.requireNonNull(type, "'ProxyOptions.getType()' cannot be null.");
 
