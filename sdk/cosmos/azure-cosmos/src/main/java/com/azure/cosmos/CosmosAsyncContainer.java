@@ -12,6 +12,8 @@ import com.azure.cosmos.model.CosmosAsyncContainerResponse;
 import com.azure.cosmos.model.CosmosAsyncItemResponse;
 import com.azure.cosmos.model.CosmosConflictProperties;
 import com.azure.cosmos.model.CosmosContainerProperties;
+import com.azure.cosmos.model.CosmosContainerRequestOptions;
+import com.azure.cosmos.model.CosmosItemRequestOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -76,7 +78,7 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
-        return database.getDocClientWrapper().readCollection(getLink(), options.toRequestOptions())
+        return database.getDocClientWrapper().readCollection(getLink(), ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
     }
 
@@ -95,7 +97,7 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
-        return database.getDocClientWrapper().deleteCollection(getLink(), options.toRequestOptions())
+        return database.getDocClientWrapper().deleteCollection(getLink(), ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
     }
 
@@ -150,7 +152,7 @@ public class CosmosAsyncContainer {
             options = new CosmosContainerRequestOptions();
         }
         return database.getDocClientWrapper()
-                   .replaceCollection(ModelBridgeInternal.getV2Collection(containerProperties), options.toRequestOptions())
+                   .replaceCollection(ModelBridgeInternal.getV2Collection(containerProperties), ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
     }
 
@@ -192,7 +194,7 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
-        options.setPartitionKey(partitionKey);
+        ModelBridgeInternal.setPartitionKey(options, partitionKey);
         return createItem(item, options);
     }
 
@@ -210,7 +212,7 @@ public class CosmosAsyncContainer {
             options = new CosmosItemRequestOptions();
         }
         Class<T> itemType = (Class<T>) item.getClass();
-        RequestOptions requestOptions = options.toRequestOptions();
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         return database.getDocClientWrapper()
                    .createDocument(getLink(),
                                    item,
@@ -254,7 +256,7 @@ public class CosmosAsyncContainer {
         Class<T> itemType = (Class<T>) item.getClass();
         return this.getDatabase().getDocClientWrapper()
                    .upsertDocument(this.getLink(), item,
-                                   options.toRequestOptions(),
+                       ModelBridgeInternal.toRequestOptions(options),
                                    true)
                    .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
                    .single();
@@ -400,7 +402,7 @@ public class CosmosAsyncContainer {
      * @return an {@link Mono} containing the cosmos item response with the read item or an error
      */
     public <T> Mono<CosmosAsyncItemResponse<T>> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) {
-        return readItem(itemId, partitionKey, new CosmosItemRequestOptions(partitionKey), itemType);
+        return readItem(itemId, partitionKey, ModelBridgeInternal.createCosmosItemRequestOptions(partitionKey), itemType);
     }
 
     /**
@@ -423,8 +425,8 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
-        options.setPartitionKey(partitionKey);
-        RequestOptions requestOptions = options.toRequestOptions();
+        ModelBridgeInternal.setPartitionKey(options, partitionKey);
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         return this.getDatabase().getDocClientWrapper()
                    .readDocument(getItemLink(itemId), requestOptions)
                    .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
@@ -469,11 +471,11 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
-        options.setPartitionKey(partitionKey);
+        ModelBridgeInternal.setPartitionKey(options, partitionKey);
         Class<T> itemType = (Class<T>) item.getClass();
         return this.getDatabase()
                    .getDocClientWrapper()
-                   .replaceDocument(getItemLink(itemId), doc, options.toRequestOptions())
+                   .replaceDocument(getItemLink(itemId), doc, ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
                    .single();
     }
@@ -511,8 +513,8 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
-        options.setPartitionKey(partitionKey);
-        RequestOptions requestOptions = options.toRequestOptions();
+        ModelBridgeInternal.setPartitionKey(options, partitionKey);
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         return this.getDatabase()
                    .getDocClientWrapper()
                    .deleteDocument(getItemLink(itemId), requestOptions)

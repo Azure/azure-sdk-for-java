@@ -9,6 +9,7 @@ import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
 import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.model.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
+import com.azure.cosmos.model.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.model.CosmosTriggerProperties;
 import com.azure.cosmos.model.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.model.ModelBridgeInternal;
@@ -67,7 +68,7 @@ public class CosmosAsyncScripts {
         sProc.setId(properties.getId());
         sProc.setBody(properties.getBody());
         return database.getDocClientWrapper()
-                   .createStoredProcedure(container.getLink(), sProc, options.toRequestOptions())
+                   .createStoredProcedure(container.getLink(), sProc, ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, this.container))
                    .single();
     }

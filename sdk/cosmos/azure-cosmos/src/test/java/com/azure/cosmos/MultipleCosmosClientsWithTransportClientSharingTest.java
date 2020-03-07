@@ -14,7 +14,9 @@ import com.azure.cosmos.implementation.directconnectivity.SharedTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
+import com.azure.cosmos.model.CosmosItemRequestOptions;
 import com.azure.cosmos.model.CosmosItemResponse;
+import com.azure.cosmos.model.ModelBridgeInternal;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -121,7 +123,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         String newPropValue = UUID.randomUUID().toString();
         BridgeInternal.setProperty(properties, "newProp", newPropValue);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setPartitionKey(new PartitionKey(properties.get("mypk")));
+        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(properties.get("mypk")));
         // replace document
         CosmosItemResponse<CosmosItemProperties> replace = container1.replaceItem(properties,
                                                               properties.getId(),

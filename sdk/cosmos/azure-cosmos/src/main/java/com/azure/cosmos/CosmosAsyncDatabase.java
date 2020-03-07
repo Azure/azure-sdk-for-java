@@ -10,6 +10,8 @@ import com.azure.cosmos.model.CosmosAsyncContainerResponse;
 import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.model.CosmosAsyncUserResponse;
 import com.azure.cosmos.model.CosmosContainerProperties;
+import com.azure.cosmos.model.CosmosContainerRequestOptions;
+import com.azure.cosmos.model.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.model.CosmosUserProperties;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import org.apache.commons.lang3.StringUtils;
@@ -71,7 +73,7 @@ public class CosmosAsyncDatabase {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
-        return getDocClientWrapper().readDatabase(getLink(), options.toRequestOptions())
+        return getDocClientWrapper().readDatabase(getLink(), ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
     }
 
@@ -102,7 +104,7 @@ public class CosmosAsyncDatabase {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
-        return getDocClientWrapper().deleteDatabase(getLink(), options.toRequestOptions())
+        return getDocClientWrapper().deleteDatabase(getLink(), ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
     }
 
@@ -145,7 +147,7 @@ public class CosmosAsyncDatabase {
         }
         validateResource(containerProperties);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        options.setOfferThroughput(throughput);
+        ModelBridgeInternal.setOfferThroughput(options, throughput);
         return createContainer(containerProperties, options);
     }
 
@@ -173,7 +175,8 @@ public class CosmosAsyncDatabase {
             options = new CosmosContainerRequestOptions();
         }
         return getDocClientWrapper()
-                   .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties), options.toRequestOptions())
+                   .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
+                       ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, this)).single();
     }
 
@@ -198,7 +201,7 @@ public class CosmosAsyncDatabase {
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
-        options.setOfferThroughput(throughput);
+        ModelBridgeInternal.setOfferThroughput(options, throughput);
         return createContainer(containerProperties, options);
     }
 
@@ -233,7 +236,7 @@ public class CosmosAsyncDatabase {
      */
     public Mono<CosmosAsyncContainerResponse> createContainer(String id, String partitionKeyPath, int throughput) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        options.setOfferThroughput(throughput);
+        ModelBridgeInternal.setOfferThroughput(options, throughput);
         return createContainer(new CosmosContainerProperties(id, partitionKeyPath), options);
     }
 
@@ -272,7 +275,7 @@ public class CosmosAsyncDatabase {
         CosmosContainerProperties containerProperties,
         int throughput) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        options.setOfferThroughput(throughput);
+        ModelBridgeInternal.setOfferThroughput(options, throughput);
         CosmosAsyncContainer container = getContainer(containerProperties.getId());
         return createContainerIfNotExistsInternal(containerProperties, container, options);
     }
@@ -313,7 +316,7 @@ public class CosmosAsyncDatabase {
         String id, String partitionKeyPath,
         int throughput) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        options.setOfferThroughput(throughput);
+        ModelBridgeInternal.setOfferThroughput(options, throughput);
         CosmosAsyncContainer container = getContainer(id);
         return createContainerIfNotExistsInternal(new CosmosContainerProperties(id, partitionKeyPath), container,
                                                   options);

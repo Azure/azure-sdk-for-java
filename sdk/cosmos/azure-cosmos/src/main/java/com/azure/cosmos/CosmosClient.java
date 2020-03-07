@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.model.CosmosDatabaseProperties;
+import com.azure.cosmos.model.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.model.CosmosDatabaseResponse;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import reactor.core.Exceptions;

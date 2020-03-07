@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.model.AccessCondition;
 
 /**
- * Contains the request options of CosmosAsyncPermission
+ * The type Cosmos conflict request options.
  */
-public class CosmosPermissionRequestOptions {
-    //TODO: Need to add respective options
+public class CosmosConflictRequestOptions {
     private AccessCondition accessCondition;
 
     /**
@@ -27,13 +25,12 @@ public class CosmosPermissionRequestOptions {
      * @param accessCondition the access condition.
      * @return the current request options
      */
-    public CosmosPermissionRequestOptions setAccessCondition(AccessCondition accessCondition) {
+    public CosmosConflictRequestOptions setAccessCondition(AccessCondition accessCondition) {
         this.accessCondition = accessCondition;
         return this;
     }
 
     RequestOptions toRequestOptions() {
-        //TODO: Should we set any default values instead of nulls?
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setAccessCondition(accessCondition);
         return requestOptions;

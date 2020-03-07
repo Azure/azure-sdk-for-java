@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.model.CosmosAsyncPermissionResponse;
 import com.azure.cosmos.model.CosmosPermissionProperties;
+import com.azure.cosmos.model.CosmosPermissionRequestOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
@@ -57,7 +58,7 @@ public class CosmosAsyncPermission {
         }
         return cosmosUser.getDatabase()
                    .getDocClientWrapper()
-                   .readPermission(getLink(), options.toRequestOptions())
+                   .readPermission(getLink(), ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, cosmosUser))
                    .single();
     }
@@ -80,7 +81,8 @@ public class CosmosAsyncPermission {
         }
         return cosmosUser.getDatabase()
                    .getDocClientWrapper()
-                   .replacePermission(ModelBridgeInternal.getV2Permissions(permissionSettings), options.toRequestOptions())
+                   .replacePermission(ModelBridgeInternal.getV2Permissions(permissionSettings),
+                       ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, cosmosUser))
                    .single();
     }
@@ -101,7 +103,7 @@ public class CosmosAsyncPermission {
         }
         return cosmosUser.getDatabase()
                    .getDocClientWrapper()
-                   .deletePermission(getLink(), options.toRequestOptions())
+                   .deletePermission(getLink(), ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, cosmosUser))
                    .single();
     }

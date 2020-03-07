@@ -13,7 +13,7 @@ import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.CosmosItemRequestOptions;
+import com.azure.cosmos.model.CosmosItemRequestOptions;
 import com.azure.cosmos.FeedOptions;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;

@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.IndexingDirective;
+import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.model.AccessCondition;
 
 import java.util.List;
 

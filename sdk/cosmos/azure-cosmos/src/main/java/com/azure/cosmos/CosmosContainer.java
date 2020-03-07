@@ -5,7 +5,9 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.model.CosmosAsyncItemResponse;
 import com.azure.cosmos.model.CosmosContainerProperties;
+import com.azure.cosmos.model.CosmosContainerRequestOptions;
 import com.azure.cosmos.model.CosmosContainerResponse;
+import com.azure.cosmos.model.CosmosItemRequestOptions;
 import com.azure.cosmos.model.CosmosItemResponse;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import reactor.core.Exceptions;

@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.model.AccessCondition;
 
 /**
  * Encapsulates options that can be specified for a request issued to cosmos database.

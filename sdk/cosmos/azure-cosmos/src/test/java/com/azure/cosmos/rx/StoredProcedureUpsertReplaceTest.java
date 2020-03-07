@@ -10,7 +10,7 @@ import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
-import com.azure.cosmos.CosmosStoredProcedureRequestOptions;
+import com.azure.cosmos.model.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.PartitionKey;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;

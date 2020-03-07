@@ -7,7 +7,7 @@ import com.azure.cosmos.model.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.CosmosItemRequestOptions;
+import com.azure.cosmos.model.CosmosItemRequestOptions;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.CosmosAsyncContainer;

@@ -22,7 +22,9 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.model.CosmosAsyncItemResponse;
 import com.azure.cosmos.model.CosmosContainerProperties;
+import com.azure.cosmos.model.CosmosItemRequestOptions;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
+import com.azure.cosmos.model.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -288,7 +290,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         cosmosItemProperties.setId(IdOfDocumentWithNoPk);
         createdContainer.createItem(cosmosItemProperties).block();
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setPartitionKey(PartitionKey.NONE);
+        ModelBridgeInternal.setPartitionKey(options, PartitionKey.NONE);
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readMono = createdContainer.readItem(cosmosItemProperties.getId(),
                                                                            PartitionKey.NONE, options,
                                                                            CosmosItemProperties.class);

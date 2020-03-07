@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.model.CosmosAsyncItemResponse;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.CosmosItemRequestOptions;
+import com.azure.cosmos.model.CosmosItemRequestOptions;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;

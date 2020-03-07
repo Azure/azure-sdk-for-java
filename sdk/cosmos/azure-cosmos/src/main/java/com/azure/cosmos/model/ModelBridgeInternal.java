@@ -12,12 +12,14 @@ import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosStoredProcedure;
 import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.CosmosUserDefinedFunction;
+import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.Permission;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
@@ -172,5 +174,48 @@ public class ModelBridgeInternal {
 
     public static List<CosmosUserProperties> getCosmosUserPropertiesFromV2Results(List<User> results) {
         return CosmosUserProperties.getFromV2Results(results);
+    }
+
+    public static RequestOptions toRequestOptions(CosmosConflictRequestOptions cosmosConflictRequestOptions) {
+        return cosmosConflictRequestOptions.toRequestOptions();
+    }
+
+    public static RequestOptions toRequestOptions(CosmosContainerRequestOptions cosmosContainerRequestOptions) {
+        return cosmosContainerRequestOptions.toRequestOptions();
+    }
+
+    public static CosmosContainerRequestOptions setOfferThroughput(CosmosContainerRequestOptions cosmosContainerRequestOptions,
+                                                                   Integer offerThroughput) {
+        return cosmosContainerRequestOptions.setOfferThroughput(offerThroughput);
+    }
+
+    public static RequestOptions toRequestOptions(CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions) {
+        return cosmosDatabaseRequestOptions.toRequestOptions();
+    }
+
+    public static CosmosDatabaseRequestOptions setOfferThroughput(CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions,
+                                                                   Integer offerThroughput) {
+        return cosmosDatabaseRequestOptions.setOfferThroughput(offerThroughput);
+    }
+
+    public static CosmosItemRequestOptions setPartitionKey(CosmosItemRequestOptions cosmosItemRequestOptions,
+                                                           PartitionKey partitionKey) {
+        return cosmosItemRequestOptions.setPartitionKey(partitionKey);
+    }
+
+    public static RequestOptions toRequestOptions(CosmosItemRequestOptions cosmosItemRequestOptions) {
+        return cosmosItemRequestOptions.toRequestOptions();
+    }
+
+    public static CosmosItemRequestOptions createCosmosItemRequestOptions(PartitionKey partitionKey) {
+        return new CosmosItemRequestOptions(partitionKey);
+    }
+
+    public static RequestOptions toRequestOptions(CosmosPermissionRequestOptions cosmosPermissionRequestOptions) {
+        return cosmosPermissionRequestOptions.toRequestOptions();
+    }
+
+    public static RequestOptions toRequestOptions(CosmosStoredProcedureRequestOptions cosmosStoredProcedureRequestOptions) {
+        return cosmosStoredProcedureRequestOptions.toRequestOptions();
     }
 }

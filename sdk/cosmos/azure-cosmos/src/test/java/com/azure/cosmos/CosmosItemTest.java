@@ -7,7 +7,9 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.model.CosmosItemRequestOptions;
 import com.azure.cosmos.model.CosmosItemResponse;
+import com.azure.cosmos.model.ModelBridgeInternal;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
@@ -99,7 +101,7 @@ public class CosmosItemTest extends TestSuiteBase {
         String newPropValue = UUID.randomUUID().toString();
         BridgeInternal.setProperty(properties, "newProp", newPropValue);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setPartitionKey(new PartitionKey(properties.get("mypk")));
+        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(properties.get("mypk")));
         // replace document
         CosmosItemResponse<CosmosItemProperties> replace = container.replaceItem(properties,
                                                               properties.getId(),

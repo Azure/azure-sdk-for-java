@@ -7,6 +7,7 @@ import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
 import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.model.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
+import com.azure.cosmos.model.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.model.CosmosStoredProcedureResponse;
 import com.azure.cosmos.model.CosmosTriggerProperties;
 import com.azure.cosmos.model.CosmosTriggerResponse;

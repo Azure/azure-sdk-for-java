@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.model.CosmosDatabaseProperties;
+import com.azure.cosmos.model.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Exceptions;
@@ -216,7 +217,7 @@ public class CosmosAsyncClient implements Closeable {
         }
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
-        return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions())
+        return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
                    .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
                        this))
                    .single();
@@ -271,10 +272,10 @@ public class CosmosAsyncClient implements Closeable {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
-        options.setOfferThroughput(throughput);
+        ModelBridgeInternal.setOfferThroughput(options, throughput);
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
-        return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions())
+        return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
                    .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
                        this))
                    .single();
@@ -294,7 +295,7 @@ public class CosmosAsyncClient implements Closeable {
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings, int throughput) {
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        options.setOfferThroughput(throughput);
+        ModelBridgeInternal.setOfferThroughput(options, throughput);
         return createDatabase(databaseSettings, options);
     }
 
@@ -312,7 +313,7 @@ public class CosmosAsyncClient implements Closeable {
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabase(String id, int throughput) {
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        options.setOfferThroughput(throughput);
+        ModelBridgeInternal.setOfferThroughput(options, throughput);
         return createDatabase(new CosmosDatabaseProperties(id), options);
     }
 
