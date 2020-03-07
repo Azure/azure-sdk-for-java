@@ -7,8 +7,10 @@ import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
 import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.model.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
 import com.azure.cosmos.model.CosmosTriggerProperties;
+import com.azure.cosmos.model.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
@@ -171,7 +173,7 @@ public class CosmosAsyncScripts {
 
         return database.getDocClientWrapper()
                    .createUserDefinedFunction(container.getLink(), udf, null)
-                   .map(response -> new CosmosAsyncUserDefinedFunctionResponse(response, this.container)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, this.container)).single();
     }
 
     /**
@@ -192,7 +194,7 @@ public class CosmosAsyncScripts {
             return database.getDocClientWrapper()
                        .readUserDefinedFunctions(container.getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           CosmosUserDefinedFunctionProperties.getFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosUserDefinedFunctionPropertiesFromV2Results(response.getResults()),
                            response.getResponseHeaders()));
         });
     }
@@ -239,7 +241,7 @@ public class CosmosAsyncScripts {
             return database.getDocClientWrapper()
                        .queryUserDefinedFunctions(container.getLink(), querySpec, options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           CosmosUserDefinedFunctionProperties.getFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosUserDefinedFunctionPropertiesFromV2Results(response.getResults()),
                            response.getResponseHeaders()));
         });
     }

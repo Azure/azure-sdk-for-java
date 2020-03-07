@@ -5,8 +5,10 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
 import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.model.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
 import com.azure.cosmos.model.CosmosTriggerProperties;
+import com.azure.cosmos.model.CosmosUserDefinedFunctionProperties;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -117,7 +119,7 @@ public class CosmosScripts {
      * @return the cosmos sync user defined function response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserDefinedFunctionResponse createUserDefinedFunction(CosmosUserDefinedFunctionProperties properties) 
+    public CosmosUserDefinedFunctionResponse createUserDefinedFunction(CosmosUserDefinedFunctionProperties properties)
         throws CosmosClientException {
         return mapUDFResponseAndBlock(asyncScripts.createUserDefinedFunction(properties));
     }

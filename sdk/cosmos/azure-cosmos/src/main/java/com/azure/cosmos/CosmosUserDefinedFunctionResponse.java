@@ -3,6 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.model.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.model.CosmosUserDefinedFunctionProperties;
+
 /**
  * The type Cosmos sync user defined function response.
  */

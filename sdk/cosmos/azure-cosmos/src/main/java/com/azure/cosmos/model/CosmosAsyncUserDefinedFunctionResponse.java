@@ -1,7 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncUserDefinedFunction;
+import com.azure.cosmos.CosmosResponse;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import org.apache.commons.lang3.StringUtils;
@@ -24,7 +28,7 @@ public class CosmosAsyncUserDefinedFunctionResponse extends CosmosResponse<Cosmo
         } else {
             cosmosUserDefinedFunctionProperties = new CosmosUserDefinedFunctionProperties(bodyAsString);
             super.setProperties(cosmosUserDefinedFunctionProperties);
-            cosmosUserDefinedFunction = new CosmosAsyncUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId(),
+            cosmosUserDefinedFunction = BridgeInternal.createCosmosAsyncUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId(),
                                                                            container);
         }
     }

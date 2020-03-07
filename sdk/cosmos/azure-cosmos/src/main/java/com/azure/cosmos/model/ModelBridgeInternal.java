@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Trigger;
+import com.azure.cosmos.implementation.UserDefinedFunction;
 
 import java.util.List;
 
@@ -74,6 +75,11 @@ public class ModelBridgeInternal {
         return new CosmosAsyncTriggerResponse(response, container);
     }
 
+    public static CosmosAsyncUserDefinedFunctionResponse createCosmosAsyncUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response,
+                                                                                                      CosmosAsyncContainer container) {
+        return new CosmosAsyncUserDefinedFunctionResponse(response, container);
+    }
+
     public static List<CosmosConflictProperties> getCosmosConflictPropertiesFromV2Results(List<Conflict> results) {
         return CosmosConflictProperties.getFromV2Results(results);
     }
@@ -108,5 +114,9 @@ public class ModelBridgeInternal {
 
     public static List<CosmosTriggerProperties> getCosmosTriggerPropertiesFromV2Results(List<Trigger> results) {
         return CosmosTriggerProperties.getFromV2Results(results);
+    }
+
+    public static List<CosmosUserDefinedFunctionProperties> getCosmosUserDefinedFunctionPropertiesFromV2Results(List<UserDefinedFunction> results) {
+        return CosmosUserDefinedFunctionProperties.getFromV2Results(results);
     }
 }
