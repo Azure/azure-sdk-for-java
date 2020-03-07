@@ -8,6 +8,7 @@ import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.model.CosmosAsyncItemResponse;
 import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.model.CosmosDatabaseProperties;
+import com.azure.cosmos.model.CosmosResponse;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.TestConfigurations;

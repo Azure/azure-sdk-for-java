@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
+import com.azure.cosmos.model.CosmosStoredProcedureResponse;
 
 /**
  * The type Cosmos sync stored procedure.

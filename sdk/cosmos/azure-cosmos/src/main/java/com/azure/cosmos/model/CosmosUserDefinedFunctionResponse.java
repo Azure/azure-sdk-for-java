@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
+import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.model.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.model.CosmosResponse;
 import com.azure.cosmos.model.CosmosUserDefinedFunctionProperties;
 
 /**

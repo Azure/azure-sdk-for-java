@@ -28,7 +28,7 @@ import com.azure.cosmos.model.CosmosDatabaseProperties;
 import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.CosmosResponse;
+import com.azure.cosmos.model.CosmosResponse;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.model.CosmosUserProperties;

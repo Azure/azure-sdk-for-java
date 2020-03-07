@@ -1,10 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.model.CosmosDatabaseProperties;
+import com.azure.cosmos.model.CosmosResponse;
 
 /**
  * The type Cosmos database response. This contains get the methods to obtain database properties and other response 
@@ -18,7 +22,7 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabasePropert
         super(response.resourceResponseWrapper, response.getProperties());
         this.responseWrapper = response;
         if (responseWrapper.getDatabase() != null) {
-            this.database = new CosmosDatabase(responseWrapper.getDatabase().getId(), client,
+            this.database = BridgeInternal.createCosmosDatabase(responseWrapper.getDatabase().getId(), client,
                 responseWrapper.getDatabase());
         } else {
             this.database = null;

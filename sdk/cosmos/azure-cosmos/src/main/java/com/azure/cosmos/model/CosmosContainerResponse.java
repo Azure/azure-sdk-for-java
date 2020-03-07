@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
-import com.azure.cosmos.model.CosmosAsyncContainerResponse;
-import com.azure.cosmos.model.CosmosContainerProperties;
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosContainer;
+import com.azure.cosmos.CosmosDatabase;
 
 /**
  * The synchronous cosmos container response
@@ -18,7 +20,7 @@ public class CosmosContainerResponse extends CosmosResponse<CosmosContainerPrope
         super(response.resourceResponseWrapper, response.getProperties());
         this.responseWrapper = response;
         if (responseWrapper.getContainer() != null) {
-            this.container = new CosmosContainer(responseWrapper.getContainer().getId(), database,
+            this.container = BridgeInternal.createCosmosContainer(responseWrapper.getContainer().getId(), database,
                 responseWrapper.getContainer());
         } else {
             // Delete will have null container client in response

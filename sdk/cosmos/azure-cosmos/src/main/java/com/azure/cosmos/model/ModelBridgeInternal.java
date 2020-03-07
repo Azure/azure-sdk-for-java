@@ -7,6 +7,11 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncUser;
+import com.azure.cosmos.CosmosClient;
+import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.CosmosStoredProcedure;
+import com.azure.cosmos.CosmosTrigger;
+import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.Permission;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -85,6 +90,38 @@ public class ModelBridgeInternal {
         return new CosmosAsyncUserResponse(response, database);
     }
 
+    public static CosmosContainerResponse createCosmosContainerResponse(CosmosAsyncContainerResponse response,
+                                                                        CosmosDatabase database, CosmosClient client) {
+        return new CosmosContainerResponse(response, database, client);
+    }
+
+    public static CosmosUserResponse createCosmosUserResponse(CosmosAsyncUserResponse response, CosmosDatabase database) {
+        return new CosmosUserResponse(response, database);
+    }
+
+    public static <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosAsyncItemResponse<T> response) {
+        return new CosmosItemResponse<>(response);
+    }
+
+    public static CosmosDatabaseResponse createCosmosDatabaseResponse(CosmosAsyncDatabaseResponse response, CosmosClient client) {
+        return new CosmosDatabaseResponse(response, client);
+    }
+
+    public static CosmosStoredProcedureResponse createCosmosStoredProcedureResponse(CosmosAsyncStoredProcedureResponse resourceResponse,
+                                                CosmosStoredProcedure storedProcedure) {
+        return new CosmosStoredProcedureResponse(resourceResponse, storedProcedure);
+    }
+
+    public static CosmosUserDefinedFunctionResponse createCosmosUserDefinedFunctionResponse(CosmosAsyncUserDefinedFunctionResponse resourceResponse,
+                                                    CosmosUserDefinedFunction userDefinedFunction) {
+        return new CosmosUserDefinedFunctionResponse(resourceResponse, userDefinedFunction);
+    }
+
+    public static CosmosTriggerResponse createCosmosTriggerResponse(CosmosAsyncTriggerResponse asyncResponse,
+                                        CosmosTrigger syncTrigger) {
+        return new CosmosTriggerResponse(asyncResponse, syncTrigger);
+    }
+
     public static List<CosmosConflictProperties> getCosmosConflictPropertiesFromV2Results(List<Conflict> results) {
         return CosmosConflictProperties.getFromV2Results(results);
     }
@@ -102,6 +139,10 @@ public class ModelBridgeInternal {
     }
 
     public static <T> CosmosItemProperties getCosmosItemProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
+        return cosmosItemResponse.getProperties();
+    }
+
+    public static <T> CosmosItemProperties getCosmosItemProperties(CosmosItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.getProperties();
     }
 

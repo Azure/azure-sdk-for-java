@@ -1,9 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.model;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.CosmosUser;
 import com.azure.cosmos.model.CosmosAsyncUserResponse;
+import com.azure.cosmos.model.CosmosResponse;
 import com.azure.cosmos.model.CosmosUserProperties;
 
 /**
@@ -23,7 +27,7 @@ public class CosmosUserResponse extends CosmosResponse<CosmosUserProperties> {
         super(response.resourceResponseWrapper, response.getProperties());
         this.asyncResponse = response;
         if (response.getUser() != null) {
-            this.user = new CosmosUser(response.getUser(), database, response.getUser().getId());
+            this.user = BridgeInternal.createCosmosUser(response.getUser(), database, response.getUser().getId());
         } else {
             // delete has null user client
             this.user = null;

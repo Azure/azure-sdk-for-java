@@ -5,7 +5,6 @@ package com.azure.cosmos.model;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncTrigger;
-import com.azure.cosmos.CosmosResponse;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.Trigger;
 import org.apache.commons.lang3.StringUtils;

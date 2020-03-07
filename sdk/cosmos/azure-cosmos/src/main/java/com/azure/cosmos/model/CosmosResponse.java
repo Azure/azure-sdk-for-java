@@ -1,44 +1,54 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+package com.azure.cosmos.model;
 
-package com.azure.cosmos;
-
-import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.model.CosmosAsyncItemResponse;
-import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.Resource;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.StoredProcedureResponse;
 
 import java.time.Duration;
 import java.util.Map;
 
 /**
- * The synchronous Cosmos item response. Contains methods to access the Item and other response methods
- *
- * @param <T> the type parameter
+ * The cosmos response
+ * @param <T> the type of resource
  */
-public class CosmosItemResponse<T> {
-    private final CosmosAsyncItemResponse responseWrapper;
+public class CosmosResponse<T extends Resource> {
+    private T properties;
+    protected final ResourceResponse resourceResponseWrapper;
 
-    CosmosItemResponse(CosmosAsyncItemResponse response) {
-        this.responseWrapper = response;
+    protected CosmosResponse(ResourceResponse resourceResponse) {
+        this.resourceResponseWrapper = resourceResponse;
+    }
+
+    protected CosmosResponse(T properties) {
+        this.properties = properties;
+        this.resourceResponseWrapper = null;
+    }
+
+    protected CosmosResponse(ResourceResponse resourceResponse, T properties) {
+        this.resourceResponseWrapper = resourceResponse;
+        this.properties = properties;
+    }
+
+    // Only used in CosmosAsyncStoredProcedureResponse compatibility with StoredProcedureResponse
+    protected CosmosResponse(StoredProcedureResponse response) {
+        this.resourceResponseWrapper = null;
     }
 
     /**
-     * Gets resource.
+     * Gets properties.
      *
-     * @return the resource
+     * @return the properties
      */
-    @SuppressWarnings("unchecked")
-    public T getResource() {
-        return (T) responseWrapper.getItem();
+    public T getProperties() {
+        return properties;
     }
 
-    /**
-     * Gets the itemSettings
-     *
-     * @return the itemSettings
-     */
-    CosmosItemProperties getProperties() {
-        return ModelBridgeInternal.getCosmosItemProperties(responseWrapper);
+    protected CosmosResponse<T> setProperties(T resourceSettings) {
+        this.properties = resourceSettings;
+        return this;
     }
 
     /**
@@ -48,7 +58,7 @@ public class CosmosItemResponse<T> {
      * @return the max resource quota.
      */
     public String getMaxResourceQuota() {
-        return responseWrapper.getMaxResourceQuota();
+        return resourceResponseWrapper.getMaxResourceQuota();
     }
 
     /**
@@ -57,7 +67,7 @@ public class CosmosItemResponse<T> {
      * @return the current resource quota usage.
      */
     public String getCurrentResourceQuotaUsage() {
-        return responseWrapper.getCurrentResourceQuotaUsage();
+        return resourceResponseWrapper.getCurrentResourceQuotaUsage();
     }
 
     /**
@@ -66,7 +76,7 @@ public class CosmosItemResponse<T> {
      * @return the activity getId.
      */
     public String getActivityId() {
-        return responseWrapper.getActivityId();
+        return resourceResponseWrapper.getActivityId();
     }
 
     /**
@@ -75,7 +85,7 @@ public class CosmosItemResponse<T> {
      * @return the request charge.
      */
     public double getRequestCharge() {
-        return responseWrapper.getRequestCharge();
+        return resourceResponseWrapper.getRequestCharge();
     }
 
     /**
@@ -84,7 +94,7 @@ public class CosmosItemResponse<T> {
      * @return the status code.
      */
     public int getStatusCode() {
-        return responseWrapper.getStatusCode();
+        return resourceResponseWrapper.getStatusCode();
     }
 
     /**
@@ -93,7 +103,7 @@ public class CosmosItemResponse<T> {
      * @return the session token.
      */
     public String getSessionToken() {
-        return responseWrapper.getSessionToken();
+        return resourceResponseWrapper.getSessionToken();
     }
 
     /**
@@ -102,7 +112,7 @@ public class CosmosItemResponse<T> {
      * @return the response headers.
      */
     public Map<String, String> getResponseHeaders() {
-        return responseWrapper.getResponseHeaders();
+        return resourceResponseWrapper.getResponseHeaders();
     }
 
     /**
@@ -111,7 +121,7 @@ public class CosmosItemResponse<T> {
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
     public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
-        return responseWrapper.getCosmosResponseDiagnostics();
+        return resourceResponseWrapper.getCosmosResponseDiagnostics();
     }
 
     /**
@@ -120,7 +130,6 @@ public class CosmosItemResponse<T> {
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
     public Duration getRequestLatency() {
-        return responseWrapper.getRequestLatency();
+        return resourceResponseWrapper.getRequestLatency();
     }
-
 }

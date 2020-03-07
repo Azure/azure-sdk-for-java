@@ -35,6 +35,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.model.ConsistencyPolicy;
 import com.azure.cosmos.model.CosmosAsyncItemResponse;
+import com.azure.cosmos.model.CosmosItemResponse;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -516,6 +517,10 @@ public class BridgeInternal {
         return ModelBridgeInternal.getCosmosItemProperties(cosmosItemResponse);
     }
 
+    public static <T> CosmosItemProperties getProperties(CosmosItemResponse<T> cosmosItemResponse) {
+        return ModelBridgeInternal.getCosmosItemProperties(cosmosItemResponse);
+    }
+
     public static PartitionKey partitionKeyfromJsonString(String jsonString) {
         return PartitionKey.fromJsonString(jsonString);
     }
@@ -588,5 +593,17 @@ public class BridgeInternal {
 
     public static CosmosAsyncUser createCosmosAsyncUser(String id, CosmosAsyncDatabase database) {
         return new CosmosAsyncUser(id, database);
+    }
+
+    public static CosmosContainer createCosmosContainer(String id, CosmosDatabase database, CosmosAsyncContainer container) {
+        return new CosmosContainer(id, database, container);
+    }
+
+    public static CosmosDatabase createCosmosDatabase(String id, CosmosClient client, CosmosAsyncDatabase database) {
+        return new CosmosDatabase(id, client, database);
+    }
+
+    public static CosmosUser createCosmosUser(CosmosAsyncUser asyncUser, CosmosDatabase database, String id) {
+        return new CosmosUser(asyncUser, database, id);
     }
 }

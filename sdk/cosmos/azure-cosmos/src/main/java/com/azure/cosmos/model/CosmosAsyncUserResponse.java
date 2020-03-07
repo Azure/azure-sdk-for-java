@@ -6,7 +6,6 @@ package com.azure.cosmos.model;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncUser;
-import com.azure.cosmos.CosmosResponse;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.User;
 import org.apache.commons.lang3.StringUtils;
