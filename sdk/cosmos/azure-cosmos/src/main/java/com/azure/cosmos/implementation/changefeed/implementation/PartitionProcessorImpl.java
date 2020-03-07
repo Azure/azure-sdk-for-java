@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;

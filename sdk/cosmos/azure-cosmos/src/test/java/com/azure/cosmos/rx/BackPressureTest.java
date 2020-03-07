@@ -13,7 +13,7 @@ import com.azure.cosmos.model.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.RxDocumentClientUnderTest;

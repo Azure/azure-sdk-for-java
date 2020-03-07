@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.model.FeedResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;

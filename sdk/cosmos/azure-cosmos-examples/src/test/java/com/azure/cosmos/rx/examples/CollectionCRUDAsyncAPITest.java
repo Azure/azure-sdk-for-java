@@ -9,7 +9,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.model.DataType;
 import com.azure.cosmos.DocumentClientTest;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.IncludedPath;
 import com.azure.cosmos.Index;
 import com.azure.cosmos.IndexingPolicy;

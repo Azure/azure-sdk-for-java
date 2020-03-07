@@ -7,7 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.model.DatabaseAccount;
 import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.PartitionKey;
 import com.azure.cosmos.model.Permission;
 import com.azure.cosmos.SqlQuerySpec;

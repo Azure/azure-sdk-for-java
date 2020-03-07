@@ -4,7 +4,7 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.SqlQuerySpec;
 import com.azure.cosmos.implementation.AsyncDocumentClient;

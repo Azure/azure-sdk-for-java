@@ -584,7 +584,7 @@ public class CosmosAsyncDatabase {
             return getDocClientWrapper().queryUsers(getLink(), querySpec, options)
                        .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(
                            ModelBridgeInternal.getCosmosUserPropertiesFromV2Results(response.getResults()), response.getResponseHeaders(),
-                           response.queryMetrics()));
+                           ModelBridgeInternal.queryMetrics(response)));
         });
     }
 

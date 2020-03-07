@@ -40,6 +40,7 @@ import com.azure.cosmos.model.CosmosStoredProcedureProperties;
 import com.azure.cosmos.model.DatabaseAccount;
 import com.azure.cosmos.model.DatabaseAccountLocation;
 import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -98,17 +99,16 @@ public class BridgeInternal {
 
     public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
                                                                           Class<T> cls) {
-        return new FeedResponse<T>(response.getQueryResponse(cls), response.getResponseHeaders());
+        return ModelBridgeInternal.toFeedResponsePage(response, cls);
     }
 
     public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
-        return new FeedResponse<>(results, headers, noChanges);
+        return ModelBridgeInternal.toFeedResponsePage(results, headers, noChanges);
     }
 
     public static <T extends Resource> FeedResponse<T> toChaneFeedResponsePage(RxDocumentServiceResponse response,
                                                                                Class<T> cls) {
-        return new FeedResponse<T>(noChanges(response) ? Collections.emptyList() : response.getQueryResponse(cls),
-            response.getResponseHeaders(), noChanges(response));
+        return ModelBridgeInternal.toChaneFeedResponsePage(response, cls);
     }
 
     public static StoredProcedureResponse toStoredProcedureResponse(RxDocumentServiceResponse response) {
@@ -193,7 +193,7 @@ public class BridgeInternal {
     }
 
     public static <T extends Resource> boolean noChanges(FeedResponse<T> page) {
-        return page.nochanges;
+        return ModelBridgeInternal.noChanges(page);
     }
 
     public static <T extends Resource> boolean noChanges(RxDocumentServiceResponse rsp) {
@@ -202,12 +202,12 @@ public class BridgeInternal {
 
     public static <T> FeedResponse<T> createFeedResponse(List<T> results,
             Map<String, String> headers) {
-        return new FeedResponse<>(results, headers);
+        return ModelBridgeInternal.createFeedResponse(results, headers);
     }
 
     public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
             Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
-        return new FeedResponse<>(results, headers, queryMetricsMap);
+        return ModelBridgeInternal.createFeedResponseWithQueryMetrics(results, headers, queryMetricsMap);
     }
 
     public static <E extends CosmosClientException> E setResourceAddress(E e, String resourceAddress) {
@@ -277,7 +277,7 @@ public class BridgeInternal {
 
     public static <T extends Resource> void putQueryMetricsIntoMap(FeedResponse<T> response, String partitionKeyRangeId,
                                                                    QueryMetrics queryMetrics) {
-        response.queryMetricsMap().put(partitionKeyRangeId, queryMetrics);
+        ModelBridgeInternal.queryMetricsMap(response).put(partitionKeyRangeId, queryMetrics);
     }
 
     public static QueryMetrics createQueryMetricsFromDelimitedStringAndClientSideMetrics(
@@ -458,8 +458,8 @@ public class BridgeInternal {
         return cosmosResponseDiagnostics.clientSideRequestStatistics().getFailedReplicas();
     }
 
-    public static ConcurrentMap<String, QueryMetrics> queryMetricsFromFeedResponse(FeedResponse feedResponse) {
-        return feedResponse.queryMetrics();
+    public static <T> ConcurrentMap<String, QueryMetrics> queryMetricsFromFeedResponse(FeedResponse<T> feedResponse) {
+        return ModelBridgeInternal.queryMetrics(feedResponse);
     }
 
     public static PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey) {

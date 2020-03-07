@@ -13,12 +13,14 @@ import com.azure.cosmos.CosmosStoredProcedure;
 import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
@@ -29,8 +31,10 @@ import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * This is meant to be used only internally as a bridge access to classes in
@@ -275,5 +279,46 @@ public class ModelBridgeInternal {
      */
     public static FeedOptions partitionKeyRangeIdInternal(FeedOptions options, String partitionKeyRangeId) {
         return options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
+    }
+
+    public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
+                                                                          Class<T> cls) {
+        return new FeedResponse<T>(response.getQueryResponse(cls), response.getResponseHeaders());
+    }
+
+    public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
+        return new FeedResponse<>(results, headers, noChanges);
+    }
+
+    public static <T extends Resource> FeedResponse<T> toChaneFeedResponsePage(RxDocumentServiceResponse response,
+                                                                               Class<T> cls) {
+        return new FeedResponse<T>(noChanges(response) ? Collections.emptyList() : response.getQueryResponse(cls),
+            response.getResponseHeaders(), noChanges(response));
+    }
+
+    public static <T extends Resource> boolean noChanges(FeedResponse<T> page) {
+        return page.nochanges;
+    }
+
+    public static <T extends Resource> boolean noChanges(RxDocumentServiceResponse rsp) {
+        return rsp.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED;
+    }
+
+    public static <T> FeedResponse<T> createFeedResponse(List<T> results,
+                                                         Map<String, String> headers) {
+        return new FeedResponse<>(results, headers);
+    }
+
+    public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
+                                                                         Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
+        return new FeedResponse<>(results, headers, queryMetricsMap);
+    }
+
+    public static <T> ConcurrentMap<String, QueryMetrics> queryMetricsMap(FeedResponse<T> feedResponse) {
+        return feedResponse.queryMetricsMap();
+    }
+
+    public static <T> ConcurrentMap<String, QueryMetrics> queryMetrics(FeedResponse<T> feedResponse) {
+        return feedResponse.queryMetrics();
     }
 }

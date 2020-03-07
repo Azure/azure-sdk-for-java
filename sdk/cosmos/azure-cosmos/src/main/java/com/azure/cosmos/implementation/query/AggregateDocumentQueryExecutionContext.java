@@ -12,7 +12,7 @@ import com.azure.cosmos.implementation.query.aggregation.MinAggregator;
 import com.azure.cosmos.implementation.query.aggregation.SumAggregator;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.Constants;

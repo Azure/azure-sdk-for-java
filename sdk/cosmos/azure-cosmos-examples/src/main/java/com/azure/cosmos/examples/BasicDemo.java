@@ -11,7 +11,7 @@ import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.PartitionKey;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;

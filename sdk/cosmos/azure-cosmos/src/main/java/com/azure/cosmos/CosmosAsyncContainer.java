@@ -15,6 +15,7 @@ import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.model.CosmosContainerRequestOptions;
 import com.azure.cosmos.model.CosmosItemRequestOptions;
 import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -385,7 +386,7 @@ public class CosmosAsyncContainer {
         return BridgeInternal.createFeedResponseWithQueryMetrics(
             (response.getResults().stream().map(document -> document.toObject(classType))
                  .collect(Collectors.toList())), response.getResponseHeaders(),
-            response.queryMetrics());
+            ModelBridgeInternal.queryMetrics(response));
     }
 
 
