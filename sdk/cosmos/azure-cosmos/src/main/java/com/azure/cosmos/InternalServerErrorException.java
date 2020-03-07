@@ -24,6 +24,14 @@ public class InternalServerErrorException extends CosmosClientException {
         this(RMResources.InternalServerError);
     }
 
+    /**
+     * Instantiates a new Internal server error exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public InternalServerErrorException(CosmosError cosmosError,
                                         long lsn,
                                         String partitionKeyRangeId,
@@ -33,6 +41,11 @@ public class InternalServerErrorException extends CosmosClientException {
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
+    /**
+     * Instantiates a new Internal server error exception.
+     *
+     * @param message the message
+     */
     public InternalServerErrorException(String message) {
         this(message, null, (Map<String, String>) null, null);
     }
@@ -46,6 +59,13 @@ public class InternalServerErrorException extends CosmosClientException {
         this(RMResources.InternalServerError, innerException, (HttpHeaders) null, (String) null);
     }
 
+    /**
+     * Instantiates a new Internal server error exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUri the request uri
+     */
     public InternalServerErrorException(String message, HttpHeaders headers, URI requestUri) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
             requestUri != null ? requestUri.toString() : null);
@@ -67,6 +87,14 @@ public class InternalServerErrorException extends CosmosClientException {
             requestUriString);
     }
 
+    /**
+     * Instantiates a new Internal server error exception.
+     *
+     * @param message the message
+     * @param innerException the inner exception
+     * @param headers the headers
+     * @param requestUriString the request uri string
+     */
     public InternalServerErrorException(String message, Exception innerException, Map<String, String> headers,
                                         String requestUriString) {
         super(message, innerException, headers, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, requestUriString);

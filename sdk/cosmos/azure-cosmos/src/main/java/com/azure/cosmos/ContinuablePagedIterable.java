@@ -21,7 +21,7 @@ import java.util.stream.Stream;
  * @see ContinuablePagedFlux
  */
 public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> extends IterableStream<T> {
-    private final int DEFAULT_BATCH_SIZE;
+    private final int defaultBatchSize;
     private final ContinuablePagedFlux<C, T, P> pagedFlux;
 
     /**
@@ -32,7 +32,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
     public ContinuablePagedIterable(ContinuablePagedFlux<C, T, P> pagedFlux) {
         super(pagedFlux);
         this.pagedFlux = pagedFlux;
-        this.DEFAULT_BATCH_SIZE = 1;
+        this.defaultBatchSize = 1;
     }
 
     /**
@@ -44,7 +44,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
     public ContinuablePagedIterable(ContinuablePagedFlux<C, T, P> pagedFlux, int batchSize) {
         super(pagedFlux);
         this.pagedFlux = pagedFlux;
-        this.DEFAULT_BATCH_SIZE = batchSize;
+        this.defaultBatchSize = batchSize;
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage() {
-        return pagedFlux.byPage().toStream(DEFAULT_BATCH_SIZE);
+        return pagedFlux.byPage().toStream(defaultBatchSize);
     }
 
     /**
@@ -65,7 +65,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(C continuationToken) {
-        return this.pagedFlux.byPage(continuationToken).toStream(DEFAULT_BATCH_SIZE);
+        return this.pagedFlux.byPage(continuationToken).toStream(defaultBatchSize);
     }
 
     /**
@@ -80,7 +80,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(int preferredPageSize) {
-        return this.pagedFlux.byPage(null, preferredPageSize).toStream(DEFAULT_BATCH_SIZE);
+        return this.pagedFlux.byPage(null, preferredPageSize).toStream(defaultBatchSize);
     }
 
     /**
@@ -95,7 +95,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(C continuationToken, int preferredPageSize) {
-        return this.pagedFlux.byPage(continuationToken, preferredPageSize).toStream(DEFAULT_BATCH_SIZE);
+        return this.pagedFlux.byPage(continuationToken, preferredPageSize).toStream(defaultBatchSize);
     }
 
     /**
@@ -105,7 +105,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return {@link Stream} of a pages
      */
     public Iterable<P> iterableByPage() {
-        return this.pagedFlux.byPage().toIterable(DEFAULT_BATCH_SIZE);
+        return this.pagedFlux.byPage().toIterable(defaultBatchSize);
     }
 
     /**
@@ -116,7 +116,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(C continuationToken) {
-        return this.pagedFlux.byPage(continuationToken).toIterable(DEFAULT_BATCH_SIZE);
+        return this.pagedFlux.byPage(continuationToken).toIterable(defaultBatchSize);
     }
 
     /**
@@ -131,7 +131,7 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(int preferredPageSize) {
-        return this.pagedFlux.byPage(null, preferredPageSize).toIterable(DEFAULT_BATCH_SIZE);
+        return this.pagedFlux.byPage(null, preferredPageSize).toIterable(defaultBatchSize);
     }
 
     /**
@@ -146,6 +146,6 @@ public abstract class ContinuablePagedIterable<C, T, P extends ContinuablePage<C
      * @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(C continuationToken, int preferredPageSize) {
-        return this.pagedFlux.byPage(continuationToken, preferredPageSize).toIterable(DEFAULT_BATCH_SIZE);
+        return this.pagedFlux.byPage(continuationToken, preferredPageSize).toIterable(defaultBatchSize);
     }
 }

@@ -141,6 +141,11 @@ public class ConflictResolutionPolicy extends JsonSerializable {
     ConflictResolutionPolicy() {
     }
 
+    /**
+     * Instantiates a new Conflict resolution policy.
+     *
+     * @param jsonString the json string
+     */
     public ConflictResolutionPolicy(String jsonString) {
         super(jsonString);
     }

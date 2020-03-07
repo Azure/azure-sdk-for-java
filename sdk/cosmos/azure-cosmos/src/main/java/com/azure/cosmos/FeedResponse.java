@@ -17,6 +17,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ * The type Feed response.
+ *
+ * @param <T> the type parameter
+ */
 public class FeedResponse<T> implements ContinuablePage<String, T> {
 
     private final List<T> results;

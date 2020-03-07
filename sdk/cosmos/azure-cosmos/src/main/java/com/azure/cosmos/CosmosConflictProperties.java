@@ -10,6 +10,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Cosmos conflict properties.
+ */
 public class CosmosConflictProperties extends Resource {
 
     /**

@@ -70,6 +70,12 @@ public class IncludedPath extends JsonSerializable {
         return this.indexes;
     }
 
+    /**
+     * Sets indexes.
+     *
+     * @param indexes the indexes
+     * @return the indexes
+     */
     public IncludedPath setIndexes(Collection<Index> indexes) {
         this.indexes = indexes;
         return this;

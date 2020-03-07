@@ -5,9 +5,10 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.StoredProcedure;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 
+/**
+ * The enum Conflict resolution mode.
+ */
 public enum ConflictResolutionMode {
     /**
      * Last writer wins conflict resolution mode

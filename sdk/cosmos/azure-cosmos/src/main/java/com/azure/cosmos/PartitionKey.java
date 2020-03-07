@@ -34,10 +34,10 @@ public class PartitionKey {
      * Gets the object used to create partition key
      * @return the partition key object
      */
-    Object getKeyObject(){
+    Object getKeyObject() {
         return keyObject;
     }
-    
+
     /**
      * Create a new instance of the PartitionKey object from a serialized JSON
      * partition key.

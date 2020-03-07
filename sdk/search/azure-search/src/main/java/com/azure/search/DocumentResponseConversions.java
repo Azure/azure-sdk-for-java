@@ -31,9 +31,9 @@ final class DocumentResponseConversions {
     /**
      * Drop fields that shouldn't be in the returned object
      *
-     * @param document document object
+     * @param searchDocument document object
      */
-    static void cleanupDocument(Document document) {
-        document.remove(ODATA_CONTEXT);
+    static void cleanupDocument(SearchDocument searchDocument) {
+        searchDocument.remove(ODATA_CONTEXT);
     }
 }

@@ -39,14 +39,6 @@ public final class IndexingParameters {
     private Integer maxFailedItemsPerBatch;
 
     /*
-     * Whether indexer will base64-encode all values that are inserted into key
-     * field of the target index. This is needed if keys can contain characters
-     * that are invalid in keys (such as dot '.'). Default is false.
-     */
-    @JsonProperty(value = "base64EncodeKeys")
-    private Boolean base64EncodeKeys;
-
-    /*
      * A dictionary of indexer-specific configuration properties. Each name is
      * the name of a specific property. Each value must be of a primitive type.
      */
@@ -122,32 +114,6 @@ public final class IndexingParameters {
      */
     public IndexingParameters setMaxFailedItemsPerBatch(Integer maxFailedItemsPerBatch) {
         this.maxFailedItemsPerBatch = maxFailedItemsPerBatch;
-        return this;
-    }
-
-    /**
-     * Get the base64EncodeKeys property: Whether indexer will base64-encode
-     * all values that are inserted into key field of the target index. This is
-     * needed if keys can contain characters that are invalid in keys (such as
-     * dot '.'). Default is false.
-     *
-     * @return the base64EncodeKeys value.
-     */
-    public Boolean isBase64EncodeKeys() {
-        return this.base64EncodeKeys;
-    }
-
-    /**
-     * Set the base64EncodeKeys property: Whether indexer will base64-encode
-     * all values that are inserted into key field of the target index. This is
-     * needed if keys can contain characters that are invalid in keys (such as
-     * dot '.'). Default is false.
-     *
-     * @param base64EncodeKeys the base64EncodeKeys value to set.
-     * @return the IndexingParameters object itself.
-     */
-    public IndexingParameters setBase64EncodeKeys(Boolean base64EncodeKeys) {
-        this.base64EncodeKeys = base64EncodeKeys;
         return this;
     }
 

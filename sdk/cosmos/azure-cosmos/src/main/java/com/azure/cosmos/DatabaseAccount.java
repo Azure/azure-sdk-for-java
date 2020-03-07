@@ -256,6 +256,11 @@ public class DatabaseAccount extends Resource {
         BridgeInternal.setProperty(this, Constants.Properties.READABLE_LOCATIONS, locations);
     }
 
+    /**
+     * Gets if enable multiple write locations is set.
+     *
+     * @return the true if multiple write locations are set
+     */
     public boolean getEnableMultipleWriteLocations() {
         return ObjectUtils.defaultIfNull(super.getBoolean(Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS), false);
     }

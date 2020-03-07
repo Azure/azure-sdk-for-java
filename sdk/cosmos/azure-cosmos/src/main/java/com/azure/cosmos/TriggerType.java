@@ -3,8 +3,6 @@
 
 package com.azure.cosmos;
 
-import org.apache.commons.text.WordUtils;
-
 /**
  * The trigger type in the Azure Cosmos DB database service.
  */

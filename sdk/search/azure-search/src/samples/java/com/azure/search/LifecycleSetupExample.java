@@ -165,7 +165,7 @@ public class LifecycleSetupExample {
                         .setAnalyzer("en.microsoft"),
                     new Field()
                         .setName("Tags")
-                        .setType(DataType.Collection(DataType.EDM_STRING))
+                        .setType(DataType.collection(DataType.EDM_STRING))
                         .setFacetable(Boolean.TRUE)
                         .setFilterable(Boolean.TRUE)
                         .setRetrievable(Boolean.TRUE)

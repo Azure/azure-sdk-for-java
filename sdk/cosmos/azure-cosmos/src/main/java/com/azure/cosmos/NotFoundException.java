@@ -17,10 +17,22 @@ import java.util.Map;
 public class NotFoundException extends CosmosClientException {
     private static final long serialVersionUID = 1L;
 
+
+    /**
+     * Instantiates a new Not found exception.
+     */
     public NotFoundException() {
         this(RMResources.NotFound);
     }
 
+    /**
+     * Instantiates a new Not found exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public NotFoundException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
                              Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.NOTFOUND, cosmosError, responseHeaders);
@@ -28,10 +40,22 @@ public class NotFoundException extends CosmosClientException {
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
+    /**
+     * Instantiates a new Not found exception.
+     *
+     * @param message the message
+     */
     public NotFoundException(String message) {
         this(message, null, (HttpHeaders) null, null);
     }
 
+    /**
+     * Instantiates a new Not found exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUri the request uri
+     */
     public NotFoundException(String message, Map<String, String> headers, String requestUri) {
         this(message, null, headers, requestUri);
     }
@@ -40,6 +64,13 @@ public class NotFoundException extends CosmosClientException {
         this(message, null, headers, requestUri);
     }
 
+    /**
+     * Instantiates a new Not found exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUri the request uri
+     */
     public NotFoundException(String message, HttpHeaders headers, URI requestUri) {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }

@@ -14,14 +14,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum VisualFeature {
     /**
+     * Enum value adult.
+     */
+    ADULT("adult"),
+
+    /**
+     * Enum value brands.
+     */
+    BRANDS("brands"),
+
+    /**
      * Enum value categories.
      */
     CATEGORIES("categories"),
-
-    /**
-     * Enum value tags.
-     */
-    TAGS("tags"),
 
     /**
      * Enum value description.
@@ -34,14 +39,14 @@ public enum VisualFeature {
     FACES("faces"),
 
     /**
-     * Enum value imageType.
+     * Enum value objects.
      */
-    IMAGE_TYPE("imageType"),
+    OBJECTS("objects"),
 
     /**
-     * Enum value color.
+     * Enum value tags.
      */
-    COLOR("color");
+    TAGS("tags");
 
     /**
      * The actual serialized value for a VisualFeature instance.

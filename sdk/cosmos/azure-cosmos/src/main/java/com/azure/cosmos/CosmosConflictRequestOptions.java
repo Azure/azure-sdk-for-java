@@ -4,6 +4,9 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.RequestOptions;
 
+/**
+ * The type Cosmos conflict request options.
+ */
 public class CosmosConflictRequestOptions {
     private AccessCondition accessCondition;
 

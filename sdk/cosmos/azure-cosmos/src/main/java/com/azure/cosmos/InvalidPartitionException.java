@@ -18,10 +18,21 @@ public class InvalidPartitionException extends CosmosClientException {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Instantiates a new Invalid partition exception.
+     */
     public InvalidPartitionException() {
         this(RMResources.Gone);
     }
 
+    /**
+     * Instantiates a new Invalid partition exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public InvalidPartitionException(CosmosError cosmosError,
                                      long lsn,
                                      String partitionKeyRangeId,
@@ -31,16 +42,34 @@ public class InvalidPartitionException extends CosmosClientException {
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
+    /**
+     * Instantiates a new Invalid partition exception.
+     *
+     * @param msg the msg
+     */
     public InvalidPartitionException(String msg) {
         super(HttpConstants.StatusCodes.GONE, msg);
         setSubStatus();
     }
 
+    /**
+     * Instantiates a new Invalid partition exception.
+     *
+     * @param msg the msg
+     * @param resourceAddress the resource address
+     */
     public InvalidPartitionException(String msg, String resourceAddress) {
         super(msg, null, null, HttpConstants.StatusCodes.GONE, resourceAddress);
         setSubStatus();
     }
 
+    /**
+     * Instantiates a new Invalid partition exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUri the request uri
+     */
     public InvalidPartitionException(String message, HttpHeaders headers, String requestUri) {
         this(message, null, headers, requestUri);
     }

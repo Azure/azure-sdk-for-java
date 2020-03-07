@@ -21,6 +21,14 @@ public class ConflictException extends CosmosClientException {
         this(RMResources.EntityAlreadyExists);
     }
 
+    /**
+     * Instantiates a new Conflict exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public ConflictException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
                              Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.CONFLICT, cosmosError, responseHeaders);
@@ -36,6 +44,13 @@ public class ConflictException extends CosmosClientException {
         super(msg, null, null, HttpConstants.StatusCodes.CONFLICT, resourceAddress);
     }
 
+    /**
+     * Instantiates a new Conflict exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUriString the request uri string
+     */
     public ConflictException(String message, HttpHeaders headers, String requestUriString) {
         this(message, null, headers, requestUriString);
     }
