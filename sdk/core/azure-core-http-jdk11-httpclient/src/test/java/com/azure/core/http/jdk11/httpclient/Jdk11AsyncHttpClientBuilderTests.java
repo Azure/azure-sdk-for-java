@@ -1,83 +1,74 @@
-//// Copyright (c) Microsoft Corporation. All rights reserved.
-//// Licensed under the MIT License.
-//
-//package com.azure.core.http.jdk11.httpclient;
-//
-//import com.azure.core.http.HttpMethod;
-//import com.azure.core.http.HttpRequest;
-//import com.azure.core.http.ProxyOptions;
-//import com.azure.core.util.Configuration;
-//import com.github.tomakehurst.wiremock.WireMockServer;
-//import com.github.tomakehurst.wiremock.client.WireMock;
-//import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-//import org.junit.jupiter.api.AfterAll;
-//import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.params.ParameterizedTest;
-//import org.junit.jupiter.params.provider.EnumSource;
-//import reactor.test.StepVerifier;
-//
-//import java.net.InetSocketAddress;
-//import java.net.Proxy;
-//import java.time.Duration;
-//import java.util.Collections;
-//import java.util.Timer;
-//import java.util.TimerTask;
-//import java.util.concurrent.Executors;
-//
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertNotNull;
-//import static org.junit.jupiter.api.Assertions.assertThrows;
-//
-///**
-// * Tests {@link Jdk11AsyncHttpClientBuilder}.
-// */
-//public class Jdk11AsyncHttpClientBuilderTests {
-//    private static final String COOKIE_VALIDATOR_PATH = "/cookieValidator";
-//    private static final String DEFAULT_PATH = "/default";
-//    private static final String DISPATCHER_PATH = "/dispatcher";
-//
-//    private static WireMockServer server;
-//
-//    private static String cookieValidatorUrl;
-//    private static String defaultUrl;
-//    private static String dispatcherUrl;
-//
-//    @BeforeAll
-//    public static void setupWireMock() {
-//        server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
-//
-//        // Mocked endpoint to test building a client with a prebuilt OkHttpClient.
-//        server.stubFor(WireMock.get(COOKIE_VALIDATOR_PATH).withCookie("test", WireMock.matching("success"))
-//            .willReturn(WireMock.aResponse().withStatus(200)));
-//
-//        // Mocked endpoint to test building a client with a timeout.
-//        server.stubFor(WireMock.get(DEFAULT_PATH).willReturn(WireMock.aResponse().withStatus(200)));
-//
-//        // Mocked endpoint to test building a client with a dispatcher and uses a delayed response.
-//        server.stubFor(WireMock.get(DISPATCHER_PATH).willReturn(WireMock.aResponse().withStatus(200)
-//            .withFixedDelay(5000)));
-//
-//        server.start();
-//
-//        cookieValidatorUrl = "http://localhost:" + server.port() + COOKIE_VALIDATOR_PATH;
-//        defaultUrl = "http://localhost:" + server.port() + DEFAULT_PATH;
-//        dispatcherUrl = "http://localhost:" + server.port() + DISPATCHER_PATH;
-//    }
-//
-//    @AfterAll
-//    public static void shutdownWireMock() {
-//        if (server.isRunning()) {
-//            server.shutdown();
-//        }
-//    }
-//
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.core.http.jdk11.httpclient;
+
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.util.Configuration;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
+
+import java.util.concurrent.Executors;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+/**
+ * Tests {@link Jdk11AsyncHttpClientBuilder}.
+ */
+public class Jdk11AsyncHttpClientBuilderTests {
+    private static final String COOKIE_VALIDATOR_PATH = "/cookieValidator";
+    private static final String DEFAULT_PATH = "/default";
+    private static final String DISPATCHER_PATH = "/dispatcher";
+
+    private static WireMockServer server;
+
+    private static String cookieValidatorUrl;
+    private static String defaultUrl;
+    private static String dispatcherUrl;
+
+    @BeforeAll
+    public static void setupWireMock() {
+        server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
+
+        // Mocked endpoint to test building a client with a prebuilt OkHttpClient.
+        server.stubFor(WireMock.get(COOKIE_VALIDATOR_PATH).withCookie("test", WireMock.matching("success"))
+            .willReturn(WireMock.aResponse().withStatus(200)));
+
+        // Mocked endpoint to test building a client with a timeout.
+        server.stubFor(WireMock.get(DEFAULT_PATH).willReturn(WireMock.aResponse().withStatus(200)));
+
+        // Mocked endpoint to test building a client with a dispatcher and uses a delayed response.
+        server.stubFor(WireMock.get(DISPATCHER_PATH).willReturn(WireMock.aResponse().withStatus(200)
+            .withFixedDelay(5000)));
+
+        server.start();
+
+        cookieValidatorUrl = "http://localhost:" + server.port() + COOKIE_VALIDATOR_PATH;
+        defaultUrl = "http://localhost:" + server.port() + DEFAULT_PATH;
+        dispatcherUrl = "http://localhost:" + server.port() + DISPATCHER_PATH;
+    }
+
+    @AfterAll
+    public static void shutdownWireMock() {
+        if (server.isRunning()) {
+            server.shutdown();
+        }
+    }
+
 //    /**
 //     * Tests that an {@link OkHttpAsyncHttpClient} is able to be built from an existing {@link OkHttpClient}.
 //     */
 //    @Test
 //    public void buildClientWithExistingClient() {
-//        OkHttpClient existingClient = new OkHttpClient.Builder()
+//        HttpClient existingClient = new OkHttpClient.Builder()
 //            .addInterceptor(chain -> chain
 //                .proceed(chain.request().newBuilder().addHeader("Cookie", "test=success").build()))
 //            .build();
@@ -89,16 +80,16 @@
 //            .assertNext(response -> assertEquals(200, response.getStatusCode()))
 //            .verifyComplete();
 //    }
-//
-//    /**
-//     * Tests that instantiating an {@link OkHttpAsyncHttpClientBuilder} with a {@code null} {@link OkHttpClient} will
-//     * throw a {@link NullPointerException}.
-//     */
-//    @Test
-//    public void startingWithNullClientThrows() {
-//        assertThrows(NullPointerException.class, () -> new OkHttpAsyncHttpClientBuilder(null));
-//    }
-//
+
+    /**
+     * Tests that instantiating an {@link Jdk11AsyncHttpClientBuilder} with a {@code null} {@link Jdk11AsyncHttpClient}
+     * will throw a {@link NullPointerException}.
+     */
+    @Test
+    public void startingWithNullClientThrows() {
+        assertThrows(NullPointerException.class, () -> new Jdk11AsyncHttpClientBuilder(null));
+    }
+
 //    /**
 //     * Tests that adding an {@link Interceptor} is handled correctly.
 //     */
@@ -153,7 +144,7 @@
 //    public void nullNetworkInterceptorsThrows() {
 //        assertThrows(NullPointerException.class, () -> new OkHttpAsyncHttpClientBuilder().networkInterceptors(null));
 //    }
-//
+
 //    /**
 //     * Tests building a client with a given {@code connectionTimeout}.
 //     */
@@ -174,7 +165,7 @@
 //            .assertNext(response -> assertEquals(200, response.getStatusCode()))
 //            .verifyComplete();
 //    }
-//
+
 //    /**
 //     * Tests building a client with a given {@code connectionTimeout}.
 //     */
@@ -195,34 +186,30 @@
 //            .assertNext(response -> assertEquals(200, response.getStatusCode()))
 //            .verifyComplete();
 //    }
-//
-//    /**
-//     * Tests building a client with a given {@code connectionPool}.
-//     */
-//    @Test
-//    public void buildWithConnectionPool() {
-//        ConnectionPool connectionPool = new ConnectionPool();
-//
-//        OkHttpAsyncHttpClient okClient = (OkHttpAsyncHttpClient) new OkHttpAsyncHttpClientBuilder()
-//            .connectionPool(connectionPool)
-//            .build();
-//
-//        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-//            .assertNext(response -> assertEquals(200, response.getStatusCode()))
-//            .verifyComplete();
-//
-//        assertEquals(1, connectionPool.connectionCount());
-//    }
-//
-//    /**
-//     * Tests that passing a {@code null} {@code connectionPool} to the builder will throw a
-//     * {@link NullPointerException}.
-//     */
-//    @Test
-//    public void nullConnectionPoolThrows() {
-//        assertThrows(NullPointerException.class, () -> new OkHttpAsyncHttpClientBuilder().connectionPool(null));
-//    }
-//
+
+    /**
+     * Tests building a client with a given {@code connectionPool}.
+     */
+    @Test
+    public void buildWithConnectionPool() {
+        HttpClient httpClient = new Jdk11AsyncHttpClientBuilder()
+            .executor(Executors.newFixedThreadPool(10))
+            .build();
+
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    /**
+     * Tests that passing a {@code null} {@code executor} to the builder will throw a
+     * {@link NullPointerException}.
+     */
+    @Test
+    public void nullConnectionPoolThrows() {
+        assertThrows(NullPointerException.class, () -> new Jdk11AsyncHttpClientBuilder().executor(null));
+    }
+
 //    /**
 //     * Tests building a client with a given {@code dispatcher}.
 //     */
@@ -260,7 +247,7 @@
 //    public void nullDispatcherThrows() {
 //        assertThrows(NullPointerException.class, () -> new OkHttpAsyncHttpClientBuilder().dispatcher(null));
 //    }
-//
+
 //    /**
 //     * Tests building a client with a given proxy.
 //     */
@@ -273,29 +260,29 @@
 //        ProxyOptions proxyOptions = new ProxyOptions(proxyType,
 //            new InetSocketAddress(expectedProxyHost, expectedProxyPort)).setCredentials("1", "1");
 //
-//        OkHttpClient validatorClient = new OkHttpClient.Builder()
-//            .eventListener(new TestEventListenerValidator(expectedProxyHost, expectedProxyPort))
-//            .build();
+////        java.net.http.HttpClient validatorClient = java.net.http.HttpClient.newBuilder()
+////            .eventListener(new TestEventListenerValidator(expectedProxyHost, expectedProxyPort))
+////            .build();
 //
-//        OkHttpAsyncHttpClient okClient = (OkHttpAsyncHttpClient) new OkHttpAsyncHttpClientBuilder(validatorClient)
+//        HttpClient httpClient = new Jdk11AsyncHttpClientBuilder(java.net.http.HttpClient.newBuilder())
 //            .proxy(proxyOptions)
 //            .build();
 //
-//        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+//        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
 //            .verifyError();
 //    }
-//
-//    @Test
-//    public void buildWithConfigurationNone() {
-//        OkHttpAsyncHttpClient okClient = (OkHttpAsyncHttpClient) new OkHttpAsyncHttpClientBuilder()
-//            .configuration(Configuration.NONE)
-//            .build();
-//
-//        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-//            .assertNext(response -> assertEquals(200, response.getStatusCode()))
-//            .verifyComplete();
-//    }
-//
+
+    @Test
+    public void buildWithConfigurationNone() {
+        HttpClient httpClient = new Jdk11AsyncHttpClientBuilder()
+            .configuration(Configuration.NONE)
+            .build();
+
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
 //    @Test
 //    public void buildWithConfigurationProxy() {
 //        Configuration configuration = new Configuration()
@@ -315,22 +302,22 @@
 //        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
 //            .verifyError();
 //    }
-//
-//    @Test
-//    public void buildWithNonProxyConfigurationProxy() {
-//        Configuration configuration = new Configuration()
-//            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
-//            .put(Configuration.PROPERTY_NO_PROXY, "localhost");
-//
-//        OkHttpAsyncHttpClient okClient = (OkHttpAsyncHttpClient) new OkHttpAsyncHttpClientBuilder()
-//            .configuration(configuration)
-//            .build();
-//
-//        StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-//            .assertNext(response -> assertEquals(200, response.getStatusCode()))
-//            .verifyComplete();
-//    }
-//
+
+    @Test
+    public void buildWithNonProxyConfigurationProxy() {
+        Configuration configuration = new Configuration()
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
+            .put(Configuration.PROPERTY_NO_PROXY, "localhost");
+
+        HttpClient httpClient = new Jdk11AsyncHttpClientBuilder()
+            .configuration(configuration)
+            .build();
+
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
 //    private static final class TestEventListenerValidator extends EventListener {
 //        private final String expectedProxyHost;
 //        private final int expectedProxyPort;
@@ -349,4 +336,4 @@
 //            super.connectStart(call, inetSocketAddress, proxy);
 //        }
 //    }
-//}
+}

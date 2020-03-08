@@ -14,6 +14,7 @@ import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.Executor;
 
 /**
  * Builder to configure and build an implementation of {@link HttpClient} for JDK 11 HttpClient.
@@ -23,14 +24,48 @@ public class Jdk11AsyncHttpClientBuilder {
 
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
 
+    private java.net.http.HttpClient.Builder httpClientBuilder;
     private Duration connectionTimeout;
     private ProxyOptions proxyOptions;
     private Configuration configuration;
+    private Executor executor;
 
     /**
      * Creates OkHttpAsyncHttpClientBuilder.
      */
     public Jdk11AsyncHttpClientBuilder() {
+    }
+
+    /**
+     * Creates OkHttpAsyncHttpClientBuilder from the builder of an existing OkHttpClient.
+     *
+     * @param httpClientBuilder the HttpClient builder to use
+     */
+    public Jdk11AsyncHttpClientBuilder(java.net.http.HttpClient.Builder httpClientBuilder) {
+        this.httpClientBuilder = Objects.requireNonNull(httpClientBuilder, "'httpClientBuilder' cannot be null.");
+    }
+
+//    /**
+//     * Creates OkHttpAsyncHttpClientBuilder from the builder of an existing OkHttpClient.
+//     *
+//     * @param httpClient the httpclient
+//     */
+//    public static Jdk11AsyncHttpClient wrap(java.net.http.HttpClient httpClient) {
+//        return new Jdk11AsyncHttpClient(httpClient);
+//    }
+
+    /**
+     * Sets the executor to be used for asynchronous and dependent tasks. This cannot be null.
+     *
+     * <p> If this method is not invoked prior to {@linkplain #build() building}, a default executor is created for each
+     * newly built {@code HttpClient}.
+     *
+     * @param executor the executor to be used for asynchronous and dependent tasks
+     * @return the updated Jdk11AsyncHttpClientBuilder object
+     */
+    public Jdk11AsyncHttpClientBuilder executor(Executor executor) {
+        this.executor = Objects.requireNonNull(executor, "executor can not be null");
+        return this;
     }
 
     /**
@@ -83,7 +118,10 @@ public class Jdk11AsyncHttpClientBuilder {
      * @return a {@link HttpClient}.
      */
     public HttpClient build() {
-        java.net.http.HttpClient.Builder httpClientBuilder = java.net.http.HttpClient.newBuilder();
+        java.net.http.HttpClient.Builder httpClientBuilder = this.httpClientBuilder == null
+                     ? java.net.http.HttpClient.newBuilder()
+                     : this.httpClientBuilder;
+
         httpClientBuilder = (this.connectionTimeout != null)
             ? httpClientBuilder.connectTimeout(this.connectionTimeout)
             : httpClientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT);
@@ -95,6 +133,10 @@ public class Jdk11AsyncHttpClientBuilder {
         ProxyOptions buildProxyOptions = (proxyOptions == null && buildConfiguration != Configuration.NONE)
             ? ProxyOptions.fromConfiguration(buildConfiguration)
             : proxyOptions;
+
+        if (executor != null) {
+            httpClientBuilder.executor(executor);
+        }
 
         if (buildProxyOptions != null) {
             httpClientBuilder = httpClientBuilder.proxy(new Jdk11HttpClientProxySelector(
