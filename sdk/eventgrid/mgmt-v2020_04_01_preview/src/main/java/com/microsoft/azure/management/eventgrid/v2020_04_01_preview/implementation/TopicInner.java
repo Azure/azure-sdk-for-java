@@ -8,11 +8,14 @@
 
 package com.microsoft.azure.management.eventgrid.v2020_04_01_preview.implementation;
 
+import java.util.List;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.TopicProvisioningState;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.InputSchema;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.InputSchemaMapping;
-import java.util.List;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PublicNetworkAccess;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.InboundIpRule;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.ResourceSku;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.IdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -22,6 +25,12 @@ import com.microsoft.azure.Resource;
  */
 @JsonFlatten
 public class TopicInner extends Resource {
+    /**
+     * List of private endpoint connections.
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections")
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
     /**
      * Provisioning state of the topic. Possible values include: 'Creating',
      * 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed'.
@@ -59,18 +68,53 @@ public class TopicInner extends Resource {
     private String metricResourceId;
 
     /**
-     * This determines if IP filtering rules ought to be evaluated or not. By
-     * default it will not evaluate and will allow traffic from all IPs.
+     * This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     * You can further restrict to specific IPs by configuring &lt;seealso
+     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicProperties.InboundIpRules"
+     * /&gt;. Possible values include: 'Enabled', 'Disabled'.
      */
-    @JsonProperty(value = "properties.allowTrafficFromAllIPs")
-    private Boolean allowTrafficFromAllIPs;
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /**
-     * This determines the IP filtering rules that ought to be applied when
-     * events are received on this topic.
+     * This can be used to restrict traffic from specific IPs instead of all
+     * IPs. Note: These are considered only if PublicNetworkAccess is enabled.
      */
     @JsonProperty(value = "properties.inboundIpRules")
     private List<InboundIpRule> inboundIpRules;
+
+    /**
+     * The Sku pricing tier for the topic.
+     */
+    @JsonProperty(value = "sku")
+    private ResourceSku sku;
+
+    /**
+     * Identity information for the resource.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityInfo identity;
+
+    /**
+     * Get list of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * Set list of private endpoint connections.
+     *
+     * @param privateEndpointConnections the privateEndpointConnections value to set
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+        this.privateEndpointConnections = privateEndpointConnections;
+        return this;
+    }
 
     /**
      * Get provisioning state of the topic. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed'.
@@ -140,27 +184,29 @@ public class TopicInner extends Resource {
     }
 
     /**
-     * Get this determines if IP filtering rules ought to be evaluated or not. By default it will not evaluate and will allow traffic from all IPs.
+     * Get this determines if traffic is allowed over public network. By default it is enabled.
+     You can further restrict to specific IPs by configuring &lt;seealso cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicProperties.InboundIpRules" /&gt;. Possible values include: 'Enabled', 'Disabled'.
      *
-     * @return the allowTrafficFromAllIPs value
+     * @return the publicNetworkAccess value
      */
-    public Boolean allowTrafficFromAllIPs() {
-        return this.allowTrafficFromAllIPs;
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
     }
 
     /**
-     * Set this determines if IP filtering rules ought to be evaluated or not. By default it will not evaluate and will allow traffic from all IPs.
+     * Set this determines if traffic is allowed over public network. By default it is enabled.
+     You can further restrict to specific IPs by configuring &lt;seealso cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicProperties.InboundIpRules" /&gt;. Possible values include: 'Enabled', 'Disabled'.
      *
-     * @param allowTrafficFromAllIPs the allowTrafficFromAllIPs value to set
+     * @param publicNetworkAccess the publicNetworkAccess value to set
      * @return the TopicInner object itself.
      */
-    public TopicInner withAllowTrafficFromAllIPs(Boolean allowTrafficFromAllIPs) {
-        this.allowTrafficFromAllIPs = allowTrafficFromAllIPs;
+    public TopicInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 
     /**
-     * Get this determines the IP filtering rules that ought to be applied when events are received on this topic.
+     * Get this can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
      *
      * @return the inboundIpRules value
      */
@@ -169,13 +215,53 @@ public class TopicInner extends Resource {
     }
 
     /**
-     * Set this determines the IP filtering rules that ought to be applied when events are received on this topic.
+     * Set this can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
      *
      * @param inboundIpRules the inboundIpRules value to set
      * @return the TopicInner object itself.
      */
     public TopicInner withInboundIpRules(List<InboundIpRule> inboundIpRules) {
         this.inboundIpRules = inboundIpRules;
+        return this;
+    }
+
+    /**
+     * Get the Sku pricing tier for the topic.
+     *
+     * @return the sku value
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the Sku pricing tier for the topic.
+     *
+     * @param sku the sku value to set
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withSku(ResourceSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get identity information for the resource.
+     *
+     * @return the identity value
+     */
+    public IdentityInfo identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set identity information for the resource.
+     *
+     * @param identity the identity value to set
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withIdentity(IdentityInfo identity) {
+        this.identity = identity;
         return this;
     }
 
