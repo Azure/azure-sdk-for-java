@@ -36,6 +36,7 @@
   <suppress checks="Header" files=".*KeyVaultKeyResolverBCProviderTest.java"/>
   <suppress checks="Header" files=".*KeyVaultKeyResolverDefaultProviderTest.java"/>
   <suppress checks="Header" files="com.azure.core.http.netty.implementation.HttpProxyHandler"/>
+  <suppress checks="Header" files="eventgrid[/\\](models|implementation)[/\\].*\.java"/>
 
   <!-- Cryptography Client exception for service client instantiation as it provides client side crypto and is not entirely based on REST service -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*CryptographyAsyncClient.java"/>
@@ -226,11 +227,11 @@
 
   <!-- Report AMQP retry attempts in static withRetry method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.amqp.implementation.RetryUtil.java"/>
-  
+
   <!-- The Identity Azure Platform End to tend Test.-->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.endtoend.identity.IdentityTest.java"/>
-    <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.endtoend.identity.WebJobsIdentityTest.java"/>
-  
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.endtoend.identity.WebJobsIdentityTest.java"/>
+
   <!-- Use the logger in a Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.textanalytics.Transforms.java" />
 
@@ -323,4 +324,26 @@
   <!-- Don't enforce non-static ClientLogger instances in azure-core-mgmt PollerFactory and PollingState types-->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)" files="com.azure.core.management.implementation.polling.PollerFactory.java"/>
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)" files="com.azure.core.management.implementation.polling.PollingState.java"/>
+  
+  <!-- Cosmos sdk suppressions -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos[/\\]src[/\\]test[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]examples[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]implementation[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*"  files=".*[/\\]cosmos[/\\]((?!(BridgeInternal|CosmosBridgeInternal|CommonsBridgeInternal)).*)"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]rx[/\\]examples[/\\]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-benchmark[/\\]"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
+            files="com.azure.cosmos.CosmosResponseDiagnostics"/>  
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+            files=".*[/\\]cosmos[/\\]((?!(CosmosClient|CosmosScripts|CosmosAsyncDatabase|PartitionKeyDefinition
+            |JsonSerializable|CosmosContainer|DatabaseAccount|CosmosContainerProperties|UniqueKeyPolicy|IncludedPath
+            |CosmosConflictProperties|CosmosDatabase|ConnectionPolicy|ThrottlingRetryOptions|ClientSideRequestStatistics)).*)"/> 
+  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ExternalDependencyExposedCheck)"
+            files="com.azure.cosmos.JsonSerializable"/>  <!-- exposes logger from slf4j-->
+  <suppress checks="javadoc" files="com.azure.cosmos.CompositePathSortOrder"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.cosmos.PartitionKey"/>
+   <suppress checks="com.azure.tools.checkstyle.checks.(EnforceFinalFieldsCheck|ExternalDependencyExposedCheck|NoImplInPublicAPI)" 
+            files="com.azure.cosmos.ClientSideRequestStatistics"/>   
+  <suppress checks="IllegalImport" 
+            files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
 </suppressions>

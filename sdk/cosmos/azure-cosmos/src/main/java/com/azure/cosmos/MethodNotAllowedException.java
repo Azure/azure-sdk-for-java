@@ -11,11 +11,22 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import java.net.URI;
 import java.util.Map;
 
+/**
+ * The type Method not allowed exception.
+ */
 public class MethodNotAllowedException extends CosmosClientException {
     MethodNotAllowedException() {
         this(RMResources.MethodNotAllowed);
     }
 
+    /**
+     * Instantiates a new Method not allowed exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public MethodNotAllowedException(CosmosError cosmosError,
                                      long lsn,
                                      String partitionKeyRangeId,
@@ -41,6 +52,14 @@ public class MethodNotAllowedException extends CosmosClientException {
         this(RMResources.MethodNotAllowed, innerException, null, null);
     }
 
+    /**
+     * Instantiates a new Method not allowed exception.
+     *
+     * @param message the message
+     * @param innerException the inner exception
+     * @param headers the headers
+     * @param requestUriString the request uri string
+     */
     public MethodNotAllowedException(String message,
                                      Exception innerException,
                                      HttpHeaders headers,

@@ -33,6 +33,7 @@ import java.util.function.Supplier;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
@@ -238,6 +239,9 @@ class PartitionPumpManager {
             .addData(ENTITY_PATH_KEY, eventHubName)
             .addData(HOST_NAME_KEY, fullyQualifiedNamespace)
             .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+        spanContext = eventData.getEnqueuedTime() == null
+            ? spanContext
+            : spanContext.addData(MESSAGE_ENQUEUED_TIME, eventData.getEnqueuedTime().getEpochSecond());
         return tracerProvider.startSpan(spanContext, ProcessKind.PROCESS);
     }
 

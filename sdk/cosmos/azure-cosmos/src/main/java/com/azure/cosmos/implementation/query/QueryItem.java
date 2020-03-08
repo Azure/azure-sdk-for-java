@@ -5,12 +5,17 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.implementation.Undefined;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Used internally for query in the Azure Cosmos DB database service.
  */
 public final class QueryItem extends JsonSerializable {
     private Object item;
+
+    public QueryItem(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     public QueryItem(String jsonString) {
         super(jsonString);

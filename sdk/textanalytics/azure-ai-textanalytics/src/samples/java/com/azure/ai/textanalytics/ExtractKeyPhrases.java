@@ -6,11 +6,11 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
- * Sample demonstrates how to extract the key phrases of an input text.
+ * Sample demonstrates how to extract the key phrases of document.
  */
 public class ExtractKeyPhrases {
     /**
-     * Main method to invoke this demo about how to extract the key phrases of an input text.
+     * Main method to invoke this demo about how to extract the key phrases of document.
      *
      * @param args Unused arguments to the program.
      */
@@ -25,8 +25,6 @@ public class ExtractKeyPhrases {
         String text = "My cat might need to see a veterinarian.";
 
         System.out.println("Extracted phrases:");
-        for (String keyPhrase : client.extractKeyPhrases(text)) {
-            System.out.printf("%s.%n", keyPhrase);
-        }
+        client.extractKeyPhrases(text).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
     }
 }

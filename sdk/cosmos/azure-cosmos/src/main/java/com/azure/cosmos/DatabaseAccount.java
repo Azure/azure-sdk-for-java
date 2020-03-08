@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,6 +26,16 @@ public class DatabaseAccount extends Resource {
     private ReplicationPolicy replicationPolicy;
     private ReplicationPolicy systemReplicationPolicy;
     private Map<String, Object> queryEngineConfiguration;
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    DatabaseAccount(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     /**
      * Constructor.
@@ -245,6 +256,11 @@ public class DatabaseAccount extends Resource {
         BridgeInternal.setProperty(this, Constants.Properties.READABLE_LOCATIONS, locations);
     }
 
+    /**
+     * Gets if enable multiple write locations is set.
+     *
+     * @return the true if multiple write locations are set
+     */
     public boolean getEnableMultipleWriteLocations() {
         return ObjectUtils.defaultIfNull(super.getBoolean(Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS), false);
     }

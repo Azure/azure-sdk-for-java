@@ -384,8 +384,17 @@ public class CosmosAsyncClient implements Closeable {
         });
     }
 
+    /**
+     * Gets database account information.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the database account.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @return {@link Mono} containing the single resource response with the database account or an error
+     */
     public Mono<DatabaseAccount> readDatabaseAccount() {
-        return asyncDocumentClient.getDatabaseAccount().single();
+        return asyncDocumentClient.getDatabaseAccount();
     }
 
     /**

@@ -11,7 +11,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.search.SearchServiceUrlParser.SearchServiceUrlParts;
 import com.azure.search.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.implementation.SearchIndexRestClientImpl;
 import com.azure.search.implementation.SerializationUtil;
@@ -95,16 +94,14 @@ public final class SearchIndexAsyncClient {
     SearchIndexAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
         HttpPipeline httpPipeline) {
 
-        SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
 
         restClient = new SearchIndexRestClientBuilder()
-            .searchServiceName(parts.serviceName)
+            .endpoint(endpoint)
             .indexName(indexName)
-            .searchDnsSuffix(parts.dnsSuffix)
             .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
             .serializer(SERIALIZER)
@@ -439,7 +436,7 @@ public final class SearchIndexAsyncClient {
      * @return the document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
-    public Mono<Document> getDocument(String key) {
+    public Mono<SearchDocument> getDocument(String key) {
         return getDocumentWithResponse(key, null, null).map(Response::getValue);
     }
 
@@ -457,18 +454,18 @@ public final class SearchIndexAsyncClient {
      * @return a response containing the document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
-    public Mono<Response<Document>> getDocumentWithResponse(String key, List<String> selectedFields,
+    public Mono<Response<SearchDocument>> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions) {
         return withContext(context -> getDocumentWithResponse(key, selectedFields, requestOptions, context));
     }
 
-    Mono<Response<Document>> getDocumentWithResponse(String key, List<String> selectedFields,
+    Mono<Response<SearchDocument>> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.documents()
                 .getWithRestResponseAsync(key, selectedFields, requestOptions, context)
                 .map(res -> {
-                    Document doc = res.getValue();
+                    SearchDocument doc = new SearchDocument(res.getValue());
                     DocumentResponseConversions.cleanupDocument(doc);
                     return new SimpleResponse<>(res, doc);
                 })

@@ -4,23 +4,19 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
+import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.models.DocumentResult;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -112,29 +108,6 @@ final class Transforms {
     }
 
     /**
-     * Convert the service returned model response {@link DocumentResultCollection} to a {@link SimpleResponse}.
-     * If the response returned with an error, a {@link TextAnalyticsException} is thrown.
-     *
-     * @param response the {@link com.azure.ai.textanalytics.models.TextAnalyticsError}.
-     * @return the {@link SimpleResponse}.
-     *
-     * @throws com.azure.ai.textanalytics.models.TextAnalyticsException if the response returned with
-     * an {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}.
-     */
-    static <T extends DocumentResult> Response<T> processSingleResponseErrorResult(
-        Response<DocumentResultCollection<T>> response) {
-        Iterator<T> responseIterator = response.getValue().iterator();
-        T result = null;
-        if (response.getStatusCode() == HttpURLConnection.HTTP_OK && responseIterator.hasNext()) {
-            result = responseIterator.next();
-            if (result.isError()) {
-                throw LOGGER.logExceptionAsError(toTextAnalyticsException(result.getError()));
-            }
-        }
-        return new SimpleResponse<>(response, result);
-    }
-
-    /**
      * Convert the incoming input {@link com.azure.ai.textanalytics.models.TextAnalyticsError}
      * to a {@link TextAnalyticsException}.
      *
@@ -144,5 +117,21 @@ final class Transforms {
     static TextAnalyticsException toTextAnalyticsException(
         com.azure.ai.textanalytics.models.TextAnalyticsError error) {
         return new TextAnalyticsException(error.getMessage(), error.getCode().toString(), error.getTarget());
+    }
+
+    /**
+     * Convert to a list of {@link LanguageInput} from {@link DetectLanguageInput}.
+     *
+     * @param textInputs The list of documents to detect languages for.
+     *
+     * @return a list of {@link LanguageInput}.
+     */
+    static List<LanguageInput> toLanguageInput(Iterable<DetectLanguageInput> textInputs) {
+        final List<LanguageInput> multiLanguageInputs = new ArrayList<>();
+        textInputs.forEach(textDocumentInput -> multiLanguageInputs.add(new LanguageInput()
+            .setId(textDocumentInput.getId())
+            .setText(textDocumentInput.getText())
+            .setCountryHint(textDocumentInput.getCountryHint())));
+        return multiLanguageInputs;
     }
 }

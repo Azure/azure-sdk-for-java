@@ -10,6 +10,7 @@ import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.List;
 
@@ -27,6 +28,10 @@ public final class PartitionedQueryExecutionInfoInternal extends JsonSerializabl
 
     public PartitionedQueryExecutionInfoInternal() {
         BridgeInternal.setProperty(this, PARTITIONED_QUERY_EXECUTION_INFO_VERSION_PROPERTY, Constants.PartitionedQueryExecutionInfo.VERSION_1);
+    }
+
+    public PartitionedQueryExecutionInfoInternal(ObjectNode objectNode) {
+        super(objectNode);
     }
 
     public PartitionedQueryExecutionInfoInternal(String jsonString) {
@@ -54,7 +59,7 @@ public final class PartitionedQueryExecutionInfoInternal extends JsonSerializabl
     public void setQueryRanges(List<Range<PartitionKeyInternal>> queryRanges) {
         this.queryRanges = queryRanges;
     }
-        
+
     public String toJson() {
         try {
             return Utils.getSimpleObjectMapper().writeValueAsString(this);

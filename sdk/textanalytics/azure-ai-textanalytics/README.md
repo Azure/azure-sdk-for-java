@@ -25,7 +25,7 @@ and includes six main functions:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -77,7 +77,7 @@ To use an [API key][api_key], provide the key as a string. This can be found in 
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ```
 Use the API key as the credential parameter to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L48-L51 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L43-L46 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
@@ -86,7 +86,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 The Azure Text Analytics client library provides a way to **rotate the existing API key**.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L165-L171 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L73-L79 -->
 ```java
 TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -115,7 +115,7 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 Use the returned token credential to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L68-L71 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L63-L66 -->
 ```java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .endpoint("{endpoint}")
@@ -166,7 +166,7 @@ The following are types of text analysis that the service offers:
 1. [Sentiment Analysis][sentiment_analysis]
     
     Use sentiment analysis to find out what customers think of your brand or topic by analyzing raw text for clues about positive or negative sentiment.
-    Scores closer to `1` indicate positive sentiment, while scores closer to `0` indicate negative sentiment.
+    The returned scores represent the model's confidence that the text is either positive, negative, or neutral. Higher values signify higher confidence.
     Sentiment analysis returns scores and labels at a document and sentence level.
 
 2. [Named Entity Recognition][named_entity_recognition]
@@ -201,14 +201,14 @@ The following sections provide several code snippets covering some of the most c
 Text analytics support both synchronous and asynchronous client creation by using
 `TextAnalyticsClientBuilder`,
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L48-L51 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L43-L46 -->
 ``` java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L58-L61 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L53-L56 -->
 ``` java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
@@ -217,68 +217,61 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 
 ### Analyze sentiment
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L137-L142 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L102-L106 -->
 ```java
 String text = "The hotel was dark and unclean. I like microsoft.";
 DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(text);
 System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentiment());
-for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-    System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment());
-}
+documentSentiment.getSentences().forEach(sentenceSentiment ->
+    System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment()));
 ```
 
 ### Detect language
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L78-L81 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L113-L116 -->
 ```java
 String inputText = "Bonjour tout le monde";
 DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(inputText);
-System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %.2f.%n",
+System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %f.%n",
     detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
 ```
 
 ### Recognize entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L88-L92 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L123-L126 -->
 ```java
 String text = "Satya Nadella is the CEO of Microsoft";
-for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text)) {
-    System.out.printf("Recognized categorized entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
-        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
-}
+textAnalyticsClient.recognizeEntities(text).forEach(entity ->
+    System.out.printf("Recognized entity: %s, category: %s, subCategory: %s, score: %f.%n",
+        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
 ```
 
 ### Recognize PII (Personally Identifiable Information) entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L99-L103 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L133-L136 -->
 ```java
 String text = "My SSN is 555-55-5555";
-for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text)) {
-    System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
-        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
-}
+textAnalyticsClient.recognizePiiEntities(text).forEach(piiEntity ->
+    System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %f.%n",
+        piiEntity.getText(), piiEntity.getCategory(), piiEntity.getSubCategory(), piiEntity.getConfidenceScore()));
 ```
 
 ### Recognize linked entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L110-L119 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L143-L150 -->
 
 ```java
 String text = "Old Faithful is a geyser at Yellowstone Park.";
-for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text)) {
+textAnalyticsClient.recognizeLinkedEntities(text).forEach(linkedEntity -> {
     System.out.println("Linked Entities:");
     System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
         linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
-    for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
-        System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n", linkedEntityMatch.getText(),
-            linkedEntityMatch.getOffset(), linkedEntityMatch.getLength(), linkedEntityMatch.getScore());
-    }
-}
+    linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
+        System.out.printf("Text: %s, score: %f.%n", linkedEntityMatch.getText(), linkedEntityMatch.getConfidenceScore()));
+});
 ```
 ### Extract key phrases
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L126-L130 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L157-L159 -->
 ```java
 String text = "My cat might need to see a veterinarian.";
 System.out.println("Extracted phrases:");
-for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text)) {
-    System.out.printf("%s.%n", keyPhrase);
-}
+textAnalyticsClient.extractKeyPhrases(text).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
 ```
 
 Above examples are introduced as the single input examples.
@@ -290,15 +283,15 @@ Text Analytics clients raise exceptions. For example, if you try to detect the l
 document IDs, `400` error is return that indicating bad request. In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L149-L158 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L86-L95 -->
 ```java
 List<DetectLanguageInput> inputs = Arrays.asList(
     new DetectLanguageInput("1", "This is written in English.", "us"),
-    new DetectLanguageInput("1", "Este es un document escrito en Español.", "es")
+    new DetectLanguageInput("1", "Este es un documento  escrito en Español.", "es")
 );
 
 try {
-    textAnalyticsClient.detectLanguageBatchWithResponse(inputs, null, Context.NONE);
+    textAnalyticsClient.detectLanguageBatch(inputs, null, Context.NONE);
 } catch (HttpResponseException e) {
     System.out.println(e.getMessage());
 }

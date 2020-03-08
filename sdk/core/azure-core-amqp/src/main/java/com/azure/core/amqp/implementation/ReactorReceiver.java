@@ -20,6 +20,7 @@ import reactor.core.publisher.ReplayProcessor;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 /**
@@ -37,26 +38,40 @@ public class ReactorReceiver implements AmqpReceiveLink {
     private final ReactorDispatcher dispatcher;
     private final Disposable.Composite subscriptions;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
-    private final EmitterProcessor<Message> messagesProcessor = EmitterProcessor.create();
-    private FluxSink<Message> messageSink = messagesProcessor.sink();
+    private final EmitterProcessor<Message> messagesProcessor;
     private final ClientLogger logger = new ClientLogger(ReactorReceiver.class);
     private final ReplayProcessor<AmqpEndpointState> endpointStates =
         ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
     private FluxSink<AmqpEndpointState> endpointStateSink = endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
 
-    private volatile Supplier<Integer> creditSupplier;
+    private final AtomicReference<Supplier<Integer>> creditSupplier = new AtomicReference<>();
 
-    ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler, TokenManager tokenManager,
-        ReactorDispatcher dispatcher) {
+    protected ReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
+        TokenManager tokenManager, ReactorDispatcher dispatcher) {
         this.entityPath = entityPath;
         this.receiver = receiver;
         this.handler = handler;
         this.tokenManager = tokenManager;
         this.dispatcher = dispatcher;
+        this.messagesProcessor = this.handler.getDeliveredMessages()
+            .map(delivery -> decodeDelivery(delivery))
+            .subscribeWith(EmitterProcessor.create());
+
+        this.messagesProcessor.doOnNext(next -> {
+            if (receiver.getRemoteCredit() == 0) {
+                final Supplier<Integer> supplier = creditSupplier.get();
+                if (supplier == null) {
+                    return;
+                }
+
+                final Integer credits = supplier.get();
+                if (credits != null && credits > 0) {
+                    addCredits(credits);
+                }
+            }
+        });
 
         this.subscriptions = Disposables.composite(
-            this.handler.getDeliveredMessages().subscribe(this::decodeDelivery),
-
             this.handler.getEndpointStates().subscribe(
                 state -> {
                     logger.verbose("Connection state: {}", state);
@@ -100,7 +115,11 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public void addCredits(int credits) {
-        receiver.flow(credits);
+        try {
+            dispatcher.invoke(() -> receiver.flow(credits));
+        } catch (IOException e) {
+            logger.warning("Unable to schedule work to add more credits.", e);
+        }
     }
 
     @Override
@@ -110,8 +129,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public void setEmptyCreditListener(Supplier<Integer> creditSupplier) {
-        Objects.requireNonNull(creditSupplier);
-        this.creditSupplier = creditSupplier;
+        Objects.requireNonNull(creditSupplier, "'creditSupplier' cannot be null.");
+        this.creditSupplier.set(creditSupplier);
     }
 
     @Override
@@ -142,7 +161,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
         subscriptions.dispose();
         endpointStateSink.complete();
-        messageSink.complete();
+        messagesProcessor.onComplete();
         tokenManager.close();
         receiver.close();
 
@@ -157,7 +176,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
         }
     }
 
-    private void decodeDelivery(Delivery delivery) {
+    protected Message decodeDelivery(Delivery delivery) {
         final int messageSize = delivery.pending();
         final byte[] buffer = new byte[messageSize];
         final int read = receiver.recv(buffer, 0, messageSize);
@@ -167,15 +186,6 @@ public class ReactorReceiver implements AmqpReceiveLink {
         message.decode(buffer, 0, read);
 
         delivery.settle();
-
-        messageSink.next(message);
-
-        if (receiver.getRemoteCredit() == 0 && creditSupplier != null) {
-            final Integer credits = creditSupplier.get();
-
-            if (credits != null && credits > 0) {
-                addCredits(credits);
-            }
-        }
+        return message;
     }
 }

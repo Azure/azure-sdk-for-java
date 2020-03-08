@@ -2167,6 +2167,7 @@ class FileAPITest extends APISpec {
         100                                            | 50               | 20        || 5 // Test that blockSize is respected
     }
 
+    @Requires({ liveMode() })
     def "Async buffered upload empty"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2177,6 +2178,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ liveMode() })
     def "Async buffered upload empty buffers"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2390,6 +2392,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ liveMode() })
     def "Buffered upload headers"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2424,6 +2427,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ liveMode() })
     def "Buffered upload metadata"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2454,6 +2458,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ liveMode() })
     def "Buffered upload options"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2475,6 +2480,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ liveMode() })
     def "Buffered upload AC"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2507,6 +2513,7 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @Requires({ liveMode() })
     def "Buffered upload AC fail"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2542,6 +2549,7 @@ class FileAPITest extends APISpec {
     // UploadBufferPool used to lock when the number of failed stageblocks exceeded the maximum number of buffers
     // (discovered when a leaseId was invalid)
     @Unroll
+    @Requires({ liveMode() })
     def "UploadBufferPool lock three or more buffers"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2645,6 +2653,7 @@ class FileAPITest extends APISpec {
 //            })
 //    }
 
+    @Requires({ liveMode() })
     def "Buffered upload default no overwrite"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
@@ -2655,6 +2664,7 @@ class FileAPITest extends APISpec {
             .verifyError(IllegalArgumentException)
     }
 
+    @Requires({ liveMode() })
     def "Buffered upload overwrite"() {
         setup:
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())

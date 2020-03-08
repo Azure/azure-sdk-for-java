@@ -35,6 +35,11 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
     public static final DataSourceType AZURE_TABLE = fromString("azuretable");
 
     /**
+     * Static value mysql for DataSourceType.
+     */
+    public static final DataSourceType MY_SQL = fromString("mysql");
+
+    /**
      * Creates or finds a DataSourceType from its string representation.
      *
      * @param name a name to look for.

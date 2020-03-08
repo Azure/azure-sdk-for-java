@@ -4,13 +4,26 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.Constants;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Used internally to represent a physical address in the Azure Cosmos DB database service.
  */
 public class Address extends Resource {
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public Address(ObjectNode objectNode) {
+        super(objectNode);
+    }
+
     /**
      * Initialize an offer object.
      */

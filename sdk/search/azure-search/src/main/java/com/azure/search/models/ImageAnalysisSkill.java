@@ -22,7 +22,7 @@ import java.util.List;
 public final class ImageAnalysisSkill extends Skill {
     /*
      * A value indicating which language code to use. Default is en. Possible
-     * values include: 'en', 'zh'
+     * values include: 'en', 'es', 'ja', 'pt', 'zh'
      */
     @JsonProperty(value = "defaultLanguageCode")
     private ImageAnalysisSkillLanguage defaultLanguageCode;
@@ -41,7 +41,8 @@ public final class ImageAnalysisSkill extends Skill {
 
     /**
      * Get the defaultLanguageCode property: A value indicating which language
-     * code to use. Default is en. Possible values include: 'en', 'zh'.
+     * code to use. Default is en. Possible values include: 'en', 'es', 'ja',
+     * 'pt', 'zh'.
      *
      * @return the defaultLanguageCode value.
      */
@@ -51,7 +52,8 @@ public final class ImageAnalysisSkill extends Skill {
 
     /**
      * Set the defaultLanguageCode property: A value indicating which language
-     * code to use. Default is en. Possible values include: 'en', 'zh'.
+     * code to use. Default is en. Possible values include: 'en', 'es', 'ja',
+     * 'pt', 'zh'.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the ImageAnalysisSkill object itself.

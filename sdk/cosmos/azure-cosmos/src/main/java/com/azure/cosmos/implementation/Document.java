@@ -3,8 +3,10 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.JsonSerializable;
 import com.azure.cosmos.Resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 
@@ -20,6 +22,16 @@ import static com.azure.cosmos.BridgeInternal.setMapper;
  * can be authorized using the master key or resource keys.
  */
 public class Document extends Resource {
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public Document(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     /**
      * Initialize a document object.

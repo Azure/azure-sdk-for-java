@@ -3,6 +3,10 @@
 
 package com.azure.cosmos;
 
+/**
+ * The type Cosmos database response. This contains get the methods to obtain database properties and other response 
+ * methods
+ */
 public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabaseProperties> {
     private final CosmosAsyncDatabaseResponse responseWrapper;
     private final CosmosDatabase database;

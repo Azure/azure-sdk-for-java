@@ -49,9 +49,9 @@ public class SearchAsyncWithFullyTypedDocumentsExample {
         SearchPagedFlux results = searchClient.search("searchText");
         results
             .subscribe(item -> {
-                Document document = item.getDocument();
+                SearchDocument searchDocument = item.getDocument();
                 // Convert the property bag received from the search query to an object of type Hotel
-                Hotel hotel = objectMapper.convertValue(document, Hotel.class);
+                Hotel hotel = objectMapper.convertValue(searchDocument, Hotel.class);
                 System.out.println("Hotel " + hotel.getHotelId());
             });
 

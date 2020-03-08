@@ -8,7 +8,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * Represents a per-User Permission to access a specific resource e.g. Document or Collection in the Azure Cosmos DB database service.
+ * Represents a per-User Permission to access a specific resource e.g. Document or Collection in the Azure Cosmos DB 
+ * database service.
  */
 public class Permission extends Resource {
     /**
@@ -29,10 +30,11 @@ public class Permission extends Resource {
 
     /**
      * Sets the id
+     *
      * @param id the name of the resource.
      * @return the current instance of permission
      */
-    public Permission setId(String id){
+    public Permission setId(String id) {
         super.setId(id);
         return this;
     }
@@ -72,7 +74,7 @@ public class Permission extends Resource {
      */
     public void setPermissionMode(PermissionMode permissionMode) {
         BridgeInternal.setProperty(this, Constants.Properties.PERMISSION_MODE,
-                permissionMode.toString().toLowerCase());
+                                   permissionMode.toString().toLowerCase());
     }
 
     /**
@@ -106,6 +108,9 @@ public class Permission extends Resource {
      * @param partitionkey the partition key.
      */
     public void setResourcePartitionKey(PartitionKey partitionkey) {
-        BridgeInternal.setProperty(this, Constants.Properties.RESOURCE_PARTITION_KEY, BridgeInternal.getPartitionKeyInternal(partitionkey).toJson());
+        BridgeInternal.setProperty(this,
+                                   Constants.Properties.RESOURCE_PARTITION_KEY,
+                                   BridgeInternal.getPartitionKeyInternal(partitionkey)
+                                       .toJson());
     }
 }

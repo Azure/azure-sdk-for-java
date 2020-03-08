@@ -3,8 +3,6 @@
 
 package com.azure.cosmos;
 
-import org.apache.commons.text.WordUtils;
-
 /**
  * Specifies the operations on which a trigger should be executed in the Azure Cosmos DB database service.
  */

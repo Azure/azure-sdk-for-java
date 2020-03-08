@@ -6,6 +6,9 @@ import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.Trigger;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * The type Cosmos async trigger response.
+ */
 public class CosmosAsyncTriggerResponse extends CosmosResponse<CosmosTriggerProperties> {
 
     private final CosmosTriggerProperties cosmosTriggerProperties;
