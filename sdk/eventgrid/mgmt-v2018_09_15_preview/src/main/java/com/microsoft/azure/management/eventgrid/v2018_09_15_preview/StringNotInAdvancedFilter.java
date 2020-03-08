@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * StringNotIn Filter.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType", defaultImpl = StringNotInAdvancedFilter.class)
 @JsonTypeName("StringNotIn")
 public class StringNotInAdvancedFilter extends AdvancedFilter {
     /**
