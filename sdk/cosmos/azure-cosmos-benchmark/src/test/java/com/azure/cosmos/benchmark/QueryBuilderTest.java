@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.SqlParameter;
+import com.azure.cosmos.model.SqlParameter;
 import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
 

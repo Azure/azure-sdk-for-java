@@ -3,8 +3,8 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CompositePath;
-import com.azure.cosmos.CompositePathSortOrder;
+import com.azure.cosmos.model.CompositePath;
+import com.azure.cosmos.model.CompositePathSortOrder;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
@@ -12,37 +12,37 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientTest;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosAsyncDatabaseResponse;
-import com.azure.cosmos.CosmosAsyncItemResponse;
+import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.model.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosContainerProperties;
-import com.azure.cosmos.CosmosContainerRequestOptions;
+import com.azure.cosmos.model.CosmosContainerProperties;
+import com.azure.cosmos.model.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.CosmosDatabaseProperties;
+import com.azure.cosmos.model.CosmosDatabaseProperties;
 import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.CosmosResponse;
+import com.azure.cosmos.model.CosmosResponse;
 import com.azure.cosmos.CosmosResponseValidator;
-import com.azure.cosmos.CosmosStoredProcedureRequestOptions;
-import com.azure.cosmos.CosmosUserProperties;
-import com.azure.cosmos.DataType;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.IncludedPath;
-import com.azure.cosmos.Index;
-import com.azure.cosmos.IndexingPolicy;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.CosmosStoredProcedureRequestOptions;
+import com.azure.cosmos.model.CosmosUserProperties;
+import com.azure.cosmos.model.DataType;
+import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.model.FeedResponse;
+import com.azure.cosmos.model.IncludedPath;
+import com.azure.cosmos.model.Index;
+import com.azure.cosmos.model.IndexingPolicy;
+import com.azure.cosmos.model.PartitionKey;
+import com.azure.cosmos.model.PartitionKeyDefinition;
+import com.azure.cosmos.model.Resource;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.model.SqlQuerySpec;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -480,7 +480,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                          List<CosmosItemProperties> documentDefinitionList) {
         return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
-            .map(itemResponse -> (CosmosItemProperties)itemResponse.getResource())
+            .map(itemResponse -> (CosmosItemProperties)itemResponse.getItem())
             .collectList()
             .block();
     }

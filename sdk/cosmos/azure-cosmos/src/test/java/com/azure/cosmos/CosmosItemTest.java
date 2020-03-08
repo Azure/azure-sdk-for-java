@@ -7,6 +7,13 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.model.CosmosItemRequestOptions;
+import com.azure.cosmos.model.CosmosItemResponse;
+import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.model.FeedResponse;
+import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.model.PartitionKey;
+import com.azure.cosmos.model.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
@@ -98,13 +105,13 @@ public class CosmosItemTest extends TestSuiteBase {
         String newPropValue = UUID.randomUUID().toString();
         BridgeInternal.setProperty(properties, "newProp", newPropValue);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setPartitionKey(new PartitionKey(properties.get("mypk")));
+        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(properties.get("mypk")));
         // replace document
         CosmosItemResponse<CosmosItemProperties> replace = container.replaceItem(properties,
                                                               properties.getId(),
                                                               new PartitionKey(properties.get("mypk")),
                                                               options);
-        assertThat(replace.getProperties().get("newProp")).isEqualTo(newPropValue);
+        assertThat(BridgeInternal.getProperties(replace).get("newProp")).isEqualTo(newPropValue);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -208,8 +215,8 @@ public class CosmosItemTest extends TestSuiteBase {
     private void validateItemResponse(CosmosItemProperties containerProperties,
                                       CosmosItemResponse<CosmosItemProperties> createResponse) {
         // Basic validation
-        assertThat(createResponse.getProperties().getId()).isNotNull();
-        assertThat(createResponse.getProperties().getId())
+        assertThat(BridgeInternal.getProperties(createResponse).getId()).isNotNull();
+        assertThat(BridgeInternal.getProperties(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(containerProperties.getId());
     }

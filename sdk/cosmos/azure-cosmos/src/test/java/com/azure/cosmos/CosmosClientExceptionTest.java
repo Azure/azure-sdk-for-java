@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.model.CosmosError;
 import com.google.common.collect.ImmutableMap;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

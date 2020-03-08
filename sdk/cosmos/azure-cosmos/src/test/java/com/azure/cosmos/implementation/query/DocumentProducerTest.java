@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosError;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.model.CosmosError;
+import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -34,7 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;

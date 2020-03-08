@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.ChangeFeedOptions;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.implementation.ChangeFeedOptions;
+import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import io.reactivex.subscribers.TestSubscriber;

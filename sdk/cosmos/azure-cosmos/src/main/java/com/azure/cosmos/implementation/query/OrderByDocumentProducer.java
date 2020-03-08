@@ -3,9 +3,9 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.model.FeedResponse;
+import com.azure.cosmos.model.Resource;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;

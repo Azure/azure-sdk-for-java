@@ -8,6 +8,14 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
+import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.model.CosmosDatabaseProperties;
+import com.azure.cosmos.model.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.model.DatabaseAccount;
+import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.model.Permission;
+import com.azure.cosmos.model.SqlQuerySpec;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -213,8 +221,8 @@ public class CosmosAsyncClient implements Closeable {
         }
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
-        return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions())
-                   .map(databaseResourceResponse -> new CosmosAsyncDatabaseResponse(databaseResourceResponse,
+        return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
+                   .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
                        this))
                    .single();
     }
@@ -268,11 +276,11 @@ public class CosmosAsyncClient implements Closeable {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
-        options.setOfferThroughput(throughput);
+        ModelBridgeInternal.setOfferThroughput(options, throughput);
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
-        return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions())
-                   .map(databaseResourceResponse -> new CosmosAsyncDatabaseResponse(databaseResourceResponse,
+        return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
+                   .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
                        this))
                    .single();
     }
@@ -291,7 +299,7 @@ public class CosmosAsyncClient implements Closeable {
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings, int throughput) {
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        options.setOfferThroughput(throughput);
+        ModelBridgeInternal.setOfferThroughput(options, throughput);
         return createDatabase(databaseSettings, options);
     }
 
@@ -309,7 +317,7 @@ public class CosmosAsyncClient implements Closeable {
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabase(String id, int throughput) {
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        options.setOfferThroughput(throughput);
+        ModelBridgeInternal.setOfferThroughput(options, throughput);
         return createDatabase(new CosmosDatabaseProperties(id), options);
     }
 
@@ -329,7 +337,7 @@ public class CosmosAsyncClient implements Closeable {
             return getDocClientWrapper().readDatabases(options)
                                         .map(response ->
                                             BridgeInternal.createFeedResponse(
-                                                CosmosDatabaseProperties.getFromV2Results(response.getResults()),
+                                                ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
                                                 response.getResponseHeaders()));
         });
     }
@@ -379,7 +387,7 @@ public class CosmosAsyncClient implements Closeable {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                                         .map(response -> BridgeInternal.createFeedResponse(
-                                            CosmosDatabaseProperties.getFromV2Results(response.getResults()),
+                                            ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
                                             response.getResponseHeaders()));
         });
     }

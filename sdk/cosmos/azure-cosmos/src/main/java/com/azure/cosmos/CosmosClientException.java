@@ -7,6 +7,8 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.model.CosmosError;
+import com.azure.cosmos.model.ModelBridgeInternal;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -69,7 +71,7 @@ public class CosmosClientException extends RuntimeException {
     CosmosClientException(int statusCode, String errorMessage) {
         this(statusCode, errorMessage, null, null);
         this.cosmosError = new CosmosError();
-        cosmosError.set(Constants.Properties.MESSAGE, errorMessage);
+        ModelBridgeInternal.setProperty(cosmosError, Constants.Properties.MESSAGE, errorMessage);
     }
 
     /**

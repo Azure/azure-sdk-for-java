@@ -3,9 +3,9 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CompositePath;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.CompositePath;
+import com.azure.cosmos.model.FeedResponse;
+import com.azure.cosmos.model.Resource;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.time.Duration;

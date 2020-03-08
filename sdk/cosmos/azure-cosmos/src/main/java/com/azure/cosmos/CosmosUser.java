@@ -3,6 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.model.CosmosUserProperties;
+import com.azure.cosmos.model.CosmosUserResponse;
+
 /**
  * The type Cosmos sync user.
  */

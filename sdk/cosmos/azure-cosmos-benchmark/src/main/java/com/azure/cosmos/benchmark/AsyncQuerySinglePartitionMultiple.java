@@ -4,9 +4,9 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.CosmosPagedFlux;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.model.FeedResponse;
+import com.azure.cosmos.model.PartitionKey;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.scheduler.Schedulers;
 
