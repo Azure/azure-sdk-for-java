@@ -9,8 +9,6 @@ import com.azure.cosmos.model.CosmosContainerRequestOptions;
 import com.azure.cosmos.model.CosmosContainerResponse;
 import com.azure.cosmos.model.CosmosItemRequestOptions;
 import com.azure.cosmos.model.CosmosItemResponse;
-import com.azure.cosmos.model.CosmosPagedFlux;
-import com.azure.cosmos.model.CosmosPagedIterable;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import com.azure.cosmos.model.PartitionKey;
@@ -379,7 +377,7 @@ public class CosmosContainer {
     }
 
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
-        return ModelBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
+        return new CosmosPagedIterable<>(cosmosPagedFlux);
     }
 
 }

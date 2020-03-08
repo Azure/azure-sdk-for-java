@@ -6,7 +6,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.model.CosmosAsyncPermissionResponse;
 import com.azure.cosmos.model.CosmosAsyncUserResponse;
-import com.azure.cosmos.model.CosmosPagedFlux;
 import com.azure.cosmos.model.CosmosPermissionProperties;
 import com.azure.cosmos.model.CosmosPermissionRequestOptions;
 import com.azure.cosmos.model.CosmosUserProperties;
@@ -144,7 +143,7 @@ public class CosmosAsyncUser {
      * error.
      */
     public CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(FeedOptions options) {
-        return ModelBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                        .readPermissions(getLink(), options)
@@ -182,7 +181,7 @@ public class CosmosAsyncUser {
      * an error.
      */
     public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query, FeedOptions options) {
-        return ModelBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                        .queryPermissions(getLink(), query, options)

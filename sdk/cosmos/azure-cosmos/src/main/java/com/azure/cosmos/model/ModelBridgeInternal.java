@@ -10,6 +10,8 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.CosmosPagedIterable;
 import com.azure.cosmos.CosmosStoredProcedure;
 import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.CosmosUserDefinedFunction;
@@ -427,13 +429,5 @@ public class ModelBridgeInternal {
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
             throw new IllegalArgumentException(e);
         }
-    }
-
-    public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
-        return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction);
-    }
-
-    public static <T> CosmosPagedIterable<T> createCosmosPagedIterable(ContinuablePagedFlux<String, T, FeedResponse<T>> pagedFlux) {
-        return new CosmosPagedIterable<>(pagedFlux);
     }
 }

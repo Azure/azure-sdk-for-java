@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.model.CosmosPagedIterable;
 import com.azure.cosmos.model.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.model.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.model.FeedOptions;

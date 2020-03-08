@@ -10,8 +10,6 @@ import com.azure.cosmos.model.CosmosContainerRequestOptions;
 import com.azure.cosmos.model.CosmosContainerResponse;
 import com.azure.cosmos.model.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.model.CosmosDatabaseResponse;
-import com.azure.cosmos.model.CosmosPagedFlux;
-import com.azure.cosmos.model.CosmosPagedIterable;
 import com.azure.cosmos.model.CosmosUserProperties;
 import com.azure.cosmos.model.CosmosUserResponse;
 import com.azure.cosmos.model.FeedOptions;
@@ -492,7 +490,7 @@ public class CosmosDatabase {
     }
 
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
-        return ModelBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
+        return new CosmosPagedIterable<>(cosmosPagedFlux);
     }
 
 }

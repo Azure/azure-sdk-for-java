@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncStoredProcedure;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosKeyCredential;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosItemProperties;

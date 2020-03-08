@@ -12,7 +12,6 @@ import com.azure.cosmos.model.CosmosAsyncUserResponse;
 import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.model.CosmosContainerRequestOptions;
 import com.azure.cosmos.model.CosmosDatabaseRequestOptions;
-import com.azure.cosmos.model.CosmosPagedFlux;
 import com.azure.cosmos.model.CosmosUserProperties;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
@@ -351,7 +350,7 @@ public class CosmosAsyncDatabase {
      * containers or an error.
      */
     public CosmosPagedFlux<CosmosContainerProperties> readAllContainers(FeedOptions options) {
-        return ModelBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readCollections(getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
@@ -433,7 +432,7 @@ public class CosmosAsyncDatabase {
      * obtained containers or an error.
      */
     public CosmosPagedFlux<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec, FeedOptions options) {
-        return ModelBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryCollections(getLink(), querySpec, options)
                        .map(response -> BridgeInternal.createFeedResponse(
@@ -512,7 +511,7 @@ public class CosmosAsyncDatabase {
      * read cosmos users or an error.
      */
     public CosmosPagedFlux<CosmosUserProperties> readAllUsers(FeedOptions options) {
-        return ModelBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readUsers(getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
@@ -580,7 +579,7 @@ public class CosmosAsyncDatabase {
      * obtained users or an error.
      */
     public CosmosPagedFlux<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
-        return ModelBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryUsers(getLink(), querySpec, options)
                        .map(response -> BridgeInternal.createFeedResponseWithQueryMetrics(

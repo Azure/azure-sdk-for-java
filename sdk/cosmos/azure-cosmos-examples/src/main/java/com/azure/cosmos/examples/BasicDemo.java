@@ -9,7 +9,7 @@ import com.azure.cosmos.model.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.model.CosmosContainerProperties;
-import com.azure.cosmos.model.CosmosPagedFlux;
+import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.model.PartitionKey;

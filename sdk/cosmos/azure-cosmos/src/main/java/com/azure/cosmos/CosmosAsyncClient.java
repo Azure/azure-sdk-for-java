@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.model.CosmosDatabaseProperties;
 import com.azure.cosmos.model.CosmosDatabaseRequestOptions;
-import com.azure.cosmos.model.CosmosPagedFlux;
 import com.azure.cosmos.model.DatabaseAccount;
 import com.azure.cosmos.model.FeedOptions;
 import com.azure.cosmos.model.ModelBridgeInternal;
@@ -333,7 +332,7 @@ public class CosmosAsyncClient implements Closeable {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
     public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
-        return ModelBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
                                         .map(response ->
@@ -384,7 +383,7 @@ public class CosmosAsyncClient implements Closeable {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
     public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
-        return ModelBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+        return new CosmosPagedFlux<>(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                                         .map(response -> BridgeInternal.createFeedResponse(

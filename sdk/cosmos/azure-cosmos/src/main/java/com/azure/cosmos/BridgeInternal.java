@@ -26,7 +26,6 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.model.CosmosAsyncItemResponse;
 import com.azure.cosmos.model.CosmosError;
 import com.azure.cosmos.model.CosmosItemResponse;
-import com.azure.cosmos.model.CosmosPagedFlux;
 import com.azure.cosmos.model.CosmosStoredProcedureProperties;
 import com.azure.cosmos.model.DatabaseAccount;
 import com.azure.cosmos.model.FeedOptions;
@@ -511,5 +510,9 @@ public class BridgeInternal {
 
     public static CosmosUser createCosmosUser(CosmosAsyncUser asyncUser, CosmosDatabase database, String id) {
         return new CosmosUser(asyncUser, database, id);
+    }
+
+    public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
+        return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction);
     }
 }
