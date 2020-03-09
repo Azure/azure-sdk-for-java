@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.polling.*;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
@@ -35,15 +36,12 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
 
-    private void getKeyAsyncClient(HttpClient httpClient,
-        KeyServiceVersion serviceVersion) {
-
-        client = clientSetup(pipeline -> new KeyClientBuilder()
+    private void getKeyAsyncClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        HttpPipeline httpPipeline = getHttpPipeline(httpClient, serviceVersion);
+        client = new KeyClientBuilder()
             .vaultUrl(getEndpoint())
-            .pipeline(pipeline)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .serviceVersion(serviceVersion)
-            .buildAsyncClient());
+            .pipeline(httpPipeline)
+            .buildAsyncClient();
     }
 
     /**

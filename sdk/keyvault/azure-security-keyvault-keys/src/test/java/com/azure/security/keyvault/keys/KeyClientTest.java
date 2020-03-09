@@ -6,6 +6,7 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
@@ -35,15 +36,12 @@ public class KeyClientTest extends KeyClientTestBase {
         beforeTestSetup();
     }
 
-    private void getKeyClient(HttpClient httpClient,
-        KeyServiceVersion serviceVersion) {
-
-        client = clientSetup(pipeline -> new KeyClientBuilder()
+    private void getKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        HttpPipeline httpPipeline = getHttpPipeline(httpClient, serviceVersion);
+        client = new KeyClientBuilder()
             .vaultUrl(getEndpoint())
-            .pipeline(pipeline)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .serviceVersion(serviceVersion)
-            .buildClient());
+            .pipeline(httpPipeline)
+            .buildClient();
     }
 
     /**
