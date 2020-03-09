@@ -135,10 +135,6 @@ public class OkHttpAsyncHttpClientBuilder {
     /**
      * Sets the proxy.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions}
-     *
      * @param proxyOptions The proxy configuration to use.
      * @return the updated {@link OkHttpAsyncHttpClientBuilder} object
      */
