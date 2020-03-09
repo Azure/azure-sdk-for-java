@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.http;
 import com.azure.cosmos.implementation.Configs;
 
 import java.net.InetSocketAddress;
+import java.time.Duration;
 
 /**
  * Helper class internally used for instantiating reactor netty http client.
@@ -15,8 +16,8 @@ public class HttpClientConfig {
 
     private final Configs configs;
     private Integer maxPoolSize;
-    private Integer maxIdleConnectionTimeoutInMillis;
-    private Integer requestTimeoutInMillis;
+    private Duration maxIdleConnectionTimeout;
+    private Duration requestTimeout;
     private InetSocketAddress proxy;
     private boolean connectionKeepAlive = true;
 
@@ -34,13 +35,13 @@ public class HttpClientConfig {
         return this;
     }
 
-    public HttpClientConfig withMaxIdleConnectionTimeoutInMillis(int maxIdleConnectionTimeoutInMillis) {
-        this.maxIdleConnectionTimeoutInMillis = maxIdleConnectionTimeoutInMillis;
+    public HttpClientConfig withMaxIdleConnectionTimeout(Duration maxIdleConnectionTimeout) {
+        this.maxIdleConnectionTimeout = maxIdleConnectionTimeout;
         return this;
     }
 
-    public HttpClientConfig withRequestTimeoutInMillis(int requestTimeoutInMillis) {
-        this.requestTimeoutInMillis = requestTimeoutInMillis;
+    public HttpClientConfig withRequestTimeout(Duration requestTimeout) {
+        this.requestTimeout = requestTimeout;
         return this;
     }
 
@@ -57,12 +58,12 @@ public class HttpClientConfig {
         return maxPoolSize;
     }
 
-    public Integer getMaxIdleConnectionTimeoutInMillis() {
-        return maxIdleConnectionTimeoutInMillis;
+    public Duration getMaxIdleConnectionTimeout() {
+        return maxIdleConnectionTimeout;
     }
 
-    public Integer getRequestTimeoutInMillis() {
-        return requestTimeoutInMillis;
+    public Duration getRequestTimeout() {
+        return requestTimeout;
     }
 
     public InetSocketAddress getProxy() {

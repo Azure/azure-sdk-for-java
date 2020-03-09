@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import java.net.InetSocketAddress;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,11 +21,11 @@ public final class ConnectionPolicy {
     private static final int DEFAULT_MAX_POOL_SIZE = 1000;
 
     private static ConnectionPolicy defaultPolicy = null;
-    private int requestTimeoutInMillis;
-    private final int mediaRequestTimeoutInMillis;
+    private Duration requestTimeout;
+    private final Duration mediaRequestTimeout;
     private ConnectionMode connectionMode;
     private int maxPoolSize;
-    private int idleConnectionTimeoutInMillis;
+    private Duration idleConnectionTimeout;
     private String userAgentSuffix;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private boolean endpointDiscoveryEnabled = true;
@@ -39,10 +40,10 @@ public final class ConnectionPolicy {
     public ConnectionPolicy() {
         this.connectionMode = ConnectionMode.DIRECT;
         this.readRequestsFallbackEnabled = null;
-        this.idleConnectionTimeoutInMillis = DEFAULT_IDLE_CONNECTION_TIMEOUT_IN_MILLIS;
+        this.idleConnectionTimeout = Duration.ofMillis(DEFAULT_IDLE_CONNECTION_TIMEOUT_IN_MILLIS);
         this.maxPoolSize = DEFAULT_MAX_POOL_SIZE;
-        this.mediaRequestTimeoutInMillis = ConnectionPolicy.DEFAULT_MEDIA_REQUEST_TIMEOUT_IN_MILLIS;
-        this.requestTimeoutInMillis = ConnectionPolicy.DEFAULT_REQUEST_TIMEOUT_IN_MILLIS;
+        this.mediaRequestTimeout = Duration.ofMillis(ConnectionPolicy.DEFAULT_MEDIA_REQUEST_TIMEOUT_IN_MILLIS);
+        this.requestTimeout = Duration.ofMillis(ConnectionPolicy.DEFAULT_REQUEST_TIMEOUT_IN_MILLIS);
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.userAgentSuffix = "";
     }
@@ -60,24 +61,23 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Gets the request timeout (time to wait for response from network peer) in
-     * milliseconds.
+     * Gets the request timeout (time to wait for response from network peer).
      *
-     * @return the request timeout in milliseconds.
+     * @return the request timeout.
      */
-    public int getRequestTimeoutInMillis() {
-        return this.requestTimeoutInMillis;
+    public Duration getRequestTimeout() {
+        return this.requestTimeout;
     }
 
     /**
-     * Sets the request timeout (time to wait for response from network peer) in
-     * milliseconds. The default is 60 seconds.
+     * Sets the request timeout (time to wait for response from network peer).
+     * The default is 60 seconds.
      *
-     * @param requestTimeoutInMillis the request timeout in milliseconds.
+     * @param requestTimeout the request timeout.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy setRequestTimeoutInMillis(int requestTimeoutInMillis) {
-        this.requestTimeoutInMillis = requestTimeoutInMillis;
+    public ConnectionPolicy setRequestTimeout(Duration requestTimeout) {
+        this.requestTimeout = requestTimeout;
         return this;
     }
 
@@ -128,19 +128,19 @@ public final class ConnectionPolicy {
      *
      * @return Idle connection timeout.
      */
-    public int getIdleConnectionTimeoutInMillis() {
-        return this.idleConnectionTimeoutInMillis;
+    public Duration getIdleConnectionTimeout() {
+        return this.idleConnectionTimeout;
     }
 
     /**
      * sets the value of the timeout for an idle connection. After that time,
      * the connection will be automatically closed.
      *
-     * @param idleConnectionTimeoutInMillis the timeout for an idle connection in seconds.
+     * @param idleConnectionTimeout the timeout for an idle connection in seconds.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy setIdleConnectionTimeoutInMillis(int idleConnectionTimeoutInMillis) {
-        this.idleConnectionTimeoutInMillis = idleConnectionTimeoutInMillis;
+    public ConnectionPolicy setIdleConnectionTimeout(Duration idleConnectionTimeout) {
+        this.idleConnectionTimeout = idleConnectionTimeout;
         return this;
     }
 
@@ -349,11 +349,11 @@ public final class ConnectionPolicy {
     @Override
     public String toString() {
         return "ConnectionPolicy{"
-                   + "requestTimeoutInMillis=" + requestTimeoutInMillis
-                   + ", mediaRequestTimeoutInMillis=" + mediaRequestTimeoutInMillis
+                   + "requestTimeout=" + requestTimeout
+                   + ", mediaRequestTimeout=" + mediaRequestTimeout
                    + ", connectionMode=" + connectionMode
                    + ", maxPoolSize=" + maxPoolSize
-                   + ", idleConnectionTimeoutInMillis=" + idleConnectionTimeoutInMillis
+                   + ", idleConnectionTimeout=" + idleConnectionTimeout
                    + ", userAgentSuffix='" + userAgentSuffix + '\''
                    + ", retryOptions=" + throttlingRetryOptions
                    + ", enableEndpointDiscovery=" + endpointDiscoveryEnabled

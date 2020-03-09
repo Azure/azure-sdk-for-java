@@ -76,10 +76,10 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
     private void createContainerWithoutPk() throws URISyntaxException, IOException {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         HttpClientConfig httpClientConfig = new HttpClientConfig(new Configs())
-                .withMaxIdleConnectionTimeoutInMillis(connectionPolicy.getIdleConnectionTimeoutInMillis())
+                .withMaxIdleConnectionTimeout(connectionPolicy.getIdleConnectionTimeout())
                 .withPoolSize(connectionPolicy.getMaxPoolSize())
                 .withHttpProxy(connectionPolicy.getProxy())
-                .withRequestTimeoutInMillis(connectionPolicy.getRequestTimeoutInMillis());
+                .withRequestTimeout(connectionPolicy.getRequestTimeout());
 
         HttpClient httpClient = HttpClient.createFixed(httpClientConfig);
 

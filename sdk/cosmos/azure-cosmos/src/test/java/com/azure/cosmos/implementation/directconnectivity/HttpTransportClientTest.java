@@ -42,6 +42,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.UnknownHostException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -102,16 +103,16 @@ public class HttpTransportClientTest {
         assertThat(res.toString()).isEqualTo(physicalAddress.toString() + "dbs");
     }
 
-    public static HttpTransportClient getHttpTransportClientUnderTest(int requestTimeout,
+    public static HttpTransportClient getHttpTransportClientUnderTest(Duration requestTimeout,
                                                                       UserAgentContainer userAgent,
                                                                       HttpClient httpClient) {
         class HttpTransportClientUnderTest extends HttpTransportClient {
-            public HttpTransportClientUnderTest(int requestTimeout, UserAgentContainer userAgent) {
+            public HttpTransportClientUnderTest(Duration requestTimeout, UserAgentContainer userAgent) {
                 super(configs, requestTimeout, userAgent);
             }
 
             @Override
-            HttpClient createHttpClient(int requestTimeout) {
+            HttpClient createHttpClient(Duration requestTimeout) {
                 return httpClient;
             }
         }
@@ -130,7 +131,7 @@ public class HttpTransportClientTest {
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         userAgentContainer.setSuffix("i am suffix");
 
-        HttpTransportClient transportClient = getHttpTransportClientUnderTest(100,
+        HttpTransportClient transportClient = getHttpTransportClientUnderTest(Duration.ofSeconds(100),
                 userAgentContainer,
                 httpClientMockWrapper.getClient());
 
@@ -448,7 +449,7 @@ public class HttpTransportClientTest {
         HttpClientMockWrapper httpClientMockWrapper = new HttpClientMockWrapper(mockedResponseBuilder);
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         HttpTransportClient transportClient = getHttpTransportClientUnderTest(
-                100,
+                Duration.ofSeconds(100),
                 userAgentContainer,
                 httpClientMockWrapper.getClient());
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
@@ -559,7 +560,7 @@ public class HttpTransportClientTest {
         HttpClientMockWrapper httpClientMockWrapper = new HttpClientMockWrapper(mockedResponseBuilder);
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         HttpTransportClient transportClient = getHttpTransportClientUnderTest(
-                100,
+                Duration.ofSeconds(100),
                 userAgentContainer,
                 httpClientMockWrapper.getClient());
 

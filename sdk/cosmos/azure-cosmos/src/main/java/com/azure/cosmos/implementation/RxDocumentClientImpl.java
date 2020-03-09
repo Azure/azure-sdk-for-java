@@ -294,7 +294,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         this.storeClientFactory = new StoreClientFactory(
             this.configs,
-            this.connectionPolicy.getRequestTimeoutInMillis() / 1000,
+            this.connectionPolicy.getRequestTimeout(),
            // this.maxConcurrentConnectionOpenRequests,
             0,
             this.userAgentContainer,
@@ -355,10 +355,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private HttpClient httpClient() {
 
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs)
-                .withMaxIdleConnectionTimeoutInMillis(this.connectionPolicy.getIdleConnectionTimeoutInMillis())
+                .withMaxIdleConnectionTimeout(this.connectionPolicy.getIdleConnectionTimeout())
                 .withPoolSize(this.connectionPolicy.getMaxPoolSize())
                 .withHttpProxy(this.connectionPolicy.getProxy())
-                .withRequestTimeoutInMillis(this.connectionPolicy.getRequestTimeoutInMillis());
+                .withRequestTimeout(this.connectionPolicy.getRequestTimeout());
 
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig);
