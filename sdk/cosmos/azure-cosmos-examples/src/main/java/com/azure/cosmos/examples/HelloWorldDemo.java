@@ -5,7 +5,7 @@ package com.azure.cosmos.examples;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.model.PartitionKey;
+import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
 
 public class HelloWorldDemo {

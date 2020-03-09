@@ -4,8 +4,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BadRequestException;
-import com.azure.cosmos.model.Permission;
-import com.azure.cosmos.model.Resource;
+import com.azure.cosmos.models.Permission;
+import com.azure.cosmos.models.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.text.StringEscapeUtils;

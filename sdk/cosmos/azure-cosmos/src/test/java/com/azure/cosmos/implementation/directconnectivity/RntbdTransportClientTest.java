@@ -21,7 +21,7 @@ import com.azure.cosmos.PreconditionFailedException;
 import com.azure.cosmos.RequestEntityTooLargeException;
 import com.azure.cosmos.RequestRateTooLargeException;
 import com.azure.cosmos.RequestTimeoutException;
-import com.azure.cosmos.model.RequestVerb;
+import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.RetryWithException;
 import com.azure.cosmos.ServiceUnavailableException;
 import com.azure.cosmos.UnauthorizedException;

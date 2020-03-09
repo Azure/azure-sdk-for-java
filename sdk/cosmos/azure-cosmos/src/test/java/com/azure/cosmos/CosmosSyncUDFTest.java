@@ -3,10 +3,10 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.model.CosmosUserDefinedFunctionProperties;
-import com.azure.cosmos.model.CosmosUserDefinedFunctionResponse;
-import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.model.SqlQuerySpec;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;

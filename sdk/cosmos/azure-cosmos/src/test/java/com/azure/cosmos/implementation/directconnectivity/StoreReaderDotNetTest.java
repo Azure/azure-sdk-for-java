@@ -7,7 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.GoneException;
 import com.azure.cosmos.InvalidPartitionException;
-import com.azure.cosmos.model.RequestVerb;
+import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.ServiceUnavailableException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Configs;

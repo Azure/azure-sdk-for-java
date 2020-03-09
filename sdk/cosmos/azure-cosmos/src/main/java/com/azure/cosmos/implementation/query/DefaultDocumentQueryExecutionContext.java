@@ -3,10 +3,10 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.model.Resource;
-import com.azure.cosmos.model.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -43,7 +43,7 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static com.azure.cosmos.model.ModelBridgeInternal.partitionKeyRangeIdInternal;
+import static com.azure.cosmos.models.ModelBridgeInternal.partitionKeyRangeIdInternal;
 
 /**
  * While this class is public, but it is not part of our published public APIs.

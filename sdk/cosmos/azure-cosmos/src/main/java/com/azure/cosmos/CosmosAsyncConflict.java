@@ -4,9 +4,9 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.model.CosmosAsyncConflictResponse;
-import com.azure.cosmos.model.CosmosConflictRequestOptions;
-import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.models.CosmosAsyncConflictResponse;
+import com.azure.cosmos.models.CosmosConflictRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 /**

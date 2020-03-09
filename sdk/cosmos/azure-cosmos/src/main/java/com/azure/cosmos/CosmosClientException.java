@@ -7,8 +7,8 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.model.CosmosError;
-import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.models.CosmosError;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;

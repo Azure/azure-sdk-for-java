@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.implementation.routing;
 
-import com.azure.cosmos.model.PartitionKeyDefinition;
-import com.azure.cosmos.model.ModelBridgeInternal;
-import com.azure.cosmos.model.PartitionKind;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.implementation.ByteBufferOutputStream;
 import com.azure.cosmos.implementation.Bytes;
 import com.azure.cosmos.implementation.RMResources;

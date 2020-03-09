@@ -4,9 +4,9 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.UserDefinedFunction;
-import com.azure.cosmos.model.CosmosAsyncUserDefinedFunctionResponse;
-import com.azure.cosmos.model.CosmosUserDefinedFunctionProperties;
-import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 /**

@@ -2,21 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.model.ConflictResolutionMode;
-import com.azure.cosmos.model.ConflictResolutionPolicy;
+import com.azure.cosmos.models.ConflictResolutionMode;
+import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.model.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosAsyncContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.model.CosmosContainerProperties;
-import com.azure.cosmos.model.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.model.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.model.ModelBridgeUtils;
+import com.azure.cosmos.models.ModelBridgeUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;

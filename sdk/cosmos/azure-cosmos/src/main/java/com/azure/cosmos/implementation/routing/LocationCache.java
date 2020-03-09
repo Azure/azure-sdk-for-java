@@ -4,8 +4,8 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.model.DatabaseAccount;
-import com.azure.cosmos.model.DatabaseAccountLocation;
+import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.models.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;

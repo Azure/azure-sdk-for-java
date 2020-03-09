@@ -6,14 +6,14 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.model.CosmosContainerProperties;
-import com.azure.cosmos.model.CosmosContainerRequestOptions;
-import com.azure.cosmos.model.CosmosContainerResponse;
-import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.model.IndexingMode;
-import com.azure.cosmos.model.IndexingPolicy;
-import com.azure.cosmos.model.PartitionKeyDefinition;
-import com.azure.cosmos.model.SqlQuerySpec;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.IndexingMode;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;

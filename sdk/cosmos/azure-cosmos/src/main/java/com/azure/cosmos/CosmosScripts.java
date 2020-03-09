@@ -3,19 +3,19 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
-import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
-import com.azure.cosmos.model.CosmosAsyncUserDefinedFunctionResponse;
-import com.azure.cosmos.model.CosmosStoredProcedureProperties;
-import com.azure.cosmos.model.CosmosStoredProcedureRequestOptions;
-import com.azure.cosmos.model.CosmosStoredProcedureResponse;
-import com.azure.cosmos.model.CosmosTriggerProperties;
-import com.azure.cosmos.model.CosmosTriggerResponse;
-import com.azure.cosmos.model.CosmosUserDefinedFunctionProperties;
-import com.azure.cosmos.model.CosmosUserDefinedFunctionResponse;
-import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.model.ModelBridgeInternal;
-import com.azure.cosmos.model.SqlQuerySpec;
+import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
+import com.azure.cosmos.models.CosmosStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.CosmosTriggerResponse;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 

@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.model.CosmosAsyncItemResponse;
-import com.azure.cosmos.model.PartitionKey;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.PartitionKey;
 import com.codahale.metrics.Timer;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;

@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.model.AccessCondition;
-import com.azure.cosmos.model.AccessConditionType;
+import com.azure.cosmos.models.AccessCondition;
+import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.model.CosmosItemRequestOptions;
-import com.azure.cosmos.model.PartitionKey;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;

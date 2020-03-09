@@ -3,10 +3,10 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
-import com.azure.cosmos.model.CosmosAsyncPermissionResponse;
-import com.azure.cosmos.model.CosmosPermissionProperties;
-import com.azure.cosmos.model.CosmosPermissionRequestOptions;
-import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
+import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.azure.cosmos.models.CosmosPermissionRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 /**

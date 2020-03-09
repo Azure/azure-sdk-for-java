@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.model.DatabaseAccount;
-import com.azure.cosmos.model.DatabaseAccountLocation;
+import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.models.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -14,7 +14,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.model.ModelBridgeUtils;
+import com.azure.cosmos.models.ModelBridgeUtils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import org.apache.commons.collections4.list.UnmodifiableList;
@@ -37,7 +37,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static com.azure.cosmos.model.ModelBridgeUtils.createDatabaseAccountLocation;
+import static com.azure.cosmos.models.ModelBridgeUtils.createDatabaseAccountLocation;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

@@ -3,12 +3,12 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.model.DataType;
-import com.azure.cosmos.model.HashIndex;
-import com.azure.cosmos.model.Index;
-import com.azure.cosmos.model.IndexingPolicy;
-import com.azure.cosmos.model.RangeIndex;
-import com.azure.cosmos.model.SpatialIndex;
+import com.azure.cosmos.models.DataType;
+import com.azure.cosmos.models.HashIndex;
+import com.azure.cosmos.models.Index;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.RangeIndex;
+import com.azure.cosmos.models.SpatialIndex;
 
 /**
  * Code snippets for {@link IndexingPolicy}

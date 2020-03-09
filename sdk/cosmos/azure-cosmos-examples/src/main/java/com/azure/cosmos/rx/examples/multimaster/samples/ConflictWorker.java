@@ -3,13 +3,13 @@
 
 package com.azure.cosmos.rx.examples.multimaster.samples;
 
-import com.azure.cosmos.model.AccessCondition;
-import com.azure.cosmos.model.AccessConditionType;
+import com.azure.cosmos.models.AccessCondition;
+import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.model.ConflictResolutionPolicy;
+import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.model.Resource;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.Document;

@@ -4,9 +4,9 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.model.CosmosItemRequestOptions;
-import com.azure.cosmos.model.CosmosItemResponse;
-import com.azure.cosmos.model.PartitionKey;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.PartitionKey;
 
 class SyncReadBenchmark extends SyncBenchmark<CosmosItemResponse> {
 

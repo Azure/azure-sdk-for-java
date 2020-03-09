@@ -4,14 +4,14 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
-import com.azure.cosmos.model.CosmosAsyncPermissionResponse;
-import com.azure.cosmos.model.CosmosAsyncUserResponse;
-import com.azure.cosmos.model.CosmosPermissionProperties;
-import com.azure.cosmos.model.CosmosPermissionRequestOptions;
-import com.azure.cosmos.model.CosmosUserProperties;
-import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.model.ModelBridgeInternal;
-import com.azure.cosmos.model.Permission;
+import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
+import com.azure.cosmos.models.CosmosAsyncUserResponse;
+import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.azure.cosmos.models.CosmosPermissionRequestOptions;
+import com.azure.cosmos.models.CosmosUserProperties;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.Permission;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;

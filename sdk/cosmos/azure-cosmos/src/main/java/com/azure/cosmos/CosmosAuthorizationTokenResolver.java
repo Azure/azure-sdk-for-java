@@ -3,8 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.model.CosmosResourceType;
-import com.azure.cosmos.model.RequestVerb;
+import com.azure.cosmos.models.CosmosResourceType;
+import com.azure.cosmos.models.RequestVerb;
 
 import java.util.Map;
 

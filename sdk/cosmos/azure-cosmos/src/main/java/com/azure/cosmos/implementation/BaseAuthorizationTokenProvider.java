@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.model.ModelBridgeInternal;
-import com.azure.cosmos.model.RequestVerb;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
 
