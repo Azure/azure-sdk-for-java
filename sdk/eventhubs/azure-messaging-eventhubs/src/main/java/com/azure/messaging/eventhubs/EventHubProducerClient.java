@@ -38,7 +38,7 @@ import java.util.Objects;
  * </p>
  *
  * <p><strong>Create a producer and publish events to any partition</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.createBatch}
  *
  * <p><strong>Publish events to partition "foo"</strong></p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-partitionId}
