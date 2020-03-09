@@ -7,6 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
@@ -25,16 +26,12 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,11 +39,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
-@TestInstance(PER_CLASS)
 public class CertificateClientTest extends CertificateClientTestBase {
-    private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private CertificateClient client;
 
     @Override
@@ -56,13 +50,11 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     private void getCertificateClient(HttpClient httpClient,
         CertificateServiceVersion serviceVersion) {
-
-        client = clientSetup(pipeline -> new CertificateClientBuilder()
+        HttpPipeline httpPipeline = getHttpPipeline(httpClient, serviceVersion);
+        client = new CertificateClientBuilder()
             .vaultUrl(getEndpoint())
-            .pipeline(pipeline)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .serviceVersion(serviceVersion)
-            .buildClient());
+            .pipeline(httpPipeline)
+            .buildClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -699,24 +691,5 @@ public class CertificateClientTest extends CertificateClientTestBase {
         }
         System.err.printf("Deleted Key %s was not purged \n", certificateName);
         return null;
-    }
-
-    /**
-     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
-     * service versions that should be tested.
-     *
-     * @return A stream of HttpClient and service version combinations to test.
-     */
-    protected Stream<Arguments> getTestParameters() {
-        // when this issues is closed, the newer version of junit will have better support for
-        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<Arguments> argumentsList = new ArrayList<>();
-        getHttpClients()
-            .forEach(httpClient -> {
-                for (CertificateServiceVersion serviceVersion : CertificateServiceVersion.values()) {
-                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
-                }
-            });
-        return argumentsList.stream();
     }
 }

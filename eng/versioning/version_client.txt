@@ -51,4 +51,8 @@ unreleased_com.azure:azure-core-amqp;1.1.0-beta.1
 # a library but need to keep the dependency version at the latest released GA.
 # Format;
 # beta_<groupId>:<artifactId>;dependency-version
+<<<<<<< HEAD
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
+=======
+# note: Released beta versions will not be manipulated with the automatic PR creation code.
+>>>>>>> 2e5d346792667912ec973d1ed660db8c7990469e

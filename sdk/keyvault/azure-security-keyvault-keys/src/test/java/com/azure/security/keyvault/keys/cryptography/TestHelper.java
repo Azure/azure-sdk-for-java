@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.data.appconfiguration;
+
+package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.http.HttpClient;
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ import org.junit.jupiter.params.provider.Arguments;
 
 import static com.azure.core.test.TestBase.getHttpClients;
 
-class TestHelper {
-    static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
+public class TestHelper {
+    public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 
     /**
      * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
@@ -25,7 +26,7 @@ class TestHelper {
         List<Arguments> argumentsList = new ArrayList<>();
         getHttpClients()
             .forEach(httpClient -> {
-                for (ConfigurationServiceVersion serviceVersion : ConfigurationServiceVersion.values()) {
+                for (CryptographyServiceVersion serviceVersion : CryptographyServiceVersion.values()) {
                     argumentsList.add(Arguments.of(httpClient, serviceVersion));
                 }
             });

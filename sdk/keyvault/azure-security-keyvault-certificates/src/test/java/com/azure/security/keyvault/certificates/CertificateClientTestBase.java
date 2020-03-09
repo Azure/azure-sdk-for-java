@@ -18,6 +18,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ServiceVersion;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -33,6 +34,7 @@ import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPo
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -44,12 +46,14 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.BiConsumer;
+import org.junit.jupiter.params.provider.Arguments;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class CertificateClientTestBase extends TestBase {
+    static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
 
@@ -61,7 +65,8 @@ public abstract class CertificateClientTestBase extends TestBase {
     void beforeTestSetup() {
     }
 
-    <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
+    HttpPipeline getHttpPipeline(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
+   // <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -81,7 +86,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION,
-            Configuration.getGlobalConfiguration().clone(), CertificateServiceVersion.getLatest()));
+            Configuration.getGlobalConfiguration().clone(), serviceVersion));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
         if (credential != null) {
@@ -96,12 +101,10 @@ public abstract class CertificateClientTestBase extends TestBase {
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
                                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                                    .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
                                     .build();
 
-        T client;
-        client = clientBuilder.apply(pipeline);
-
-        return Objects.requireNonNull(client);
+        return pipeline;
     }
 
     @Test
@@ -562,6 +565,25 @@ public abstract class CertificateClientTestBase extends TestBase {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
+     * service versions that should be tested.
+     *
+     * @return A stream of HttpClient and service version combinations to test.
+     */
+    static Stream<Arguments> getTestParameters() {
+        // when this issues is closed, the newer version of junit will have better support for
+        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+        List<Arguments> argumentsList = new ArrayList<>();
+        getHttpClients()
+            .forEach(httpClient -> {
+                for (CertificateServiceVersion serviceVersion : CertificateServiceVersion.values()) {
+                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
+                }
+            });
+        return argumentsList.stream();
     }
 }
 

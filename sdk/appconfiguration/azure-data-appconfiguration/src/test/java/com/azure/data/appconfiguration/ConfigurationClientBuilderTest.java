@@ -27,14 +27,12 @@ import java.util.Locale;
 import java.util.Objects;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static com.azure.data.appconfiguration.ConfigurationClientTestBase.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
-@TestInstance(PER_CLASS)
 public class ConfigurationClientBuilderTest extends TestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String DEFAULT_DOMAIN_NAME = ".azconfig.io";
@@ -167,8 +165,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
             .retryPolicy(new RetryPolicy())
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .pipeline(new HttpPipelineBuilder().build())
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .pipeline(new HttpPipelineBuilder().httpClient(httpClient == null ?
+                interceptorManager.getPlaybackClient() : httpClient).build())
             .serviceVersion(serviceVersion);
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -192,24 +190,5 @@ public class ConfigurationClientBuilderTest extends TestBase {
             throw new IllegalArgumentException(String.format(Locale.US,
                 "Invalid namespace name: %s", namespace), exception);
         }
-    }
-
-    /**
-     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
-     * service versions that should be tested.
-     *
-     * @return A stream of HttpClient and service version combinations to test.
-     */
-    protected Stream<Arguments> getTestParameters() {
-        // when this issues is closed, the newer version of junit will have better support for
-        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<Arguments> argumentsList = new ArrayList<>();
-        getHttpClients()
-            .forEach(httpClient -> {
-                for (ConfigurationServiceVersion serviceVersion : ConfigurationServiceVersion.values()) {
-                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
-                }
-            });
-        return argumentsList.stream();
     }
 }

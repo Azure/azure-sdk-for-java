@@ -128,16 +128,16 @@ public abstract class TestBase implements BeforeEachCallback {
      * Returns a list of {@link HttpClient HttpClients} that should be tested.
      * @return A list of {@link HttpClient HttpClients} to be tested.
      */
-    protected Stream<HttpClient> getHttpClients() {
+    public static Stream<HttpClient> getHttpClients() {
         if (testMode == TestMode.PLAYBACK) {
             // Call to @MethodSource method happens @BeforeEach call, so the interceptorManager is
             // not yet initialized. So, playbackClient will not be available until later.
             return Stream.of(new HttpClient[]{null});
         }
-        return HttpClientProviders.getAllHttpClients().stream().filter(this::shouldClientBeTested);
+        return HttpClientProviders.getAllHttpClients().stream().filter(TestBase::shouldClientBeTested);
     }
 
-    private boolean shouldClientBeTested(HttpClient client) {
+    public static boolean shouldClientBeTested(HttpClient client) {
         // This is for when we decide to filter some http clients based on some criteria
         // to reduce the time take to run the tests.
         return true;

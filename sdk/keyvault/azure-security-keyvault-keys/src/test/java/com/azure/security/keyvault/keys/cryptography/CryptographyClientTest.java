@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.KeyClient;
@@ -19,10 +20,10 @@ import com.azure.security.keyvault.keys.models.KeyCurveName;
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
 import java.util.*;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -34,28 +35,20 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     @Override
     protected void beforeTest() {
         beforeTestSetup();
-        if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(pipeline -> {
-                this.pipeline = pipeline;
-                return new KeyClientBuilder()
-                    .pipeline(pipeline)
-                    .vaultUrl(getEndpoint())
-                    .buildClient();
-            });
-        } else {
-            client = clientSetup(pipeline -> {
-                this.pipeline = pipeline;
-                return new KeyClientBuilder()
-                    .pipeline(pipeline)
-                    .vaultUrl(getEndpoint())
-                    .buildClient();
-            });
-        }
+    }
+
+    private void initializeClient(HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
+        pipeline = getHttpPipeline(httpClient, serviceVersion);
+        client = new KeyClientBuilder()
+            .pipeline(pipeline)
+            .vaultUrl(getEndpoint())
+            .buildClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void encryptDecryptRsa() throws Exception {
+    public void encryptDecryptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
+        initializeClient(httpClient, serviceVersion);
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
             String keyName = generateResourceId("testRsaKey");
@@ -92,7 +85,8 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void wrapUnwraptRsa() throws Exception {
+    public void wrapUnwraptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
+        initializeClient(httpClient, serviceVersion);
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
             String keyName = generateResourceId("testRsaKeyWrapUnwrap");
@@ -130,7 +124,8 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void signVerifyRsa() throws Exception {
+    public void signVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
+        initializeClient(httpClient, serviceVersion);
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
             String keyName = generateResourceId("testRsaKeySignVerify");
@@ -167,7 +162,8 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void signVerifyEc() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+    public void signVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+        initializeClient(httpClient, serviceVersion);
         Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();
         curveToSignature.put(KeyCurveName.P_256, SignatureAlgorithm.ES256);
         curveToSignature.put(KeyCurveName.P_384, SignatureAlgorithm.ES384);
