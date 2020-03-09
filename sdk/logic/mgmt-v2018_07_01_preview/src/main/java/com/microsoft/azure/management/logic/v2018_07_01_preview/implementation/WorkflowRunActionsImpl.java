@@ -74,10 +74,14 @@ class WorkflowRunActionsImpl extends WrapperImpl<WorkflowRunActionsInner> implem
     public Observable<WorkflowRunAction> getAsync(String resourceGroupName, String workflowName, String runName, String actionName) {
         WorkflowRunActionsInner client = this.inner();
         return client.getAsync(resourceGroupName, workflowName, runName, actionName)
-        .map(new Func1<WorkflowRunActionInner, WorkflowRunAction>() {
+        .flatMap(new Func1<WorkflowRunActionInner, Observable<WorkflowRunAction>>() {
             @Override
-            public WorkflowRunAction call(WorkflowRunActionInner inner) {
-                return wrapModel(inner);
+            public Observable<WorkflowRunAction> call(WorkflowRunActionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((WorkflowRunAction)wrapModel(inner));
+                }
             }
        });
     }
