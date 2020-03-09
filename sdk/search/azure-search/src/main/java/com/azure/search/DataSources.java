@@ -16,6 +16,7 @@ import com.azure.search.models.HighWaterMarkChangeDetectionPolicy;
  * Utility class generating DataSource object per DataSourceType
  */
 public final class DataSources {
+    private DataSources(){}
 
     /**
      * Creates a new DataSource to connect to an Azure SQL database.

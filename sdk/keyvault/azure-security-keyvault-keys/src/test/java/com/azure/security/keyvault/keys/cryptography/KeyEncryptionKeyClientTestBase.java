@@ -20,18 +20,21 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
+import org.junit.jupiter.params.provider.Arguments;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
 public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
+    static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
 
@@ -175,5 +178,22 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
+     * service versions that should be tested.
+     *
+     * @return A stream of HttpClient and service version combinations to test.
+     */
+    protected Stream<Arguments> getTestParameters() {
+        // when this issues is closed, the newer version of junit will have better support for
+        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+        List<Arguments> argumentsList = new ArrayList<>();
+        getHttpClients()
+            .forEach(httpClient -> {
+                argumentsList.add(Arguments.of(httpClient))
+            });
+        return argumentsList.stream();
     }
 }
