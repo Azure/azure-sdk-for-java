@@ -5,7 +5,15 @@ package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -38,8 +46,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Scanner;
@@ -59,6 +68,7 @@ public class IdentityClient {
     private final PublicClientApplication publicClientApplication;
     private final String tenantId;
     private final String clientId;
+    private HttpPipelineAdapter httpPipelineAdapter;
 
     /**
      * Creates an IdentityClient with the given options.
@@ -82,17 +92,31 @@ public class IdentityClient {
         } else {
             String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
-            if (options.getHttpPipeline() != null) {
-                publicClientApplicationBuilder = publicClientApplicationBuilder
-                        .httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
-            }
             try {
                 publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
             } catch (MalformedURLException e) {
                 throw logger.logExceptionAsWarning(new IllegalStateException(e));
             }
-            if (options.getProxyOptions() != null) {
-                publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+
+            // If user supplies the pipeline, then it should override all other properties
+            // as they should directly be set on the pipeline.
+            HttpPipeline httpPipeline = options.getHttpPipeline();
+            if (httpPipeline != null) {
+                httpPipelineAdapter = new HttpPipelineAdapter(httpPipeline);
+                publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
+            } else {
+                // If http client is set on the credential, then it should override the proxy options if any configured.
+                HttpClient httpClient = options.getHttpClient();
+                if (httpClient != null) {
+                    httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient));
+                    publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
+                } else if (options.getProxyOptions() != null) {
+                    publicClientApplicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+                } else {
+                    //Http Client is null, proxy options are not set, use the default client and build the pipeline.
+                    httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault()));
+                    publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
+                }
             }
             this.publicClientApplication = publicClientApplicationBuilder.build();
         }
@@ -111,21 +135,33 @@ public class IdentityClient {
             ConfidentialClientApplication.Builder applicationBuilder =
                 ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromSecret(clientSecret))
                     .authority(authorityUrl);
-            if (options.getProxyOptions() != null) {
+
+            // If http pipeline is available, then it should override the proxy options if any configured.
+            if (httpPipelineAdapter != null) {
+                applicationBuilder.httpClient(httpPipelineAdapter);
+            } else if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
-            if (options.getHttpPipeline() != null) {
-                applicationBuilder.httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
-            }
+
             ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
                     .build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
-                    ZoneOffset.UTC)));
+                .map(ar -> new MsalToken(ar, options));
         } catch (MalformedURLException e) {
             return Mono.error(e);
         }
+    }
+
+    private HttpPipeline setupPipeline(HttpClient httpClient) {
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        HttpLogOptions httpLogOptions = new HttpLogOptions();
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new RetryPolicy());
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        return new HttpPipelineBuilder().httpClient(httpClient)
+                   .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
     }
 
     /**
@@ -144,17 +180,18 @@ public class IdentityClient {
                     ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromCertificate(
                                 new FileInputStream(pfxCertificatePath), pfxCertificatePassword))
                             .authority(authorityUrl);
-            if (options.getProxyOptions() != null) {
+
+            // If http pipeline is available, then it should override the proxy options if any configured.
+            if (httpPipelineAdapter != null) {
+                applicationBuilder.httpClient(httpPipelineAdapter);
+            } else if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
-            if (options.getHttpPipeline() != null) {
-                applicationBuilder.httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
-            }
+
             return applicationBuilder.build();
         }).flatMap(application -> Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build())))
-        .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
-                ZoneOffset.UTC)));
+        .map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -173,18 +210,19 @@ public class IdentityClient {
                             CertificateUtil.privateKeyFromPem(pemCertificateBytes),
                             CertificateUtil.publicKeyFromPem(pemCertificateBytes)))
                         .authority(authorityUrl);
-            if (options.getProxyOptions() != null) {
+
+            // If http pipeline is available, then it should override the proxy options if any configured.
+            if (httpPipelineAdapter != null) {
+                applicationBuilder.httpClient(httpPipelineAdapter);
+            } else if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
-            if (options.getHttpPipeline() != null) {
-                applicationBuilder.httpClient(new HttpPipelineAdapter(options.getHttpPipeline()));
-            }
+
             ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
                     .build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
-                    ZoneOffset.UTC)));
+                .map(ar -> new MsalToken(ar, options));
         } catch (IOException e) {
             return Mono.error(e);
         }
@@ -203,7 +241,7 @@ public class IdentityClient {
         return Mono.fromFuture(publicClientApplication.acquireToken(
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()), username, password.toCharArray())
                 .build()))
-            .map(MsalToken::new);
+            .map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -221,7 +259,8 @@ public class IdentityClient {
         }
         return Mono.defer(() -> {
             try {
-                return Mono.fromFuture(publicClientApplication.acquireTokenSilently(parameters)).map(MsalToken::new);
+                return Mono.fromFuture(publicClientApplication.acquireTokenSilently(parameters))
+                        .map(ar -> new MsalToken(ar, options));
             } catch (MalformedURLException e) {
                 return Mono.error(e);
             }
@@ -245,7 +284,7 @@ public class IdentityClient {
                 dc -> deviceCodeConsumer.accept(new DeviceCodeInfo(dc.userCode(), dc.deviceCode(),
                     dc.verificationUri(), OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
             return publicClientApplication.acquireToken(parameters);
-        }).map(MsalToken::new);
+        }).map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -262,7 +301,7 @@ public class IdentityClient {
             AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
                 .scopes(new HashSet<>(request.getScopes()))
                 .build()))
-            .map(MsalToken::new);
+            .map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -319,11 +358,11 @@ public class IdentityClient {
      */
     public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String msiEndpoint, String msiSecret,
                                                                    TokenRequestContext request) {
-        String resource = ScopeUtil.scopesToResource(request.getScopes());
-        HttpURLConnection connection = null;
-        StringBuilder payload = new StringBuilder();
+        return Mono.fromCallable(() -> {
+            String resource = ScopeUtil.scopesToResource(request.getScopes());
+            HttpURLConnection connection = null;
+            StringBuilder payload = new StringBuilder();
 
-        try {
             payload.append("resource=");
             payload.append(URLEncoder.encode(resource, "UTF-8"));
             payload.append("&api-version=");
@@ -332,32 +371,30 @@ public class IdentityClient {
                 payload.append("&clientid=");
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
-        } catch (IOException exception) {
-            return Mono.error(exception);
-        }
-        try {
-            URL url = new URL(String.format("%s?%s", msiEndpoint, payload));
-            connection = (HttpURLConnection) url.openConnection();
+            try {
+                URL url = new URL(String.format("%s?%s", msiEndpoint, payload));
+                connection = (HttpURLConnection) url.openConnection();
 
-            connection.setRequestMethod("GET");
-            if (msiSecret != null) {
-                connection.setRequestProperty("Secret", msiSecret);
+                connection.setRequestMethod("GET");
+                if (msiSecret != null) {
+                    connection.setRequestProperty("Secret", msiSecret);
+                }
+                connection.setRequestProperty("Metadata", "true");
+
+                connection.connect();
+
+                Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
+                        .useDelimiter("\\A");
+                String result = s.hasNext() ? s.next() : "";
+
+                MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                return new IdentityToken(msiToken.getToken(), msiToken.getExpiresAt(), options);
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
             }
-            connection.setRequestProperty("Metadata", "true");
-
-            connection.connect();
-
-            Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
-            String result = s.hasNext() ? s.next() : "";
-
-            return Mono.just(SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON));
-        } catch (IOException e) {
-            return Mono.error(e);
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
+        });
     }
 
     /**
@@ -403,7 +440,9 @@ public class IdentityClient {
                             .useDelimiter("\\A");
                     String result = s.hasNext() ? s.next() : "";
 
-                    return SERIALIZER_ADAPTER.<MSIToken>deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                    MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result,
+                            MSIToken.class, SerializerEncoding.JSON);
+                    return new IdentityToken(msiToken.getToken(), msiToken.getExpiresAt(), options);
                 } catch (IOException exception) {
                     if (connection == null) {
                         throw logger.logExceptionAsError(new RuntimeException(

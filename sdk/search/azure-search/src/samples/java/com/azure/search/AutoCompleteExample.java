@@ -46,7 +46,7 @@ public class AutoCompleteExample {
             AutocompleteMode.ONE_TERM_WITH_CONTEXT);
 
         RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
+            .setXMsClientRequestId(UUID.randomUUID());
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = searchClient.autocomplete("coffee m",
             "sg", params, requestOptions, Context.NONE);
@@ -68,7 +68,7 @@ public class AutoCompleteExample {
             .setHighlightPostTag("</b>");
 
         RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
+            .setXMsClientRequestId(UUID.randomUUID());
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = searchClient.autocomplete("co", "sg", params,
             requestOptions, Context.NONE);
@@ -89,7 +89,7 @@ public class AutoCompleteExample {
             .setFilter("HotelId ne '6' and Category eq 'Budget'");
 
         RequestOptions requestOptions = new RequestOptions()
-            .setClientRequestId(UUID.randomUUID());
+            .setXMsClientRequestId(UUID.randomUUID());
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = searchClient.autocomplete("su", "sg", params,
             requestOptions, Context.NONE);

@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.models.CosmosError;
 
 import java.util.Map;
 
@@ -20,6 +21,14 @@ public class RequestEntityTooLargeException extends CosmosClientException {
         this(RMResources.RequestEntityTooLarge);
     }
 
+    /**
+     * Instantiates a new Request entity too large exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public RequestEntityTooLargeException(CosmosError cosmosError,
                                           long lsn,
                                           String partitionKeyRangeId,
@@ -37,6 +46,13 @@ public class RequestEntityTooLargeException extends CosmosClientException {
         super(msg, null, null, HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE, resourceAddress);
     }
 
+    /**
+     * Instantiates a new Request entity too large exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUri the request uri
+     */
     public RequestEntityTooLargeException(String message, HttpHeaders headers, String requestUri) {
         this(message, null, headers, requestUri);
     }

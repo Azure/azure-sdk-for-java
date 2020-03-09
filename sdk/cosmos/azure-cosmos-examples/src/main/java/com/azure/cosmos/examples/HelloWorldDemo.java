@@ -5,11 +5,8 @@ package com.azure.cosmos.examples;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
-
-import java.io.IOException;
 
 public class HelloWorldDemo {
     public static void main(String[] args) {
@@ -36,24 +33,24 @@ public class HelloWorldDemo {
         // Create an item
         container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND"))
             .flatMap(response -> {
-                System.out.println("Created item: " + response.getResource());
+                System.out.println("Created item: " + response.getItem());
                 // Read that item 👓
-                return container.readItem(response.getResource().getId(),
-                                          new PartitionKey(response.getResource().getId()),
+                return container.readItem(response.getItem().getId(),
+                                          new PartitionKey(response.getItem().getId()),
                                           Passenger.class);
             })
             .flatMap(response -> {
-                System.out.println("Read item: " + response.getResource());
+                System.out.println("Read item: " + response.getItem());
                 // Replace that item 🔁
-                Passenger p = response.getResource();
+                Passenger p = response.getItem();
                 p.setDestination("SFO");
                 return container.replaceItem(p,
-                                             response.getResource().getId(),
-                                             new PartitionKey(response.getResource().getId()));
+                                             response.getItem().getId(),
+                                             new PartitionKey(response.getItem().getId()));
             })
             // delete that item 💣
-            .flatMap(response -> container.deleteItem(response.getResource().getId(),
-                                                      new PartitionKey(response.getResource().getId())))
+            .flatMap(response -> container.deleteItem(response.getItem().getId(),
+                                                      new PartitionKey(response.getItem().getId())))
             .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
     }
 

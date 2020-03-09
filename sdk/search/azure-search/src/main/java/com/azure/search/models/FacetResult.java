@@ -36,7 +36,7 @@ public final class FacetResult {
      *
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getDocument() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
@@ -47,7 +47,7 @@ public final class FacetResult {
      * @param additionalProperties the additionalProperties value to set.
      * @return the FacetResult object itself.
      */
-    FacetResult setDocument(Map<String, Object> additionalProperties) {
+    FacetResult setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

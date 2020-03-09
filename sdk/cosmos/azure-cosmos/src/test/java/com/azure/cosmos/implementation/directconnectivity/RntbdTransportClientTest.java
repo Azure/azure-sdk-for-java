@@ -21,7 +21,7 @@ import com.azure.cosmos.PreconditionFailedException;
 import com.azure.cosmos.RequestEntityTooLargeException;
 import com.azure.cosmos.RequestRateTooLargeException;
 import com.azure.cosmos.RequestTimeoutException;
-import com.azure.cosmos.RequestVerb;
+import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.RetryWithException;
 import com.azure.cosmos.ServiceUnavailableException;
 import com.azure.cosmos.UnauthorizedException;
@@ -75,7 +75,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
-import static com.azure.cosmos.implementation.HttpConstants.HttpMethods;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;

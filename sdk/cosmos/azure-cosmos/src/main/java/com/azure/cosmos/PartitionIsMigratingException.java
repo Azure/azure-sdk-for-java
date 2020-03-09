@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.models.CosmosError;
 
 import java.util.Map;
 
@@ -18,10 +19,21 @@ public class PartitionIsMigratingException extends CosmosClientException {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Instantiates a new Partition is migrating exception.
+     */
     public PartitionIsMigratingException() {
         this(RMResources.Gone);
     }
 
+    /**
+     * Instantiates a new Partition is migrating exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public PartitionIsMigratingException(CosmosError cosmosError,
                                          long lsn,
                                          String partitionKeyRangeId,
@@ -41,6 +53,13 @@ public class PartitionIsMigratingException extends CosmosClientException {
         setSubStatus();
     }
 
+    /**
+     * Instantiates a new Partition is migrating exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUri the request uri
+     */
     public PartitionIsMigratingException(String message, HttpHeaders headers, String requestUri) {
         this(message, null, headers, requestUri);
     }

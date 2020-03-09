@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.models.FeedOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;

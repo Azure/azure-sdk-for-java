@@ -2,11 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.search;
 
-import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.CorsOptions;
 import com.azure.search.models.DataType;
@@ -19,6 +18,7 @@ import com.azure.search.models.RequestOptions;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.ScoringProfile;
+import com.azure.search.models.SearchErrorException;
 import com.azure.search.models.Suggester;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.test.AccessConditionTests;
@@ -60,7 +60,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         (String name, AccessOptions ac) ->
             client.deleteIndexWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
 
-    private Index createOrUpdateIndex(Index index, AccessCondition accessCondition, RequestOptions requestOptions) {
+    private Index createOrUpdateIndex(Index index, MatchConditions accessCondition, RequestOptions requestOptions) {
         return client.createOrUpdateIndexWithResponse(index, false, accessCondition, requestOptions, Context.NONE)
             .getValue();
     }
@@ -129,8 +129,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
             client.createIndex(index);
             fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
-            assertEquals(HttpResponseException.class, ex.getClass());
-            assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((HttpResponseException) ex).getResponse().getStatusCode());
+            assertEquals(SearchErrorException.class, ex.getClass());
+            assertEquals(HttpResponseStatus.BAD_REQUEST.code(), ((SearchErrorException) ex).getResponse().getStatusCode());
             assertTrue(ex.getMessage().contains(expectedMessage));
         }
     }
@@ -181,10 +181,10 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         try {
             accessOptions = new AccessOptions(generateIfNotChangedAccessCondition(eTagStale));
             deleteIndexFunc.accept(HOTEL_INDEX_NAME, accessOptions);
-            fail("deleteFunc should have failed due to selected AccessCondition");
+            fail("deleteFunc should have failed due to selected MatchConditions");
         } catch (Exception exc) {
-            assertEquals(HttpResponseException.class, exc.getClass());
-            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((HttpResponseException) exc).getResponse().getStatusCode());
+            assertEquals(SearchErrorException.class, exc.getClass());
+            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((SearchErrorException) exc).getResponse().getStatusCode());
         }
 
         // Get the new eTag
@@ -211,17 +211,17 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
                     .setType(DataType.EDM_STRING)
                     .setKey(true)
             ));
-        Response<Void> deleteResponse = client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
+        Response<Void> deleteResponse = client.deleteIndexWithResponse(index.getName(), new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
         Response<Index> createResponse = client.createIndexWithResponse(index, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
 
         // Delete the same index twice
-        deleteResponse = client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteIndexWithResponse(index.getName(), new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
 
-        deleteResponse = client.deleteIndexWithResponse(index.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
+        deleteResponse = client.deleteIndexWithResponse(index.getName(), new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
@@ -231,7 +231,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         client.createIndex(index);
         client.deleteIndex(index.getName());
 
-        assertThrows(HttpResponseException.class, () -> client.getIndex(index.getName()));
+        assertThrows(SearchErrorException.class, () -> client.getIndex(index.getName()));
     }
 
     @Test
@@ -327,7 +327,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         hotelNameField.setSynonymMaps(Collections.emptyList());
 
         Index updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
-            true, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
+            true, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
         TestHelpers.assertIndexesEqual(existingIndex, updatedIndex);
     }
 
@@ -380,7 +380,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         hotelNameField.setRetrievable(false);
 
         updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
-            true, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
+            true, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
         TestHelpers.assertIndexesEqual(existingIndex, updatedIndex);
     }
 
@@ -404,7 +404,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         ));
 
         Index updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
-            true, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
+            true, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
 
         TestHelpers.assertIndexesEqual(existingIndex, updatedIndex);
     }
@@ -448,16 +448,16 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     public void createOrUpdateIndexCreatesWhenIndexDoesNotExistWithResponse() {
         Index expected = createTestIndex();
 
-        Index actual = client.createOrUpdateIndexWithResponse(expected, false, new AccessCondition(),
+        Index actual = client.createOrUpdateIndexWithResponse(expected, false, new MatchConditions(),
             generateRequestOptions(), Context.NONE).getValue();
         TestHelpers.assertIndexesEqual(expected, actual);
 
         actual = client.createOrUpdateIndexWithResponse(expected.setName("hotel1"),
-            false, new AccessCondition(), generateRequestOptions(), Context.NONE).getValue();
+            false, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
         TestHelpers.assertIndexesEqual(expected, actual);
 
         Response<Index> createOrUpdateResponse = client.createOrUpdateIndexWithResponse(expected.setName("hotel2"),
-            false, new AccessCondition(), generateRequestOptions(), Context.NONE);
+            false, new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
     }
 

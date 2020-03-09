@@ -24,7 +24,7 @@ public final class ItemError {
      * The message describing the error that occurred while processing the
      * item.
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "errorMessage", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
     /*
@@ -33,7 +33,7 @@ public final class ItemError {
      * found, 409 for a version conflict, 422 when the index is temporarily
      * unavailable, or 503 for when the service is too busy.
      */
-    @JsonProperty(value = "statusCode", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int statusCode;
 
     /*

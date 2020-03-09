@@ -7,7 +7,7 @@ import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConflictException;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosError;
+import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.ForbiddenException;
 import com.azure.cosmos.GoneException;
 import com.azure.cosmos.InternalServerErrorException;
@@ -26,6 +26,7 @@ import com.azure.cosmos.RetryWithException;
 import com.azure.cosmos.ServiceUnavailableException;
 import com.azure.cosmos.UnauthorizedException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelException;
@@ -724,7 +725,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             // ..Create Error instance
 
             final CosmosError error = response.hasPayload()
-                ? BridgeInternal.createCosmosError(RntbdObjectMapper.readTree(response))
+                ? ModelBridgeInternal.createCosmosError(RntbdObjectMapper.readTree(response))
                 : new CosmosError(Integer.toString(statusCode), status.reasonPhrase(), status.codeClass().name());
 
             // ..Map RNTBD response headers to HTTP response headers

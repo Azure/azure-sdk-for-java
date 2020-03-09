@@ -17,7 +17,7 @@ public final class ResourceCounter {
     /*
      * The resource usage amount.
      */
-    @JsonProperty(value = "usage")
+    @JsonProperty(value = "usage", required = true)
     private long usage;
 
     /*

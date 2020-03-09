@@ -7,6 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.search.models.SearchErrorException;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
 import com.azure.search.util.SearchPagedFlux;
@@ -57,12 +58,12 @@ public class HttpResponseExceptionExample {
                 // normal results processing
                 System.out.printf("Found hotel: %s%n", result.getDocument().get("HotelName"));
             }
-        } catch (HttpResponseException ex) {
+        } catch (SearchErrorException ex) {
             // The exception contains the HTTP status code and the detailed message
             // returned from the search service
             HttpResponse response = ex.getResponse();
             System.out.println("Status Code: " + response.getStatusCode());
-            System.out.println("Message: " + response.getBodyAsString().block());
+            System.out.println("Message: " + ex.getMessage());
         }
     }
 

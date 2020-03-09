@@ -2,21 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeUtils;
-import com.azure.cosmos.ConflictResolutionMode;
-import com.azure.cosmos.ConflictResolutionPolicy;
+import com.azure.cosmos.models.ConflictResolutionMode;
+import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosAsyncContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosContainerProperties;
-import com.azure.cosmos.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.ModelBridgeUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -137,9 +137,9 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         CosmosContainerProperties collection = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
 
         // LWW without path specified, should default to _ts
-        ConflictResolutionPolicy policy = BridgeUtils.createConflictResolutionPolicy();
-        BridgeUtils.setMode(policy, ConflictResolutionMode.LAST_WRITER_WINS);
-        BridgeUtils.setStoredProc(policy,"randomSprocName");
+        ConflictResolutionPolicy policy = ModelBridgeUtils.createConflictResolutionPolicy();
+        ModelBridgeUtils.setMode(policy, ConflictResolutionMode.LAST_WRITER_WINS);
+        ModelBridgeUtils.setStoredProc(policy,"randomSprocName");
         collection.setConflictResolutionPolicy(policy);
 
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(
@@ -159,9 +159,9 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         CosmosContainerProperties collection = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
 
         // LWW without getPath specified, should default to _ts
-        ConflictResolutionPolicy policy = BridgeUtils.createConflictResolutionPolicy();
-        BridgeUtils.setMode(policy, ConflictResolutionMode.CUSTOM);
-        BridgeUtils.setPath(policy,"/mypath");
+        ConflictResolutionPolicy policy = ModelBridgeUtils.createConflictResolutionPolicy();
+        ModelBridgeUtils.setMode(policy, ConflictResolutionMode.CUSTOM);
+        ModelBridgeUtils.setPath(policy,"/mypath");
         collection.setConflictResolutionPolicy(policy);
 
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 
 import java.util.ArrayList;
@@ -21,9 +21,9 @@ public interface CosmosItemResponseValidator {
 
                 @Override
                 public void validate(CosmosAsyncItemResponse itemResponse) {
-                    assertThat(itemResponse.getResource()).isNotNull();
+                    assertThat(itemResponse.getItem()).isNotNull();
                     // This could be validated for potential improvement by remove fromObject 
-                    assertThat(CosmosItemProperties.fromObject(itemResponse.getResource())
+                    assertThat(CosmosItemProperties.fromObject(itemResponse.getItem())
                                    .getId()).as("check Resource Id").isEqualTo(resourceId);
                 }
             });
@@ -35,8 +35,8 @@ public interface CosmosItemResponseValidator {
 
                 @Override
                 public void validate(CosmosAsyncItemResponse itemResponse) {
-                    assertThat(itemResponse.getResource()).isNotNull();
-                    assertThat(CosmosItemProperties.fromObject(itemResponse.getResource())
+                    assertThat(itemResponse.getItem()).isNotNull();
+                    assertThat(CosmosItemProperties.fromObject(itemResponse.getItem())
                                    .get(propertyName)).as("check property").isEqualTo(value);
                 }
             });
@@ -59,7 +59,7 @@ public interface CosmosItemResponseValidator {
 
                 @Override
                 public void validate(CosmosAsyncItemResponse itemResponse) {
-                    assertThat(itemResponse.getResource()).isNull();
+                    assertThat(itemResponse.getItem()).isNull();
                 }
             });
             return this; 
