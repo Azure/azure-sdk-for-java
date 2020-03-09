@@ -727,6 +727,7 @@ public class DomainsInner implements InnerSupportsGet<DomainInner>, InnerSupport
 
     private ServiceResponse<DomainInner> beginUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<DomainInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .register(201, new TypeToken<DomainInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

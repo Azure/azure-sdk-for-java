@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public abstract class ContainerTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
-    protected static final String containerName = "perfstress-" + UUID.randomUUID().toString();
+    private static final String CONTAINER_NAME = "perfstress-" + UUID.randomUUID().toString();
 
     protected final BlobContainerClient blobContainerClient;
     protected final BlobContainerAsyncClient blobContainerAsyncClient;
@@ -20,8 +20,8 @@ public abstract class ContainerTest<TOptions extends PerfStressOptions> extends 
     public ContainerTest(TOptions options) {
         super(options);
         // Setup the container clients
-        blobContainerClient = blobServiceClient.getBlobContainerClient(containerName);
-        blobContainerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
+        blobContainerClient = blobServiceClient.getBlobContainerClient(CONTAINER_NAME);
+        blobContainerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(CONTAINER_NAME);
     }
 
     // NOTE: the pattern setup the parent first, then yourself.

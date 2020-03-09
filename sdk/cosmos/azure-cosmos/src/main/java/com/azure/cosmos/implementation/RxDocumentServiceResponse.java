@@ -3,13 +3,13 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.JsonSerializable;
-import com.azure.cosmos.Permission;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosResponseDiagnostics;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -142,7 +142,7 @@ public class RxDocumentServiceResponse {
                         ? fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString()))
                                 : jToken;
 
-               T resource = (T) BridgeInternal.instantiateJsonSerializable((ObjectNode) resourceJson, c);
+               T resource = (T) ModelBridgeInternal.instantiateJsonSerializable((ObjectNode) resourceJson, c);
                queryResults.add(resource);
             }
         }

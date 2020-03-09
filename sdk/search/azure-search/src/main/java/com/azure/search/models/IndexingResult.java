@@ -20,7 +20,7 @@ public final class IndexingResult implements Serializable {
     /*
      * The key of a document that was in the indexing request.
      */
-    @JsonProperty(value = "key", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "key", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String key;
 
     /*
@@ -34,7 +34,7 @@ public final class IndexingResult implements Serializable {
      * A value indicating whether the indexing operation succeeded for the
      * document identified by the key.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private boolean succeeded;
 
     /*
@@ -44,7 +44,7 @@ public final class IndexingResult implements Serializable {
      * a version conflict, 422 when the index is temporarily unavailable, or
      * 503 for when the service is too busy.
      */
-    @JsonProperty(value = "statusCode", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int statusCode;
 
     /**

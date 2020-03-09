@@ -124,7 +124,7 @@ public final class TextAnalyticsClientBuilder {
      * settings are ignored
      * </p>
      *
-     * @return A TextAnalyticsClient with the options set from the builder.
+     * @return A {@link TextAnalyticsClient} with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
      * {@link #apiKey(TextAnalyticsApiKeyCredential) apiKey} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
@@ -143,7 +143,7 @@ public final class TextAnalyticsClientBuilder {
      * settings are ignored.
      * </p>
      *
-     * @return A TextAnalyticsAsyncClient with the options set from the builder.
+     * @return A {@link TextAnalyticsAsyncClient} with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
      * {@link #apiKey(TextAnalyticsApiKeyCredential) apiKey} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
@@ -209,7 +209,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param language default language
      *
-     * @return The updated TextAnalyticsClientBuilder object.
+     * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder defaultLanguage(String language) {
         this.defaultLanguage = language;
@@ -221,7 +221,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param countryHint default country hint
      *
-     * @return The updated TextAnalyticsClientBuilder object.
+     * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder defaultCountryHint(String countryHint) {
         this.defaultCountryHint = countryHint;
@@ -232,7 +232,7 @@ public final class TextAnalyticsClientBuilder {
      * Sets the service endpoint for the Azure Text Analytics instance.
      *
      * @param endpoint The URL of the Azure Text Analytics instance service requests to and receive responses from.
-     * @return The updated TextAnalyticsClientBuilder object.
+     * @return The updated {@link TextAnalyticsClientBuilder} object.
      * @throws NullPointerException if {@code endpoint} is null
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
@@ -255,11 +255,11 @@ public final class TextAnalyticsClientBuilder {
     }
 
     /**
-     * Sets the credential to use when authenticating HTTP requests for this TextAnalyticsClientBuilder.
+     * Sets the credential to use when authenticating HTTP requests for this {@link TextAnalyticsClientBuilder}.
      *
      * @param apiKeyCredential API key credential
      *
-     * @return The updated TextAnalyticsClientBuilder object.
+     * @return The updated {@link TextAnalyticsClientBuilder} object.
      * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
      */
     public TextAnalyticsClientBuilder apiKey(TextAnalyticsApiKeyCredential apiKeyCredential) {
@@ -270,8 +270,8 @@ public final class TextAnalyticsClientBuilder {
     /**
      * Sets the {@link TokenCredential} used to authenticate HTTP requests.
      *
-     * @param tokenCredential TokenCredential used to authenticate HTTP requests.
-     * @return The updated TextAnalyticsClientBuilder object.
+     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
+     * @return The updated {@link TextAnalyticsClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is {@code null}.
      */
     public TextAnalyticsClientBuilder credential(TokenCredential tokenCredential) {
@@ -287,7 +287,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      *
-     * @return The updated TextAnalyticsClientBuilder object.
+     * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
@@ -299,7 +299,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param policy The retry policy for service requests.
      *
-     * @return The updated TextAnalyticsClientBuilder object.
+     * @return The updated {@link TextAnalyticsClientBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public TextAnalyticsClientBuilder addPolicy(HttpPipelinePolicy policy) {
@@ -311,7 +311,7 @@ public final class TextAnalyticsClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return The updated TextAnalyticsClientBuilder object.
+     * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
@@ -331,7 +331,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      *
-     * @return The updated TextAnalyticsClientBuilder object.
+     * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
@@ -350,7 +350,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param configuration The configuration store used to
      *
-     * @return The updated TextAnalyticsClientBuilder object.
+     * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
@@ -365,7 +365,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param retryPolicy user's retry policy applied to each request.
      *
-     * @return The updated TextAnalyticsClientBuilder object.
+     * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
@@ -381,7 +381,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param version {@link TextAnalyticsServiceVersion} of the service to be used when making requests.
      *
-     * @return The updated TextAnalyticsClientBuilder object.
+     * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder serviceVersion(TextAnalyticsServiceVersion version) {
         this.version = version;

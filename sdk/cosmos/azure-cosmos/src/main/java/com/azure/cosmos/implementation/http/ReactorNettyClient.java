@@ -8,7 +8,6 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.logging.LogLevel;
-import org.apache.commons.lang3.tuple.Pair;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +80,7 @@ class ReactorNettyClient implements HttpClient {
             }
             //  By default, keep alive is enabled on http client
             tcpClient = tcpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
-                configs.getConnectionAcquireTimeoutInMillis());
+                (int) configs.getConnectionAcquireTimeout().toMillis());
 
             return tcpClient;
         }).httpResponseDecoder(httpResponseDecoderSpec -> {

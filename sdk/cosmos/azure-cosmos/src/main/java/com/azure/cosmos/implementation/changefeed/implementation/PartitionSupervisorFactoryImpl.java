@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.ChangeFeedProcessorOptions;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverFactory;
 import com.azure.cosmos.implementation.changefeed.Lease;

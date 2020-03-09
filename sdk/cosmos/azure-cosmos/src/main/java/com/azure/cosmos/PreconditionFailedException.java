@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.models.CosmosError;
 
 import java.util.Map;
 
@@ -21,6 +22,13 @@ public class PreconditionFailedException extends CosmosClientException {
         this(RMResources.PreconditionFailed);
     }
 
+    /**
+     * Constructor
+     * @param cosmosError the error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public PreconditionFailedException(CosmosError cosmosError,
                                        long lsn,
                                        String partitionKeyRangeId,
@@ -38,6 +46,12 @@ public class PreconditionFailedException extends CosmosClientException {
         super(msg, null, null, HttpConstants.StatusCodes.PRECONDITION_FAILED, resourceAddress);
     }
 
+    /**
+     * Constructor
+     * @param message the message
+     * @param headers the headers
+     * @param requestUriString the request uri string
+     */
     public PreconditionFailedException(String message, HttpHeaders headers, String requestUriString) {
         this(message, null, headers, requestUriString);
     }
