@@ -87,7 +87,7 @@
     <dependency>
       <groupId>org.unitils</groupId>
       <artifactId>unitils-core</artifactId>
-      <version>3.4.2</version> <!-- {x-version-update;org.unitils:unitils-core;external_dependency} -->
+      <version>3.4.6</version> <!-- {x-version-update;org.unitils:unitils-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
