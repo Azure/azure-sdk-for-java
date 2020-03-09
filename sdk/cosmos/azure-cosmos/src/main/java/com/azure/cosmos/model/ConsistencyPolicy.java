@@ -127,7 +127,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
         if (maxStalenessInterval == null) {
             throw new IllegalArgumentException("maxStalenessInterval should not be null");
         }
-        super.set(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS, maxStalenessInterval.toSeconds());
+        super.set(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS, maxStalenessInterval.getSeconds());
         return this;
     }
 }
