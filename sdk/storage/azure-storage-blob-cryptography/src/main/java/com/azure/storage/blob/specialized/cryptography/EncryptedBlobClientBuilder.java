@@ -472,9 +472,10 @@ public final class EncryptedBlobClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpPipeline} to use for the service client, and adds a decryption policy.
+     * Sets the {@link HttpPipeline} to use for the service client, and adds a decryption policy if one is not present.
      *
-     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
+     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}
+     * and {@link #customerProvidedKey(CustomerProvidedKey) customer provided key}.
      *
      * <p>Use this method after setting the key in {@link #key(AsyncKeyEncryptionKey, String) key} and keyResolver in
      * {@link #keyResolver(AsyncKeyEncryptionKeyResolver)}.</p>
@@ -491,11 +492,16 @@ public final class EncryptedBlobClientBuilder {
         HttpPipeline pipeline = null;
         if (httpPipeline != null) {
             List<HttpPipelinePolicy> policies = new ArrayList<>();
-            policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
+            // Check that BlobDecryptionPolicy not already present while copying them over to a new policy list.
+            boolean decryptionPolicyPresent = false;
             for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
                 HttpPipelinePolicy currPolicy = httpPipeline.getPolicy(i);
+                decryptionPolicyPresent |= currPolicy instanceof BlobDecryptionPolicy;
                 policies.add(currPolicy);
-
+            }
+            // If a decryption policy is not already present, add it to the front.
+            if (!decryptionPolicyPresent) {
+                policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver));
             }
             pipeline = new HttpPipelineBuilder()
                 .httpClient(httpPipeline.getHttpClient())
@@ -552,8 +558,9 @@ public final class EncryptedBlobClientBuilder {
      * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
      * {@link #serviceVersion(BlobServiceVersion) serviceVersion}.</p>
      *
-     * <p>Note that this method does not copy over the {@link CustomerProvidedKey} and encryption scope properties
-     * from the provided client. To set CPK, please use {@link #customerProvidedKey(CustomerProvidedKey)}.</p>
+     * <p>Note that for security reasons, this method does not copy over the {@link CustomerProvidedKey} and
+     * encryption scope properties from the provided client. To set CPK, please use
+     * {@link #customerProvidedKey(CustomerProvidedKey)}.</p>
      *
      * @param blobClient BlobClient used to configure the builder.
      * @return the updated EncryptedBlobClientBuilder object
@@ -574,8 +581,9 @@ public final class EncryptedBlobClientBuilder {
      * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
      * {@link #serviceVersion(BlobServiceVersion) serviceVersion}.</p>
      *
-     * <p>Note that this method does not copy over the {@link CustomerProvidedKey} and encryption scope properties
-     * from the provided client. To set CPK, please use {@link #customerProvidedKey(CustomerProvidedKey)}.</p>
+     * <p>Note that for security reasons, this method does not copy over the {@link CustomerProvidedKey} and
+     * encryption scope properties from the provided client. To set CPK, please use
+     * {@link #customerProvidedKey(CustomerProvidedKey)}.</p>
      *
      * @param blobAsyncClient BlobAsyncClient used to configure the builder.
      * @return the updated EncryptedBlobClientBuilder object
