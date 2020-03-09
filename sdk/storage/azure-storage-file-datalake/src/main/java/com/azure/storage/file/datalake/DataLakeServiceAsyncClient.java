@@ -271,6 +271,8 @@ public class DataLakeServiceAsyncClient {
     PagedFlux<FileSystemItem> listFileSystemsWithOptionalTimeout(ListFileSystemsOptions options, Duration timeout) {
         PagedFlux<BlobContainerItem> inputPagedFlux = blobServiceAsyncClient
             .listBlobContainers(Transforms.toListBlobContainersOptions(options));
+        /* We need to create a new PagedFlux here because PagedFlux extends Flux, but not all operations were
+            overriden to return PagedFlux - so we need to do the transformations and recreate a PagedFlux. */
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<BlobContainerItem>> flux = (continuationToken == null)
                 ? inputPagedFlux.byPage()
