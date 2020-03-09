@@ -66,8 +66,12 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
     @Override
     public Flux<FeedResponse<T>> drainAsync(int maxPageSize) {
         ParallelDocumentQueryExecutionContextBase<T> context;
-
-        if (this.component instanceof AggregateDocumentQueryExecutionContext<?>) {
+        if (this.component instanceof DistinctDocumentQueryExecutionContext<?>) {
+            context =
+                (ParallelDocumentQueryExecutionContextBase<T>) ((DistinctDocumentQueryExecutionContext<T>) this.component)
+                                                                   .getComponent();
+        }
+        else if (this.component instanceof AggregateDocumentQueryExecutionContext<?>) {
             context =
                 (ParallelDocumentQueryExecutionContextBase<T>) ((AggregateDocumentQueryExecutionContext<T>) this.component)
                                                                    .getComponent();
