@@ -12,11 +12,11 @@ import java.util.List;
  * Represents the Connection policy associated with a DocumentClient in the Azure Cosmos DB database service.
  */
 public final class ConnectionPolicy {
-    private static final int DEFAULT_REQUEST_TIMEOUT_IN_MILLIS = 60 * 1000;
+    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(60);
     // defaultMediaRequestTimeout is based upon the blob client timeout and the
     // retry policy.
-    private static final int DEFAULT_MEDIA_REQUEST_TIMEOUT_IN_MILLIS = 300 * 1000;
-    private static final int DEFAULT_IDLE_CONNECTION_TIMEOUT_IN_MILLIS = 60 * 1000;
+    private static final Duration DEFAULT_MEDIA_REQUEST_TIMEOUT = Duration.ofSeconds(300);
+    private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
 
     private static final int DEFAULT_MAX_POOL_SIZE = 1000;
 
@@ -40,10 +40,10 @@ public final class ConnectionPolicy {
     public ConnectionPolicy() {
         this.connectionMode = ConnectionMode.DIRECT;
         this.readRequestsFallbackEnabled = null;
-        this.idleConnectionTimeout = Duration.ofMillis(DEFAULT_IDLE_CONNECTION_TIMEOUT_IN_MILLIS);
+        this.idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
         this.maxPoolSize = DEFAULT_MAX_POOL_SIZE;
-        this.mediaRequestTimeout = Duration.ofMillis(ConnectionPolicy.DEFAULT_MEDIA_REQUEST_TIMEOUT_IN_MILLIS);
-        this.requestTimeout = Duration.ofMillis(ConnectionPolicy.DEFAULT_REQUEST_TIMEOUT_IN_MILLIS);
+        this.mediaRequestTimeout = DEFAULT_MEDIA_REQUEST_TIMEOUT;
+        this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.userAgentSuffix = "";
     }

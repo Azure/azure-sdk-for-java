@@ -58,8 +58,8 @@ public class Configs {
     private static final int DEFAULT_DIRECT_HTTPS_POOL_SIZE = CPU_CNT * 500;
 
     //  Reactor Netty Constants
-    private static final Duration MAX_IDLE_CONNECTION_TIMEOUT = Duration.ofMillis(60);
-    private static final Duration CONNECTION_ACQUIRE_TIMEOUT = Duration.ofMillis(45);
+    private static final Duration MAX_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(45);
     private static final int REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE = 1000;
     private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
 
