@@ -159,6 +159,19 @@ public class EventGridManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The EventChannelsInner object to access its operations.
+     */
+    private EventChannelsInner eventChannels;
+
+    /**
+     * Gets the EventChannelsInner object to access its operations.
+     * @return the EventChannelsInner object.
+     */
+    public EventChannelsInner eventChannels() {
+        return this.eventChannels;
+    }
+
+    /**
      * The EventSubscriptionsInner object to access its operations.
      */
     private EventSubscriptionsInner eventSubscriptions;
@@ -169,6 +182,32 @@ public class EventGridManagementClientImpl extends AzureServiceClient {
      */
     public EventSubscriptionsInner eventSubscriptions() {
         return this.eventSubscriptions;
+    }
+
+    /**
+     * The SystemTopicEventSubscriptionsInner object to access its operations.
+     */
+    private SystemTopicEventSubscriptionsInner systemTopicEventSubscriptions;
+
+    /**
+     * Gets the SystemTopicEventSubscriptionsInner object to access its operations.
+     * @return the SystemTopicEventSubscriptionsInner object.
+     */
+    public SystemTopicEventSubscriptionsInner systemTopicEventSubscriptions() {
+        return this.systemTopicEventSubscriptions;
+    }
+
+    /**
+     * The PartnerTopicEventSubscriptionsInner object to access its operations.
+     */
+    private PartnerTopicEventSubscriptionsInner partnerTopicEventSubscriptions;
+
+    /**
+     * Gets the PartnerTopicEventSubscriptionsInner object to access its operations.
+     * @return the PartnerTopicEventSubscriptionsInner object.
+     */
+    public PartnerTopicEventSubscriptionsInner partnerTopicEventSubscriptions() {
+        return this.partnerTopicEventSubscriptions;
     }
 
     /**
@@ -185,6 +224,84 @@ public class EventGridManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The PartnerNamespacesInner object to access its operations.
+     */
+    private PartnerNamespacesInner partnerNamespaces;
+
+    /**
+     * Gets the PartnerNamespacesInner object to access its operations.
+     * @return the PartnerNamespacesInner object.
+     */
+    public PartnerNamespacesInner partnerNamespaces() {
+        return this.partnerNamespaces;
+    }
+
+    /**
+     * The PartnerRegistrationsInner object to access its operations.
+     */
+    private PartnerRegistrationsInner partnerRegistrations;
+
+    /**
+     * Gets the PartnerRegistrationsInner object to access its operations.
+     * @return the PartnerRegistrationsInner object.
+     */
+    public PartnerRegistrationsInner partnerRegistrations() {
+        return this.partnerRegistrations;
+    }
+
+    /**
+     * The PartnerTopicsInner object to access its operations.
+     */
+    private PartnerTopicsInner partnerTopics;
+
+    /**
+     * Gets the PartnerTopicsInner object to access its operations.
+     * @return the PartnerTopicsInner object.
+     */
+    public PartnerTopicsInner partnerTopics() {
+        return this.partnerTopics;
+    }
+
+    /**
+     * The PrivateEndpointConnectionsInner object to access its operations.
+     */
+    private PrivateEndpointConnectionsInner privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsInner object to access its operations.
+     * @return the PrivateEndpointConnectionsInner object.
+     */
+    public PrivateEndpointConnectionsInner privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * The PrivateLinkResourcesInner object to access its operations.
+     */
+    private PrivateLinkResourcesInner privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesInner object to access its operations.
+     * @return the PrivateLinkResourcesInner object.
+     */
+    public PrivateLinkResourcesInner privateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /**
+     * The SystemTopicsInner object to access its operations.
+     */
+    private SystemTopicsInner systemTopics;
+
+    /**
+     * Gets the SystemTopicsInner object to access its operations.
+     * @return the SystemTopicsInner object.
+     */
+    public SystemTopicsInner systemTopics() {
+        return this.systemTopics;
+    }
+
+    /**
      * The TopicsInner object to access its operations.
      */
     private TopicsInner topics;
@@ -195,6 +312,19 @@ public class EventGridManagementClientImpl extends AzureServiceClient {
      */
     public TopicsInner topics() {
         return this.topics;
+    }
+
+    /**
+     * The ExtensionTopicsInner object to access its operations.
+     */
+    private ExtensionTopicsInner extensionTopics;
+
+    /**
+     * Gets the ExtensionTopicsInner object to access its operations.
+     * @return the ExtensionTopicsInner object.
+     */
+    public ExtensionTopicsInner extensionTopics() {
+        return this.extensionTopics;
     }
 
     /**
@@ -247,9 +377,19 @@ public class EventGridManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.domains = new DomainsInner(restClient().retrofit(), this);
         this.domainTopics = new DomainTopicsInner(restClient().retrofit(), this);
+        this.eventChannels = new EventChannelsInner(restClient().retrofit(), this);
         this.eventSubscriptions = new EventSubscriptionsInner(restClient().retrofit(), this);
+        this.systemTopicEventSubscriptions = new SystemTopicEventSubscriptionsInner(restClient().retrofit(), this);
+        this.partnerTopicEventSubscriptions = new PartnerTopicEventSubscriptionsInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.partnerNamespaces = new PartnerNamespacesInner(restClient().retrofit(), this);
+        this.partnerRegistrations = new PartnerRegistrationsInner(restClient().retrofit(), this);
+        this.partnerTopics = new PartnerTopicsInner(restClient().retrofit(), this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsInner(restClient().retrofit(), this);
+        this.privateLinkResources = new PrivateLinkResourcesInner(restClient().retrofit(), this);
+        this.systemTopics = new SystemTopicsInner(restClient().retrofit(), this);
         this.topics = new TopicsInner(restClient().retrofit(), this);
+        this.extensionTopics = new ExtensionTopicsInner(restClient().retrofit(), this);
         this.topicTypes = new TopicTypesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
