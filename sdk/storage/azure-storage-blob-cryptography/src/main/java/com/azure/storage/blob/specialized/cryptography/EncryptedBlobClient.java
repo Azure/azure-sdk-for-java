@@ -120,26 +120,11 @@ public class EncryptedBlobClient extends BlobClient {
      * {@inheritDoc}
      */
     @Override
-    public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
-        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
-        Duration timeout, Context context) {
-        final ParallelTransferOptions validatedParallelTransferOptions =
-            ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
-
-        // BlobOutputStream passes to buffered upload, which has logic for switching based on stream size
-        BlobOutputStream blobOutputStream = BlobOutputStream.blockBlobOutputStream(encryptedBlobAsyncClient,
-            validatedParallelTransferOptions, headers, metadata, tier, requestConditions);
-        try {
-            StorageImplUtils.copyToOutputStream(data, length, blobOutputStream);
-            blobOutputStream.close();
-        } catch (IOException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof BlobStorageException) {
-                throw logger.logExceptionAsError((BlobStorageException) cause);
-            } else {
-                throw logger.logExceptionAsError(new UncheckedIOException(e));
-            }
-        }
+    // Used to inject the encrypted blobClient into the BlobOutputStream for upload(InputStream, long).
+    protected BlobOutputStream getBlobOutputStreamInternal(ParallelTransferOptions parallelTransferOptions,
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+        BlobRequestConditions requestConditions) {
+        return getBlobOutputStream(parallelTransferOptions, headers, metadata, tier, requestConditions);
     }
 
     /**

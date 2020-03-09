@@ -170,8 +170,8 @@ public class BlobClient extends BlobClientBase {
         Duration timeout, Context context) {
         final ParallelTransferOptions validatedParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
-        BlobOutputStream blobOutputStream = BlobOutputStream.blockBlobOutputStream(client,
-            validatedParallelTransferOptions, headers, metadata, tier, requestConditions);
+        BlobOutputStream blobOutputStream = getBlobOutputStreamInternal(validatedParallelTransferOptions, headers,
+            metadata, tier, requestConditions);
         try {
             StorageImplUtils.copyToOutputStream(data, length, blobOutputStream);
             blobOutputStream.close();
@@ -183,7 +183,24 @@ public class BlobClient extends BlobClientBase {
                 throw logger.logExceptionAsError(new UncheckedIOException(e));
             }
         }
+    }
 
+    /**
+     * An abstraction that allows child packages to inject the correct client into the blob outputstream used to upload.
+     *
+     * @param parallelTransferOptions The options passed to upload. Pre-verified.
+     * @param headers The headers passed to upload.
+     * @param metadata The metadata passed to upload.
+     * @param tier The tier passed to upload.
+     * @param requestConditions The request conditions passed to upload.
+     *
+     * @return The {@link BlobOutputStream} initialized with the appropriate client.
+     */
+    protected BlobOutputStream getBlobOutputStreamInternal(ParallelTransferOptions parallelTransferOptions,
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+        BlobRequestConditions requestConditions) {
+        return BlobOutputStream.blockBlobOutputStream(client, parallelTransferOptions, headers, metadata, tier,
+            requestConditions);
     }
 
     /**
