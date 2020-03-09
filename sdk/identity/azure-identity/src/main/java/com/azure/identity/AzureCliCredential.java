@@ -19,7 +19,7 @@ import com.azure.core.credential.TokenRequestContext;
  * command.
  */
 @Immutable
-public class AzureCliCredential implements TokenCredential {
+class AzureCliCredential implements TokenCredential {
     private final IdentityClient identityClient;
 
     /**
