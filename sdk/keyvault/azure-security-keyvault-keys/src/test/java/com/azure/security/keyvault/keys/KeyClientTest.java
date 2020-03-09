@@ -41,6 +41,7 @@ public class KeyClientTest extends KeyClientTestBase {
         client = new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
+            .serviceVersion(serviceVersion)
             .buildClient();
     }
 

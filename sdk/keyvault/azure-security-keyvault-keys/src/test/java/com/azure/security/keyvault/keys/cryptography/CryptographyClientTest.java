@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
@@ -37,26 +38,32 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         beforeTestSetup();
     }
 
-    private void initializeClient(HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
-        pipeline = getHttpPipeline(httpClient, serviceVersion);
+    private void initializeKeyClient(HttpClient httpClient) {
+        pipeline = getHttpPipeline(httpClient, KeyServiceVersion.getLatest());
         client = new KeyClientBuilder()
             .pipeline(pipeline)
             .vaultUrl(getEndpoint())
             .buildClient();
     }
 
+    private CryptographyClient initializeCryptographyClient(String keyId, HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
+        pipeline = getHttpPipeline(httpClient, serviceVersion);
+        return new CryptographyClientBuilder()
+            .pipeline(pipeline)
+            .serviceVersion(serviceVersion)
+            .keyIdentifier(keyId)
+            .buildClient();
+    }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
     public void encryptDecryptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
-        initializeClient(httpClient, serviceVersion);
+        initializeKeyClient(httpClient);
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
             String keyName = generateResourceId("testRsaKey");
             KeyVaultKey importedKey = client.importKey(keyName, key);
-            CryptographyClient cryptoClient = new CryptographyClientBuilder()
-                .pipeline(pipeline)
-                .keyIdentifier(importedKey.getId())
-                .buildClient();
+            CryptographyClient cryptoClient = initializeCryptographyClient(importedKey.getId(), httpClient, serviceVersion);
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
 
             List<EncryptionAlgorithm> algorithms = Arrays.asList(EncryptionAlgorithm.RSA1_5, EncryptionAlgorithm.RSA_OAEP, EncryptionAlgorithm.RSA_OAEP_256);
@@ -86,15 +93,12 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
     public void wrapUnwraptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
-        initializeClient(httpClient, serviceVersion);
+        initializeKeyClient(httpClient);
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
             String keyName = generateResourceId("testRsaKeyWrapUnwrap");
             KeyVaultKey importedKey = client.importKey(keyName, key);
-            CryptographyClient cryptoClient = new CryptographyClientBuilder()
-                .pipeline(pipeline)
-                .keyIdentifier(importedKey.getId())
-                .buildClient();
+            CryptographyClient cryptoClient = initializeCryptographyClient(importedKey.getId(), httpClient, serviceVersion);
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
 
             List<KeyWrapAlgorithm> algorithms = Arrays.asList(KeyWrapAlgorithm.RSA1_5, KeyWrapAlgorithm.RSA_OAEP, KeyWrapAlgorithm.RSA_OAEP_256);
@@ -125,15 +129,12 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
     public void signVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
-        initializeClient(httpClient, serviceVersion);
+        initializeKeyClient(httpClient);
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
             String keyName = generateResourceId("testRsaKeySignVerify");
             KeyVaultKey importedKey = client.importKey(keyName, key);
-            CryptographyClient cryptoClient = new CryptographyClientBuilder()
-                .pipeline(pipeline)
-                .keyIdentifier(importedKey.getId())
-                .buildClient();
+            CryptographyClient cryptoClient = initializeCryptographyClient(importedKey.getId(), httpClient, serviceVersion);
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
 
             List<SignatureAlgorithm> algorithms = Arrays.asList(SignatureAlgorithm.RS256, SignatureAlgorithm.RS384, SignatureAlgorithm.RS512);
@@ -163,7 +164,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
     public void signVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
-        initializeClient(httpClient, serviceVersion);
+        initializeKeyClient(httpClient);
         Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();
         curveToSignature.put(KeyCurveName.P_256, SignatureAlgorithm.ES256);
         curveToSignature.put(KeyCurveName.P_384, SignatureAlgorithm.ES384);
@@ -188,10 +189,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             JsonWebKey key = JsonWebKey.fromEc(keyPair, provider);
             String keyName = generateResourceId("testEcKey" + crv.toString());
             KeyVaultKey imported = client.importKey(keyName, key);
-            CryptographyClient cryptoClient = new CryptographyClientBuilder()
-                .pipeline(pipeline)
-                .keyIdentifier(imported.getId())
-                .buildClient();
+            CryptographyClient cryptoClient = initializeCryptographyClient(imported.getId(), httpClient, serviceVersion);
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
 
             byte[] plainText = new byte[100];

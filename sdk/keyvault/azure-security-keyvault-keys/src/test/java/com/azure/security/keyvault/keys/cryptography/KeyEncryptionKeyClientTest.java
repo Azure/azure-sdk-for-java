@@ -39,6 +39,7 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
             secretKey = serviceClient.setSecretKey(new SecretKey("secretKey", Base64.getEncoder().encodeToString(kek)), Context.NONE).block().getValue();
             client = new KeyEncryptionKeyClientBuilder()
                          .pipeline(pipeline)
+                         .serviceVersion(serviceVersion)
                          .buildKeyEncryptionKey(secretKey.getId());
         }
     }

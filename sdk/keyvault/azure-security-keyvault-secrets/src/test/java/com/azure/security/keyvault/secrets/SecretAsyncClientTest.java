@@ -38,6 +38,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
         client = new SecretClientBuilder()
             .pipeline(getHttpPipeline(httpClient, serviceVersion))
             .vaultUrl(getEndpoint())
+            .serviceVersion(serviceVersion)
             .buildAsyncClient();
     }
 

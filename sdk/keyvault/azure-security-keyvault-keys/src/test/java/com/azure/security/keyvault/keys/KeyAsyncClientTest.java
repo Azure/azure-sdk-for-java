@@ -41,6 +41,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         client = new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
+            .serviceVersion(serviceVersion)
             .buildAsyncClient();
     }
 

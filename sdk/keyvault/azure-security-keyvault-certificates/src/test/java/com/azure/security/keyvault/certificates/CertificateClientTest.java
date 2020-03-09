@@ -54,6 +54,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         client = new CertificateClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
+            .serviceVersion(serviceVersion)
             .buildClient();
     }
 

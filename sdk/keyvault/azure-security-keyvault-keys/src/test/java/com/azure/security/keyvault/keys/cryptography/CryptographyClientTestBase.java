@@ -19,6 +19,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ServiceVersion;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
 import java.util.stream.Stream;
@@ -52,7 +53,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
     void beforeTestSetup() {
     }
 
-    HttpPipeline getHttpPipeline (HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
+    HttpPipeline getHttpPipeline (HttpClient httpClient, ServiceVersion serviceVersion) {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
