@@ -39,9 +39,16 @@ com.azure:azure-storage-queue;12.3.0;12.4.0-beta.1
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
-# version. Unreleased dependencies are only valid for dependency versions
+# version. Unreleased dependencies are only valid for dependency versions.
 # Format;
 # unreleased_<groupId>:<artifactId>;dependency-version
-# note: the unrelease dependencies do not require the empty line as their versions
-# will not be manipulated with the automatic PR creation code.
+# note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 unreleased_com.azure:azure-core-amqp;1.1.0-beta.1
+
+# Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
+# version and set the version to the released beta. Released beta dependencies are only valid 
+# for dependency versions. These entries are specifically for when we've released a beta for 
+# a library but need to keep the dependency version at the latest released GA.
+# Format;
+# beta_<groupId>:<artifactId>;dependency-version
+# note: Released beta versions will not be manipulated with the automatic PR creation code.
