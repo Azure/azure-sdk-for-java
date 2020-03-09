@@ -2,34 +2,37 @@
 
 This is the Java client library for [Azure Cognitive Search](https://docs.microsoft.com/en-us/rest/api/searchservice/).
 Azure Cognitive Search is a fully managed cloud search service that provides a rich search experience to custom applications.
-This library provides an easy (native) way for a Java developer to interact with the service to accomplish tasks like: create and manage indexes, load data, implement search features, execute queries, and handle results.
+This library provides an easy (native) way for a Java developer to interact with the service to accomplish tasks like: 
+create and manage indexes, load data, implement search features, execute queries, and handle results.
 
-[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation]
-| [Product documentation][search_docs] | [Samples][samples]
+[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation]| [Product documentation][search_docs] | [Samples][samples]
 
 ## Getting started
 
 ### Prerequisites
 
--   Java Development Kit (JDK) with version 8 or above
--   [Azure subscription][azure_subscription]
--   An instance of [Cognitive search service][search]
+- Java Development Kit (JDK) with version 8 or above
+- [Azure subscription][azure_subscription]
+- [Cognitive search service][search]
 
 ### Adding the package to your product
 
 [//]: # ({x-version-update-start;com.azure:azure-search;current})
-```
+```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>11.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ## Key concepts
 
-Azure Cognitive Search has the concepts of search services and indexes and documents, where a search service contains one or more indexes that provides persistent storage of searchable data, and data is loaded in the form of JSON documents. Data can be pushed to an index from an external data source, but if you use an indexer, it's possible to crawl a data source to extract and load data into an index.
+Azure Cognitive Search has the concepts of search services and indexes and documents, where a search service contains 
+one or more indexes that provides persistent storage of searchable data, and data is loaded in the form of JSON documents. 
+Data can be pushed to an index from an external data source, but if you use an indexer, it's possible to crawl a data 
+source to extract and load data into an index.
 
 There are several types of operations that can be executed against the service:
 
@@ -41,13 +44,18 @@ There are several types of operations that can be executed against the service:
 
 ### Authenticate the client
 
-In order to interact with the Cognitive Search service you'll need to create an instance of the Search Client class. To make this possible you will need an [api-key of the Cognitive Search service](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
+In order to interact with the Cognitive Search service you'll need to create an instance of the Search Client class. 
+To make this possible you will need an [api-key of the Cognitive Search service](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
 
-The SDK provides two types of clients - SearchIndexClient for all document operations, and SearchServiceClient for all CRUD operations on the service resources.
+The SDK provides two clients.
+
+1. SearchIndexClient for all document operations.
+2. SearchServiceClient for all CRUD operations on service resources.
 
 #### Create a SearchServiceClient
 
-Once you have the values of the Cognitive Search Service [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and [admin key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys) you can create the Search Service client:
+Once you have the values of the Cognitive Search Service [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) 
+and [admin key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys) you can create the Search Service client:
 
 <!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L31-L34 -->
 ```Java
@@ -69,7 +77,9 @@ SearchServiceAsyncClient client = new SearchServiceClientBuilder()
 
 #### Create a SearchIndexClient
 
-To create a SearchIndexClient, you will need an existing index name as well as the values of the Cognitive Search Service [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and [query key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
+To create a SearchIndexClient, you will need an existing index name as well as the values of the Cognitive Search Service 
+[URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and 
+[query key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
 Note that you will need an admin key to index documents (query keys only work for queries).
 
 <!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L45-L49 -->
@@ -105,24 +115,24 @@ Both PagedIterable and PagedFlux enable the common case to be quickly and easily
 
 For the Cognitive Search service SDK, each page in the response will contain page-specific additional information, based on the executed API:
 
-**[SearchPagedResponse](/sdk/search/azure-search/src/main/java/com/azure/search/SearchPagedResponse.java)**
+**[SearchPagedResponse](src/main/java/com/azure/search/util/SearchPagedResponse.java)**
 Represents an HTTP response from the search API request that contains a list of items deserialized into a page. Additional information includes the count of total documents returned, and other metadata.
 
-**[SuggestPagedResponse](/sdk/search/azure-search/src/main/java/com/azure/search/SuggestPagedResponse.java)**
+**[SuggestPagedResponse](src/main/java/com/azure/search/util/SuggestPagedResponse.java)**
 Represents an HTTP response from the suggest API request that contains a list of items deserialized into a page. The additional information is:
 
 -   coverage - coverage value
 
-**[AutocompletePagedResponse](/sdk/search/azure-search/src/main/java/com/azure/search/AutocompletePagedResponse.java)**
+**[AutocompletePagedResponse](src/main/java/com/azure/search/util/AutocompletePagedResponse.java)**
 Represents an HTTP response from the autocomplete API request that contains a list of items deserialized into a page.
 
 #### Synchronous Pagination and Iteration
 
-[Search query options with sync client](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchOptionsExample.java)
+[Search query options with sync client](src/samples/java/com/azure/search/SearchOptionsExample.java)
 
 #### Asynchronous Pagination and Iteration
 
-[Search queries options with async client](/sdk/search/azure-search/src/samples/java/com/azure/search/SearchOptionsAsyncExample.java)
+[Search queries options with async client](src/samples/java/com/azure/search/SearchOptionsAsyncExample.java)
 
 ## Examples
 
@@ -132,50 +142,20 @@ Samples are explained in detail [here][samples_readme].
 
 ### General
 
-When you interact with Azure Cognitive Search using this Java client library, errors returned by the service correspond to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a document that doesn't exist in your index, a `404` error is returned, indicating `Not Found`.
+When you interact with Azure Cognitive Search using this Java client library, errors returned by the service correspond 
+to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a document 
+that doesn't exist in your index, a `404` error is returned, indicating `Not Found`.
 
-<!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L75-L83 -->
-```java
-try {
-    Iterable<SearchResult> results = indexClient.search("hotel");
-} catch (HttpResponseException ex) {
-    // The exception contains the HTTP status code and the detailed message
-    // returned from the search service
-    HttpResponse response = ex.getResponse();
-    System.out.println("Status Code: " + response.getStatusCode());
-    System.out.println("Message: " + response.getBodyAsString().block());
-}
-```
-        
+### Enabling Logging
 
-Azure Search provides a way to define customized headers through `Context` object in the public API. 
-
-<!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L61-L71 -->
-```java
-HttpHeaders headers = new HttpHeaders();
-headers.put("my-header1", "my-header1-value");
-headers.put("my-header2", "my-header2-value");
-headers.put("my-header3", "my-header3-value");
-// Call API by passing headers in Context.
-Index index = new Index().setName(indexName);
-searchClient.createIndexWithResponse(
-    index,
-    new RequestOptions(),
-    new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
-// Above three HttpHeader will be added in outgoing HttpRequest.
-```
-For more detail information, check out the [AddHeadersFromContextPolicy][add_headers_from_context_policy]
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite 
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help 
+locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Default HTTP Client
-All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
-the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
 
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
-operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
-better performance compared to the default SSL implementation within the JDK. For more information, including how to 
-reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+By default a Netty based HTTP client will be used, for more information on configuring or changing the HTTP client is 
+detailed in the [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
 
 ## Next steps
 
@@ -183,11 +163,16 @@ reduce the dependency size, refer to the [performance tuning][performance_tuning
 
 ## Contributing
 
-This project welcomes contributions and suggestions. Most contributions require you to agree to a [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights to use your contribution.
+This project welcomes contributions and suggestions. Most contributions require you to agree to a 
+[Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights 
+to use your contribution.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate 
+the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to 
+do this once across all repos using our CLA.
 
-This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] 
+or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
 
@@ -200,12 +185,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [samples]: src/samples/java/com/azure/search
 [samples_readme]: src/samples/README.md
 [source_code]: src
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
 [rest_api]: https://docs.microsoft.com/en-us/rest/api/searchservice/http-status-codes
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%search%2Fazure-search%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fsearch%2Fazure-search%2FREADME.png)

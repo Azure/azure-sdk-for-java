@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.ChangeFeedProcessorOptions;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 
 import java.util.List;
 

@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.JsonSerializable;
+import com.azure.cosmos.models.JsonSerializable;
 
 /**
  * Represents the 'Undefined' partition key in the Azure Cosmos DB database service.

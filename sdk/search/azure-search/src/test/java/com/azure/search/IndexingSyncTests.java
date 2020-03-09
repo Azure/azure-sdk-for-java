@@ -8,7 +8,7 @@ import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.GeoPoint;
 import com.azure.search.models.Index;
-import com.azure.search.models.IndexBatch;
+import com.azure.search.models.IndexDocumentsBatch;
 import com.azure.search.models.IndexDocumentsResult;
 import com.azure.search.models.IndexingResult;
 import com.azure.search.test.environment.models.Author;
@@ -104,10 +104,10 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         waitForIndexing();
         assertEquals(2, client.getDocumentCount());
 
-        IndexBatch<Hotel> deleteBatch = new IndexBatch<Hotel>()
+        IndexDocumentsBatch<Hotel> deleteBatch = new IndexDocumentsBatch<Hotel>()
             .addDeleteAction("HotelId", "1", "2");
 
-        IndexDocumentsResult documentIndexResult = client.index(deleteBatch);
+        IndexDocumentsResult documentIndexResult = client.indexDocuments(deleteBatch);
         waitForIndexing();
 
         assertEquals(2, documentIndexResult.getResults().size());
@@ -148,7 +148,6 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
         List<SearchDocument> docs = new ArrayList<>();
 
-
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("HotelId", "1");
         searchDocument.put("Category", "Luxury");
@@ -179,7 +178,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel"); // merging with a non existing document
         Hotel randomHotel = prepareStaticallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexBatch<Hotel> batch = new IndexBatch<Hotel>()
+        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
             .addUploadAction(hotel1)
             .addDeleteAction(randomHotel)
             .addMergeAction(nonExistingHotel)
@@ -187,7 +186,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
             .addUploadAction(hotel2);
 
         try {
-            client.index(batch);
+            client.indexDocuments(batch);
             fail("indexing did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
@@ -223,7 +222,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         SearchDocument nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
         SearchDocument randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexBatch<SearchDocument> batch = new IndexBatch<SearchDocument>()
+        IndexDocumentsBatch<SearchDocument> batch = new IndexDocumentsBatch<SearchDocument>()
             .addUploadAction(hotel1)
             .addDeleteAction(randomHotel)
             .addMergeAction(nonExistingHotel)
@@ -231,7 +230,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
             .addUploadAction(hotel2);
 
         try {
-            client.index(batch);
+            client.indexDocuments(batch);
             fail("indexing did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
@@ -791,7 +790,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         hotelsToDelete.add(new Hotel()
             .hotelId("4"));
 
-        IndexBatch<Hotel> batch = new IndexBatch<Hotel>()
+        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
             .addUploadAction(hotelsToUpload)
             .addMergeOrUploadAction(hotelsToMergeOrUpload);
 
@@ -824,7 +823,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         result = deleteResponse.getValue();
         assertEquals(1, result.getResults().size());
 
-        Response<IndexDocumentsResult> batchResponse = client.indexWithResponse(batch, Context.NONE);
+        Response<IndexDocumentsResult> batchResponse = client.indexDocumentsWithResponse(batch, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, batchResponse.getStatusCode());

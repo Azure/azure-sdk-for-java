@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.4 (Unreleased)
+
+
 ## 1.0.0-beta.3 (2020-03-06)
 
 - EventHubs: add enqueueTime to Process span links.

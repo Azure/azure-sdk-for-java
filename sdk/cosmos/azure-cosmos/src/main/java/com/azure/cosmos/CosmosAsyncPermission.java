@@ -3,6 +3,10 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
+import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
+import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.azure.cosmos.models.CosmosPermissionRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 /**
@@ -54,8 +58,8 @@ public class CosmosAsyncPermission {
         }
         return cosmosUser.getDatabase()
                    .getDocClientWrapper()
-                   .readPermission(getLink(), options.toRequestOptions())
-                   .map(response -> new CosmosAsyncPermissionResponse(response, cosmosUser))
+                   .readPermission(getLink(), ModelBridgeInternal.toRequestOptions(options))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, cosmosUser))
                    .single();
     }
 
@@ -77,8 +81,9 @@ public class CosmosAsyncPermission {
         }
         return cosmosUser.getDatabase()
                    .getDocClientWrapper()
-                   .replacePermission(permissionSettings.getV2Permissions(), options.toRequestOptions())
-                   .map(response -> new CosmosAsyncPermissionResponse(response, cosmosUser))
+                   .replacePermission(ModelBridgeInternal.getV2Permissions(permissionSettings),
+                       ModelBridgeInternal.toRequestOptions(options))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, cosmosUser))
                    .single();
     }
 
@@ -98,8 +103,8 @@ public class CosmosAsyncPermission {
         }
         return cosmosUser.getDatabase()
                    .getDocClientWrapper()
-                   .deletePermission(getLink(), options.toRequestOptions())
-                   .map(response -> new CosmosAsyncPermissionResponse(response, cosmosUser))
+                   .deletePermission(getLink(), ModelBridgeInternal.toRequestOptions(options))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, cosmosUser))
                    .single();
     }
 

@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosError;
+import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -328,7 +329,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             String body = bodyAsBytes != null ? new String(bodyAsBytes) : null;
             CosmosError cosmosError;
-            cosmosError = (StringUtils.isNotEmpty(body)) ? BridgeInternal.createCosmosError(body) : new CosmosError();
+            cosmosError = (StringUtils.isNotEmpty(body)) ? ModelBridgeInternal.createCosmosError(body) : new CosmosError();
             cosmosError = new CosmosError(statusCodeString,
                     String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                     cosmosError.getPartitionedQueryExecutionInfo());

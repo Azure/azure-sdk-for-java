@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -22,7 +23,7 @@ public class SharedTransportClient extends TransportClient {
     private static final AtomicInteger counter = new AtomicInteger(0);
     private static SharedTransportClient sharedTransportClient;
 
-    public static TransportClient getOrCreateInstance(Protocol protocol, Configs configs, int requestTimeout, UserAgentContainer userAgent) {
+    public static TransportClient getOrCreateInstance(Protocol protocol, Configs configs, Duration requestTimeout, UserAgentContainer userAgent) {
         synchronized (SharedTransportClient.class) {
             if (sharedTransportClient == null) {
                 assert counter.get() == 0;
@@ -39,7 +40,7 @@ public class SharedTransportClient extends TransportClient {
 
     private final TransportClient transportClient;
 
-    private SharedTransportClient(Protocol protocol, Configs configs, int requestTimeout, UserAgentContainer userAgent) {
+    private SharedTransportClient(Protocol protocol, Configs configs, Duration requestTimeout, UserAgentContainer userAgent) {
         if (protocol == Protocol.TCP) {
             this.transportClient = new RntbdTransportClient(configs, requestTimeout, userAgent);
         } else if (protocol == Protocol.HTTPS){
