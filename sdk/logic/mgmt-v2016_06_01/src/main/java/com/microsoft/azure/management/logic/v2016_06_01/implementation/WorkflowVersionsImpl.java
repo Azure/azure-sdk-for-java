@@ -45,10 +45,14 @@ class WorkflowVersionsImpl extends WrapperImpl<WorkflowVersionsInner> implements
     public Observable<WorkflowVersion> getAsync(String resourceGroupName, String workflowName, String versionId) {
         WorkflowVersionsInner client = this.inner();
         return client.getAsync(resourceGroupName, workflowName, versionId)
-        .map(new Func1<WorkflowVersionInner, WorkflowVersion>() {
+        .flatMap(new Func1<WorkflowVersionInner, Observable<WorkflowVersion>>() {
             @Override
-            public WorkflowVersion call(WorkflowVersionInner inner) {
-                return wrapWorkflowVersionModel(inner);
+            public Observable<WorkflowVersion> call(WorkflowVersionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((WorkflowVersion)wrapWorkflowVersionModel(inner));
+                }
             }
        });
     }

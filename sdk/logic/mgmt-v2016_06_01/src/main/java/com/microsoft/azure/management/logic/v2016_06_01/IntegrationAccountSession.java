@@ -86,6 +86,9 @@ public interface IntegrationAccountSession extends HasInner<IntegrationAccountSe
         interface WithIntegrationAccount {
            /**
             * Specifies resourceGroupName, integrationAccountName.
+            * @param resourceGroupName The resource group name
+            * @param integrationAccountName The integration account name
+            * @return the next definition stage
             */
             WithCreate withExistingIntegrationAccount(String resourceGroupName, String integrationAccountName);
         }
@@ -96,6 +99,8 @@ public interface IntegrationAccountSession extends HasInner<IntegrationAccountSe
         interface WithContent {
             /**
              * Specifies content.
+             * @param content The session content
+             * @return the next definition stage
              */
             WithCreate withContent(Object content);
         }
@@ -106,6 +111,8 @@ public interface IntegrationAccountSession extends HasInner<IntegrationAccountSe
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The resource location
+             * @return the next definition stage
              */
             WithCreate withLocation(String location);
         }
@@ -116,6 +123,8 @@ public interface IntegrationAccountSession extends HasInner<IntegrationAccountSe
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -144,6 +153,8 @@ public interface IntegrationAccountSession extends HasInner<IntegrationAccountSe
         interface WithContent {
             /**
              * Specifies content.
+             * @param content The session content
+             * @return the next update stage
              */
             Update withContent(Object content);
         }
@@ -154,6 +165,8 @@ public interface IntegrationAccountSession extends HasInner<IntegrationAccountSe
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The resource location
+             * @return the next update stage
              */
             Update withLocation(String location);
         }
@@ -164,6 +177,8 @@ public interface IntegrationAccountSession extends HasInner<IntegrationAccountSe
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }
