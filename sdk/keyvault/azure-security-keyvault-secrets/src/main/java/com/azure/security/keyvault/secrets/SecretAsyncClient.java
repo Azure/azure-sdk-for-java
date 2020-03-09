@@ -54,7 +54,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = SecretClientBuilder.class, isAsync = true, serviceInterfaces = SecretService.class)
 public final class SecretAsyncClient {
-    final String apiVersion;
+    private final String apiVersion;
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
