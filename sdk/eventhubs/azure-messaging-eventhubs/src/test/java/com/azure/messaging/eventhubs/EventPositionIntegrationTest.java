@@ -55,11 +55,12 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(client.createProducer(), NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(createBuilder().buildAsyncClient().createProducer(), NUMBER_OF_EVENTS, options);
 
             // Receiving back those events we sent so we have something to compare to.
             logger.info("Receiving the events we sent.");
-            final EventHubConsumerAsyncClient consumer = client
+            final EventHubConsumerAsyncClient consumer = createBuilder()
+                .buildAsyncClient()
                 .createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
             final EventPosition startingPosition = EventPosition.fromEnqueuedTime(
                 testData.getEnqueuedTime().minus(Duration.ofMinutes(1)));
