@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.ListBlobsOptions;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileAttribute;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -146,6 +147,7 @@ class AzureResource {
      */
     private void extractHttpHeaders(List<FileAttribute<?>> fileAttributes) {
         BlobHttpHeaders headers = new BlobHttpHeaders();
+        fileAttributes = new ArrayList<>(fileAttributes); // To ensure remove is supported.
         for (Iterator<FileAttribute<?>> it = fileAttributes.iterator(); it.hasNext();) {
             FileAttribute<?> attr = it.next();
             boolean propertyFound = true;

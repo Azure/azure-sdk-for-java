@@ -239,7 +239,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         fs.provider().createDirectory(fs.getDefaultDirectory())
 
         then:
-        thrown(IOException)
+        thrown(IllegalArgumentException)
     }
 
     def "FileSystemProvider createDir no parent"() {
@@ -340,7 +340,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         if (!sourceIsVirtual) {
             assert sourceClient.exists()
         } else {
-            assert ((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(sourceClient)
+            assert new AzureResource(sourcePath).checkDirectoryExists()
         }
 
         // If the source was a file, check that the destination data matches the source.
@@ -423,7 +423,7 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         then:
         thrown(DirectoryNotEmptyException)
-        ((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(destinationClient)
+        new AzureResource(destPath).checkDirectoryExists()
 
         where:
         destinationIsVirtual | _
@@ -453,7 +453,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         then:
         thrown(FileAlreadyExistsException)
         if (destinationIsDir) {
-            assert ((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(destinationClient)
+            assert new AzureResource(destPath).checkDirectoryExists()
         } else {
             def outStream = new ByteArrayOutputStream()
             destinationClient.download(outStream)
@@ -544,6 +544,7 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Create resources as necessary
         sourceClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20)
+        sourceClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20, true)
 
         when:
         fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
@@ -670,7 +671,7 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         then:
         thrown(DirectoryNotEmptyException)
-        ((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(path.toBlobClient())
+        new AzureResource(path).checkDirectoryExists()
 
         where:
         virtual | _
@@ -740,14 +741,14 @@ class AzureFileSystemProviderSpec extends APISpec {
         }
 
         expect:
-        ((AzureFileSystemProvider) fs.provider()).checkDirStatus(blobClient1) == status
-        ((AzureFileSystemProvider) fs.provider()).checkDirStatus(blobClient2) == status
+        new AzureResource(parentPath1).checkDirStatus() == status
+        new AzureResource(parentPath2).checkDirStatus() == status
         if (status == DirectoryStatus.EMPTY || status == DirectoryStatus.NOT_EMPTY) {
-            assert ((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(blobClient1)
-            assert ((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(blobClient2)
+            assert new AzureResource(parentPath1).checkDirectoryExists()
+            assert new AzureResource(parentPath2).checkDirectoryExists()
         } else {
-            assert !((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(blobClient1)
-            assert !((AzureFileSystemProvider) fs.provider()).checkDirectoryExists(blobClient2)
+            assert !new AzureResource(parentPath1).checkDirectoryExists()
+            assert !new AzureResource(parentPath2).checkDirectoryExists()
         }
 
         where:
@@ -766,7 +767,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         def fileName = generateBlobName()
 
         expect:
-        !((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(fs.getPath(fileName, "bar"))
+        !new AzureResource(fs.getPath(fileName, "bar")).checkParentDirectoryExists()
     }
 
     def "FileSystemProvider parent dir exists virtual"() {
@@ -782,7 +783,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         blobClient.create()
 
         then:
-        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(fs.getPath(fileName, childName))
+        new AzureResource(fs.getPath(fileName, childName)).checkParentDirectoryExists()
     }
 
     def "FileSystemProvider parent dir exists concrete"() {
@@ -796,7 +797,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         putDirectoryBlob(blobClient)
 
         then:
-        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(fs.getPath(fileName, "bar"))
+        new AzureResource(fs.getPath(fileName, "bar")).checkParentDirectoryExists()
     }
 
     def "FileSystemProvider parent dir exists root"() {
@@ -805,7 +806,7 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         expect:
         // No parent means the parent is implicitly the default root, which always exists
-        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(fs.getPath("foo"))
+        new AzureResource(fs.getPath("foo")).checkParentDirectoryExists()
 
     }
 
@@ -821,7 +822,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         blobClient.getAppendBlobClient().create()
 
         then:
-        ((AzureFileSystemProvider) fs.provider()).checkParentDirectoryExists(fs.getPath(rootName, "fizz/buzz"))
+        new AzureResource(fs.getPath(rootName, "fizz/buzz")).checkParentDirectoryExists()
     }
 
     def basicSetupForCopyTest(FileSystem fs) {
