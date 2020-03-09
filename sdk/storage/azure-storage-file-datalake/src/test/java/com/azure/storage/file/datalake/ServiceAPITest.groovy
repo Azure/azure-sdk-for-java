@@ -23,7 +23,7 @@ class ServiceAPITest extends APISpec {
     def "List file systems"() {
         when:
         def response =
-            primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions().setPrefix(fileSystemPrefix + testName))
+            primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions().setPrefix(fileSystemPrefix + testName), null)
 
         then:
         for (FileSystemItem c : response) {
@@ -70,7 +70,7 @@ class ServiceAPITest extends APISpec {
         expect:
         primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions()
             .setDetails(new FileSystemListDetails().setRetrieveMetadata(true))
-            .setPrefix("aaa" + fileSystemPrefix))
+            .setPrefix("aaa" + fileSystemPrefix), null)
             .iterator().next().getMetadata() == metadata
 
         // File system with prefix "aaa" will not be cleaned up by normal test cleanup.
@@ -92,7 +92,7 @@ class ServiceAPITest extends APISpec {
         expect:
         primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions()
             .setPrefix(fileSystemPrefix)
-            .setMaxResultsPerPage(PAGE_RESULTS))
+            .setMaxResultsPerPage(PAGE_RESULTS), null)
             .iterableByPage().iterator().next().getValue().size() == PAGE_RESULTS
 
         cleanup:
