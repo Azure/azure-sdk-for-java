@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.model.PartitionKeyDefinition;
-import com.azure.cosmos.model.PartitionKeyDefinitionVersion;
-import com.azure.cosmos.model.PartitionKind;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;

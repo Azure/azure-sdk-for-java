@@ -2,22 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.model.CompositePath;
-import com.azure.cosmos.model.CosmosAsyncContainerResponse;
-import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
-import com.azure.cosmos.model.CosmosAsyncPermissionResponse;
-import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
-import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
-import com.azure.cosmos.model.CosmosAsyncUserDefinedFunctionResponse;
-import com.azure.cosmos.model.CosmosAsyncUserResponse;
-import com.azure.cosmos.model.CosmosResponse;
-import com.azure.cosmos.model.IndexingMode;
-import com.azure.cosmos.model.PermissionMode;
-import com.azure.cosmos.model.Resource;
-import com.azure.cosmos.model.SpatialSpec;
-import com.azure.cosmos.model.SpatialType;
-import com.azure.cosmos.model.TriggerOperation;
-import com.azure.cosmos.model.TriggerType;
+import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
+import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosAsyncUserResponse;
+import com.azure.cosmos.models.CosmosResponse;
+import com.azure.cosmos.models.IndexingMode;
+import com.azure.cosmos.models.PermissionMode;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SpatialSpec;
+import com.azure.cosmos.models.SpatialType;
+import com.azure.cosmos.models.TriggerOperation;
+import com.azure.cosmos.models.TriggerType;
 import org.assertj.core.api.Assertions;
 
 import java.util.ArrayList;

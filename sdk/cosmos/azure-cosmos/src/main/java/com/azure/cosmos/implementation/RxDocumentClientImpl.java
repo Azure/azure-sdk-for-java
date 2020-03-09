@@ -2,26 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.model.AccessConditionType;
+import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.model.CosmosResourceType;
-import com.azure.cosmos.model.DatabaseAccount;
-import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.model.JsonSerializable;
-import com.azure.cosmos.model.PartitionKey;
-import com.azure.cosmos.model.ModelBridgeInternal;
-import com.azure.cosmos.model.PartitionKeyDefinition;
-import com.azure.cosmos.model.Permission;
-import com.azure.cosmos.model.RequestVerb;
-import com.azure.cosmos.model.Resource;
-import com.azure.cosmos.model.SqlQuerySpec;
-import com.azure.cosmos.model.SqlParameter;
-import com.azure.cosmos.model.SqlParameterList;
+import com.azure.cosmos.models.CosmosResourceType;
+import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.Permission;
+import com.azure.cosmos.models.RequestVerb;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlParameterList;
 import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -74,7 +74,7 @@ import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
 import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
 import static com.azure.cosmos.BridgeInternal.serializeJsonToByteBuffer;
-import static com.azure.cosmos.model.ModelBridgeInternal.toDatabaseAccount;
+import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
 
 /**
  * While this class is public, but it is not part of our published public APIs.

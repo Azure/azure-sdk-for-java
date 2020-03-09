@@ -3,13 +3,11 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ReplicationPolicy;
-import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.models.ModelBridgeInternal;
 
-import java.net.URI;
 import java.util.Map;
 
 /**

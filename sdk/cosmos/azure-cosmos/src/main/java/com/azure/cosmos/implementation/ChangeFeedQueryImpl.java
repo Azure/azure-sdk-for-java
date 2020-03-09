@@ -3,8 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.model.Resource;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;

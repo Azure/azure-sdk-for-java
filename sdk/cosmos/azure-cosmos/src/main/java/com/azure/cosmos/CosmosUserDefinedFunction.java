@@ -3,8 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.model.CosmosUserDefinedFunctionProperties;
-import com.azure.cosmos.model.CosmosUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 
 /**
  * The type Cosmos sync user defined function.

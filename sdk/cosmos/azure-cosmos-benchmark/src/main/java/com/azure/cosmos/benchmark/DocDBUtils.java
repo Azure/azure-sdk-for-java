@@ -6,10 +6,10 @@ package com.azure.cosmos.benchmark;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.model.SqlParameter;
-import com.azure.cosmos.model.SqlParameterList;
-import com.azure.cosmos.model.SqlQuerySpec;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlParameterList;
+import com.azure.cosmos.models.SqlQuerySpec;
 
 class DocDBUtils {
 

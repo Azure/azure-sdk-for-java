@@ -5,9 +5,9 @@ package com.azure.cosmos.rx.examples;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.model.FeedResponse;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.model.SqlQuerySpec;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseForTest;

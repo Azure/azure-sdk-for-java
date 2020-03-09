@@ -3,8 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.model.CosmosTriggerProperties;
-import com.azure.cosmos.model.CosmosTriggerResponse;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.CosmosTriggerResponse;
 
 /**
  * The type Cosmos sync trigger.

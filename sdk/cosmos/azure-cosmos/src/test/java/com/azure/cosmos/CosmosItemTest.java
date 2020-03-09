@@ -7,13 +7,13 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.model.CosmosItemRequestOptions;
-import com.azure.cosmos.model.CosmosItemResponse;
-import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.model.FeedResponse;
-import com.azure.cosmos.model.ModelBridgeInternal;
-import com.azure.cosmos.model.PartitionKey;
-import com.azure.cosmos.model.SqlQuerySpec;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;

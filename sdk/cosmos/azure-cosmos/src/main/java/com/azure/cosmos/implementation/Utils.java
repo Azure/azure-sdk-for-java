@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.models.FeedOptions;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;

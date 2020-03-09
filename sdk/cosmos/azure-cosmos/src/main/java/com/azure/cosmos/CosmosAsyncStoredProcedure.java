@@ -4,10 +4,10 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.StoredProcedure;
-import com.azure.cosmos.model.CosmosAsyncStoredProcedureResponse;
-import com.azure.cosmos.model.CosmosStoredProcedureProperties;
-import com.azure.cosmos.model.CosmosStoredProcedureRequestOptions;
-import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 /**

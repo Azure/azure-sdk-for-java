@@ -3,18 +3,18 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.model.CosmosAsyncContainerResponse;
-import com.azure.cosmos.model.CosmosAsyncUserResponse;
-import com.azure.cosmos.model.CosmosContainerProperties;
-import com.azure.cosmos.model.CosmosContainerRequestOptions;
-import com.azure.cosmos.model.CosmosContainerResponse;
-import com.azure.cosmos.model.CosmosDatabaseRequestOptions;
-import com.azure.cosmos.model.CosmosDatabaseResponse;
-import com.azure.cosmos.model.CosmosUserProperties;
-import com.azure.cosmos.model.CosmosUserResponse;
-import com.azure.cosmos.model.FeedOptions;
-import com.azure.cosmos.model.ModelBridgeInternal;
-import com.azure.cosmos.model.SqlQuerySpec;
+import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosAsyncUserResponse;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosUserProperties;
+import com.azure.cosmos.models.CosmosUserResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 

@@ -3,10 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.model.DatabaseAccount;
-import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.models.ModelBridgeInternal;
 
 /**
  * Used internally to provides functionality to work with database account configuration in the Azure Cosmos DB database service.

@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.model.SqlQuerySpec;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;

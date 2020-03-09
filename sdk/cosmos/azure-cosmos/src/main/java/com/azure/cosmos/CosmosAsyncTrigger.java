@@ -4,9 +4,9 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.Trigger;
-import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
-import com.azure.cosmos.model.CosmosTriggerProperties;
-import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 /**

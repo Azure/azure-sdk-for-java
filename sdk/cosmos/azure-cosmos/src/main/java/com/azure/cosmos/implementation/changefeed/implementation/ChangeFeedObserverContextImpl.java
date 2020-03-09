@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 
-import com.azure.cosmos.model.FeedResponse;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.PartitionCheckpointer;

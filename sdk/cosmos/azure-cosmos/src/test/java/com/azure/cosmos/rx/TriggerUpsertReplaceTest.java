@@ -4,12 +4,12 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
-import com.azure.cosmos.model.CosmosTriggerProperties;
-import com.azure.cosmos.model.TriggerOperation;
-import com.azure.cosmos.model.TriggerType;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.TriggerOperation;
+import com.azure.cosmos.models.TriggerType;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;

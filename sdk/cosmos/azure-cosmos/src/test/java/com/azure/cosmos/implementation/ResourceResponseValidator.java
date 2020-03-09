@@ -2,15 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.model.CompositePath;
-import com.azure.cosmos.model.IndexingMode;
-import com.azure.cosmos.model.Permission;
-import com.azure.cosmos.model.PermissionMode;
-import com.azure.cosmos.model.Resource;
-import com.azure.cosmos.model.SpatialSpec;
-import com.azure.cosmos.model.SpatialType;
-import com.azure.cosmos.model.TriggerOperation;
-import com.azure.cosmos.model.TriggerType;
+import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.IndexingMode;
+import com.azure.cosmos.models.Permission;
+import com.azure.cosmos.models.PermissionMode;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SpatialSpec;
+import com.azure.cosmos.models.SpatialType;
+import com.azure.cosmos.models.TriggerOperation;
+import com.azure.cosmos.models.TriggerType;
 import org.assertj.core.api.Condition;
 
 import java.time.Instant;

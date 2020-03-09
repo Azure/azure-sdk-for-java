@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.model.Resource;
+import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.assertj.core.api.Condition;
 

@@ -5,12 +5,12 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.model.CosmosError;
+import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 
