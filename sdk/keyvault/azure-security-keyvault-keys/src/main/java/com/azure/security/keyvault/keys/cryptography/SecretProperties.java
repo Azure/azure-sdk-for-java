@@ -131,7 +131,7 @@ class SecretProperties {
     }
 
     /**
-     * The number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
+     * The number of days a secret is retained before being deleted for a soft delete-enabled Key Vault.
      */
     @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
     private Integer recoverableDays;
@@ -159,7 +159,7 @@ class SecretProperties {
     }
 
     /**
-     * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
+     * Gets the number of days a secret is retained before being deleted for a soft delete-enabled Key Vault.
      * @return the recoverable days.
      */
     public Integer getRecoverableDays() {

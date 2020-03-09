@@ -89,7 +89,7 @@ public class CertificateProperties {
     Base64Url x509Thumbprint;
 
     /**
-     * The number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
+     * The number of days a certificate is retained before being deleted for a soft delete-enabled Key Vault.
      */
     @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
     private Integer recoverableDays;
