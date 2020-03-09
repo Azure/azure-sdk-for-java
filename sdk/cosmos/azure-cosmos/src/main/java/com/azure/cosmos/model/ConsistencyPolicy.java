@@ -9,6 +9,8 @@ import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.CaseFormat;
 
+import java.time.Duration;
+
 /**
  * Encapsulates the properties for consistency policy in the Azure Cosmos DB database service.
  */
@@ -105,21 +107,21 @@ public final class ConsistencyPolicy extends JsonSerializable {
      *
      * @return the max staleness prefix.
      */
-    public int getMaxStalenessIntervalInSeconds() {
+    public Duration getMaxStalenessIntervalInSeconds() {
         Integer value = super.getInt(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS);
         if (value == null) {
-            return ConsistencyPolicy.DEFAULT_MAX_STALENESS_INTERVAL;
+            return Duration.ofSeconds(ConsistencyPolicy.DEFAULT_MAX_STALENESS_INTERVAL);
         }
-        return value;
+        return Duration.ofSeconds(value);
     }
 
     /**
      * Sets the in bounded staleness consistency, the maximum allowed staleness in terms time interval.
      *
-     * @param maxStalenessIntervalInSeconds the max staleness interval in seconds.
+     * @param maxStalenessIntervalInSeconds the max staleness duration.
      * @return the ConsistenctPolicy.
      */
-    public ConsistencyPolicy setMaxStalenessIntervalInSeconds(int maxStalenessIntervalInSeconds) {
+    public ConsistencyPolicy setMaxStalenessIntervalInSeconds(Duration maxStalenessIntervalInSeconds) {
         super.set(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS, maxStalenessIntervalInSeconds);
         return this;
     }

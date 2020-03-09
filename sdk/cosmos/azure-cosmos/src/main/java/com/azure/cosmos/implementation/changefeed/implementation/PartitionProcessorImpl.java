@@ -152,12 +152,12 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         }
                         case TRANSIENT_ERROR: {
                             // Retry on transient (429) errors
-                            if (clientException.getRetryAfterInMilliseconds() > 0) {
-                                ZonedDateTime stopTimer = ZonedDateTime.now().plus(clientException.getRetryAfterInMilliseconds(), MILLIS);
-                                return Mono.just(clientException.getRetryAfterInMilliseconds()) // set some seed value to be able to run
-                                    // the repeat loop
-                                    .delayElement(Duration.ofMillis(100))
-                                    .repeat(() -> {
+                            if (clientException.getRetryAfterDuration().toMillis() > 0) {
+                                ZonedDateTime stopTimer = ZonedDateTime.now().plus(clientException.getRetryAfterDuration().toMillis(), MILLIS);
+                                return Mono.just(clientException.getRetryAfterDuration().toMillis()) // set some seed value to be able to run
+                                           // the repeat loop
+                                           .delayElement(Duration.ofMillis(100))
+                                           .repeat(() -> {
                                         ZonedDateTime currentTime = ZonedDateTime.now();
                                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
                                     }).flatMap(values -> Flux.empty());

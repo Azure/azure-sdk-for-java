@@ -42,12 +42,12 @@ public class RetryAnalyzer extends RetryAnalyzerCount {
             return  waitBetweenRetriesInSeconds;
         }
 
-        long retryAfterInMilliseconds = cosmosClientException.getRetryAfterInMilliseconds();
-        if (retryAfterInMilliseconds <= 0) {
+        Duration retryAfterDuration = cosmosClientException.getRetryAfterDuration();
+        if (retryAfterDuration.toMillis() <= 0) {
             return waitBetweenRetriesInSeconds;
         }
 
-        return Math.max(Math.toIntExact(Duration.ofMillis(retryAfterInMilliseconds).getSeconds()), waitBetweenRetriesInSeconds);
+        return Math.max(Math.toIntExact(retryAfterDuration.getSeconds()), waitBetweenRetriesInSeconds);
     }
 
     private CosmosClientException extractCosmosClientExceptionIfAny(Throwable t) {

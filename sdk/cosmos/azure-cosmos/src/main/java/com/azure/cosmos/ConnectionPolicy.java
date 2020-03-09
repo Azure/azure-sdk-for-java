@@ -63,7 +63,7 @@ public final class ConnectionPolicy {
     /**
      * Gets the request timeout (time to wait for response from network peer).
      *
-     * @return the request timeout.
+     * @return the request timeout duration.
      */
     public Duration getRequestTimeout() {
         return this.requestTimeout;
@@ -73,7 +73,7 @@ public final class ConnectionPolicy {
      * Sets the request timeout (time to wait for response from network peer).
      * The default is 60 seconds.
      *
-     * @param requestTimeout the request timeout.
+     * @param requestTimeout the request timeout duration.
      * @return the ConnectionPolicy.
      */
     public ConnectionPolicy setRequestTimeout(Duration requestTimeout) {
@@ -126,7 +126,7 @@ public final class ConnectionPolicy {
      * Gets the value of the timeout for an idle connection, the default is 60
      * seconds.
      *
-     * @return Idle connection timeout.
+     * @return Idle connection timeout duration.
      */
     public Duration getIdleConnectionTimeout() {
         return this.idleConnectionTimeout;
@@ -136,7 +136,7 @@ public final class ConnectionPolicy {
      * sets the value of the timeout for an idle connection. After that time,
      * the connection will be automatically closed.
      *
-     * @param idleConnectionTimeout the timeout for an idle connection in seconds.
+     * @param idleConnectionTimeout the duration for an idle connection.
      * @return the ConnectionPolicy.
      */
     public ConnectionPolicy setIdleConnectionTimeout(Duration idleConnectionTimeout) {
