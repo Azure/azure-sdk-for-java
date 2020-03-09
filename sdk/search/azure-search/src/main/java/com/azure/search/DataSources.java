@@ -16,7 +16,6 @@ import com.azure.search.models.HighWaterMarkChangeDetectionPolicy;
  * Utility class that aids in the creation of {@link DataSource DataSources}.
  */
 public final class DataSources {
-    private DataSources(){}
 
     /**
      * Creates a new {@link DataSource} to connect to an Azure SQL database.
