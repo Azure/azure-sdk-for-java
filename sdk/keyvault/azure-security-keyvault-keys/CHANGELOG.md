@@ -2,8 +2,10 @@
 
 ## 4.2.0-beta.2 (2020-03-10)
 ### Added
-- Add `recoverableDays` property to `KeyProperties`.
-- Add `Import` operation to `KeyOperation`.
+- Added `recoverableDays` property to `KeyProperties`.
+- Added `Import` operation to `KeyOperation`.
+- Added support for `7.1-Preview` service version
+
 
 ## 4.2.0-beta.1
 - `KeyVaultKey` model can be instantiated using `fromKeyId(String keyId, JsonWebKey jsonWebKey)` and `fromName(String name, JsonWebKey jsonWebKey)` methods on the `KeyVaultKey` model.
