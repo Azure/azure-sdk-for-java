@@ -69,7 +69,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * Set the name of the resource.
      *
      * @param level the consistency level.
-     * @return the ConsistenctPolicy.
+     * @return the ConsistencyPolicy.
      */
     public ConsistencyPolicy setDefaultConsistencyLevel(ConsistencyLevel level) {
         super.set(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL, level.toString());
@@ -95,7 +95,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * (aka version).
      *
      * @param maxStalenessPrefix the max staleness prefix.
-     * @return the ConsistenctPolicy.
+     * @return the ConsistencyPolicy.
      */
     public ConsistencyPolicy setMaxStalenessPrefix(int maxStalenessPrefix) {
         super.set(Constants.Properties.MAX_STALENESS_PREFIX, maxStalenessPrefix);
@@ -104,6 +104,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
 
     /**
      * Gets the in bounded staleness consistency, the maximum allowed staleness in terms time interval.
+     * Resolution is in seconds.
      *
      * @return the max staleness prefix.
      */
@@ -117,12 +118,16 @@ public final class ConsistencyPolicy extends JsonSerializable {
 
     /**
      * Sets the in bounded staleness consistency, the maximum allowed staleness in terms time interval.
+     * Resolution is in seconds.
      *
-     * @param maxStalenessInterval the max staleness duration.
-     * @return the ConsistenctPolicy.
+     * @param maxStalenessInterval the max staleness interval.
+     * @return the ConsistencyPolicy.
      */
     public ConsistencyPolicy setMaxStalenessInterval(Duration maxStalenessInterval) {
-        super.set(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS, maxStalenessInterval);
+        if (maxStalenessInterval == null) {
+            throw new IllegalArgumentException("maxStalenessInterval should not be null");
+        }
+        super.set(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS, maxStalenessInterval.toSeconds());
         return this;
     }
 }
