@@ -33,10 +33,6 @@ public class KeyClientTest extends KeyClientTestBase {
     @Override
     protected void beforeTest() {
         beforeTestSetup();
-        client = clientSetup(pipeline -> new KeyClientBuilder()
-            .vaultUrl(getEndpoint())
-            .pipeline(pipeline)
-            .buildClient());
     }
 
     private void getKeyClient(HttpClient httpClient,

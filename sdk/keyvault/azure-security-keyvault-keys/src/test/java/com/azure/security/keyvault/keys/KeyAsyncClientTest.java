@@ -32,11 +32,6 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @Override
     protected void beforeTest() {
         beforeTestSetup();
-
-        client = clientSetup(pipeline -> new KeyClientBuilder()
-            .pipeline(pipeline)
-            .vaultUrl(getEndpoint())
-            .buildAsyncClient());
     }
 
 
