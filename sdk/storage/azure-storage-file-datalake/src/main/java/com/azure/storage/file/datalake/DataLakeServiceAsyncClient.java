@@ -273,6 +273,8 @@ public class DataLakeServiceAsyncClient {
             .listBlobContainers(Transforms.toListBlobContainersOptions(options));
         /* We need to create a new PagedFlux here because PagedFlux extends Flux, but not all operations were
             overriden to return PagedFlux - so we need to do the transformations and recreate a PagedFlux. */
+        /* Note: pageSize is not passed in as a parameter since the underlying implementation of listBlobContainers
+           does not use the pageSize parameter. Passing it in will have no effect. */
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<BlobContainerItem>> flux = (continuationToken == null)
                 ? inputPagedFlux.byPage()
