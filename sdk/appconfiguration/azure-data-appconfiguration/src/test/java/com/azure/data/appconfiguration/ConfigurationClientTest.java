@@ -83,7 +83,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests that a configuration is able to be added, these are differentiate from each other using a key or key-label identifier.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void addConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         addConfigurationSettingRunner((expected) -> assertConfigurationEquals(expected, client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
@@ -103,7 +103,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests that we can add configuration settings when value is not null or an empty string.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void addConfigurationSettingEmptyValue(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         addConfigurationSettingEmptyValueRunner((setting) -> {
@@ -116,7 +116,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that an exception is thrown when null key is passed.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void addConfigurationSettingNullKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         assertRunnableThrowsException(() -> client.addConfigurationSetting(null, null, "A Value"), IllegalArgumentException.class);
@@ -127,7 +127,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests that a configuration cannot be added twice with the same key. This should return a 412 error.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void addExistingSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         addExistingSettingRunner((expected) -> {
@@ -142,7 +142,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * When the configuration is read-only updates cannot happen, this will result in a 409.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void setConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         setConfigurationSettingRunner((expected, update) -> assertConfigurationEquals(expected, client.setConfigurationSettingWithResponse(expected, false, Context.NONE).getValue()));
@@ -154,7 +154,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * prevent set from doing an add as well.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void setConfigurationSettingIfETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         setConfigurationSettingIfETagRunner((initial, update) -> {
@@ -173,7 +173,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests that we cannot set a configuration setting when the key is an empty string.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void setConfigurationSettingEmptyKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         assertRestException(() -> client.setConfigurationSetting("", null, "A value"), HttpURLConnection.HTTP_BAD_METHOD);
@@ -184,7 +184,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Value is not a required property.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void setConfigurationSettingEmptyValue(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         setConfigurationSettingEmptyValueRunner((setting) -> {
@@ -197,7 +197,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that an exception is thrown when null key is passed.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void setConfigurationSettingNullKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         assertRunnableThrowsException(() -> client.setConfigurationSetting(null, null, "A Value"), IllegalArgumentException.class);
@@ -208,7 +208,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests that a configuration is able to be retrieved when it exists, whether or not it is read-only.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void getConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         getConfigurationSettingRunner((expected) -> {
@@ -221,7 +221,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests that attempting to retrieve a non-existent configuration doesn't work, this will result in a 404.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void getConfigurationSettingNotFound(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final String key = getKey();
@@ -240,7 +240,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * configuration never existed.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void deleteConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         deleteConfigurationSettingRunner((expected) -> {
@@ -256,7 +256,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests that attempting to delete a non-existent configuration will return a 204.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void deleteConfigurationSettingNotFound(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final String key = getKey();
@@ -276,7 +276,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * If the delete ETag doesn't match anything the delete won't happen, this will result in a 412.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void deleteConfigurationSettingWithETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         deleteConfigurationSettingWithETagRunner((initial, update) -> {
@@ -294,7 +294,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void deleteConfigurationSettingNullKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         assertRunnableThrowsException(() -> client.deleteConfigurationSetting(null, null), IllegalArgumentException.class);
@@ -305,7 +305,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests assert that the setting can not be deleted after set the setting to read-only.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void setReadOnly(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
 
@@ -325,7 +325,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests assert that the setting can be deleted after clear read-only of the setting.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void clearReadOnly(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         lockUnlockRunner((expected) -> {
@@ -351,7 +351,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests assert that the setting can not be deleted after lock the setting.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void setReadOnlyWithConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         lockUnlockRunner((expected) -> {
@@ -370,7 +370,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Tests assert that the setting can be deleted after unlock the setting.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void clearReadOnlyWithConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         lockUnlockRunner((expected) -> {
@@ -398,7 +398,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * from the service when filtering by either its label or just its key.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listWithKeyAndLabel(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final String value = "myValue";
@@ -416,7 +416,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * service when filtering by their keys.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listWithMultipleKeys(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         String key = getKey();
@@ -435,7 +435,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * from the service when filtering by their labels.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listWithMultipleLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         String key = getKey();
@@ -454,7 +454,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that we can select filter results by key, label, and select fields using SettingSelector.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listConfigurationSettingsSelectFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         listConfigurationSettingsSelectFieldsRunner((settings, selector) -> {
@@ -467,7 +467,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that throws exception when using SettingSelector with not supported *a key filter.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         filterValueTest("*" + getKey(), getLabel());
@@ -477,7 +477,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that throws exception when using SettingSelector with not supported *a* key filter.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         filterValueTest("*" + getKey() + "*", getLabel());
@@ -487,7 +487,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that throws exception when using SettingSelector with not supported *a label filter.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         filterValueTest(getKey(), "*" + getLabel());
@@ -497,7 +497,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that throws exception when using SettingSelector with not supported *a* label filter.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         filterValueTest(getKey(), "*" + getLabel() + "*");
@@ -507,7 +507,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that we can get a ConfigurationSetting at the provided accept datetime
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listConfigurationSettingsAcceptDateTime(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final String keyName = getKey();
@@ -542,7 +542,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * specific fields.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listRevisions(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final String keyName = getKey();
@@ -572,7 +572,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that we can get all the revisions for all settings with the specified keys.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listRevisionsWithMultipleKeys(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         String key = getKey();
@@ -592,7 +592,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that we can get all revisions for all settings with the specified labels.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listRevisionsWithMultipleLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         String key = getKey();
@@ -613,7 +613,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that we can get a subset of revisions based on the "acceptDateTime"
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listRevisionsAcceptDateTime(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final String keyName = getKey();
@@ -651,7 +651,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listRevisionsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final int numberExpected = 50;
@@ -668,7 +668,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listRevisionsWithPaginationAndRepeatStream(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final int numberExpected = 50;
@@ -688,7 +688,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listRevisionsWithPaginationAndRepeatIterator(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final int numberExpected = 50;
@@ -716,7 +716,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listConfigurationSettingsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final int numberExpected = 50;
@@ -733,7 +733,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * scenario will return a setting when the ETag provided does not match the one of the current setting.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void getConfigurationSettingWhenValueNotUpdated(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final String key = getKey();
@@ -751,7 +751,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     @Disabled
     public void deleteAllSettings(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
@@ -763,7 +763,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void addHeadersFromContextPolicyTest(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final HttpHeaders headers = getCustomizedHeaders();

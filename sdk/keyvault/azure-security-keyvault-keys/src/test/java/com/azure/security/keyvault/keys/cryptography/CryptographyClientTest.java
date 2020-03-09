@@ -46,7 +46,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
     public void encryptDecryptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
         initializeClient(httpClient, serviceVersion);
         encryptDecryptRsaRunner(keyPair -> {
@@ -84,7 +84,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
     public void wrapUnwraptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
         initializeClient(httpClient, serviceVersion);
         encryptDecryptRsaRunner(keyPair -> {
@@ -123,7 +123,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
     public void signVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
         initializeClient(httpClient, serviceVersion);
         encryptDecryptRsaRunner(keyPair -> {
@@ -161,7 +161,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
     public void signVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
         initializeClient(httpClient, serviceVersion);
         Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();

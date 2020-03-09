@@ -122,7 +122,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void nullServiceVersion(HttpClient httpClient) {
         final String key = "newKey";
         final String value = "newValue";
@@ -149,7 +149,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void defaultPipeline(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         final String key = "newKey";
         final String value = "newValue";

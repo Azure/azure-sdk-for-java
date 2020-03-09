@@ -55,7 +55,7 @@ public class AadCredentialTest extends TestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("TestHelper#getTestParameters")
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void aadAuthenticationAzConfigClient(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion) throws Exception {
         setup(httpClient, serviceVersion);
