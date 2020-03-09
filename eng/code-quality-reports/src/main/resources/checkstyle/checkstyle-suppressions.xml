@@ -332,6 +332,7 @@
   <suppress checks="Javadoc" files=".*[/\\]perf-test[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*[/\\]perf-test[/\\].*\.java"/>
   <suppress checks="GoodLogging" files=".*[/\\]perf-test[/\\].*\.java"/>
+  <suppress checks="GoodLogging" files=".*[/\\]com.azure.perf.test.core[/\\].*"/>
 
   <!-- Internal smoke test classes in Java perf framework need the public modifier -->
   <suppress checks="RedundantModifier" files="com.azure.perf.test.core.NoOpTest.java"/>
