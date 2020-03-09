@@ -193,7 +193,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         fs.provider().createDirectory(fs.getPath(fileName)) // Will go to default directory
 
         then:
-        thrown(FileAlreadyExistsException)
+       thrown(FileAlreadyExistsException)
     }
 
     def "FileSystemProvider createDir concrete dir already exists"() {
