@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.Permission;
+import com.azure.cosmos.models.PermissionMode;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -3,17 +3,14 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.JsonSerializable;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 
-import static com.azure.cosmos.BridgeInternal.remove;
 import static com.azure.cosmos.BridgeInternal.setProperty;
-import static com.azure.cosmos.BridgeInternal.setMapper;
-
 /**
  * Represents a document in the Azure Cosmos DB database service.
  * <p>
@@ -48,18 +45,6 @@ public class Document extends Resource {
     public Document setId(String id){
         super.setId(id);
         return this;
-    }
-
-    /**
-     * Initialize a document object from json string.
-     *
-     * @param jsonString the json string that represents the document object.
-     * @param objectMapper the custom object mapper
-     */
-    Document(String jsonString, ObjectMapper objectMapper) {
-        // TODO: Made package private due to #153. #171 adding custom serialization options back.
-        super(jsonString);
-        setMapper(this, objectMapper);
     }
 
     /**
@@ -120,7 +105,7 @@ public class Document extends Resource {
         if (timeToLive != null) {
             setProperty(this, Constants.Properties.TTL, timeToLive);
         } else if (super.has(Constants.Properties.TTL)) {
-            remove(this, Constants.Properties.TTL);
+            remove(Constants.Properties.TTL);
         }
     }
 }

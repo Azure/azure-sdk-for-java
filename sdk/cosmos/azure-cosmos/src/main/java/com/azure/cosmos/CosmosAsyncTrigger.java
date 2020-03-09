@@ -4,6 +4,9 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.Trigger;
+import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 /**
@@ -52,7 +55,7 @@ public class CosmosAsyncTrigger {
         return container.getDatabase()
                    .getDocClientWrapper()
                    .readTrigger(getLink(), null)
-                   .map(response -> new CosmosAsyncTriggerResponse(response, container))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, container))
                    .single();
     }
 
@@ -71,7 +74,7 @@ public class CosmosAsyncTrigger {
         return container.getDatabase()
                    .getDocClientWrapper()
                    .replaceTrigger(new Trigger(triggerSettings.toJson()), null)
-                   .map(response -> new CosmosAsyncTriggerResponse(response, container))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, container))
                    .single();
     }
 
@@ -88,7 +91,7 @@ public class CosmosAsyncTrigger {
         return container.getDatabase()
                    .getDocClientWrapper()
                    .deleteTrigger(getLink(), null)
-                   .map(response -> new CosmosAsyncTriggerResponse(response, container))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, container))
                    .single();
     }
 

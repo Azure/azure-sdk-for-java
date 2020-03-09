@@ -8,7 +8,7 @@ import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
 import com.azure.search.models.GeoPoint;
 import com.azure.search.models.Index;
-import com.azure.search.models.IndexBatch;
+import com.azure.search.models.IndexDocumentsBatch;
 import com.azure.search.test.environment.models.Hotel;
 import com.azure.search.test.environment.models.HotelAddress;
 import com.azure.search.test.environment.models.HotelRoom;
@@ -298,7 +298,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         expectedDoc.put("Location", GeoPoint.create(40.760586, -73.975403));
         expectedDoc.put("Rooms", Collections.singletonList(new SearchDocument(Collections.singletonMap("BaseRate", "NaN"))));
 
-        client.index(new IndexBatch<>().addUploadAction(indexedDoc));
+        client.indexDocuments(new IndexDocumentsBatch<>().addUploadAction(indexedDoc));
 
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Location", "Rooms/BaseRate");
@@ -315,7 +315,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         SearchDocument expectedDoc = new SearchDocument();
         expectedDoc.put("HotelId", complexKey);
 
-        client.index(new IndexBatch<>().addUploadAction(expectedDoc));
+        client.indexDocuments(new IndexDocumentsBatch<>().addUploadAction(expectedDoc));
         assertEquals(client.getDocumentWithResponse(complexKey, new ArrayList<>(expectedDoc.keySet()), null, Context.NONE).getValue(), expectedDoc);
     }
 
@@ -332,7 +332,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
         expectedDoc.put("HotelId", "1");
         expectedDoc.put("LastRenovationDate", OffsetDateTime.parse("2010-06-27T08:00:00Z", DateTimeFormatter.ISO_DATE_TIME));
 
-        client.index(new IndexBatch<>().addUploadAction(indexedDoc));
+        client.indexDocuments(new IndexDocumentsBatch<>().addUploadAction(indexedDoc));
         assertEquals(client.getDocumentWithResponse("1", new ArrayList<>(expectedDoc.keySet()), null, Context.NONE).getValue(), expectedDoc);
     }
 

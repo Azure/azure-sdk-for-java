@@ -4,6 +4,9 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.UserDefinedFunction;
+import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 /**
@@ -52,7 +55,7 @@ public class CosmosAsyncUserDefinedFunction {
      */
     public Mono<CosmosAsyncUserDefinedFunctionResponse> read() {
         return container.getDatabase().getDocClientWrapper().readUserDefinedFunction(getLink(), null)
-                   .map(response -> new CosmosAsyncUserDefinedFunctionResponse(response, container)).single();
+                        .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container)).single();
     }
 
     /**
@@ -71,7 +74,7 @@ public class CosmosAsyncUserDefinedFunction {
         return container.getDatabase()
                    .getDocClientWrapper()
                    .replaceUserDefinedFunction(new UserDefinedFunction(udfSettings.toJson()), null)
-                   .map(response -> new CosmosAsyncUserDefinedFunctionResponse(response, container))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container))
                    .single();
     }
 
@@ -90,7 +93,7 @@ public class CosmosAsyncUserDefinedFunction {
         return container.getDatabase()
                    .getDocClientWrapper()
                    .deleteUserDefinedFunction(this.getLink(), null)
-                   .map(response -> new CosmosAsyncUserDefinedFunctionResponse(response, container))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container))
                    .single();
     }
 

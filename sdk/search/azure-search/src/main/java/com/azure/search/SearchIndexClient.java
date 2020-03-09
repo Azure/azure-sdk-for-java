@@ -8,7 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.models.AutocompleteOptions;
-import com.azure.search.models.IndexBatch;
+import com.azure.search.models.IndexDocumentsBatch;
 import com.azure.search.models.IndexDocumentsResult;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
@@ -385,8 +385,8 @@ public final class SearchIndexClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
-    public IndexDocumentsResult index(IndexBatch<?> batch) {
-        return indexWithResponse(batch, Context.NONE).getValue();
+    public IndexDocumentsResult indexDocuments(IndexDocumentsBatch<?> batch) {
+        return indexDocumentsWithResponse(batch, Context.NONE).getValue();
     }
 
     /**
@@ -403,8 +403,8 @@ public final class SearchIndexClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
-    public Response<IndexDocumentsResult> indexWithResponse(IndexBatch<?> batch, Context context) {
-        return asyncClient.indexWithResponse(batch, context).block();
+    public Response<IndexDocumentsResult> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch, Context context) {
+        return asyncClient.indexDocumentsWithResponse(batch, context).block();
     }
 
     /**
