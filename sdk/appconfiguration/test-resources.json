@@ -20,7 +20,7 @@
             }
         },
         "sku": {
-            "defaultValue": "Standard",
+            "defaultValue": "standard",
             "type": "string"
         }
     },
