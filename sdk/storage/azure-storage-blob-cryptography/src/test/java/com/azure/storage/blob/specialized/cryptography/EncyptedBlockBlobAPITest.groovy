@@ -156,40 +156,6 @@ class EncyptedBlockBlobAPITest extends APISpec {
         true    | true
     }
 
-    def "Test Async and Sync EncryptedBlockBlobClient to BlockBlobClient"() {
-        when:
-        beac.upload(defaultFlux, null).block()
-        BlockBlobAsyncClient normalAsyncClient = beac.getBlockBlobAsyncClient()
-
-        then:
-        normalAsyncClient.blobUrl == beac.blobUrl
-        normalAsyncClient.getHttpPipeline().policyCount == beac.getHttpPipeline().policyCount
-        normalAsyncClient.getHttpPipeline().httpClient == beac.getHttpPipeline().httpClient
-
-        and:
-        normalAsyncClient.download().blockLast()
-
-        then:
-        notThrown(BlobStorageException)
-
-        when:
-        bec.uploadFromFile(getRandomFile(KB).toPath().toString())
-        BlockBlobClient normalClient = bec.getBlockBlobClient()
-
-        // Check that an encrypted client has correct number of policies and important properties are the same
-        then:
-        normalClient.blobUrl == bec.blobUrl
-        normalClient.getHttpPipeline().policyCount == bec.getHttpPipeline().policyCount
-        normalClient.getHttpPipeline().httpClient == bec.getHttpPipeline().httpClient
-
-        and:
-        normalClient.download(new ByteArrayOutputStream())
-
-        then:
-        notThrown(BlobStorageException)
-
-    }
-
     // This test checks that encryption is not just a no-op
     def "Encryption not a no-op"() {
         setup:
