@@ -20,7 +20,7 @@
             }
         },
         "sku": {
-            "defaultValue": "standard",
+            "defaultValue": "Standard",
             "type": "string"
         }
     },
@@ -33,7 +33,7 @@
     "resources": [
         {
             "type": "Microsoft.AppConfiguration/configurationStores",
-            "apiVersion": "2019-02-01-preview",
+            "apiVersion": "2019-10-01",
             "name": "[variables('uniqueAzConfigName')]",
             "location":"[resourceGroup().location]",
             "sku": {
