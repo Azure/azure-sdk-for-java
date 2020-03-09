@@ -519,12 +519,12 @@ class APISpec extends Specification {
 
     def putDirectoryBlob(BlockBlobClient blobClient) {
         blobClient.commitBlockListWithResponse(Collections.emptyList(), null,
-            [(AzureFileSystemProvider.DIR_METADATA_MARKER): "true"], null, null, null, null)
+            [(AzureResource.DIR_METADATA_MARKER): "true"], null, null, null, null)
     }
 
     def checkBlobIsDir(BlobClient blobClient) {
         return blobClient.getPropertiesWithResponse(null, null, null).getValue().getMetadata()
-            .containsKey(AzureFileSystemProvider.DIR_METADATA_MARKER)
+            .containsKey(AzureResource.DIR_METADATA_MARKER)
     }
 
     static class TestFileAttribute<T> implements  FileAttribute<T> {

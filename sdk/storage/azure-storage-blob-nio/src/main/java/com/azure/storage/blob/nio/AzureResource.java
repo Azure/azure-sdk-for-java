@@ -36,7 +36,7 @@ import java.util.Objects;
 class AzureResource {
     private final ClientLogger logger = new ClientLogger(AzureResource.class);
 
-    private static final String DIR_METADATA_MARKER = "is_hdi_folder";
+    static final String DIR_METADATA_MARKER = "is_hdi_folder";
 
     private final AzurePath path;
     private final BlobClient blobClient;
