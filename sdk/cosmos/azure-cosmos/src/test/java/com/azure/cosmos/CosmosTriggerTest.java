@@ -3,6 +3,12 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.model.CosmosTriggerProperties;
+import com.azure.cosmos.model.CosmosTriggerResponse;
+import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.model.SqlQuerySpec;
+import com.azure.cosmos.model.TriggerOperation;
+import com.azure.cosmos.model.TriggerType;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;

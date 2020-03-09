@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.model.CosmosError;
 
 import java.util.Map;
 
@@ -20,10 +21,21 @@ import java.util.Map;
  */
 public class PartitionKeyRangeGoneException extends CosmosClientException {
 
+    /**
+     * Instantiates a new Partition key range gone exception.
+     */
     public PartitionKeyRangeGoneException() {
         this(RMResources.Gone);
     }
 
+    /**
+     * Instantiates a new Partition key range gone exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public PartitionKeyRangeGoneException(CosmosError cosmosError,
                                           long lsn,
                                           String partitionKeyRangeId,
@@ -34,6 +46,11 @@ public class PartitionKeyRangeGoneException extends CosmosClientException {
         this.setSubstatus();
     }
 
+    /**
+     * Instantiates a new Partition key range gone exception.
+     *
+     * @param message the message
+     */
     public PartitionKeyRangeGoneException(String message) {
         this(message, null, null, null);
     }
@@ -47,6 +64,13 @@ public class PartitionKeyRangeGoneException extends CosmosClientException {
     }
 
 
+    /**
+     * Instantiates a new Partition key range gone exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUriString the request uri string
+     */
     public PartitionKeyRangeGoneException(String message, HttpHeaders headers, String requestUriString) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.GONE, requestUriString);
         this.setSubstatus();

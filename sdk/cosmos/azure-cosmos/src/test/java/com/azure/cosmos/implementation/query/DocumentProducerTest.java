@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosError;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.model.CosmosError;
+import com.azure.cosmos.model.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -34,10 +34,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -338,7 +338,7 @@ public class DocumentProducerTest {
         RequestCreator requestCreator = RequestCreator.simpleMock();
 
         List<FeedResponse<Document>> responsesBeforeThrottle = mockFeedResponses(partitionKeyRangeId, 2, 1, false);
-        Exception throttlingException = mockThrottlingException(10);
+        Exception throttlingException = mockThrottlingException(Duration.ofMillis(10));
         List<FeedResponse<Document>> responsesAfterThrottle = mockFeedResponses(partitionKeyRangeId, 5, 1, true);
 
         RequestExecutor.PartitionAnswer behaviourBeforeException =
@@ -407,7 +407,7 @@ public class DocumentProducerTest {
         RequestCreator requestCreator = RequestCreator.simpleMock();
 
         List<FeedResponse<Document>> responsesBeforeThrottle = mockFeedResponses(partitionKeyRangeId, 1, 1, false);
-        Exception throttlingException = mockThrottlingException(10);
+        Exception throttlingException = mockThrottlingException(Duration.ofMillis(10));
 
         RequestExecutor.PartitionAnswer behaviourBeforeException =
                 RequestExecutor.PartitionAnswer.just(partitionKeyRangeId, responsesBeforeThrottle);
@@ -436,11 +436,11 @@ public class DocumentProducerTest {
         subscriber.assertValueCount(responsesBeforeThrottle.size());
     }
 
-    private CosmosClientException mockThrottlingException(long retriesAfter) {
+    private CosmosClientException mockThrottlingException(Duration retriesAfterDuration) {
         CosmosClientException throttleException = mock(CosmosClientException.class);
         doReturn(429).when(throttleException).getStatusCode();
         doReturn(new StackTraceElement[0]).when(throttleException).getStackTrace();
-        doReturn(retriesAfter).when(throttleException).getRetryAfterInMilliseconds();
+        doReturn(retriesAfterDuration).when(throttleException).getRetryAfterDuration();
         return throttleException;
     }
 

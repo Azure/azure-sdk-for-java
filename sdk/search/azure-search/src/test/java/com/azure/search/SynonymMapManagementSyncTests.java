@@ -3,10 +3,10 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.models.AccessCondition;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.test.AccessConditionTests;
@@ -42,7 +42,7 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
             client.deleteSynonymMapWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
 
     private SynonymMap createOrUpdateSynonymMap(
-        SynonymMap sm, AccessCondition ac, RequestOptions ro) {
+        SynonymMap sm, MatchConditions ac, RequestOptions ro) {
         return client.createOrUpdateSynonymMapWithResponse(sm, ac, ro, Context.NONE).getValue();
     }
 
@@ -152,7 +152,7 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
             .setName(initial.getName())
             .setSynonyms("newword1,newword2");
 
-        SynonymMap updatedActual = client.createOrUpdateSynonymMapWithResponse(updatedExpected, new AccessCondition(),
+        SynonymMap updatedActual = client.createOrUpdateSynonymMapWithResponse(updatedExpected, new MatchConditions(),
             generateRequestOptions(), Context.NONE).getValue();
         assertSynonymMapsEqual(updatedExpected, updatedActual);
 
@@ -173,7 +173,7 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         SynonymMap expected = createTestSynonymMap();
 
         Response<SynonymMap> createOrUpdateResponse = client.createOrUpdateSynonymMapWithResponse(
-            expected, new AccessCondition(), generateRequestOptions(), Context.NONE);
+            expected, new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
         assertSynonymMapsEqual(expected, createOrUpdateResponse.getValue());
     }
@@ -217,7 +217,7 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
     public void deleteSynonymMapIsIdempotent() {
         SynonymMap synonymMap = createTestSynonymMap();
         Response<Void> deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(),
-            new AccessCondition(), generateRequestOptions(), Context.NONE);
+            new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
         Response<SynonymMap> createResponse = client.createSynonymMapWithResponse(synonymMap,
@@ -225,11 +225,11 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
         assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
 
         deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(),
-            new AccessCondition(), generateRequestOptions(), Context.NONE);
+            new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
 
         deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(),
-            new AccessCondition(), generateRequestOptions(), Context.NONE);
+            new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 

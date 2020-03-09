@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.model.CosmosError;
 
 import java.util.Map;
 
@@ -18,10 +19,21 @@ public class PartitionKeyRangeIsSplittingException extends CosmosClientException
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Instantiates a new Partition key range is splitting exception.
+     */
     public PartitionKeyRangeIsSplittingException() {
         this(RMResources.Gone);
     }
 
+    /**
+     * Instantiates a new Partition key range is splitting exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public PartitionKeyRangeIsSplittingException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
                                                  Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.GONE, cosmosError, responseHeaders);
@@ -39,6 +51,13 @@ public class PartitionKeyRangeIsSplittingException extends CosmosClientException
         setSubStatus();
     }
 
+    /**
+     * Instantiates a new Partition key range is splitting exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUri the request uri
+     */
     public PartitionKeyRangeIsSplittingException(String message, HttpHeaders headers, String requestUri) {
         this(message, null, headers, requestUri);
     }

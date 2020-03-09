@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.Resource;
 
 /**
  * Represents a database user in the Azure Cosmos DB database service.

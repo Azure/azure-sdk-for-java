@@ -24,6 +24,7 @@ public final class IdentityClientOptions {
     private ProxyOptions proxyOptions;
     private HttpPipeline httpPipeline;
     private ExecutorService executorService;
+    private Duration tokenRefreshOffset = Duration.ofMinutes(2);
     private HttpClient httpClient;
 
     /**
@@ -128,8 +129,17 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * Specifies the  ExecutorService to be used to execute the requests.
+     * Specifies the ExecutorService to be used to execute the authentication requests.
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
+     *
+     * <p>
+     * If this is not configured, the {@link ForkJoinPool#commonPool()} will be used which is
+     * also shared with other application tasks. If the common pool is heavily used for other tasks, authentication
+     * requests might starve and setting up this executor service should be considered.
+     * </p>
+     *
+     * <p> The executor service and can be safely shutdown if the TokenCredential is no longer being used by the
+     * Azure SDK clients and should be shutdown before the application exits. </p>
      *
      * @param executorService the executor service to use for executing authentication requests.
      * @return IdentityClientOptions
@@ -144,6 +154,30 @@ public final class IdentityClientOptions {
      */
     public ExecutorService getExecutorService() {
         return executorService;
+    }
+  
+    /**
+     * @return how long before the actual token expiry to refresh the token.
+     */
+    public Duration getTokenRefreshOffset() {
+        return tokenRefreshOffset;
+    }
+
+    /**
+     * Sets how long before the actual token expiry to refresh the token. The
+     * token will be considered expired at and after the time of (actual
+     * expiry - token refresh offset). The default offset is 2 minutes.
+     *
+     * This is useful when network is congested and a request containing the
+     * token takes longer than normal to get to the server.
+     *
+     * @param tokenRefreshOffset the duration before the actual expiry of a token to refresh it
+     */
+    public IdentityClientOptions setTokenRefreshOffset(Duration tokenRefreshOffset) {
+        if (tokenRefreshOffset != null) {
+            this.tokenRefreshOffset = tokenRefreshOffset;
+        }
+        return this;
     }
 
     /**

@@ -17,8 +17,8 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
 
     private final static Logger logger = LoggerFactory.getLogger(ResourceThrottleRetryPolicy.class);
 
-    private final static int DefaultMaxWaitTimeInSeconds = 60;
-    private final static int DefaultRetryInSeconds = 5;
+    private final static Duration DEFAULT_MAX_WAIT_TIME_IN_SECONDS = Duration.ofSeconds(60);
+    private final static Duration DEFAULT_RETRY_IN_SECONDS = Duration.ofSeconds(5);
     private final int backoffDelayFactor;
     private final int maxAttemptCount;
     private final Duration maxWaitTime;
@@ -28,20 +28,20 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     private int currentAttemptCount;
     private Duration cumulativeRetryDelay;
 
-    public ResourceThrottleRetryPolicy(int maxAttemptCount, int maxWaitTimeInSeconds) {
-        this(maxAttemptCount, maxWaitTimeInSeconds, 1);
+    public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime) {
+        this(maxAttemptCount, maxWaitTime, 1);
     }
 
     public ResourceThrottleRetryPolicy(int maxAttemptCount) {
-        this(maxAttemptCount, DefaultMaxWaitTimeInSeconds, 1);
+        this(maxAttemptCount, DEFAULT_MAX_WAIT_TIME_IN_SECONDS, 1);
     }
 
-    public ResourceThrottleRetryPolicy(int maxAttemptCount, int maxWaitTimeInSeconds, int backoffDelayFactor) {
-        Utils.checkStateOrThrow(maxWaitTimeInSeconds < Integer.MAX_VALUE / 1000, "maxWaitTimeInSeconds", "maxWaitTimeInSeconds must be less than " + Integer.MAX_VALUE / 1000);
+    public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime, int backoffDelayFactor) {
+        Utils.checkStateOrThrow(maxWaitTime.getSeconds() < Integer.MAX_VALUE / 1000, "maxWaitTime", "maxWaitTime must be less than " + Integer.MAX_VALUE / 1000);
 
         this.maxAttemptCount = maxAttemptCount;
         this.backoffDelayFactor = backoffDelayFactor;
-        this.maxWaitTime = Duration.ofSeconds(maxWaitTimeInSeconds); 
+        this.maxWaitTime = maxWaitTime;
         this.currentAttemptCount = 0;
         this.cumulativeRetryDelay = Duration.ZERO;
     }
@@ -89,7 +89,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         if (dce != null){
 
             if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.TOO_MANY_REQUESTS))  {
-                retryDelay = Duration.ofMillis(dce.getRetryAfterInMilliseconds());
+                retryDelay = dce.getRetryAfterDuration();
                 if (this.backoffDelayFactor > 1) {
                     retryDelay = Duration.ofNanos(retryDelay.toNanos() * this.backoffDelayFactor);
                 }
@@ -100,7 +100,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                     if (retryDelay == Duration.ZERO){
                         // we should never reach here as BE should turn non-zero of retryDelay
                         logger.trace("Received retryDelay of 0 with Http 429", exception);
-                        retryDelay = Duration.ofSeconds(DefaultRetryInSeconds);
+                        retryDelay = DEFAULT_RETRY_IN_SECONDS;
                     }
 
                     return retryDelay;

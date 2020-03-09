@@ -4,16 +4,16 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.AccessCondition;
-import com.azure.cosmos.AccessConditionType;
+import com.azure.cosmos.model.AccessCondition;
+import com.azure.cosmos.model.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.PartitionKind;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.model.PartitionKey;
+import com.azure.cosmos.model.PartitionKeyDefinition;
+import com.azure.cosmos.model.PartitionKind;
+import com.azure.cosmos.model.Resource;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;

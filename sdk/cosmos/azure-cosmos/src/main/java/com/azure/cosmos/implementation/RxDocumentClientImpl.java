@@ -2,26 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.AccessConditionType;
+import com.azure.cosmos.model.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ChangeFeedOptions;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.CosmosResourceType;
-import com.azure.cosmos.DatabaseAccount;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.JsonSerializable;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.Permission;
-import com.azure.cosmos.RequestVerb;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlQuerySpec;
-import com.azure.cosmos.SqlParameter;
-import com.azure.cosmos.SqlParameterList;
+import com.azure.cosmos.model.CosmosResourceType;
+import com.azure.cosmos.model.DatabaseAccount;
+import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.model.FeedResponse;
+import com.azure.cosmos.model.JsonSerializable;
+import com.azure.cosmos.model.PartitionKey;
+import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.model.PartitionKeyDefinition;
+import com.azure.cosmos.model.Permission;
+import com.azure.cosmos.model.RequestVerb;
+import com.azure.cosmos.model.Resource;
+import com.azure.cosmos.model.SqlQuerySpec;
+import com.azure.cosmos.model.SqlParameter;
+import com.azure.cosmos.model.SqlParameterList;
 import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -70,11 +70,11 @@ import java.util.stream.Collectors;
 
 import static com.azure.cosmos.BridgeInternal.documentFromObject;
 import static com.azure.cosmos.BridgeInternal.getAltLink;
-import static com.azure.cosmos.BridgeInternal.toDatabaseAccount;
 import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
 import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
 import static com.azure.cosmos.BridgeInternal.serializeJsonToByteBuffer;
+import static com.azure.cosmos.model.ModelBridgeInternal.toDatabaseAccount;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -294,7 +294,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         this.storeClientFactory = new StoreClientFactory(
             this.configs,
-            this.connectionPolicy.getRequestTimeoutInMillis() / 1000,
+            this.connectionPolicy.getRequestTimeout(),
            // this.maxConcurrentConnectionOpenRequests,
             0,
             this.userAgentContainer,
@@ -355,10 +355,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private HttpClient httpClient() {
 
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs)
-                .withMaxIdleConnectionTimeoutInMillis(this.connectionPolicy.getIdleConnectionTimeoutInMillis())
+                .withMaxIdleConnectionTimeout(this.connectionPolicy.getIdleConnectionTimeout())
                 .withPoolSize(this.connectionPolicy.getMaxPoolSize())
                 .withHttpProxy(this.connectionPolicy.getProxy())
-                .withRequestTimeoutInMillis(this.connectionPolicy.getRequestTimeoutInMillis());
+                .withRequestTimeout(this.connectionPolicy.getRequestTimeout());
 
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig);
@@ -915,7 +915,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         PartitionKeyInternal partitionKeyInternal = null;
         if (options != null && options.getPartitionKey() != null && options.getPartitionKey().equals(PartitionKey.NONE)){
-            partitionKeyInternal = BridgeInternal.getNonePartitionKey(partitionKeyDefinition);
+            partitionKeyInternal = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
         } else if (options != null && options.getPartitionKey() != null) {
             partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(options.getPartitionKey());
         } else if (partitionKeyDefinition == null || partitionKeyDefinition.getPaths().size() == 0) {
@@ -949,7 +949,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (parts.size() >= 1) {
                 Object value = document.getObjectByPath(parts);
                 if (value == null || value.getClass() == ObjectNode.class) {
-                    value = BridgeInternal.getNonePartitionKey(partitionKeyDefinition);
+                    value = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
                 }
 
                 if (value instanceof PartitionKeyInternal) {
@@ -1478,7 +1478,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String idParamName = "@param" + i;
 
             PartitionKey pkValueAsPartitionKey = pair.getRight();
-            Object pkValue = BridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
+            Object pkValue = ModelBridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
 
             if (!Objects.equals(idValue, pkValue)) {
                 // this is sanity check to ensure id and pk are the same
@@ -1506,7 +1506,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Pair<String, PartitionKey> pair = idPartitionKeyPairList.get(i);
 
             PartitionKey pkValueAsPartitionKey = pair.getRight();
-            Object pkValue = BridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
+            Object pkValue = ModelBridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
             String pkParamName = "@param" + (2 * i);
             parameters.add(new SqlParameter(pkParamName, pkValue));
 

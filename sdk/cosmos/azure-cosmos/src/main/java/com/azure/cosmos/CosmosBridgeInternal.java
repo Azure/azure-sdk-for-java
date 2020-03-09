@@ -5,6 +5,8 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.model.CosmosContainerProperties;
+import com.azure.cosmos.model.DatabaseAccount;
 import reactor.core.publisher.Mono;
 
 /**

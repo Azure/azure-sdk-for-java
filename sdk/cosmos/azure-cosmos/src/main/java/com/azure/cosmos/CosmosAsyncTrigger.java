@@ -4,8 +4,14 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.Trigger;
+import com.azure.cosmos.model.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.model.CosmosTriggerProperties;
+import com.azure.cosmos.model.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
+/**
+ * The type Cosmos async trigger. This contains methods to operate on a cosmos trigger asynchronously
+ */
 public class CosmosAsyncTrigger {
 
     private final CosmosAsyncContainer container;
@@ -49,7 +55,7 @@ public class CosmosAsyncTrigger {
         return container.getDatabase()
                    .getDocClientWrapper()
                    .readTrigger(getLink(), null)
-                   .map(response -> new CosmosAsyncTriggerResponse(response, container))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, container))
                    .single();
     }
 
@@ -68,7 +74,7 @@ public class CosmosAsyncTrigger {
         return container.getDatabase()
                    .getDocClientWrapper()
                    .replaceTrigger(new Trigger(triggerSettings.toJson()), null)
-                   .map(response -> new CosmosAsyncTriggerResponse(response, container))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, container))
                    .single();
     }
 
@@ -85,7 +91,7 @@ public class CosmosAsyncTrigger {
         return container.getDatabase()
                    .getDocClientWrapper()
                    .deleteTrigger(getLink(), null)
-                   .map(response -> new CosmosAsyncTriggerResponse(response, container))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, container))
                    .single();
     }
 

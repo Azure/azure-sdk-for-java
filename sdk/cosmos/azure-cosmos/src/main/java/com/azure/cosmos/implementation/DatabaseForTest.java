@@ -3,10 +3,10 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.SqlParameter;
-import com.azure.cosmos.SqlParameterList;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.model.FeedResponse;
+import com.azure.cosmos.model.SqlParameter;
+import com.azure.cosmos.model.SqlParameterList;
+import com.azure.cosmos.model.SqlQuerySpec;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

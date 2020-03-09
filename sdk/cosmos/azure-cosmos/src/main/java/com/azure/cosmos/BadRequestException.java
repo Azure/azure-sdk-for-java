@@ -6,6 +6,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.model.CosmosError;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -18,14 +19,31 @@ import java.util.Map;
 public class BadRequestException extends CosmosClientException {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Instantiates a new Bad request exception.
+     *
+     * @param message the message
+     * @param innerException the inner exception
+     */
     public BadRequestException(String message, Exception innerException) {
         super(message, innerException, new HashMap<>(), HttpConstants.StatusCodes.BADREQUEST, null);
     }
 
+    /**
+     * Instantiates a new Bad request exception.
+     */
     public BadRequestException() {
         this(RMResources.BadRequest);
     }
 
+    /**
+     * Instantiates a new Bad request exception.
+     *
+     * @param cosmosError the cosmos error
+     * @param lsn the lsn
+     * @param partitionKeyRangeId the partition key range id
+     * @param responseHeaders the response headers
+     */
     public BadRequestException(CosmosError cosmosError, long lsn, String partitionKeyRangeId,
                                Map<String, String> responseHeaders) {
         super(HttpConstants.StatusCodes.BADREQUEST, cosmosError, responseHeaders);
@@ -33,6 +51,11 @@ public class BadRequestException extends CosmosClientException {
         BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
+    /**
+     * Instantiates a new Bad request exception.
+     *
+     * @param message the message
+     */
     public BadRequestException(String message) {
         this(message, null, null, null);
     }
@@ -41,6 +64,13 @@ public class BadRequestException extends CosmosClientException {
         this(message, null, headers, requestUrlString);
     }
 
+    /**
+     * Instantiates a new Bad request exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param requestUri the request uri
+     */
     public BadRequestException(String message, HttpHeaders headers, URI requestUri) {
         this(message, headers, requestUri != null ? requestUri.toString() : null);
     }

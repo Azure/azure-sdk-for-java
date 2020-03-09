@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ReplicationPolicy;
+import com.azure.cosmos.model.ModelBridgeInternal;
 
 import java.net.URI;
 import java.util.Map;
@@ -31,18 +32,18 @@ public class GatewayServiceConfigurationReader {
     }
 
     public ReplicationPolicy getUserReplicationPolicy() {
-        return BridgeInternal.getReplicationPolicy(this.globalEndpointManager.getLatestDatabaseAccount());
+        return ModelBridgeInternal.getReplicationPolicy(this.globalEndpointManager.getLatestDatabaseAccount());
     }
 
     public ReplicationPolicy getSystemReplicationPolicy() {
-        return BridgeInternal.getSystemReplicationPolicy(this.globalEndpointManager.getLatestDatabaseAccount());
+        return ModelBridgeInternal.getSystemReplicationPolicy(this.globalEndpointManager.getLatestDatabaseAccount());
     }
 
     public ConsistencyLevel getDefaultConsistencyLevel() {
-        return BridgeInternal.getConsistencyPolicy(this.globalEndpointManager.getLatestDatabaseAccount()).getDefaultConsistencyLevel();
+        return ModelBridgeInternal.getConsistencyPolicy(this.globalEndpointManager.getLatestDatabaseAccount()).getDefaultConsistencyLevel();
     }
 
     public Map<String, Object> getQueryEngineConfiguration() {
-        return BridgeInternal.getQueryEngineConfiuration(this.globalEndpointManager.getLatestDatabaseAccount());
+        return ModelBridgeInternal.getQueryEngineConfiuration(this.globalEndpointManager.getLatestDatabaseAccount());
     }
 }

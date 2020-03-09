@@ -4,10 +4,10 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeRequest;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.GetIndexStatisticsResult;
@@ -91,7 +91,7 @@ public final class SearchServiceClient {
      * @return a response containing data source that was created or updated.
      */
     public Response<DataSource> createOrUpdateDataSourceWithResponse(DataSource dataSource,
-        AccessCondition accessCondition, RequestOptions requestOptions, Context context) {
+        MatchConditions accessCondition, RequestOptions requestOptions, Context context) {
         return asyncClient.createOrUpdateDataSourceWithResponse(dataSource, accessCondition, requestOptions, context)
             .block();
     }
@@ -187,7 +187,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return an empty response
      */
-    public Response<Void> deleteDataSourceWithResponse(String dataSourceName, AccessCondition accessCondition,
+    public Response<Void> deleteDataSourceWithResponse(String dataSourceName, MatchConditions accessCondition,
         RequestOptions requestOptions, Context context) {
         return asyncClient.deleteDataSourceWithResponse(dataSourceName, accessCondition, requestOptions, context)
             .block();
@@ -238,7 +238,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return A response object containing the Indexer.
      */
-    public Response<Indexer> createOrUpdateIndexerWithResponse(Indexer indexer, AccessCondition accessCondition,
+    public Response<Indexer> createOrUpdateIndexerWithResponse(Indexer indexer, MatchConditions accessCondition,
         RequestOptions requestOptions, Context context) {
         return asyncClient.createOrUpdateIndexerWithResponse(indexer, accessCondition, requestOptions, context).block();
     }
@@ -309,7 +309,7 @@ public final class SearchServiceClient {
      * @param context the context
      * @return a response signalling completion.
      */
-    public Response<Void> deleteIndexerWithResponse(String indexerName, AccessCondition accessCondition,
+    public Response<Void> deleteIndexerWithResponse(String indexerName, MatchConditions accessCondition,
         RequestOptions requestOptions, Context context) {
         return asyncClient.deleteIndexerWithResponse(indexerName, accessCondition, requestOptions, context).block();
     }
@@ -501,7 +501,7 @@ public final class SearchServiceClient {
      * @return a response containing the Index that was created or updated.
      */
     public Response<Index> createOrUpdateIndexWithResponse(Index index, boolean allowIndexDowntime,
-        AccessCondition accessCondition, RequestOptions requestOptions, Context context) {
+        MatchConditions accessCondition, RequestOptions requestOptions, Context context) {
         return asyncClient.createOrUpdateIndexWithResponse(index, allowIndexDowntime, accessCondition, requestOptions,
             context).block();
     }
@@ -526,7 +526,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
-    public Response<Void> deleteIndexWithResponse(String indexName, AccessCondition accessCondition,
+    public Response<Void> deleteIndexWithResponse(String indexName, MatchConditions accessCondition,
         RequestOptions requestOptions, Context context) {
         return asyncClient.deleteIndexWithResponse(indexName, accessCondition, requestOptions, context).block();
     }
@@ -649,7 +649,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the skillset that was created or updated.
      */
-    public Response<Skillset> createOrUpdateSkillsetWithResponse(Skillset skillset, AccessCondition accessCondition,
+    public Response<Skillset> createOrUpdateSkillsetWithResponse(Skillset skillset, MatchConditions accessCondition,
         RequestOptions requestOptions, Context context) {
         return asyncClient.createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions, context)
             .block();
@@ -675,7 +675,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response signalling completion.
      */
-    public Response<Void> deleteSkillsetWithResponse(String skillsetName, AccessCondition accessCondition,
+    public Response<Void> deleteSkillsetWithResponse(String skillsetName, MatchConditions accessCondition,
         RequestOptions requestOptions, Context context) {
         return asyncClient.deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions, context).block();
     }
@@ -773,7 +773,7 @@ public final class SearchServiceClient {
      * @return a response containing the synonym map that was created or updated.
      */
     public Response<SynonymMap> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
-        AccessCondition accessCondition, RequestOptions requestOptions, Context context) {
+        MatchConditions accessCondition, RequestOptions requestOptions, Context context) {
         return asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, accessCondition, requestOptions, context)
             .block();
     }
@@ -798,7 +798,7 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
-    public Response<Void> deleteSynonymMapWithResponse(String synonymMapName, AccessCondition accessCondition,
+    public Response<Void> deleteSynonymMapWithResponse(String synonymMapName, MatchConditions accessCondition,
         RequestOptions requestOptions, Context context) {
         return asyncClient.deleteSynonymMapWithResponse(synonymMapName, accessCondition, requestOptions, context)
             .block();

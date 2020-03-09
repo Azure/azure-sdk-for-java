@@ -3,11 +3,11 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.SqlParameter;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.model.FeedResponse;
+import com.azure.cosmos.model.PartitionKey;
+import com.azure.cosmos.model.SqlParameter;
+import com.azure.cosmos.model.SqlQuerySpec;
 import com.codahale.metrics.Timer;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;

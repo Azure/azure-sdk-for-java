@@ -5,14 +5,14 @@ package com.azure.cosmos.examples;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosAsyncItemResponse;
+import com.azure.cosmos.model.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosContainerProperties;
+import com.azure.cosmos.model.CosmosContainerProperties;
 import com.azure.cosmos.CosmosPagedFlux;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.model.FeedResponse;
+import com.azure.cosmos.model.PartitionKey;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -82,7 +82,7 @@ public class BasicDemo {
                              .doOnError(throwable -> log("CREATE 3", throwable))
                              .publishOn(Schedulers.elastic())
                              .block()
-                             .getResource();
+                             .getItem();
         } catch (RuntimeException e) {
             log("Couldn't create items due to above exceptions");
         }

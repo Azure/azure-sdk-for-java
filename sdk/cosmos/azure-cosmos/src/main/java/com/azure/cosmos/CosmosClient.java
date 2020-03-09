@@ -4,6 +4,13 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.cosmos.model.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.model.CosmosDatabaseProperties;
+import com.azure.cosmos.model.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.model.CosmosDatabaseResponse;
+import com.azure.cosmos.model.FeedOptions;
+import com.azure.cosmos.model.ModelBridgeInternal;
+import com.azure.cosmos.model.SqlQuerySpec;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -192,7 +199,7 @@ public class CosmosClient implements Closeable {
     }
 
     CosmosDatabaseResponse convertResponse(CosmosAsyncDatabaseResponse response) {
-        return new CosmosDatabaseResponse(response, this);
+        return ModelBridgeInternal.createCosmosDatabaseResponse(response, this);
     }
 
     CosmosAsyncClient asyncClient() {
