@@ -675,7 +675,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             throw Utility.logError(logger, new IllegalArgumentException("This provider cannot operate on subtypes of "
                 + "Path other than AzurePath"));
         }
-        return (AzurePath)path;
+        return (AzurePath) path;
     }
 
     private void validateNotRoot(Path path, String operation) {
