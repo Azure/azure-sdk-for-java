@@ -51,11 +51,11 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static com.azure.cosmos.implementation.Utils.trimBeginningAndEndingSlashes;
 /*
@@ -67,16 +67,16 @@ public class HttpTransportClient extends TransportClient {
     private final Map<String, String> defaultHeaders;
     private final Configs configs;
 
-    HttpClient createHttpClient(int requestTimeout) {
+    HttpClient createHttpClient(Duration requestTimeout) {
         // TODO: use one instance of SSL context everywhere
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs);
-        httpClientConfig.withRequestTimeoutInMillis(requestTimeout * 1000);
+        httpClientConfig.withRequestTimeout(requestTimeout);
         httpClientConfig.withPoolSize(configs.getDirectHttpsMaxConnectionLimit());
 
         return HttpClient.createFixed(httpClientConfig);
     }
 
-    public HttpTransportClient(Configs configs, int requestTimeout, UserAgentContainer userAgent) {
+    public HttpTransportClient(Configs configs, Duration requestTimeout, UserAgentContainer userAgent) {
         this.configs = configs;
         this.httpClient = createHttpClient(requestTimeout);
 

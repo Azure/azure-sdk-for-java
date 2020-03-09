@@ -9,6 +9,8 @@ import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.CaseFormat;
 
+import java.time.Duration;
+
 /**
  * Encapsulates the properties for consistency policy in the Azure Cosmos DB database service.
  */
@@ -67,7 +69,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * Set the name of the resource.
      *
      * @param level the consistency level.
-     * @return the ConsistenctPolicy.
+     * @return the ConsistencyPolicy.
      */
     public ConsistencyPolicy setDefaultConsistencyLevel(ConsistencyLevel level) {
         super.set(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL, level.toString());
@@ -93,7 +95,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * (aka version).
      *
      * @param maxStalenessPrefix the max staleness prefix.
-     * @return the ConsistenctPolicy.
+     * @return the ConsistencyPolicy.
      */
     public ConsistencyPolicy setMaxStalenessPrefix(int maxStalenessPrefix) {
         super.set(Constants.Properties.MAX_STALENESS_PREFIX, maxStalenessPrefix);
@@ -102,25 +104,30 @@ public final class ConsistencyPolicy extends JsonSerializable {
 
     /**
      * Gets the in bounded staleness consistency, the maximum allowed staleness in terms time interval.
+     * Resolution is in seconds.
      *
      * @return the max staleness prefix.
      */
-    public int getMaxStalenessIntervalInSeconds() {
+    public Duration getMaxStalenessInterval() {
         Integer value = super.getInt(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS);
         if (value == null) {
-            return ConsistencyPolicy.DEFAULT_MAX_STALENESS_INTERVAL;
+            return Duration.ofSeconds(ConsistencyPolicy.DEFAULT_MAX_STALENESS_INTERVAL);
         }
-        return value;
+        return Duration.ofSeconds(value);
     }
 
     /**
      * Sets the in bounded staleness consistency, the maximum allowed staleness in terms time interval.
+     * Resolution is in seconds.
      *
-     * @param maxStalenessIntervalInSeconds the max staleness interval in seconds.
-     * @return the ConsistenctPolicy.
+     * @param maxStalenessInterval the max staleness interval.
+     * @return the ConsistencyPolicy.
      */
-    public ConsistencyPolicy setMaxStalenessIntervalInSeconds(int maxStalenessIntervalInSeconds) {
-        super.set(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS, maxStalenessIntervalInSeconds);
+    public ConsistencyPolicy setMaxStalenessInterval(Duration maxStalenessInterval) {
+        if (maxStalenessInterval == null) {
+            throw new IllegalArgumentException("maxStalenessInterval should not be null");
+        }
+        super.set(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS, maxStalenessInterval.getSeconds());
         return this;
     }
 }

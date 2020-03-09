@@ -48,7 +48,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         this.throttlingRetry = new ResourceThrottleRetryPolicy(
                 throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
-                throttlingRetryOptions.getMaxRetryWaitTimeInSeconds());
+                throttlingRetryOptions.getMaxRetryWaitTime());
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
         this.enableEndpointDiscovery = enableEndpointDiscovery;

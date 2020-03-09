@@ -11,6 +11,7 @@ import com.azure.cosmos.model.CosmosError;
 import com.azure.cosmos.model.ModelBridgeInternal;
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -193,13 +194,13 @@ public class CosmosClientException extends RuntimeException {
     }
 
     /**
-     * Gets the recommended time interval after which the client can retry failed
+     * Gets the recommended time duration after which the client can retry failed
      * requests
      *
-     * @return the recommended time interval after which the client can retry failed
+     * @return the recommended time duration after which the client can retry failed
      * requests.
      */
-    public long getRetryAfterInMilliseconds() {
+    public Duration getRetryAfterDuration() {
         long retryIntervalInMilliseconds = 0;
 
         if (this.responseHeaders != null) {
@@ -217,7 +218,7 @@ public class CosmosClientException extends RuntimeException {
         //
         // In the absence of explicit guidance from the backend, don't introduce
         // any unilateral retry delays here.
-        return retryIntervalInMilliseconds;
+        return Duration.ofMillis(retryIntervalInMilliseconds);
     }
 
     /**

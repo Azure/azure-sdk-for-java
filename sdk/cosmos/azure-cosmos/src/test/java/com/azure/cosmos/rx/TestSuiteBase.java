@@ -70,6 +70,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -1020,7 +1021,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
-        options.setMaxRetryWaitTimeInSeconds(SUITE_SETUP_TIMEOUT);
+        options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         connectionPolicy.setThrottlingRetryOptions(options);
         return new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
             .setCosmosKeyCredential(cosmosKeyCredential)

@@ -3,21 +3,17 @@
 
 package com.azure.cosmos.model;
 
-import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosDatabase;
-import com.azure.cosmos.CosmosPagedFlux;
-import com.azure.cosmos.CosmosPagedIterable;
 import com.azure.cosmos.CosmosStoredProcedure;
 import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -43,7 +39,6 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import reactor.core.publisher.Flux;
 
 import java.lang.reflect.InvocationTargetException;
 import java.time.OffsetDateTime;

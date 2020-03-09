@@ -37,6 +37,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -337,7 +338,7 @@ public class DocumentProducerTest {
         RequestCreator requestCreator = RequestCreator.simpleMock();
 
         List<FeedResponse<Document>> responsesBeforeThrottle = mockFeedResponses(partitionKeyRangeId, 2, 1, false);
-        Exception throttlingException = mockThrottlingException(10);
+        Exception throttlingException = mockThrottlingException(Duration.ofMillis(10));
         List<FeedResponse<Document>> responsesAfterThrottle = mockFeedResponses(partitionKeyRangeId, 5, 1, true);
 
         RequestExecutor.PartitionAnswer behaviourBeforeException =
@@ -406,7 +407,7 @@ public class DocumentProducerTest {
         RequestCreator requestCreator = RequestCreator.simpleMock();
 
         List<FeedResponse<Document>> responsesBeforeThrottle = mockFeedResponses(partitionKeyRangeId, 1, 1, false);
-        Exception throttlingException = mockThrottlingException(10);
+        Exception throttlingException = mockThrottlingException(Duration.ofMillis(10));
 
         RequestExecutor.PartitionAnswer behaviourBeforeException =
                 RequestExecutor.PartitionAnswer.just(partitionKeyRangeId, responsesBeforeThrottle);
@@ -435,11 +436,11 @@ public class DocumentProducerTest {
         subscriber.assertValueCount(responsesBeforeThrottle.size());
     }
 
-    private CosmosClientException mockThrottlingException(long retriesAfter) {
+    private CosmosClientException mockThrottlingException(Duration retriesAfterDuration) {
         CosmosClientException throttleException = mock(CosmosClientException.class);
         doReturn(429).when(throttleException).getStatusCode();
         doReturn(new StackTraceElement[0]).when(throttleException).getStackTrace();
-        doReturn(retriesAfter).when(throttleException).getRetryAfterInMilliseconds();
+        doReturn(retriesAfterDuration).when(throttleException).getRetryAfterDuration();
         return throttleException;
     }
 
