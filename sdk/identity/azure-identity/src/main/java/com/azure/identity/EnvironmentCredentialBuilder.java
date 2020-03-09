@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
 
 /**
  * Fluent credential builder for instantiating a {@link EnvironmentCredential}.
@@ -24,6 +25,11 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
     /**
      * Specifies the  ExecutorService to be used to execute the requests.
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
+     *
+     * <p> The executor service is required whenever the application is looking to completely or
+     * exclusively consume the {@link ForkJoinPool#commonPool()}. The executor service
+     * and can be safely shutdown if the TokenCredential is no longer being used by the
+     * Azure SDK clients and should be shutdown before the application exits. </p>
      *
      * @param executorService the executor service to use for executing authentication requests.
      * @return An updated instance of this builder with the executor service set as specified.
