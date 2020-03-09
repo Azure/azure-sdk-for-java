@@ -198,13 +198,10 @@ public class DataLakeServiceClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.listFileSystems#ListFileSystemsOptions-Duration}
      *
      * @param options A {@link ListFileSystemsOptions} which specifies what data should be returned by the service.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of file systems.
      */
     public PagedIterable<FileSystemItem> listFileSystems(ListFileSystemsOptions options, Duration timeout) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blobServiceClient.listBlobContainers(Transforms.toListBlobContainersOptions(options), timeout)
-            .mapPage(Transforms::toFileSystemItem), logger);
+        return new PagedIterable<>(dataLakeServiceAsyncClient.listFileSystemsWithOptionalTimeout(options, timeout));
     }
 
     /**

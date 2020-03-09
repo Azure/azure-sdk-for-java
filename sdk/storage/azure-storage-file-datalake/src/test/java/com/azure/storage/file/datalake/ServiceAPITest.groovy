@@ -23,7 +23,7 @@ class ServiceAPITest extends APISpec {
     def "List file systems"() {
         when:
         def response =
-            primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions().setPrefix(fileSystemPrefix + testName), null)
+            primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions().setPrefix(fileSystemPrefix + testName))
 
         then:
         for (FileSystemItem c : response) {
@@ -70,7 +70,7 @@ class ServiceAPITest extends APISpec {
         expect:
         primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions()
             .setDetails(new FileSystemListDetails().setRetrieveMetadata(true))
-            .setPrefix("aaa" + fileSystemPrefix), null)
+            .setPrefix("aaa" + fileSystemPrefix))
             .iterator().next().getMetadata() == metadata
 
         // File system with prefix "aaa" will not be cleaned up by normal test cleanup.
@@ -92,7 +92,7 @@ class ServiceAPITest extends APISpec {
         expect:
         primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions()
             .setPrefix(fileSystemPrefix)
-            .setMaxResultsPerPage(PAGE_RESULTS), null)
+            .setMaxResultsPerPage(PAGE_RESULTS))
             .iterableByPage().iterator().next().getValue().size() == PAGE_RESULTS
 
         cleanup:
@@ -102,11 +102,7 @@ class ServiceAPITest extends APISpec {
     def "List file systems error"() {
         when:
         PagedIterable<FileSystemItem> items =  primaryDataLakeServiceClient.listFileSystems()
-        try {
-            items.streamByPage("garbage continuation token").count()
-        } catch (BlobStorageException ex) {
-            throw DataLakeImplUtils.transformBlobStorageException(ex)
-        }
+        items.streamByPage("garbage continuation token").count()
 
         then:
         thrown(DataLakeStorageException)
@@ -126,7 +122,7 @@ class ServiceAPITest extends APISpec {
         primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions().setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
 
         then: "Still have paging functionality"
-        notThrown(Exception)
+        notThrown(DataLakeStorageException)
 
         cleanup:
         fileSystems.each { fileSystem -> fileSystem.delete() }
