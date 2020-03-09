@@ -51,7 +51,6 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         client = new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .retry(RETRY_OPTIONS)
-            .shareConnection()
             .buildClient();
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
@@ -59,7 +58,12 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         } else {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
 
-            final EventHubProducerClient producer = client.createProducer();
+            final EventHubClient testClient = new EventHubClientBuilder()
+                .connectionString(getConnectionString())
+                .retry(RETRY_OPTIONS)
+                .shareConnection()
+                .buildClient();
+            final EventHubProducerClient producer = testClient.createProducer();
             testData = setupEventTestData(producer, NUMBER_OF_EVENTS, options);
         }
 
