@@ -78,6 +78,8 @@ public class IdentityClient {
     private static final String LINUX_MAC_SWITCHER = "-c";
     private static final String WINDOWS_PROCESS_ERROR_MESSAGE = "'az' is not recognized";
     private static final String LINUX_MAC_PROCESS_ERROR_MESSAGE = "(.*)az:(.*)not found";
+    private static final String DEFAULT_WINDOWS_SYSTEM_ROOT = System.getenv("SystemRoot");
+    private static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
@@ -169,6 +171,9 @@ public class IdentityClient {
             String workingDirectory = getSafeWorkingDirectory();
             if (workingDirectory != null) {
                 builder.directory(new File(workingDirectory));
+            } else {
+                throw logger.logExceptionAsError(new IllegalStateException("A Safe Working directory could not be" +
+                                                                               " found to execute CLI command from."));
             }
             builder.redirectErrorStream(true);
             Process process = builder.start();
@@ -639,17 +644,13 @@ public class IdentityClient {
     }
 
     private String getSafeWorkingDirectory() {
-        String path = System.getenv("PATH");
-        if (CoreUtils.isNullOrEmpty(path)) {
+        if (CoreUtils.isNullOrEmpty(DEFAULT_WINDOWS_SYSTEM_ROOT)) {
             return null;
         }
 
-        String[] paths = isWindowsPlatform() ? path.split(";") : path.split(":");
+        String defaultWindowsPath  = DEFAULT_WINDOWS_SYSTEM_ROOT + "\\system32";
 
-        if (paths.length >= 1) {
-            return paths[0];
-        }
-        return null;
+        return isWindowsPlatform() ? defaultWindowsPath : DEFAULT_MAC_LINUX_PATH;
     }
 
     private boolean isWindowsPlatform() {
