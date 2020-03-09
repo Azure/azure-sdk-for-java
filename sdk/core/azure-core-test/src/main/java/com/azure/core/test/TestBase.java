@@ -137,6 +137,11 @@ public abstract class TestBase implements BeforeEachCallback {
         return HttpClientProviders.getAllHttpClients().stream().filter(TestBase::shouldClientBeTested);
     }
 
+    /**
+     * Filter out the http clients needs to run in test framework
+     * @param client Http client needs to check
+     * @return Boolean indicates whether filters out the client or not.
+     */
     public static boolean shouldClientBeTested(HttpClient client) {
         // This is for when we decide to filter some http clients based on some criteria
         // to reduce the time take to run the tests.
