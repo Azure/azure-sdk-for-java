@@ -6,21 +6,27 @@
 ###########
 
 # Catch all
-/sdk/                                               @joshfree @jonathangiles
+/sdk/                                               @joshfree @jonathangiles @srnagar @hemanttanwar @anuchandy
+
+# BOM
+/sdk/boms/azure-sdk-bom/                            @alzimmermsft @jonathangiles @srnagar @hemanttanwar @anuchandy
 
 # Service teams
 /sdk/appconfiguration/                              @mssfang @alzimmermsft @conniey @sima-zhu
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
-/sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar
-/sdk/cosmos/                                        @moderakh @christopheranderson @kushagraThapar
+/sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
+/sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft
+/sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang
-/sdk/identity/                                      @jianghaolu @g2vinay @hemanttanwar
+/sdk/identity/                                      @g2vinay @jianghaolu
 /sdk/keyvault/                                      @g2vinay @samvaity
+/sdk/search/                                        @alzimmermsft @sima-zhu
 /sdk/servicebus/                                    @yvgopal @nemakam
-/sdk/textanalytics/                                 @samvaity @mssfang
-/sdk/tracing/                                       @samvaity @alzimmermsft
-
 /sdk/storage/                                       @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
+/sdk/textanalytics/                                 @samvaity @mssfang
+
+# end to end tests
+/sdk/e2e/                                           @jianghaolu @g2vinay
 
 # Management Plane
 /**/resource-manager/                               @yaohaizh

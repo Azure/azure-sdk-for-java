@@ -14,6 +14,7 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -21,6 +22,7 @@ import java.util.Objects;
 public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
     static final String PUT_TOKEN_TYPE = "type";
     static final String PUT_TOKEN_AUDIENCE = "name";
+    static final String PUT_TOKEN_EXPIRY = "expiration";
     private static final String PUT_TOKEN_OPERATION = "operation";
     private static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
 
@@ -30,39 +32,39 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
     private final AmqpRetryOptions retryOptions;
 
     public ClaimsBasedSecurityChannel(Mono<RequestResponseChannel> responseChannelMono, TokenCredential tokenCredential,
-               CbsAuthorizationType authorizationType, AmqpRetryOptions retryOptions) {
+        CbsAuthorizationType authorizationType, AmqpRetryOptions retryOptions) {
 
         this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.credential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
-        this.cbsChannelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.")
-            .cache();
+        this.cbsChannelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.");
     }
 
     @Override
     public Mono<OffsetDateTime> authorize(String tokenAudience, String scopes) {
-        final Message request = Proton.message();
-        final Map<String, Object> properties = new HashMap<>();
-        properties.put(PUT_TOKEN_OPERATION, PUT_TOKEN_OPERATION_VALUE);
-        properties.put(PUT_TOKEN_TYPE, authorizationType.getTokenType());
-        properties.put(PUT_TOKEN_AUDIENCE, tokenAudience);
+        return cbsChannelMono.flatMap(channel ->
+            credential.getToken(new TokenRequestContext().addScopes(scopes))
+                .flatMap(accessToken -> {
+                    final Message request = Proton.message();
+                    final Map<String, Object> properties = new HashMap<>();
+                    properties.put(PUT_TOKEN_OPERATION, PUT_TOKEN_OPERATION_VALUE);
+                    properties.put(PUT_TOKEN_EXPIRY, Date.from(accessToken.getExpiresAt().toInstant()));
+                    properties.put(PUT_TOKEN_TYPE, authorizationType.getTokenType());
+                    properties.put(PUT_TOKEN_AUDIENCE, tokenAudience);
 
-        final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
-        request.setApplicationProperties(applicationProperties);
+                    final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
+                    request.setApplicationProperties(applicationProperties);
+                    request.setBody(new AmqpValue(accessToken.getToken()));
 
-        return credential.getToken(new TokenRequestContext().addScopes(scopes)).flatMap(accessToken -> {
-            request.setBody(new AmqpValue(accessToken.getToken()));
-
-            return cbsChannelMono.flatMap(x -> x.sendWithAck(request))
-                .then(Mono.fromCallable(() -> accessToken.getExpiresAt()));
-        });
+                    return channel.sendWithAck(request).thenReturn(accessToken.getExpiresAt());
+                }));
     }
 
     @Override
     public void close() {
         final RequestResponseChannel channel = cbsChannelMono.block(retryOptions.getTryTimeout());
         if (channel != null) {
-            channel.close();
+            channel.dispose();
         }
     }
 }

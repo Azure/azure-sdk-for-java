@@ -93,8 +93,28 @@ public class SapMonitorInner extends Resource {
     /**
      * The ARM ID of the Log Analytics Workspace that is used for monitoring.
      */
-    @JsonProperty(value = "properties.logAnalyticsWorkspaceArmId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.logAnalyticsWorkspaceArmId")
     private String logAnalyticsWorkspaceArmId;
+
+    /**
+     * The value indicating whether to send analytics to Microsoft.
+     */
+    @JsonProperty(value = "properties.enableCustomerAnalytics")
+    private Boolean enableCustomerAnalytics;
+
+    /**
+     * The workspace ID of the log analytics workspace to be used for
+     * monitoring.
+     */
+    @JsonProperty(value = "properties.logAnalyticsWorkspaceId")
+    private String logAnalyticsWorkspaceId;
+
+    /**
+     * The shared key of the log analytics workspace that is used for
+     * monitoring.
+     */
+    @JsonProperty(value = "properties.logAnalyticsWorkspaceSharedKey")
+    private String logAnalyticsWorkspaceSharedKey;
 
     /**
      * Get specifies the SAP monitor unique ID.
@@ -301,6 +321,77 @@ public class SapMonitorInner extends Resource {
      */
     public String logAnalyticsWorkspaceArmId() {
         return this.logAnalyticsWorkspaceArmId;
+    }
+
+    /**
+     * Set the ARM ID of the Log Analytics Workspace that is used for monitoring.
+     *
+     * @param logAnalyticsWorkspaceArmId the logAnalyticsWorkspaceArmId value to set
+     * @return the SapMonitorInner object itself.
+     */
+    public SapMonitorInner withLogAnalyticsWorkspaceArmId(String logAnalyticsWorkspaceArmId) {
+        this.logAnalyticsWorkspaceArmId = logAnalyticsWorkspaceArmId;
+        return this;
+    }
+
+    /**
+     * Get the value indicating whether to send analytics to Microsoft.
+     *
+     * @return the enableCustomerAnalytics value
+     */
+    public Boolean enableCustomerAnalytics() {
+        return this.enableCustomerAnalytics;
+    }
+
+    /**
+     * Set the value indicating whether to send analytics to Microsoft.
+     *
+     * @param enableCustomerAnalytics the enableCustomerAnalytics value to set
+     * @return the SapMonitorInner object itself.
+     */
+    public SapMonitorInner withEnableCustomerAnalytics(Boolean enableCustomerAnalytics) {
+        this.enableCustomerAnalytics = enableCustomerAnalytics;
+        return this;
+    }
+
+    /**
+     * Get the workspace ID of the log analytics workspace to be used for monitoring.
+     *
+     * @return the logAnalyticsWorkspaceId value
+     */
+    public String logAnalyticsWorkspaceId() {
+        return this.logAnalyticsWorkspaceId;
+    }
+
+    /**
+     * Set the workspace ID of the log analytics workspace to be used for monitoring.
+     *
+     * @param logAnalyticsWorkspaceId the logAnalyticsWorkspaceId value to set
+     * @return the SapMonitorInner object itself.
+     */
+    public SapMonitorInner withLogAnalyticsWorkspaceId(String logAnalyticsWorkspaceId) {
+        this.logAnalyticsWorkspaceId = logAnalyticsWorkspaceId;
+        return this;
+    }
+
+    /**
+     * Get the shared key of the log analytics workspace that is used for monitoring.
+     *
+     * @return the logAnalyticsWorkspaceSharedKey value
+     */
+    public String logAnalyticsWorkspaceSharedKey() {
+        return this.logAnalyticsWorkspaceSharedKey;
+    }
+
+    /**
+     * Set the shared key of the log analytics workspace that is used for monitoring.
+     *
+     * @param logAnalyticsWorkspaceSharedKey the logAnalyticsWorkspaceSharedKey value to set
+     * @return the SapMonitorInner object itself.
+     */
+    public SapMonitorInner withLogAnalyticsWorkspaceSharedKey(String logAnalyticsWorkspaceSharedKey) {
+        this.logAnalyticsWorkspaceSharedKey = logAnalyticsWorkspaceSharedKey;
+        return this;
     }
 
 }

@@ -4,37 +4,38 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * The RecognizeLinkedEntitiesResult model.
+ * The {@link RecognizeLinkedEntitiesResult} model.
  */
 @Immutable
 public final class RecognizeLinkedEntitiesResult extends DocumentResult {
-    private final List<LinkedEntity> linkedEntities;
+    private final IterableStream<LinkedEntity> entities;
 
     /**
-     * Creates a {@code RecognizeLinkedEntitiesResult} model that describes recognized linked entities result
+     * Creates a {@link RecognizeLinkedEntitiesResult} model that describes recognized linked entities result.
      *
-     * @param id unique, non-empty document identifier
-     * @param textDocumentStatistics text document statistics
-     * @param error the document error
-     * @param linkedEntities a list of linked entities
+     * @param id Unique, non-empty document identifier.
+     * @param textDocumentStatistics The text document statistics.
+     * @param error The document error.
+     * @param entities An {@link IterableStream} of {@link LinkedEntity}.
      */
     public RecognizeLinkedEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error, List<LinkedEntity> linkedEntities) {
+        TextAnalyticsError error, IterableStream<LinkedEntity> entities) {
         super(id, textDocumentStatistics, error);
-        this.linkedEntities = linkedEntities == null ? new ArrayList<>() : linkedEntities;
+        this.entities = entities == null ? new IterableStream<>(new ArrayList<>()) : entities;
     }
 
     /**
-     * Get a list of linked entities
+     * Get an {@link IterableStream} of {@link LinkedEntity}.
      *
-     * @return a list of linked entities.
+     * @return An {@link IterableStream} of {@link LinkedEntity}.
      */
-    public List<LinkedEntity> getLinkedEntities() {
-        return linkedEntities;
+    public IterableStream<LinkedEntity> getEntities() {
+        throwExceptionIfError();
+        return entities;
     }
 }

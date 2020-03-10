@@ -543,6 +543,38 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
+     * Verifies that throws exception when using SettingSelector with not supported *a key filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarKeyFilter() {
+        filterValueTest("*" + getKey(), getLabel());
+    }
+
+    /**
+     * Verifies that throws exception when using SettingSelector with not supported *a* key filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithSubstringKeyFilter() {
+        filterValueTest("*" + getKey() + "*", getLabel());
+    }
+
+    /**
+     * Verifies that throws exception when using SettingSelector with not supported *a label filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithPrefixStarLabelFilter() {
+        filterValueTest(getKey(), "*" + getLabel());
+    }
+
+    /**
+     * Verifies that throws exception when using SettingSelector with not supported *a* label filter.
+     */
+    @Test
+    public void listConfigurationSettingsSelectFieldsWithSubstringLabelFilter() {
+        filterValueTest(getKey(), "*" + getLabel() + "*");
+    }
+
+    /**
      * Verifies that we can get a ConfigurationSetting at the provided accept datetime
      */
     @Test
@@ -810,6 +842,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         configurationSettingPagedFlux.toIterable().forEach(configurationSetting -> configurationSettingList2.add(configurationSetting));
         assertEquals(numberExpected, configurationSettingList2.size());
     }
+
     /**
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.
@@ -884,6 +917,18 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     assertContainsHeaders(headers, requestHeaders);
                 })
                 .verifyComplete());
+    }
+
+    /**
+     * Test helper that calling list configuration setting with given key and label input
+     *
+     * @param keyFilter key filter expression
+     * @param labelFilter label filter expression
+     */
+    private void filterValueTest(String keyFilter, String labelFilter) {
+        listConfigurationSettingsSelectFieldsWithNotSupportedFilterRunner(keyFilter, labelFilter, selector ->
+            StepVerifier.create(client.listConfigurationSettings(selector))
+                .verifyError(HttpResponseException.class));
     }
 }
 

@@ -1,5 +1,7 @@
 # Release History
 
+## 1.0.0-beta.8 (Unreleased)
+
 ## 1.0.0-preview.4 (2019-09-09)
 
 ## Version 1.0.0-preview.3 (2019-08-05)

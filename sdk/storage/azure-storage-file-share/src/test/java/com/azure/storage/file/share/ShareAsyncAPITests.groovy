@@ -5,9 +5,12 @@ package com.azure.storage.file.share
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.NtfsFileAttributes
+import com.azure.storage.file.share.models.ShareRequestConditions
+import com.azure.storage.file.share.models.ShareStorageException
 import reactor.test.StepVerifier
 import spock.lang.Ignore
 import spock.lang.Unroll
@@ -139,7 +142,9 @@ class ShareAsyncAPITests extends APISpec {
 
     def "Create snapshot metadata error"() {
         when:
+        primaryShareAsyncClient.create().block()
         def createSnapshotErrorVerifier = StepVerifier.create(primaryShareAsyncClient.createSnapshotWithResponse(Collections.singletonMap("", "value")))
+
         then:
         createSnapshotErrorVerifier.verifyErrorSatisfies {
             assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY)
@@ -183,6 +188,23 @@ class ShareAsyncAPITests extends APISpec {
             .verifyErrorSatisfies {
                 assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND)
             }
+    }
+
+    def "Get properties premium"() {
+        given:
+        def premiumShare = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(), testMetadata, null).block().getValue()
+        when:
+        def getPropertiesVerifier = StepVerifier.create(premiumShare.getPropertiesWithResponse())
+        then:
+        getPropertiesVerifier.assertNext {
+            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert testMetadata == it.getValue().getMetadata()
+            assert it.getValue().getQuota()
+            assert it.getValue().getProvisionedIops()
+            assert it.getValue().getProvisionedIngressMBps()
+            assert it.getValue().getProvisionedEgressMBps()
+            assert it.getValue().getNextAllowedQuotaDowngradeTime()
+        }.verifyComplete()
     }
 
     def "Set quota"() {
@@ -235,6 +257,38 @@ class ShareAsyncAPITests extends APISpec {
     def "Set metadata error"() {
         expect:
         StepVerifier.create(primaryShareAsyncClient.setMetadata(testMetadata))
+            .verifyErrorSatisfies {
+                assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND)
+            }
+    }
+
+    @Unroll
+    def "Get statistics"() {
+        setup:
+        primaryShareAsyncClient.create().block()
+        primaryShareAsyncClient.createFile("tempFile", (long) size).block()
+
+        when:
+        def respVerifier = StepVerifier.create(primaryShareAsyncClient.getStatisticsWithResponse())
+
+        then:
+        respVerifier.assertNext {
+            assert FileTestHelper.assertResponseStatusCode(it, 200)
+            assert it.getValue().getShareUsageInBytes() == size
+            assert it.getValue().getShareUsageInGB() == gigabytes
+        }
+
+        where:
+        size                    || gigabytes
+        0                       || 0
+        Constants.KB            || 1
+        Constants.GB            || 1
+        (long) 3 * Constants.GB || 3
+    }
+
+    def "Get statistics error"() {
+        expect:
+        StepVerifier.create(primaryShareAsyncClient.getStatistics())
             .verifyErrorSatisfies {
                 assert FileTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND)
             }
@@ -359,6 +413,30 @@ class ShareAsyncAPITests extends APISpec {
 
     }
 
+    def "Create file lease"() {
+        given:
+        primaryShareAsyncClient.create().block()
+        primaryShareAsyncClient.getFileClient("testCreateFile").create(512).block()
+        def leaseId = createLeaseClient(primaryShareAsyncClient.getFileClient("testCreateFile")).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null,
+            null, new ShareRequestConditions().setLeaseId(leaseId)))
+            .expectNextCount(1).verifyComplete()
+    }
+
+    def "Create file lease fail"() {
+        given:
+        primaryShareAsyncClient.create().block()
+        primaryShareAsyncClient.getFileClient("testCreateFile").create(512).block()
+        createLeaseClient(primaryShareAsyncClient.getFileClient("testCreateFile")).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null,
+            null, new ShareRequestConditions().setLeaseId(getRandomUUID())))
+            .verifyError(ShareStorageException)
+    }
+
     def "Create file maxOverload"() {
         given:
         primaryShareAsyncClient.create().block()
@@ -431,6 +509,32 @@ class ShareAsyncAPITests extends APISpec {
 
     }
 
+    def "Delete file lease"() {
+        given:
+        def fileName = "testCreateFile"
+        primaryShareAsyncClient.create().block()
+        primaryShareAsyncClient.createFile(fileName, 1024).block()
+        def leaseId = createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryShareAsyncClient.deleteFileWithResponse(fileName,
+            new ShareRequestConditions().setLeaseId(leaseId)))
+            .expectNextCount(1).verifyComplete()
+    }
+
+    def "Delete file lease fail"() {
+        given:
+        def fileName = "testCreateFile"
+        primaryShareAsyncClient.create().block()
+        primaryShareAsyncClient.createFile(fileName, 1024).block()
+        createLeaseClient(primaryShareAsyncClient.getFileClient(fileName)).acquireLease().block()
+
+        expect:
+        StepVerifier.create(primaryShareAsyncClient.deleteFileWithResponse(fileName,
+            new ShareRequestConditions().setLeaseId(getRandomUUID())))
+            .verifyError(ShareStorageException)
+    }
+
     def "Delete file error"() {
         given:
         primaryShareAsyncClient.create().block()
@@ -453,14 +557,13 @@ class ShareAsyncAPITests extends APISpec {
             }.verifyComplete()
     }
 
-    @Ignore
     def "Create and get permission"() {
         given:
         primaryShareAsyncClient.create().block()
         def filePermissionKey = primaryShareAsyncClient.createPermission(filePermission).block()
 
         expect:
-        StepVerifier.create(primaryShareAsyncClient.setPermissionWithResponse(filePermissionKey))
+        StepVerifier.create(primaryShareAsyncClient.getPermissionWithResponse(filePermissionKey))
             .assertNext {
                 assert FileTestHelper.assertResponseStatusCode(it, 200)
             }.verifyComplete()

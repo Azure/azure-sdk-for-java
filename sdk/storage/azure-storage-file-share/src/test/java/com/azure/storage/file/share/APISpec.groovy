@@ -16,25 +16,46 @@ import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ListSharesOptions
+import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient
+import com.azure.storage.file.share.specialized.ShareLeaseClient
+import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder
+import reactor.core.publisher.Flux
+import org.junit.jupiter.api.Test
 import spock.lang.Specification
 
+import java.nio.ByteBuffer
+import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.OffsetDateTime
 
 class APISpec extends Specification {
     // Field common used for all APIs.
     static ClientLogger logger = new ClientLogger(APISpec.class)
+
+    Integer entityNo = 0 // Used to generate stable share names for recording tests requiring multiple shares.
+
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     URL testFolder = getClass().getClassLoader().getResource("testfiles")
     InterceptorManager interceptorManager
     TestResourceNamer testResourceName
+    // Prefixes for paths and shares
+    String sharePrefix = "jts" // java test share
+
+    String pathPrefix = "javapath"
+
+    public static final String defaultEndpointTemplate = "https://%s.file.core.windows.net/"
+
+    static def PREMIUM_STORAGE = "PREMIUM_FILE_STORAGE_"
+    static StorageSharedKeyCredential premiumCredential
 
     static def PRIMARY_STORAGE = "AZURE_STORAGE_FILE_"
     protected static StorageSharedKeyCredential primaryCredential
+
     // Primary Clients used for API tests
     ShareServiceClient primaryFileServiceClient
     ShareServiceAsyncClient primaryFileServiceAsyncClient
-
+    ShareServiceClient premiumFileServiceClient
+    ShareServiceAsyncClient premiumFileServiceAsyncClient
 
     // Test name for test method name.
     String methodName
@@ -45,10 +66,23 @@ class APISpec extends Specification {
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
     static boolean enableDebugging = false
 
+    /*
+    Note that this value is only used to check if we are depending on the received etag. This value will not actually
+    be used.
+     */
+    static final String receivedLeaseID = "received"
+
+    static final String garbageLeaseID = UUID.randomUUID().toString()
+
+    def defaultData = ByteBuffer.wrap("default".getBytes(StandardCharsets.UTF_8))
+    def defaultFlux = Flux.just(defaultData)
+    Long defaultDataLength = defaultData.remaining()
+
     /**
      * Setup the File service clients commonly used for the API tests.
      */
     def setup() {
+        premiumCredential = getCredential(PREMIUM_STORAGE)
         primaryCredential = getCredential(PRIMARY_STORAGE)
         String testName = reformat(specificationContext.currentIteration.getName())
         String className = specificationContext.getCurrentSpec().getName()
@@ -63,6 +97,11 @@ class APISpec extends Specification {
             connectionString = "DefaultEndpointsProtocol=https;AccountName=teststorage;" +
                 "AccountKey=atestaccountkey;EndpointSuffix=core.windows.net"
         }
+        primaryFileServiceClient = setClient(primaryCredential)
+        primaryFileServiceAsyncClient = setAsyncClient(primaryCredential)
+
+        premiumFileServiceClient = setClient(premiumCredential)
+        premiumFileServiceAsyncClient = setAsyncClient(premiumCredential)
 
         // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
         System.out.printf("========================= %s.%s =========================%n", className, testName)
@@ -130,7 +169,57 @@ class APISpec extends Specification {
     }
 
     static boolean liveMode() {
-        return testMode == TestMode.LIVE
+        return testMode != TestMode.PLAYBACK
+    }
+
+    def generateShareName() {
+        generateResourceName(sharePrefix, entityNo++)
+    }
+
+    def generatePathName() {
+        generateResourceName(pathPrefix, entityNo++)
+    }
+
+    private String generateResourceName(String prefix, int entityNo) {
+        return testResourceName.randomName(prefix + methodName + entityNo, 63)
+    }
+
+    ShareServiceAsyncClient setAsyncClient(StorageSharedKeyCredential credential) {
+        try {
+            return getServiceAsyncClient(credential)
+        } catch (Exception ignore) {
+            return null
+        }
+    }
+
+    ShareServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential) {
+        return getServiceAsyncClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
+    }
+
+    ShareServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential, String endpoint,
+                                        HttpPipelinePolicy... policies) {
+        return getServiceClientBuilder(credential, endpoint, policies).buildAsyncClient()
+    }
+
+    ShareServiceClient setClient(StorageSharedKeyCredential credential) {
+        try {
+            return getServiceClient(credential)
+        } catch (Exception ignore) {
+            return null
+        }
+    }
+
+    ShareServiceClient getServiceClient(StorageSharedKeyCredential credential) {
+        // TODO : Remove this once its no longer preprod
+//        if (credential == premiumCredential) {
+//            return getServiceClient(credential, String.format("https://%s.file.preprod.core.windows.net/", credential.getAccountName()), null)
+//        }
+        return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()), null)
+    }
+
+    ShareServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint,
+                                       HttpPipelinePolicy... policies) {
+        return getServiceClientBuilder(credential, endpoint, policies).buildClient()
     }
 
     def fileServiceBuilderHelper(final InterceptorManager interceptorManager) {
@@ -161,7 +250,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (!liveMode()) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -294,6 +383,58 @@ class APISpec extends Specification {
 
     InputStream getInputStream(byte[] data) {
         return new ByteArrayInputStream(data)
+    }
+
+    static ShareLeaseClient createLeaseClient(ShareFileClient fileClient) {
+        return createLeaseClient(fileClient, null)
+    }
+
+    static ShareLeaseClient createLeaseClient(ShareFileClient fileClient, String leaseId) {
+        return new ShareLeaseClientBuilder()
+            .fileClient(fileClient)
+            .leaseId(leaseId)
+            .buildClient()
+    }
+
+    static ShareLeaseAsyncClient createLeaseClient(ShareFileAsyncClient fileClient) {
+        return createLeaseClient(fileClient, null)
+    }
+
+    static ShareLeaseAsyncClient createLeaseClient(ShareFileAsyncClient fileClient, String leaseId) {
+        return new ShareLeaseClientBuilder()
+            .fileAsyncClient(fileClient)
+            .leaseId(leaseId)
+            .buildAsyncClient()
+    }
+
+    /**
+     * This helper method will acquire a lease on a blob to prepare for testing lease Id. We want to test
+     * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
+     * proper setting of the header. If we pass null, though, we don't want to acquire a lease, as that will interfere
+     * with other AC tests.
+     *
+     * @param fc
+     *      The blob on which to acquire a lease.
+     * @param leaseID
+     *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
+     * @return
+     * The actual lease Id of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
+     * returned.
+     */
+    def setupFileLeaseCondition(ShareFileClient fc, String leaseID) {
+        String responseLeaseId = null
+        if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
+            responseLeaseId = createLeaseClient(fc).acquireLease()
+        }
+        if (leaseID == receivedLeaseID) {
+            return responseLeaseId
+        } else {
+            return leaseID
+        }
+    }
+
+    String getRandomUUID() {
+        return testResourceName.randomUuid()
     }
 
     void sleepIfLive(long milliseconds) {

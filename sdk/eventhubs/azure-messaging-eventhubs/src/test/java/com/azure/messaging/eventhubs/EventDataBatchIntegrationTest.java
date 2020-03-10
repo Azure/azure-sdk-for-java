@@ -44,7 +44,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     protected void beforeTest() {
         MockitoAnnotations.initMocks(this);
 
-        client = createBuilder().buildAsyncClient();
+        client = createBuilder().shareConnection().buildAsyncClient();
         producer = client.createProducer();
     }
 

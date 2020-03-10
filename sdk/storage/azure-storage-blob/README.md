@@ -22,7 +22,7 @@ definition, such as text or binary data.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.2.0</version>
+    <version>12.4.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -124,37 +124,57 @@ The following sections provide several code snippets covering some of the most c
 
 Create a `BlobServiceClient` using the [`sasToken`](#get-credentials) generated above.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L27-L30 -->
 ```java
 BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-        .endpoint("<your-storage-blob-url>")
-        .sasToken("<your-sasToken>")
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .buildClient();
+```
+
+or
+
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L34-L36 -->
+```java
+BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+    .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
+    .buildClient();
 ```
 
 ### Create a `BlobContainerClient`
 
 Create a `BlobContainerClient` using a `BlobServiceClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L40-L40 -->
 ```java
 BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient("mycontainer");
 ```
 
-or
-
 Create a `BlobContainerClient` from the builder [`sasToken`](#get-credentials) generated above.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L44-L48 -->
 ```java
 BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
-        .endpoint("<your-storage-blob-url>")
-        .sasToken("<your-sasToken>")
-        .containerName("mycontainer")
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .containerName("mycontainer")
+    .buildClient();
+```
+
+or
+
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L52-L54 -->
+```java
+BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
+    .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "?" + "<your-sasToken>")
+    .buildClient();
 ```
 
 ### Create a `BlobClient`
 
 Create a `BlobClient` using a `BlobContainerClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L58-L58 -->
 ```java
 BlobClient blobClient = blobContainerClient.getBlobClient("myblob");
 ```
@@ -163,19 +183,30 @@ or
 
 Create a `BlobClient` from the builder [`sasToken`](#get-credentials) generated above.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L62-L67 -->
 ```java
 BlobClient blobClient = new BlobClientBuilder()
-        .endpoint("<your-storage-blob-url>")
-        .sasToken("<your-sasToken>")
-        .containerName("mycontainer")
-        .blobName("myblob")
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .containerName("mycontainer")
+    .blobName("myblob")
+    .buildClient();
+```
+
+or
+
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L71-L73 -->
+```java
+BlobClient blobClient = new BlobClientBuilder()
+    .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" + "?" + "<your-sasToken>")
+    .buildClient();
 ```
 
 ### Create a container
 
 Create a container using a `BlobServiceClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L77-L77 -->
 ```java
 blobServiceClient.createBlobContainer("mycontainer");
 ```
@@ -184,6 +215,7 @@ or
 
 Create a container using a `BlobContainerClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L81-L81 -->
 ```java
 blobContainerClient.create();
 ```
@@ -192,11 +224,14 @@ blobContainerClient.create();
 
 Upload from an `InputStream` to a blob using a `BlockBlobClient` generated from a `BlobContainerClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L85-L91 -->
 ```java
 BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient("myblockblob").getBlockBlobClient();
 String dataSample = "samples";
 try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
     blockBlobClient.upload(dataStream, dataSample.length());
+} catch (IOException e) {
+    e.printStackTrace();
 }
 ```
 
@@ -204,6 +239,7 @@ try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBy
 
 Upload a file to a blob using a `BlobClient` generated from a `BlobContainerClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L95-L96 -->
 ```java
 BlobClient blobClient = blobContainerClient.getBlobClient("myblockblob");
 blobClient.uploadFromFile("local-file.jpg");
@@ -213,9 +249,12 @@ blobClient.uploadFromFile("local-file.jpg");
 
 Download a blob to an `OutputStream` using a `BlobClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L100-L104 -->
 ```java
-try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
     blobClient.download(outputStream);
+} catch (IOException e) {
+    e.printStackTrace();
 }
 ```
 
@@ -223,6 +262,7 @@ try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 
 Download blob to a local file using a `BlobClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L108-L108 -->
 ```java
 blobClient.downloadToFile("downloaded-file.jpg");
 ```
@@ -231,22 +271,23 @@ blobClient.downloadToFile("downloaded-file.jpg");
 
 Enumerating all blobs using a `BlobContainerClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L112-L114 -->
 ```java
-blobContainerClient.listBlobs()
-        .forEach(
-            blobItem -> System.out.println("This is the blob name: " + blobItem.getName())
-        );
+for (BlobItem blobItem : blobContainerClient.listBlobs()) {
+    System.out.println("This is the blob name: " + blobItem.getName());
+}
 ```
 
 ### Authenticate with Azure Identity
 
 The [Azure Identity library][identity] provides Azure Active Directory support for authenticating with Azure Storage.
 
+<!-- embedme ./src/samples/java/com/azure/storage/blob/ReadmeSamples.java#L118-L121 -->
 ```java
 BlobServiceClient blobStorageClient = new BlobServiceClientBuilder()
-        .endpoint(endpoint)
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 ## Troubleshooting
