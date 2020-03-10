@@ -301,6 +301,14 @@ public final class BlobBatch {
                     BATCH_OPERATION_INFO, operationInfo)));
         }
 
+        /*
+         * Mono.when is more robust and safer to use than the previous implementation, using Flux.generate, as it is
+         * fulfilled/complete once all publishers comprising it are completed whereas Flux.generate will complete once
+         * the sink completes. Certain authorization methods, such as AAD, may have deferred processing where the sink
+         * would trigger completion before the request bodies are added into the batch, leading to a state where the
+         * request would believe it had a different size than it actually had, Mono.when bypasses this issue as it must
+         * wait until the deferred processing has completed to trigger the `thenReturn` operator.
+         */
         return Mono.when(batchOperationResponses)
             .doOnSuccess(ignored -> operationInfo.finalizeBatchOperations())
             .thenReturn(operationInfo);
