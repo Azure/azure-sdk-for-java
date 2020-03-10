@@ -31,7 +31,6 @@ import java.time.ZoneOffset;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import org.junit.jupiter.params.provider.Arguments;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -420,7 +419,7 @@ public abstract class KeyClientTestBase extends TestBase {
         getHttpClients()
             .forEach(httpClient -> {
                 Arrays.stream(KeyServiceVersion.values()).filter(KeyClientTestBase::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion ->argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
             });
         return argumentsList.stream();
     }

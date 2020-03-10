@@ -8,7 +8,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -35,7 +34,6 @@ import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import org.junit.jupiter.params.provider.Arguments;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,7 +51,7 @@ public abstract class CryptographyClientTestBase extends TestBase {
     void beforeTestSetup() {
     }
 
-    HttpPipeline getHttpPipeline (HttpClient httpClient, ServiceVersion serviceVersion) {
+    HttpPipeline getHttpPipeline(HttpClient httpClient, ServiceVersion serviceVersion) {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {

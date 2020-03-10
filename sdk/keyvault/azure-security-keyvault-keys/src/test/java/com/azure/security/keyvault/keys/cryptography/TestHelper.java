@@ -6,7 +6,6 @@ package com.azure.security.keyvault.keys.cryptography;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
-import com.azure.security.keyvault.keys.KeyServiceVersion;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +21,7 @@ public class TestHelper extends TestBase {
      *
      * @return A stream of HttpClient and service version combinations to test.
      */
-    static Stream<Arguments> getTestParameters() {
+    protected static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
@@ -30,12 +29,12 @@ public class TestHelper extends TestBase {
         getHttpClients()
             .forEach(httpClient -> {
                 Arrays.stream(CryptographyServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion ->argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
             });
         return argumentsList.stream();
     }
 
-    static boolean shouldServiceVersionBeTested(CryptographyServiceVersion serviceVersion) {
+    protected static boolean shouldServiceVersionBeTested(CryptographyServiceVersion serviceVersion) {
         if (Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS) == null) {
             return CryptographyServiceVersion.getLatest().equals(serviceVersion);
         }
