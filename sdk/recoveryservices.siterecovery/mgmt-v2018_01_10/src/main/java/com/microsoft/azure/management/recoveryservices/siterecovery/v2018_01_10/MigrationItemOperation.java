@@ -28,6 +28,9 @@ public final class MigrationItemOperation extends ExpandableStringEnum<Migration
     /** Static value Migrate for MigrationItemOperation. */
     public static final MigrationItemOperation MIGRATE = fromString("Migrate");
 
+    /** Static value StartResync for MigrationItemOperation. */
+    public static final MigrationItemOperation START_RESYNC = fromString("StartResync");
+
     /**
      * Creates or finds a MigrationItemOperation from its string representation.
      * @param name a name to look for

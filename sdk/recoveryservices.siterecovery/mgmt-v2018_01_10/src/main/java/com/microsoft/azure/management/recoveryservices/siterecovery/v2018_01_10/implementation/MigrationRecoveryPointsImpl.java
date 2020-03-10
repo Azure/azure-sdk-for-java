@@ -54,10 +54,14 @@ class MigrationRecoveryPointsImpl extends WrapperImpl<MigrationRecoveryPointsInn
     public Observable<MigrationRecoveryPoint> getAsync(String fabricName, String protectionContainerName, String migrationItemName, String migrationRecoveryPointName) {
         MigrationRecoveryPointsInner client = this.inner();
         return client.getAsync(fabricName, protectionContainerName, migrationItemName, migrationRecoveryPointName)
-        .map(new Func1<MigrationRecoveryPointInner, MigrationRecoveryPoint>() {
+        .flatMap(new Func1<MigrationRecoveryPointInner, Observable<MigrationRecoveryPoint>>() {
             @Override
-            public MigrationRecoveryPoint call(MigrationRecoveryPointInner inner) {
-                return wrapModel(inner);
+            public Observable<MigrationRecoveryPoint> call(MigrationRecoveryPointInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((MigrationRecoveryPoint)wrapModel(inner));
+                }
             }
        });
     }
