@@ -13,6 +13,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractInnerException;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.IpFirewallRuleProperties;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ReplaceAllIpFirewallRulesRequest;
 import com.microsoft.azure.Page;
