@@ -118,6 +118,10 @@ public class IdentityClient {
                     publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
                 }
             }
+
+            if (options.getExecutorService() != null) {
+                publicClientApplicationBuilder.executorService(options.getExecutorService());
+            }
             this.publicClientApplication = publicClientApplicationBuilder.build();
         }
     }
@@ -141,6 +145,10 @@ public class IdentityClient {
                 applicationBuilder.httpClient(httpPipelineAdapter);
             } else if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+            }
+
+            if (options.getExecutorService() != null) {
+                applicationBuilder.executorService(options.getExecutorService());
             }
 
             ConfidentialClientApplication application = applicationBuilder.build();
@@ -188,6 +196,10 @@ public class IdentityClient {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
 
+            if (options.getExecutorService() != null) {
+                applicationBuilder.executorService(options.getExecutorService());
+            }
+
             return applicationBuilder.build();
         }).flatMap(application -> Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build())))
@@ -216,6 +228,10 @@ public class IdentityClient {
                 applicationBuilder.httpClient(httpPipelineAdapter);
             } else if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+            }
+
+            if (options.getExecutorService() != null) {
+                applicationBuilder.executorService(options.getExecutorService());
             }
 
             ConfidentialClientApplication application = applicationBuilder.build();
