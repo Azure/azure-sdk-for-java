@@ -103,12 +103,12 @@ public class EventHubConsumerClientTest {
         when(amqpReceiveLink.getEndpointStates()).thenReturn(Flux.never());
         when(amqpReceiveLink.getCredits()).thenReturn(10);
 
-        connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
+        connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection))
             .subscribeWith(new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getEntityPath(), connectionOptions.getRetry()));
+                "event-hub-path", connectionOptions.getRetry()));
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         when(connection.createReceiveLink(any(), argThat(name -> name.endsWith(PARTITION_ID)), any(EventPosition.class), any(ReceiveOptions.class)))
