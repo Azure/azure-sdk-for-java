@@ -153,8 +153,10 @@ public abstract class TestBase implements BeforeEachCallback {
         // This is for when we decide to filter some http clients based on some criteria
         // to reduce the time take to run the tests.
         String configuredHttpClientToTest = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS);
-
-        if (CoreUtils.isNullOrEmpty(configuredHttpClientToTest) || configuredHttpClientToTest.equals("ALL")) {
+        if (CoreUtils.isNullOrEmpty(configuredHttpClientToTest)) {
+            return client.getClass().getSimpleName().equals(AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY);
+        }
+        if (configuredHttpClientToTest.equals(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL)) {
             return true;
         }
         return client.getClass().getSimpleName().equals(configuredHttpClientToTest);
