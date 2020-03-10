@@ -163,8 +163,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
             .retryPolicy(new RetryPolicy())
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .pipeline(new HttpPipelineBuilder().httpClient(httpClient == null ?
-                interceptorManager.getPlaybackClient() : httpClient).build())
+            .pipeline(new HttpPipelineBuilder().build())
             .serviceVersion(serviceVersion);
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -174,7 +173,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
                 () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
         }
 
-        clientBuilder.pipeline(null);
+        clientBuilder.pipeline(null).httpClient(httpClient == null ? interceptorManager.getPlaybackClient() :
+            httpClient);
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
         Assertions.assertEquals(addedSetting.getKey(), key);

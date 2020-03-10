@@ -7,7 +7,6 @@ import com.azure.core.implementation.http.HttpClientProviders;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
