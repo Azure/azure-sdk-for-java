@@ -8,7 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
 
 /**
@@ -172,11 +174,12 @@ public final class IdentityClientOptions {
      * token takes longer than normal to get to the server.
      *
      * @param tokenRefreshOffset the duration before the actual expiry of a token to refresh it
+     * @return IdentityClientOptions
+     * @throws NullPointerException If {@code tokenRefreshOffset} is null.
      */
     public IdentityClientOptions setTokenRefreshOffset(Duration tokenRefreshOffset) {
-        if (tokenRefreshOffset != null) {
-            this.tokenRefreshOffset = tokenRefreshOffset;
-        }
+        Objects.requireNonNull(tokenRefreshOffset, "The token refresh offset cannot be null.");
+        this.tokenRefreshOffset = tokenRefreshOffset;
         return this;
     }
 

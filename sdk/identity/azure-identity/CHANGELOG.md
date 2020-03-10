@@ -5,7 +5,10 @@
 ### Added
 - Added 'authorityHost' set method in `DefaultAzureCredentialBuilder`
 - Added `executorService` set method in all the credential builders except `ManagedIdentityCredentialBuilder`
-
+- Added `authorityHost` set method to `DefaultAzureCredentialBuilder`
+- Added `tokenRefreshOffset` set method in all the credential builders.
+- Added `httpClient` set method in all the credential builders.
+- Updated `DefaultAzureCredential` to enable authenticating through the Azure CLI
 
 ## 1.1.0-beta.1 (2020-02-12)
 - All credential builders support setting a pipeline via `httpPipeline` method.
