@@ -21,7 +21,10 @@
         },
         "sku": {
             "defaultValue": "Standard",
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "sku type defined here."
+            }
         }
     },
     "variables": {
