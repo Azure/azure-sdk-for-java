@@ -68,7 +68,7 @@ public class PathAccessControlEntry {
      *
      * Must be omitted for types mask or other. It must also be omitted when the user or group is the owner.
      */
-    private String entityID;
+    private String entityId;
 
     /**
      * Specifies the permissions granted to this entry.
@@ -101,7 +101,7 @@ public class PathAccessControlEntry {
         if (accessControlType != that.accessControlType) {
             return false;
         }
-        if (!Objects.equals(entityID, that.entityID)) {
+        if (!Objects.equals(entityId, that.entityId)) {
             return false;
         }
         return Objects.equals(permissions, that.permissions);
@@ -111,7 +111,7 @@ public class PathAccessControlEntry {
     public int hashCode() {
         int result = (defaultScope ? 1 : 0);
         result = 31 * result + (accessControlType != null ? accessControlType.hashCode() : 0);
-        result = 31 * result + (entityID != null ? entityID.hashCode() : 0);
+        result = 31 * result + (entityId != null ? entityId.hashCode() : 0);
         result = 31 * result + (permissions != null ? permissions.hashCode() : 0);
         return result;
     }
@@ -127,7 +127,7 @@ public class PathAccessControlEntry {
         }
         sb.append(accessControlType.toString().toLowerCase(Locale.ROOT));
         sb.append(':');
-        sb.append(entityID == null ? "" : entityID);
+        sb.append(entityId == null ? "" : entityId);
         sb.append(':');
         sb.append(permissions.toSymbolic());
 
@@ -158,7 +158,7 @@ public class PathAccessControlEntry {
             indexOffset = 1;
         }
         res.accessControlType = AccessControlType.fromString(parts[indexOffset]);
-        res.entityID = !parts[1 + indexOffset].equals("") ? parts[1 + indexOffset] : null;
+        res.entityId = !parts[1 + indexOffset].equals("") ? parts[1 + indexOffset] : null;
         res.permissions = RolePermissions.parseSymbolic(parts[2 + indexOffset], false);
         return res;
     }
@@ -217,8 +217,8 @@ public class PathAccessControlEntry {
      *
      * @return The entity for which this entry applies.
      */
-    public String getEntityID() {
-        return entityID;
+    public String getEntityId() {
+        return entityId;
     }
 
     /**
@@ -257,11 +257,11 @@ public class PathAccessControlEntry {
      * {@link AccessControlType#OTHER} or if the user is the owner or the group is the owning group. Must be a valid
      * Azure AAD Object ID or User Principal Name.
      *
-     * @param entityID The entity to which this entry will apply.
+     * @param entityId The entity to which this entry will apply.
      * @return The updated PathAccessControlEntry object.
      */
-    public PathAccessControlEntry setEntityID(String entityID) {
-        this.entityID = entityID;
+    public PathAccessControlEntry setEntityId(String entityId) {
+        this.entityId = entityId;
         return this;
     }
 

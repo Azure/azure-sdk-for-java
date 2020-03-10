@@ -25,30 +25,30 @@ public class UploadFromFileTest extends BlobTestBase<SizeOptions> {
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync().then(CreateTempFile());
+        return super.globalSetupAsync().then(createTempFile());
     }
 
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return DeleteTempFile().then(super.globalCleanupAsync());
+        return deleteTempFile().then(super.globalCleanupAsync());
     }
 
-    private Mono<Void> CreateTempFile() {
+    private Mono<Void> createTempFile() {
         try {
             tempFile = Files.createTempFile(null, null);
-            
+
             InputStream inputStream = RandomStream.create(options.getSize());
             OutputStream outputStream = new FileOutputStream(tempFile.toString());
             copyStream(inputStream, outputStream);
             outputStream.close();
-            
+
             return Mono.empty();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private Mono<Void> DeleteTempFile() {
+    private Mono<Void> deleteTempFile() {
         try {
             Files.delete(tempFile);
             return Mono.empty();

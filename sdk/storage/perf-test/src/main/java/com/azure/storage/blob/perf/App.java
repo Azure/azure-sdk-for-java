@@ -14,7 +14,7 @@ import java.util.List;
  * <p>To run from command line. Package the project into a jar with dependencies via mvn clean package.
  * Then run the program via java -jar 'compiled-jar-with-dependencies-path' </p>
  *
- * <p> To run from IDE, set all the required environment variables in IntelliJ via Run -> EditConfigurations section.
+ * <p> To run from IDE, set all the required environment variables in IntelliJ via Run -&gt; EditConfigurations section.
  * Then run the App's main method via IDE.</p>
  */
 public class App {

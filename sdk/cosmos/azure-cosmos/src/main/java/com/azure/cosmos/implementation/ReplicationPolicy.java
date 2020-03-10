@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.JsonSerializable;
+import com.azure.cosmos.models.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**

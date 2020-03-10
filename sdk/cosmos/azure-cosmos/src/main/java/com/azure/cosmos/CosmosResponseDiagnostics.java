@@ -4,7 +4,6 @@ package com.azure.cosmos;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +14,8 @@ import java.time.Duration;
  * This class represents response diagnostic statistics associated with a request to Azure Cosmos DB
  */
 public class CosmosResponseDiagnostics {
-    private static final Logger logger = LoggerFactory.getLogger(CosmosResponseDiagnostics.class);
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosResponseDiagnostics.class);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private ClientSideRequestStatistics clientSideRequestStatistics;
 
@@ -41,9 +40,9 @@ public class CosmosResponseDiagnostics {
     @Override
     public String toString() {
         try {
-            return objectMapper.writeValueAsString(this.clientSideRequestStatistics);
-        }catch (JsonProcessingException e) {
-            logger.error("Error while parsing diagnostics " + e);
+            return OBJECT_MAPPER.writeValueAsString(this.clientSideRequestStatistics);
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Error while parsing diagnostics " + e);
         }
         return StringUtils.EMPTY;
     }

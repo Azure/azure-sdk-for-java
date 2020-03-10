@@ -3,6 +3,18 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosAsyncUserResponse;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosUserProperties;
+import com.azure.cosmos.models.CosmosUserResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -327,7 +339,7 @@ public class CosmosDatabase {
      * @return the cosmos sync container response
      */
     CosmosContainerResponse convertResponse(CosmosAsyncContainerResponse response) {
-        return new CosmosContainerResponse(response, this, client);
+        return ModelBridgeInternal.createCosmosContainerResponse(response, this, client);
     }
 
     /* Users */
@@ -440,7 +452,7 @@ public class CosmosDatabase {
     }
 
     private CosmosUserResponse convertUserResponse(CosmosAsyncUserResponse response) {
-        return new CosmosUserResponse(response, this);
+        return ModelBridgeInternal.createCosmosUserResponse(response, this);
     }
 
     /**

@@ -5,14 +5,13 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosItemRequestOptions;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FailureValidator;
-import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -26,7 +25,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static org.apache.commons.io.FileUtils.ONE_MB;
@@ -378,14 +376,14 @@ public class DocumentCrudTest extends TestSuiteBase {
         TestObject newTestObject = new TestObject(docId, partitionKey, sgmts, "test string");
 
         Mono<CosmosAsyncItemResponse<TestObject>> itemResponseMono = container.createItem(newTestObject);
-        TestObject resultObject = itemResponseMono.block().getResource();
+        TestObject resultObject = itemResponseMono.block().getItem();
         compareTestObjs(newTestObject, resultObject);
 
         Mono<CosmosAsyncItemResponse<TestObject>> readResponseMono = container.readItem(newTestObject.id,
                                                                                         new PartitionKey(newTestObject
                                                                                                              .getMypk()),
                                                                                         TestObject.class);
-        resultObject = readResponseMono.block().getResource();
+        resultObject = readResponseMono.block().getItem();
         compareTestObjs(newTestObject, resultObject);
 
         newTestObject.setStringProp("another string");
@@ -393,7 +391,7 @@ public class DocumentCrudTest extends TestSuiteBase {
                                                                                       newTestObject.getId(),
                                                                                       new PartitionKey(newTestObject
                                                                                                            .getMypk()));
-        resultObject = replaceMono.block().getResource();
+        resultObject = replaceMono.block().getItem();
         compareTestObjs(newTestObject, resultObject);
     }
 

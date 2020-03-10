@@ -46,7 +46,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -119,6 +118,10 @@ public class IdentityClient {
                     publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
                 }
             }
+
+            if (options.getExecutorService() != null) {
+                publicClientApplicationBuilder.executorService(options.getExecutorService());
+            }
             this.publicClientApplication = publicClientApplicationBuilder.build();
         }
     }
@@ -144,13 +147,15 @@ public class IdentityClient {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
 
+            if (options.getExecutorService() != null) {
+                applicationBuilder.executorService(options.getExecutorService());
+            }
+
             ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                   .build()))
-                   .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
-                               ZoneOffset.UTC)));
-
+                    .build()))
+                .map(ar -> new MsalToken(ar, options));
         } catch (MalformedURLException e) {
             return Mono.error(e);
         }
@@ -191,11 +196,14 @@ public class IdentityClient {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
 
+            if (options.getExecutorService() != null) {
+                applicationBuilder.executorService(options.getExecutorService());
+            }
+
             return applicationBuilder.build();
         }).flatMap(application -> Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build())))
-        .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
-                ZoneOffset.UTC)));
+        .map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -222,12 +230,15 @@ public class IdentityClient {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
 
+            if (options.getExecutorService() != null) {
+                applicationBuilder.executorService(options.getExecutorService());
+            }
+
             ConfidentialClientApplication application = applicationBuilder.build();
             return Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
                     .build()))
-                .map(ar -> new AccessToken(ar.accessToken(), OffsetDateTime.ofInstant(ar.expiresOnDate().toInstant(),
-                    ZoneOffset.UTC)));
+                .map(ar -> new MsalToken(ar, options));
         } catch (IOException e) {
             return Mono.error(e);
         }
@@ -246,7 +257,7 @@ public class IdentityClient {
         return Mono.fromFuture(publicClientApplication.acquireToken(
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()), username, password.toCharArray())
                 .build()))
-            .map(MsalToken::new);
+            .map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -264,7 +275,8 @@ public class IdentityClient {
         }
         return Mono.defer(() -> {
             try {
-                return Mono.fromFuture(publicClientApplication.acquireTokenSilently(parameters)).map(MsalToken::new);
+                return Mono.fromFuture(publicClientApplication.acquireTokenSilently(parameters))
+                        .map(ar -> new MsalToken(ar, options));
             } catch (MalformedURLException e) {
                 return Mono.error(e);
             }
@@ -288,7 +300,7 @@ public class IdentityClient {
                 dc -> deviceCodeConsumer.accept(new DeviceCodeInfo(dc.userCode(), dc.deviceCode(),
                     dc.verificationUri(), OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
             return publicClientApplication.acquireToken(parameters);
-        }).map(MsalToken::new);
+        }).map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -305,7 +317,7 @@ public class IdentityClient {
             AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
                 .scopes(new HashSet<>(request.getScopes()))
                 .build()))
-            .map(MsalToken::new);
+            .map(ar -> new MsalToken(ar, options));
     }
 
     /**
@@ -362,11 +374,11 @@ public class IdentityClient {
      */
     public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String msiEndpoint, String msiSecret,
                                                                    TokenRequestContext request) {
-        String resource = ScopeUtil.scopesToResource(request.getScopes());
-        HttpURLConnection connection = null;
-        StringBuilder payload = new StringBuilder();
+        return Mono.fromCallable(() -> {
+            String resource = ScopeUtil.scopesToResource(request.getScopes());
+            HttpURLConnection connection = null;
+            StringBuilder payload = new StringBuilder();
 
-        try {
             payload.append("resource=");
             payload.append(URLEncoder.encode(resource, "UTF-8"));
             payload.append("&api-version=");
@@ -375,32 +387,30 @@ public class IdentityClient {
                 payload.append("&clientid=");
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
-        } catch (IOException exception) {
-            return Mono.error(exception);
-        }
-        try {
-            URL url = new URL(String.format("%s?%s", msiEndpoint, payload));
-            connection = (HttpURLConnection) url.openConnection();
+            try {
+                URL url = new URL(String.format("%s?%s", msiEndpoint, payload));
+                connection = (HttpURLConnection) url.openConnection();
 
-            connection.setRequestMethod("GET");
-            if (msiSecret != null) {
-                connection.setRequestProperty("Secret", msiSecret);
+                connection.setRequestMethod("GET");
+                if (msiSecret != null) {
+                    connection.setRequestProperty("Secret", msiSecret);
+                }
+                connection.setRequestProperty("Metadata", "true");
+
+                connection.connect();
+
+                Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
+                        .useDelimiter("\\A");
+                String result = s.hasNext() ? s.next() : "";
+
+                MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                return new IdentityToken(msiToken.getToken(), msiToken.getExpiresAt(), options);
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
             }
-            connection.setRequestProperty("Metadata", "true");
-
-            connection.connect();
-
-            Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name()).useDelimiter("\\A");
-            String result = s.hasNext() ? s.next() : "";
-
-            return Mono.just(SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON));
-        } catch (IOException e) {
-            return Mono.error(e);
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
+        });
     }
 
     /**
@@ -446,7 +456,9 @@ public class IdentityClient {
                             .useDelimiter("\\A");
                     String result = s.hasNext() ? s.next() : "";
 
-                    return SERIALIZER_ADAPTER.<MSIToken>deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                    MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result,
+                            MSIToken.class, SerializerEncoding.JSON);
+                    return new IdentityToken(msiToken.getToken(), msiToken.getExpiresAt(), options);
                 } catch (IOException exception) {
                     if (connection == null) {
                         throw logger.logExceptionAsError(new RuntimeException(

@@ -3,6 +3,16 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -193,7 +203,8 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public <T> CosmosItemResponse<T> upsertItem(Object item, CosmosItemRequestOptions options) throws CosmosClientException {
+    public <T> CosmosItemResponse<T> upsertItem(Object item, CosmosItemRequestOptions options) throws
+        CosmosClientException {
         return (CosmosItemResponse<T>) this.mapItemResponseAndBlock(this.asyncContainer.upsertItem(item, options));
     }
 
@@ -204,11 +215,12 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    <T> CosmosItemResponse<T> mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse<T>> itemMono) throws CosmosClientException {
+    <T> CosmosItemResponse<T> mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse<T>> itemMono) throws
+        CosmosClientException {
         try {
             return (CosmosItemResponse<T>) itemMono
-                       .map(this::convertResponse)
-                       .block();
+                                               .map(this::convertResponse)
+                                               .block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
@@ -283,7 +295,8 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) throws CosmosClientException {
+    public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) throws
+        CosmosClientException {
         return this.mapItemResponseAndBlock(asyncContainer.readItem(itemId,
                                                                     partitionKey,
                                                                     new CosmosItemRequestOptions(),
@@ -301,8 +314,9 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey,
-                                          CosmosItemRequestOptions options, Class<T> itemType) throws CosmosClientException {
+    public <T> CosmosItemResponse<T> readItem(
+        String itemId, PartitionKey partitionKey,
+        CosmosItemRequestOptions options, Class<T> itemType) throws CosmosClientException {
         return this.mapItemResponseAndBlock(asyncContainer.readItem(itemId, partitionKey, options, itemType));
     }
 
@@ -359,7 +373,7 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      */
     private <T> CosmosItemResponse<T> convertResponse(CosmosAsyncItemResponse response) {
-        return new CosmosItemResponse<T>(response);
+        return ModelBridgeInternal.createCosmosItemResponse(response);
     }
 
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {

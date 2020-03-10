@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
@@ -502,7 +503,7 @@ public class DataLakePathClient {
         DataLakePathClient dataLakePathClient = getPathClient(destinationFileSystem, destinationPath);
 
         String renameSource = "/" + dataLakePathAsyncClient.getFileSystemName() + "/"
-            + dataLakePathAsyncClient.getObjectPath();
+            + Utility.urlEncode(dataLakePathAsyncClient.getObjectPath());
 
         return dataLakePathClient.dataLakePathAsyncClient.dataLakeStorage.paths().createWithRestResponseAsync(
             null /* pathResourceType */, null /* continuation */, PathRenameMode.LEGACY, renameSource,

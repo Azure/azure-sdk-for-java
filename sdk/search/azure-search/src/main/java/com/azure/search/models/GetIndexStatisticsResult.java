@@ -18,13 +18,13 @@ public final class GetIndexStatisticsResult {
     /*
      * The number of documents in the index.
      */
-    @JsonProperty(value = "documentCount", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "documentCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private long documentCount;
 
     /*
      * The amount of storage in bytes consumed by the index.
      */
-    @JsonProperty(value = "storageSize", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "storageSize", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private long storageSize;
 
     /**

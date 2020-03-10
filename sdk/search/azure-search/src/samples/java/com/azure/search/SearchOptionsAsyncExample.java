@@ -67,7 +67,7 @@ public class SearchOptionsAsyncExample {
             v.forEach(result -> {
                 System.out.println(k + " :");
                 System.out.println("    count: " + result.getCount());
-                result.getDocument().forEach((f, d) -> System.out.println("    " + f + " : " + d));
+                result.getAdditionalProperties().forEach((f, d) -> System.out.println("    " + f + " : " + d));
             });
         });
     }
@@ -88,7 +88,7 @@ public class SearchOptionsAsyncExample {
             result.forEach((k, v) -> v.forEach(facetResult -> {
                 System.out.println(k + " :");
                 System.out.println("    count: " + facetResult.getCount());
-                facetResult.getDocument().forEach((f, d) ->
+                facetResult.getAdditionalProperties().forEach((f, d) ->
                     System.out.println("    " + f + " : " + d)
                 );
             }))

@@ -4,6 +4,9 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.models.CosmosAsyncConflictResponse;
+import com.azure.cosmos.models.CosmosConflictRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 /**
@@ -60,9 +63,9 @@ public class CosmosAsyncConflict {
         if (options == null) {
             options = new CosmosConflictRequestOptions();
         }
-        RequestOptions requestOptions = options.toRequestOptions();
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         return this.container.getDatabase().getDocClientWrapper().readConflict(getLink(), requestOptions)
-                   .map(response -> new CosmosAsyncConflictResponse(response, container)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncConflictResponse(response, container)).single();
 
     }
 
@@ -81,9 +84,9 @@ public class CosmosAsyncConflict {
         if (options == null) {
             options = new CosmosConflictRequestOptions();
         }
-        RequestOptions requestOptions = options.toRequestOptions();
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         return this.container.getDatabase().getDocClientWrapper().deleteConflict(getLink(), requestOptions)
-                   .map(response -> new CosmosAsyncConflictResponse(response, container)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncConflictResponse(response, container)).single();
     }
 
     String getURIPathSegment() {
