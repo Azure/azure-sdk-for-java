@@ -97,7 +97,7 @@ public class ServiceBusReceiverAsyncClientTest {
                 return mock(ServiceBusReceivedMessage.class);
             });
 
-        ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, ENTITY_NAME, tokenCredential,
+        ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
 
@@ -109,7 +109,7 @@ public class ServiceBusReceiverAsyncClientTest {
 
         ServiceBusConnectionProcessor connectionProcessor = Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
             .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getEntityPath(), connectionOptions.getRetry()));
+                ENTITY_NAME, connectionOptions.getRetry()));
 
         ReceiveMessageOptions receiveOptions = new ReceiveMessageOptions().setPrefetchCount(PREFETCH);
         consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_NAME, connectionProcessor, tracerProvider,

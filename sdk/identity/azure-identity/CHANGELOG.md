@@ -2,6 +2,10 @@
 
 ## 1.1.0-beta.2 (Unreleased)
 
+### Added
+- Added 'authorityHost' set method in `DefaultAzureCredentialBuilder`
+- Added `executorService` set method in all the credential builders except `ManagedIdentityCredentialBuilder`
+
 
 ## 1.1.0-beta.1 (2020-02-12)
 - All credential builders support setting a pipeline via `httpPipeline` method.
@@ -18,7 +22,7 @@
 
 - The `getToken(TokenRequest tokenRequest)` methods on all the credentials are changed to `getToken(TokenRequestContext tokenRequestContext)`. 
 - All credentials are moved from `com.azure.identity.credential` package to `com.azure.identity` package
-- `DeviceCodeChallenge` is renamed to `DeviceCodeInfo`, with `int expiresIn()` replaced with `OffsetDateTime expiresOn()` returning the time of the device code expiration
+- `DeviceCodeChallenge` is renamed to r`DeviceCodeInfo`, with `int expiresIn()` replaced with `OffsetDateTime expiresOn()` returning the time of the device code expiration
 - All methods containing `uri` is renamed to contain `url` for consistency
 
 **Known issues**

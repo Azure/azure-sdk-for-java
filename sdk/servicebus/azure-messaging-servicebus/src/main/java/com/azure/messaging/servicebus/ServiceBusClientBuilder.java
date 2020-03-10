@@ -272,7 +272,7 @@ public final class ServiceBusClientBuilder {
         }).repeat();
 
         return connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
-            connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getEntityPath(),
+            connectionOptions.getFullyQualifiedNamespace(), serviceBusResourceName,
             connectionOptions.getRetry()));
     }
 
@@ -308,7 +308,7 @@ public final class ServiceBusClientBuilder {
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        return new ConnectionOptions(fullyQualifiedNamespace, serviceBusResourceName, credentials, authorizationType,
+        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
             transport, retryOptions, proxyOptions, scheduler);
     }
 
