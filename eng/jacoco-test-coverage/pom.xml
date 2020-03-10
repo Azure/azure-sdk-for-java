@@ -161,7 +161,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-search</artifactId>
-      <version>11.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-search;current} -->
+      <version>11.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-search;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
