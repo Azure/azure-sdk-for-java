@@ -265,6 +265,7 @@ public class SecretClientTest extends SecretClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void backupSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+        initializeClient(httpClient, serviceVersion);
         backupSecretRunner((secretToBackup) -> {
             assertSecretEquals(secretToBackup, client.setSecret(secretToBackup));
             byte[] backupBytes = (client.backupSecret(secretToBackup.getName()));
