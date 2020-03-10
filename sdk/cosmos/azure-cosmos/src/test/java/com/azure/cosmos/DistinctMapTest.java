@@ -21,16 +21,15 @@ public class DistinctMapTest {
 
     @Test(groups = "unit", dataProvider = "distinctMapArgProvider")
     public void integerValue(DistinctQueryType queryType) {
-        String resource = String.format("{ " + "\"id\": 5 + \"}");
+        String resource = String.format("{ " + "\"id\": %d + \"}", 5);
         DistinctMap distinctMap = DistinctMap.create(queryType, null);
-
         Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
         boolean add = distinctMap.add(resource, outHash);
         System.out.println("outHash5 = " + outHash.v);
         assertThat(add).as("Value should be added first time").isTrue();
         boolean add2 = distinctMap.add(resource, outHash);
         assertThat(add2).as("same value should not be added again").isFalse();
-        resource = String.format("{ " + "\"id\": 3 + \"}");
+        resource = String.format("{ " + "\"id\": %d + \"}", 3);
         boolean add3 = distinctMap.add(resource, outHash);
         assertThat(add3).as("different value should be added again").isTrue();
     }

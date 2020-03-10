@@ -4,7 +4,6 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -35,14 +34,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DistinctQueryTests extends TestSuiteBase {
     private final String FIELD = "name";
-    private CosmosAsyncDatabase createdDatabase;
     private CosmosAsyncContainer createdCollection;
     private ArrayList<CosmosItemProperties> docs = new ArrayList<>();
-
-    private String partitionKey = "mypk";
-    private int firstPk = 0;
-    private int secondPk = 1;
-    private String field = "field";
 
     private CosmosAsyncClient client;
 
@@ -51,14 +44,14 @@ public class DistinctQueryTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    private static String GetRandomName(Random rand) {
+    private static String getRandomName(Random rand) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("name_" + rand.nextInt(100));
 
         return stringBuilder.toString();
     }
 
-    private static City GetRandomCity(Random rand) {
+    private static City getRandomCity(Random rand) {
         int index = rand.nextInt(3);
         switch (index) {
             case 0:
@@ -72,11 +65,11 @@ public class DistinctQueryTests extends TestSuiteBase {
         return City.LosAngeles;
     }
 
-    private static double GetRandomIncome(Random rand) {
+    private static double getRandomIncome(Random rand) {
         return rand.nextDouble() * Double.MAX_VALUE;
     }
 
-    private static int GetRandomAge(Random rand) {
+    private static int getRandomAge(Random rand) {
         return rand.nextInt(100);
     }
 
@@ -105,7 +98,7 @@ public class DistinctQueryTests extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(), validator, TIMEOUT);
     }
 
-    @Test(groups = {"long"}, timeOut = TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void queryDistinctDocuments() {
 
         List<String> queries = Arrays.asList(
@@ -251,7 +244,7 @@ public class DistinctQueryTests extends TestSuiteBase {
         Random rand = new Random();
         ObjectMapper mapper = new ObjectMapper();
         for (int i = 0; i < 40; i++) {
-            Person person = GetRandomPerson(rand);
+            Person person = getRandomPerson(rand);
             try {
                 docs.add(new CosmosItemProperties(mapper.writeValueAsString(person)));
             } catch (JsonProcessingException e) {
@@ -260,25 +253,25 @@ public class DistinctQueryTests extends TestSuiteBase {
         }
     }
 
-    private Pet GetRandomPet(Random rand) {
-        String name = GetRandomName(rand);
-        int age = GetRandomAge(rand);
+    private Pet getRandomPet(Random rand) {
+        String name = getRandomName(rand);
+        int age = getRandomAge(rand);
         return new Pet(name, age);
     }
 
-    public Person GetRandomPerson(Random rand) {
-        String name = GetRandomName(rand);
-        City city = GetRandomCity(rand);
-        double income = GetRandomIncome(rand);
+    public Person getRandomPerson(Random rand) {
+        String name = getRandomName(rand);
+        City city = getRandomCity(rand);
+        double income = getRandomIncome(rand);
         List<Person> people = new ArrayList<Person>();
         if (rand.nextInt(10) % 10 == 0) {
             for (int i = 0; i < rand.nextInt(5); i++) {
-                people.add(GetRandomPerson(rand));
+                people.add(getRandomPerson(rand));
             }
         }
 
-        int age = GetRandomAge(rand);
-        Pet pet = GetRandomPet(rand);
+        int age = getRandomAge(rand);
+        Pet pet = getRandomPet(rand);
         UUID guid = UUID.randomUUID();
         Person p = new Person(name, city, income, people, age, pet, guid);
         return p;
@@ -321,37 +314,37 @@ public class DistinctQueryTests extends TestSuiteBase {
 
     public final class Person extends JsonSerializable {
         @JsonProperty("name")
-        public String Name;
+        public String name;
 
         @JsonProperty("id")
         public String id;
 
         @JsonProperty("city")
-        public City City;
+        public City city;
 
         @JsonProperty("income")
-        public double Income;
+        public double income;
 
         @JsonProperty("children")
-        public List<Person> Children;
+        public List<Person> children;
 
         @JsonProperty("age")
-        public int Age;
+        public int age;
 
         @JsonProperty("pet")
-        public Pet Pet;
+        public Pet pet;
 
         @JsonProperty("guid")
-        public UUID Guid;
+        public UUID guid;
 
         public Person(String name, City city, double income, List<Person> children, int age, Pet pet, UUID guid) {
-            this.Name = name;
-            this.City = city;
-            this.Income = income;
-            this.Children = children;
-            this.Age = age;
-            this.Pet = pet;
-            this.Guid = guid;
+            this.name = name;
+            this.city = city;
+            this.income = income;
+            this.children = children;
+            this.age = age;
+            this.pet = pet;
+            this.guid = guid;
             this.id = UUID.randomUUID().toString();
         }
     }
