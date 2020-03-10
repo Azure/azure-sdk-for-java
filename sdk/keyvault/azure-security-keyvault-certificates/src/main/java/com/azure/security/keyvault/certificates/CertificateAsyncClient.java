@@ -400,7 +400,7 @@ public final class CertificateAsyncClient {
         CertificateUpdateParameters parameters = new CertificateUpdateParameters()
             .tags(properties.getTags())
             .certificateAttributes(new CertificateRequestAttributes(properties));
-        return service.updateCertificate(vaultUrl, properties.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
+        return service.updateCertificate(vaultUrl, properties.getName(), properties.getVersion(), API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Updating certificate - {}",  properties.getName()))
             .doOnSuccess(response -> logger.info("Updated the certificate - {}", properties.getName()))
             .doOnError(error -> logger.warning("Failed to update the certificate - {}", properties.getName(), error));
@@ -1715,9 +1715,12 @@ public final class CertificateAsyncClient {
         CertificateImportParameters parameters = new CertificateImportParameters()
             .base64EncodedCertificate(transformCertificateForImport(importCertificateOptions))
             .certificateAttributes(new CertificateRequestAttributes(importCertificateOptions))
-            .certificatePolicy(new CertificatePolicyRequest(importCertificateOptions.getPolicy()))
             .password(importCertificateOptions.getPassword())
             .tags(importCertificateOptions.getTags());
+
+        if (importCertificateOptions.getPolicy() != null) {
+            parameters.certificatePolicy(new CertificatePolicyRequest(importCertificateOptions.getPolicy()));
+        }
 
         return service.importCertificate(vaultUrl, importCertificateOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context);
@@ -1725,19 +1728,13 @@ public final class CertificateAsyncClient {
 
     private String transformCertificateForImport(ImportCertificateOptions options) {
         CertificatePolicy policy = options.getPolicy();
+
         if (policy != null) {
             CertificateContentType contentType = policy.getContentType();
-            if (contentType != null) {
-                switch (contentType.toString()) {
-                    case "application/x-pem-file":
-                        return new String(options.getCertificate(), StandardCharsets.US_ASCII);
-                    case "application/x-pkcs12":
-                        return Base64.getEncoder().encodeToString(options.getCertificate());
-                    default:
-                        return new String(options.getCertificate(), StandardCharsets.US_ASCII);
-                }
+            if (contentType != null && contentType.equals(CertificateContentType.PEM)) {
+                return new String(options.getCertificate(), StandardCharsets.US_ASCII);
             }
         }
-        return new String(options.getCertificate(), StandardCharsets.US_ASCII);
+        return Base64.getEncoder().encodeToString(options.getCertificate());
     }
 }

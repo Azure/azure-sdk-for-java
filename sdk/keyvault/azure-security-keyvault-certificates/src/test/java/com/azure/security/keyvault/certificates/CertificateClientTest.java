@@ -541,6 +541,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
     @Test
     public void importCertificate() {
         importCertificateRunner((importCertificateOptions) -> {
+            if (client == null) {
+                return;
+            }
             KeyVaultCertificateWithPolicy importedCertificate = client.importCertificate(importCertificateOptions);
             assertTrue(toHexString(importedCertificate.getProperties().getX509Thumbprint()).equalsIgnoreCase("7cb8b7539d87ba7215357b9b9049dff2d3fa59ba"));
             assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
@@ -559,6 +562,17 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
             assertTrue(x509Certificate.getSubjectX500Principal().getName().equals("CN=KeyVaultTest"));
             assertTrue(x509Certificate.getIssuerX500Principal().getName().equals("CN=Root Agency"));
+            deleteAndPurgeCertificate(importCertificateOptions.getName());
+        });
+    }
+
+    @Test
+    public void importPemCertificate() throws IOException {
+        importPemCertificateRunner((importCertificateOptions) -> {
+            KeyVaultCertificateWithPolicy importedCertificate = client.importCertificate(importCertificateOptions);
+            assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
+            assertEquals(CertificateContentType.PEM, importedCertificate.getPolicy().getContentType());
+
             deleteAndPurgeCertificate(importCertificateOptions.getName());
         });
     }
