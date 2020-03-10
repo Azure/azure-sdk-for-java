@@ -15,6 +15,5 @@
     <module>azure-core-http-okhttp</module>
     <module>azure-core-test</module>
     <module>azure-core-tracing-opentelemetry</module>
-    <module>azure-perfstress</module>
   </modules>
 </project>
