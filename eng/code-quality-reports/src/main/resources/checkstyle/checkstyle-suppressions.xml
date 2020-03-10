@@ -169,25 +169,6 @@
   <!-- Suppress IO exception in the NIO package because they are required by the interface -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.storage.blob.nio/*"/>
 
-
-  <!-- Suppress the checks as these are internal smoke test classes in Java perf framework not used by public API -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.perf.test.core.SleepTest.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.perf.test.core.ExceptionTest.java"/>
-
-  <!-- Internal smoke test classes in Java perf framework need the public modifier -->
-  <suppress checks="RedundantModifier" files="com.azure.perf.test.core.NoOpTest.java"/>
-  <suppress checks="RedundantModifier" files="com.azure.perf.test.core.SleepTest.java"/>
-  <suppress checks="RedundantModifier" files="com.azure.perf.test.core.ExceptionTest.java"/>
-
-  <!-- The variables are assigned by jcommander annotation injection framework, cannot be made final. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.SizeOptions.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.CountOptions.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.PerfStressOptions.java"/>
-
-  <!-- These classes do general output, which is required always, not only when logging is turned on -->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLogging" files="com.azure.perf.test.core.SleepTest.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLogging" files="com.azure.perf.test.core.PerfStressProgram.java"/>
-
   <!-- Suppress external dependency Checkstyle on Netty and OkHttp HttpClient packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.http.netty.NettyAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
@@ -324,7 +305,7 @@
   <!-- Don't enforce non-static ClientLogger instances in azure-core-mgmt PollerFactory and PollingState types-->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)" files="com.azure.core.management.implementation.polling.PollerFactory.java"/>
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)" files="com.azure.core.management.implementation.polling.PollingState.java"/>
-  
+
   <!-- Cosmos sdk suppressions -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos[/\\]src[/\\]test[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]examples[/\\]"/>
@@ -333,17 +314,34 @@
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]cosmos[/\\]rx[/\\]examples[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-benchmark[/\\]"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
-            files="com.azure.cosmos.CosmosResponseDiagnostics"/>  
+            files="com.azure.cosmos.CosmosResponseDiagnostics"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files=".*[/\\]cosmos[/\\]((?!(CosmosClient|CosmosScripts|CosmosAsyncDatabase|PartitionKeyDefinition
             |JsonSerializable|CosmosContainer|DatabaseAccount|CosmosContainerProperties|UniqueKeyPolicy|IncludedPath
-            |CosmosConflictProperties|CosmosDatabase|ConnectionPolicy|ThrottlingRetryOptions|ClientSideRequestStatistics)).*)"/> 
+            |CosmosConflictProperties|CosmosDatabase|ConnectionPolicy|ThrottlingRetryOptions|ClientSideRequestStatistics)).*)"/>
   <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ExternalDependencyExposedCheck)"
             files="com.azure.cosmos.JsonSerializable"/>  <!-- exposes logger from slf4j-->
   <suppress checks="javadoc" files="com.azure.cosmos.CompositePathSortOrder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.cosmos.PartitionKey"/>
-   <suppress checks="com.azure.tools.checkstyle.checks.(EnforceFinalFieldsCheck|ExternalDependencyExposedCheck|NoImplInPublicAPI)" 
-            files="com.azure.cosmos.ClientSideRequestStatistics"/>   
-  <suppress checks="IllegalImport" 
+   <suppress checks="com.azure.tools.checkstyle.checks.(EnforceFinalFieldsCheck|ExternalDependencyExposedCheck|NoImplInPublicAPI)"
+            files="com.azure.cosmos.ClientSideRequestStatistics"/>
+  <suppress checks="IllegalImport"
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
+
+  <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
+  <suppress checks="Javadoc" files=".*[/\\]perf-test[/\\].*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*[/\\]perf-test[/\\].*\.java"/>
+  <suppress checks="GoodLogging" files=".*[/\\]perf-test[/\\].*\.java"/>
+  <suppress checks="GoodLogging" files=".*[/\\]com.azure.perf.test.core[/\\].*"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*[/\\]com.azure.perf.test.core[/\\].*"/>
+
+  <!-- Internal smoke test classes in Java perf framework need the public modifier -->
+  <suppress checks="RedundantModifier" files="com.azure.perf.test.core.NoOpTest.java"/>
+  <suppress checks="RedundantModifier" files="com.azure.perf.test.core.SleepTest.java"/>
+  <suppress checks="RedundantModifier" files="com.azure.perf.test.core.ExceptionTest.java"/>
+
+  <!-- The variables are assigned by jcommander annotation injection framework, cannot be made final. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.SizeOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.CountOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.PerfStressOptions.java"/>
 </suppressions>

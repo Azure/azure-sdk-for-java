@@ -13,12 +13,12 @@ import reactor.core.publisher.Mono;
 public interface ServiceBusAmqpConnection extends AmqpConnection {
 
     /**
-     * Gets the management node for fetching metadata about the Service Bus and performing management operations
-     * for example peek.
+     * Gets the management node for a Service Bus resource and performs metadata and management operations using it.
      *
-     * @return A Mono that completes with a session to the Event Hub's management node.
+     * @param entityPath Name of the Service bus resource.
+     * @return A Mono that completes with that resources's management node.
      */
-    Mono<ServiceBusManagementNode> getManagementNode();
+    Mono<ServiceBusManagementNode> getManagementNode(String entityPath);
 
     /**
      * Creates or gets a send link. The same link is returned if there is an existing send link with the same {@code
