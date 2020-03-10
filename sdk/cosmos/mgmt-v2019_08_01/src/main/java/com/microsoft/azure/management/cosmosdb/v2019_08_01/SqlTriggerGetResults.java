@@ -24,26 +24,6 @@ import java.util.Map;
  */
 public interface SqlTriggerGetResults extends HasInner<SqlTriggerGetResultsInner>, Indexable, Refreshable<SqlTriggerGetResults>, Updatable<SqlTriggerGetResults.Update>, HasManager<CosmosDBManager> {
     /**
-     * @return the _etag value.
-     */
-    String _etag();
-
-    /**
-     * @return the _rid value.
-     */
-    String _rid();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
-     * @return the body value.
-     */
-    String body();
-
-    /**
      * @return the id value.
      */
     String id();
@@ -59,24 +39,14 @@ public interface SqlTriggerGetResults extends HasInner<SqlTriggerGetResultsInner
     String name();
 
     /**
-     * @return the sqlTriggerGetResultsId value.
+     * @return the resource value.
      */
-    String sqlTriggerGetResultsId();
+    SqlTriggerGetPropertiesResource resource();
 
     /**
      * @return the tags value.
      */
     Map<String, String> tags();
-
-    /**
-     * @return the triggerOperation value.
-     */
-    TriggerOperation triggerOperation();
-
-    /**
-     * @return the triggerType value.
-     */
-    TriggerType triggerType();
 
     /**
      * @return the type value.
