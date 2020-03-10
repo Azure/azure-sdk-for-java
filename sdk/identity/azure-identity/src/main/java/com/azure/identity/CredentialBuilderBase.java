@@ -47,12 +47,17 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
         return (T) this;
     }
 
+
     /**
-     * Specifies he options for proxy configuration.
+     * Specifies the options for proxy configuration.
+     *
+     * @deprecated Configure the proxy options on the {@link HttpClient} instead and then set that
+     * client on the credential using {@link #httpClient(HttpClient)}.
      *
      * @param proxyOptions the options for proxy configuration
      * @return An updated instance of this builder with the proxy options set as specified.
      */
+    @Deprecated
     @SuppressWarnings("unchecked")
     public T proxyOptions(ProxyOptions proxyOptions) {
         this.identityClientOptions.setProxyOptions(proxyOptions);
