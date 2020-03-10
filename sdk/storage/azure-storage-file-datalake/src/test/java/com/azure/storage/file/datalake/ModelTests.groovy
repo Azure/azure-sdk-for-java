@@ -122,13 +122,13 @@ class ModelTests extends APISpec{
             .setAccessControlType(AccessControlType.GROUP)
             .setPermissions(RolePermissions.parseOctal(0))
             .setDefaultScope(true)
-            .setEntityID("a")
+            .setEntityId("a")
         def fromStr = PathAccessControlEntry.parse("default:group:a:---")
 
         then:
         entry.isInDefaultScope()
         entry.getAccessControlType() == AccessControlType.GROUP
-        entry.getEntityID() == "a"
+        entry.getEntityId() == "a"
         entry.getPermissions() == RolePermissions.parseOctal(0)
         entry.toString() == "default:group:a:---"
         entry.equals(fromStr)
@@ -138,7 +138,7 @@ class ModelTests extends APISpec{
             .setAccessControlType(AccessControlType.MASK)
             .setPermissions(RolePermissions.parseOctal(4))
             .setDefaultScope(false)
-            .setEntityID(null)
+            .setEntityId(null)
         fromStr = PathAccessControlEntry.parse("mask::r--")
 
         then:
@@ -150,7 +150,7 @@ class ModelTests extends APISpec{
             .setAccessControlType(AccessControlType.USER)
             .setPermissions(RolePermissions.parseOctal(2))
             .setDefaultScope(false)
-            .setEntityID("b")
+            .setEntityId("b")
 
         then:
         entry.toString() == "user:b:-w-"
@@ -164,12 +164,12 @@ class ModelTests extends APISpec{
             .setAccessControlType(AccessControlType.USER)
             .setPermissions(RolePermissions.parseOctal(1))
             .setDefaultScope(true)
-            .setEntityID("c"))
+            .setEntityId("c"))
         acl.add(new PathAccessControlEntry()
             .setAccessControlType(AccessControlType.OTHER)
             .setPermissions(RolePermissions.parseOctal(7))
             .setDefaultScope(false)
-            .setEntityID(null))
+            .setEntityId(null))
         def listFromStr = PathAccessControlEntry.parseList("default:user:c:--x,other::rwx")
 
         then:

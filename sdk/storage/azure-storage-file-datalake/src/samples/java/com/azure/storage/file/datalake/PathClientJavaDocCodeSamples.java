@@ -168,7 +168,7 @@ public class PathClientJavaDocCodeSamples {
     public void setAccessControlListCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.setAccessControlList#List-String-String
         PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
-            .setEntityID("entityId")
+            .setEntityId("entityId")
             .setPermissions(new RolePermissions().setReadPermission(true));
         List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
         pathAccessControlEntries.add(pathAccessControlEntry);
@@ -187,7 +187,7 @@ public class PathClientJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.setAccessControlListWithResponse#List-String-String-DataLakeRequestConditions-Duration-Context
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
         PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
-            .setEntityID("entityId")
+            .setEntityId("entityId")
             .setPermissions(new RolePermissions().setReadPermission(true));
         List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
         pathAccessControlEntries.add(pathAccessControlEntry);
