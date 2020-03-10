@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob;
+package com.azure.storage.file.datalake;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
 
@@ -24,7 +24,7 @@ public class FileTransferExample {
     private static final String LARGE_TEST_FOLDER = "test-large-files/";
 
     /**
-     * Entry point into the file transfer examples for Storage blobs.
+     * Entry point into the file transfer examples for Storage datalake.
      * @param args Unused. Arguments to the program.
      * @throws IOException If an I/O error occurs
      * @throws NoSuchAlgorithmException If {@code MD5} isn't supported
@@ -44,16 +44,16 @@ public class FileTransferExample {
         StorageSharedKeyCredential credential = new StorageSharedKeyCredential(accountName, accountKey);
 
         /*
-         * From the Azure portal, get your Storage account blob service URL endpoint.
+         * From the Azure portal, get your Storage account datalake service URL endpoint.
          * The URL typically looks like this:
          */
-        String endPoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
+        String endPoint = String.format(Locale.ROOT, "https://%s.dfs.core.windows.net", accountName);
 
         /*
-         * Create a BlobServiceClient object that wraps the service endpoint, credential and a request pipeline.
-         * Now you can use the storageClient to perform various container and blob operations.
+         * Create a DataLakeServiceClient object that wraps the service endpoint, credential and a request pipeline.
+         * Now you can use the storageClient to perform various file system and path operations.
          */
-        BlobServiceClient storageClient = new BlobServiceClientBuilder().endpoint(endPoint).credential(credential).buildClient();
+        DataLakeServiceClient storageClient = new DataLakeServiceClientBuilder().endpoint(endPoint).credential(credential).buildClient();
 
 
         /*
@@ -62,22 +62,22 @@ public class FileTransferExample {
 
 
         /*
-         * Create a client that references a to-be-created container in your Azure Storage account. This returns a
-         * ContainerClient uses the same endpoint, credential and pipeline from storageClient.
-         * Note that container names require lowercase.
+         * Create a client that references a to-be-created file system in your Azure Storage account. This returns a
+         * FileSystemClient uses the same endpoint, credential and pipeline from storageClient.
+         * Note that file system names require lowercase.
          */
-        BlobContainerClient blobContainerClient = storageClient.getBlobContainerClient("myjavacontainerparallelupload" + System.currentTimeMillis());
+        DataLakeFileSystemClient fileSystemClient = storageClient.getFileSystemClient("myjavafilesystemparallelupload" + System.currentTimeMillis());
 
         /*
-         * Create a container in Storage blob account.
+         * Create a file system in Storage datalake account.
          */
-        blobContainerClient.create();
+        fileSystemClient.create();
 
         /*
-         * Create a BlockBlobClient object that wraps a blob's endpoint and a default pipeline, the blockBlobClient give us access to upload the file.
+         * Create a FileClient object that wraps a file's endpoint and a default pipeline, the client give us access to upload the file.
          */
         String filename = "BigFile.bin";
-        BlobClient blobClient = blobContainerClient.getBlobClient(filename);
+        DataLakeFileClient fileClient = fileSystemClient.getFileClient(filename);
 
         /*
          * Create the empty uploadFile and downloadFile.
@@ -93,14 +93,14 @@ public class FileTransferExample {
         createTempFileWithFileSize(largeFile, fileSize);
 
         /*
-         * Upload the large file to storage blob.
+         * Upload the large file to storage file.
          */
-        blobClient.uploadFromFile(largeFile.getPath());
+        fileClient.uploadFromFile(largeFile.getPath());
 
         /*
-         * Download the large file from storage blob to the local downloadFile path.
+         * Download the large file from storage file to the local downloadFile path.
          */
-        blobClient.downloadToFile(downloadFile.getPath());
+        fileClient.readToFile(downloadFile.getPath(), true);
 
         /*
          * Check the files are same after the round-trip.
@@ -113,9 +113,9 @@ public class FileTransferExample {
         }
 
         /*
-         * Clean up the local files and storage container.
+         * Clean up the local files and storage file system.
          */
-        blobContainerClient.delete();
+        fileSystemClient.delete();
         Files.deleteIfExists(largeFile.toPath());
         Files.deleteIfExists(downloadFile.toPath());
     }
