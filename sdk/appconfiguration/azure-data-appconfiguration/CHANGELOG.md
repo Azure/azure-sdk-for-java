@@ -1,7 +1,4 @@
 # Release History
-## 1.0.1 (Unreleased)
-
-
 ## 1.0.2 (2020-03-09)
 - Updated javadoc to support the changes that App Configuration service no longer support `*a` and `*a*` suffix and full text search.
   For more information: see [Filtering](https://github.com/Azure/AppConfiguration/blob/d7837982445b4692448c246f7b45334df1a8c89b/docs/REST/kv.md#filtering).
