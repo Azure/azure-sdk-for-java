@@ -18,7 +18,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.ServiceVersion;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -44,7 +43,6 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.BiConsumer;
 import org.junit.jupiter.params.provider.Arguments;
 
@@ -581,7 +579,7 @@ public abstract class CertificateClientTestBase extends TestBase {
             .forEach(httpClient -> {
                 Arrays.stream(CertificateServiceVersion.values()).filter(
                     CertificateClientTestBase::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion ->argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
             });
         return argumentsList.stream();
     }

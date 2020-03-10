@@ -173,8 +173,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
                 () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
         }
 
-        clientBuilder.pipeline(null).httpClient(httpClient == null ? interceptorManager.getPlaybackClient() :
-            httpClient);
+        clientBuilder.pipeline(null).httpClient(httpClient == null ? interceptorManager.getPlaybackClient()
+            : httpClient);
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
         Assertions.assertEquals(addedSetting.getKey(), key);

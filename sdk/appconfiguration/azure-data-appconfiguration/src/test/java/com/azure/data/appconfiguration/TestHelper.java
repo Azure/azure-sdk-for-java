@@ -3,19 +3,13 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.ServiceVersion;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.provider.Arguments;
-
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 class TestHelper extends TestBase {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
