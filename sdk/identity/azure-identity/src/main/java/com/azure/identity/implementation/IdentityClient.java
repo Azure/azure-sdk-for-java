@@ -664,13 +664,14 @@ public class IdentityClient {
     }
 
     private String getSafeWorkingDirectory() {
-        if (CoreUtils.isNullOrEmpty(DEFAULT_WINDOWS_SYSTEM_ROOT)) {
-            return null;
+        if (isWindowsPlatform()) {
+            if (CoreUtils.isNullOrEmpty(DEFAULT_WINDOWS_SYSTEM_ROOT)) {
+                return null;
+            }
+            return DEFAULT_WINDOWS_SYSTEM_ROOT + "\\system32";
+        } else {
+            return DEFAULT_MAC_LINUX_PATH;
         }
-
-        String defaultWindowsPath  = DEFAULT_WINDOWS_SYSTEM_ROOT + "\\system32";
-
-        return isWindowsPlatform() ? defaultWindowsPath : DEFAULT_MAC_LINUX_PATH;
     }
 
     private boolean isWindowsPlatform() {
