@@ -263,7 +263,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
                             .setFilterable(true))),
                 new Field()
                     .setName("Buckets")
-                    .setType(DataType.Collection(DataType.EDM_COMPLEX_TYPE))
+                    .setType(DataType.collection(DataType.EDM_COMPLEX_TYPE))
                     .setFields(Arrays.asList(
                         new Field()
                             .setName("BucketName")

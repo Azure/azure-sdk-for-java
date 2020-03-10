@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -39,7 +40,7 @@ public class RetryThrottleTest extends TestSuiteBase {
         ConnectionPolicy policy = new ConnectionPolicy();
         ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         throttlingRetryOptions.setMaxRetryAttemptsOnThrottledRequests(Integer.MAX_VALUE);
-        throttlingRetryOptions.setMaxRetryWaitTimeInSeconds(LARGE_TIMEOUT);
+        throttlingRetryOptions.setMaxRetryWaitTime(Duration.ofSeconds(LARGE_TIMEOUT));
         policy.setThrottlingRetryOptions(throttlingRetryOptions);
 
         AsyncDocumentClient.Builder builder = new AsyncDocumentClient.Builder()

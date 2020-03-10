@@ -25,7 +25,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.MicrosoftLanguageTokenizer", value = MicrosoftLanguageTokenizer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.MicrosoftLanguageStemmingTokenizer", value = MicrosoftLanguageStemmingTokenizer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.NGramTokenizer", value = NGramTokenizer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PathHierarchyTokenizer", value = PathHierarchyTokenizer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PathHierarchyTokenizerV2", value = PathHierarchyTokenizerV2.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PatternTokenizer", value = PatternTokenizer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StandardTokenizer", value = StandardTokenizer.class),

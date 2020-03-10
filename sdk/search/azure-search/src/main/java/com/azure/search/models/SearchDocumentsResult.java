@@ -53,7 +53,7 @@ public final class SearchDocumentsResult {
     /*
      * The sequence of results returned by the query.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchResult> results;
 
     /*

@@ -59,7 +59,7 @@ public class SearchOptionsExample {
                 v.forEach(result -> {
                     System.out.println(k + " :");
                     System.out.println("    count: " + result.getCount());
-                    result.getDocument().forEach((f, d) ->
+                    result.getAdditionalProperties().forEach((f, d) ->
                         System.out.println("    " + f + " : " + d)
                     );
                 });
@@ -79,7 +79,7 @@ public class SearchOptionsExample {
                 v.forEach(result -> {
                     System.out.println(k + " :");
                     System.out.println("    count: " + result.getCount());
-                    result.getDocument().forEach((f, d) ->
+                    result.getAdditionalProperties().forEach((f, d) ->
                         System.out.println("    " + f + " : " + d)
                     );
                 });

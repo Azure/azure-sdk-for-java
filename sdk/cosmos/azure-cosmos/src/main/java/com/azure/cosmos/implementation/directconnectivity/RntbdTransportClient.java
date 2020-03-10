@@ -70,8 +70,8 @@ public final class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
     }
 
-    RntbdTransportClient(final Configs configs, final int requestTimeoutInSeconds, final UserAgentContainer userAgent) {
-        this(new Options.Builder(requestTimeoutInSeconds).userAgent(userAgent).build(), configs.getSslContext());
+    RntbdTransportClient(final Configs configs, final Duration requestTimeout, final UserAgentContainer userAgent) {
+        this(new Options.Builder(requestTimeout).userAgent(userAgent).build(), configs.getSslContext());
     }
 
     // endregion

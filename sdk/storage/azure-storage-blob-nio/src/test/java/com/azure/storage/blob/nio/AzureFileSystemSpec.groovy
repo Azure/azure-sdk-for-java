@@ -156,6 +156,7 @@ class AzureFileSystemSpec extends APISpec {
         "root:/foo"         | ["bar"]                    || "root:/foo/bar"
         "///root:////foo"   | ["//bar///fizz//", "buzz"] || "root:/foo/bar/fizz/buzz"
         "root:/"            | null                       || "root:"
+        ""                  | null                       || ""
     }
 
     @Unroll

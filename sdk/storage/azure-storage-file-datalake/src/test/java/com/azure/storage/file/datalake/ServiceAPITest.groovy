@@ -102,11 +102,7 @@ class ServiceAPITest extends APISpec {
     def "List file systems error"() {
         when:
         PagedIterable<FileSystemItem> items =  primaryDataLakeServiceClient.listFileSystems()
-        try {
-            items.streamByPage("garbage continuation token").count()
-        } catch (BlobStorageException ex) {
-            throw DataLakeImplUtils.transformBlobStorageException(ex)
-        }
+        items.streamByPage("garbage continuation token").count()
 
         then:
         thrown(DataLakeStorageException)
@@ -126,7 +122,7 @@ class ServiceAPITest extends APISpec {
         primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions().setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
 
         then: "Still have paging functionality"
-        notThrown(Exception)
+        notThrown(DataLakeStorageException)
 
         cleanup:
         fileSystems.each { fileSystem -> fileSystem.delete() }

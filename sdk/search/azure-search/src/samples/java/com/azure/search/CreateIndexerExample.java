@@ -3,9 +3,9 @@
 
 package com.azure.search;
 
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
-import com.azure.search.models.AccessCondition;
 import com.azure.search.models.FieldMapping;
 import com.azure.search.models.Indexer;
 import com.azure.search.models.IndexingParameters;
@@ -69,7 +69,7 @@ public class CreateIndexerExample {
         System.out.println(String.format("Creating Indexer: %s", indexer.getName()));
         Response<Indexer> response = searchServiceClient.createOrUpdateIndexerWithResponse(
             indexer,
-            new AccessCondition(),
+            new MatchConditions(),
             new RequestOptions()
         ).block();
 

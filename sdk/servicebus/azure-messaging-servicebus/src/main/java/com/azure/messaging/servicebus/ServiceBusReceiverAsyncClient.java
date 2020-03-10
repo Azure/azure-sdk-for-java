@@ -282,7 +282,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      */
     public Mono<ServiceBusReceivedMessage> inspectMessage() {
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode())
+            .flatMap(connection -> connection.getManagementNode(entityPath))
             .flatMap(ServiceBusManagementNode::peek);
     }
 
@@ -295,7 +295,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      */
     public Mono<ServiceBusReceivedMessage> inspectMessage(int fromSequenceNumber) {
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode())
+            .flatMap(connection -> connection.getManagementNode(entityPath))
             .flatMap(ServiceBusManagementNode::peek);
     }
 

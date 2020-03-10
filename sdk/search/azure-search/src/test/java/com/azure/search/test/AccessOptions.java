@@ -3,26 +3,26 @@
 
 package com.azure.search.test;
 
-import com.azure.search.models.AccessCondition;
+import com.azure.core.http.MatchConditions;
 import com.azure.search.models.RequestOptions;
 
 /**
  * Contains common options for the Search service.
  */
 public class AccessOptions {
-    private AccessCondition accessCondition;
+    private MatchConditions accessCondition;
     private RequestOptions requestOptions;
 
-    public AccessOptions(AccessCondition accessCondition, RequestOptions requestOptions) {
+    public AccessOptions(MatchConditions accessCondition, RequestOptions requestOptions) {
         this.accessCondition = accessCondition;
         this.requestOptions = requestOptions;
     }
 
-    public AccessOptions(AccessCondition accessCondition) {
+    public AccessOptions(MatchConditions accessCondition) {
         this(accessCondition, null);
     }
 
-    public AccessCondition getAccessCondition() {
+    public MatchConditions getAccessCondition() {
         return this.accessCondition;
     }
 
@@ -30,7 +30,7 @@ public class AccessOptions {
         return this.requestOptions;
     }
 
-    public void setAccessCondition(AccessCondition accessCondition) {
+    public void setAccessCondition(MatchConditions accessCondition) {
         this.accessCondition = accessCondition;
     }
 

@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.models.Permission;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -38,6 +39,9 @@ public class CosmosClientBuilder {
     private boolean sessionCapturingOverrideEnabled;
     private boolean connectionReuseAcrossClientsEnabled;
 
+    /**
+     * Instantiates a new Cosmos client builder.
+     */
     public CosmosClientBuilder() {
     }
 
@@ -96,8 +100,8 @@ public class CosmosClientBuilder {
      * When you have multiple instances of Cosmos Client in the same JVM interacting to multiple Cosmos accounts,
      * enabling this allows connection sharing in Direct mode if possible between instances of Cosmos Client.
      *
-     * Please note, when setting this option, the connection configuration (e.g., socket timeout config, idle timeout config)
-     * of the first instantiated client will be used for all other client instances.
+     * Please note, when setting this option, the connection configuration (e.g., socket timeout config, idle timeout
+     * config) of the first instantiated client will be used for all other client instances.
      *
      * @param connectionReuseAcrossClientsEnabled connection sharing
      * @return current cosmosClientBuilder
@@ -134,7 +138,8 @@ public class CosmosClientBuilder {
      * @param cosmosAuthorizationTokenResolver the token resolver
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder setCosmosAuthorizationTokenResolver(CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
+    public CosmosClientBuilder setCosmosAuthorizationTokenResolver(
+        CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         return this;
     }
