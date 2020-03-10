@@ -5,9 +5,6 @@ package com.azure.storage.blob.perf;
 
 import com.azure.perf.test.core.PerfStressProgram;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Runs the Storage performance test.
  *
@@ -20,9 +17,6 @@ import java.util.List;
 public class App {
     public static void main(String[] args) {
         Class<?>[] testClasses;
-
-
-        List<String> strings = new ArrayList<>();
 
         try {
             testClasses = new Class<?>[] {

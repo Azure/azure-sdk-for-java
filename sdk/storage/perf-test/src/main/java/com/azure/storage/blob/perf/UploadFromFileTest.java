@@ -17,7 +17,14 @@ import reactor.core.publisher.Mono;
 
 public class UploadFromFileTest extends BlobTestBase<SizeOptions> {
 
-    private static Path tempFile;
+    private static final Path TEMP_FILE;
+    static {
+        try {
+            TEMP_FILE = Files.createTempFile(null, null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public UploadFromFileTest(SizeOptions options) {
         super(options);
@@ -34,14 +41,9 @@ public class UploadFromFileTest extends BlobTestBase<SizeOptions> {
     }
 
     private Mono<Void> createTempFile() {
-        try {
-            tempFile = Files.createTempFile(null, null);
-
-            InputStream inputStream = RandomStream.create(options.getSize());
-            OutputStream outputStream = new FileOutputStream(tempFile.toString());
+        try (InputStream inputStream = RandomStream.create(options.getSize());
+             OutputStream outputStream = new FileOutputStream(TEMP_FILE.toString())) {
             copyStream(inputStream, outputStream);
-            outputStream.close();
-
             return Mono.empty();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -50,7 +52,7 @@ public class UploadFromFileTest extends BlobTestBase<SizeOptions> {
 
     private Mono<Void> deleteTempFile() {
         try {
-            Files.delete(tempFile);
+            Files.delete(TEMP_FILE);
             return Mono.empty();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -59,11 +61,11 @@ public class UploadFromFileTest extends BlobTestBase<SizeOptions> {
 
     @Override
     public void run() {
-        blobClient.uploadFromFile(tempFile.toString(), true);
+        blobClient.uploadFromFile(TEMP_FILE.toString(), true);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return blobAsyncClient.uploadFromFile(tempFile.toString(), true);
+        return blobAsyncClient.uploadFromFile(TEMP_FILE.toString(), true);
     }
 }
