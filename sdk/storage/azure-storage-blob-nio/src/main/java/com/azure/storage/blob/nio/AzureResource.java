@@ -147,7 +147,6 @@ class AzureResource {
      */
     private void extractHttpHeaders(List<FileAttribute<?>> fileAttributes) {
         BlobHttpHeaders headers = new BlobHttpHeaders();
-        fileAttributes = new ArrayList<>(fileAttributes); // To ensure remove is supported.
         for (Iterator<FileAttribute<?>> it = fileAttributes.iterator(); it.hasNext();) {
             FileAttribute<?> attr = it.next();
             boolean propertyFound = true;
@@ -225,6 +224,7 @@ class AzureResource {
     }
 
     AzureResource setFileAttributes(List<FileAttribute<?>> attributes) {
+        attributes = new ArrayList<>(attributes); // To ensure removing header values from the list is supported.
         extractHttpHeaders(attributes);
         convertAttributesToMetadata(attributes);
 

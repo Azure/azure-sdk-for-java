@@ -1,0 +1,192 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcresourceparentdirexistsnondefaultroot1537885d8738fc?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "581e9699-ec07-4bb8-82fc-36634d35f1f1"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ContainerNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "225",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "c1c54792-501e-00c3-7037-f7985e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:c1c54792-501e-00c3-7037-f7985e000000\nTime:2020-03-10T23:57:26.8328293Z</Message></Error>",
+      "Date" : "Tue, 10 Mar 2020 23:57:26 GMT",
+      "x-ms-client-request-id" : "581e9699-ec07-4bb8-82fc-36634d35f1f1",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcresourceparentdirexistsnondefaultroot1537885d8738fc?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "6366b367-df8f-4384-b9a3-2a43a5af72aa"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7C54EC91FA056",
+      "Last-Modified" : "Tue, 10 Mar 2020 23:57:26 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "c1c5479b-501e-00c3-7837-f7985e000000",
+      "Date" : "Tue, 10 Mar 2020 23:57:26 GMT",
+      "x-ms-client-request-id" : "6366b367-df8f-4384-b9a3-2a43a5af72aa"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcresourceparentdirexistsnondefaultroot239880b7dea187?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "ca86628f-20eb-49b7-a248-e5252f994522"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ContainerNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "225",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "c1c5479f-501e-00c3-7b37-f7985e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:c1c5479f-501e-00c3-7b37-f7985e000000\nTime:2020-03-10T23:57:26.8948867Z</Message></Error>",
+      "Date" : "Tue, 10 Mar 2020 23:57:26 GMT",
+      "x-ms-client-request-id" : "ca86628f-20eb-49b7-a248-e5252f994522",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcresourceparentdirexistsnondefaultroot239880b7dea187?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "f3ac9604-e68f-4e06-9ce8-b2d498948549"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7C54EC928F161",
+      "Last-Modified" : "Tue, 10 Mar 2020 23:57:26 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "c1c547a3-501e-00c3-7e37-f7985e000000",
+      "Date" : "Tue, 10 Mar 2020 23:57:26 GMT",
+      "x-ms-client-request-id" : "f3ac9604-e68f-4e06-9ce8-b2d498948549"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcresourceparentdirexistsnondefaultroot239880b7dea187/fizz%2Fbuzz%2Fbazz",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "4293229c-934c-447a-9c2d-9073bd881da3"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7C54EC92E365E",
+      "Last-Modified" : "Tue, 10 Mar 2020 23:57:26 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "c1c547a9-501e-00c3-0337-f7985e000000",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 10 Mar 2020 23:57:26 GMT",
+      "x-ms-client-request-id" : "4293229c-934c-447a-9c2d-9073bd881da3"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcresourceparentdirexistsnondefaultroot239880b7dea187?prefix=fizz&delimiter=/&maxresults=2&include=metadata&restype=container&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "82570dfe-7b08-41a0-a7aa-ed27ddeb97ee"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "c1c547bc-501e-00c3-1337-f7985e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\" ContainerName=\"jtcresourceparentdirexistsnondefaultroot239880b7dea187\"><Prefix>fizz</Prefix><MaxResults>2</MaxResults><Delimiter>/</Delimiter><Blobs><BlobPrefix><Name>fizz/</Name></BlobPrefix></Blobs><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 10 Mar 2020 23:57:26 GMT",
+      "x-ms-client-request-id" : "82570dfe-7b08-41a0-a7aa-ed27ddeb97ee",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://xclientdev2.blob.core.windows.net?prefix=jtcresourceparentdirexistsnondefaultroot&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "65ec7432-f0cb-4e1c-bc77-2e08e5838462"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "c1c547c4-501e-00c3-1b37-f7985e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcresourceparentdirexistsnondefaultroot</Prefix><Containers><Container><Name>jtcresourceparentdirexistsnondefaultroot1537885d8738fc</Name><Properties><Last-Modified>Tue, 10 Mar 2020 23:57:26 GMT</Last-Modified><Etag>\"0x8D7C54EC91FA056\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtcresourceparentdirexistsnondefaultroot239880b7dea187</Name><Properties><Last-Modified>Tue, 10 Mar 2020 23:57:26 GMT</Last-Modified><Etag>\"0x8D7C54EC928F161\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 10 Mar 2020 23:57:26 GMT",
+      "x-ms-client-request-id" : "65ec7432-f0cb-4e1c-bc77-2e08e5838462",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcresourceparentdirexistsnondefaultroot1537885d8738fc?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "33b2f5d2-9673-4999-b9b3-813d141b67be"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "c1c547d4-501e-00c3-2737-f7985e000000",
+      "Date" : "Tue, 10 Mar 2020 23:57:26 GMT",
+      "x-ms-client-request-id" : "33b2f5d2-9673-4999-b9b3-813d141b67be"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcresourceparentdirexistsnondefaultroot239880b7dea187?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e3dc7f60-ce60-4745-bca2-75d200475f00"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "c1c547e8-501e-00c3-3837-f7985e000000",
+      "Date" : "Tue, 10 Mar 2020 23:57:26 GMT",
+      "x-ms-client-request-id" : "e3dc7f60-ce60-4745-bca2-75d200475f00"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcresourceparentdirexistsnondefaultroot099936594f1a98", "jtcresourceparentdirexistsnondefaultroot1537885d8738fc", "jtcresourceparentdirexistsnondefaultroot239880b7dea187" ]
+}

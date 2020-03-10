@@ -269,7 +269,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                     throw LoggingUtility.logError(logger,
                         new FileAlreadyExistsException(azureResource.getPath().toString()));
                 } else {
-                    throw LoggingUtility.logError(logger, new IOException("An error occured when creating the directory", e));
+                    throw LoggingUtility.logError(logger,
+                        new IOException("An error occurred when creating the directory", e));
                 }
             }
         } else {
@@ -387,8 +388,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         can skip a service call.
          */
         if (destinationStatus.equals(DirectoryStatus.DOES_NOT_EXIST) &&!destinationRes.checkParentDirectoryExists()) {
-            throw LoggingUtility.logError(logger, new IOException("Parent directory of destination location does not exist."
-                + "The destination path is therefore invalid. Destination: " + destinationRes.getPath().toString()));
+            throw LoggingUtility.logError(logger, new IOException("Parent directory of destination location does not "
+                + "exist. The destination path is therefore invalid. Destination: "
+                + destinationRes.getPath().toString()));
         }
 
         /*
