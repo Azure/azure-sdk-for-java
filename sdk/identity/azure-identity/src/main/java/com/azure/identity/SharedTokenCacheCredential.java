@@ -76,7 +76,12 @@ public class SharedTokenCacheCredential implements TokenCredential {
         if (pubClient == null) {
             try {
                 PersistentTokenCacheAccessAspect accessAspect = new PersistentTokenCacheAccessAspect();
-                pubClient = PublicClientApplication.builder(this.clientId)
+                PublicClientApplication.Builder applicationBuilder =  PublicClientApplication.builder(this.clientId);
+                if (options.getExecutorService() != null) {
+                    applicationBuilder.executorService(options.getExecutorService());
+                }
+
+                pubClient = applicationBuilder
                     .authority(authorityUrl)
                     .setTokenCacheAccessAspect(accessAspect)
                     .build();

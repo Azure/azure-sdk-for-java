@@ -5,10 +5,12 @@ package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -31,8 +33,11 @@ import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -45,9 +50,14 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -62,6 +72,14 @@ import java.util.function.Consumer;
 public class IdentityClient {
     private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final Random RANDOM = new Random();
+    private static final String WINDOWS_STARTER = "cmd.exe";
+    private static final String LINUX_MAC_STARTER = "/bin/sh";
+    private static final String WINDOWS_SWITCHER = "/c";
+    private static final String LINUX_MAC_SWITCHER = "-c";
+    private static final String WINDOWS_PROCESS_ERROR_MESSAGE = "'az' is not recognized";
+    private static final String LINUX_MAC_PROCESS_ERROR_MESSAGE = "(.*)az:(.*)not found";
+    private static final String DEFAULT_WINDOWS_SYSTEM_ROOT = System.getenv("SystemRoot");
+    private static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
@@ -118,9 +136,111 @@ public class IdentityClient {
                     publicClientApplicationBuilder.httpClient(httpPipelineAdapter);
                 }
             }
+
+            if (options.getExecutorService() != null) {
+                publicClientApplicationBuilder.executorService(options.getExecutorService());
+            }
             this.publicClientApplication = publicClientApplicationBuilder.build();
         }
     }
+
+    /**
+     * Asynchronously acquire a token from Active Directory with Azure CLI.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateWithAzureCli(TokenRequestContext request) {
+        String azCommand = "az account get-access-token --output json --resource ";
+
+        StringBuilder command = new StringBuilder();
+        command.append(azCommand);
+
+        String scopes = ScopeUtil.scopesToResource(request.getScopes());
+
+        try {
+            ScopeUtil.validateScope(scopes);
+        } catch (IllegalArgumentException ex) {
+            return Mono.error(logger.logExceptionAsError(ex));
+        }
+
+        command.append(scopes);
+    
+        AccessToken token = null;
+        BufferedReader reader = null;
+        try {
+            String starter;
+            String switcher;
+            if (isWindowsPlatform()) {
+                starter = WINDOWS_STARTER;
+                switcher = WINDOWS_SWITCHER;
+            } else {
+                starter = LINUX_MAC_STARTER;
+                switcher = LINUX_MAC_SWITCHER;
+            }
+
+            ProcessBuilder builder = new ProcessBuilder(starter, switcher, command.toString());
+            String workingDirectory = getSafeWorkingDirectory();
+            if (workingDirectory != null) {
+                builder.directory(new File(workingDirectory));
+            } else {
+                throw logger.logExceptionAsError(new IllegalStateException("A Safe Working directory could not be"
+                                                                           + " found to execute CLI command from."));
+            }
+            builder.redirectErrorStream(true);
+            Process process = builder.start();
+
+            reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"));
+            String line;
+            StringBuilder output = new StringBuilder();
+            while (true) {
+                line = reader.readLine();
+                if (line == null) {
+                    break;
+                }
+                if (line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE) || line.matches(LINUX_MAC_PROCESS_ERROR_MESSAGE)) {
+                    throw logger.logExceptionAsError(
+                        new ClientAuthenticationException("Azure CLI not installed", null));
+                }
+                output.append(line);
+            }
+            String processOutput = output.toString();
+
+            if (process.exitValue() != 0) {
+                if (processOutput.length() > 0) {
+                    String redactedOutput = redactInfo("\"accessToken\": \"(.*?)(\"|$)", processOutput);
+                    throw logger.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
+                } else {
+                    throw logger.logExceptionAsError(
+                        new ClientAuthenticationException("Failed to invoke Azure CLI ", null));
+                }
+            }
+            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(processOutput, Map.class,
+                        SerializerEncoding.JSON);
+            String accessToken = objectMap.get("accessToken");
+            String time = objectMap.get("expiresOn");
+            String timeToSecond = time.substring(0, time.indexOf("."));
+            String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
+            OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                                           .atZone(ZoneId.systemDefault())
+                                           .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
+            token = new IdentityToken(accessToken, expiresOn, options);
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new IllegalStateException(e));
+        } catch (RuntimeException e) {
+            return Mono.error(logger.logExceptionAsError(e));
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException ex) {
+                return Mono.error(logger.logExceptionAsError(new IllegalStateException(ex)));
+            }
+        }
+        return Mono.just(token);
+    }
+
 
     /**
      * Asynchronously acquire a token from Active Directory with a client secret.
@@ -141,6 +261,10 @@ public class IdentityClient {
                 applicationBuilder.httpClient(httpPipelineAdapter);
             } else if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+            }
+
+            if (options.getExecutorService() != null) {
+                applicationBuilder.executorService(options.getExecutorService());
             }
 
             ConfidentialClientApplication application = applicationBuilder.build();
@@ -188,6 +312,10 @@ public class IdentityClient {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
             }
 
+            if (options.getExecutorService() != null) {
+                applicationBuilder.executorService(options.getExecutorService());
+            }
+
             return applicationBuilder.build();
         }).flatMap(application -> Mono.fromFuture(application.acquireToken(
                 ClientCredentialParameters.builder(new HashSet<>(request.getScopes())).build())))
@@ -216,6 +344,10 @@ public class IdentityClient {
                 applicationBuilder.httpClient(httpPipelineAdapter);
             } else if (options.getProxyOptions() != null) {
                 applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+            }
+
+            if (options.getExecutorService() != null) {
+                applicationBuilder.executorService(options.getExecutorService());
             }
 
             ConfidentialClientApplication application = applicationBuilder.build();
@@ -529,6 +661,25 @@ public class IdentityClient {
             default:
                 return new Proxy(Type.HTTP, options.getAddress());
         }
+    }
+
+    private String getSafeWorkingDirectory() {
+        if (isWindowsPlatform()) {
+            if (CoreUtils.isNullOrEmpty(DEFAULT_WINDOWS_SYSTEM_ROOT)) {
+                return null;
+            }
+            return DEFAULT_WINDOWS_SYSTEM_ROOT + "\\system32";
+        } else {
+            return DEFAULT_MAC_LINUX_PATH;
+        }
+    }
+
+    private boolean isWindowsPlatform() {
+        return System.getProperty("os.name").contains("Windows");
+    }
+
+    private String redactInfo(String regex, String input) {
+        return input.replaceAll(regex, "****");
     }
 
     void openUrl(String url) throws IOException {
