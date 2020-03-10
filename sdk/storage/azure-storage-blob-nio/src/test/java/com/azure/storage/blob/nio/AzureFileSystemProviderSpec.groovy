@@ -544,7 +544,6 @@ class AzureFileSystemProviderSpec extends APISpec {
 
         // Create resources as necessary
         sourceClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20)
-        sourceClient.upload(new ByteArrayInputStream(getRandomByteArray(20)), 20, true)
 
         when:
         fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
