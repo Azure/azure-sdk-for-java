@@ -51,7 +51,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     /**
      * Specifies the options for proxy configuration.
      *
-     * @deprecated Set the proxy options on the {@link HttpClient} instead and configure the
+     * @deprecated Configure the proxy options on the {@link HttpClient} instead and then set that
      * client on the credential using {@link #httpClient(HttpClient)}.
      *
      * @param proxyOptions the options for proxy configuration
