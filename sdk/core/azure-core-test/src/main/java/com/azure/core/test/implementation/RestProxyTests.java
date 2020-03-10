@@ -79,7 +79,7 @@ public abstract class RestProxyTests {
      */
     protected abstract HttpClient createHttpClient();
 
-    @Host("http://httpbin.org")
+    @Host("http://localhost:21354")
     @ServiceInterface(name = "Service1")
     private interface Service1 {
         @Get("bytes/100")
@@ -116,7 +116,7 @@ public abstract class RestProxyTests {
             .verifyComplete();
     }
 
-    @Host("http://{hostName}.org")
+    @Host("http://{hostName}:21354")
     @ServiceInterface(name = "Service2")
     private interface Service2 {
         @Get("bytes/{numberOfBytes}")
@@ -131,35 +131,35 @@ public abstract class RestProxyTests {
 
     @Test
     public void syncRequestWithByteArrayReturnTypeAndParameterizedHostAndPath() {
-        final byte[] result = createService(Service2.class).getByteArray("httpbin", 50);
+        final byte[] result = createService(Service2.class).getByteArray("localhost", 100);
 
         assertNotNull(result);
-        assertEquals(result.length, 50);
+        assertEquals(result.length, 100);
     }
 
     @Test
     public void asyncRequestWithByteArrayReturnTypeAndParameterizedHostAndPath() {
-        StepVerifier.create(createService(Service2.class).getByteArrayAsync("httpbin", 50))
-            .assertNext(bytes -> assertEquals(50, bytes.length))
+        StepVerifier.create(createService(Service2.class).getByteArrayAsync("localhost", 100))
+            .assertNext(bytes -> assertEquals(100, bytes.length))
             .verifyComplete();
     }
 
     @Test
     public void syncRequestWithEmptyByteArrayReturnTypeAndParameterizedHostAndPath() {
-        final byte[] result = createService(Service2.class).getByteArray("httpbin", 0);
+        final byte[] result = createService(Service2.class).getByteArray("localhost", 0);
 
         // If no body then for async returns Mono.empty() for sync return null.
         assertNull(result);
     }
 
-    @Host("http://httpbin.org")
+    @Host("http://localhost:21354")
     @ServiceInterface(name = "Service3")
     private interface Service3 {
-        @Get("bytes/2")
+        @Get("bytes/100")
         @ExpectedResponses({200})
         void getNothing();
 
-        @Get("bytes/2")
+        @Get("bytes/100")
         @ExpectedResponses({200})
         Mono<Void> getNothingAsync();
     }
@@ -179,7 +179,7 @@ public abstract class RestProxyTests {
             .verifyComplete();
     }
 
-    @Host("http://httpbin.org")
+    @Host("http://localhost:21354")
     @ServiceInterface(name = "Service5")
     private interface Service5 {
         @Get("anything")
@@ -208,7 +208,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class).getAnything();
 
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything", json.url());
+        assertMatchWithHttpOrHttps("localhost/anything", json.url());
     }
 
     @Test
@@ -216,7 +216,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class).getAnythingWithPlus();
 
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything/with+plus", json.url());
+        assertMatchWithHttpOrHttps("localhost/anything/with+plus", json.url());
     }
 
     @Test
@@ -224,7 +224,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class).getAnythingWithPathParam("withpathparam");
 
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything/withpathparam", json.url());
+        assertMatchWithHttpOrHttps("localhost/anything/withpathparam", json.url());
     }
 
     @Test
@@ -232,7 +232,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class).getAnythingWithPathParam("with path param");
 
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything/with path param", json.url());
+        assertMatchWithHttpOrHttps("localhost/anything/with path param", json.url());
     }
 
     @Test
@@ -240,7 +240,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class).getAnythingWithPathParam("with+path+param");
 
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything/with+path+param", json.url());
+        assertMatchWithHttpOrHttps("localhost/anything/with+path+param", json.url());
     }
 
     @Test
@@ -248,7 +248,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class).getAnythingWithEncodedPathParam("withpathparam");
 
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything/withpathparam", json.url());
+        assertMatchWithHttpOrHttps("localhost/anything/withpathparam", json.url());
     }
 
     @Test
@@ -256,7 +256,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class).getAnythingWithEncodedPathParam("with%20path%20param");
 
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything/with path param", json.url());
+        assertMatchWithHttpOrHttps("localhost/anything/with path param", json.url());
     }
 
     @Test
@@ -264,17 +264,17 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class).getAnythingWithEncodedPathParam("with+path+param");
 
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything/with+path+param", json.url());
+        assertMatchWithHttpOrHttps("localhost/anything/with+path+param", json.url());
     }
 
     @Test
     public void asyncGetRequestWithAnything() {
         StepVerifier.create(createService(Service5.class).getAnythingAsync())
-            .assertNext(json -> assertMatchWithHttpOrHttps("httpbin.org/anything", json.url()))
+            .assertNext(json -> assertMatchWithHttpOrHttps("localhost/anything", json.url()))
             .verifyComplete();
     }
 
-    @Host("http://httpbin.org")
+    @Host("http://localhost:21354")
     @ServiceInterface(name = "Service6")
     private interface Service6 {
         @Get("anything")
@@ -295,7 +295,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service6.class).getAnything("A", 15);
 
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything?a=A&b=15", json.url());
+        assertMatchWithHttpOrHttps("localhost/anything?a=A&b=15", json.url());
     }
 
     @Test
@@ -303,7 +303,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service6.class).getAnything("A%20Z", 15);
 
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything?a=A%2520Z&b=15", json.url());
+        assertMatchWithHttpOrHttps("localhost/anything?a=A%2520Z&b=15", json.url());
     }
 
     @Test
@@ -311,13 +311,13 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service6.class).getAnythingWithEncoded("x%20y", 15);
 
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything?a=x y&b=15", json.url());
+        assertMatchWithHttpOrHttps("localhost/anything?a=x y&b=15", json.url());
     }
 
     @Test
     public void asyncGetRequestWithQueryParametersAndAnything() {
         StepVerifier.create(createService(Service6.class).getAnythingAsync("A", 15))
-            .assertNext(json -> assertMatchWithHttpOrHttps("httpbin.org/anything?a=A&b=15", json.url()))
+            .assertNext(json -> assertMatchWithHttpOrHttps("localhost/anything?a=A&b=15", json.url()))
             .verifyComplete();
     }
 
@@ -326,10 +326,10 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service6.class).getAnything(null, 15);
 
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("httpbin.org/anything?b=15", json.url());
+        assertMatchWithHttpOrHttps("localhost/anything?b=15", json.url());
     }
 
-    @Host("http://httpbin.org")
+    @Host("http://localhost:21354")
     @ServiceInterface(name = "Service7")
     private interface Service7 {
         @Get("anything")
@@ -381,7 +381,7 @@ public abstract class RestProxyTests {
         assertArrayEquals(new String[]{"15"}, headers.getValues("B"));
     }
 
-    @Host("http://httpbin.org")
+    @Host("http://localhost:21354")
     @ServiceInterface(name = "Service8")
     private interface Service8 {
         @Post("post")
@@ -939,7 +939,7 @@ public abstract class RestProxyTests {
         StepVerifier.create(createService(Service16.class).putByteArrayAsync(expectedBytes))
             .assertNext(json -> {
                 assertTrue(json.data() instanceof String);
-                assertEquals(expectedBytes, ((String) json.data()).getBytes());
+                assertArrayEquals(expectedBytes, ((String) json.data()).getBytes());
             }).verifyComplete();
     }
 
