@@ -8,6 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 
 import java.time.Duration;
+import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
 
 /**
@@ -22,6 +25,7 @@ public final class IdentityClientOptions {
     private Function<Duration, Duration> retryTimeout;
     private ProxyOptions proxyOptions;
     private HttpPipeline httpPipeline;
+    private ExecutorService executorService;
     private Duration tokenRefreshOffset = Duration.ofMinutes(2);
     private HttpClient httpClient;
 
@@ -127,6 +131,34 @@ public final class IdentityClientOptions {
     }
 
     /**
+     * Specifies the ExecutorService to be used to execute the authentication requests.
+     * Developer is responsible for maintaining the lifecycle of the ExecutorService.
+     *
+     * <p>
+     * If this is not configured, the {@link ForkJoinPool#commonPool()} will be used which is
+     * also shared with other application tasks. If the common pool is heavily used for other tasks, authentication
+     * requests might starve and setting up this executor service should be considered.
+     * </p>
+     *
+     * <p> The executor service and can be safely shutdown if the TokenCredential is no longer being used by the
+     * Azure SDK clients and should be shutdown before the application exits. </p>
+     *
+     * @param executorService the executor service to use for executing authentication requests.
+     * @return IdentityClientOptions
+     */
+    public IdentityClientOptions setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
+        return this;
+    }
+
+    /**
+     * @return the ExecutorService to execute authentication requests.
+     */
+    public ExecutorService getExecutorService() {
+        return executorService;
+    }
+  
+    /**
      * @return how long before the actual token expiry to refresh the token.
      */
     public Duration getTokenRefreshOffset() {
@@ -142,11 +174,12 @@ public final class IdentityClientOptions {
      * token takes longer than normal to get to the server.
      *
      * @param tokenRefreshOffset the duration before the actual expiry of a token to refresh it
+     * @return IdentityClientOptions
+     * @throws NullPointerException If {@code tokenRefreshOffset} is null.
      */
     public IdentityClientOptions setTokenRefreshOffset(Duration tokenRefreshOffset) {
-        if (tokenRefreshOffset != null) {
-            this.tokenRefreshOffset = tokenRefreshOffset;
-        }
+        Objects.requireNonNull(tokenRefreshOffset, "The token refresh offset cannot be null.");
+        this.tokenRefreshOffset = tokenRefreshOffset;
         return this;
     }
 

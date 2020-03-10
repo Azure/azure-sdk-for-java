@@ -1592,6 +1592,19 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    def "Rename url encoded path"() {
+        setup:
+        // Add some random url encoded characters to the end
+        fc = fsc.getFileClient(generatePathName() + "%20%25")
+        fc.create()
+
+        when:
+        def response = fc.renameWithResponse(null, generatePathName(), null, null, null, null)
+
+        then:
+        response.getStatusCode() == 201
+    }
+
     @Unroll
     def "Rename source AC"() {
         setup:

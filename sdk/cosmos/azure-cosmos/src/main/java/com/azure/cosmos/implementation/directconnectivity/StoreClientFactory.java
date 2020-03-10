@@ -8,6 +8,8 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.UserAgentContainer;
 
+import java.time.Duration;
+
 // TODO: DANOBLE: no support for ICommunicationEventSource ask Ji
 //  Links:
 //  https://msdata.visualstudio.com/CosmosDB/SDK/_workitems/edit/262496
@@ -16,7 +18,7 @@ public class StoreClientFactory implements AutoCloseable {
 
     private final Configs configs;
     private final int maxConcurrentConnectionOpenRequests;
-    private final int requestTimeoutInSeconds;
+    private final Duration requestTimeout;
     private final Protocol protocol;
     private final TransportClient transportClient;
     private final boolean enableTransportClientSharing;
@@ -24,24 +26,24 @@ public class StoreClientFactory implements AutoCloseable {
 
     public StoreClientFactory(
         Configs configs,
-        int requestTimeoutInSeconds,
+        Duration requestTimeout,
         int maxConcurrentConnectionOpenRequests,
         UserAgentContainer userAgent,
         boolean enableTransportClientSharing) {
 
         this.configs = configs;
         this.protocol = configs.getProtocol();
-        this.requestTimeoutInSeconds = requestTimeoutInSeconds;
+        this.requestTimeout = requestTimeout;
         this.maxConcurrentConnectionOpenRequests = maxConcurrentConnectionOpenRequests;
         this.enableTransportClientSharing = enableTransportClientSharing;
 
         if (enableTransportClientSharing) {
-            this.transportClient = SharedTransportClient.getOrCreateInstance(protocol, configs, requestTimeoutInSeconds, userAgent);
+            this.transportClient = SharedTransportClient.getOrCreateInstance(protocol, configs, requestTimeout, userAgent);
         } else {
             if (protocol == Protocol.HTTPS) {
-                this.transportClient = new HttpTransportClient(configs, requestTimeoutInSeconds, userAgent);
+                this.transportClient = new HttpTransportClient(configs, requestTimeout, userAgent);
             } else if (protocol == Protocol.TCP) {
-                this.transportClient = new RntbdTransportClient(configs, requestTimeoutInSeconds, userAgent);
+                this.transportClient = new RntbdTransportClient(configs, requestTimeout, userAgent);
             } else {
                 throw new IllegalArgumentException(String.format("protocol: %s", this.protocol));
             }

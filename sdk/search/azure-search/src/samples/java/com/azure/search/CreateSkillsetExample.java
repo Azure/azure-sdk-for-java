@@ -24,6 +24,8 @@ public class CreateSkillsetExample {
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
     private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
+    private static final String OCR_SKILLSET_NAME = "ocr-skillset";
+    private static final String CUSTOME_SKILLSET_NAME = "custom-skillset";
 
     public static void main(String[] args) {
         SearchServiceClient searchServiceClient = new SearchServiceClientBuilder()
@@ -33,6 +35,7 @@ public class CreateSkillsetExample {
 
         createOcrSkillset(searchServiceClient);
         createCustomSkillset(searchServiceClient);
+        cleanupSkillset(searchServiceClient);
     }
 
     private static void createOcrSkillset(SearchServiceClient searchServiceClient) {
@@ -66,7 +69,7 @@ public class CreateSkillsetExample {
         );
 
         Skillset skillset = new Skillset()
-            .setName("ocr-skillset")
+            .setName(OCR_SKILLSET_NAME)
             .setDescription("Extracts text (plain and structured) from image.")
             .setSkills(skills);
 
@@ -107,7 +110,7 @@ public class CreateSkillsetExample {
             .setDescription("A WebApiSkill that can be used to call a custom web api function");
 
         Skillset skillset = new Skillset()
-            .setName("custom-skillset")
+            .setName(CUSTOME_SKILLSET_NAME)
             .setDescription("Skillset for testing custom skillsets")
             .setSkills(Collections.singletonList(webApiSkill));
 
@@ -118,5 +121,10 @@ public class CreateSkillsetExample {
         System.out.println("Created custom skillset");
         System.out.println(String.format("Name: %s", createdSkillset.getName()));
         System.out.println(String.format("ETag: %s", createdSkillset.getETag()));
+    }
+
+    private static void cleanupSkillset(SearchServiceClient searchServiceClient) {
+        searchServiceClient.deleteSkillset(OCR_SKILLSET_NAME);
+        searchServiceClient.deleteSkillset(CUSTOME_SKILLSET_NAME);
     }
 }

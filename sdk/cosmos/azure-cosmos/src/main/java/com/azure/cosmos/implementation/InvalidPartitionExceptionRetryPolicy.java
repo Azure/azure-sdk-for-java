@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.models.FeedOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;

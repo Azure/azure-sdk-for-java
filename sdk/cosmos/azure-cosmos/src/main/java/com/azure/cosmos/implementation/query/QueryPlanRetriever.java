@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -13,7 +13,6 @@ import com.azure.cosmos.implementation.RuntimeConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
