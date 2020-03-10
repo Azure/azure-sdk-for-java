@@ -460,7 +460,7 @@
     <Method name="endTracingSpan"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
-  
+
   <!-- Incorrect flagging, error will be thrown if value is null -->
   <Match>
       <Class name="com.azure.endtoend.identity.WebJobsIdentityTest"/>
@@ -753,4 +753,12 @@
     NP_BOOLEAN_RETURN_NULL"/>
   </Match>
 
+  <!-- Disable some spotbugs rules on perf-tests -->
+  <Match>
+    <Or>
+      <Package name="com.azure.storage.blob.perf"/>
+      <Package name="com.azure.storage.blob.perf.core"/>
+    </Or>
+    <Bug pattern="BC_UNCONFIRMED_CAST, DM_EXIT, RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
+  </Match>
 </FindBugsFilter>
