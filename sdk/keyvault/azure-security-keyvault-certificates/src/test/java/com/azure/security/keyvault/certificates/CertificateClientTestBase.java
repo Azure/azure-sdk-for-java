@@ -573,17 +573,23 @@ public abstract class CertificateClientTestBase extends TestBase {
      *
      * @return A stream of HttpClient and service version combinations to test.
      */
-    static Stream<Arguments> getTestParameters() {
+    Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
         getHttpClients()
             .forEach(httpClient -> {
-                for (CertificateServiceVersion serviceVersion : CertificateServiceVersion.values()) {
-                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
-                }
+                Arrays.stream(CertificateServiceVersion.values()).filter(this::shouldServiceVersionBeTested)
+                    .forEach(serviceVersion ->argumentsList.add(Arguments.of(httpClient, serviceVersion)));
             });
         return argumentsList.stream();
+    }
+
+    boolean shouldServiceVersionBeTested(CertificateServiceVersion serviceVersion) {
+        if (Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS) == null) {
+            return CertificateServiceVersion.getLatest().equals(serviceVersion);
+        }
+        return true;
     }
 }
 

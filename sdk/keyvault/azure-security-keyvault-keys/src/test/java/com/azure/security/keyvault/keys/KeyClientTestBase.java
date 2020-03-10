@@ -39,7 +39,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class KeyClientTestBase extends TestBase {
-
     private static final String KEY_NAME = "javaKeyTemp";
     private static final KeyType RSA_KEY_TYPE = KeyType.RSA;
     private static final KeyType EC_KEY_TYPE = KeyType.EC;
@@ -413,16 +412,23 @@ public abstract class KeyClientTestBase extends TestBase {
      *
      * @return A stream of HttpClient and service version combinations to test.
      */
-    protected static Stream<Arguments> getTestParameters() {
+    Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
+
         getHttpClients()
             .forEach(httpClient -> {
-                for (KeyServiceVersion serviceVersion : KeyServiceVersion.values()) {
-                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
-                }
+                Arrays.stream(KeyServiceVersion.values()).filter(this::shouldServiceVersionBeTested)
+                    .forEach(serviceVersion ->argumentsList.add(Arguments.of(httpClient, serviceVersion)));
             });
         return argumentsList.stream();
+    }
+
+    protected boolean shouldServiceVersionBeTested(KeyServiceVersion serviceVersion) {
+        if (Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS) == null) {
+            return KeyServiceVersion.getLatest().equals(serviceVersion);
+        }
+        return true;
     }
 }

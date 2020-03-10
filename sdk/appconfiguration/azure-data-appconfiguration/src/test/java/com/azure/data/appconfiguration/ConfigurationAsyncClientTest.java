@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration;
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
@@ -27,6 +28,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
@@ -34,6 +36,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.context.Context;
 
+@TestInstance(PER_CLASS)
 public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClientTest.class);

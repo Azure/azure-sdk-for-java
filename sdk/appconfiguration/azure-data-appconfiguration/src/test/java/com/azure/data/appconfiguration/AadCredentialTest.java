@@ -13,14 +13,17 @@ import org.junit.jupiter.api.Assertions;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
 /**
  * Unit test for construct a configuration client by using AAD token credential.
  */
+@TestInstance(PER_CLASS)
 public class AadCredentialTest extends TestBase {
     private static ConfigurationClient client;
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
@@ -56,8 +59,8 @@ public class AadCredentialTest extends TestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void aadAuthenticationAzConfigClient(HttpClient httpClient,
-        ConfigurationServiceVersion serviceVersion) throws Exception {
+    public void aadAuthenticationAzConfigClient(HttpClient httpClient, ConfigurationServiceVersion serviceVersion)
+        throws Exception {
         setup(httpClient, serviceVersion);
         final String key = "newKey";
         final String value = "newValue";

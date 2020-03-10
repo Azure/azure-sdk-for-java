@@ -14,9 +14,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +30,7 @@ import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUM
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
+@TestInstance(PER_CLASS)
 public class ConfigurationClientBuilderTest extends TestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String DEFAULT_DOMAIN_NAME = ".azconfig.io";
