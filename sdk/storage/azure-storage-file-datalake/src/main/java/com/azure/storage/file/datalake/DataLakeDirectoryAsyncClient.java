@@ -66,7 +66,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     DataLakeDirectoryAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
         super(dataLakePathAsyncClient.getHttpPipeline(), dataLakePathAsyncClient.getPathUrl(),
             dataLakePathAsyncClient.getServiceVersion(), dataLakePathAsyncClient.getAccountName(),
-            dataLakePathAsyncClient.getFileSystemName(), dataLakePathAsyncClient.getObjectPath(),
+            dataLakePathAsyncClient.getFileSystemName(), Utility.urlEncode(dataLakePathAsyncClient.getObjectPath()),
             PathResourceType.DIRECTORY, dataLakePathAsyncClient.getBlockBlobAsyncClient());
     }
 
@@ -159,12 +159,21 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public DataLakeFileAsyncClient getFileAsyncClient(String fileName) {
         Objects.requireNonNull(fileName, "'fileName' can not be set to null");
 
+        /* Deals with the root directory. */
+        String filePath = Utility.urlEncode(getObjectPath()) + "/" + Utility.urlEncode(Utility.urlDecode(fileName));
+        String pathUrl = getPathUrl();
+        if (getObjectPath().equals(DataLakeFileSystemAsyncClient.ROOT_DIRECTORY_NAME)) {
+            filePath = Utility.urlDecode(fileName);
+            /* Remove the URL encoded ROOT_DIRECTORY_NAME which will be in the path url*/
+            pathUrl = pathUrl.substring(0, pathUrl.length()
+                - Utility.urlEncode(DataLakeFileSystemAsyncClient.ROOT_DIRECTORY_NAME).length());
+        }
+
         BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(fileName).buildBlockBlobAsyncClient();
 
         return new DataLakeFileAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(fileName))).toString(),
-            getServiceVersion(), getAccountName(), getFileSystemName(), getObjectPath() + "/"
-            + Utility.urlDecode(fileName), blockBlobAsyncClient);
+            StorageImplUtils.appendToUrlPath(pathUrl, Utility.urlEncode(Utility.urlDecode(fileName))).toString(),
+            getServiceVersion(), getAccountName(), getFileSystemName(), filePath, blockBlobAsyncClient);
     }
 
     /**
@@ -277,13 +286,24 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public DataLakeDirectoryAsyncClient getSubdirectoryAsyncClient(String subdirectoryName) {
         Objects.requireNonNull(subdirectoryName, "'subdirectoryName' can not be set to null");
 
+        String subdirName = Utility.urlEncode(getObjectPath()) + "/"
+            + Utility.urlEncode(Utility.urlDecode(subdirectoryName));
+        String pathUrl = getPathUrl();
+        /* Deals with the root directory. */
+        if (getObjectPath().equals(DataLakeFileSystemAsyncClient.ROOT_DIRECTORY_NAME)) {
+            subdirName = Utility.urlEncode(Utility.urlDecode(subdirectoryName));
+            /* Remove the URL encoded ROOT_DIRECTORY_NAME which will be in the path url*/
+            pathUrl = pathUrl.substring(0, pathUrl.length()
+                - Utility.urlEncode(DataLakeFileSystemAsyncClient.ROOT_DIRECTORY_NAME).length());
+        }
+
         BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(subdirectoryName)
             .buildBlockBlobAsyncClient();
 
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(),
-            StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(subdirectoryName)))
-                .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), getObjectPath() + "/"
-            + Utility.urlDecode(subdirectoryName), blockBlobAsyncClient);
+            StorageImplUtils.appendToUrlPath(pathUrl, Utility.urlEncode(Utility.urlDecode(subdirectoryName)))
+                .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), subdirName,
+            blockBlobAsyncClient);
     }
 
     /**
@@ -449,10 +469,22 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @return {@link SpecializedBlobClientBuilder}
      */
     SpecializedBlobClientBuilder prepareBuilderAppendPath(String pathName) {
-        String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(getPathUrl(), "blob", "dfs");
+
+        /* Deals with the root directory. */
+        String path = Utility.urlEncode(getObjectPath()) + "/" + Utility.urlEncode(Utility.urlDecode(pathName));
+        String pathUrl = getPathUrl();
+        if (getObjectPath().equals(DataLakeFileSystemAsyncClient.ROOT_DIRECTORY_NAME)) {
+            path = Utility.urlDecode(pathName);
+            /* Remove the URL encoded ROOT_DIRECTORY_NAME which will be in the path url*/
+            pathUrl = pathUrl.substring(0, pathUrl.length()
+                - Utility.urlEncode(DataLakeFileSystemAsyncClient.ROOT_DIRECTORY_NAME).length());
+        }
+
+        String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(pathUrl, "blob", "dfs");
 
         return new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
-            .endpoint(StorageImplUtils.appendToUrlPath(blobUrl, pathName).toString());
+            .endpoint(StorageImplUtils.appendToUrlPath(blobUrl, Utility.urlEncode(Utility.urlDecode(pathName)))
+                .toString());
     }
 }

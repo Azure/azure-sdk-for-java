@@ -58,7 +58,7 @@ public class DataLakeFileSystemClient {
 
     public static final String ROOT_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
 
-    private static final String ROOT_DIRECTORY_NAME = "";
+    private static final String ROOT_DIRECTORY_NAME = "/";
 
 //    public static final String STATIC_WEBSITE_FILESYSTEM_NAME =
 //    DataLakeFileSystemAsyncClient.STATIC_WEBSITE_FILESYSTEM_NAME;

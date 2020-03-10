@@ -1157,19 +1157,34 @@ class FileSystemAPITest extends APISpec {
         items.hasNext()
     }
 
-    def "Set ACL root directory"() {
+    def "Ensure root directory"() {
         setup:
-        def dc = fsc.getRootDirectoryClient()
+        // This test is to check that / and "" root directories are genuinely the same.
+        // / works on blob + dfs, "" works only on dfs.
+        def blobWorking = fsc.getRootDirectoryClient()
+        def dfsWorking = fsc.getDirectoryClient("")
 
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
 
         when:
-        def resp = dc.setAccessControlList(pathAccessControlEntries, null, null)
+        def respDfs = dfsWorking.setAccessControlList(pathAccessControlEntries, null, null)
+
+        def respBlob = blobWorking.getProperties()
 
         then:
         notThrown(DataLakeStorageException)
-        resp.getETag()
-        resp.getLastModified()
+        respDfs.getETag() == respBlob.getETag()
+
+        and:
+
+        when:
+        respBlob = blobWorking.setMetadataWithResponse(null, null, null, null)
+        respDfs = dfsWorking.getAccessControlWithResponse(false, null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        respDfs.getHeaders().getValue("E-Tag") == respBlob.getHeaders().getValue("E-Tag")
+
     }
 
 }

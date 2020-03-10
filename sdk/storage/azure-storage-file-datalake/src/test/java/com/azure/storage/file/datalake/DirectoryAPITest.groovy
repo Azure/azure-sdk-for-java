@@ -288,6 +288,18 @@ class DirectoryAPITest extends APISpec {
         resp.getLastModified()
     }
 
+    def "Set permissions root"() {
+        setup:
+        def dc = fsc.getRootDirectoryClient()
+        when:
+        def resp = dc.setPermissions(permissions, group, owner)
+
+        then:
+        notThrown(DataLakeStorageException)
+        resp.getETag()
+        resp.getLastModified()
+    }
+
     def "Set permissions with response"() {
         expect:
         dc.setPermissionsWithResponse(permissions, group, owner, null, null, Context.NONE).getStatusCode() == 200
@@ -366,6 +378,18 @@ class DirectoryAPITest extends APISpec {
         resp.getLastModified()
     }
 
+    def "Set ACL root"() {
+        setup:
+        def dc = fsc.getRootDirectoryClient()
+        when:
+        def resp = dc.setAccessControlList(pathAccessControlEntries, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        resp.getETag()
+        resp.getLastModified()
+    }
+
     def "Set ACL with response"() {
         expect:
         dc.setAccessControlListWithResponse(pathAccessControlEntries, group, owner, null, null, Context.NONE).getStatusCode() == 200
@@ -435,6 +459,21 @@ class DirectoryAPITest extends APISpec {
     }
 
     def "Get access control min"() {
+        when:
+        PathAccessControl pac = dc.getAccessControl()
+
+        then:
+        notThrown(DataLakeStorageException)
+        pac.getAccessControlList()
+        pac.getPermissions()
+        pac.getOwner()
+        pac.getGroup()
+    }
+
+    def "Get access control root"() {
+        setup:
+        def dc = fsc.getRootDirectoryClient()
+
         when:
         PathAccessControl pac = dc.getAccessControl()
 
@@ -715,6 +754,14 @@ class DirectoryAPITest extends APISpec {
         dc.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
     }
 
+    def "Get properties root"() {
+        setup:
+        def dc = fsc.getRootDirectoryClient()
+
+        expect:
+        dc.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+    }
+
     @Unroll
     def "Get properties AC"() {
         setup:
@@ -785,6 +832,23 @@ class DirectoryAPITest extends APISpec {
 
     def "Set HTTP headers min"() {
         setup:
+        def properties = dc.getProperties()
+        def headers = new PathHttpHeaders()
+            .setContentEncoding(properties.getContentEncoding())
+            .setContentDisposition(properties.getContentDisposition())
+            .setContentType("type")
+            .setCacheControl(properties.getCacheControl())
+            .setContentLanguage(properties.getContentLanguage())
+
+        dc.setHttpHeaders(headers)
+
+        expect:
+        dc.getProperties().getContentType() == "type"
+    }
+
+    def "Set HTTP headers root"() {
+        setup:
+        def dc = fsc.getRootDirectoryClient()
         def properties = dc.getProperties()
         def headers = new PathHttpHeaders()
             .setContentEncoding(properties.getContentEncoding())
@@ -914,6 +978,23 @@ class DirectoryAPITest extends APISpec {
         }
     }
 
+    def "Set metadata root"() {
+        setup:
+        def dc = fsc.getRootDirectoryClient()
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+
+        when:
+        dc.setMetadata(metadata)
+
+        then:
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            dc.getProperties().getMetadata().containsKey(k)
+            dc.getProperties().getMetadata().get(k) == metadata.get(k)
+        }
+    }
+
     @Unroll
     def "Set metadata metadata"() {
         setup:
@@ -1004,6 +1085,17 @@ class DirectoryAPITest extends APISpec {
     }
 
     def "Create file min"() {
+        when:
+        dc.getFileClient(generatePathName()).create()
+
+        then:
+        notThrown(DataLakeStorageException)
+    }
+
+    def "Create file root"() {
+        setup:
+        dc = fsc.getRootDirectoryClient()
+
         when:
         dc.getFileClient(generatePathName()).create()
 
@@ -1154,6 +1246,18 @@ class DirectoryAPITest extends APISpec {
         dc.deleteFileWithResponse(pathName, null, null, null).getStatusCode() == 200
     }
 
+    def "Delete file root"() {
+        setup:
+        dc = fsc.getRootDirectoryClient()
+        def pathName = generatePathName()
+
+        when:
+        dc.createFile(pathName)
+
+        then:
+       dc.deleteFileWithResponse(pathName, null, null, null).getStatusCode() == 200
+    }
+
     def "Delete file file does not exist anymore"() {
         when:
         def pathName = generatePathName()
@@ -1228,6 +1332,25 @@ class DirectoryAPITest extends APISpec {
         when:
         def subdir = dc.getSubdirectoryClient(generatePathName())
         subdir.create()
+
+        then:
+        notThrown(DataLakeStorageException)
+    }
+
+    def "Create sub dir root"() {
+        setup:
+        dc = fsc.getRootDirectoryClient()
+
+        when:
+        def subdir = dc.getSubdirectoryClient(generatePathName())
+        subdir.create()
+
+        // Do something with the subdirectory
+        // blob call
+        subdir.getProperties()
+
+        // dfs call
+        subdir.getAccessControl()
 
         then:
         notThrown(DataLakeStorageException)
@@ -1378,6 +1501,16 @@ class DirectoryAPITest extends APISpec {
         expect:
         def pathName = generatePathName()
         dc.createSubdirectory(pathName)
+        dc.deleteSubdirectoryWithResponse(pathName, false, null, null, null).getStatusCode() == 200
+    }
+
+    def "Delete sub dir root"() {
+        setup:
+        dc = fsc.getRootDirectoryClient()
+        def pathName = generatePathName()
+        when:
+        dc.createSubdirectory(pathName)
+        then:
         dc.deleteSubdirectoryWithResponse(pathName, false, null, null, null).getStatusCode() == 200
     }
 

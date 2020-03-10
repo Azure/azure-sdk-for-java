@@ -14,6 +14,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReporter;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.UploadBufferPool;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.UploadUtils;
@@ -100,8 +101,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
     DataLakeFileAsyncClient(DataLakePathAsyncClient pathAsyncClient) {
         super(pathAsyncClient.getHttpPipeline(), pathAsyncClient.getPathUrl(), pathAsyncClient.getServiceVersion(),
-            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(), pathAsyncClient.getObjectPath(),
-            PathResourceType.FILE, pathAsyncClient.getBlockBlobAsyncClient());
+            pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(),
+            Utility.urlEncode(pathAsyncClient.getObjectPath()), PathResourceType.FILE,
+            pathAsyncClient.getBlockBlobAsyncClient());
     }
 
     /**
