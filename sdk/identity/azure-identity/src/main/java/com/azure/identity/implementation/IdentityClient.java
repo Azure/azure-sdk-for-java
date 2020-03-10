@@ -151,7 +151,15 @@ public class IdentityClient {
 
         StringBuilder command = new StringBuilder();
         command.append(azCommand);
+
         String scopes = ScopeUtil.scopesToResource(request.getScopes());
+
+        try {
+            ScopeUtil.validateScope(scopes);
+        } catch (IllegalArgumentException ex) {
+            return Mono.error(logger.logExceptionAsError(ex));
+        }
+
         command.append(scopes);
     
         AccessToken token = null;
@@ -172,8 +180,8 @@ public class IdentityClient {
             if (workingDirectory != null) {
                 builder.directory(new File(workingDirectory));
             } else {
-                throw logger.logExceptionAsError(new IllegalStateException("A Safe Working directory could not be" +
-                                                                               " found to execute CLI command from."));
+                throw logger.logExceptionAsError(new IllegalStateException("A Safe Working directory could not be"
+                                                                           + " found to execute CLI command from."));
             }
             builder.redirectErrorStream(true);
             Process process = builder.start();
@@ -197,8 +205,7 @@ public class IdentityClient {
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
                     String redactedOutput = redactInfo("\"accessToken\": \"(.*?)(\"|$)", processOutput);
-                    throw logger.logExceptionAsError(new ClientAuthenticationException(processOutput
-                                                               .replaceAll(redactedOutput, "****"), null));
+                    throw logger.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {
                     throw logger.logExceptionAsError(
                         new ClientAuthenticationException("Failed to invoke Azure CLI ", null));

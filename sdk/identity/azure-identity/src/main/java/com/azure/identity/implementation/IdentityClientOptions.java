@@ -3,7 +3,6 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
