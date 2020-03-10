@@ -541,9 +541,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
     @Test
     public void importCertificate() {
         importCertificateRunner((importCertificateOptions) -> {
-            if (client == null) {
-                return;
-            }
             KeyVaultCertificateWithPolicy importedCertificate = client.importCertificate(importCertificateOptions);
             assertTrue(toHexString(importedCertificate.getProperties().getX509Thumbprint()).equalsIgnoreCase("7cb8b7539d87ba7215357b9b9049dff2d3fa59ba"));
             assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
