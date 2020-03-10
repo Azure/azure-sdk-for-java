@@ -21,12 +21,13 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -290,19 +291,19 @@ public final class BlobBatch {
         // Begin a new batch.
         batchOperationQueue = new ConcurrentLinkedDeque<>();
 
-        return Flux.generate(sink -> {
-            if (operations.isEmpty()) {
-                operationInfo.finalizeBatchOperations();
-                sink.complete();
-            } else {
-                BlobBatchOperation<?> batchOperation = operations.pop();
-                sink.next(batchOperation.getResponse()
-                    .subscriberContext(Context.of(BATCH_REQUEST_URL_PATH, batchOperation.getRequestUrlPath(),
-                        BATCH_OPERATION_RESPONSE, batchOperation.getBatchOperationResponse(),
-                        BATCH_OPERATION_INFO, operationInfo))
-                    .subscribe());
-            }
-        }).then(Mono.just(operationInfo));
+        List<Mono<? extends Response<?>>> batchOperationResponses = new ArrayList<>();
+        while (!operations.isEmpty()) {
+            BlobBatchOperation<?> batchOperation = operations.pop();
+
+            batchOperationResponses.add(batchOperation.getResponse()
+                .subscriberContext(Context.of(BATCH_REQUEST_URL_PATH, batchOperation.getRequestUrlPath(),
+                    BATCH_OPERATION_RESPONSE, batchOperation.getBatchOperationResponse(),
+                    BATCH_OPERATION_INFO, operationInfo)));
+        }
+
+        return Mono.when(batchOperationResponses)
+            .doOnSuccess(ignored -> operationInfo.finalizeBatchOperations())
+            .thenReturn(operationInfo);
     }
 
     /*
