@@ -9,6 +9,7 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
+<<<<<<< HEAD:sdk/appconfiguration/pom.service.xml
     <!-- NOTE: Commenting out because we should now be binary composed.
     -->
     <module>../core/azure-core</module>
@@ -16,6 +17,8 @@
     <module>../core/azure-core-http-netty</module>
     <module>../core/azure-core-http-okhttp</module>
     <module>../identity/azure-identity</module>
+=======
+>>>>>>> Bringing identity and appconfiguration into scope.:sdk/appconfiguration/pom.xml
     <module>azure-data-appconfiguration</module>
   </modules>
 </project>

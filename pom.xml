@@ -9,5 +9,7 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
     <module>sdk/core</module>
+    <module>sdk/identity</module>
+    <module>sdk/appconfiguration</module>
   </modules>
 </project>
