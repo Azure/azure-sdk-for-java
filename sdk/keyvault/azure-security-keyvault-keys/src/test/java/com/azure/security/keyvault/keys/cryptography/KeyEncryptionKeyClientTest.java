@@ -44,7 +44,9 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
         }
     }
 
-    private KeyEncryptionKey setupKeyEncryptionKey(KeyVaultKey kvKey, CryptographyServiceVersion serviceVersion) {
+    private KeyEncryptionKey setupKeyEncryptionKey(KeyVaultKey kvKey, HttpClient httpClient,
+        CryptographyServiceVersion serviceVersion) {
+        pipeline = getHttpPipeline(httpClient, serviceVersion);
         if (kvKey != null) {
             return new KeyEncryptionKeyClientBuilder()
                 .pipeline(pipeline)
@@ -74,7 +76,7 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
         JsonWebKey localKey = JsonWebKey.fromAes(new SecretKeySpec(kek, "AES"),
             Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY));
         KeyVaultKey kvKey = KeyVaultKey.fromName("localSymmeticKey", localKey);
-        KeyEncryptionKey keyEncryptionKey = setupKeyEncryptionKey(kvKey, serviceVersion);
+        KeyEncryptionKey keyEncryptionKey = setupKeyEncryptionKey(kvKey, httpClient, serviceVersion);
         byte[] cek = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte) 0x88, (byte) 0x99, (byte) 0xAA, (byte) 0xBB, (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF };
         byte[] encrypted = keyEncryptionKey.wrapKey("A128KW", cek);
         byte[] ek = { 0x1F, (byte) 0xA6, (byte) 0x8B, 0x0A, (byte) 0x81, 0x12, (byte) 0xB4, 0x47, (byte) 0xAE, (byte) 0xF3, 0x4B, (byte) 0xD8, (byte) 0xFB, 0x5A, 0x7B, (byte) 0x82, (byte) 0x9D, 0x3E, (byte) 0x86, 0x23, 0x71, (byte) 0xD2, (byte) 0xCF, (byte) 0xE5 };
@@ -103,7 +105,7 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
         JsonWebKey localKey = JsonWebKey.fromAes(new SecretKeySpec(kek, "AES"),
             Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY));
         KeyVaultKey kvKey = KeyVaultKey.fromName("localSymmeticKey", localKey);
-        client = setupKeyEncryptionKey(kvKey, serviceVersion);
+        client = setupKeyEncryptionKey(kvKey, httpClient, serviceVersion);
         byte[] cek = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte) 0x88, (byte) 0x99, (byte) 0xAA, (byte) 0xBB, (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF };
         byte[] encrypted = client.wrapKey("A192KW", cek);
         byte[] ek = { (byte) 0x96, 0x77, (byte) 0x8B, 0x25, (byte) 0xAE, 0x6C, (byte) 0xA4, 0x35, (byte) 0xF9, 0x2B, 0x5B, (byte) 0x97, (byte) 0xC0, 0x50, (byte) 0xAE, (byte) 0xD2, 0x46, (byte) 0x8A, (byte) 0xB8, (byte) 0xA1, 0x7A, (byte) 0xD8, 0x4E, 0x5D };
