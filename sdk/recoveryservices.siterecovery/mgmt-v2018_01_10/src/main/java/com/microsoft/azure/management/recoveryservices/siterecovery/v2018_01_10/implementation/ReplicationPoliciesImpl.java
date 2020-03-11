@@ -64,10 +64,14 @@ class ReplicationPoliciesImpl extends WrapperImpl<ReplicationPoliciesInner> impl
     public Observable<Policy> getAsync(String policyName) {
         ReplicationPoliciesInner client = this.inner();
         return client.getAsync(policyName)
-        .map(new Func1<PolicyInner, Policy>() {
+        .flatMap(new Func1<PolicyInner, Observable<Policy>>() {
             @Override
-            public Policy call(PolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<Policy> call(PolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Policy)wrapModel(inner));
+                }
             }
        });
     }

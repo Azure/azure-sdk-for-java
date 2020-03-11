@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Create network mappings input properties/behavior specific to vmm to vmm
  * Network mapping.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = VmmToVmmCreateNetworkMappingInput.class)
 @JsonTypeName("VmmToVmm")
 public class VmmToVmmCreateNetworkMappingInput extends FabricSpecificCreateNetworkMappingInput {
 }

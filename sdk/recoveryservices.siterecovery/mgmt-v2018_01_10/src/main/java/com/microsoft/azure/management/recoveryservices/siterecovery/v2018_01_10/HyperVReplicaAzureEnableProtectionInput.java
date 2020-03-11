@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Azure specific enable protection input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = HyperVReplicaAzureEnableProtectionInput.class)
 @JsonTypeName("HyperVReplicaAzure")
 public class HyperVReplicaAzureEnableProtectionInput extends EnableProtectionProviderSpecificInput {
     /**

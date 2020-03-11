@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * RCM based Azure migration specific policy details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = RcmAzureMigrationPolicyDetails.class)
 @JsonTypeName("RcmAzureMigration")
 public class RcmAzureMigrationPolicyDetails extends PolicyProviderSpecificDetails {
     /**

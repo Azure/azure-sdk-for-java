@@ -54,10 +54,14 @@ class ReplicationEventsImpl extends WrapperImpl<ReplicationEventsInner> implemen
     public Observable<Event> getAsync(String eventName) {
         ReplicationEventsInner client = this.inner();
         return client.getAsync(eventName)
-        .map(new Func1<EventInner, Event>() {
+        .flatMap(new Func1<EventInner, Observable<Event>>() {
             @Override
-            public Event call(EventInner inner) {
-                return wrapModel(inner);
+            public Observable<Event> call(EventInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Event)wrapModel(inner));
+                }
             }
        });
     }

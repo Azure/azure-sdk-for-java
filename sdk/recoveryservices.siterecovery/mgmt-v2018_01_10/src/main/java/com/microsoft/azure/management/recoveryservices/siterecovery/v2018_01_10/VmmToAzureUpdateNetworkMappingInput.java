@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Update network mappings input properties/behavior specific to vmm to azure.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = VmmToAzureUpdateNetworkMappingInput.class)
 @JsonTypeName("VmmToAzure")
 public class VmmToAzureUpdateNetworkMappingInput extends FabricSpecificUpdateNetworkMappingInput {
 }
