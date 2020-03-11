@@ -106,13 +106,13 @@ class ApplicationGatewaysImpl extends GroupableResourcesCoreImpl<ApplicationGate
     @Override
     public PagedList<ApplicationGateway> list() {
         ApplicationGatewaysInner client = this.inner();
-        return this.wrapList(client.listAll());
+        return this.wrapList(client.list());
     }
 
     @Override
     public Observable<ApplicationGateway> listAsync() {
         ApplicationGatewaysInner client = this.inner();
-        return client.listAllAsync()
+        return client.listAsync()
         .flatMapIterable(new Func1<Page<ApplicationGatewayInner>, Iterable<ApplicationGatewayInner>>() {
             @Override
             public Iterable<ApplicationGatewayInner> call(Page<ApplicationGatewayInner> page) {
