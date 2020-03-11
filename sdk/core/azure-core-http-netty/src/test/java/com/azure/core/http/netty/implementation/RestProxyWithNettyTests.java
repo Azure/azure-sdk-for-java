@@ -17,15 +17,12 @@ public class RestProxyWithNettyTests extends RestProxyTests {
     @BeforeAll
     public static void getWireMockServer() {
         server = RestProxyTestsWireMockServer.getRestProxyTestsServer();
-
-        if (!server.isRunning()) {
-            server.start();
-        }
+        server.start();
     }
 
     @AfterAll
     public static void shutdownWireMockServer() {
-        if (server.isRunning()) {
+        if (server != null) {
             server.shutdown();
         }
     }
