@@ -1,5 +1,9 @@
 # Release History
 
+## 1.0.4 (2020-03-10)
+- Upgrade `azure-core` dependency to 1.0.4
+
+
 ## 1.0.3 (2020-01-013)
 - Support datetime format `M/d/yyyy K:mm:ss a XXX` for token `expires_on` property on Windows App Services.
 
