@@ -14,7 +14,7 @@ import java.util.Objects;
 /**
  * Policy that adds the Cognitive Search Service api-key into the request's Authorization header.
  */
-public class SearchApiKeyPipelinePolicy implements HttpPipelinePolicy {
+public final class SearchApiKeyPipelinePolicy implements HttpPipelinePolicy {
     private static final String API_KEY = "api-key";
 
     private final SearchApiKeyCredential apiKey;

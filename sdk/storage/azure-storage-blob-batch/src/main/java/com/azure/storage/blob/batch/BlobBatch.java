@@ -21,12 +21,13 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -290,19 +291,27 @@ public final class BlobBatch {
         // Begin a new batch.
         batchOperationQueue = new ConcurrentLinkedDeque<>();
 
-        return Flux.generate(sink -> {
-            if (operations.isEmpty()) {
-                operationInfo.finalizeBatchOperations();
-                sink.complete();
-            } else {
-                BlobBatchOperation<?> batchOperation = operations.pop();
-                sink.next(batchOperation.getResponse()
-                    .subscriberContext(Context.of(BATCH_REQUEST_URL_PATH, batchOperation.getRequestUrlPath(),
-                        BATCH_OPERATION_RESPONSE, batchOperation.getBatchOperationResponse(),
-                        BATCH_OPERATION_INFO, operationInfo))
-                    .subscribe());
-            }
-        }).then(Mono.just(operationInfo));
+        List<Mono<? extends Response<?>>> batchOperationResponses = new ArrayList<>();
+        while (!operations.isEmpty()) {
+            BlobBatchOperation<?> batchOperation = operations.pop();
+
+            batchOperationResponses.add(batchOperation.getResponse()
+                .subscriberContext(Context.of(BATCH_REQUEST_URL_PATH, batchOperation.getRequestUrlPath(),
+                    BATCH_OPERATION_RESPONSE, batchOperation.getBatchOperationResponse(),
+                    BATCH_OPERATION_INFO, operationInfo)));
+        }
+
+        /*
+         * Mono.when is more robust and safer to use than the previous implementation, using Flux.generate, as it is
+         * fulfilled/complete once all publishers comprising it are completed whereas Flux.generate will complete once
+         * the sink completes. Certain authorization methods, such as AAD, may have deferred processing where the sink
+         * would trigger completion before the request bodies are added into the batch, leading to a state where the
+         * request would believe it had a different size than it actually had, Mono.when bypasses this issue as it must
+         * wait until the deferred processing has completed to trigger the `thenReturn` operator.
+         */
+        return Mono.when(batchOperationResponses)
+            .doOnSuccess(ignored -> operationInfo.finalizeBatchOperations())
+            .thenReturn(operationInfo);
     }
 
     /*

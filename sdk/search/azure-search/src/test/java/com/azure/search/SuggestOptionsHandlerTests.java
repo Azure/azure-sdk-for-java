@@ -3,6 +3,7 @@
 
 package com.azure.search;
 
+import com.azure.search.implementation.util.SuggestOptionsHandler;
 import com.azure.search.models.SuggestOptions;
 import org.junit.jupiter.api.Test;
 

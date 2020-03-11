@@ -564,6 +564,17 @@ public class CertificateClientTest extends CertificateClientTestBase {
     }
 
     @Test
+    public void importPemCertificate() throws IOException {
+        importPemCertificateRunner((importCertificateOptions) -> {
+            KeyVaultCertificateWithPolicy importedCertificate = client.importCertificate(importCertificateOptions);
+            assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
+            assertEquals(CertificateContentType.PEM, importedCertificate.getPolicy().getContentType());
+
+            deleteAndPurgeCertificate(importCertificateOptions.getName());
+        });
+    }
+
+    @Test
     public void mergeCertificateNotFound() {
         assertRestException(() -> client.mergeCertificate(new MergeCertificateOptions(generateResourceId("testCert16"), Arrays.asList("test".getBytes()))),
             HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);

@@ -7,8 +7,11 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.models.CosmosError;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,7 +72,7 @@ public class CosmosClientException extends RuntimeException {
     CosmosClientException(int statusCode, String errorMessage) {
         this(statusCode, errorMessage, null, null);
         this.cosmosError = new CosmosError();
-        cosmosError.set(Constants.Properties.MESSAGE, errorMessage);
+        ModelBridgeInternal.setProperty(cosmosError, Constants.Properties.MESSAGE, errorMessage);
     }
 
     /**
@@ -191,13 +194,13 @@ public class CosmosClientException extends RuntimeException {
     }
 
     /**
-     * Gets the recommended time interval after which the client can retry failed
+     * Gets the recommended time duration after which the client can retry failed
      * requests
      *
-     * @return the recommended time interval after which the client can retry failed
+     * @return the recommended time duration after which the client can retry failed
      * requests.
      */
-    public long getRetryAfterInMilliseconds() {
+    public Duration getRetryAfterDuration() {
         long retryIntervalInMilliseconds = 0;
 
         if (this.responseHeaders != null) {
@@ -215,7 +218,7 @@ public class CosmosClientException extends RuntimeException {
         //
         // In the absence of explicit guidance from the backend, don't introduce
         // any unilateral retry delays here.
-        return retryIntervalInMilliseconds;
+        return Duration.ofMillis(retryIntervalInMilliseconds);
     }
 
     /**

@@ -5,11 +5,8 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 
@@ -18,11 +15,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously recognize the entities of a batch input text.
+ * Sample demonstrates how to asynchronously recognize the entities of documents.
  */
 public class RecognizeEntitiesBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to recognize the entities of a batch input text.
+     * Main method to invoke this demo about how to recognize the entities of documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -40,43 +37,33 @@ public class RecognizeEntitiesBatchDocumentsAsync {
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         // Recognizing batch entities
-        client.recognizeEntitiesBatchWithResponse(inputs, requestOptions).subscribe(
-            result -> {
-                final DocumentResultCollection<RecognizeEntitiesResult> recognizedBatchResult = result.getValue();
-                System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
+        client.recognizeEntitiesBatch(inputs, requestOptions).byPage().subscribe(
+            pagedResponse -> {
+                System.out.printf("Model version: %s%n", pagedResponse.getModelVersion());
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = recognizedBatchResult.getStatistics();
-                System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getDocumentCount(),
-                    batchStatistics.getInvalidDocumentCount(),
-                    batchStatistics.getTransactionCount(),
-                    batchStatistics.getValidDocumentCount());
+                final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
+                System.out.printf("A batch of documents statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
+                    batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                // Recognized entities for each of document from a batch of documents
-                for (RecognizeEntitiesResult recognizeEntitiesResult : recognizedBatchResult) {
-                    System.out.printf("Document ID: %s%n", recognizeEntitiesResult.getId());
-                    // Erroneous document
-                    if (recognizeEntitiesResult.isError()) {
-                        System.out.printf("Cannot recognize entities. Error: %s%n", recognizeEntitiesResult.getError().getMessage());
-                        continue;
+                // Recognized entities for each of documents from a batch of documents
+                pagedResponse.getElements().forEach(entitiesResult -> {
+                    System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
+                    if (entitiesResult.isError()) {
+                        // Erroneous document
+                        System.out.printf("Cannot recognize entities. Error: %s%n", entitiesResult.getError().getMessage());
+                    } else {
+                        // Valid document
+                        entitiesResult.getEntities().forEach(entity -> System.out.printf(
+                            "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
                     }
-                    // Valid document
-                    for (CategorizedEntity entity : recognizeEntitiesResult.getEntities()) {
-                        System.out.printf("Recognized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                            entity.getText(),
-                            entity.getCategory(),
-                            entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                            entity.getOffset(),
-                            entity.getLength(),
-                            entity.getScore());
-                    }
-                }
+                });
             },
-            error -> System.err.println("There was an error recognizing entities of the text inputs." + error),
+            error -> System.err.println("There was an error recognizing entities of the documents." + error),
             () -> System.out.println("Batch of entities recognized."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

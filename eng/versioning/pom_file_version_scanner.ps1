@@ -201,10 +201,10 @@ function Test-Dependency-Tag-And-Version {
             }
             elseif ($depType -eq $DependencyTypeCurrent) 
             {
-                # Verify that none of the 'current' dependencies are using a groupId that starts with 'unreleased_'
-                if ($depKey.StartsWith('unreleased_'))
+                # Verify that none of the 'current' dependencies are using a groupId that starts with 'unreleased_' or 'beta_'
+                if ($depKey.StartsWith('unreleased_') -or $depKey.StartsWith('beta_'))
                 {
-                    return "Error: $($versionUpdateString) is using an unreleased_ dependency and trying to set current value. Only dependency versions can be set with an unreleased dependency."
+                    return "Error: $($versionUpdateString) is using an unreleased_ or beta_ dependency and trying to set current value. Only dependency versions can be set with an unreleased or beta dependency."
                 }
                 if ($versionString -ne $libHash[$depKey].curVer)
                 {

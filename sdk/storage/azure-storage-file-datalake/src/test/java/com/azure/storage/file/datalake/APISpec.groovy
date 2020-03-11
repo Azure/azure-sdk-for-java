@@ -662,8 +662,8 @@ class APISpec extends Specification {
         for (PathAccessControlEntry e : acl) {
             if (e.isInDefaultScope() == entry.isInDefaultScope() &&
                 e.getAccessControlType().equals(entry.getAccessControlType()) &&
-                (e.getEntityID() == null && entry.getEntityID() == null ||
-                    e.getEntityID().equals(entry.getEntityID())) &&
+                (e.getEntityId() == null && entry.getEntityId() == null ||
+                    e.getEntityId().equals(entry.getEntityId())) &&
                 e.getPermissions().equals(entry.getPermissions())) {
                 return true
             }

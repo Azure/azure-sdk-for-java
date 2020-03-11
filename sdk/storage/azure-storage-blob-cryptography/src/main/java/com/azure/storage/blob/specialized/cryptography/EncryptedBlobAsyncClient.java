@@ -15,6 +15,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
@@ -93,13 +94,16 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param containerName The container name.
      * @param blobName The blob name.
      * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
      * @param key The key used to encrypt and decrypt data.
      * @param keyWrapAlgorithm The algorithm used to wrap/unwrap the key during encryption.
      */
     EncryptedBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
-        String containerName, String blobName, String snapshot, AsyncKeyEncryptionKey key, String keyWrapAlgorithm) {
-        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, null /*cpk*/,
-            null /*encryption scope*/);
+        String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+        AsyncKeyEncryptionKey key, String keyWrapAlgorithm) {
+        super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
+            null);
 
         this.keyWrapper = key;
         this.keyWrapAlgorithm = keyWrapAlgorithm;

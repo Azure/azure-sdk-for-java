@@ -17,38 +17,44 @@ public final class ServiceCounters {
     /*
      * Total number of documents across all indexes in the service.
      */
-    @JsonProperty(value = "documentCount")
+    @JsonProperty(value = "documentCount", required = true)
     private ResourceCounter documentCounter;
 
     /*
      * Total number of indexes.
      */
-    @JsonProperty(value = "indexesCount")
+    @JsonProperty(value = "indexesCount", required = true)
     private ResourceCounter indexCounter;
 
     /*
      * Total number of indexers.
      */
-    @JsonProperty(value = "indexersCount")
+    @JsonProperty(value = "indexersCount", required = true)
     private ResourceCounter indexerCounter;
 
     /*
      * Total number of data sources.
      */
-    @JsonProperty(value = "dataSourcesCount")
+    @JsonProperty(value = "dataSourcesCount", required = true)
     private ResourceCounter dataSourceCounter;
 
     /*
      * Total size of used storage in bytes.
      */
-    @JsonProperty(value = "storageSize")
+    @JsonProperty(value = "storageSize", required = true)
     private ResourceCounter storageSizeCounter;
 
     /*
      * Total number of synonym maps.
      */
-    @JsonProperty(value = "synonymMaps")
+    @JsonProperty(value = "synonymMaps", required = true)
     private ResourceCounter synonymMapCounter;
+
+    /*
+     * Total number of skillsets.
+     */
+    @JsonProperty(value = "skillsetCount", required = true)
+    private ResourceCounter skillsetCounter;
 
     /**
      * Get the documentCounter property: Total number of documents across all
@@ -171,6 +177,26 @@ public final class ServiceCounters {
      */
     public ServiceCounters setSynonymMapCounter(ResourceCounter synonymMapCounter) {
         this.synonymMapCounter = synonymMapCounter;
+        return this;
+    }
+
+    /**
+     * Get the skillsetCounter property: Total number of skillsets.
+     *
+     * @return the skillsetCounter value.
+     */
+    public ResourceCounter getSkillsetCounter() {
+        return this.skillsetCounter;
+    }
+
+    /**
+     * Set the skillsetCounter property: Total number of skillsets.
+     *
+     * @param skillsetCounter the skillsetCounter value to set.
+     * @return the ServiceCounters object itself.
+     */
+    public ServiceCounters setSkillsetCounter(ResourceCounter skillsetCounter) {
+        this.skillsetCounter = skillsetCounter;
         return this;
     }
 }
