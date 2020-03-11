@@ -15,14 +15,14 @@ import com.microsoft.azure.management.appservice.v2016_08_01.BuiltInAuthenticati
 import com.microsoft.azure.management.appservice.v2016_08_01.UnauthenticatedClientAction;
 
 class SiteAuthSettingsImpl extends WrapperImpl<SiteAuthSettingsInner> implements SiteAuthSettings {
-    private final AppServiceManager manager;
-    SiteAuthSettingsImpl(SiteAuthSettingsInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    SiteAuthSettingsImpl(SiteAuthSettingsInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

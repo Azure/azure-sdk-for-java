@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.Map;
 
 class StringDictionaryImpl extends WrapperImpl<StringDictionaryInner> implements StringDictionary {
-    private final AppServiceManager manager;
-    StringDictionaryImpl(StringDictionaryInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    StringDictionaryImpl(StringDictionaryInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.appservice.v2016_08_01.OperationStatus;
 
 class MigrateMySqlStatusImpl extends WrapperImpl<MigrateMySqlStatusInner> implements MigrateMySqlStatus {
-    private final AppServiceManager manager;
-    MigrateMySqlStatusImpl(MigrateMySqlStatusInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    MigrateMySqlStatusImpl(MigrateMySqlStatusInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

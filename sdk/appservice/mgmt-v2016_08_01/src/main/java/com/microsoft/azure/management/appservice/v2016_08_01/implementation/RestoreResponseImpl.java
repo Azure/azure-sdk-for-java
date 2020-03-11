@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2016_08_01.RestoreResponse;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class RestoreResponseImpl extends WrapperImpl<RestoreResponseInner> implements RestoreResponse {
-    private final AppServiceManager manager;
-    RestoreResponseImpl(RestoreResponseInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    RestoreResponseImpl(RestoreResponseInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
