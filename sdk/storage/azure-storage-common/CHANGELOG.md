@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.5.0 (2020-03-11)
-- Added Buffered Upload utility classes. 
+- Added types that enabled buffered upload in datalake.
 
 ## 12.4.0 (2020-02-12)
 
