@@ -36,8 +36,11 @@ import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.FileSystemLoopException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.cert.CertificateException;
@@ -406,7 +409,7 @@ public abstract class CertificateClientTestBase extends TestBase {
 
     void importPemCertificateRunner(Consumer<ImportCertificateOptions> testRunner) throws IOException {
 
-        byte[] certificateContent = readCertificate("certificate.pem");
+        byte[] certificateContent = readCertificate("pemCert.pem");
 
         String certificateName = generateResourceId("importCertPem");
         HashMap<String, String> tags = new HashMap<>();
@@ -421,10 +424,17 @@ public abstract class CertificateClientTestBase extends TestBase {
 
     private byte[] readCertificate(String certName) throws IOException {
         String pemPath = getClass().getClassLoader().getResource(certName).getPath();
-        if (pemPath.contains(":")) {
-            pemPath = pemPath.substring(1);
+        String pemCert = "";
+        BufferedReader br = new BufferedReader(new FileReader(pemPath));
+        try {
+            String line;
+            while ((line = br.readLine()) != null) {
+                pemCert += line + "\n";
+            }
+        } finally {
+            br.close();
         }
-        return Files.readAllBytes(Paths.get(pemPath));
+        return pemCert.getBytes();
     }
 
     @Test
