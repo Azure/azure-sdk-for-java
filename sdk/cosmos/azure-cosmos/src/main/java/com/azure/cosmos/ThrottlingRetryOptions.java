@@ -3,12 +3,14 @@
 
 package com.azure.cosmos;
 
+import java.time.Duration;
+
 /**
  * Encapsulates retry options in the Azure Cosmos DB database service.
  */
-public class ThrottlingRetryOptions {
+public final class ThrottlingRetryOptions {
     private int maxRetryAttemptsOnThrottledRequests;
-    private int maxRetryWaitTimeInSeconds;
+    private Duration maxRetryWaitTime;
 
     /**
      * Creates a new instance of the RetryOptions class and initializes all
@@ -16,7 +18,7 @@ public class ThrottlingRetryOptions {
      */
     public ThrottlingRetryOptions() {
         this.maxRetryAttemptsOnThrottledRequests = 9;
-        this.maxRetryWaitTimeInSeconds = 30;
+        this.maxRetryWaitTime = Duration.ofSeconds(30);
     }
 
     /**
@@ -58,12 +60,12 @@ public class ThrottlingRetryOptions {
     }
 
     /**
-     * Gets the maximum retry time in seconds.
+     * Gets the maximum retry duration.
      *
-     * @return the maximum retry time in seconds.
+     * @return the maximum retry duration.
      */
-    public int getMaxRetryWaitTimeInSeconds() {
-        return this.maxRetryWaitTimeInSeconds;
+    public Duration getMaxRetryWaitTime() {
+        return this.maxRetryWaitTime;
     }
 
     /**
@@ -78,17 +80,17 @@ public class ThrottlingRetryOptions {
      * <p>
      * The default value is 30 seconds.
      *
-     * @param maxRetryWaitTimeInSeconds the maximum number of seconds a request will be retried.
+     * @param maxRetryWaitTime the maximum duration a request will be retried.
      * @return the RetryOptions.
      * @throws IllegalArgumentException thrown if an error occurs
      */
-    public ThrottlingRetryOptions setMaxRetryWaitTimeInSeconds(int maxRetryWaitTimeInSeconds) {
-        if (maxRetryWaitTimeInSeconds < 0 || maxRetryWaitTimeInSeconds > Integer.MAX_VALUE / 1000) {
+    public ThrottlingRetryOptions setMaxRetryWaitTime(Duration maxRetryWaitTime) {
+        if (maxRetryWaitTime.getSeconds() < 0 || maxRetryWaitTime.getSeconds() > Integer.MAX_VALUE / 1000) {
             throw new IllegalArgumentException(
                 "value must be a positive integer between the range of 0 to " + Integer.MAX_VALUE / 1000);
         }
 
-        this.maxRetryWaitTimeInSeconds = maxRetryWaitTimeInSeconds;
+        this.maxRetryWaitTime = maxRetryWaitTime;
         return this;
     }
 
@@ -96,7 +98,7 @@ public class ThrottlingRetryOptions {
     public String toString() {
         return "RetryOptions{"
                    + "maxRetryAttemptsOnThrottledRequests=" + maxRetryAttemptsOnThrottledRequests
-                   + ", maxRetryWaitTimeInSeconds=" + maxRetryWaitTimeInSeconds
+                   + ", maxRetryWaitTime=" + maxRetryWaitTime
                    + '}';
     }
 }

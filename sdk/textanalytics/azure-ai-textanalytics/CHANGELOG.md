@@ -1,7 +1,21 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2020-03-10)
+**New features**
+- Introduced `TextAnalyticsPagedFlux`, `TextAnalyticsPagedIterable`, and `TextAnalyticsPagedResponse` type. Moved `modelVersion` amd `TextDocumentBatchStatistics` into `TextAnalyticsPagedResponse`. All collection APIs are return `TextAnalyticsPagedFlux` and `TextAnalyticsPagedIterable` in the asynchronous and synchronous client, respectively. So `DocumentResultCollection` is no longer required. Most of existing API surface are changes. Please check up `TextAnalyticsAsyncClient` and `TextAnalyticsClient` for more detail.
+- Introduced `EntityCategory` class to support major entity categories that the service supported.
+- Added `getDefaultCountryHint()`, `getDefaultLanguage()` and `getServiceVersion()` to `TextAnalyticsClient`
 
+**Breaking changes**
+- Supported `Iterable<T>` instead of `List<T>` text inputs.
+- Default language and country hint can only be assigned value when building a Text Analytics client.
+- Renamed `showStatistics()` to `isIncludeStatistics()` in the `TextAnalyticsRequestOptions`.
+- Renamed `getErrorCodeValue()` to `getCode()` in the `TextAnalyticsException`.
+- Renamed `getOffset()`, `getLength()` and `getScore()` to `getGraphemeOffset()`, `getGraphemeLength` and `getConfidenceScore()`in `CategorizedEntity`, `LinkedEntityMatch`, `PiiEntity`.
+- Renamed `SentimentLabel` to `TextSentiment` class.
+- Renamed `SentimentScorePerLabel` to `SentimentConfidenceScores` class.
+- Renamed `getCharacterCount()` to `getGraphemeCount()` in the `TextDocumentStatistics`.
+- Removed `InnerError`, `DocumentResultCollection` and `TextAnalyticsClientOptions` class.
 
 ## 1.0.0-beta.2 (2020-02-12)
 

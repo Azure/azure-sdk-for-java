@@ -4,9 +4,9 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseForTest;
@@ -16,12 +16,14 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 public class Utils {
     public static AsyncDocumentClient housekeepingClient() {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
         options.setMaxRetryAttemptsOnThrottledRequests(100);
-        options.setMaxRetryWaitTimeInSeconds(60);
+        options.setMaxRetryWaitTime(Duration.ofSeconds(60));
         connectionPolicy.setThrottlingRetryOptions(options);
         return new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)

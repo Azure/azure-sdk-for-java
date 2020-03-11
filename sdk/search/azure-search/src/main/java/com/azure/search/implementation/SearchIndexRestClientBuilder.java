@@ -36,34 +36,18 @@ public final class SearchIndexRestClientBuilder {
     }
 
     /*
-     * The name of the search service.
+     * The endpoint URL of the search service.
      */
-    private String searchServiceName;
+    private String endpoint;
 
     /**
-     * Sets The name of the search service.
+     * Sets The endpoint URL of the search service.
      *
-     * @param searchServiceName the searchServiceName value.
+     * @param endpoint the endpoint value.
      * @return the SearchIndexRestClientBuilder.
      */
-    public SearchIndexRestClientBuilder searchServiceName(String searchServiceName) {
-        this.searchServiceName = searchServiceName;
-        return this;
-    }
-
-    /*
-     * The DNS suffix of the search service. The default is search.windows.net.
-     */
-    private String searchDnsSuffix;
-
-    /**
-     * Sets The DNS suffix of the search service. The default is search.windows.net.
-     *
-     * @param searchDnsSuffix the searchDnsSuffix value.
-     * @return the SearchIndexRestClientBuilder.
-     */
-    public SearchIndexRestClientBuilder searchDnsSuffix(String searchDnsSuffix) {
-        this.searchDnsSuffix = searchDnsSuffix;
+    public SearchIndexRestClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -128,13 +112,8 @@ public final class SearchIndexRestClientBuilder {
         if (this.apiVersion != null) {
             client.setApiVersion(this.apiVersion);
         }
-        if (this.searchServiceName != null) {
-            client.setSearchServiceName(this.searchServiceName);
-        }
-        if (this.searchDnsSuffix != null) {
-            client.setSearchDnsSuffix(this.searchDnsSuffix);
-        } else {
-            client.setSearchDnsSuffix("search.windows.net");
+        if (this.endpoint != null) {
+            client.setEndpoint(this.endpoint);
         }
         if (this.indexName != null) {
             client.setIndexName(this.indexName);

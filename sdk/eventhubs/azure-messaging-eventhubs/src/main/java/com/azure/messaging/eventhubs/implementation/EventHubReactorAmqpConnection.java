@@ -57,7 +57,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
      * @param messageSerializer Serializes and deserializes proton-j messages.
      */
-    public EventHubReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
+    public EventHubReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions, String eventHubName,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
         String clientVersion) {
@@ -74,7 +74,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
             Mono.fromCallable(() -> {
                 return (EventHubManagementNode) new ManagementChannel(
                     createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
-                    connectionOptions.getEntityPath(), connectionOptions.getTokenCredential(),
+                    eventHubName, connectionOptions.getTokenCredential(),
                     this.tokenManagerProvider, this.messageSerializer, connectionOptions.getScheduler());
             }))
             .cache();

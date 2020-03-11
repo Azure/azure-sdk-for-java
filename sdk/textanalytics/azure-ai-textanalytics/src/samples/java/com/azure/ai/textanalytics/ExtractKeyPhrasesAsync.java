@@ -8,11 +8,11 @@ import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously extract the key phrases of an input text.
+ * Sample demonstrates how to asynchronously extract the key phrases of document.
  */
 public class ExtractKeyPhrasesAsync {
     /**
-     * Main method to invoke this demo about how to extract the key phrases of an input text.
+     * Main method to invoke this demo about how to extract the key phrases of document.
      *
      * @param args Unused arguments to the program.
      */

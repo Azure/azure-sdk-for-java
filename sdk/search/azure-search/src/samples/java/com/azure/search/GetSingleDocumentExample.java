@@ -28,7 +28,7 @@ public class GetSingleDocumentExample {
             .buildClient();
 
         // Retrieve a single document by key
-        Document document = client.getDocument("3");
+        SearchDocument document = client.getDocument("3");
 
         for (String key : document.keySet()) {
             System.out.println(key + ":" + document.get(key));

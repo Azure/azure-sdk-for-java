@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import java.util.Locale;
 
 /**
- * The DetectLanguageInput model.
+ * The {@link DetectLanguageInput} model.
  */
 @Immutable
 public final class DetectLanguageInput {
@@ -30,8 +30,8 @@ public final class DetectLanguageInput {
     /**
      * Creates an input for detect language that will takes {@code id} and {@code text} as required inputs.
      *
-     * @param id unique, non-empty document identifier
-     * @param text the text property
+     * @param id Unique, non-empty document identifier.
+     * @param text The text property.
      */
     public DetectLanguageInput(String id, String text) {
         this(id, text, null);
@@ -40,9 +40,11 @@ public final class DetectLanguageInput {
     /**
      * Creates an input for detect language that will takes {@code id}, {@code text} and {@code countryHint}.
      *
-     * @param id unique, non-empty document identifier
-     * @param text the text property
-     * @param countryHint the country hint
+     * @param id Unique, non-empty document identifier.
+     * @param text The text property.
+     * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
+     * specified. To remove this behavior you can reset this parameter by setting this value to empty string
+     * {@code countryHint} = "" or "none".
      */
     public DetectLanguageInput(String id, String text, String countryHint) {
         this.id = id;
@@ -53,7 +55,7 @@ public final class DetectLanguageInput {
     /**
      * Get the id property: Unique, non-empty document identifier.
      *
-     * @return the id value.
+     * @return The id value.
      */
     public String getId() {
         return this.id;
@@ -62,16 +64,16 @@ public final class DetectLanguageInput {
     /**
      * Get the text property: The text property.
      *
-     * @return the text value.
+     * @return The text value.
      */
     public String getText() {
         return this.text;
     }
 
     /**
-     * Get the countryHint property: The countryHint property.
+     * Get the countryHint property: The {@code countryHint} property.
      *
-     * @return the countryHint value.
+     * @return The {@code countryHint} value.
      */
     public String getCountryHint() {
         return this.countryHint;

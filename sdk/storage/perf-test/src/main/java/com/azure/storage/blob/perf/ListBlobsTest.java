@@ -25,7 +25,7 @@ public class ListBlobsTest extends ContainerTest<CountOptions> {
 
     @Override
     public void run() {
-        blobContainerClient.listBlobs().forEach(b -> {});
+        blobContainerClient.listBlobs().forEach(b -> { });
     }
 
     @Override

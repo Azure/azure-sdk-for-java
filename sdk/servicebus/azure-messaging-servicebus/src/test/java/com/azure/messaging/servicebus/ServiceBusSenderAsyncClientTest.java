@@ -100,7 +100,7 @@ public class ServiceBusSenderAsyncClientTest {
         MockitoAnnotations.initMocks(this);
 
         tracerProvider = new TracerProvider(Collections.emptyList());
-        connectionOptions = new ConnectionOptions(NAMESPACE, ENTITY_NAME, tokenCredential,
+        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
 
@@ -109,7 +109,7 @@ public class ServiceBusSenderAsyncClientTest {
 
         connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
             new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getEntityPath(), connectionOptions.getRetry()));
+                ENTITY_NAME, connectionOptions.getRetry()));
         sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, connectionProcessor, retryOptions,
             tracerProvider, messageSerializer);
 

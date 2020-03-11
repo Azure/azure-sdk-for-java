@@ -6,4 +6,3 @@ jobs:
       ServiceDirectory: textanalytics
       EnvVars:
         AZURE_TEST_MODE: RECORD
-        AZURE_LOG_LEVEL: 3

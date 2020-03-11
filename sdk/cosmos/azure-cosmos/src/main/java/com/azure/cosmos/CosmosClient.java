@@ -4,6 +4,13 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -14,7 +21,7 @@ import java.io.Closeable;
  * SyncClient is used to perform operations in a synchronous way
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
-public class CosmosClient implements Closeable {
+public final class CosmosClient implements Closeable {
     private final CosmosAsyncClient asyncClientWrapper;
 
     CosmosClient(CosmosClientBuilder builder) {
@@ -192,7 +199,7 @@ public class CosmosClient implements Closeable {
     }
 
     CosmosDatabaseResponse convertResponse(CosmosAsyncDatabaseResponse response) {
-        return new CosmosDatabaseResponse(response, this);
+        return ModelBridgeInternal.createCosmosDatabaseResponse(response, this);
     }
 
     CosmosAsyncClient asyncClient() {
