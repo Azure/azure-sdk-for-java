@@ -70,6 +70,7 @@ import com.azure.search.models.UaxUrlEmailTokenizer;
 import com.azure.search.models.UniqueTokenFilter;
 import com.azure.search.models.WordDelimiterTokenFilter;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import java.lang.reflect.Array;
 import org.junit.jupiter.api.Test;
 import org.unitils.reflectionassert.ReflectionAssert;
 
@@ -165,7 +166,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             new Field()
                 .setName("field")
                 .setType(DataType.EDM_STRING)
-                .setSearchAnalyzer(AnalyzerName.EN_LUCENE.toString());
+                .setSearchAnalyzer(AnalyzerName.EN_LUCENE);
         } catch (Exception ex) {
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals("Only non-language analyzer can be used as search analyzer.", ex.getMessage());
@@ -174,7 +175,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             new Field()
                 .setName("field")
                 .setType(DataType.EDM_STRING)
-                .setIndexAnalyzer(AnalyzerName.AR_MICROSOFT.toString());
+                .setIndexAnalyzer(AnalyzerName.AR_MICROSOFT);
         } catch (Exception ex) {
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals("Only non-language analyzer can be used as index analyzer.", ex.getMessage());
@@ -510,8 +511,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 .setName("field" + (fieldNumber++))
                 .setType(fieldType)
                 .setSearchable(true)
-                .setSearchAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i).toString())
-                .setIndexAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i).toString()));
+                .setSearchAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i))
+                .setIndexAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i)));
         }
 
         fields.add(new Field()
@@ -530,11 +531,15 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 .setTokenizer(TokenizerName.LOWERCASE)
                 .setTokenFilters(TokenFilterName.values()
                     .stream()
+                    .map(TokenFilterName::toString)
                     .sorted()
+                    .map(TokenFilterName::fromString)
                     .collect(Collectors.toList()))
                 .setCharFilters(CharFilterName.values()
                     .stream()
+                    .map(CharFilterName::toString)
                     .sorted()
+                    .map(CharFilterName::fromString)
                     .collect(Collectors.toList()))
                 .setName("abc");
 

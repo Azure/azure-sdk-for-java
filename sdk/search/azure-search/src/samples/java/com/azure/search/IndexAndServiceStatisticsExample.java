@@ -170,8 +170,8 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.FALSE)
                     .setSortable(Boolean.FALSE)
                     .setFacetable(Boolean.FALSE)
-                    .setSearchAnalyzer(AnalyzerName.STOP.toString())
-                    .setIndexAnalyzer(AnalyzerName.STOP.toString())
+                    .setSearchAnalyzer(AnalyzerName.STOP)
+                    .setIndexAnalyzer(AnalyzerName.STOP)
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Category")

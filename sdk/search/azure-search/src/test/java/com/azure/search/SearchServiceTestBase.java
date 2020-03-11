@@ -221,8 +221,8 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setName("Description_Custom")
                     .setType(DataType.EDM_STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setSearchAnalyzer(AnalyzerName.STOP.toString())
-                    .setIndexAnalyzer(AnalyzerName.STOP.toString())
+                    .setSearchAnalyzer(AnalyzerName.STOP)
+                    .setIndexAnalyzer(AnalyzerName.STOP)
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Category")
