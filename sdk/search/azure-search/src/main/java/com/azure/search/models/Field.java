@@ -119,9 +119,32 @@ public final class Field {
      * be used only with searchable fields and it can't be set together with
      * either searchAnalyzer or indexAnalyzer. Once the analyzer is chosen, it
      * cannot be changed for the field. Must be null for complex fields.
+     * Possible values include: 'ar.microsoft', 'ar.lucene', 'hy.lucene',
+     * 'bn.microsoft', 'eu.lucene', 'bg.microsoft', 'bg.lucene',
+     * 'ca.microsoft', 'ca.lucene', 'zh-Hans.microsoft', 'zh-Hans.lucene',
+     * 'zh-Hant.microsoft', 'zh-Hant.lucene', 'hr.microsoft', 'cs.microsoft',
+     * 'cs.lucene', 'da.microsoft', 'da.lucene', 'nl.microsoft', 'nl.lucene',
+     * 'en.microsoft', 'en.lucene', 'et.microsoft', 'fi.microsoft',
+     * 'fi.lucene', 'fr.microsoft', 'fr.lucene', 'gl.lucene', 'de.microsoft',
+     * 'de.lucene', 'el.microsoft', 'el.lucene', 'gu.microsoft',
+     * 'he.microsoft', 'hi.microsoft', 'hi.lucene', 'hu.microsoft',
+     * 'hu.lucene', 'is.microsoft', 'id.microsoft', 'id.lucene', 'ga.lucene',
+     * 'it.microsoft', 'it.lucene', 'ja.microsoft', 'ja.lucene',
+     * 'kn.microsoft', 'ko.microsoft', 'ko.lucene', 'lv.microsoft',
+     * 'lv.lucene', 'lt.microsoft', 'ml.microsoft', 'ms.microsoft',
+     * 'mr.microsoft', 'nb.microsoft', 'no.lucene', 'fa.lucene',
+     * 'pl.microsoft', 'pl.lucene', 'pt-BR.microsoft', 'pt-BR.lucene',
+     * 'pt-PT.microsoft', 'pt-PT.lucene', 'pa.microsoft', 'ro.microsoft',
+     * 'ro.lucene', 'ru.microsoft', 'ru.lucene', 'sr-cyrillic.microsoft',
+     * 'sr-latin.microsoft', 'sk.microsoft', 'sl.microsoft', 'es.microsoft',
+     * 'es.lucene', 'sv.microsoft', 'sv.lucene', 'ta.microsoft',
+     * 'te.microsoft', 'th.microsoft', 'th.lucene', 'tr.microsoft',
+     * 'tr.lucene', 'uk.microsoft', 'ur.microsoft', 'vi.microsoft',
+     * 'standard.lucene', 'standardasciifolding.lucene', 'keyword', 'pattern',
+     * 'simple', 'stop', 'whitespace'
      */
     @JsonProperty(value = "analyzer")
-    private String analyzer;
+    private AnalyzerName analyzer;
 
     /*
      * The name of the analyzer used at search time for the field. This option
@@ -434,11 +457,34 @@ public final class Field {
      * the field. This option can be used only with searchable fields and it
      * can't be set together with either searchAnalyzer or indexAnalyzer. Once
      * the analyzer is chosen, it cannot be changed for the field. Must be null
-     * for complex fields.
+     * for complex fields. Possible values include: 'ar.microsoft',
+     * 'ar.lucene', 'hy.lucene', 'bn.microsoft', 'eu.lucene', 'bg.microsoft',
+     * 'bg.lucene', 'ca.microsoft', 'ca.lucene', 'zh-Hans.microsoft',
+     * 'zh-Hans.lucene', 'zh-Hant.microsoft', 'zh-Hant.lucene', 'hr.microsoft',
+     * 'cs.microsoft', 'cs.lucene', 'da.microsoft', 'da.lucene',
+     * 'nl.microsoft', 'nl.lucene', 'en.microsoft', 'en.lucene',
+     * 'et.microsoft', 'fi.microsoft', 'fi.lucene', 'fr.microsoft',
+     * 'fr.lucene', 'gl.lucene', 'de.microsoft', 'de.lucene', 'el.microsoft',
+     * 'el.lucene', 'gu.microsoft', 'he.microsoft', 'hi.microsoft',
+     * 'hi.lucene', 'hu.microsoft', 'hu.lucene', 'is.microsoft',
+     * 'id.microsoft', 'id.lucene', 'ga.lucene', 'it.microsoft', 'it.lucene',
+     * 'ja.microsoft', 'ja.lucene', 'kn.microsoft', 'ko.microsoft',
+     * 'ko.lucene', 'lv.microsoft', 'lv.lucene', 'lt.microsoft',
+     * 'ml.microsoft', 'ms.microsoft', 'mr.microsoft', 'nb.microsoft',
+     * 'no.lucene', 'fa.lucene', 'pl.microsoft', 'pl.lucene',
+     * 'pt-BR.microsoft', 'pt-BR.lucene', 'pt-PT.microsoft', 'pt-PT.lucene',
+     * 'pa.microsoft', 'ro.microsoft', 'ro.lucene', 'ru.microsoft',
+     * 'ru.lucene', 'sr-cyrillic.microsoft', 'sr-latin.microsoft',
+     * 'sk.microsoft', 'sl.microsoft', 'es.microsoft', 'es.lucene',
+     * 'sv.microsoft', 'sv.lucene', 'ta.microsoft', 'te.microsoft',
+     * 'th.microsoft', 'th.lucene', 'tr.microsoft', 'tr.lucene',
+     * 'uk.microsoft', 'ur.microsoft', 'vi.microsoft', 'standard.lucene',
+     * 'standardasciifolding.lucene', 'keyword', 'pattern', 'simple', 'stop',
+     * 'whitespace'.
      *
      * @return the analyzer value.
      */
-    public String getAnalyzer() {
+    public AnalyzerName getAnalyzer() {
         return this.analyzer;
     }
 
@@ -447,12 +493,35 @@ public final class Field {
      * the field. This option can be used only with searchable fields and it
      * can't be set together with either searchAnalyzer or indexAnalyzer. Once
      * the analyzer is chosen, it cannot be changed for the field. Must be null
-     * for complex fields.
+     * for complex fields. Possible values include: 'ar.microsoft',
+     * 'ar.lucene', 'hy.lucene', 'bn.microsoft', 'eu.lucene', 'bg.microsoft',
+     * 'bg.lucene', 'ca.microsoft', 'ca.lucene', 'zh-Hans.microsoft',
+     * 'zh-Hans.lucene', 'zh-Hant.microsoft', 'zh-Hant.lucene', 'hr.microsoft',
+     * 'cs.microsoft', 'cs.lucene', 'da.microsoft', 'da.lucene',
+     * 'nl.microsoft', 'nl.lucene', 'en.microsoft', 'en.lucene',
+     * 'et.microsoft', 'fi.microsoft', 'fi.lucene', 'fr.microsoft',
+     * 'fr.lucene', 'gl.lucene', 'de.microsoft', 'de.lucene', 'el.microsoft',
+     * 'el.lucene', 'gu.microsoft', 'he.microsoft', 'hi.microsoft',
+     * 'hi.lucene', 'hu.microsoft', 'hu.lucene', 'is.microsoft',
+     * 'id.microsoft', 'id.lucene', 'ga.lucene', 'it.microsoft', 'it.lucene',
+     * 'ja.microsoft', 'ja.lucene', 'kn.microsoft', 'ko.microsoft',
+     * 'ko.lucene', 'lv.microsoft', 'lv.lucene', 'lt.microsoft',
+     * 'ml.microsoft', 'ms.microsoft', 'mr.microsoft', 'nb.microsoft',
+     * 'no.lucene', 'fa.lucene', 'pl.microsoft', 'pl.lucene',
+     * 'pt-BR.microsoft', 'pt-BR.lucene', 'pt-PT.microsoft', 'pt-PT.lucene',
+     * 'pa.microsoft', 'ro.microsoft', 'ro.lucene', 'ru.microsoft',
+     * 'ru.lucene', 'sr-cyrillic.microsoft', 'sr-latin.microsoft',
+     * 'sk.microsoft', 'sl.microsoft', 'es.microsoft', 'es.lucene',
+     * 'sv.microsoft', 'sv.lucene', 'ta.microsoft', 'te.microsoft',
+     * 'th.microsoft', 'th.lucene', 'tr.microsoft', 'tr.lucene',
+     * 'uk.microsoft', 'ur.microsoft', 'vi.microsoft', 'standard.lucene',
+     * 'standardasciifolding.lucene', 'keyword', 'pattern', 'simple', 'stop',
+     * 'whitespace'.
      *
      * @param analyzer the analyzer value to set.
      * @return the Field object itself.
      */
-    public Field setAnalyzer(String analyzer) {
+    public Field setAnalyzer(AnalyzerName analyzer) {
         this.analyzer = analyzer;
         return this;
     }
