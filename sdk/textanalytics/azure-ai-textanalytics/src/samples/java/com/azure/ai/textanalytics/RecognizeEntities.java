@@ -3,15 +3,14 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
- * Sample demonstrates how to recognize the entities of an input text.
+ * Sample demonstrates how to recognize the entities of document.
  */
 public class RecognizeEntities {
     /**
-     * Main method to invoke this demo about how to recognize the entities of an input text.
+     * Main method to invoke this demo about how to recognize the entities of document.
      *
      * @param args Unused arguments to the program.
      */
@@ -25,15 +24,8 @@ public class RecognizeEntities {
         // The text that needs be analyzed.
         String text = "Satya Nadella is the CEO of Microsoft";
 
-        for (CategorizedEntity entity : client.recognizeEntities(text)) {
-            System.out.printf(
-                "Recognized entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                entity.getText(),
-                entity.getCategory(),
-                entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                entity.getOffset(),
-                entity.getLength(),
-                entity.getScore());
-        }
+        client.recognizeEntities(text).forEach(entity -> System.out.printf(
+            "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
+            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
     }
 }

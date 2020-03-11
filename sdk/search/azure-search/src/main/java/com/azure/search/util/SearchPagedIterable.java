@@ -3,6 +3,7 @@
 
 package com.azure.search.util;
 
+import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.search.models.SearchRequest;
 import com.azure.search.models.SearchResult;
 

@@ -17,7 +17,7 @@ public enum ConsistencyLevel {
     /**
      * STRONG Consistency guarantees that read operations always return the value that was last written.
      */
-    STRONG ("Strong"),
+    STRONG("Strong"),
 
     /**
      * Bounded Staleness guarantees that reads are not too out-of-date. This can be configured based on number of
@@ -43,30 +43,26 @@ public enum ConsistencyLevel {
      * writes
      * will be eventually be available for reads.
      */
-    CONSISTENT_PREFIX ("ConsistentPrefix");
+    CONSISTENT_PREFIX("ConsistentPrefix");
+
+    private static Map<String, ConsistencyLevel> consistencyLevelHashMap = new HashMap<>();
+
+    static {
+        for (ConsistencyLevel cl : ConsistencyLevel.values()) {
+            consistencyLevelHashMap.put(cl.toString(), cl);
+        }
+    }
+
+    private final String overWireValue;
+
 
     ConsistencyLevel(String overWireValue) {
         this.overWireValue = overWireValue;
     }
 
-    private final String overWireValue;
-
-    @Override
-    public String toString() {
-        return this.overWireValue;
-    }
-
-
-    static private Map<String, ConsistencyLevel> consistencyLevelHashMap = new HashMap<>();
-
-    static {
-        for(ConsistencyLevel cl: ConsistencyLevel.values()) {
-            consistencyLevelHashMap.put(cl.toString(), cl);
-        }
-    }
-
     /**
      * Given the over wire version of ConsistencyLevel gives the corresponding enum or return null
+     *
      * @param consistencyLevel String value of consistency level
      * @return ConsistencyLevel Enum consistency level
      */
@@ -74,5 +70,10 @@ public enum ConsistencyLevel {
         // this is 100x faster than org.apache.commons.lang3.EnumUtils.getEnum(String)
         // for more detail refer to https://github.com/moderakh/azure-cosmosdb-benchmark
         return consistencyLevelHashMap.get(consistencyLevel);
+    }
+
+    @Override
+    public String toString() {
+        return this.overWireValue;
     }
 }

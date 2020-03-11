@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
 
+import java.time.Duration;
+
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Strings.emptyToNull;
 
@@ -56,8 +58,8 @@ public class Configs {
     private static final int DEFAULT_DIRECT_HTTPS_POOL_SIZE = CPU_CNT * 500;
 
     //  Reactor Netty Constants
-    private static final int MAX_IDLE_CONNECTION_TIMEOUT_IN_MILLIS = 60 * 1000;
-    private static final int CONNECTION_ACQUIRE_TIMEOUT_IN_MILLIS = 45 * 1000;
+    private static final Duration MAX_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(45);
     private static final int REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE = 1000;
     private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
 
@@ -155,12 +157,12 @@ public class Configs {
         return REACTOR_NETTY_CONNECTION_POOL_NAME;
     }
 
-    public int getMaxIdleConnectionTimeoutInMillis() {
-        return MAX_IDLE_CONNECTION_TIMEOUT_IN_MILLIS;
+    public Duration getMaxIdleConnectionTimeout() {
+        return MAX_IDLE_CONNECTION_TIMEOUT;
     }
 
-    public int getConnectionAcquireTimeoutInMillis() {
-        return CONNECTION_ACQUIRE_TIMEOUT_IN_MILLIS;
+    public Duration getConnectionAcquireTimeout() {
+        return CONNECTION_ACQUIRE_TIMEOUT;
     }
 
     public int getReactorNettyMaxConnectionPoolSize() {

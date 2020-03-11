@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
@@ -30,7 +29,7 @@ class CertificateImportParameters {
      * The management policy for the certificate.
      */
     @JsonProperty(value = "policy")
-    private CertificatePolicy certificatePolicy;
+    private CertificatePolicyRequest certificatePolicy;
 
     /**
      * The attributes of the certificate (optional).
@@ -89,7 +88,7 @@ class CertificateImportParameters {
      *
      * @return the certificatePolicy value
      */
-    CertificatePolicy certificatePolicy() {
+    CertificatePolicyRequest certificatePolicy() {
         return this.certificatePolicy;
     }
 
@@ -99,7 +98,7 @@ class CertificateImportParameters {
      * @param certificatePolicy the certificatePolicy value to set
      * @return the CertificateImportParameters object itself.
      */
-    CertificateImportParameters certificatePolicy(CertificatePolicy certificatePolicy) {
+    CertificateImportParameters certificatePolicy(CertificatePolicyRequest certificatePolicy) {
         this.certificatePolicy = certificatePolicy;
         return this;
     }

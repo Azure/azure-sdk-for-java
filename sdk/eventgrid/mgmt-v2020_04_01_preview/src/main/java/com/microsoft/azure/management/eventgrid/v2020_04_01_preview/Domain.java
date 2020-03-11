@@ -19,6 +19,7 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.implementation.EventGridManager;
 import java.util.List;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.implementation.PrivateEndpointConnectionInner;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.implementation.DomainInner;
 
 /**
@@ -26,14 +27,14 @@ import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.implementati
  */
 public interface Domain extends HasInner<DomainInner>, Resource, GroupableResourceCore<EventGridManager, DomainInner>, HasResourceGroup, Refreshable<Domain>, Updatable<Domain.Update>, HasManager<EventGridManager> {
     /**
-     * @return the allowTrafficFromAllIPs value.
-     */
-    Boolean allowTrafficFromAllIPs();
-
-    /**
      * @return the endpoint value.
      */
     String endpoint();
+
+    /**
+     * @return the identity value.
+     */
+    IdentityInfo identity();
 
     /**
      * @return the inboundIpRules value.
@@ -56,9 +57,24 @@ public interface Domain extends HasInner<DomainInner>, Resource, GroupableResour
     String metricResourceId();
 
     /**
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
      * @return the provisioningState value.
      */
     DomainProvisioningState provisioningState();
+
+    /**
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
+     * @return the sku value.
+     */
+    ResourceSku sku();
 
     /**
      * The entirety of the Domain definition.
@@ -83,15 +99,15 @@ public interface Domain extends HasInner<DomainInner>, Resource, GroupableResour
         }
 
         /**
-         * The stage of the domain definition allowing to specify AllowTrafficFromAllIPs.
+         * The stage of the domain definition allowing to specify Identity.
          */
-        interface WithAllowTrafficFromAllIPs {
+        interface WithIdentity {
             /**
-             * Specifies allowTrafficFromAllIPs.
-             * @param allowTrafficFromAllIPs This determines if IP filtering rules ought to be evaluated or not. By default it will not evaluate and will allow traffic from all IPs
+             * Specifies identity.
+             * @param identity Identity information for the resource
              * @return the next definition stage
              */
-            WithCreate withAllowTrafficFromAllIPs(Boolean allowTrafficFromAllIPs);
+            WithCreate withIdentity(IdentityInfo identity);
         }
 
         /**
@@ -100,7 +116,7 @@ public interface Domain extends HasInner<DomainInner>, Resource, GroupableResour
         interface WithInboundIpRules {
             /**
              * Specifies inboundIpRules.
-             * @param inboundIpRules This determines the IP filtering rules that ought be applied when events are received on this domain
+             * @param inboundIpRules This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled
              * @return the next definition stage
              */
             WithCreate withInboundIpRules(List<InboundIpRule> inboundIpRules);
@@ -131,17 +147,54 @@ public interface Domain extends HasInner<DomainInner>, Resource, GroupableResour
         }
 
         /**
+         * The stage of the domain definition allowing to specify PrivateEndpointConnections.
+         */
+        interface WithPrivateEndpointConnections {
+            /**
+             * Specifies privateEndpointConnections.
+             * @param privateEndpointConnections List of private endpoint connections
+             * @return the next definition stage
+             */
+            WithCreate withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);
+        }
+
+        /**
+         * The stage of the domain definition allowing to specify PublicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies publicNetworkAccess.
+             * @param publicNetworkAccess This determines if traffic is allowed over public network. By default it is enabled.
+ You can further restrict to specific IPs by configuring &lt;seealso cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainProperties.InboundIpRules" /&gt;. Possible values include: 'Enabled', 'Disabled'
+             * @return the next definition stage
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+
+        /**
+         * The stage of the domain definition allowing to specify Sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies sku.
+             * @param sku The Sku pricing tier for the domain
+             * @return the next definition stage
+             */
+            WithCreate withSku(ResourceSku sku);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Domain>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAllowTrafficFromAllIPs, DefinitionStages.WithInboundIpRules, DefinitionStages.WithInputSchema, DefinitionStages.WithInputSchemaMapping {
+        interface WithCreate extends Creatable<Domain>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithIdentity, DefinitionStages.WithInboundIpRules, DefinitionStages.WithInputSchema, DefinitionStages.WithInputSchemaMapping, DefinitionStages.WithPrivateEndpointConnections, DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithSku {
         }
     }
     /**
      * The template for a Domain update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Domain>, Resource.UpdateWithTags<Update>, UpdateStages.WithAllowTrafficFromAllIPs, UpdateStages.WithInboundIpRules {
+    interface Update extends Appliable<Domain>, Resource.UpdateWithTags<Update>, UpdateStages.WithIdentity, UpdateStages.WithInboundIpRules, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithSku {
     }
 
     /**
@@ -149,15 +202,15 @@ public interface Domain extends HasInner<DomainInner>, Resource, GroupableResour
      */
     interface UpdateStages {
         /**
-         * The stage of the domain update allowing to specify AllowTrafficFromAllIPs.
+         * The stage of the domain update allowing to specify Identity.
          */
-        interface WithAllowTrafficFromAllIPs {
+        interface WithIdentity {
             /**
-             * Specifies allowTrafficFromAllIPs.
-             * @param allowTrafficFromAllIPs This determines if IP filtering rules ought to be evaluated or not. By default it will not evaluate and will allow traffic from all IPs
+             * Specifies identity.
+             * @param identity Identity information for the resource
              * @return the next update stage
              */
-            Update withAllowTrafficFromAllIPs(Boolean allowTrafficFromAllIPs);
+            Update withIdentity(IdentityInfo identity);
         }
 
         /**
@@ -166,10 +219,35 @@ public interface Domain extends HasInner<DomainInner>, Resource, GroupableResour
         interface WithInboundIpRules {
             /**
              * Specifies inboundIpRules.
-             * @param inboundIpRules This determines the IP filtering rules that ought be applied when events are received on this domain
+             * @param inboundIpRules This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled
              * @return the next update stage
              */
             Update withInboundIpRules(List<InboundIpRule> inboundIpRules);
+        }
+
+        /**
+         * The stage of the domain update allowing to specify PublicNetworkAccess.
+         */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies publicNetworkAccess.
+             * @param publicNetworkAccess This determines if traffic is allowed over public network. By default it is enabled.
+ You can further restrict to specific IPs by configuring &lt;seealso cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainUpdateParameterProperties.InboundIpRules" /&gt;. Possible values include: 'Enabled', 'Disabled'
+             * @return the next update stage
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+
+        /**
+         * The stage of the domain update allowing to specify Sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies sku.
+             * @param sku The Sku pricing tier for the domain
+             * @return the next update stage
+             */
+            Update withSku(ResourceSku sku);
         }
 
     }

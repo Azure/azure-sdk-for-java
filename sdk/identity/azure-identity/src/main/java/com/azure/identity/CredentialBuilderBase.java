@@ -47,12 +47,17 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
         return (T) this;
     }
 
+
     /**
-     * Specifies he options for proxy configuration.
+     * Specifies the options for proxy configuration.
+     *
+     * @deprecated Configure the proxy options on the {@link HttpClient} instead and then set that
+     * client on the credential using {@link #httpClient(HttpClient)}.
      *
      * @param proxyOptions the options for proxy configuration
      * @return An updated instance of this builder with the proxy options set as specified.
      */
+    @Deprecated
     @SuppressWarnings("unchecked")
     public T proxyOptions(ProxyOptions proxyOptions) {
         this.identityClientOptions.setProxyOptions(proxyOptions);
@@ -82,6 +87,23 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     public T httpClient(HttpClient client) {
         Objects.requireNonNull(client);
         this.identityClientOptions.setHttpClient(client);
+        return (T) this;
+    }
+
+    /**
+     * Sets how long before the actual token expiry to refresh the token. The
+     * token will be considered expired at and after the time of (actual
+     * expiry - token refresh offset). The default offset is 2 minutes.
+     *
+     * This is useful when network is congested and a request containing the
+     * token takes longer than normal to get to the server.
+     *
+     * @param tokenRefreshOffset the duration before the actual expiry of a token to refresh it
+     * @return An updated instance of this builder with the token refresh offset set as specified.
+     */
+    @SuppressWarnings("unchecked")
+    public T tokenRefreshOffset(Duration tokenRefreshOffset) {
+        this.identityClientOptions.setTokenRefreshOffset(tokenRefreshOffset);
         return (T) this;
     }
 }

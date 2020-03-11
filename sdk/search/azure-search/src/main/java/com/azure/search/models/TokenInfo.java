@@ -17,20 +17,20 @@ public final class TokenInfo {
     /*
      * The token returned by the analyzer.
      */
-    @JsonProperty(value = "token", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "token", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String token;
 
     /*
      * The index of the first character of the token in the input text.
      */
-    @JsonProperty(value = "startOffset", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer startOffset;
+    @JsonProperty(value = "startOffset", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private int startOffset;
 
     /*
      * The index of the last character of the token in the input text.
      */
-    @JsonProperty(value = "endOffset", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer endOffset;
+    @JsonProperty(value = "endOffset", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private int endOffset;
 
     /*
      * The position of the token in the input text relative to other tokens.
@@ -38,8 +38,8 @@ public final class TokenInfo {
      * 1, and so on. Depending on the analyzer used, some tokens might have the
      * same position, for example if they are synonyms of each other.
      */
-    @JsonProperty(value = "position", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer position;
+    @JsonProperty(value = "position", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    private int position;
 
     /**
      * Get the token property: The token returned by the analyzer.
@@ -56,7 +56,7 @@ public final class TokenInfo {
      *
      * @return the startOffset value.
      */
-    public Integer getStartOffset() {
+    public int getStartOffset() {
         return this.startOffset;
     }
 
@@ -66,7 +66,7 @@ public final class TokenInfo {
      *
      * @return the endOffset value.
      */
-    public Integer getEndOffset() {
+    public int getEndOffset() {
         return this.endOffset;
     }
 
@@ -79,7 +79,7 @@ public final class TokenInfo {
      *
      * @return the position value.
      */
-    public Integer getPosition() {
+    public int getPosition() {
         return this.position;
     }
 }

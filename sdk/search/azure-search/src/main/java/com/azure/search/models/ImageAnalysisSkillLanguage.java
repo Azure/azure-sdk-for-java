@@ -20,6 +20,21 @@ public final class ImageAnalysisSkillLanguage extends ExpandableStringEnum<Image
     public static final ImageAnalysisSkillLanguage EN = fromString("en");
 
     /**
+     * Static value es for ImageAnalysisSkillLanguage.
+     */
+    public static final ImageAnalysisSkillLanguage ES = fromString("es");
+
+    /**
+     * Static value ja for ImageAnalysisSkillLanguage.
+     */
+    public static final ImageAnalysisSkillLanguage JA = fromString("ja");
+
+    /**
+     * Static value pt for ImageAnalysisSkillLanguage.
+     */
+    public static final ImageAnalysisSkillLanguage PT = fromString("pt");
+
+    /**
      * Static value zh for ImageAnalysisSkillLanguage.
      */
     public static final ImageAnalysisSkillLanguage ZH = fromString("zh");

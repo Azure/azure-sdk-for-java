@@ -3,15 +3,13 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
-import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -20,30 +18,32 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
-import com.azure.cosmos.implementation.query.QueryInfo;
-import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
-import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosError;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Flux;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,15 +55,7 @@ import java.util.function.Function;
  * This is meant to be used only internally as a bridge access to classes in
  * com.azure.cosmos
  **/
-public class BridgeInternal {
-
-    public static CosmosError createCosmosError(ObjectNode objectNode) {
-        return new CosmosError(objectNode);
-    }
-
-    public static CosmosError createCosmosError(String jsonString) {
-        return new CosmosError(jsonString);
-    }
+public final class BridgeInternal {
 
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
         return Document.FromObject(document, mapper);
@@ -88,39 +80,20 @@ public class BridgeInternal {
 
     public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
                                                                           Class<T> cls) {
-        return new FeedResponse<T>(response.getQueryResponse(cls), response.getResponseHeaders());
+        return ModelBridgeInternal.toFeedResponsePage(response, cls);
     }
 
     public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
-        return new FeedResponse<>(results, headers, noChanges);
+        return ModelBridgeInternal.toFeedResponsePage(results, headers, noChanges);
     }
 
     public static <T extends Resource> FeedResponse<T> toChaneFeedResponsePage(RxDocumentServiceResponse response,
                                                                                Class<T> cls) {
-        return new FeedResponse<T>(noChanges(response) ? Collections.emptyList() : response.getQueryResponse(cls),
-            response.getResponseHeaders(), noChanges(response));
+        return ModelBridgeInternal.toChaneFeedResponsePage(response, cls);
     }
 
     public static StoredProcedureResponse toStoredProcedureResponse(RxDocumentServiceResponse response) {
         return new StoredProcedureResponse(response);
-    }
-
-    public static DatabaseAccount toDatabaseAccount(RxDocumentServiceResponse response) {
-        DatabaseAccount account = response.getResource(DatabaseAccount.class);
-
-        // read the headers and set to the account
-        Map<String, String> responseHeader = response.getResponseHeaders();
-
-        account.setMaxMediaStorageUsageInMB(
-            Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.MAX_MEDIA_STORAGE_USAGE_IN_MB)));
-        account.setMediaStorageUsageInMB(
-            Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.CURRENT_MEDIA_STORAGE_USAGE_IN_MB)));
-
-        return account;
-    }
-
-    public static String getAddressesLink(DatabaseAccount databaseAccount) {
-        return databaseAccount.getAddressesLink();
     }
 
     public static Map<String, String> getFeedHeaders(ChangeFeedOptions options) {
@@ -201,7 +174,7 @@ public class BridgeInternal {
     }
 
     public static <T extends Resource> boolean noChanges(FeedResponse<T> page) {
-        return page.nochanges;
+        return ModelBridgeInternal.noChanges(page);
     }
 
     public static <T extends Resource> boolean noChanges(RxDocumentServiceResponse rsp) {
@@ -210,12 +183,16 @@ public class BridgeInternal {
 
     public static <T> FeedResponse<T> createFeedResponse(List<T> results,
             Map<String, String> headers) {
-        return new FeedResponse<>(results, headers);
+        return ModelBridgeInternal.createFeedResponse(results, headers);
     }
 
     public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
             Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
-        return new FeedResponse<>(results, headers, queryMetricsMap);
+        return ModelBridgeInternal.createFeedResponseWithQueryMetrics(results, headers, queryMetricsMap);
+    }
+
+    public static FeedResponseDiagnostics createFeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
+        return new FeedResponseDiagnostics(queryMetricsMap);
     }
 
     public static <E extends CosmosClientException> E setResourceAddress(E e, String resourceAddress) {
@@ -271,28 +248,12 @@ public class BridgeInternal {
         return cosmosClientException.requestHeaders;
     }
 
-    public static Map<String, Object> getQueryEngineConfiuration(DatabaseAccount databaseAccount) {
-        return databaseAccount.getQueryEngineConfiguration();
-    }
-
-    public static ReplicationPolicy getReplicationPolicy(DatabaseAccount databaseAccount) {
-        return databaseAccount.getReplicationPolicy();
-    }
-
-    public static ReplicationPolicy getSystemReplicationPolicy(DatabaseAccount databaseAccount) {
-        return databaseAccount.getSystemReplicationPolicy();
-    }
-
-    public static ConsistencyPolicy getConsistencyPolicy(DatabaseAccount databaseAccount) {
-        return databaseAccount.getConsistencyPolicy();
-    }
-
     public static String getAltLink(Resource resource) {
-        return resource.getAltLink();
+        return ModelBridgeInternal.getAltLink(resource);
     }
 
     public static void setAltLink(Resource resource, String altLink) {
-        resource.setAltLink(altLink);
+        ModelBridgeInternal.setAltLink(resource, altLink);
     }
 
     public static void setMaxReplicaSetSize(ReplicationPolicy replicationPolicy, int value) {
@@ -301,7 +262,7 @@ public class BridgeInternal {
 
     public static <T extends Resource> void putQueryMetricsIntoMap(FeedResponse<T> response, String partitionKeyRangeId,
                                                                    QueryMetrics queryMetrics) {
-        response.queryMetricsMap().put(partitionKeyRangeId, queryMetrics);
+        ModelBridgeInternal.queryMetricsMap(response).put(partitionKeyRangeId, queryMetrics);
     }
 
     public static QueryMetrics createQueryMetricsFromDelimitedStringAndClientSideMetrics(
@@ -325,32 +286,28 @@ public class BridgeInternal {
         return cosmosClientException.innerErrorMessage();
     }
 
-    public static PartitionKeyInternal getNonePartitionKey(PartitionKeyDefinition partitionKeyDefinition) {
-        return partitionKeyDefinition.getNonePartitionKeyValue();
-    }
-
     public static PartitionKey getPartitionKey(PartitionKeyInternal partitionKeyInternal) {
         return new PartitionKey(partitionKeyInternal);
     }
 
     public static <T> void setProperty(JsonSerializable jsonSerializable, String propertyName, T value) {
-        jsonSerializable.set(propertyName, value);
+        ModelBridgeInternal.setProperty(jsonSerializable, propertyName, value);
     }
 
     public static ObjectNode getObject(JsonSerializable jsonSerializable, String propertyName) {
-        return jsonSerializable.getObject(propertyName);
+        return ModelBridgeInternal.getObject(jsonSerializable, propertyName);
     }
 
     public static void remove(JsonSerializable jsonSerializable, String propertyName) {
-        jsonSerializable.remove(propertyName);
+        ModelBridgeInternal.remove(jsonSerializable, propertyName);
     }
 
     public static CosmosStoredProcedureProperties createCosmosStoredProcedureProperties(String jsonString) {
-        return new CosmosStoredProcedureProperties(jsonString);
+        return ModelBridgeInternal.createCosmosStoredProcedureProperties(jsonString);
     }
 
     public static Object getValue(JsonNode value) {
-        return JsonSerializable.getValue(value);
+        return ModelBridgeInternal.getValue(value);
     }
 
     public static CosmosClientException setCosmosResponseDiagnostics(
@@ -366,7 +323,7 @@ public class BridgeInternal {
     public static CosmosClientException createCosmosClientException(int statusCode, String errorMessage) {
         CosmosClientException cosmosClientException = new CosmosClientException(statusCode, errorMessage, null, null);
         cosmosClientException.setError(new CosmosError());
-        cosmosClientException.getError().set(Constants.Properties.MESSAGE, errorMessage);
+        ModelBridgeInternal.setProperty(cosmosClientException.getError(), Constants.Properties.MESSAGE, errorMessage);
         return cosmosClientException;
     }
 
@@ -418,19 +375,11 @@ public class BridgeInternal {
     }
 
     public static void setResourceSelfLink(Resource resource, String selfLink) {
-        resource.setSelfLink(selfLink);
-    }
-
-    public static void populatePropertyBagJsonSerializable(JsonSerializable jsonSerializable) {
-        jsonSerializable.populatePropertyBag();
-    }
-
-    public static void setMapper(JsonSerializable jsonSerializable, ObjectMapper om) {
-        jsonSerializable.setMapper(om);
+        ModelBridgeInternal.setResourceSelfLink(resource, selfLink);
     }
 
     public static void setTimestamp(Resource resource, OffsetDateTime date) {
-        resource.setTimestamp(date);
+        ModelBridgeInternal.setTimestamp(resource, date);
     }
 
     public static CosmosResponseDiagnostics createCosmosResponseDiagnostics() {
@@ -482,12 +431,12 @@ public class BridgeInternal {
         return cosmosResponseDiagnostics.clientSideRequestStatistics().getFailedReplicas();
     }
 
-    public static ConcurrentMap<String, QueryMetrics> queryMetricsFromFeedResponse(FeedResponse feedResponse) {
-        return feedResponse.queryMetrics();
+    public static <T> ConcurrentMap<String, QueryMetrics> queryMetricsFromFeedResponse(FeedResponse<T> feedResponse) {
+        return ModelBridgeInternal.queryMetrics(feedResponse);
     }
 
     public static PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey) {
-        return partitionKey.getInternalPartitionKey();
+        return ModelBridgeInternal.getPartitionKeyInternal(partitionKey);
     }
 
     public static void setFeedOptionsContinuationTokenAndMaxItemCount(FeedOptions feedOptions, String continuationToken, Integer maxItemCount) {
@@ -503,53 +452,67 @@ public class BridgeInternal {
         feedOptions.setMaxItemCount(maxItemCount);
     }
 
-    public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
-        return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction);
-    }
-
     public static <T> CosmosItemProperties getProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
-        return cosmosItemResponse.getProperties();
+        return ModelBridgeInternal.getCosmosItemProperties(cosmosItemResponse);
     }
 
-    public static PartitionKey partitionKeyfromJsonString(String jsonString) {
-        return PartitionKey.fromJsonString(jsonString);
+    public static <T> CosmosItemProperties getProperties(CosmosItemResponse<T> cosmosItemResponse) {
+        return ModelBridgeInternal.getCosmosItemProperties(cosmosItemResponse);
     }
-
-    public static Object getPartitionKeyObject(PartitionKey right) {
-        return right.getKeyObject();
-    }
-
 
     public static int getHashCode(CosmosKeyCredential keyCredential) {
         return keyCredential.getKeyHashCode();
-    }
-
-
-    public static String toLower(RequestVerb verb) {
-        return verb.toLowerCase();
     }
 
     public static String getLink(CosmosAsyncContainer cosmosAsyncContainer) {
         return cosmosAsyncContainer.getLink();
     }
 
-    public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class klassType) {
-        try {
-            // the hot path should come through here to avoid serialization/deserialization
-            if (klassType.equals(Document.class) || klassType.equals(OrderByRowResult.class) || klassType.equals(CosmosItemProperties.class)
-                || klassType.equals(PartitionKeyRange.class) || klassType.equals(Range.class)
-                || klassType.equals(QueryInfo.class) || klassType.equals(PartitionedQueryExecutionInfoInternal.class)
-                || klassType.equals(QueryItem.class)
-                || klassType.equals(Address.class)
-                || klassType.equals(DatabaseAccount.class) || klassType.equals(DatabaseAccountLocation.class)
-                || klassType.equals(ReplicationPolicy.class) || klassType.equals(ConsistencyPolicy.class)
-                || klassType.equals(DocumentCollection.class) || klassType.equals(Database.class)) {
-                return (JsonSerializable) klassType.getDeclaredConstructor(ObjectNode.class).newInstance(objectNode);
-            } else {
-                return (JsonSerializable) klassType.getDeclaredConstructor(String.class).newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), objectNode));
-            }
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
-            throw new IllegalArgumentException(e);
-        }
+    public static CosmosAsyncConflict createCosmosAsyncConflict(String id, CosmosAsyncContainer container) {
+        return new CosmosAsyncConflict(id, container);
+    }
+
+    public static CosmosAsyncContainer createCosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
+        return new CosmosAsyncContainer(id, database);
+    }
+
+    public static CosmosAsyncDatabase createCosmosAsyncDatabase(String id, CosmosAsyncClient client) {
+        return new CosmosAsyncDatabase(id, client);
+    }
+
+    public static CosmosAsyncPermission createCosmosAsyncPermission(String id, CosmosAsyncUser user) {
+        return new CosmosAsyncPermission(id, user);
+    }
+
+    public static CosmosAsyncStoredProcedure createCosmosAsyncStoredProcedure(String id, CosmosAsyncContainer cosmosContainer) {
+        return new CosmosAsyncStoredProcedure(id, cosmosContainer);
+    }
+
+    public static CosmosAsyncTrigger createCosmosAsyncTrigger(String id, CosmosAsyncContainer container) {
+        return new CosmosAsyncTrigger(id, container);
+    }
+
+    public static CosmosAsyncUserDefinedFunction createCosmosAsyncUserDefinedFunction(String id, CosmosAsyncContainer container) {
+        return new CosmosAsyncUserDefinedFunction(id, container);
+    }
+
+    public static CosmosAsyncUser createCosmosAsyncUser(String id, CosmosAsyncDatabase database) {
+        return new CosmosAsyncUser(id, database);
+    }
+
+    public static CosmosContainer createCosmosContainer(String id, CosmosDatabase database, CosmosAsyncContainer container) {
+        return new CosmosContainer(id, database, container);
+    }
+
+    public static CosmosDatabase createCosmosDatabase(String id, CosmosClient client, CosmosAsyncDatabase database) {
+        return new CosmosDatabase(id, client, database);
+    }
+
+    public static CosmosUser createCosmosUser(CosmosAsyncUser asyncUser, CosmosDatabase database, String id) {
+        return new CosmosUser(asyncUser, database, id);
+    }
+
+    public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
+        return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction);
     }
 }
