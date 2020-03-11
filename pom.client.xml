@@ -426,7 +426,10 @@
             <excludePackageNames>
               *.impl*:
               *.implementation*:
-              com.azure.tools.checkstyle*
+              com.azure.tools.checkstyle*:
+              com.azure.core.test*:
+              com.azure.endtoend*:
+              com.azure.perf*
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
@@ -464,12 +467,12 @@
                 <packages>com.azure.data.appconfiguration*</packages>
               </group>
               <group>
-                <title>Azure Event Hubs</title>
-                <packages>com.azure.messaging.eventhubs*</packages>
+                <title>Azure Cosmos</title>
+                <packages>com.azure.cosmos*</packages>
               </group>
               <group>
-                <title>Azure Service Bus</title>
-                <packages>com.azure.messaging.servicebus*</packages>
+                <title>Azure Event Hubs</title>
+                <packages>com.azure.messaging.eventhubs*</packages>
               </group>
               <group>
                 <title>Azure Identity</title>
@@ -478,6 +481,14 @@
               <group>
                 <title>Azure Key Vault</title>
                 <packages>com.azure.security.keyvault*</packages>
+              </group>
+              <group>
+                <title>Azure Search</title>
+                <packages>com.azure.search*</packages>
+              </group>
+              <group>
+                <title>Azure Service Bus</title>
+                <packages>com.azure.messaging.servicebus*</packages>
               </group>
               <group>
                 <title>Azure Storage - Common</title>
@@ -519,10 +530,6 @@
               <group>
                 <title>Azure Text Analytics</title>
                 <packages>com.azure.ai.textanalytics*</packages>
-              </group>
-              <group>
-                <title>Azure Cosmos</title>
-                <packages>com.azure.cosmos*</packages>
               </group>
             </groups>
             <links>
@@ -701,6 +708,7 @@
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-cryptography/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-datalake/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
                 -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java

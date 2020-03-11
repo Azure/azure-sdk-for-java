@@ -18,6 +18,13 @@
             "metadata": {
                 "description": "The principal to assign the role to. This is application object id."
             }
+        },
+        "sku": {
+            "defaultValue": "Standard",
+            "type": "string",
+            "metadata": {
+                "description": "sku type defined here."
+            }
         }
     },
     "variables": {
@@ -29,9 +36,12 @@
     "resources": [
         {
             "type": "Microsoft.AppConfiguration/configurationStores",
-            "apiVersion": "2019-02-01-preview",
+            "apiVersion": "2019-10-01",
             "name": "[variables('uniqueAzConfigName')]",
             "location":"[resourceGroup().location]",
+            "sku": {
+                "name": "[parameters('sku')]"
+            },
             "properties": {
                 "endpoint":"[variables('endpointValue')]"
             }

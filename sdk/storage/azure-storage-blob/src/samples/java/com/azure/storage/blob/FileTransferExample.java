@@ -125,7 +125,7 @@ public class FileTransferExample {
 
         File dirPath = new File(pathName);
 
-        if (dirPath.exists() || dirPath.mkdir()) {
+        if (dirPath.exists() || dirPath.mkdirs()) {
             File f = new File(pathName + fileName);
             if (f.exists() || f.createNewFile()) {
                 return f;

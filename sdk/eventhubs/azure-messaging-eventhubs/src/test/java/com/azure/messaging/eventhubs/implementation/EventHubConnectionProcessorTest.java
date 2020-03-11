@@ -247,10 +247,11 @@ class EventHubConnectionProcessorTest {
     }
 
     /**
-     * Verifies that when the processor has completed (ie. the instance is closed), no more connections are emitted.
+     * Verifies that when the processor has completed (ie. the instance is closed), and we try to subscribe, an error
+     * is thrown.
      */
     @Test
-    void completesWhenTerminated() {
+    void errorsWhenResubscribingOnTerminated() {
         // Arrange
         final EventHubAmqpConnection[] connections = new EventHubAmqpConnection[]{
             connection,
@@ -272,7 +273,7 @@ class EventHubConnectionProcessorTest {
 
         // Verify that it completes without emitting a connection.
         StepVerifier.create(processor)
-            .expectComplete()
+            .expectError(IllegalStateException.class)
             .verify(timeout);
     }
 
