@@ -93,18 +93,6 @@ jobs:
           pip install markdown2 BeautifulSoup4
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
-      - pwsh: |
-          Write-Host "##vso[task.setvariable variable=ProjectList;]"
-        displayName: Establish project list variable
-      
-      - ${{each artifact in parameters.Artifacts }}:
-        - pwsh: |
-            Write-Host "##vso[task.setvariable variable=ProjectList;]$(ProjectList) ${{artifact.groupId}}:${{artifact.name}}"
-          displayName: Append ${{artifact.name}} to project list
-
-      - script: |
-          echo Project List: $(ProjectList)
-
       - template: ../steps/cache-maven-repository.yml
 
       - template: eng/pipelines/templates/scripts/replace-relative-links.yml@azure-sdk-tools
@@ -114,12 +102,16 @@ jobs:
           BuildSHA: $(Build.SourceVersion)
           RepoId: 'Azure/azure-sdk-for-java'
 
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:
           mavenPomFile: pom.xml
           goals: 'package'
-          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview' -pl $(ProjectList) -am -amd # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
