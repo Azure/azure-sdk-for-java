@@ -113,17 +113,6 @@ public class EncryptedBlobClient extends BlobClient {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    // Used to inject the encrypted blobClient into the BlobOutputStream for upload(InputStream, long).
-    protected BlobOutputStream getBlobOutputStreamInternal(ParallelTransferOptions parallelTransferOptions,
-        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
-        BlobRequestConditions requestConditions) {
-        return getBlobOutputStream(parallelTransferOptions, headers, metadata, tier, requestConditions);
-    }
-
-    /**
      * Creates a new block blob, or updates the content of an existing block blob.
      *
      * <p><strong>Code Samples</strong></p>
