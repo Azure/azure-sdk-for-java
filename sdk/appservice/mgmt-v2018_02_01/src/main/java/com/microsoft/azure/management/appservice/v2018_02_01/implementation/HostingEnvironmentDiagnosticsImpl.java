@@ -13,18 +13,18 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 
 class HostingEnvironmentDiagnosticsImpl extends WrapperImpl<HostingEnvironmentDiagnosticsInner> implements HostingEnvironmentDiagnostics {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String diagnosticsName;
 
-    HostingEnvironmentDiagnosticsImpl(HostingEnvironmentDiagnosticsInner inner,  AppServiceManager manager) {
+    HostingEnvironmentDiagnosticsImpl(HostingEnvironmentDiagnosticsInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

@@ -16,8 +16,6 @@ import rx.functions.Func1;
 import com.microsoft.azure.management.appservice.v2018_02_01.Sites;
 import com.microsoft.azure.Page;
 import rx.Completable;
-
-import java.io.InputStream;
 import java.util.List;
 import com.microsoft.azure.management.appservice.v2018_02_01.CustomHostnameAnalysisResult;
 import com.microsoft.azure.management.appservice.v2018_02_01.BackupItem;
@@ -25,6 +23,8 @@ import com.microsoft.azure.management.appservice.v2018_02_01.SiteConfigResource;
 import com.microsoft.azure.management.appservice.v2018_02_01.BackupRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.StringDictionary;
 import com.microsoft.azure.management.appservice.v2018_02_01.RestoreRequest;
+import com.microsoft.azure.management.appservice.v2018_02_01.HostKeys;
+import com.microsoft.azure.management.appservice.v2018_02_01.KeyInfo;
 import com.microsoft.azure.management.appservice.v2018_02_01.RelayServiceConnectionEntity;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteCloneability;
 import com.microsoft.azure.management.appservice.v2018_02_01.FunctionSecrets;
@@ -83,14 +83,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.SiteVnetGateway;
 import com.microsoft.azure.management.appservice.v2018_02_01.WebJob;
 
 class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    WebAppsImpl(AppServiceManager manager) {
+    WebAppsImpl(CertificateRegistrationManager manager) {
         super(manager.inner().webApps());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -112,6 +112,11 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     @Override
     public FunctionEnvelopeImpl defineFunction(String name) {
         return wrapFunctionModel(name);
+    }
+
+    @Override
+    public KeyInfoImpl defineKey(String name) {
+        return wrapKeyModel(name);
     }
 
     @Override
@@ -168,6 +173,10 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
 
     private FunctionEnvelopeImpl wrapFunctionModel(String name) {
         return new FunctionEnvelopeImpl(name, this.manager());
+    }
+
+    private KeyInfoImpl wrapKeyModel(String name) {
+        return new KeyInfoImpl(name, this.manager());
     }
 
     private HostNameBindingImpl wrapHostNameBindingModel(String name) {
@@ -228,6 +237,10 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
 
     private FunctionEnvelopeImpl wrapFunctionEnvelopeModel(FunctionEnvelopeInner inner) {
         return  new FunctionEnvelopeImpl(inner, manager());
+    }
+
+    private KeyInfoImpl wrapKeyInfoModel(KeyInfoInner inner) {
+        return  new KeyInfoImpl(inner, manager());
     }
 
     private HostNameBindingImpl wrapHostNameBindingModel(HostNameBindingInner inner) {
@@ -476,10 +489,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
 
     @Override
     public Observable<Sites> getByResourceGroupAsync(String resourceGroupName, String name) {
-        return this.getSiteInnerUsingWebAppsInnerAsync(resourceGroupName, name).map(new Func1<SiteInner, Sites> () {
+        return this.getSiteInnerUsingWebAppsInnerAsync(resourceGroupName, name).flatMap(new Func1<SiteInner, Observable<Sites>> () {
             @Override
-            public Sites call(SiteInner inner) {
-                return wrapSitesModel(inner);
+            public Observable<Sites> call(SiteInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return  Observable.just((Sites)wrapSitesModel(inner));
+                }
             }
         });
     }
@@ -686,6 +703,48 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
         WebAppsInner client = this.inner();
         return client.getFunctionsAdminTokenAsync(resourceGroupName, name)
     ;}
+
+    @Override
+    public Observable<HostKeys> listHostKeysAsync(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.listHostKeysAsync(resourceGroupName, name)
+        .map(new Func1<HostKeysInner, HostKeys>() {
+            @Override
+            public HostKeys call(HostKeysInner inner) {
+                return new HostKeysImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable listSyncStatusAsync(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.listSyncStatusAsync(resourceGroupName, name).toCompletable();
+    }
+
+    @Override
+    public Completable syncFunctionsAsync(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.syncFunctionsAsync(resourceGroupName, name).toCompletable();
+    }
+
+    @Override
+    public Observable<KeyInfo> createOrUpdateHostSecretAsync(String resourceGroupName, String name, String keyType, String keyName, KeyInfoInner key) {
+        WebAppsInner client = this.inner();
+        return client.createOrUpdateHostSecretAsync(resourceGroupName, name, keyType, keyName, key)
+        .map(new Func1<KeyInfoInner, KeyInfo>() {
+            @Override
+            public KeyInfo call(KeyInfoInner inner) {
+                return new KeyInfoImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteHostSecretAsync(String resourceGroupName, String name, String keyType, String keyName) {
+        WebAppsInner client = this.inner();
+        return client.deleteHostSecretAsync(resourceGroupName, name, keyType, keyName).toCompletable();
+    }
 
     @Override
     public Observable<RelayServiceConnectionEntity> listRelayServiceConnectionsAsync(String resourceGroupName, String name) {
@@ -1033,10 +1092,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<BackupItem> getBackupStatusAsync(String resourceGroupName, String name, String backupId) {
         WebAppsInner client = this.inner();
         return client.getBackupStatusAsync(resourceGroupName, name, backupId)
-        .map(new Func1<BackupItemInner, BackupItem>() {
+        .flatMap(new Func1<BackupItemInner, Observable<BackupItem>>() {
             @Override
-            public BackupItem call(BackupItemInner inner) {
-                return wrapBackupItemModel(inner);
+            public Observable<BackupItem> call(BackupItemInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((BackupItem)wrapBackupItemModel(inner));
+                }
             }
        });
     }
@@ -1597,10 +1660,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<ContinuousWebJob> getContinuousWebJobAsync(String resourceGroupName, String name, String webJobName) {
         WebAppsInner client = this.inner();
         return client.getContinuousWebJobAsync(resourceGroupName, name, webJobName)
-        .map(new Func1<ContinuousWebJobInner, ContinuousWebJob>() {
+        .flatMap(new Func1<ContinuousWebJobInner, Observable<ContinuousWebJob>>() {
             @Override
-            public ContinuousWebJob call(ContinuousWebJobInner inner) {
-                return wrapContinuousWebJobModel(inner);
+            public Observable<ContinuousWebJob> call(ContinuousWebJobInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ContinuousWebJob)wrapContinuousWebJobModel(inner));
+                }
             }
        });
     }
@@ -1693,10 +1760,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<Deployment> getDeploymentAsync(String resourceGroupName, String name, String id) {
         WebAppsInner client = this.inner();
         return client.getDeploymentAsync(resourceGroupName, name, id)
-        .map(new Func1<DeploymentInner, Deployment>() {
+        .flatMap(new Func1<DeploymentInner, Observable<Deployment>>() {
             @Override
-            public Deployment call(DeploymentInner inner) {
-                return wrapDeploymentModel(inner);
+            public Observable<Deployment> call(DeploymentInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Deployment)wrapDeploymentModel(inner));
+                }
             }
        });
     }
@@ -1801,10 +1872,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<Identifier> getDomainOwnershipIdentifierAsync(String resourceGroupName, String name, String domainOwnershipIdentifierName) {
         WebAppsInner client = this.inner();
         return client.getDomainOwnershipIdentifierAsync(resourceGroupName, name, domainOwnershipIdentifierName)
-        .map(new Func1<IdentifierInner, Identifier>() {
+        .flatMap(new Func1<IdentifierInner, Observable<Identifier>>() {
             @Override
-            public Identifier call(IdentifierInner inner) {
-                return wrapIdentifierModel(inner);
+            public Observable<Identifier> call(IdentifierInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Identifier)wrapIdentifierModel(inner));
+                }
             }
        });
     }
@@ -2041,10 +2116,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<FunctionEnvelope> getFunctionAsync(String resourceGroupName, String name, String functionName) {
         WebAppsInner client = this.inner();
         return client.getFunctionAsync(resourceGroupName, name, functionName)
-        .map(new Func1<FunctionEnvelopeInner, FunctionEnvelope>() {
+        .flatMap(new Func1<FunctionEnvelopeInner, Observable<FunctionEnvelope>>() {
             @Override
-            public FunctionEnvelope call(FunctionEnvelopeInner inner) {
-                return wrapFunctionEnvelopeModel(inner);
+            public Observable<FunctionEnvelope> call(FunctionEnvelopeInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((FunctionEnvelope)wrapFunctionEnvelopeModel(inner));
+                }
             }
        });
     }
@@ -2071,6 +2150,18 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Completable deleteFunctionAsync(String resourceGroupName, String name, String functionName) {
         WebAppsInner client = this.inner();
         return client.deleteFunctionAsync(resourceGroupName, name, functionName).toCompletable();
+    }
+
+    @Override
+    public Observable<StringDictionary> listFunctionKeysAsync(String resourceGroupName, String name, String functionName) {
+        WebAppsInner client = this.inner();
+        return client.listFunctionKeysAsync(resourceGroupName, name, functionName)
+        .map(new Func1<StringDictionaryInner, StringDictionary>() {
+            @Override
+            public StringDictionary call(StringDictionaryInner inner) {
+                return new StringDictionaryImpl(inner, manager());
+            }
+        });
     }
 
     @Override
@@ -2134,6 +2225,18 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Observable<StringDictionary> listFunctionKeysSlotAsync(String resourceGroupName, String name, String functionName, String slot) {
+        WebAppsInner client = this.inner();
+        return client.listFunctionKeysSlotAsync(resourceGroupName, name, functionName, slot)
+        .map(new Func1<StringDictionaryInner, StringDictionary>() {
+            @Override
+            public StringDictionary call(StringDictionaryInner inner) {
+                return new StringDictionaryImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<FunctionSecrets> listFunctionSecretsSlotAsync(String resourceGroupName, String name, String functionName, String slot) {
         WebAppsInner client = this.inner();
         return client.listFunctionSecretsSlotAsync(resourceGroupName, name, functionName, slot)
@@ -2146,13 +2249,41 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Completable deleteFunctionSecretAsync(String resourceGroupName, String name, String functionName, String keyName) {
+        WebAppsInner client = this.inner();
+        return client.deleteFunctionSecretAsync(resourceGroupName, name, functionName, keyName).toCompletable();
+    }
+
+    @Override
+    public Observable<KeyInfo> createOrUpdateFunctionSecretSlotAsync(String resourceGroupName, String name, String functionName, String keyName, String slot, KeyInfoInner key) {
+        WebAppsInner client = this.inner();
+        return client.createOrUpdateFunctionSecretSlotAsync(resourceGroupName, name, functionName, keyName, slot, key)
+        .map(new Func1<KeyInfoInner, KeyInfo>() {
+            @Override
+            public KeyInfo call(KeyInfoInner inner) {
+                return new KeyInfoImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteFunctionSecretSlotAsync(String resourceGroupName, String name, String functionName, String keyName, String slot) {
+        WebAppsInner client = this.inner();
+        return client.deleteFunctionSecretSlotAsync(resourceGroupName, name, functionName, keyName, slot).toCompletable();
+    }
+
+    @Override
     public Observable<HostNameBinding> getHostNameBindingAsync(String resourceGroupName, String name, String hostName) {
         WebAppsInner client = this.inner();
         return client.getHostNameBindingAsync(resourceGroupName, name, hostName)
-        .map(new Func1<HostNameBindingInner, HostNameBinding>() {
+        .flatMap(new Func1<HostNameBindingInner, Observable<HostNameBinding>>() {
             @Override
-            public HostNameBinding call(HostNameBindingInner inner) {
-                return wrapHostNameBindingModel(inner);
+            public Observable<HostNameBinding> call(HostNameBindingInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((HostNameBinding)wrapHostNameBindingModel(inner));
+                }
             }
        });
     }
@@ -2233,10 +2364,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<SiteHybridConnection> getHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
         WebAppsInner client = this.inner();
         return client.getHybridConnectionAsync(resourceGroupName, name, namespaceName, relayName)
-        .map(new Func1<HybridConnectionInner, SiteHybridConnection>() {
+        .flatMap(new Func1<HybridConnectionInner, Observable<SiteHybridConnection>>() {
             @Override
-            public SiteHybridConnection call(HybridConnectionInner inner) {
-                return wrapSiteHybridConnectionModel(inner);
+            public Observable<SiteHybridConnection> call(HybridConnectionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SiteHybridConnection)wrapSiteHybridConnectionModel(inner));
+                }
             }
        });
     }
@@ -2389,10 +2524,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<ProcessInfo> getInstanceProcessAsync(String resourceGroupName, String name, String processId, String instanceId) {
         WebAppsInner client = this.inner();
         return client.getInstanceProcessAsync(resourceGroupName, name, processId, instanceId)
-        .map(new Func1<ProcessInfoInner, ProcessInfo>() {
+        .flatMap(new Func1<ProcessInfoInner, Observable<ProcessInfo>>() {
             @Override
-            public ProcessInfo call(ProcessInfoInner inner) {
-                return wrapProcessInfoModel(inner);
+            public Observable<ProcessInfo> call(ProcessInfoInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ProcessInfo)wrapProcessInfoModel(inner));
+                }
             }
        });
     }
@@ -2533,10 +2672,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<ProcessModuleInfo> getInstanceProcessModuleAsync(String resourceGroupName, String name, String processId, String baseAddress, String instanceId) {
         WebAppsInner client = this.inner();
         return client.getInstanceProcessModuleAsync(resourceGroupName, name, processId, baseAddress, instanceId)
-        .map(new Func1<ProcessModuleInfoInner, ProcessModuleInfo>() {
+        .flatMap(new Func1<ProcessModuleInfoInner, Observable<ProcessModuleInfo>>() {
             @Override
-            public ProcessModuleInfo call(ProcessModuleInfoInner inner) {
-                return wrapProcessModuleInfoModel(inner);
+            public Observable<ProcessModuleInfo> call(ProcessModuleInfoInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ProcessModuleInfo)wrapProcessModuleInfoModel(inner));
+                }
             }
        });
     }
@@ -2653,10 +2796,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<ProcessThreadInfo> getInstanceProcessThreadAsync(String resourceGroupName, String name, String processId, String threadId, String instanceId) {
         WebAppsInner client = this.inner();
         return client.getInstanceProcessThreadAsync(resourceGroupName, name, processId, threadId, instanceId)
-        .map(new Func1<ProcessThreadInfoInner, ProcessThreadInfo>() {
+        .flatMap(new Func1<ProcessThreadInfoInner, Observable<ProcessThreadInfo>>() {
             @Override
-            public ProcessThreadInfo call(ProcessThreadInfoInner inner) {
-                return wrapProcessThreadInfoModel(inner);
+            public Observable<ProcessThreadInfo> call(ProcessThreadInfoInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ProcessThreadInfo)wrapProcessThreadInfoModel(inner));
+                }
             }
        });
     }
@@ -2869,10 +3016,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<NetworkFeatures> listNetworkFeaturesAsync(String resourceGroupName, String name, String view) {
         WebAppsInner client = this.inner();
         return client.listNetworkFeaturesAsync(resourceGroupName, name, view)
-        .map(new Func1<NetworkFeaturesInner, NetworkFeatures>() {
+        .flatMap(new Func1<NetworkFeaturesInner, Observable<NetworkFeatures>>() {
             @Override
-            public NetworkFeatures call(NetworkFeaturesInner inner) {
-                return wrapNetworkFeaturesModel(inner);
+            public Observable<NetworkFeatures> call(NetworkFeaturesInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((NetworkFeatures)wrapNetworkFeaturesModel(inner));
+                }
             }
        });
     }
@@ -3037,10 +3188,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<PremierAddOn> getPremierAddOnAsync(String resourceGroupName, String name, String premierAddOnName) {
         WebAppsInner client = this.inner();
         return client.getPremierAddOnAsync(resourceGroupName, name, premierAddOnName)
-        .map(new Func1<PremierAddOnInner, PremierAddOn>() {
+        .flatMap(new Func1<PremierAddOnInner, Observable<PremierAddOn>>() {
             @Override
-            public PremierAddOn call(PremierAddOnInner inner) {
-                return wrapPremierAddOnModel(inner);
+            public Observable<PremierAddOn> call(PremierAddOnInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((PremierAddOn)wrapPremierAddOnModel(inner));
+                }
             }
        });
     }
@@ -3169,10 +3324,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<PublicCertificate> getPublicCertificateAsync(String resourceGroupName, String name, String publicCertificateName) {
         WebAppsInner client = this.inner();
         return client.getPublicCertificateAsync(resourceGroupName, name, publicCertificateName)
-        .map(new Func1<PublicCertificateInner, PublicCertificate>() {
+        .flatMap(new Func1<PublicCertificateInner, Observable<PublicCertificate>>() {
             @Override
-            public PublicCertificate call(PublicCertificateInner inner) {
-                return wrapPublicCertificateModel(inner);
+            public Observable<PublicCertificate> call(PublicCertificateInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((PublicCertificate)wrapPublicCertificateModel(inner));
+                }
             }
        });
     }
@@ -3253,10 +3412,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<SiteExtensionInfo> getSiteExtensionAsync(String resourceGroupName, String name, String siteExtensionId) {
         WebAppsInner client = this.inner();
         return client.getSiteExtensionAsync(resourceGroupName, name, siteExtensionId)
-        .map(new Func1<SiteExtensionInfoInner, SiteExtensionInfo>() {
+        .flatMap(new Func1<SiteExtensionInfoInner, Observable<SiteExtensionInfo>>() {
             @Override
-            public SiteExtensionInfo call(SiteExtensionInfoInner inner) {
-                return wrapSiteExtensionInfoModel(inner);
+            public Observable<SiteExtensionInfo> call(SiteExtensionInfoInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SiteExtensionInfo)wrapSiteExtensionInfoModel(inner));
+                }
             }
        });
     }
@@ -3337,10 +3500,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<Slots> getSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
         return client.getSlotAsync(resourceGroupName, name, slot)
-        .map(new Func1<SiteInner, Slots>() {
+        .flatMap(new Func1<SiteInner, Observable<Slots>>() {
             @Override
-            public Slots call(SiteInner inner) {
-                return wrapSlotsModel(inner);
+            public Observable<Slots> call(SiteInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Slots)wrapSlotsModel(inner));
+                }
             }
        });
     }
@@ -3530,6 +3697,48 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
         WebAppsInner client = this.inner();
         return client.getFunctionsAdminTokenSlotAsync(resourceGroupName, name, slot)
     ;}
+
+    @Override
+    public Observable<HostKeys> listHostKeysSlotAsync(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.listHostKeysSlotAsync(resourceGroupName, name, slot)
+        .map(new Func1<HostKeysInner, HostKeys>() {
+            @Override
+            public HostKeys call(HostKeysInner inner) {
+                return new HostKeysImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable listSyncStatusSlotAsync(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.listSyncStatusSlotAsync(resourceGroupName, name, slot).toCompletable();
+    }
+
+    @Override
+    public Completable syncFunctionsSlotAsync(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.syncFunctionsSlotAsync(resourceGroupName, name, slot).toCompletable();
+    }
+
+    @Override
+    public Observable<KeyInfo> createOrUpdateHostSecretSlotAsync(String resourceGroupName, String name, String keyType, String keyName, String slot, KeyInfoInner key) {
+        WebAppsInner client = this.inner();
+        return client.createOrUpdateHostSecretSlotAsync(resourceGroupName, name, keyType, keyName, slot, key)
+        .map(new Func1<KeyInfoInner, KeyInfo>() {
+            @Override
+            public KeyInfo call(KeyInfoInner inner) {
+                return new KeyInfoImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteHostSecretSlotAsync(String resourceGroupName, String name, String keyType, String keyName, String slot) {
+        WebAppsInner client = this.inner();
+        return client.deleteHostSecretSlotAsync(resourceGroupName, name, keyType, keyName, slot).toCompletable();
+    }
 
     @Override
     public Observable<RelayServiceConnectionEntity> listRelayServiceConnectionsSlotAsync(String resourceGroupName, String name, String slot) {
@@ -3937,10 +4146,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<TriggeredWebJob> getTriggeredWebJobSlotAsync(String resourceGroupName, String name, String webJobName, String slot) {
         WebAppsInner client = this.inner();
         return client.getTriggeredWebJobSlotAsync(resourceGroupName, name, webJobName, slot)
-        .map(new Func1<TriggeredWebJobInner, TriggeredWebJob>() {
+        .flatMap(new Func1<TriggeredWebJobInner, Observable<TriggeredWebJob>>() {
             @Override
-            public TriggeredWebJob call(TriggeredWebJobInner inner) {
-                return wrapTriggeredWebJobModel(inner);
+            public Observable<TriggeredWebJob> call(TriggeredWebJobInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((TriggeredWebJob)wrapTriggeredWebJobModel(inner));
+                }
             }
        });
     }
@@ -4117,10 +4330,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<SiteVnetInfo> getVnetConnectionSlotAsync(String resourceGroupName, String name, String vnetName, String slot) {
         WebAppsInner client = this.inner();
         return client.getVnetConnectionSlotAsync(resourceGroupName, name, vnetName, slot)
-        .map(new Func1<VnetInfoInner, SiteVnetInfo>() {
+        .flatMap(new Func1<VnetInfoInner, Observable<SiteVnetInfo>>() {
             @Override
-            public SiteVnetInfo call(VnetInfoInner inner) {
-                return wrapSiteVnetInfoModel(inner);
+            public Observable<SiteVnetInfo> call(VnetInfoInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SiteVnetInfo)wrapSiteVnetInfoModel(inner));
+                }
             }
        });
     }
@@ -4213,10 +4430,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<SiteVnetGateway> getVnetConnectionGatewaySlotAsync(String resourceGroupName, String name, String vnetName, String gatewayName, String slot) {
         WebAppsInner client = this.inner();
         return client.getVnetConnectionGatewaySlotAsync(resourceGroupName, name, vnetName, gatewayName, slot)
-        .map(new Func1<VnetGatewayInner, SiteVnetGateway>() {
+        .flatMap(new Func1<VnetGatewayInner, Observable<SiteVnetGateway>>() {
             @Override
-            public SiteVnetGateway call(VnetGatewayInner inner) {
-                return wrapSiteVnetGatewayModel(inner);
+            public Observable<SiteVnetGateway> call(VnetGatewayInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SiteVnetGateway)wrapSiteVnetGatewayModel(inner));
+                }
             }
        });
     }
@@ -4261,10 +4482,14 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Observable<WebJob> getWebJobSlotAsync(String resourceGroupName, String name, String webJobName, String slot) {
         WebAppsInner client = this.inner();
         return client.getWebJobSlotAsync(resourceGroupName, name, webJobName, slot)
-        .map(new Func1<WebJobInner, WebJob>() {
+        .flatMap(new Func1<WebJobInner, Observable<WebJob>>() {
             @Override
-            public WebJob call(WebJobInner inner) {
-                return wrapWebJobModel(inner);
+            public Observable<WebJob> call(WebJobInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((WebJob)wrapWebJobModel(inner));
+                }
             }
        });
     }

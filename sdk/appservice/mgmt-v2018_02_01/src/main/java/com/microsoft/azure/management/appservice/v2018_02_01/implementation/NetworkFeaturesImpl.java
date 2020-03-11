@@ -18,12 +18,12 @@ import com.microsoft.azure.management.appservice.v2018_02_01.SiteHybridConnectio
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteVnetInfo;
 
 class NetworkFeaturesImpl extends IndexableRefreshableWrapperImpl<NetworkFeatures, NetworkFeaturesInner> implements NetworkFeatures {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String view;
 
-    NetworkFeaturesImpl(NetworkFeaturesInner inner,  AppServiceManager manager) {
+    NetworkFeaturesImpl(NetworkFeaturesInner inner,  CertificateRegistrationManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
@@ -33,7 +33,7 @@ class NetworkFeaturesImpl extends IndexableRefreshableWrapperImpl<NetworkFeature
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
