@@ -93,6 +93,14 @@ jobs:
           pip install markdown2 BeautifulSoup4
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
+      - ${{each artifact in parameters.Artifacts }}:
+        - pwsh: |
+            Write-Host "##vso[task.setvariable variable=ProjectList;]$(ProjectList) ${{artifact.groupId}}:${{artifact.name}}"
+          displayName: Append ${{artifact.name}} to project list
+
+      - script: |
+          echo Project List: $(ProjectList)
+
       - template: ../steps/cache-maven-repository.yml
 
       - template: eng/pipelines/templates/scripts/replace-relative-links.yml@azure-sdk-tools
