@@ -13,12 +13,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 /**
- * This example shows how to upload and download using the Azure Storage Data Lake SDK for Java.
+ * This example shows how to append, flush and download using the Azure Storage Data Lake SDK for Java.
  */
-public class UploadDownloadExample {
+public class AppendFlushExample {
 
     /**
-     * Entry point into the upload download examples for Storage datalake.
+     * Entry point into the append, flush and download examples for Storage datalake.
      *
      * @param args Unused. Arguments to the program.
      * @throws IOException If an I/O error occurs
