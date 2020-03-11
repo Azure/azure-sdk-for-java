@@ -61,7 +61,7 @@ public class MsalTest extends AadBase {
     @Override
     String tokenGet(final String authority, final String clientId, final String clientSecret, final String audience, final String extra)
             throws MalformedURLException, InterruptedException, ExecutionException {
-        ConfidentialClientApplication app = ConfidentialClientApplication.builder(clientId, ClientCredentialFactory.createFromSecret(clientSecret))
+        ConfidentialClientApplication app = ConfidentialClientApplication.builder(clientId, new ClientSecret(clientSecret))
                 .authority(authority)
                 .build();
         
