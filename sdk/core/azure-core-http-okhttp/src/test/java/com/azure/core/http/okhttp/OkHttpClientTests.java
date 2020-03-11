@@ -177,7 +177,7 @@ public class OkHttpClientTests {
                 latch.await();
                 HttpClient client = HttpClient.createDefault();
                 HttpRequest request = new HttpRequest(HttpMethod.GET,
-                    new URL("http://localhost:" + ss.getLocalPort() + "/get"));
+                    new URL("http://localhost:" + ss.getLocalPort() + "/getIOException"));
 
                 StepVerifier.create(client.send(request))
                     .assertNext(response -> {
