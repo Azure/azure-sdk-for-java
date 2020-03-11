@@ -16,6 +16,8 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.network.v2019_06_01.ErrorException;
+import com.microsoft.azure.management.network.v2019_06_01.TagsObject;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -24,12 +26,14 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
@@ -83,6 +87,14 @@ public class BastionHostsInner implements InnerSupportsGet<BastionHostInner>, In
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_06_01.BastionHosts beginCreateOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}")
         Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("bastionHostName") String bastionHostName, @Path("subscriptionId") String subscriptionId, @Body BastionHostInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_06_01.BastionHosts updateTags" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}")
+        Observable<Response<ResponseBody>> updateTags(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("bastionHostName") String bastionHostName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TagsObject bastionHostParameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_06_01.BastionHosts beginUpdateTags" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}")
+        Observable<Response<ResponseBody>> beginUpdateTags(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("bastionHostName") String bastionHostName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TagsObject bastionHostParameters, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_06_01.BastionHosts list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/bastionHosts")
@@ -502,6 +514,321 @@ public class BastionHostsInner implements InnerSupportsGet<BastionHostInner>, In
                 .register(200, new TypeToken<BastionHostInner>() { }.getType())
                 .register(201, new TypeToken<BastionHostInner>() { }.getType())
                 .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BastionHostInner object if successful.
+     */
+    public BastionHostInner updateTags(String resourceGroupName, String bastionHostName) {
+        return updateTagsWithServiceResponseAsync(resourceGroupName, bastionHostName).toBlocking().last().body();
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BastionHostInner> updateTagsAsync(String resourceGroupName, String bastionHostName, final ServiceCallback<BastionHostInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateTagsWithServiceResponseAsync(resourceGroupName, bastionHostName), serviceCallback);
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<BastionHostInner> updateTagsAsync(String resourceGroupName, String bastionHostName) {
+        return updateTagsWithServiceResponseAsync(resourceGroupName, bastionHostName).map(new Func1<ServiceResponse<BastionHostInner>, BastionHostInner>() {
+            @Override
+            public BastionHostInner call(ServiceResponse<BastionHostInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<BastionHostInner>> updateTagsWithServiceResponseAsync(String resourceGroupName, String bastionHostName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        final String apiVersion = "2019-06-01";
+        final Map<String, String> tags = null;
+        TagsObject bastionHostParameters = new TagsObject();
+        bastionHostParameters.withTags(null);
+        Observable<Response<ResponseBody>> observable = service.updateTags(this.client.subscriptionId(), resourceGroupName, bastionHostName, apiVersion, this.client.acceptLanguage(), bastionHostParameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<BastionHostInner>() { }.getType());
+    }
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BastionHostInner object if successful.
+     */
+    public BastionHostInner updateTags(String resourceGroupName, String bastionHostName, Map<String, String> tags) {
+        return updateTagsWithServiceResponseAsync(resourceGroupName, bastionHostName, tags).toBlocking().last().body();
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @param tags Resource tags.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BastionHostInner> updateTagsAsync(String resourceGroupName, String bastionHostName, Map<String, String> tags, final ServiceCallback<BastionHostInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateTagsWithServiceResponseAsync(resourceGroupName, bastionHostName, tags), serviceCallback);
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<BastionHostInner> updateTagsAsync(String resourceGroupName, String bastionHostName, Map<String, String> tags) {
+        return updateTagsWithServiceResponseAsync(resourceGroupName, bastionHostName, tags).map(new Func1<ServiceResponse<BastionHostInner>, BastionHostInner>() {
+            @Override
+            public BastionHostInner call(ServiceResponse<BastionHostInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<BastionHostInner>> updateTagsWithServiceResponseAsync(String resourceGroupName, String bastionHostName, Map<String, String> tags) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        Validator.validate(tags);
+        final String apiVersion = "2019-06-01";
+        TagsObject bastionHostParameters = new TagsObject();
+        bastionHostParameters.withTags(tags);
+        Observable<Response<ResponseBody>> observable = service.updateTags(this.client.subscriptionId(), resourceGroupName, bastionHostName, apiVersion, this.client.acceptLanguage(), bastionHostParameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<BastionHostInner>() { }.getType());
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BastionHostInner object if successful.
+     */
+    public BastionHostInner beginUpdateTags(String resourceGroupName, String bastionHostName) {
+        return beginUpdateTagsWithServiceResponseAsync(resourceGroupName, bastionHostName).toBlocking().single().body();
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BastionHostInner> beginUpdateTagsAsync(String resourceGroupName, String bastionHostName, final ServiceCallback<BastionHostInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateTagsWithServiceResponseAsync(resourceGroupName, bastionHostName), serviceCallback);
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BastionHostInner object
+     */
+    public Observable<BastionHostInner> beginUpdateTagsAsync(String resourceGroupName, String bastionHostName) {
+        return beginUpdateTagsWithServiceResponseAsync(resourceGroupName, bastionHostName).map(new Func1<ServiceResponse<BastionHostInner>, BastionHostInner>() {
+            @Override
+            public BastionHostInner call(ServiceResponse<BastionHostInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BastionHostInner object
+     */
+    public Observable<ServiceResponse<BastionHostInner>> beginUpdateTagsWithServiceResponseAsync(String resourceGroupName, String bastionHostName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        final String apiVersion = "2019-06-01";
+        final Map<String, String> tags = null;
+        TagsObject bastionHostParameters = new TagsObject();
+        bastionHostParameters.withTags(null);
+        return service.beginUpdateTags(this.client.subscriptionId(), resourceGroupName, bastionHostName, apiVersion, this.client.acceptLanguage(), bastionHostParameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BastionHostInner>>>() {
+                @Override
+                public Observable<ServiceResponse<BastionHostInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<BastionHostInner> clientResponse = beginUpdateTagsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BastionHostInner object if successful.
+     */
+    public BastionHostInner beginUpdateTags(String resourceGroupName, String bastionHostName, Map<String, String> tags) {
+        return beginUpdateTagsWithServiceResponseAsync(resourceGroupName, bastionHostName, tags).toBlocking().single().body();
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @param tags Resource tags.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BastionHostInner> beginUpdateTagsAsync(String resourceGroupName, String bastionHostName, Map<String, String> tags, final ServiceCallback<BastionHostInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateTagsWithServiceResponseAsync(resourceGroupName, bastionHostName, tags), serviceCallback);
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BastionHostInner object
+     */
+    public Observable<BastionHostInner> beginUpdateTagsAsync(String resourceGroupName, String bastionHostName, Map<String, String> tags) {
+        return beginUpdateTagsWithServiceResponseAsync(resourceGroupName, bastionHostName, tags).map(new Func1<ServiceResponse<BastionHostInner>, BastionHostInner>() {
+            @Override
+            public BastionHostInner call(ServiceResponse<BastionHostInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostName The name of the bastionHost.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BastionHostInner object
+     */
+    public Observable<ServiceResponse<BastionHostInner>> beginUpdateTagsWithServiceResponseAsync(String resourceGroupName, String bastionHostName, Map<String, String> tags) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        Validator.validate(tags);
+        final String apiVersion = "2019-06-01";
+        TagsObject bastionHostParameters = new TagsObject();
+        bastionHostParameters.withTags(tags);
+        return service.beginUpdateTags(this.client.subscriptionId(), resourceGroupName, bastionHostName, apiVersion, this.client.acceptLanguage(), bastionHostParameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BastionHostInner>>>() {
+                @Override
+                public Observable<ServiceResponse<BastionHostInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<BastionHostInner> clientResponse = beginUpdateTagsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<BastionHostInner> beginUpdateTagsDelegate(Response<ResponseBody> response) throws ErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<BastionHostInner, ErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<BastionHostInner>() { }.getType())
+                .register(201, new TypeToken<BastionHostInner>() { }.getType())
+                .registerError(ErrorException.class)
                 .build(response);
     }
 
