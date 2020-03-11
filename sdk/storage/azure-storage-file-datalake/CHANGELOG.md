@@ -1,6 +1,7 @@
 # Release History
 
-## 12.0.0-beta.13 (Unreleased)
+## 12.0.1 (2020-03-11)
+- GA release. 
 - Fixed bug that caused rename to fail on paths that are url encoded.
 - Mapped StorageErrorException and BlobStorageException to DataLakeStorageException on DataLakeServiceClient.listFileSystems
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 12.5.0-beta.1 (Unreleased)
+## 12.5.0 (2020-03-11)
 - Fixed a bug that was adding an invalid 'include' query-parameter for list blob item requests if no dataset-include options were specified.
 - Fixed a bug in ReliableDownload that would cause multiple subscriber errors.
 - Added logic to ReliableDownload to retry on TimeoutException
