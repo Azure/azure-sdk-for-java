@@ -17,14 +17,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.DeletedSite;
 import com.microsoft.azure.Page;
 
 class DeletedWebAppsImpl extends WrapperImpl<DeletedWebAppsInner> implements DeletedWebApps {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    DeletedWebAppsImpl(AppServiceManager manager) {
+    DeletedWebAppsImpl(CertificateRegistrationManager manager) {
         super(manager.inner().deletedWebApps());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -43,10 +43,14 @@ class DeletedWebAppsImpl extends WrapperImpl<DeletedWebAppsInner> implements Del
     public Observable<DeletedSite> getDeletedWebAppByLocationAsync(String location, String deletedSiteId) {
         DeletedWebAppsInner client = this.inner();
         return client.getDeletedWebAppByLocationAsync(location, deletedSiteId)
-        .map(new Func1<DeletedSiteInner, DeletedSite>() {
+        .flatMap(new Func1<DeletedSiteInner, Observable<DeletedSite>>() {
             @Override
-            public DeletedSite call(DeletedSiteInner inner) {
-                return wrapDeletedSiteModel(inner);
+            public Observable<DeletedSite> call(DeletedSiteInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DeletedSite)wrapDeletedSiteModel(inner));
+                }
             }
        });
     }

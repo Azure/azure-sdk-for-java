@@ -31,14 +31,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.ServerfarmVnetGatew
 import com.microsoft.azure.management.appservice.v2018_02_01.VnetRoute;
 
 class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements AppServicePlans {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    AppServicePlansImpl(AppServiceManager manager) {
+    AppServicePlansImpl(CertificateRegistrationManager manager) {
         super(manager.inner().appServicePlans());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -137,10 +137,14 @@ class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements A
 
     @Override
     public Observable<AppServicePlan> getByResourceGroupAsync(String resourceGroupName, String name) {
-        return this.getAppServicePlanInnerUsingAppServicePlansInnerAsync(resourceGroupName, name).map(new Func1<AppServicePlanInner, AppServicePlan> () {
+        return this.getAppServicePlanInnerUsingAppServicePlansInnerAsync(resourceGroupName, name).flatMap(new Func1<AppServicePlanInner, Observable<AppServicePlan>> () {
             @Override
-            public AppServicePlan call(AppServicePlanInner inner) {
-                return wrapAppServicePlanModel(inner);
+            public Observable<AppServicePlan> call(AppServicePlanInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return  Observable.just((AppServicePlan)wrapAppServicePlanModel(inner));
+                }
             }
         });
     }
@@ -220,10 +224,14 @@ class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements A
     public Observable<ServerfarmHybridConnection> getHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
         AppServicePlansInner client = this.inner();
         return client.getHybridConnectionAsync(resourceGroupName, name, namespaceName, relayName)
-        .map(new Func1<HybridConnectionInner, ServerfarmHybridConnection>() {
+        .flatMap(new Func1<HybridConnectionInner, Observable<ServerfarmHybridConnection>>() {
             @Override
-            public ServerfarmHybridConnection call(HybridConnectionInner inner) {
-                return wrapServerfarmHybridConnectionModel(inner);
+            public Observable<ServerfarmHybridConnection> call(HybridConnectionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServerfarmHybridConnection)wrapServerfarmHybridConnectionModel(inner));
+                }
             }
        });
     }
@@ -364,10 +372,14 @@ class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements A
     public Observable<ServerfarmVnetInfo> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName) {
         AppServicePlansInner client = this.inner();
         return client.getVnetFromServerFarmAsync(resourceGroupName, name, vnetName)
-        .map(new Func1<VnetInfoInner, ServerfarmVnetInfo>() {
+        .flatMap(new Func1<VnetInfoInner, Observable<ServerfarmVnetInfo>>() {
             @Override
-            public ServerfarmVnetInfo call(VnetInfoInner inner) {
-                return wrapServerfarmVnetInfoModel(inner);
+            public Observable<ServerfarmVnetInfo> call(VnetInfoInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServerfarmVnetInfo)wrapServerfarmVnetInfoModel(inner));
+                }
             }
        });
     }
@@ -394,10 +406,14 @@ class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements A
     public Observable<ServerfarmVnetGateway> getVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName) {
         AppServicePlansInner client = this.inner();
         return client.getVnetGatewayAsync(resourceGroupName, name, vnetName, gatewayName)
-        .map(new Func1<VnetGatewayInner, ServerfarmVnetGateway>() {
+        .flatMap(new Func1<VnetGatewayInner, Observable<ServerfarmVnetGateway>>() {
             @Override
-            public ServerfarmVnetGateway call(VnetGatewayInner inner) {
-                return wrapServerfarmVnetGatewayModel(inner);
+            public Observable<ServerfarmVnetGateway> call(VnetGatewayInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServerfarmVnetGateway)wrapServerfarmVnetGatewayModel(inner));
+                }
             }
        });
     }
