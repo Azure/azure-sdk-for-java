@@ -74,7 +74,7 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
     }
 
