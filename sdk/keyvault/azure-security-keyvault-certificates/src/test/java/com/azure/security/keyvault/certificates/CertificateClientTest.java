@@ -667,6 +667,18 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
+    public void importPemCertificate() throws IOException {
+        importPemCertificateRunner((importCertificateOptions) -> {
+            KeyVaultCertificateWithPolicy importedCertificate = client.importCertificate(importCertificateOptions);
+            assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
+            assertEquals(CertificateContentType.PEM, importedCertificate.getPolicy().getContentType());
+
+            deleteAndPurgeCertificate(importCertificateOptions.getName());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
     public void mergeCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         getCertificateClient(httpClient, serviceVersion);
         assertRestException(() -> client.mergeCertificate(new MergeCertificateOptions(generateResourceId("testCert16"), Arrays.asList("test".getBytes()))),
