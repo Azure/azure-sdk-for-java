@@ -10,24 +10,6 @@
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <profiles>
     <profile>
-      <id>data</id>
-      <activation>
-        <property>
-          <name>env.SDKTYPE</name>
-          <value>data</value>
-        </property>
-      </activation>
-      <modules>
-        <module>microsoft-azure-keyvault</module>
-        <module>microsoft-azure-keyvault-complete</module>
-        <module>microsoft-azure-keyvault-core</module>
-        <module>microsoft-azure-keyvault-cryptography</module>
-        <module>microsoft-azure-keyvault-extensions</module>
-        <module>microsoft-azure-keyvault-test</module>
-        <module>microsoft-azure-keyvault-webkey</module>
-      </modules>
-    </profile>
-    <profile>
       <id>client</id>
       <activation>
         <property>

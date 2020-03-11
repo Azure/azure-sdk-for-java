@@ -162,9 +162,6 @@ org.revapi:revapi-maven-plugin;0.11.2
 # going to be some investigation necessary to find, at the very least, a newer version
 # which is, hopefully, not a SNAPSHOT.
 # sdk\batch\microsoft-azure-batch\pom.xml
-# sdk\keyvault\microsoft-azure-keyvault\pom.xml
-# sdk\keyvault\microsoft-azure-keyvault-extensions\pom.xml
-# sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
@@ -189,11 +186,6 @@ eventgrid_commons-io:commons-io;2.6
 # sdk\eventhubs\microsoft-azure-eventhubs-eph\pom.xml
 # sdk\eventhubs\microsoft-azure-eventhubs-extensions\pom.xml
 eventhubs_com.microsoft.azure:msal4j;0.4.0-preview
-
-# sdk\keyvault\microsoft-azure-keyvault-extensions\pom.xml
-keyvault_org.mockito:mockito-core;1.10.19
-# sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
-keyvault_com.microsoft.azure:azure-storage;4.4.0
 
 # sdk\mediaservices\microsoft-azure-media\pom.xml which hasn't been released for 2 years
 # all of these unique references below are listed here because they're old, some are over 10 years old

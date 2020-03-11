@@ -77,11 +77,11 @@ Version 4.0.0-preview.1 is a preview of our efforts in creating a client library
 
 For details on the Azure SDK for Java (July 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview1-java).
 
-This library is not a direct replacement for keys management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-keys`.
+This library is not a direct replacement for keys management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/66e69218ce12db60021524b9b59fec5a9ebe3187/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-keys`.
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/tree/66e69218ce12db60021524b9b59fec5a9ebe3187/keyvault/client/keys/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/keys/src/samples/java)
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/66e69218ce12db60021524b9b59fec5a9ebe3187/keyvault/client/keys/src/samples/java)
 demonstrate the new API.
 
 

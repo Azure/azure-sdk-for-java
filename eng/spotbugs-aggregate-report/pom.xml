@@ -41,11 +41,6 @@
                 dependency in eventhubs code. This issue is under investigation.
                 Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/3096 -->
                 <!-- <source>..\..\storage\data-plane\src\main\java\com</source> -->
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault\src\main\java\com</source>
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-cryptography\src\main\java\com</source>
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-core\src\main\java\com</source>
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-extensions\src\main\java\com</source>
-                <source>..\..\sdk\keyvault\microsoft-azure-keyvault-webkey\src\main\java\com</source>
                 <source>..\..\sdk\servicebus\microsoft-azure-servicebus\src\main\java\com</source>
               </sources>
             </configuration>
