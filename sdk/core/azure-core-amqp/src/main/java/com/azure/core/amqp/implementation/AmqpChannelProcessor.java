@@ -84,6 +84,14 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     public void onNext(T amqpChannel) {
         Objects.requireNonNull(amqpChannel, "'amqpChannel' cannot be null.");
 
+        if (isDisposed()) {
+            logger.warning("connectionId[{}] entityPath[{}]: Cannot emit another item. Processor is closed.",
+                connectionId, entityPath);
+
+            Operators.onNextDropped(amqpChannel, Context.empty());
+            return;
+        }
+
         final String identifier = connectionId + "_" + counter.incrementAndGet();
 
         logger.info("connectionId[{}] entityPath[{}] subscriberId[{}]: Waiting for active status.",
@@ -337,109 +345,6 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             } else {
                 logger.warning("Unknown identifier [{}] notified of onEndpointActive. Skipping.", identifier);
             }
-        }
-    }
-
-    /**
-     * Wrapper that manages the AMQP channel and publishes state.
-     *
-     * @param <T>
-     */
-    static final class AmqpChannelSubscriber<T> extends BaseSubscriber<AmqpEndpointState> {
-        private final T amqpChannel;
-        private final AtomicBoolean hasStarted = new AtomicBoolean();
-        private final ClientLogger logger;
-        private final DirectProcessor<Boolean> isOpenProcessor = DirectProcessor.create();
-        private final FluxSink<Boolean> isOpenSink = isOpenProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-        private final String identifier;
-
-        private volatile boolean isDisposed = false;
-
-        AmqpChannelSubscriber(String identifier, T amqpChannel) {
-            this.identifier = Objects.requireNonNull(identifier, "'identifier' cannot be null");
-            this.logger = new ClientLogger(AmqpChannelSubscriber.class + "[" + identifier + "]");
-            this.amqpChannel = Objects.requireNonNull(amqpChannel, "'amqpChannel' cannot be null.");
-        }
-
-        /**
-         * Gets the identifier for this connection subscriber.
-         *
-         * @return The identifier for this connection subscriber.
-         */
-        String getIdentifier() {
-            return identifier;
-        }
-
-        /**
-         * Gets the channel wrapped by this subscriber.
-         *
-         * @return The channel wrapped by this subscriber.
-         */
-        T getChannel() {
-            return amqpChannel;
-        }
-
-        Flux<Boolean> isOpen() {
-            return isOpenProcessor;
-        }
-
-        @Override
-        protected void hookOnNext(AmqpEndpointState value) {
-            switch (value) {
-                case ACTIVE:
-                    if (!hasStarted.getAndSet(true)) {
-                        isOpenSink.next(true);
-                    }
-                    break;
-                case CLOSED:
-                    isOpenSink.complete();
-                    break;
-                case UNINITIALIZED:
-                    logger.verbose("Channel is opening.");
-                    break;
-                default:
-                    logger.warning("Unprocessed status: {}", value);
-                    break;
-            }
-        }
-
-        @Override
-        protected void hookOnError(Throwable throwable) {
-            if (isDisposed) {
-                Operators.onErrorDropped(throwable, Context.empty());
-                return;
-            }
-
-            isDisposed = true;
-            isOpenSink.error(throwable);
-        }
-
-        /**
-         * Disposes of the AMQP channel.
-         */
-        @Override
-        protected void hookOnComplete() {
-            if (isDisposed) {
-                return;
-            }
-
-            isDisposed = true;
-            isOpenSink.complete();
-
-            if (amqpChannel instanceof AutoCloseable) {
-                try {
-                    ((AutoCloseable) amqpChannel).close();
-                } catch (Exception error) {
-                    logger.warning("Error occurred closing channel.", error);
-                }
-            } else if (amqpChannel instanceof Disposable) {
-                ((Disposable) amqpChannel).dispose();
-            }
-        }
-
-        @Override
-        protected void hookOnCancel() {
-            hookOnComplete();
         }
     }
 
