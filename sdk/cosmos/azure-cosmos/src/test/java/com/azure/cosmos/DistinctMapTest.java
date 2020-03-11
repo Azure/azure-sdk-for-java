@@ -37,15 +37,11 @@ public class DistinctMapTest {
                                               3));
         boolean add3 = distinctMap.add(resource, outHash);
         assertThat(add3).as("different value should be added again").isTrue();
-        assertThat(distinctMap.add(new Document(String.format("{ " + "\"id\": \"%s\", \"prop\": %f }",
-                                                              UUID.randomUUID().toString(), 5.0)), outHash))
-            .as("5.0 should be treated same as 5 and should not be added")
-            .isFalse();
     }
 
     @Test(groups = "unit", dataProvider = "distinctMapArgProvider")
     public void stringValue(DistinctQueryType queryType) {
-        String resourceString = String.format("{ " + "\"id\": \"5\" + \"}");
+        String resourceString = String.format("{ " + "\"id\": \"a\" }");
         Document resource = new Document(resourceString);
         DistinctMap distinctMap = DistinctMap.create(queryType, null);
 
@@ -54,7 +50,7 @@ public class DistinctMapTest {
         assertThat(add).as("Value should be added first time").isTrue();
         boolean add2 = distinctMap.add(resource, outHash);
         assertThat(add2).as("same value should not be added again").isFalse();
-        resource = new Document(String.format("{ " + "\"id\": \"6\" + \"}"));
+        resource = new Document(String.format("{ " + "\"id\": \"b\" }"));
         boolean add3 = distinctMap.add(resource, outHash);
         assertThat(add3).as("different value should be added again").isTrue();
     }
@@ -117,7 +113,6 @@ public class DistinctMapTest {
         resource = new Document(resource2);
         boolean add2 = distinctMap.add(resource, outHash);
         assertThat(add2).as("Order of objects in map should be treated same").isFalse();
-        
     }
     
 }
