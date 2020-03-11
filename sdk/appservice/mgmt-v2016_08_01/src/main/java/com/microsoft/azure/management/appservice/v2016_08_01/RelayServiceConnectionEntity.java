@@ -10,13 +10,13 @@ package com.microsoft.azure.management.appservice.v2016_08_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import com.microsoft.azure.management.appservice.v2016_08_01.implementation.RelayServiceConnectionEntityInner;
 
 /**
  * Type representing RelayServiceConnectionEntity.
  */
-public interface RelayServiceConnectionEntity extends HasInner<RelayServiceConnectionEntityInner>, HasManager<AppServiceManager> {
+public interface RelayServiceConnectionEntity extends HasInner<RelayServiceConnectionEntityInner>, HasManager<WebManager> {
     /**
      * @return the biztalkUri value.
      */

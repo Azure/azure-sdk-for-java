@@ -14,14 +14,14 @@ import java.util.List;
 import com.microsoft.azure.management.appservice.v2016_08_01.TriggeredJobRun;
 
 class TriggeredJobHistoryImpl extends WrapperImpl<TriggeredJobHistoryInner> implements TriggeredJobHistory {
-    private final AppServiceManager manager;
-    TriggeredJobHistoryImpl(TriggeredJobHistoryInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    TriggeredJobHistoryImpl(TriggeredJobHistoryInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

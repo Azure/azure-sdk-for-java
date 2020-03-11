@@ -11,14 +11,14 @@ package com.microsoft.azure.management.appservice.v2016_08_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2016_08_01.implementation.ResourceMetricDefinitionInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Type representing ResourceMetricDefinition.
  */
-public interface ResourceMetricDefinition extends HasInner<ResourceMetricDefinitionInner>, HasManager<AppServiceManager> {
+public interface ResourceMetricDefinition extends HasInner<ResourceMetricDefinitionInner>, HasManager<WebManager> {
     /**
      * @return the id value.
      */

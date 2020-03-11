@@ -10,13 +10,13 @@ package com.microsoft.azure.management.appservice.v2016_08_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import com.microsoft.azure.management.appservice.v2016_08_01.implementation.StorageMigrationResponseInner;
 
 /**
  * Type representing StorageMigrationResponse.
  */
-public interface StorageMigrationResponse extends HasInner<StorageMigrationResponseInner>, HasManager<AppServiceManager> {
+public interface StorageMigrationResponse extends HasInner<StorageMigrationResponseInner>, HasManager<WebManager> {
     /**
      * @return the id value.
      */
