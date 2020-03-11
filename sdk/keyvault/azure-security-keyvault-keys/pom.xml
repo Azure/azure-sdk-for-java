@@ -42,7 +42,10 @@
         <configuration>
           <rerunFailingTestsCount>3</rerunFailingTestsCount>
           <argLine>
+            --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+
             --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.cryptography=ALL-UNNAMED
+            --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys=ALL-UNNAMED
           </argLine>
         </configuration>
       </plugin>
