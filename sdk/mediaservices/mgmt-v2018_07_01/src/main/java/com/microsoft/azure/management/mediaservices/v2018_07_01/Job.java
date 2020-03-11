@@ -41,6 +41,11 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
     String description();
 
     /**
+     * @return the endTime value.
+     */
+    DateTime endTime();
+
+    /**
      * @return the id value.
      */
     String id();
@@ -69,6 +74,11 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
      * @return the priority value.
      */
     Priority priority();
+
+    /**
+     * @return the startTime value.
+     */
+    DateTime startTime();
 
     /**
      * @return the state value.

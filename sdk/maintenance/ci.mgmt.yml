@@ -1,0 +1,40 @@
+resources:
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+
+trigger:
+  branches:
+    include:
+      - master
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/maintenance/
+    exclude:
+      - sdk/maintenance/azure
+      - sdk/maintenance/microsoft-azure
+      - sdk/maintenance/ms-azure
+
+pr:
+  branches:
+    include:
+      - master
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/maintenance/
+    exclude:
+      - sdk/maintenance/azure
+      - sdk/maintenance/microsoft-azure
+      - sdk/maintenance/ms-azure
+
+stages:
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
+    parameters:
+      ServiceDirectory: maintenance

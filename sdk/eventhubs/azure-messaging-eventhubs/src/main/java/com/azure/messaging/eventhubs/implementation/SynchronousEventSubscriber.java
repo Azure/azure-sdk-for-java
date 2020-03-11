@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.Messages;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
@@ -69,7 +70,7 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
      */
     @Override
     protected void hookOnError(Throwable throwable) {
-        logger.error("Error occurred in subscriber. Error: {}", throwable);
+        logger.error(Messages.ERROR_OCCURRED_IN_SUBSCRIBER_ERROR, throwable);
         work.error(throwable);
         dispose();
     }

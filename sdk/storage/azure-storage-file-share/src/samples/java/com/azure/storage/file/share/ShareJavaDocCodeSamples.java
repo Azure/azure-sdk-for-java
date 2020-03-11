@@ -7,12 +7,15 @@ import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStatistics;
+import com.azure.storage.file.share.sas.ShareSasPermission;
+import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -30,6 +33,10 @@ public class ShareJavaDocCodeSamples {
 
     private String key1 = "key1";
     private String value1 = "val1";
+
+    private String leaseId = "leaseId";
+    ShareClient client = createClientWithSASToken();
+    private Duration timeout = Duration.ofSeconds(30);
 
     /**
      * Generates code sample for {@link ShareClient} instantiation.
@@ -88,6 +95,21 @@ public class ShareJavaDocCodeSamples {
             .buildClient();
         // END: com.azure.storage.file.share.ShareClient.instantiation.connectionstring
         return shareClient;
+    }
+
+    /**
+     * Code snippets for {@link ShareClient#exists()} and {@link ShareClient#existsWithResponse(
+     * Duration, Context)}
+     */
+    public void exists() {
+        // BEGIN: com.azure.storage.file.share.ShareClient.exists
+        System.out.printf("Exists? %b%n", client.exists());
+        // END: com.azure.storage.file.share.ShareClient.exists
+
+        // BEGIN: com.azure.storage.file.share.ShareClient.existsWithResponse#Duration-Context
+        Context context = new Context("Key", "Value");
+        System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, context).getValue());
+        // END: com.azure.storage.file.share.ShareClient.existsWithResponse#Duration-Context
     }
 
     /**
@@ -226,6 +248,35 @@ public class ShareJavaDocCodeSamples {
     }
 
     /**
+     * Generates a code sample for using {@link ShareClient#createFileWithResponse(String, long, ShareFileHttpHeaders, FileSmbProperties, String, Map, ShareRequestConditions, Duration, Context)}
+     */
+    public void createFileWithLease() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-Duration-Context
+        ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders()
+            .setContentType("text/html")
+            .setContentEncoding("gzip")
+            .setContentLanguage("en")
+            .setCacheControl("no-transform")
+            .setContentDisposition("attachment");
+        FileSmbProperties smbProperties = new FileSmbProperties()
+            .setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY))
+            .setFileCreationTime(OffsetDateTime.now())
+            .setFileLastWriteTime(OffsetDateTime.now())
+            .setFilePermissionKey("filePermissionKey");
+        String filePermission = "filePermission";
+        // NOTE: filePermission and filePermissionKey should never be both set
+
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+
+        Response<ShareFileClient> response = shareClient.createFileWithResponse("myfile", 1024,
+            httpHeaders, smbProperties, filePermission, Collections.singletonMap("directory", "metadata"),
+            requestConditions, Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.printf("Creating the file completed with status code %d", response.getStatusCode());
+        // END: com.azure.storage.file.share.ShareClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions-Duration-Context
+    }
+
+    /**
      * Generates a code sample for using {@link ShareClient#deleteDirectory(String)}
      */
     public void deleteDirectory() {
@@ -269,6 +320,19 @@ public class ShareJavaDocCodeSamples {
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Complete deleting the file with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-duration-context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareClient#deleteFileWithResponse(String, ShareRequestConditions, Duration, Context)}
+     */
+    public void deleteFileWithLease() {
+        ShareClient shareClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context
+        ShareRequestConditions requestConditions = new ShareRequestConditions().setLeaseId(leaseId);
+        Response<Void> response = shareClient.deleteFileWithResponse("myfile", requestConditions,
+            Duration.ofSeconds(1), new Context(key1, value1));
+        System.out.println("Complete deleting the file with status code: " + response.getStatusCode());
+        // END: com.azure.storage.file.share.ShareClient.deleteFileWithResponse#string-ShareRequestConditions-duration-context
     }
 
     /**
@@ -516,5 +580,21 @@ public class ShareJavaDocCodeSamples {
         String shareName = shareAsyncClient.getShareName();
         System.out.println("The name of the share is " + shareName);
         // END: com.azure.storage.file.share.ShareClient.getShareName
+    }
+
+    /**
+     * Code snippet for {@link ShareClient#generateSas(ShareServiceSasSignatureValues)}
+     */
+    public void generateSas() {
+        ShareClient shareClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareClient.generateSas#ShareServiceSasSignatureValues
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        ShareSasPermission permission = new ShareSasPermission().setReadPermission(true);
+
+        ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        shareClient.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.file.share.ShareClient.generateSas#ShareServiceSasSignatureValues
     }
 }

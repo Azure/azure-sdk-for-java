@@ -17,7 +17,7 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
     static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
 
     private final ClientLogger logger = new ClientLogger(AzureTokenManagerProvider.class);
-    private final CBSAuthorizationType authorizationType;
+    private final CbsAuthorizationType authorizationType;
     private final String fullyQualifiedNamespace;
     private final String activeDirectoryScope;
 
@@ -29,7 +29,7 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
      * @param fullyQualifiedNamespace Fully-qualified namespace of the message broker.
      * @param activeDirectoryScope Scope used to access AD resources for the Azure service.
      */
-    public AzureTokenManagerProvider(CBSAuthorizationType authorizationType, String fullyQualifiedNamespace,
+    public AzureTokenManagerProvider(CbsAuthorizationType authorizationType, String fullyQualifiedNamespace,
                                      String activeDirectoryScope) {
         this.activeDirectoryScope = Objects.requireNonNull(activeDirectoryScope,
             "'activeDirectoryScope' cannot be null.");
@@ -44,8 +44,10 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
      */
     @Override
     public TokenManager getTokenManager(Mono<ClaimsBasedSecurityNode> cbsNodeMono, String resource) {
-        final String scopes = getResourceString(resource);
+        final String scopes = getScopesFromResource(resource);
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
+
+        logger.info("Creating new token manager for audience[{}], resource[{}]", tokenAudience, resource);
         return new ActiveClientTokenManager(cbsNodeMono, tokenAudience, scopes);
     }
 
@@ -53,7 +55,7 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
      * {@inheritDoc}
      */
     @Override
-    public String getResourceString(String resource) {
+    public String getScopesFromResource(String resource) {
         switch (authorizationType) {
             case JSON_WEB_TOKEN:
                 return activeDirectoryScope;

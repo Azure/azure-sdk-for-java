@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * A video analyzer preset that extracts insights (rich metadata) from both
  * audio and video, and outputs a JSON format file.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = VideoAnalyzerPreset.class)
 @JsonTypeName("#Microsoft.Media.VideoAnalyzerPreset")
 public class VideoAnalyzerPreset extends AudioAnalyzerPreset {
     /**

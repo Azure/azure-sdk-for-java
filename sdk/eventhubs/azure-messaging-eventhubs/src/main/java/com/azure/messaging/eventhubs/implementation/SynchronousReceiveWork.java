@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.Messages;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import reactor.core.publisher.FluxSink;
 
@@ -88,7 +89,7 @@ public class SynchronousReceiveWork {
             emitter.next(event);
             remaining.decrementAndGet();
         } catch (Exception e) {
-            logger.warning("Exception occurred while emitting next received event.", e);
+            logger.warning(Messages.EXCEPTION_OCCURRED_WHILE_EMITTING, e);
             isTerminal = true;
             emitter.error(e);
         }

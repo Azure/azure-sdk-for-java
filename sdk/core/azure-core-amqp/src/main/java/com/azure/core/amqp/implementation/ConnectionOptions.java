@@ -23,15 +23,13 @@ public class ConnectionOptions {
     private final ProxyOptions proxyOptions;
     private final Scheduler scheduler;
     private final String fullyQualifiedNamespace;
-    private final String entityPath;
-    private final CBSAuthorizationType authorizationType;
+    private final CbsAuthorizationType authorizationType;
 
-    public ConnectionOptions(String fullyQualifiedNamespace, String entityPath, TokenCredential tokenCredential,
-            CBSAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
+    public ConnectionOptions(String fullyQualifiedNamespace, TokenCredential tokenCredential,
+            CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
             ProxyOptions proxyOptions, Scheduler scheduler) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' is required.");
-        this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' is required.");
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' is required.");
         this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' is required.");
         this.transport = Objects.requireNonNull(transport, "'transport' is required.");
@@ -44,15 +42,11 @@ public class ConnectionOptions {
         return fullyQualifiedNamespace;
     }
 
-    public String getEntityPath() {
-        return entityPath;
-    }
-
     public TokenCredential getTokenCredential() {
         return tokenCredential;
     }
 
-    public CBSAuthorizationType getAuthorizationType() {
+    public CbsAuthorizationType getAuthorizationType() {
         return authorizationType;
     }
 

@@ -15,13 +15,13 @@ trigger:
   branches:
     include:
       - master
-      - feature/*
       - hotfix/*
       - release/*
   paths:
     include:
       - sdk/servicebus/
     exclude:
+      - sdk/servicebus/microsoft-azure
       - sdk/servicebus/mgmt-
 
 pr:
@@ -35,6 +35,7 @@ pr:
     include:
       - sdk/servicebus/
     exclude:
+      - sdk/servicebus/microsoft-azure
       - sdk/servicebus/mgmt-
 
 stages:
@@ -42,6 +43,6 @@ stages:
     parameters:
       ServiceDirectory: servicebus
       Artifacts:
-        - name: azure-servicebus
-          safeName: azureservicebus
-          stagingProfileId: 534d15ee3800f4
+        - name: azure-messaging-servicebus
+          groupId: com.azure
+          safeName: azuremessagingservicebus

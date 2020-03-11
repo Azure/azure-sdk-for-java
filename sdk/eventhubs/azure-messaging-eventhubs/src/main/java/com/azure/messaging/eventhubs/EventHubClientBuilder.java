@@ -8,7 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
-import com.azure.core.amqp.implementation.CBSAuthorizationType;
+import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -26,8 +26,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
+import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -35,6 +37,7 @@ import reactor.core.scheduler.Schedulers;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
 
@@ -73,7 +76,7 @@ import java.util.ServiceLoader;
  * <p>In the sample, the namespace connection string is used to create a synchronous Event Hub consumer. Notice that
  * {@code "EntityPath"} <b>is</b> in the connection string.</p>
  *
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation}
  *
  * <p><strong>Creating producers and consumers that share the same connection</strong></p>
  * <p>By default, a dedicated connection is created for each producer and consumer created from the builder. If users
@@ -81,12 +84,17 @@ import java.util.ServiceLoader;
  *
  * {@codesnippet com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation}
  *
- * @see EventHubClient
- * @see EventHubAsyncClient
+ * @see EventHubProducerAsyncClient
+ * @see EventHubProducerClient
+ * @see EventHubConsumerAsyncClient
+ * @see EventHubConsumerClient
  */
 @ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class,
     EventHubConsumerAsyncClient.class, EventHubConsumerClient.class})
 public class EventHubClientBuilder {
+    // Default number of events to fetch when creating the consumer.
+    static final int DEFAULT_PREFETCH_COUNT = 500;
+
     /**
      * The name of the default consumer group in the Event Hubs service.
      */
@@ -100,15 +108,17 @@ public class EventHubClientBuilder {
      */
     private static final int MAXIMUM_PREFETCH_COUNT = 8000;
 
-    // Default number of events to fetch when creating the consumer.
-    static final int DEFAULT_PREFETCH_COUNT = 500;
-
-    private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
+    private static final String EVENTHUBS_PROPERTIES_FILE = "azure-messaging-eventhubs.properties";
+    private static final String NAME_KEY = "name";
+    private static final String VERSION_KEY = "version";
+    private static final String UNKNOWN = "UNKNOWN";
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
     private static final AmqpRetryOptions DEFAULT_RETRY = new AmqpRetryOptions()
         .setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
 
+    private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
+    private final Object connectionLock = new Object();
     private TokenCredential credentials;
     private Configuration configuration;
     private ProxyOptions proxyOptions;
@@ -118,9 +128,14 @@ public class EventHubClientBuilder {
     private String fullyQualifiedNamespace;
     private String eventHubName;
     private String consumerGroup;
-    private EventHubConnection eventHubConnection;
+    private EventHubConnectionProcessor eventHubConnectionProcessor;
     private int prefetchCount;
     private boolean isSharedConnection;
+
+    /**
+     * Keeps track of the open clients that were created from this builder when there is a shared connection.
+     */
+    private volatile int openClients;
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP} and a non-shared connection. A
@@ -231,7 +246,9 @@ public class EventHubClientBuilder {
      * @return The updated {@link EventHubClientBuilder} object.
      */
     public EventHubClientBuilder shareConnection() {
-        this.isSharedConnection = true;
+        synchronized (connectionLock) {
+            this.isSharedConnection = true;
+        }
         return this;
     }
 
@@ -276,18 +293,6 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder proxyOptions(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
-        return this;
-    }
-
-    /**
-     * Sets the scheduler for operations such as connecting to and receiving or sending data to Event Hubs. If none is
-     * specified, an elastic pool is used.
-     *
-     * @param scheduler The scheduler for operations such as connecting to and receiving or sending data to Event Hubs.
-     * @return The updated {@link EventHubClientBuilder} object.
-     */
-    public EventHubClientBuilder scheduler(Scheduler scheduler) {
-        this.scheduler = scheduler;
         return this;
     }
 
@@ -352,6 +357,21 @@ public class EventHubClientBuilder {
         }
 
         this.prefetchCount = prefetchCount;
+        return this;
+    }
+
+    /**
+     * Package-private method that sets the scheduler for the created Event Hub client.
+     *
+     * TODO (conniey): Currently, the default is to use an elastic scheduler if none is specified to facilitate the
+     * possibility of legacy blocking code. However, we should consider if we should give consumers an option to use a
+     * parallel Scheduler. https://github.com/Azure/azure-sdk-for-java/issues/5466
+     *
+     * @param scheduler Scheduler to set.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    EventHubClientBuilder scheduler(Scheduler scheduler) {
+        this.scheduler = scheduler;
         return this;
     }
 
@@ -454,17 +474,26 @@ public class EventHubClientBuilder {
 
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
-        if (isSharedConnection && eventHubConnection == null) {
-            eventHubConnection = buildConnection(messageSerializer);
-        }
+        final EventHubConnectionProcessor processor;
+        synchronized (connectionLock) {
+            if (isSharedConnection) {
+                if (eventHubConnectionProcessor == null) {
+                    eventHubConnectionProcessor = buildConnectionProcessor(messageSerializer);
+                }
 
-        final EventHubConnection connection = isSharedConnection
-            ? eventHubConnection
-            : buildConnection(messageSerializer);
+                final int numberOfOpenClients = ++openClients;
+                logger.info("# of open clients with shared connection: {}", numberOfOpenClients);
+            }
+
+            processor = isSharedConnection
+                ? eventHubConnectionProcessor
+                : buildConnectionProcessor(messageSerializer);
+        }
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new EventHubAsyncClient(connection, tracerProvider, messageSerializer, isSharedConnection);
+        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler, isSharedConnection,
+            this::onClientClose);
     }
 
     /**
@@ -498,7 +527,20 @@ public class EventHubClientBuilder {
         return new EventHubClient(client, retryOptions);
     }
 
-    private EventHubConnection buildConnection(MessageSerializer messageSerializer) {
+    void onClientClose() {
+        synchronized (connectionLock) {
+            final int numberOfOpenClients = --openClients;
+            logger.info("Closing a dependent client. # of open clients: {}", numberOfOpenClients);
+
+            if (numberOfOpenClients == 0) {
+                logger.info("No more open clients, closing shared connection.");
+                eventHubConnectionProcessor.dispose();
+                eventHubConnectionProcessor = null;
+            }
+        }
+    }
+
+    private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
             connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
@@ -506,14 +548,20 @@ public class EventHubClientBuilder {
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
-        final Mono<EventHubAmqpConnection> connectionMono = Mono.fromCallable(() -> {
+        final Map<String, String> properties = CoreUtils.getProperties(EVENTHUBS_PROPERTIES_FILE);
+        final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
+        final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
+
+        final Flux<EventHubAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
             final String connectionId = StringUtil.getRandomString("MF");
 
-            return new EventHubReactorAmqpConnection(connectionId, connectionOptions, provider, handlerProvider,
-                tokenManagerProvider, messageSerializer);
-        });
+            return (EventHubAmqpConnection) new EventHubReactorAmqpConnection(connectionId, connectionOptions,
+                eventHubName, provider, handlerProvider, tokenManagerProvider, messageSerializer, product,
+                clientVersion);
+        }).repeat();
 
-        return new EventHubConnection(connectionMono, connectionOptions);
+        return connectionFlux.subscribeWith(new EventHubConnectionProcessor(
+            connectionOptions.getFullyQualifiedNamespace(), eventHubName, connectionOptions.getRetry()));
     }
 
     private ConnectionOptions getConnectionOptions() {
@@ -544,12 +592,12 @@ public class EventHubClientBuilder {
             proxyOptions = getDefaultProxyConfiguration(configuration);
         }
 
-        final CBSAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential
-            ? CBSAuthorizationType.SHARED_ACCESS_SIGNATURE
-            : CBSAuthorizationType.JSON_WEB_TOKEN;
+        final CbsAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential
+            ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
+            : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        return new ConnectionOptions(fullyQualifiedNamespace, eventHubName, credentials, authorizationType,
-            transport, retryOptions, proxyOptions, scheduler);
+        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
+            proxyOptions, scheduler);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {

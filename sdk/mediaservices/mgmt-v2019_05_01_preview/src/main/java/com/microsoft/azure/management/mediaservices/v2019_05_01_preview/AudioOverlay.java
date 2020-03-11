@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Describes the properties of an audio overlay.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = AudioOverlay.class)
 @JsonTypeName("#Microsoft.Media.AudioOverlay")
 public class AudioOverlay extends Overlay {
 }

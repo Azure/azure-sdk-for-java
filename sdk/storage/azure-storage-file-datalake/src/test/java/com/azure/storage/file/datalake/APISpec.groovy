@@ -14,7 +14,9 @@ import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder
 import reactor.core.publisher.Flux
@@ -60,7 +62,8 @@ class APISpec extends Specification {
 
     static int defaultDataSize = defaultData.remaining()
 
-    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
+    @Shared
+    public static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
 
     // Prefixes for blobs and containers
     String fileSystemPrefix = "jtfs" // java test file system
@@ -109,7 +112,7 @@ class APISpec extends Specification {
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
-    private TestResourceNamer resourceNamer
+    public TestResourceNamer resourceNamer
     protected String testName
     def fileSystemName
 
@@ -126,6 +129,9 @@ class APISpec extends Specification {
         this.testName = fullTestName.substring(0, substringIndex)
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
+
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
 
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
@@ -177,14 +183,14 @@ class APISpec extends Specification {
     }
 
     static boolean liveMode() {
-        return setupTestMode() == TestMode.RECORD
+        return setupTestMode() == TestMode.LIVE
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -214,8 +220,8 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD) {
-            if (recordLiveMode) {
+        if (testMode != TestMode.PLAYBACK) {
+            if (testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -263,7 +269,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -276,7 +282,7 @@ class APISpec extends Specification {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
@@ -298,6 +304,17 @@ class APISpec extends Specification {
             .fileClient(pathClient)
             .leaseId(leaseId)
             .buildClient()
+    }
+
+    static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileAsyncClient pathAsyncClient) {
+        return createLeaseAsyncClient(pathAsyncClient, null)
+    }
+
+    static DataLakeLeaseAsyncClient createLeaseAsyncClient(DataLakeFileAsyncClient pathAsyncClient, String leaseId) {
+        return new DataLakeLeaseClientBuilder()
+            .fileAsyncClient(pathAsyncClient)
+            .leaseId(leaseId)
+            .buildAsyncClient()
     }
 
     static DataLakeLeaseClient createLeaseClient(DataLakeDirectoryClient pathClient) {
@@ -332,7 +349,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -346,7 +363,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -360,7 +377,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -368,16 +385,20 @@ class APISpec extends Specification {
     }
 
     DataLakeFileSystemClient getFileSystemClient(String sasToken, String endpoint) {
+        getFileSystemClientBuilder(endpoint).sasToken(sasToken).buildClient()
+    }
+
+    DataLakeFileSystemClientBuilder getFileSystemClientBuilder(String endpoint) {
         DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
-        builder.sasToken(sasToken).buildClient()
+        return builder
     }
 
     def generateFileSystemName() {
@@ -505,7 +526,11 @@ class APISpec extends Specification {
     def setupPathLeaseCondition(DataLakePathClient pc, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = createLeaseClient(pc).acquireLease(-1)
+            if (pc instanceof DataLakeFileClient) {
+                responseLeaseId = createLeaseClient((DataLakeFileClient) pc).acquireLease(-1)
+            } else {
+                responseLeaseId = createLeaseClient((DataLakeDirectoryClient) pc).acquireLease(-1)
+            }
         }
         if (leaseID == receivedLeaseID) {
             return responseLeaseId
@@ -514,11 +539,27 @@ class APISpec extends Specification {
         }
     }
 
-    def setupPathLeaseCondition(DataLakePathAsyncClient pac, String leaseID) {
+    def setupPathLeaseCondition(DataLakeFileAsyncClient fac, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             responseLeaseId = new DataLakeLeaseClientBuilder()
-                .pathAsyncClient(pac)
+                .fileAsyncClient(fac)
+                .buildAsyncClient()
+                .acquireLease(-1)
+                .block()
+        }
+        if (leaseID == receivedLeaseID) {
+            return responseLeaseId
+        } else {
+            return leaseID
+        }
+    }
+
+    def setupPathLeaseCondition(DataLakeDirectoryAsyncClient dac, String leaseID) {
+        String responseLeaseId = null
+        if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
+            responseLeaseId = new DataLakeLeaseClientBuilder()
+                .directoryAsyncClient(dac)
                 .buildAsyncClient()
                 .acquireLease(-1)
                 .block()
@@ -600,7 +641,7 @@ class APISpec extends Specification {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
@@ -619,15 +660,127 @@ class APISpec extends Specification {
 
     def entryIsInAcl(PathAccessControlEntry entry, List<PathAccessControlEntry> acl) {
         for (PathAccessControlEntry e : acl) {
-            if (e.defaultScope() == entry.defaultScope() &&
-                e.accessControlType().equals(entry.accessControlType()) &&
-                (e.entityID() == null && entry.entityID() == null ||
-                    e.entityID().equals(entry.entityID())) &&
-                e.permissions().equals(entry.permissions())) {
+            if (e.isInDefaultScope() == entry.isInDefaultScope() &&
+                e.getAccessControlType().equals(entry.getAccessControlType()) &&
+                (e.getEntityId() == null && entry.getEntityId() == null ||
+                    e.getEntityId().equals(entry.getEntityId())) &&
+                e.getPermissions().equals(entry.getPermissions())) {
                 return true
             }
         }
         return false
+    }
+
+    def sleepIfLive(long milliseconds) {
+        if (testMode == TestMode.PLAYBACK) {
+            return
+        }
+        sleep(milliseconds)
+    }
+
+    /*
+    We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
+     */
+    File getRandomFile(int size) {
+        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
+        file.deleteOnExit()
+        FileOutputStream fos = new FileOutputStream(file)
+
+        if (size > Constants.MB) {
+            for (def i = 0; i < size / Constants.MB; i++) {
+                def dataSize = Math.min(Constants.MB, size - i * Constants.MB)
+                fos.write(getRandomByteArray(dataSize))
+            }
+        } else {
+            fos.write(getRandomByteArray(size))
+        }
+
+        fos.close()
+        return file
+    }
+
+    /**
+     * Compares two files for having equivalent content.
+     *
+     * @param file1 File used to upload data to the service
+     * @param file2 File used to download data from the service
+     * @param offset Write offset from the upload file
+     * @param count Size of the download from the service
+     * @return Whether the files have equivalent content based on offset and read count
+     */
+    def compareFiles(File file1, File file2, long offset, long count) {
+        def pos = 0L
+        def readBuffer = 8 * Constants.KB
+        def stream1 = new FileInputStream(file1)
+        stream1.skip(offset)
+        def stream2 = new FileInputStream(file2)
+
+        try {
+            while (pos < count) {
+                def bufferSize = (int) Math.min(readBuffer, count - pos)
+                def buffer1 = new byte[bufferSize]
+                def buffer2 = new byte[bufferSize]
+
+                def readCount1 = stream1.read(buffer1)
+                def readCount2 = stream2.read(buffer2)
+
+                assert readCount1 == readCount2 && buffer1 == buffer2
+
+                pos += bufferSize
+            }
+
+            def verificationRead = stream2.read()
+            return pos == count && verificationRead == -1
+        } finally {
+            stream1.close()
+            stream2.close()
+        }
+    }
+
+    /*
+    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
+    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
+    with than was worth it.
+     */
+
+    def getStubResponse(int code, HttpRequest request) {
+        return new HttpResponse(request) {
+
+            @Override
+            int getStatusCode() {
+                return code
+            }
+
+            @Override
+            String getHeaderValue(String s) {
+                return null
+            }
+
+            @Override
+            HttpHeaders getHeaders() {
+                return new HttpHeaders()
+            }
+
+            @Override
+            Flux<ByteBuffer> getBody() {
+                return Flux.empty()
+            }
+
+            @Override
+            Mono<byte[]> getBodyAsByteArray() {
+                return Mono.just(new byte[0])
+            }
+
+            @Override
+            Mono<String> getBodyAsString() {
+                return Mono.just("")
+            }
+
+            @Override
+            Mono<String> getBodyAsString(Charset charset) {
+                return Mono.just("")
+            }
+        }
     }
 
 }

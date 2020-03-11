@@ -22,6 +22,9 @@ public final class SqlServerLicenseType extends ExpandableStringEnum<SqlServerLi
     /** Static value AHUB for SqlServerLicenseType. */
     public static final SqlServerLicenseType AHUB = fromString("AHUB");
 
+    /** Static value DR for SqlServerLicenseType. */
+    public static final SqlServerLicenseType DR = fromString("DR");
+
     /**
      * Creates or finds a SqlServerLicenseType from its string representation.
      * @param name a name to look for

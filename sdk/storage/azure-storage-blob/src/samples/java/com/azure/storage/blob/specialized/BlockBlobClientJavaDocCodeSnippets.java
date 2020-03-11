@@ -197,7 +197,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
         boolean overwrite = false; // Default behavior
         System.out.printf("Committing block list completed. Last modified: %s%n",
             client.commitBlockList(Collections.singletonList(base64BlockId), overwrite).getLastModified());
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List-boolean
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.commitBlockList#List-boolean
     }
 
     /**

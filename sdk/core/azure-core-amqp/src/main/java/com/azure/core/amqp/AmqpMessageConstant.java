@@ -120,13 +120,13 @@ public enum AmqpMessageConstant {
     /**
      * Parses an header value to its message constant.
      *
-     * @param headerValue the messaging header value to parse.
+     * @param value the messaging header value to parse.
      * @return the parsed MessageConstant object, or {@code null} if unable to parse.
      * @throws NullPointerException if {@code constant} is {@code null}.
      */
-    public static AmqpMessageConstant fromString(String headerValue) {
-        Objects.requireNonNull(headerValue, "'headerValue' cannot be null.");
+    public static AmqpMessageConstant fromString(String value) {
+        Objects.requireNonNull(value, "'value' cannot be null.");
 
-        return RESERVED_CONSTANTS_MAP.get(headerValue);
+        return RESERVED_CONSTANTS_MAP.get(value);
     }
 }

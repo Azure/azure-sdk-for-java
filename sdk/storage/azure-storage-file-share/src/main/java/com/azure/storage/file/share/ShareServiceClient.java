@@ -4,12 +4,14 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
@@ -376,5 +378,32 @@ public final class ShareServiceClient {
      */
     public String getAccountName() {
         return this.shareServiceAsyncClient.getAccountName();
+    }
+
+    /**
+     * Gets the {@link HttpPipeline} powering this client.
+     *
+     * @return The pipeline.
+     */
+    public HttpPipeline getHttpPipeline() {
+        return this.shareServiceAsyncClient.getHttpPipeline();
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * <p><strong>Generating an account SAS</strong></p>
+     * <p>The snippet below generates an AccountSasSignatureValues object that lasts for two days and gives the user
+     * read and list access to blob  and file shares.</p>
+     * {@codesnippet com.azure.storage.file.share.ShareServiceClient.generateAccountSas#AccountSasSignatureValues}
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
+        return this.shareServiceAsyncClient.generateAccountSas(accountSasSignatureValues);
     }
 }

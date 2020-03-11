@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Specifies a certificate for token validation.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = ContentKeyPolicyX509CertificateTokenKey.class)
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicyX509CertificateTokenKey")
 public class ContentKeyPolicyX509CertificateTokenKey extends ContentKeyPolicyRestrictionTokenKey {
     /**

@@ -14,9 +14,9 @@ import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.iotcentral.v2018_09_01.AppPatch;
-import com.microsoft.azure.management.iotcentral.v2018_09_01.ErrorDetailsException;
 import com.microsoft.azure.management.iotcentral.v2018_09_01.OperationInputs;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -112,6 +112,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/checkSubdomainAvailability")
         Observable<Response<ResponseBody>> checkSubdomainAvailability(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body OperationInputs operationInputs, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listTemplates" })
+        @POST("subscriptions/{subscriptionId}/providers/Microsoft.IoTCentral/appTemplates")
+        Observable<Response<ResponseBody>> listTemplates(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -119,6 +123,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listByResourceGroupNext" })
         @GET
         Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.iotcentral.v2018_09_01.Apps listTemplatesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listTemplatesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -128,7 +136,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppInner object if successful.
      */
@@ -201,10 +209,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<AppInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AppInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<AppInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -215,7 +223,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param app The IoT Central application metadata and security metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppInner object if successful.
      */
@@ -292,7 +300,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param app The IoT Central application metadata and security metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppInner object if successful.
      */
@@ -372,12 +380,12 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<AppInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AppInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<AppInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppInner>() { }.getType())
                 .register(201, new TypeToken<AppInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -388,7 +396,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param appPatch The IoT Central application metadata and security metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppInner object if successful.
      */
@@ -465,7 +473,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param appPatch The IoT Central application metadata and security metadata.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppInner object if successful.
      */
@@ -545,11 +553,11 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<AppInner> beginUpdateDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AppInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<AppInner> beginUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -559,7 +567,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String resourceName) {
@@ -627,7 +635,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginDelete(String resourceGroupName, String resourceName) {
@@ -699,12 +707,12 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -712,7 +720,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      * Get all IoT Central Applications in a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppInner&gt; object if successful.
      */
@@ -808,10 +816,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<PageImpl<AppInner>> listDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<AppInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -820,7 +828,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      *
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppInner&gt; object if successful.
      */
@@ -923,10 +931,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<PageImpl<AppInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<AppInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -935,7 +943,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      *
      * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppAvailabilityInfoInner object if successful.
      */
@@ -1003,10 +1011,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<AppAvailabilityInfoInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AppAvailabilityInfoInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<AppAvailabilityInfoInner> checkNameAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppAvailabilityInfoInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppAvailabilityInfoInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1015,7 +1023,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      *
      * @param operationInputs Set the name parameter in the OperationInputs structure to the subdomain of the IoT Central application to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AppAvailabilityInfoInner object if successful.
      */
@@ -1083,10 +1091,117 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<AppAvailabilityInfoInner> checkSubdomainAvailabilityDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AppAvailabilityInfoInner, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<AppAvailabilityInfoInner> checkSubdomainAvailabilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AppAvailabilityInfoInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppAvailabilityInfoInner>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AppTemplateInner&gt; object if successful.
+     */
+    public PagedList<AppTemplateInner> listTemplates() {
+        ServiceResponse<Page<AppTemplateInner>> response = listTemplatesSinglePageAsync().toBlocking().single();
+        return new PagedList<AppTemplateInner>(response.body()) {
+            @Override
+            public Page<AppTemplateInner> nextPage(String nextPageLink) {
+                return listTemplatesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AppTemplateInner>> listTemplatesAsync(final ListOperationCallback<AppTemplateInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listTemplatesSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<AppTemplateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AppTemplateInner>>> call(String nextPageLink) {
+                    return listTemplatesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AppTemplateInner&gt; object
+     */
+    public Observable<Page<AppTemplateInner>> listTemplatesAsync() {
+        return listTemplatesWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<AppTemplateInner>>, Page<AppTemplateInner>>() {
+                @Override
+                public Page<AppTemplateInner> call(ServiceResponse<Page<AppTemplateInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AppTemplateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AppTemplateInner>>> listTemplatesWithServiceResponseAsync() {
+        return listTemplatesSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<AppTemplateInner>>, Observable<ServiceResponse<Page<AppTemplateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AppTemplateInner>>> call(ServiceResponse<Page<AppTemplateInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listTemplatesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AppTemplateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AppTemplateInner>>> listTemplatesSinglePageAsync() {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listTemplates(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppTemplateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AppTemplateInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<AppTemplateInner>> result = listTemplatesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AppTemplateInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<AppTemplateInner>> listTemplatesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppTemplateInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AppTemplateInner>>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1095,7 +1210,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppInner&gt; object if successful.
      */
@@ -1194,10 +1309,10 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<PageImpl<AppInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<AppInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1206,7 +1321,7 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorDetailsException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;AppInner&gt; object if successful.
      */
@@ -1305,10 +1420,121 @@ public class AppsInner implements InnerSupportsGet<AppInner>, InnerSupportsDelet
             });
     }
 
-    private ServiceResponse<PageImpl<AppInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorDetailsException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, ErrorDetailsException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<AppInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<AppInner>>() { }.getType())
-                .registerError(ErrorDetailsException.class)
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AppTemplateInner&gt; object if successful.
+     */
+    public PagedList<AppTemplateInner> listTemplatesNext(final String nextPageLink) {
+        ServiceResponse<Page<AppTemplateInner>> response = listTemplatesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<AppTemplateInner>(response.body()) {
+            @Override
+            public Page<AppTemplateInner> nextPage(String nextPageLink) {
+                return listTemplatesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AppTemplateInner>> listTemplatesNextAsync(final String nextPageLink, final ServiceFuture<List<AppTemplateInner>> serviceFuture, final ListOperationCallback<AppTemplateInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listTemplatesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<AppTemplateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AppTemplateInner>>> call(String nextPageLink) {
+                    return listTemplatesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AppTemplateInner&gt; object
+     */
+    public Observable<Page<AppTemplateInner>> listTemplatesNextAsync(final String nextPageLink) {
+        return listTemplatesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<AppTemplateInner>>, Page<AppTemplateInner>>() {
+                @Override
+                public Page<AppTemplateInner> call(ServiceResponse<Page<AppTemplateInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Get all available application templates.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AppTemplateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AppTemplateInner>>> listTemplatesNextWithServiceResponseAsync(final String nextPageLink) {
+        return listTemplatesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<AppTemplateInner>>, Observable<ServiceResponse<Page<AppTemplateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AppTemplateInner>>> call(ServiceResponse<Page<AppTemplateInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listTemplatesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get all available application templates.
+     *
+    ServiceResponse<PageImpl<AppTemplateInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AppTemplateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AppTemplateInner>>> listTemplatesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listTemplatesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppTemplateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AppTemplateInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<AppTemplateInner>> result = listTemplatesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AppTemplateInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<AppTemplateInner>> listTemplatesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AppTemplateInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AppTemplateInner>>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 

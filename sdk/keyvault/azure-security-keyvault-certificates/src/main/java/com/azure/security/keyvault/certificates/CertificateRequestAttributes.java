@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.security.keyvault.certificates.models.CertificateImportOptions;
+import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,14 +25,14 @@ class CertificateRequestAttributes {
         if (certificateProperties.getNotBefore() != null) {
             this.notBefore = certificateProperties.getNotBefore().toEpochSecond();
         }
-        if (certificateProperties.getExpires() != null) {
-            this.expires = certificateProperties.getExpires().toEpochSecond();
+        if (certificateProperties.getExpiresOn() != null) {
+            this.expires = certificateProperties.getExpiresOn().toEpochSecond();
         }
         this.enabled = certificateProperties.isEnabled();
     }
 
-    CertificateRequestAttributes(CertificateImportOptions certificateImportOptions) {
-        this.enabled = certificateImportOptions.isEnabled();
+    CertificateRequestAttributes(ImportCertificateOptions importCertificateOptions) {
+        this.enabled = importCertificateOptions.isEnabled();
     }
 
     CertificateRequestAttributes() {

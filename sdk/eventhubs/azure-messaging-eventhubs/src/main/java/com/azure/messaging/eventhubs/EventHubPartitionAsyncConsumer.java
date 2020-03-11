@@ -3,9 +3,10 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
@@ -13,137 +14,85 @@ import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
-import java.io.Closeable;
-import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+import java.util.function.Supplier;
 
 /**
  * A package-private consumer responsible for reading {@link EventData} from a specific Event Hub partition in the
  * context of a specific consumer group.
  */
-class EventHubPartitionAsyncConsumer implements Closeable {
-    private static final AtomicReferenceFieldUpdater<EventHubPartitionAsyncConsumer, AmqpReceiveLink>
-        RECEIVE_LINK_FIELD_UPDATER = AtomicReferenceFieldUpdater.newUpdater(
-        EventHubPartitionAsyncConsumer.class, AmqpReceiveLink.class, "receiveLink");
-
-    // We don't want to dump too many credits on the link at once. It's easy enough to ask for more.
-    private static final int MINIMUM_REQUEST = 0;
-    private static final int MAXIMUM_REQUEST = 100;
-
-    private final AtomicInteger creditsToRequest = new AtomicInteger(1);
+class EventHubPartitionAsyncConsumer implements AutoCloseable {
+    private final ClientLogger logger = new ClientLogger(EventHubPartitionAsyncConsumer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
-    private final ClientLogger logger = new ClientLogger(EventHubPartitionAsyncConsumer.class);
+    private final AmqpReceiveLinkProcessor amqpReceiveLinkProcessor;
     private final MessageSerializer messageSerializer;
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
     private final String consumerGroup;
     private final String partitionId;
-    private final EmitterProcessor<PartitionEvent> emitterProcessor;
-    private final Flux<PartitionEvent> messageFlux;
     private final boolean trackLastEnqueuedEventProperties;
+    private final Scheduler scheduler;
+    private final EmitterProcessor<PartitionEvent> emitterProcessor;
+    private final EventPosition initialPosition;
 
-    private volatile AmqpReceiveLink receiveLink;
+    private volatile Long currentOffset;
 
-    EventHubPartitionAsyncConsumer(Mono<AmqpReceiveLink> receiveLinkMono, MessageSerializer messageSerializer,
-        String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId,
-        int prefetchCount, boolean trackLastEnqueuedEventProperties) {
+    EventHubPartitionAsyncConsumer(AmqpReceiveLinkProcessor amqpReceiveLinkProcessor,
+        MessageSerializer messageSerializer, String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
+        String partitionId, AtomicReference<Supplier<EventPosition>> currentEventPosition,
+        boolean trackLastEnqueuedEventProperties, Scheduler scheduler) {
+        this.initialPosition = Objects.requireNonNull(currentEventPosition.get().get(),
+            "'currentEventPosition.get().get()' cannot be null.");
+        this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.consumerGroup = consumerGroup;
         this.partitionId = partitionId;
-        this.emitterProcessor = EmitterProcessor.create(prefetchCount, false);
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
+        this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
 
         if (trackLastEnqueuedEventProperties) {
             lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null));
         }
 
-        // Caching the created link so we don't invoke another link creation.
-        this.messageFlux = receiveLinkMono.cache().flatMapMany(link -> {
-            if (RECEIVE_LINK_FIELD_UPDATER.compareAndSet(this, null, link)) {
-                logger.info("Created AMQP receive link. Initializing prefetch credits: {}", prefetchCount);
-                link.addCredits(prefetchCount);
+        currentEventPosition.set(() -> {
+            final Long offset = currentOffset;
+            return offset == null
+                ? initialPosition
+                : EventPosition.fromOffset(offset);
+        });
 
-                link.setEmptyCreditListener(() -> {
-                    if (emitterProcessor.hasDownstreams()) {
-                        return creditsToRequest.get();
-                    } else {
-                        logger.verbose("Emitter has no downstream subscribers. Not adding credits.");
-                        return 0;
-                    }
-                });
-
-                link.getErrors().subscribe(error -> {
-                    logger.info("Error received in ReceiveLink. {}", error.toString());
-
-                    //TODO (conniey): Surface error to EmitterProcessor.
-                });
-
-                link.getShutdownSignals().subscribe(signal -> {
-                    logger.info("Shutting down. Initiated by client? {}. Reason: {}",
-                        signal.isInitiatedByClient(), signal.toString());
-
-                    try {
-                        close();
-                    } catch (IOException e) {
-                        logger.error("Error closing consumer: {}", e.toString());
-                    }
-                });
-            }
-
-            return link.receive().map(message -> onMessageReceived(message));
-        }).subscribeWith(emitterProcessor)
-            .doOnSubscribe(subscription -> {
-                AmqpReceiveLink existingLink = RECEIVE_LINK_FIELD_UPDATER.get(this);
-                if (existingLink == null) {
-                    logger.info("AmqpReceiveLink not set yet.");
-                    return;
-                }
-
-                logger.verbose("Subscription received for consumer.");
-                if (existingLink.getCredits() == 0) {
-                    logger.info("Subscription received and there are no remaining credits on the link. Adding more.");
-                    existingLink.addCredits(creditsToRequest.get());
+        this.emitterProcessor = amqpReceiveLinkProcessor
+            .map(message -> onMessageReceived(message))
+            .doOnNext(event -> {
+                // Keep track of the last position so if the link goes down, we don't start from the original location.
+                final Long offset = event.getData().getOffset();
+                if (offset != null) {
+                    currentOffset = offset;
+                } else {
+                    logger.warning(
+                        "Offset for received event should not be null. Partition Id: {}. Consumer group: {}. Data: {}",
+                        event.getPartitionContext().getPartitionId(), event.getPartitionContext().getConsumerGroup(),
+                        event.getData().getBodyAsString());
                 }
             })
-            .doOnRequest(request -> {
-                if (request < MINIMUM_REQUEST) {
-                    logger.warning("Back pressure request value not valid. It must be between {} and {}.",
-                        MINIMUM_REQUEST, MAXIMUM_REQUEST);
-                    return;
-                }
-
-                final int newRequest = request > MAXIMUM_REQUEST
-                    ? MAXIMUM_REQUEST
-                    : (int) request;
-
-                logger.verbose("Back pressure request. Old value: {}. New value: {}", creditsToRequest.get(),
-                    newRequest);
-                creditsToRequest.set(newRequest);
-            });
+            .subscribeWith(EmitterProcessor.create(false));
     }
 
     /**
      * Disposes of the consumer by closing the underlying connection to the service.
-     *
-     * @throws IOException if the underlying transport and its resources could not be disposed.
      */
     @Override
-    public void close() throws IOException {
+    public void close() {
         if (!isDisposed.getAndSet(true)) {
-            final AmqpReceiveLink receiveLink = RECEIVE_LINK_FIELD_UPDATER.getAndSet(this, null);
-            if (receiveLink != null) {
-                receiveLink.close();
-            }
-
             emitterProcessor.onComplete();
+            amqpReceiveLinkProcessor.cancel();
         }
     }
 
@@ -153,7 +102,7 @@ class EventHubPartitionAsyncConsumer implements Closeable {
      * @return A stream of events received from the partition.
      */
     Flux<PartitionEvent> receive() {
-        return messageFlux;
+        return emitterProcessor.publishOn(this.scheduler);
     }
 
     /**
@@ -183,9 +132,8 @@ class EventHubPartitionAsyncConsumer implements Closeable {
             }
         }
 
-        final PartitionContext partitionContext = new PartitionContext(fullyQualifiedNamespace, partitionId,
-            eventHubName, consumerGroup, lastEnqueuedEventProperties.get());
-
-        return new PartitionEvent(partitionContext, event);
+        final PartitionContext partitionContext = new PartitionContext(fullyQualifiedNamespace, eventHubName,
+            consumerGroup, partitionId);
+        return new PartitionEvent(partitionContext, event, lastEnqueuedEventProperties.get());
     }
 }

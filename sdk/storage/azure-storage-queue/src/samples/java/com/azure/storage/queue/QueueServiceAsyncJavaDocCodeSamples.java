@@ -3,10 +3,16 @@
 package com.azure.storage.queue;
 
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.sas.AccountSasPermission;
+import com.azure.storage.common.sas.AccountSasResourceType;
+import com.azure.storage.common.sas.AccountSasService;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
 
@@ -259,5 +265,26 @@ public class QueueServiceAsyncJavaDocCodeSamples {
                     stats.getGeoReplication().getStatus(), stats.getGeoReplication().getLastSyncTime());
             });
         // END: com.azure.storage.queue.queueServiceAsyncClient.getStatisticsWithResponse
+    }
+
+    /**
+     * Code snippet for {@link QueueServiceAsyncClient#generateAccountSas(AccountSasSignatureValues)}
+     */
+    public void generateAccountSas() {
+        QueueServiceAsyncClient queueServiceAsyncClient = createAsyncClientWithCredential();
+        // BEGIN: com.azure.storage.queue.QueueServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true).setObject(true);
+        AccountSasService services = new AccountSasService().setQueueAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = queueServiceAsyncClient.generateAccountSas(sasValues);
+        // END: com.azure.storage.queue.QueueServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
     }
 }

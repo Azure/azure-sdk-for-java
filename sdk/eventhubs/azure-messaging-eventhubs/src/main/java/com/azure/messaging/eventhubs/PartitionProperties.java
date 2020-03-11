@@ -67,7 +67,7 @@ public final class PartitionProperties {
     /**
      * Gets the last sequence number of the partition's message stream.
      *
-     * @return the last sequence number of the partition's message stream.
+     * @return The last sequence number of the partition's message stream.
      */
     public long getLastEnqueuedSequenceNumber() {
         return this.lastEnqueuedSequenceNumber;
@@ -82,7 +82,7 @@ public final class PartitionProperties {
      * are no longer visible within the stream.
      * </p>
      *
-     * @return the offset of the last enqueued message in the partition's stream.
+     * @return The offset of the last enqueued message in the partition's stream.
      */
     public String getLastEnqueuedOffset() {
         return this.lastEnqueuedOffset;
@@ -91,7 +91,7 @@ public final class PartitionProperties {
     /**
      * Gets the instant, in UTC, of the last enqueued message in the partition's stream.
      *
-     * @return the instant, in UTC, of the last enqueued message in the partition's stream.
+     * @return The instant, in UTC, of the last enqueued message in the partition's stream.
      */
     public Instant getLastEnqueuedTime() {
         return this.lastEnqueuedTime;

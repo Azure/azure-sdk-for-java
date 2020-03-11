@@ -18,6 +18,10 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
@@ -44,6 +48,7 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -155,6 +160,21 @@ class Transforms {
             .setValue(blobUserDelegationKey.getValue());
     }
 
+    static com.azure.storage.blob.models.UserDelegationKey toBlobUserDelegationKey(UserDelegationKey
+        dataLakeUserDelegationKey) {
+        if (dataLakeUserDelegationKey == null) {
+            return null;
+        }
+        return new com.azure.storage.blob.models.UserDelegationKey()
+            .setSignedExpiry(dataLakeUserDelegationKey.getSignedExpiry())
+            .setSignedObjectId(dataLakeUserDelegationKey.getSignedObjectId())
+            .setSignedTenantId(dataLakeUserDelegationKey.getSignedTenantId())
+            .setSignedService(dataLakeUserDelegationKey.getSignedService())
+            .setSignedStart(dataLakeUserDelegationKey.getSignedStart())
+            .setSignedVersion(dataLakeUserDelegationKey.getSignedVersion())
+            .setValue(dataLakeUserDelegationKey.getValue());
+    }
+
     static BlobHttpHeaders toBlobHttpHeaders(PathHttpHeaders pathHTTPHeaders) {
         if (pathHTTPHeaders == null) {
             return null;
@@ -236,8 +256,9 @@ class Transforms {
         }
         return new PathItem(path.getETag(),
             OffsetDateTime.parse(path.getLastModified(), DateTimeFormatter.RFC_1123_DATE_TIME),
-            path.getContentLength(), path.getGroup(), path.isDirectory() == null ? false : path.isDirectory(),
-            path.getName(), path.getOwner(), path.getPermissions());
+            path.getContentLength() == null ? 0 : path.getContentLength(), path.getGroup(),
+            path.isDirectory() == null ? false : path.isDirectory(), path.getName(), path.getOwner(),
+            path.getPermissions());
     }
 
     static BlobRequestConditions toBlobRequestConditions(DataLakeRequestConditions requestConditions) {
@@ -299,7 +320,7 @@ class Transforms {
             .setVersion(h.getVersion())
             .setAcceptRanges(h.getAcceptRanges())
             .setDateProperty(h.getDateProperty())
-            .setIsServerEncrypted(h.isServerEncrypted())
+            .setServerEncrypted(h.isServerEncrypted())
             .setEncryptionKeySha256(h.getEncryptionKeySha256())
             .setFileContentMd5(h.getBlobContentMD5())
             .setContentCrc64(h.getContentCrc64())
@@ -374,4 +395,53 @@ class Transforms {
             .setPermissions(accessPolicy.getPermissions());
     }
 
+    static BlobServiceSasSignatureValues toBlobSasValues(DataLakeServiceSasSignatureValues
+        dataLakeServiceSasSignatureValues) {
+        if (dataLakeServiceSasSignatureValues == null) {
+            return null;
+        }
+        BlobServiceSasSignatureValues blobServiceSasSignatureValues;
+        if (dataLakeServiceSasSignatureValues.getIdentifier() != null) {
+            blobServiceSasSignatureValues =
+                new BlobServiceSasSignatureValues(dataLakeServiceSasSignatureValues.getIdentifier());
+        } else {
+            // It's ok to use blob container sas permission since its a super set of blob sas permission
+            blobServiceSasSignatureValues =
+                new BlobServiceSasSignatureValues(dataLakeServiceSasSignatureValues.getExpiryTime(),
+                    BlobContainerSasPermission.parse(dataLakeServiceSasSignatureValues.getPermissions()));
+        }
+        blobServiceSasSignatureValues.setVersion(dataLakeServiceSasSignatureValues.getVersion())
+            .setProtocol(dataLakeServiceSasSignatureValues.getProtocol())
+            .setStartTime(dataLakeServiceSasSignatureValues.getStartTime())
+            .setExpiryTime(dataLakeServiceSasSignatureValues.getExpiryTime())
+            .setSasIpRange(dataLakeServiceSasSignatureValues.getSasIpRange())
+            .setIdentifier(dataLakeServiceSasSignatureValues.getIdentifier())
+            .setCacheControl(dataLakeServiceSasSignatureValues.getCacheControl())
+            .setContentDisposition(dataLakeServiceSasSignatureValues.getContentDisposition())
+            .setContentEncoding(dataLakeServiceSasSignatureValues.getContentEncoding())
+            .setContentLanguage(dataLakeServiceSasSignatureValues.getContentLanguage())
+            .setContentType(dataLakeServiceSasSignatureValues.getContentType());
+        if (dataLakeServiceSasSignatureValues.getPermissions() != null) {
+            // It's ok to use blob container sas permission since its a super set of blob sas permission
+            blobServiceSasSignatureValues.setPermissions(BlobContainerSasPermission.parse(
+                dataLakeServiceSasSignatureValues.getPermissions()));
+        }
+        return blobServiceSasSignatureValues;
+    }
+
+    static com.azure.storage.blob.models.ParallelTransferOptions toBlobParallelTransferOptions(
+        ParallelTransferOptions pto) {
+        if (pto == null) {
+            return null;
+        }
+        return new com.azure.storage.blob.models.ParallelTransferOptions(pto.getBlockSize(), pto.getNumBuffers(),
+            Transforms.toBlobProgressReceiver(pto.getProgressReceiver()), pto.getMaxSingleUploadSize());
+    }
+
+    static com.azure.storage.blob.ProgressReceiver toBlobProgressReceiver(ProgressReceiver pr) {
+        if (pr == null) {
+            return null;
+        }
+        return pr::reportProgress;
+    }
 }

@@ -5,6 +5,10 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.sas.AccountSasPermission;
+import com.azure.storage.common.sas.AccountSasResourceType;
+import com.azure.storage.common.sas.AccountSasService;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
 
@@ -250,5 +254,26 @@ public class ShareServiceJavaDocCodeSamples {
             Duration.ofSeconds(1), new Context(key1, value1));
         System.out.printf("Setting File service properties completed with status code %d", response.getStatusCode());
         // END: com.azure.storage.file.share.ShareServiceClient.setPropertiesWithResponse#fileServiceProperties-Context.clearCORS
+    }
+
+    /**
+     * Code snippet for {@link ShareServiceClient#generateAccountSas(AccountSasSignatureValues)}
+     */
+    public void generateAccountSas() {
+        ShareServiceClient fileServiceClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareServiceClient.generateAccountSas#AccountSasSignatureValues
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true);
+        AccountSasService services = new AccountSasService().setBlobAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = fileServiceClient.generateAccountSas(sasValues);
+        // END: com.azure.storage.file.share.ShareServiceClient.generateAccountSas#AccountSasSignatureValues
     }
 }

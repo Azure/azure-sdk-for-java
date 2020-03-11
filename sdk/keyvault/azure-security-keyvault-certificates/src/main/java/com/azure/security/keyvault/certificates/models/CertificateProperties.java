@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,6 +17,13 @@ import java.util.Map;
  * Represents base properties of a certificate.
  */
 public class CertificateProperties {
+
+    private final ClientLogger logger = new ClientLogger(CertificateProperties.class);
+
+    /**
+     * URL for the Azure KeyVault service.
+     */
+    private String vaultUrl;
 
     /**
      * Determines whether the object is enabled.
@@ -35,17 +43,17 @@ public class CertificateProperties {
     /**
      * Expiry date in UTC.
      */
-    private OffsetDateTime expires;
+    private OffsetDateTime expiresOn;
 
     /**
      * Creation time in UTC.
      */
-    private OffsetDateTime created;
+    private OffsetDateTime createdOn;
 
     /**
      * Last updated time in UTC.
      */
-    private OffsetDateTime updated;
+    private OffsetDateTime updatedOn;
 
     /**
      * Reflects the deletion recovery level currently in effect for certificates in
@@ -87,9 +95,9 @@ public class CertificateProperties {
     CertificateProperties() { }
 
     /**
-     * Get the id value.
+     * Get the certificate identifier.
      *
-     * @return the id value
+     * @return the certificate identifier
      */
     public String getId() {
         return this.id;
@@ -109,8 +117,8 @@ public class CertificateProperties {
      *
      * @return the expires UTC time.
      */
-    public OffsetDateTime getExpires() {
-        return this.expires;
+    public OffsetDateTime getExpiresOn() {
+        return this.expiresOn;
     }
 
     /**
@@ -118,8 +126,8 @@ public class CertificateProperties {
      *
      * @return the created UTC time.
      */
-    public OffsetDateTime getCreated() {
-        return created;
+    public OffsetDateTime getCreatedOn() {
+        return createdOn;
     }
 
     /**
@@ -127,8 +135,8 @@ public class CertificateProperties {
      *
      * @return the last updated UTC time.
      */
-    public OffsetDateTime getUpdated() {
-        return updated;
+    public OffsetDateTime getUpdatedOn() {
+        return updatedOn;
     }
 
 
@@ -139,6 +147,15 @@ public class CertificateProperties {
      */
     public Map<String, String> getTags() {
         return this.tags;
+    }
+
+    /**
+     * Get the URL for the Azure KeyVault service.
+     *
+     * @return the value of the URL for the Azure KeyVault service.
+     */
+    public String getVaultUrl() {
+        return this.vaultUrl;
     }
 
     /**
@@ -214,9 +231,9 @@ public class CertificateProperties {
     void unpackBaseAttributes(Map<String, Object> attributes) {
         this.enabled = (Boolean) attributes.get("enabled");
         this.notBefore =  epochToOffsetDateTime(attributes.get("nbf"));
-        this.expires =  epochToOffsetDateTime(attributes.get("exp"));
-        this.created = epochToOffsetDateTime(attributes.get("created"));
-        this.updated = epochToOffsetDateTime(attributes.get("updated"));
+        this.expiresOn =  epochToOffsetDateTime(attributes.get("exp"));
+        this.createdOn = epochToOffsetDateTime(attributes.get("created"));
+        this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
         this.recoveryLevel = (String) attributes.get("recoveryLevel");
         this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
         unpackId((String) attributes.get("id"));
@@ -237,10 +254,11 @@ public class CertificateProperties {
             try {
                 URL url = new URL(id);
                 String[] tokens = url.getPath().split("/");
+                this.vaultUrl = (tokens.length >= 2 ? tokens[1] : null);
                 this.name = (tokens.length >= 3 ? tokens[2] : null);
                 this.version = (tokens.length >= 4 ? tokens[3] : null);
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+                throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
             }
         }
     }

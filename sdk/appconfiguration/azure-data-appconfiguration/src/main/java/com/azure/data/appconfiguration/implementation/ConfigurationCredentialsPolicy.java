@@ -12,6 +12,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
+import java.util.Objects;
 
 /**
  * A policy that authenticates requests with Azure App Configuration service. The content added by this policy
@@ -32,8 +33,10 @@ public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy 
      * pipeline.
      *
      * @param credentials the credential information to authenticate to Azure App Configuration service
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public ConfigurationCredentialsPolicy(ConfigurationClientCredentials credentials) {
+        Objects.requireNonNull(credentials, "'credential' can not be a null value.");
         this.credentials = credentials;
     }
 

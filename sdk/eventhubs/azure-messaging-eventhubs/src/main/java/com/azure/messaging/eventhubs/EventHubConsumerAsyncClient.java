@@ -3,58 +3,61 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
+import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
+import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * A consumer responsible for reading {@link EventData} from a specific Event Hub partition in the context of a specific
- * consumer group.
+ * An <b>asynchronous</b> consumer responsible for reading {@link EventData} from either a specific Event Hub partition
+ * or all partitions in the context of a specific consumer group.
  *
  * <p><strong>Creating an {@link EventHubConsumerAsyncClient}</strong></p>
- * <p>Required parameters are {@code consumerGroup}, and credentials are required when
- * creating a consumer.</p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation}
  *
  * <p><strong>Consuming events a single partition from Event Hub</strong></p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition}
  *
- * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
- * <p>For event consumers that need to limit the number of events they receive at a given time, they can use {@link
- * BaseSubscriber#request(long)}.</p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber}
- *
  * <p><strong>Viewing latest partition information</strong></p>
  * <p>Latest partition information as events are received can by setting
  * {@link ReceiveOptions#setTrackLastEnqueuedEventProperties(boolean) setTrackLastEnqueuedEventProperties} to
- * {@code true}. As events come in, explore the {@link PartitionContext} object.
- * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean-receiveoptions}
+ * {@code true}. As events come in, explore the {@link PartitionEvent} object.
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions}
+ *
+ * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
+ * <p>For event consumers that need to limit the number of events they receive at a given time, they can use
+ * {@link BaseSubscriber#request(long)}.</p>
+ * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber}
  *
  * <p><strong>Receiving from all partitions</strong></p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean}
- *
  */
 @ServiceClient(builder = EventHubClientBuilder.class, isAsync = true)
 public class EventHubConsumerAsyncClient implements Closeable {
@@ -65,28 +68,32 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubConsumerAsyncClient.class);
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
-    private final EventHubConnection connection;
+    private final EventHubConnectionProcessor connectionProcessor;
     private final MessageSerializer messageSerializer;
     private final String consumerGroup;
     private final int prefetchCount;
+    private final Scheduler scheduler;
     private final boolean isSharedConnection;
+    private final Runnable onClientClosed;
     /**
-     * Keeps track of the open partition consumers keyed by linkName. The link name is generated as:
-     * {@code "partitionId_GUID"}. For receiving from all partitions, links are prefixed with
-     * {@code "all-GUID-partitionId"}.
+     * Keeps track of the open partition consumers keyed by linkName. The link name is generated as: {@code
+     * "partitionId_GUID"}. For receiving from all partitions, links are prefixed with {@code "all-GUID-partitionId"}.
      */
     private final ConcurrentHashMap<String, EventHubPartitionAsyncConsumer> openPartitionConsumers =
         new ConcurrentHashMap<>();
 
-    EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName, EventHubConnection connection,
-        MessageSerializer messageSerializer, String consumerGroup, int prefetchCount, boolean isSharedConnection) {
+    EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
+        EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
+        int prefetchCount, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClosed) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
-        this.connection = connection;
+        this.connectionProcessor = connectionProcessor;
         this.messageSerializer = messageSerializer;
         this.consumerGroup = consumerGroup;
         this.prefetchCount = prefetchCount;
+        this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
+        this.onClientClosed = onClientClosed;
     }
 
     /**
@@ -124,7 +131,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
-        return connection.getManagementNode().flatMap(EventHubManagementNode::getEventHubProperties);
+        return connectionProcessor.flatMap(connection -> connection.getManagementNode())
+            .flatMap(EventHubManagementNode::getEventHubProperties);
     }
 
     /**
@@ -143,6 +151,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * @param partitionId The unique identifier of a partition associated with the Event Hub.
      *
      * @return The set of information for the requested partition under the Event Hub this client is associated with.
+     *
+     * @throws NullPointerException if {@code partitionId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
@@ -152,7 +162,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
             return monoError(logger, new IllegalArgumentException("'partitionId' cannot be an empty string."));
         }
 
-        return connection.getManagementNode().flatMap(node -> node.getPartitionProperties(partitionId));
+        return connectionProcessor.flatMap(connection -> connection.getManagementNode())
+            .flatMap(node -> node.getPartitionProperties(partitionId));
     }
 
     /**
@@ -171,15 +182,15 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     /**
-     * Consumes events from a single partition starting at {@code startingPosition} with a set of
-     * {@link ReceiveOptions receive options}.
+     * Consumes events from a single partition starting at {@code startingPosition} with a set of {@link ReceiveOptions
+     * receive options}.
      *
      * <ul>
      * <li>If receive is invoked where {@link ReceiveOptions#getOwnerLevel()} has a value, then Event Hubs service will
-     * guarantee only one active consumer exists per partitionId and consumer group combination. This consumer is
-     * sometimes referred to as an "Epoch Consumer."</li>
+     * guarantee only one active consumer exists per partitionId and consumer group combination. This receive operation
+     * is sometimes referred to as an "Epoch Consumer".</li>
      * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
-     * {@link ReceiveOptions#getOwnerLevel()} when creating consumers. This non-exclusive consumer is sometimes
+     * {@link ReceiveOptions#getOwnerLevel()} when invoking receive operations. This non-exclusive consumer is sometimes
      * referred to as a "Non-Epoch Consumer."</li>
      * </ul>
      *
@@ -190,7 +201,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * @return A stream of events for this partition. If a stream for the events was opened before, the same position
      *     within that partition is returned. Otherwise, events are read starting from {@code startingPosition}.
      *
-     * @throws NullPointerException if {@code partitionId}, {@code startingPosition}, {@code receiveOptions} is null.
+     * @throws NullPointerException if {@code partitionId}, {@code startingPosition}, {@code receiveOptions} is
+     *     null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.
      */
     public Flux<PartitionEvent> receiveFromPartition(String partitionId, EventPosition startingPosition,
@@ -212,17 +224,16 @@ public class EventHubConsumerAsyncClient implements Closeable {
     /**
      * Consumes events from all partitions starting from the beginning of each partition.
      *
-     * <p>
-     * This method is not recommended for production use; the {@link EventProcessorClient} should be used for reading
-     * events from all partitions in a production scenario, as it offers a much more robust experience with higher
-     * throughput.
+     * <p>This method is <b>not</b> recommended for production use; the {@link EventProcessorClient} should be used for
+     * reading events from all partitions in a production scenario, as it offers a much more robust experience with
+     * higher throughput.
      *
      * It is important to note that this method does not guarantee fairness amongst the partitions. Depending on service
      * communication, there may be a clustering of events per partition and/or there may be a noticeable bias for a
-     * given partition or subset of partitions.
-     * </p>
+     * given partition or subset of partitions.</p>
      *
-     * @return A stream of events for every partition in the Event Hub starting from {@code startingPosition}.
+     *
+     * @return A stream of events for every partition in the Event Hub starting from the beginning of each partition.
      */
     public Flux<PartitionEvent> receive() {
         return receive(true, defaultReceiveOptions);
@@ -231,18 +242,17 @@ public class EventHubConsumerAsyncClient implements Closeable {
     /**
      * Consumes events from all partitions.
      *
-     * <p>
-     * This method is not recommended for production use; the {@link EventProcessorClient} should be used for reading
-     * events from all partitions in a production scenario, as it offers a much more robust experience with higher
-     * throughput.
+     * <p>This method is <b>not</b> recommended for production use; the {@link EventProcessorClient} should be used for
+     * reading events from all partitions in a production scenario, as it offers a much more robust experience with
+     * higher throughput.
      *
      * It is important to note that this method does not guarantee fairness amongst the partitions. Depending on service
      * communication, there may be a clustering of events per partition and/or there may be a noticeable bias for a
-     * given partition or subset of partitions.
-     * </p>
+     * given partition or subset of partitions.</p>
      *
-     * @param startReadingAtEarliestEvent {@code true} to begin reading at the first events available in each partition;
-     *     otherwise, reading will begin at the end of each partition seeing only new events as they are published.
+     * @param startReadingAtEarliestEvent {@code true} to begin reading at the first events available in each
+     *     partition; otherwise, reading will begin at the end of each partition seeing only new events as they are
+     *     published.
      *
      * @return A stream of events for every partition in the Event Hub.
      */
@@ -251,20 +261,28 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     /**
-     * Consumes events from all partitions.
+     * Consumes events from all partitions configured with a set of {@code receiveOptions}.
      *
-     * <p>
-     * This method is not recommended for production use; the {@link EventProcessorClient} should be used for reading
-     * events from all partitions in a production scenario, as it offers a much more robust experience with higher
-     * throughput.
+     * <p>This method is <b>not</b> recommended for production use; the {@link EventProcessorClient} should be used for
+     * reading events from all partitions in a production scenario, as it offers a much more robust experience with
+     * higher throughput.
      *
      * It is important to note that this method does not guarantee fairness amongst the partitions. Depending on service
      * communication, there may be a clustering of events per partition and/or there may be a noticeable bias for a
-     * given partition or subset of partitions.
-     * </p>
+     * given partition or subset of partitions.</p>
      *
-     * @param startReadingAtEarliestEvent {@code true} to begin reading at the first events available in each partition;
-     *     otherwise, reading will begin at the end of each partition seeing only new events as they are published.
+     * <ul>
+     * <li>If receive is invoked where {@link ReceiveOptions#getOwnerLevel()} has a value, then Event Hubs service will
+     * guarantee only one active consumer exists per partitionId and consumer group combination. This receive operation
+     * is sometimes referred to as an "Epoch Consumer".</li>
+     * <li>Multiple consumers per partitionId and consumer group combination can be created by not setting
+     * {@link ReceiveOptions#getOwnerLevel()} when invoking receive operations. This non-exclusive consumer is sometimes
+     * referred to as a "Non-Epoch Consumer."</li>
+     * </ul>
+     *
+     * @param startReadingAtEarliestEvent {@code true} to begin reading at the first events available in each
+     *     partition; otherwise, reading will begin at the end of each partition seeing only new events as they are
+     *     published.
      * @param receiveOptions Options when receiving events from each Event Hub partition.
      *
      * @return A stream of events for every partition in the Event Hub.
@@ -294,43 +312,39 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     @Override
     public void close() {
-        if (!isDisposed.getAndSet(true)) {
-            openPartitionConsumers.forEach((key, value) -> {
-                try {
-                    value.close();
-                } catch (IOException e) {
-                    logger.warning("Exception occurred while closing consumer for partition '{}'", key, e);
-                }
-            });
-            openPartitionConsumers.clear();
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
+        openPartitionConsumers.forEach((key, value) -> value.close());
+        openPartitionConsumers.clear();
 
-            if (!isSharedConnection) {
-                connection.close();
-            }
+        if (isSharedConnection) {
+            onClientClosed.run();
+        } else {
+            connectionProcessor.dispose();
         }
     }
 
     private Flux<PartitionEvent> createConsumer(String linkName, String partitionId, EventPosition startingPosition,
-            ReceiveOptions receiveOptions) {
+        ReceiveOptions receiveOptions) {
         return openPartitionConsumers
             .computeIfAbsent(linkName, name -> {
                 logger.info("{}: Creating receive consumer for partition '{}'", linkName, partitionId);
                 return createPartitionConsumer(name, partitionId, startingPosition, receiveOptions);
             })
             .receive()
-            .doFinally(signalType -> {
-                logger.info("{}: Receiving completed. Partition: '{}'. Signal: '{}'", linkName, partitionId,
-                    signalType);
-                final EventHubPartitionAsyncConsumer consumer = openPartitionConsumers.remove(linkName);
+            .doOnCancel(() -> removeLink(linkName, partitionId, SignalType.CANCEL))
+            .doOnComplete(() -> removeLink(linkName, partitionId, SignalType.ON_COMPLETE))
+            .doOnError(error -> removeLink(linkName, partitionId, SignalType.ON_ERROR));
+    }
 
-                if (consumer != null) {
-                    try {
-                        consumer.close();
-                    } catch (IOException e) {
-                        logger.warning("Exception occurred while closing consumer {}", linkName, e);
-                    }
-                }
-            });
+    private void removeLink(String linkName, String partitionId, SignalType signalType) {
+        logger.info("{}: Receiving completed. Partition[{}]. Signal[{}]", linkName, partitionId, signalType);
+        final EventHubPartitionAsyncConsumer consumer = openPartitionConsumers.remove(linkName);
+
+        if (consumer != null) {
+            consumer.close();
+        }
     }
 
     private EventHubPartitionAsyncConsumer createPartitionConsumer(String linkName, String partitionId,
@@ -338,12 +352,19 @@ public class EventHubConsumerAsyncClient implements Closeable {
         final String entityPath = String.format(Locale.US, RECEIVER_ENTITY_PATH_FORMAT,
             getEventHubName(), consumerGroup, partitionId);
 
-        final Mono<AmqpReceiveLink> receiveLinkMono =
-            connection.createReceiveLink(linkName, entityPath, startingPosition, receiveOptions)
-                .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()));
+        final AtomicReference<Supplier<EventPosition>> initialPosition = new AtomicReference<>(() -> startingPosition);
+        final Flux<AmqpReceiveLink> receiveLinkMono =
+            connectionProcessor.flatMap(connection ->
+                connection.createReceiveLink(linkName, entityPath, initialPosition.get().get(), receiveOptions))
+                .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()))
+            .repeat();
 
-        return new EventHubPartitionAsyncConsumer(receiveLinkMono, messageSerializer, getFullyQualifiedNamespace(),
-            getEventHubName(), consumerGroup, partitionId, prefetchCount,
-            receiveOptions.getTrackLastEnqueuedEventProperties());
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
+        final AmqpReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
+            new AmqpReceiveLinkProcessor(prefetchCount, retryPolicy, connectionProcessor));
+
+        return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
+            getEventHubName(), consumerGroup, partitionId, initialPosition,
+            receiveOptions.getTrackLastEnqueuedEventProperties(), scheduler);
     }
 }

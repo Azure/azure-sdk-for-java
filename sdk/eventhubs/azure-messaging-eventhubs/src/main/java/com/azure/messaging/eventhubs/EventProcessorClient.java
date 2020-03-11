@@ -7,27 +7,32 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
+import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import java.util.concurrent.atomic.AtomicReference;
-import reactor.core.Disposable;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
-
+import java.time.Duration;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import reactor.core.Disposable;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 /**
- * Event Processor provides a convenient mechanism to consume events from all partitions of an Event Hub in the context
- * of a consumer group. Event Processor-based application consists of one or more instances of EventProcessor(s) which
- * are set up to consume events from the same Event Hub, consumer group to balance the workload across different
- * instances and track progress when events are processed. Based on the number of instances running, each Event
- * Processor may own zero or more partitions to balance the workload among all the instances.
+ * EventProcessorClient provides a convenient mechanism to consume events from all partitions of an Event Hub in the
+ * context of a consumer group. Event Processor-based application consists of one or more instances of
+ * EventProcessorClient(s) which are set up to consume events from the same Event Hub, consumer group to balance the
+ * workload across different instances and track progress when events are processed. Based on the number of instances
+ * running, each EventProcessorClient may own zero or more partitions to balance the workload among all the instances.
  *
- * <p>To create an instance of EventProcessor, use the fluent {@link EventProcessorClientBuilder}.</p>
+ * <p>To create an instance of EventProcessorClient, use the fluent {@link EventProcessorClientBuilder}.</p>
  *
  * @see EventProcessorClientBuilder
  */
@@ -39,13 +44,16 @@ public class EventProcessorClient {
     private final ClientLogger logger = new ClientLogger(EventProcessorClient.class);
 
     private final String identifier;
-    private final AtomicBoolean started = new AtomicBoolean(false);
+    private final AtomicBoolean isRunning = new AtomicBoolean(false);
     private final PartitionPumpManager partitionPumpManager;
     private final PartitionBasedLoadBalancer partitionBasedLoadBalancer;
     private final CheckpointStore checkpointStore;
 
     private final AtomicReference<Disposable> runner = new AtomicReference<>();
     private final AtomicReference<Scheduler> scheduler = new AtomicReference<>();
+    private final String fullyQualifiedNamespace;
+    private final String eventHubName;
+    private final String consumerGroup;
 
     /**
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
@@ -53,30 +61,38 @@ public class EventProcessorClient {
      * @param eventHubClientBuilder The {@link EventHubClientBuilder}.
      * @param consumerGroup The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
-     * @param initialEventPosition Initial event position to start consuming events.
-     * @param checkpointStore The store used for reading and updating partition ownership and checkpoints.
-     * information.
+     * @param checkpointStore The store used for reading and updating partition ownership and checkpoints. information.
+     * @param trackLastEnqueuedEventProperties If set to {@code true}, all events received by this EventProcessorClient
+     * will also include the last enqueued event properties for it's respective partitions.
      * @param tracerProvider The tracer implementation.
+     * @param processError Error handler for any errors that occur outside the context of a partition.
+     * @param initialPartitionEventPosition Map of initial event positions for partition ids.
      */
     EventProcessorClient(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
-        Supplier<PartitionProcessor> partitionProcessorFactory, EventPosition initialEventPosition,
-        CheckpointStore checkpointStore, TracerProvider tracerProvider) {
+        Supplier<PartitionProcessor> partitionProcessorFactory, CheckpointStore checkpointStore,
+        boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider, Consumer<ErrorContext> processError,
+        Map<String, EventPosition> initialPartitionEventPosition) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
         Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
         Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null.");
-        Objects.requireNonNull(initialEventPosition, "initialEventPosition cannot be null.");
+
+        EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
 
         this.checkpointStore = Objects.requireNonNull(checkpointStore, "checkpointStore cannot be null");
         this.identifier = UUID.randomUUID().toString();
+        this.fullyQualifiedNamespace = eventHubAsyncClient.getFullyQualifiedNamespace().toLowerCase(Locale.ROOT);
+        this.eventHubName = eventHubAsyncClient.getEventHubName().toLowerCase(Locale.ROOT);
+        this.consumerGroup = consumerGroup.toLowerCase(Locale.ROOT);
+
         logger.info("The instance ID for this event processors is {}", this.identifier);
         this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
-            initialEventPosition, eventHubClientBuilder, tracerProvider);
-        EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
+            eventHubClientBuilder, trackLastEnqueuedEventProperties, tracerProvider, initialPartitionEventPosition);
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
-                eventHubAsyncClient.getFullyQualifiedNamespace(), eventHubAsyncClient.getEventHubName(),
-                consumerGroup, identifier, TimeUnit.MINUTES.toSeconds(1), partitionPumpManager);
+                this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,
+                TimeUnit.MINUTES.toSeconds(1), this.partitionPumpManager, processError);
+
     }
 
     /**
@@ -98,10 +114,10 @@ public class EventProcessorClient {
      * </p>
      *
      * <p><strong>Starting the processor to consume events from all partitions</strong></p>
-     * {@codesnippet com.azure.messaging.eventhubs.eventprocessor.startstop}
+     * {@codesnippet com.azure.messaging.eventhubs.eventprocessorclient.startstop}
      */
     public synchronized void start() {
-        if (!started.compareAndSet(false, true)) {
+        if (!isRunning.compareAndSet(false, true)) {
             logger.info("Event processor is already running");
             return;
         }
@@ -122,15 +138,37 @@ public class EventProcessorClient {
      * </p>
      *
      * <p><strong>Stopping the processor</strong></p>
-     * {@codesnippet com.azure.messaging.eventhubs.eventprocessor.startstop}
+     * {@codesnippet com.azure.messaging.eventhubs.eventprocessorclient.startstop}
      */
     public synchronized void stop() {
-        if (!started.compareAndSet(true, false)) {
+        if (!isRunning.compareAndSet(true, false)) {
             logger.info("Event processor has already stopped");
             return;
         }
         runner.get().dispose();
         scheduler.get().dispose();
-        this.partitionPumpManager.stopAllPartitionPumps();
+        stopProcessing();
+    }
+
+    /**
+     * Returns {@code true} if the event processor is running. If the event processor is already running, calling
+     * {@link #start()} has no effect.
+     *
+     * @return {@code true} if the event processor is running.
+     */
+    public synchronized boolean isRunning() {
+        return isRunning.get();
+    }
+
+    private void stopProcessing() {
+        partitionPumpManager.stopAllPartitionPumps();
+
+        // finally, remove ownerid from checkpointstore as the processor is shutting down
+        checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup)
+            .filter(ownership -> identifier.equals(ownership.getOwnerId()))
+            .map(ownership -> ownership.setOwnerId(""))
+            .collect(Collectors.toList())
+            .flatMapMany(checkpointStore::claimOwnership)
+            .blockLast(Duration.ofSeconds(10)); // block until the checkpoint store is updated
     }
 }

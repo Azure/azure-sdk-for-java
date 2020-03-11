@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Specifies a RSA key for token validation.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = ContentKeyPolicyRsaTokenKey.class)
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicyRsaTokenKey")
 public class ContentKeyPolicyRsaTokenKey extends ContentKeyPolicyRestrictionTokenKey {
     /**

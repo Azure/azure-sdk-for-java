@@ -13,6 +13,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.FileSystemAccessPolicies;
@@ -21,8 +23,11 @@ import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PublicAccessType;
+import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -39,7 +44,9 @@ import java.util.Objects;
  * respectively, and operations on the service are available on {@link DataLakeServiceClient}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>
+ * Please refer to the
+ *
+ * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">
  *     Azure Docs</a> for more information on file systems.
  */
 @ServiceClient(builder = DataLakeFileSystemClientBuilder.class)
@@ -51,10 +58,7 @@ public class DataLakeFileSystemClient {
 
     public static final String ROOT_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
 
-//    public static final String STATIC_WEBSITE_FILESYSTEM_NAME =
-//    DataLakeFileSystemAsyncClient.STATIC_WEBSITE_FILESYSTEM_NAME;
-
-//    public static final String LOG_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.LOG_FILESYSTEM_NAME;
+    private static final String ROOT_DIRECTORY_NAME = "";
 
     /**
      * Package-private constructor for use by {@link DataLakeFileSystemClientBuilder}.
@@ -107,6 +111,21 @@ public class DataLakeFileSystemClient {
 
         return new DataLakeDirectoryClient(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(directoryName),
             blobContainerClient.getBlobClient(directoryName).getBlockBlobClient());
+    }
+
+    /**
+     * Initializes a new DataLakeDirectoryClient object by concatenating {@code ""} to the end of
+     * DataLakeFileSystemClient's URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the
+     * DataLakeFileSystemClient.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.getRootDirectoryClient}
+     *
+     * @return A new {@link DataLakeDirectoryClient} object which references the root directory in this file system.
+     */
+    DataLakeDirectoryClient getRootDirectoryClient() {
+        return getDirectoryClient(DataLakeFileSystemClient.ROOT_DIRECTORY_NAME);
     }
 
     /**
@@ -191,8 +210,9 @@ public class DataLakeFileSystemClient {
      */
     public Response<Void> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Duration timeout, Context context) {
-        return blobContainerClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType), timeout,
-            context);
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blobContainerClient.createWithResponse(metadata, Transforms.toBlobPublicAccessType(accessType), timeout,
+                context), logger);
     }
 
     /**
@@ -224,8 +244,9 @@ public class DataLakeFileSystemClient {
      */
     public Response<Void> deleteWithResponse(DataLakeRequestConditions requestConditions, Duration timeout,
         Context context) {
-        return blobContainerClient.deleteWithResponse(Transforms.toBlobRequestConditions(requestConditions),
-             timeout, context);
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blobContainerClient.deleteWithResponse(Transforms.toBlobRequestConditions(requestConditions), timeout,
+                context), logger);
     }
 
     /**
@@ -256,9 +277,11 @@ public class DataLakeFileSystemClient {
      * @return A response containing the file system properties.
      */
     public Response<FileSystemProperties> getPropertiesWithResponse(String leaseId, Duration timeout, Context context) {
-        Response<BlobContainerProperties> response = blobContainerClient.getPropertiesWithResponse(leaseId, timeout,
-            context);
-        return new SimpleResponse<>(response, Transforms.toFileSystemProperties(response.getValue()));
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            Response<BlobContainerProperties> response = blobContainerClient.getPropertiesWithResponse(leaseId, timeout,
+                context);
+            return new SimpleResponse<>(response, Transforms.toFileSystemProperties(response.getValue()));
+        }, logger);
     }
 
     /**
@@ -290,8 +313,9 @@ public class DataLakeFileSystemClient {
      */
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata,
         DataLakeRequestConditions requestConditions, Duration timeout, Context context) {
-        return blobContainerClient.setMetadataWithResponse(metadata,
-            Transforms.toBlobRequestConditions(requestConditions), timeout, context);
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blobContainerClient.setMetadataWithResponse(metadata, Transforms.toBlobRequestConditions(requestConditions),
+                timeout, context), logger);
     }
 
     /**
@@ -519,9 +543,11 @@ public class DataLakeFileSystemClient {
      */
     public Response<FileSystemAccessPolicies> getAccessPolicyWithResponse(String leaseId, Duration timeout,
         Context context) {
-        Response<BlobContainerAccessPolicies> response = blobContainerClient.getAccessPolicyWithResponse(leaseId,
-            timeout, context);
-        return new SimpleResponse<>(response, Transforms.toFileSystemAccessPolicies(response.getValue()));
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            Response<BlobContainerAccessPolicies> response = blobContainerClient.getAccessPolicyWithResponse(leaseId,
+                timeout, context);
+            return new SimpleResponse<>(response, Transforms.toFileSystemAccessPolicies(response.getValue()));
+        }, logger);
     }
 
     /**
@@ -571,14 +597,55 @@ public class DataLakeFileSystemClient {
     public Response<Void> setAccessPolicyWithResponse(PublicAccessType accessType,
         List<DataLakeSignedIdentifier> identifiers, DataLakeRequestConditions requestConditions,
         Duration timeout, Context context) {
-        return blobContainerClient
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blobContainerClient
             .setAccessPolicyWithResponse(Transforms.toBlobPublicAccessType(accessType),
                 Transforms.toBlobIdentifierList(identifiers), Transforms.toBlobRequestConditions(requestConditions),
-                timeout, context);
+                timeout, context), logger);
     }
 
     BlobContainerClient getBlobContainerClient() {
         return blobContainerClient;
+    }
+
+    /**
+     * Generates a user delegation SAS for the file system using the specified
+     * {@link DataLakeServiceSasSignatureValues}.
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a user delegation SAS.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @see DataLakeServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to
+     * get a user delegation key.
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return dataLakeFileSystemAsyncClient.generateUserDelegationSas(dataLakeServiceSasSignatureValues,
+            userDelegationKey);
+    }
+
+    /**
+     * Generates a service SAS for the file system using the specified {@link DataLakeServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.generateSas#DataLakeServiceSasSignatureValues}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues) {
+        return dataLakeFileSystemAsyncClient.generateSas(dataLakeServiceSasSignatureValues);
     }
 
 }

@@ -9,21 +9,19 @@
 package com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.arm.resources.models.Resource;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
-import com.microsoft.azure.arm.resources.models.HasResourceGroup;
-import com.microsoft.azure.arm.model.Refreshable;
+import com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.implementation.SqlVirtualMachineInner;
+import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.implementation.SqlVirtualMachineManager;
-import com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.implementation.SqlVirtualMachineInner;
+import java.util.Map;
 
 /**
  * Type representing SqlVirtualMachine.
  */
-public interface SqlVirtualMachine extends HasInner<SqlVirtualMachineInner>, Resource, GroupableResourceCore<SqlVirtualMachineManager, SqlVirtualMachineInner>, HasResourceGroup, Refreshable<SqlVirtualMachine>, Updatable<SqlVirtualMachine.Update>, HasManager<SqlVirtualMachineManager> {
+public interface SqlVirtualMachine extends HasInner<SqlVirtualMachineInner>, Indexable, Updatable<SqlVirtualMachine.Update>, HasManager<SqlVirtualMachineManager> {
     /**
      * @return the autoBackupSettings value.
      */
@@ -35,6 +33,11 @@ public interface SqlVirtualMachine extends HasInner<SqlVirtualMachineInner>, Res
     AutoPatchingSettings autoPatchingSettings();
 
     /**
+     * @return the id value.
+     */
+    String id();
+
+    /**
      * @return the identity value.
      */
     ResourceIdentity identity();
@@ -43,6 +46,16 @@ public interface SqlVirtualMachine extends HasInner<SqlVirtualMachineInner>, Res
      * @return the keyVaultCredentialSettings value.
      */
     KeyVaultCredentialSettings keyVaultCredentialSettings();
+
+    /**
+     * @return the location value.
+     */
+    String location();
+
+    /**
+     * @return the name value.
+     */
+    String name();
 
     /**
      * @return the provisioningState value.
@@ -80,6 +93,21 @@ public interface SqlVirtualMachine extends HasInner<SqlVirtualMachineInner>, Res
     String sqlVirtualMachineGroupResourceId();
 
     /**
+     * @return the storageConfigurationSettings value.
+     */
+    StorageConfigurationSettings storageConfigurationSettings();
+
+    /**
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
+     * @return the type value.
+     */
+    String type();
+
+    /**
      * @return the virtualMachineResourceId value.
      */
     String virtualMachineResourceId();
@@ -92,7 +120,7 @@ public interface SqlVirtualMachine extends HasInner<SqlVirtualMachineInner>, Res
     /**
      * The entirety of the SqlVirtualMachine definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithSqlVirtualMachineGroup, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
     }
 
     /**
@@ -102,13 +130,31 @@ public interface SqlVirtualMachine extends HasInner<SqlVirtualMachineInner>, Res
         /**
          * The first stage of a SqlVirtualMachine definition.
          */
-        interface Blank extends GroupableResourceCore.DefinitionWithRegion<WithGroup> {
+        interface Blank extends WithSqlVirtualMachineGroup {
         }
 
         /**
-         * The stage of the SqlVirtualMachine definition allowing to specify the resource group.
+         * The stage of the sqlvirtualmachine definition allowing to specify SqlVirtualMachineGroup.
          */
-        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCreate> {
+        interface WithSqlVirtualMachineGroup {
+           /**
+            * Specifies resourceGroupName.
+            * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
+            * @return the next definition stage
+            */
+            WithLocation withExistingSqlVirtualMachineGroup(String resourceGroupName);
+        }
+
+        /**
+         * The stage of the sqlvirtualmachine definition allowing to specify Location.
+         */
+        interface WithLocation {
+           /**
+            * Specifies location.
+            * @param location Resource location
+            * @return the next definition stage
+            */
+            WithCreate withLocation(String location);
         }
 
         /**
@@ -213,7 +259,7 @@ public interface SqlVirtualMachine extends HasInner<SqlVirtualMachineInner>, Res
         interface WithSqlServerLicenseType {
             /**
              * Specifies sqlServerLicenseType.
-             * @param sqlServerLicenseType SQL Server license type. Possible values include: 'PAYG', 'AHUB'
+             * @param sqlServerLicenseType SQL Server license type. Possible values include: 'PAYG', 'AHUB', 'DR'
              * @return the next definition stage
              */
             WithCreate withSqlServerLicenseType(SqlServerLicenseType sqlServerLicenseType);
@@ -229,6 +275,30 @@ public interface SqlVirtualMachine extends HasInner<SqlVirtualMachineInner>, Res
              * @return the next definition stage
              */
             WithCreate withSqlVirtualMachineGroupResourceId(String sqlVirtualMachineGroupResourceId);
+        }
+
+        /**
+         * The stage of the sqlvirtualmachine definition allowing to specify StorageConfigurationSettings.
+         */
+        interface WithStorageConfigurationSettings {
+            /**
+             * Specifies storageConfigurationSettings.
+             * @param storageConfigurationSettings Storage Configuration Settings
+             * @return the next definition stage
+             */
+            WithCreate withStorageConfigurationSettings(StorageConfigurationSettings storageConfigurationSettings);
+        }
+
+        /**
+         * The stage of the sqlvirtualmachine definition allowing to specify Tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies tags.
+             * @param tags Resource tags
+             * @return the next definition stage
+             */
+            WithCreate withTags(Map<String, String> tags);
         }
 
         /**
@@ -260,13 +330,13 @@ public interface SqlVirtualMachine extends HasInner<SqlVirtualMachineInner>, Res
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<SqlVirtualMachine>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAutoBackupSettings, DefinitionStages.WithAutoPatchingSettings, DefinitionStages.WithIdentity, DefinitionStages.WithKeyVaultCredentialSettings, DefinitionStages.WithServerConfigurationsManagementSettings, DefinitionStages.WithSqlImageOffer, DefinitionStages.WithSqlImageSku, DefinitionStages.WithSqlManagement, DefinitionStages.WithSqlServerLicenseType, DefinitionStages.WithSqlVirtualMachineGroupResourceId, DefinitionStages.WithVirtualMachineResourceId, DefinitionStages.WithWsfcDomainCredentials {
+        interface WithCreate extends Creatable<SqlVirtualMachine>, DefinitionStages.WithAutoBackupSettings, DefinitionStages.WithAutoPatchingSettings, DefinitionStages.WithIdentity, DefinitionStages.WithKeyVaultCredentialSettings, DefinitionStages.WithServerConfigurationsManagementSettings, DefinitionStages.WithSqlImageOffer, DefinitionStages.WithSqlImageSku, DefinitionStages.WithSqlManagement, DefinitionStages.WithSqlServerLicenseType, DefinitionStages.WithSqlVirtualMachineGroupResourceId, DefinitionStages.WithStorageConfigurationSettings, DefinitionStages.WithTags, DefinitionStages.WithVirtualMachineResourceId, DefinitionStages.WithWsfcDomainCredentials {
         }
     }
     /**
      * The template for a SqlVirtualMachine update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<SqlVirtualMachine>, Resource.UpdateWithTags<Update>, UpdateStages.WithAutoBackupSettings, UpdateStages.WithAutoPatchingSettings, UpdateStages.WithIdentity, UpdateStages.WithKeyVaultCredentialSettings, UpdateStages.WithServerConfigurationsManagementSettings, UpdateStages.WithSqlImageOffer, UpdateStages.WithSqlImageSku, UpdateStages.WithSqlManagement, UpdateStages.WithSqlServerLicenseType, UpdateStages.WithSqlVirtualMachineGroupResourceId, UpdateStages.WithVirtualMachineResourceId, UpdateStages.WithWsfcDomainCredentials {
+    interface Update extends Appliable<SqlVirtualMachine>, UpdateStages.WithAutoBackupSettings, UpdateStages.WithAutoPatchingSettings, UpdateStages.WithIdentity, UpdateStages.WithKeyVaultCredentialSettings, UpdateStages.WithServerConfigurationsManagementSettings, UpdateStages.WithSqlImageOffer, UpdateStages.WithSqlImageSku, UpdateStages.WithSqlManagement, UpdateStages.WithSqlServerLicenseType, UpdateStages.WithSqlVirtualMachineGroupResourceId, UpdateStages.WithStorageConfigurationSettings, UpdateStages.WithTags, UpdateStages.WithVirtualMachineResourceId, UpdateStages.WithWsfcDomainCredentials {
     }
 
     /**
@@ -375,7 +445,7 @@ public interface SqlVirtualMachine extends HasInner<SqlVirtualMachineInner>, Res
         interface WithSqlServerLicenseType {
             /**
              * Specifies sqlServerLicenseType.
-             * @param sqlServerLicenseType SQL Server license type. Possible values include: 'PAYG', 'AHUB'
+             * @param sqlServerLicenseType SQL Server license type. Possible values include: 'PAYG', 'AHUB', 'DR'
              * @return the next update stage
              */
             Update withSqlServerLicenseType(SqlServerLicenseType sqlServerLicenseType);
@@ -391,6 +461,30 @@ public interface SqlVirtualMachine extends HasInner<SqlVirtualMachineInner>, Res
              * @return the next update stage
              */
             Update withSqlVirtualMachineGroupResourceId(String sqlVirtualMachineGroupResourceId);
+        }
+
+        /**
+         * The stage of the sqlvirtualmachine update allowing to specify StorageConfigurationSettings.
+         */
+        interface WithStorageConfigurationSettings {
+            /**
+             * Specifies storageConfigurationSettings.
+             * @param storageConfigurationSettings Storage Configuration Settings
+             * @return the next update stage
+             */
+            Update withStorageConfigurationSettings(StorageConfigurationSettings storageConfigurationSettings);
+        }
+
+        /**
+         * The stage of the sqlvirtualmachine update allowing to specify Tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies tags.
+             * @param tags Resource tags
+             * @return the next update stage
+             */
+            Update withTags(Map<String, String> tags);
         }
 
         /**

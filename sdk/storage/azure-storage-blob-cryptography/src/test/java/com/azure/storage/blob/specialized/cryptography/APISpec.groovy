@@ -3,6 +3,10 @@ package com.azure.storage.blob.specialized.cryptography
 import com.azure.core.cryptography.AsyncKeyEncryptionKey
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver
 import com.azure.core.http.HttpClient
+import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
@@ -22,6 +26,7 @@ import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.implementation.Constants
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -29,8 +34,10 @@ import spock.lang.Shared
 import spock.lang.Specification
 
 import java.nio.ByteBuffer
+import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.OffsetDateTime
+import java.util.function.Supplier
 
 class APISpec extends Specification {
 
@@ -80,18 +87,25 @@ class APISpec extends Specification {
     static def BLOB_STORAGE = "BLOB_STORAGE_"
     static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
 
-    private TestResourceNamer resourceNamer
+    TestResourceNamer resourceNamer
     private InterceptorManager interceptorManager
     protected String testName
 
     // Fields used for conveniently creating blobs with data.
     static final String defaultText = "default"
 
+    static final Supplier<InputStream> defaultInputStream = new Supplier<InputStream>() {
+        @Override
+        InputStream get() {
+            return new ByteArrayInputStream(defaultText.getBytes(StandardCharsets.UTF_8))
+        }
+    }
+
     public static final ByteBuffer defaultData = ByteBuffer.wrap(defaultText.getBytes(StandardCharsets.UTF_8))
 
     static int defaultDataSize = defaultData.remaining()
 
-    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map{buffer -> buffer.duplicate()}
+    public static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map{buffer -> buffer.duplicate()}
 
     public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
 
@@ -114,6 +128,10 @@ class APISpec extends Specification {
         this.testName = fullTestName.substring(0, substringIndex)
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
+
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
+
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) == null
         connectionString = Configuration.getGlobalConfiguration().get("AZURE_STORAGE_BLOB_CONNECTION_STRING")
@@ -138,14 +156,14 @@ class APISpec extends Specification {
     }
 
     static boolean liveMode() {
-        return setupTestMode() == TestMode.RECORD
+        return setupTestMode() == TestMode.LIVE
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
         String accountName
         String accountKey
 
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             accountName = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
             accountKey = Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
@@ -194,7 +212,7 @@ class APISpec extends Specification {
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
-        if (testMode == TestMode.RECORD) {
+        if (testMode != TestMode.PLAYBACK) {
             builder.wiretap(true)
 
             if (Boolean.parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_TEST_DEBUGGING"))) {
@@ -222,7 +240,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -244,7 +262,7 @@ class APISpec extends Specification {
             builder.addPolicy(policy)
         }
 
-        if (testMode == TestMode.RECORD && recordLiveMode) {
+        if (testMode == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
         }
 
@@ -361,5 +379,138 @@ class APISpec extends Specification {
             .blobClient(blobClient)
             .leaseId(leaseId)
             .buildClient()
+    }
+
+    def compareDataToFile(Flux<ByteBuffer> data, File file) {
+        FileInputStream fis = new FileInputStream(file)
+
+        for (ByteBuffer received : data.toIterable()) {
+            byte[] readBuffer = new byte[received.remaining()]
+            fis.read(readBuffer)
+            for (int i = 0; i < received.remaining(); i++) {
+                if (readBuffer[i] != received.get(i)) {
+                    return false
+                }
+            }
+        }
+
+        fis.close()
+        return true
+    }
+
+    class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            return next.process().flatMap { HttpResponse response ->
+                if (response.getRequest().getHeaders().getValue("x-ms-range") != "bytes=0-15") {
+                    return Mono.<HttpResponse> error(new IllegalArgumentException("The range header was not set correctly on retry."))
+                } else {
+                    // ETag can be a dummy value. It's not validated, but DownloadResponse requires one
+                    return Mono.<HttpResponse> just(new MockDownloadHttpResponse(response, 206, Flux.error(new IOException())))
+                }
+            }
+        }
+    }
+
+    /*
+    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
+    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
+    with than was worth it. Because this type is just for BlobDownload, we don't need to accept a header type.
+     */
+
+    class MockDownloadHttpResponse extends HttpResponse {
+        private final int statusCode
+        private final HttpHeaders headers
+        private final Flux<ByteBuffer> body
+
+        MockDownloadHttpResponse(HttpResponse response, int statusCode, Flux<ByteBuffer> body) {
+            super(response.getRequest())
+            this.statusCode = statusCode
+            this.headers = response.getHeaders()
+            this.body = body
+        }
+
+        @Override
+        int getStatusCode() {
+            return statusCode
+        }
+
+        @Override
+        String getHeaderValue(String s) {
+            return headers.getValue(s)
+        }
+
+        @Override
+        HttpHeaders getHeaders() {
+            return headers
+        }
+
+        @Override
+        Flux<ByteBuffer> getBody() {
+            return body
+        }
+
+        @Override
+        Mono<byte[]> getBodyAsByteArray() {
+            return Mono.error(new IOException())
+        }
+
+        @Override
+        Mono<String> getBodyAsString() {
+            return Mono.error(new IOException())
+        }
+
+        @Override
+        Mono<String> getBodyAsString(Charset charset) {
+            return Mono.error(new IOException())
+        }
+    }
+
+    /**
+     * Compares two files for having equivalent content.
+     *
+     * @param file1 File used to upload data to the service
+     * @param file2 File used to download data from the service
+     * @param offset Write offset from the upload file
+     * @param count Size of the download from the service
+     * @return Whether the files have equivalent content based on offset and read count
+     */
+    def compareFiles(File file1, File file2, long offset, long count) {
+        def pos = 0L
+        def readBuffer = 8 * Constants.KB
+        def stream1 = new FileInputStream(file1)
+        stream1.skip(offset)
+        def stream2 = new FileInputStream(file2)
+
+        try {
+            while (pos < count) {
+                def bufferSize = (int) Math.min(readBuffer, count - pos)
+                def buffer1 = new byte[bufferSize]
+                def buffer2 = new byte[bufferSize]
+
+                def readCount1 = stream1.read(buffer1)
+                def readCount2 = stream2.read(buffer2)
+
+                assert readCount1 == readCount2 && buffer1 == buffer2
+
+                pos += bufferSize
+            }
+
+            def verificationRead = stream2.read()
+            return pos == count && verificationRead == -1
+        } finally {
+            stream1.close()
+            stream2.close()
+        }
+    }
+
+    /**
+     * Insecurely and quickly generates a random AES256 key for the purpose of unit tests. No one should ever make a
+     * real key this way.
+     */
+    def getRandomKey(long seed = new Random().nextLong()) {
+        def key = new byte[32] // 256 bit key
+        new Random(seed).nextBytes(key)
+        return key
     }
 }

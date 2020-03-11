@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Represents input files for a Job.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = JobInputClip.class)
 @JsonTypeName("#Microsoft.Media.JobInputClip")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.JobInputAsset", value = JobInputAsset.class),

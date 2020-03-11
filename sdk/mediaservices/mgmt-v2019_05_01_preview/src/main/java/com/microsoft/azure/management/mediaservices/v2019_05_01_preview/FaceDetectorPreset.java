@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Describes all the settings to be used when analyzing a video in order to
  * detect all the faces present.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = FaceDetectorPreset.class)
 @JsonTypeName("#Microsoft.Media.FaceDetectorPreset")
 public class FaceDetectorPreset extends Preset {
     /**

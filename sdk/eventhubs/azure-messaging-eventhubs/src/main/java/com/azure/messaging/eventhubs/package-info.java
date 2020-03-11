@@ -6,6 +6,6 @@
  * {@link com.azure.messaging.eventhubs.EventHubProducerClient},
  * {@link com.azure.messaging.eventhubs.EventHubConsumerAsyncClient},
  * {@link com.azure.messaging.eventhubs.EventHubConsumerClient}, or
- * {@link com.azure.messaging.eventhubs.EventProcessor} to perform operations on Azure Event Hubs.
+ * {@link com.azure.messaging.eventhubs.EventProcessorClient} to perform operations on Azure Event Hubs.
  */
 package com.azure.messaging.eventhubs;

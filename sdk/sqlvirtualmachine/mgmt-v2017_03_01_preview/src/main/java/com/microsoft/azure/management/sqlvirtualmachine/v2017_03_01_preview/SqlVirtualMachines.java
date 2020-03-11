@@ -9,17 +9,60 @@
 package com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview;
 
 import com.microsoft.azure.arm.collection.SupportsCreating;
-import com.microsoft.azure.arm.resources.collection.SupportsDeletingByResourceGroup;
-import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
-import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
 import rx.Observable;
-import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
-import com.microsoft.azure.arm.collection.SupportsListing;
+import rx.Completable;
 import com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.implementation.SqlVirtualMachinesInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing SqlVirtualMachines.
  */
-public interface SqlVirtualMachines extends SupportsCreating<SqlVirtualMachine.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<SqlVirtualMachine>, SupportsListingByResourceGroup<SqlVirtualMachine>, SupportsListing<SqlVirtualMachine>, HasInner<SqlVirtualMachinesInner> {
+public interface SqlVirtualMachines extends SupportsCreating<SqlVirtualMachine.DefinitionStages.Blank>, HasInner<SqlVirtualMachinesInner> {
+    /**
+     * Gets a SQL virtual machine.
+     *
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName Name of the SQL virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlVirtualMachine> getByResourceGroupAsync(String resourceGroupName, String sqlVirtualMachineName);
+
+    /**
+     * Deletes a SQL virtual machine.
+     *
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineName Name of the SQL virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String resourceGroupName, String sqlVirtualMachineName);
+
+    /**
+     * Gets all SQL virtual machines in a subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlVirtualMachine> listAsync();
+
+    /**
+     * Gets all SQL virtual machines in a resource group.
+     *
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlVirtualMachine> listByResourceGroupAsync(final String resourceGroupName);
+
+    /**
+     * Gets the list of sql virtual machines in a SQL virtual machine group.
+     *
+     * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SqlVirtualMachine> listBySqlVmGroupAsync(final String resourceGroupName, final String sqlVirtualMachineGroupName);
+
 }

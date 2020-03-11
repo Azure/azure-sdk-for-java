@@ -14,6 +14,7 @@ import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -39,6 +40,8 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
     private static final Symbol EPOCH = Symbol.valueOf(VENDOR + ":epoch");
     private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME =
         Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
+
+    private final ClientLogger logger = new ClientLogger(EventHubReactorSession.class);
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -74,13 +77,6 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        //TODO (conniey): support creating a filter when we've already received some events. I believe this in
-        // the cause of recreating a failing link.
-        // final Map<Symbol, UnknownDescribedType> filterMap = MessageReceiver.this.settingsProvider
-        // .getFilter(MessageReceiver.this.lastReceivedMessage);
-        // if (filterMap != null) {
-        //    source.setFilter(filterMap);
-        // }
         final String eventPositionExpression = getExpression(eventPosition);
         final Map<Symbol, UnknownDescribedType> filter = new HashMap<>();
         filter.put(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER,

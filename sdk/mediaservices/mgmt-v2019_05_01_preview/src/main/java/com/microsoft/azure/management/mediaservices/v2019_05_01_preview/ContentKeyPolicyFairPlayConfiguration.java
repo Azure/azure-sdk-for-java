@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Specifies a configuration for FairPlay licenses.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = ContentKeyPolicyFairPlayConfiguration.class)
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicyFairPlayConfiguration")
 public class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolicyConfiguration {
     /**

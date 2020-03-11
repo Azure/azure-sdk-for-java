@@ -24,6 +24,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.IntegrationTestBase;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -33,8 +34,9 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-import static com.azure.core.amqp.implementation.CBSAuthorizationType.SHARED_ACCESS_SIGNATURE;
+import static com.azure.core.amqp.implementation.CbsAuthorizationType.SHARED_ACCESS_SIGNATURE;
 
 public class CBSChannelTest extends IntegrationTestBase {
     private static final String CONNECTION_ID = "CbsChannelTest-Connection";
@@ -45,9 +47,18 @@ public class CBSChannelTest extends IntegrationTestBase {
     private AzureTokenManagerProvider azureTokenManagerProvider;
     @Mock
     private MessageSerializer messageSerializer;
+    private static String product;
+    private static String clientVersion;
 
     public CBSChannelTest() {
         super(new ClientLogger(CBSChannelTest.class));
+    }
+
+    @BeforeAll
+    public static void init() {
+        Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
+        product = properties.get("name");
+        clientVersion = properties.get("version");
     }
 
     @Override
@@ -62,14 +73,14 @@ public class CBSChannelTest extends IntegrationTestBase {
                 connectionString.getSharedAccessKey());
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(connectionString.getEndpoint().getHost(),
-            connectionString.getEntityPath(), tokenCredential, SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
+            tokenCredential, SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
             RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.elastic());
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofMinutes(5));
 
         ReactorProvider reactorProvider = new ReactorProvider();
         ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(reactorProvider);
         connection = new TestReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider,
-            azureTokenManagerProvider, messageSerializer);
+            azureTokenManagerProvider, messageSerializer, product, clientVersion);
 
         final Mono<RequestResponseChannel> requestResponseChannel = connection.getCBSChannel();
 
@@ -84,14 +95,14 @@ public class CBSChannelTest extends IntegrationTestBase {
         }
 
         if (connection != null) {
-            connection.close();
+            connection.dispose();
         }
     }
 
     @Test
     public void successfullyAuthorizes() {
         // Arrange
-        final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEntityPath());
+        final String tokenAudience = azureTokenManagerProvider.getScopesFromResource(connectionString.getEntityPath());
 
         // Act & Assert
         StepVerifier.create(cbsChannel.authorize(tokenAudience, tokenAudience))
@@ -102,7 +113,7 @@ public class CBSChannelTest extends IntegrationTestBase {
     @Test
     public void unsuccessfulAuthorize() {
         // Arrange
-        final String tokenAudience = azureTokenManagerProvider.getResourceString(connectionString.getEntityPath());
+        final String tokenAudience = azureTokenManagerProvider.getScopesFromResource(connectionString.getEntityPath());
 
         TokenCredential tokenProvider = new EventHubSharedKeyCredential(connectionString.getSharedAccessKeyName(),
             "Invalid shared access key.");
@@ -126,11 +137,13 @@ public class CBSChannelTest extends IntegrationTestBase {
     }
 
     private static final class TestReactorConnection extends ReactorConnection {
+
         private TestReactorConnection(String connectionId, ConnectionOptions connectionOptions,
-                                      ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-                                      TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
+            ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
+            TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
+            String product, String clientVersion) {
             super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
-                messageSerializer);
+                messageSerializer, product, clientVersion);
         }
 
         private Mono<RequestResponseChannel> getCBSChannel() {

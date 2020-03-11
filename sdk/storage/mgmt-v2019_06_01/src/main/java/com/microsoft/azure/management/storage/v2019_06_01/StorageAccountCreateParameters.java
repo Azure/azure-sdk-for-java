@@ -114,6 +114,13 @@ public class StorageAccountCreateParameters {
     private LargeFileSharesState largeFileSharesState;
 
     /**
+     * Maintains information about the network routing choice opted by the user
+     * for data transfer.
+     */
+    @JsonProperty(value = "properties.routingPreference")
+    private RoutingPreference routingPreference;
+
+    /**
      * Get required. Gets or sets the SKU name.
      *
      * @return the sku value
@@ -370,6 +377,26 @@ public class StorageAccountCreateParameters {
      */
     public StorageAccountCreateParameters withLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
         this.largeFileSharesState = largeFileSharesState;
+        return this;
+    }
+
+    /**
+     * Get maintains information about the network routing choice opted by the user for data transfer.
+     *
+     * @return the routingPreference value
+     */
+    public RoutingPreference routingPreference() {
+        return this.routingPreference;
+    }
+
+    /**
+     * Set maintains information about the network routing choice opted by the user for data transfer.
+     *
+     * @param routingPreference the routingPreference value to set
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withRoutingPreference(RoutingPreference routingPreference) {
+        this.routingPreference = routingPreference;
         return this;
     }
 

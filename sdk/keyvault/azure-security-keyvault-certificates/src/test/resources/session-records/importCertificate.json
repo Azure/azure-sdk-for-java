@@ -1,0 +1,393 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/importCertPkcs/import?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:07:35 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "1823",
+      "x-ms-request-id" : "f667593b-0e41-42f2-9199-e3a053bfe21c",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"id\":\"https://cameravault.vault.azure.net/certificates/importCertPkcs/47d186170b1349a8a6b6d41ce57846b3\",\"kid\":\"https://cameravault.vault.azure.net/keys/importCertPkcs/47d186170b1349a8a6b6d41ce57846b3\",\"sid\":\"https://cameravault.vault.azure.net/secrets/importCertPkcs/47d186170b1349a8a6b6d41ce57846b3\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"cer\":\"MIICODCCAeagAwIBAgIQqHmpBAv+CY9IJFoUhlbziTAJBgUrDgMCHQUAMBYxFDASBgNVBAMTC1Jvb3QgQWdlbmN5MB4XDTE1MDQyOTIxNTM0MVoXDTM5MTIzMTIzNTk1OVowFzEVMBMGA1UEAxMMS2V5VmF1bHRUZXN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5bVAT73zr4+N4WVv2+SvTunAw08ksS4BrJW/nNliz3S9XuzMBMXvmYzU5HJ8TtEgluBiZZYd5qsMJD+OXHSNbsLdmMhni0jYX09h3XlC2VJw2sGKeYF+xEaavXm337aZZaZyjrFBrrUl51UePaN+kVFXNlBb3N3TYpqa7KokXenJQuR+i9Gv9a77c0UsSsDSryxppYhKK7HvTZCpKrhVtulF5iPMswWe9np3uggfMamyIsK/0L7X9w9B2qN7993RR0A00nOk4H6CnkuwO77dSsD0KJsk6FyAoZBzRXDZh9+d9R76zCL506NcQy/jl0lCiQYwsUX73PG5pxOh02OwKwIDAQABo0swSTBHBgNVHQEEQDA+gBAS5AktBh0dTwCNYSHcFmRjoRgwFjEUMBIGA1UEAxMLUm9vdCBBZ2VuY3mCEAY3bACqAGSKEc+41KpcNfQwCQYFKw4DAh0FAANBAGqIjo2geVagzuzaZOe1ClGKhZeiCKfWAxklaGN+qlGUbVS4IN4V1lot3VKnzabasmkEHeNxPwLn1qvSD0cX9CE=\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1575378455,\"updated\":1575378455,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"tags\":{\"key\":\"val\"},\"policy\":{\"id\":\"https://cameravault.vault.azure.net/certificates/importCertPkcs/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=KeyVaultTest\",\"ekus\":[],\"key_usage\":[],\"validity_months\":297,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"EmailContacts\"}}],\"issuer\":{\"name\":\"Unknown\"},\"attributes\":{\"enabled\":true,\"created\":1575378455,\"updated\":1575378455}}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/importCertPkcs?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:07:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "1966",
+      "x-ms-request-id" : "28a3ccb3-c140-4cfd-8f64-6c61f3fd2184",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"recoveryId\":\"https://cameravault.vault.azure.net/deletedcertificates/importCertPkcs\",\"deletedDate\":1575378456,\"scheduledPurgeDate\":1583154456,\"id\":\"https://cameravault.vault.azure.net/certificates/importCertPkcs/47d186170b1349a8a6b6d41ce57846b3\",\"kid\":\"https://cameravault.vault.azure.net/keys/importCertPkcs/47d186170b1349a8a6b6d41ce57846b3\",\"sid\":\"https://cameravault.vault.azure.net/secrets/importCertPkcs/47d186170b1349a8a6b6d41ce57846b3\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"cer\":\"MIICODCCAeagAwIBAgIQqHmpBAv+CY9IJFoUhlbziTAJBgUrDgMCHQUAMBYxFDASBgNVBAMTC1Jvb3QgQWdlbmN5MB4XDTE1MDQyOTIxNTM0MVoXDTM5MTIzMTIzNTk1OVowFzEVMBMGA1UEAxMMS2V5VmF1bHRUZXN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5bVAT73zr4+N4WVv2+SvTunAw08ksS4BrJW/nNliz3S9XuzMBMXvmYzU5HJ8TtEgluBiZZYd5qsMJD+OXHSNbsLdmMhni0jYX09h3XlC2VJw2sGKeYF+xEaavXm337aZZaZyjrFBrrUl51UePaN+kVFXNlBb3N3TYpqa7KokXenJQuR+i9Gv9a77c0UsSsDSryxppYhKK7HvTZCpKrhVtulF5iPMswWe9np3uggfMamyIsK/0L7X9w9B2qN7993RR0A00nOk4H6CnkuwO77dSsD0KJsk6FyAoZBzRXDZh9+d9R76zCL506NcQy/jl0lCiQYwsUX73PG5pxOh02OwKwIDAQABo0swSTBHBgNVHQEEQDA+gBAS5AktBh0dTwCNYSHcFmRjoRgwFjEUMBIGA1UEAxMLUm9vdCBBZ2VuY3mCEAY3bACqAGSKEc+41KpcNfQwCQYFKw4DAh0FAANBAGqIjo2geVagzuzaZOe1ClGKhZeiCKfWAxklaGN+qlGUbVS4IN4V1lot3VKnzabasmkEHeNxPwLn1qvSD0cX9CE=\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1575378455,\"updated\":1575378455,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"tags\":{\"key\":\"val\"},\"policy\":{\"id\":\"https://cameravault.vault.azure.net/certificates/importCertPkcs/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=KeyVaultTest\",\"ekus\":[],\"key_usage\":[],\"validity_months\":297,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"EmailContacts\"}}],\"issuer\":{\"name\":\"Unknown\"},\"attributes\":{\"enabled\":true,\"created\":1575378455,\"updated\":1575378455}}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/importCertPkcs?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:07:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "98",
+      "x-ms-request-id" : "c4f04f91-2fd2-4154-9a28-9bd446438ace",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: importCertPkcs\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/importCertPkcs?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:07:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "98",
+      "x-ms-request-id" : "2a9a3464-3267-4aed-9898-640d4fac9353",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: importCertPkcs\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/importCertPkcs?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:07:39 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "98",
+      "x-ms-request-id" : "7f2448d1-f6ce-4c21-b84c-7728ca2e7c27",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: importCertPkcs\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/importCertPkcs?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:07:40 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "98",
+      "x-ms-request-id" : "6c704213-1f7e-4da5-bd63-b64acf909164",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: importCertPkcs\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/importCertPkcs?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:07:41 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "98",
+      "x-ms-request-id" : "93bfeb34-b868-480c-9d89-eea4716b78b3",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: importCertPkcs\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/importCertPkcs?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:07:43 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "98",
+      "x-ms-request-id" : "9de7d00d-1652-43c7-822c-025d7e60013f",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: importCertPkcs\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/importCertPkcs?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:07:44 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "98",
+      "x-ms-request-id" : "1f2d680c-3be4-457a-8aa0-91349e8c43ec",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: importCertPkcs\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/importCertPkcs?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:07:45 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "98",
+      "x-ms-request-id" : "07e73207-0172-4c02-a8d7-6dd05b46ec07",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: importCertPkcs\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/importCertPkcs?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:07:47 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "98",
+      "x-ms-request-id" : "b6020a2e-6e63-459e-ba40-10274a6dd890",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: importCertPkcs\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/importCertPkcs?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 03 Dec 2019 13:07:48 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "1966",
+      "x-ms-request-id" : "17b6a39b-8e4f-4176-8601-73767d7a2c48",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"recoveryId\":\"https://cameravault.vault.azure.net/deletedcertificates/importCertPkcs\",\"deletedDate\":1575378456,\"scheduledPurgeDate\":1583154456,\"id\":\"https://cameravault.vault.azure.net/certificates/importCertPkcs/47d186170b1349a8a6b6d41ce57846b3\",\"kid\":\"https://cameravault.vault.azure.net/keys/importCertPkcs/47d186170b1349a8a6b6d41ce57846b3\",\"sid\":\"https://cameravault.vault.azure.net/secrets/importCertPkcs/47d186170b1349a8a6b6d41ce57846b3\",\"x5t\":\"fLi3U52HunIVNXubkEnf8tP6Wbo\",\"cer\":\"MIICODCCAeagAwIBAgIQqHmpBAv+CY9IJFoUhlbziTAJBgUrDgMCHQUAMBYxFDASBgNVBAMTC1Jvb3QgQWdlbmN5MB4XDTE1MDQyOTIxNTM0MVoXDTM5MTIzMTIzNTk1OVowFzEVMBMGA1UEAxMMS2V5VmF1bHRUZXN0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5bVAT73zr4+N4WVv2+SvTunAw08ksS4BrJW/nNliz3S9XuzMBMXvmYzU5HJ8TtEgluBiZZYd5qsMJD+OXHSNbsLdmMhni0jYX09h3XlC2VJw2sGKeYF+xEaavXm337aZZaZyjrFBrrUl51UePaN+kVFXNlBb3N3TYpqa7KokXenJQuR+i9Gv9a77c0UsSsDSryxppYhKK7HvTZCpKrhVtulF5iPMswWe9np3uggfMamyIsK/0L7X9w9B2qN7993RR0A00nOk4H6CnkuwO77dSsD0KJsk6FyAoZBzRXDZh9+d9R76zCL506NcQy/jl0lCiQYwsUX73PG5pxOh02OwKwIDAQABo0swSTBHBgNVHQEEQDA+gBAS5AktBh0dTwCNYSHcFmRjoRgwFjEUMBIGA1UEAxMLUm9vdCBBZ2VuY3mCEAY3bACqAGSKEc+41KpcNfQwCQYFKw4DAh0FAANBAGqIjo2geVagzuzaZOe1ClGKhZeiCKfWAxklaGN+qlGUbVS4IN4V1lot3VKnzabasmkEHeNxPwLn1qvSD0cX9CE=\",\"attributes\":{\"enabled\":true,\"nbf\":1430344421,\"exp\":2208988799,\"created\":1575378455,\"updated\":1575378455,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"tags\":{\"key\":\"val\"},\"policy\":{\"id\":\"https://cameravault.vault.azure.net/certificates/importCertPkcs/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=KeyVaultTest\",\"ekus\":[],\"key_usage\":[],\"validity_months\":297,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"EmailContacts\"}}],\"issuer\":{\"name\":\"Unknown\"},\"attributes\":{\"enabled\":true,\"created\":1575378455,\"updated\":1575378455}}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/importCertPkcs?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Tue, 03 Dec 2019 13:07:48 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "6659f237-4b74-48bf-a65b-97af87d9b4da",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://cameravault.vault.azure.net/deletedcertificates/importCertPkcs?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:07:49 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "98",
+      "x-ms-request-id" : "ff00e15a-33a5-4fe6-8675-b33305c0f515",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: importCertPkcs\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

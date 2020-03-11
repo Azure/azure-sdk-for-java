@@ -79,6 +79,32 @@ class DirectoryAPITests extends APISpec {
         fileClient instanceof ShareFileClient
     }
 
+    def "Exists"() {
+        when:
+        primaryDirectoryClient.create()
+
+        then:
+        primaryDirectoryClient.exists()
+    }
+
+    def "Does not exist"() {
+        expect:
+        !primaryDirectoryClient.exists()
+    }
+
+    def "Exists error"() {
+        setup:
+        primaryDirectoryClient = directoryBuilderHelper(interceptorManager, shareName, directoryPath)
+            .sasToken("sig=dummyToken").buildDirectoryClient()
+
+        when:
+        primaryDirectoryClient.exists()
+
+        then:
+        def e = thrown(ShareStorageException)
+        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 403, ShareErrorCode.AUTHENTICATION_FAILED)
+    }
+
     def "Create directory"() {
         expect:
         FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.createWithResponse(null, null, null, null, null), 201)
@@ -382,9 +408,11 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         when:
-        primaryDirectoryClient.forceCloseHandle("1")
+        def handlesClosedInfo = primaryDirectoryClient.forceCloseHandle("1")
 
         then:
+        handlesClosedInfo.getClosedHandles() == 0
+        handlesClosedInfo.getFailedHandles() == 0
         notThrown(ShareStorageException)
     }
 
@@ -404,11 +432,12 @@ class DirectoryAPITests extends APISpec {
         primaryDirectoryClient.create()
 
         when:
-        def numberOfHandlesClosed = primaryDirectoryClient.forceCloseAllHandles(false, null, null)
+        def handlesClosedInfo  = primaryDirectoryClient.forceCloseAllHandles(false, null, null)
 
         then:
         notThrown(ShareStorageException)
-        numberOfHandlesClosed == 0
+        handlesClosedInfo.getClosedHandles() == 0
+        handlesClosedInfo.getFailedHandles() == 0
     }
 
     def "Create sub directory"() {

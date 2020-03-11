@@ -3,9 +3,12 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import java.util.List;
+import java.util.Locale;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,22 +23,39 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class InMemoryCheckpointStore implements CheckpointStore {
 
+    private static final String OWNERSHIP = "ownership";
+    private static final String SEPARATOR = "/";
+    private static final String CHECKPOINT = "checkpoint";
     private final Map<String, PartitionOwnership> partitionOwnershipMap = new ConcurrentHashMap<>();
+    private final Map<String, Checkpoint> checkpointsMap = new ConcurrentHashMap<>();
     private final ClientLogger logger = new ClientLogger(InMemoryCheckpointStore.class);
 
     /**
      * {@inheritDoc}
-     *
-     * @param fullyQualifiedNamespace The fully qualified namespace of the Event Hubs instance.
-     * @param eventHubName The name of the Event Hub to list ownership of.
-     * @param consumerGroupName The name of the consumer group to list ownership of.
-     * @return A {@link Flux} of partition ownership information.
      */
     @Override
     public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
-        String consumerGroupName) {
+        String consumerGroup) {
         logger.info("Listing partition ownership");
-        return Flux.fromIterable(partitionOwnershipMap.values());
+
+        String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup, OWNERSHIP);
+        return Flux.fromIterable(partitionOwnershipMap.keySet())
+            .filter(key -> key.startsWith(prefix))
+            .map(key -> partitionOwnershipMap.get(key));
+    }
+
+    private String prefixBuilder(String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
+        String type) {
+        return new StringBuilder()
+            .append(fullyQualifiedNamespace)
+            .append(SEPARATOR)
+            .append(eventHubName)
+            .append(SEPARATOR)
+            .append(consumerGroup)
+            .append(SEPARATOR)
+            .append(type)
+            .toString()
+            .toLowerCase(Locale.ROOT);
     }
 
     /**
@@ -43,12 +63,19 @@ public class InMemoryCheckpointStore implements CheckpointStore {
      * already claimed by an instance or if the ETag in the request doesn't match the previously stored ETag, then
      * ownership claim is denied.
      *
-     * @param requestedPartitionOwnerships Array of partition ownerships this instance is requesting to own.
+     * @param requestedPartitionOwnerships List of partition ownerships this instance is requesting to own.
      * @return Successfully claimed partition ownerships.
      */
     @Override
-    public Flux<PartitionOwnership> claimOwnership(PartitionOwnership... requestedPartitionOwnerships) {
-        return Flux.fromArray(requestedPartitionOwnerships)
+    public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
+        if (CoreUtils.isNullOrEmpty(requestedPartitionOwnerships)) {
+            return Flux.empty();
+        }
+        PartitionOwnership firstEntry = requestedPartitionOwnerships.get(0);
+        String prefix = prefixBuilder(firstEntry.getFullyQualifiedNamespace(), firstEntry.getEventHubName(),
+            firstEntry.getConsumerGroup(), OWNERSHIP);
+
+        return Flux.fromIterable(requestedPartitionOwnerships)
             .filter(partitionOwnership -> {
                 return !partitionOwnershipMap.containsKey(partitionOwnership.getPartitionId())
                     || partitionOwnershipMap.get(partitionOwnership.getPartitionId()).getETag()
@@ -60,26 +87,40 @@ public class InMemoryCheckpointStore implements CheckpointStore {
             .map(partitionOwnership -> {
                 partitionOwnership.setETag(UUID.randomUUID().toString())
                     .setLastModifiedTime(System.currentTimeMillis());
-                partitionOwnershipMap.put(partitionOwnership.getPartitionId(), partitionOwnership);
+                partitionOwnershipMap.put(prefix + SEPARATOR + partitionOwnership.getPartitionId(), partitionOwnership);
                 return partitionOwnership;
             });
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName,
+        String consumerGroup) {
+        String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup, CHECKPOINT);
+        return Flux.fromIterable(checkpointsMap.keySet())
+            .filter(key -> key.startsWith(prefix))
+            .map(key -> checkpointsMap.get(key));
     }
 
     /**
      * Updates the in-memory storage with the provided checkpoint information.
      *
      * @param checkpoint The checkpoint containing the information to be stored in-memory.
-     * @return A new ETag associated with the updated checkpoint.
+     * @return A {@link Mono} that completes when the checkpoint is updated.
      */
     @Override
-    public Mono<String> updateCheckpoint(final Checkpoint checkpoint) {
-        String updatedETag = UUID.randomUUID().toString();
-        partitionOwnershipMap.get(checkpoint.getPartitionId())
-            .setSequenceNumber(checkpoint.getSequenceNumber())
-            .setOffset(checkpoint.getOffset())
-            .setETag(updatedETag);
+    public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
+        if (checkpoint == null) {
+            return Mono.error(logger.logExceptionAsError(new NullPointerException("checkpoint cannot be null")));
+        }
+
+        String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
+            checkpoint.getConsumerGroup(), CHECKPOINT);
+        checkpointsMap.put(prefix + SEPARATOR + checkpoint.getPartitionId(), checkpoint);
         logger.info("Updated checkpoint for partition {} with sequence number {}", checkpoint.getPartitionId(),
             checkpoint.getSequenceNumber());
-        return Mono.just(updatedETag);
+        return Mono.empty();
     }
 }

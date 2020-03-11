@@ -40,6 +40,12 @@ public class ClusterCreateProperties {
     private ClusterDefinition clusterDefinition;
 
     /**
+     * The cluster kafka rest proxy configuration.
+     */
+    @JsonProperty(value = "kafkaRestProperties")
+    private KafkaRestProperties kafkaRestProperties;
+
+    /**
      * The security profile.
      */
     @JsonProperty(value = "securityProfile")
@@ -62,6 +68,12 @@ public class ClusterCreateProperties {
      */
     @JsonProperty(value = "diskEncryptionProperties")
     private DiskEncryptionProperties diskEncryptionProperties;
+
+    /**
+     * The minimal supported tls version.
+     */
+    @JsonProperty(value = "minSupportedTlsVersion")
+    private String minSupportedTlsVersion;
 
     /**
      * Get the version of the cluster.
@@ -144,6 +156,26 @@ public class ClusterCreateProperties {
     }
 
     /**
+     * Get the cluster kafka rest proxy configuration.
+     *
+     * @return the kafkaRestProperties value
+     */
+    public KafkaRestProperties kafkaRestProperties() {
+        return this.kafkaRestProperties;
+    }
+
+    /**
+     * Set the cluster kafka rest proxy configuration.
+     *
+     * @param kafkaRestProperties the kafkaRestProperties value to set
+     * @return the ClusterCreateProperties object itself.
+     */
+    public ClusterCreateProperties withKafkaRestProperties(KafkaRestProperties kafkaRestProperties) {
+        this.kafkaRestProperties = kafkaRestProperties;
+        return this;
+    }
+
+    /**
      * Get the security profile.
      *
      * @return the securityProfile value
@@ -220,6 +252,26 @@ public class ClusterCreateProperties {
      */
     public ClusterCreateProperties withDiskEncryptionProperties(DiskEncryptionProperties diskEncryptionProperties) {
         this.diskEncryptionProperties = diskEncryptionProperties;
+        return this;
+    }
+
+    /**
+     * Get the minimal supported tls version.
+     *
+     * @return the minSupportedTlsVersion value
+     */
+    public String minSupportedTlsVersion() {
+        return this.minSupportedTlsVersion;
+    }
+
+    /**
+     * Set the minimal supported tls version.
+     *
+     * @param minSupportedTlsVersion the minSupportedTlsVersion value to set
+     * @return the ClusterCreateProperties object itself.
+     */
+    public ClusterCreateProperties withMinSupportedTlsVersion(String minSupportedTlsVersion) {
+        this.minSupportedTlsVersion = minSupportedTlsVersion;
         return this;
     }
 

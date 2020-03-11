@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Describes the properties for generating an MPEG-2 Transport Stream (ISO/IEC
  * 13818-1) output video file(s).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = TransportStreamFormat.class)
 @JsonTypeName("#Microsoft.Media.TransportStreamFormat")
 public class TransportStreamFormat extends MultiBitrateFormat {
 }

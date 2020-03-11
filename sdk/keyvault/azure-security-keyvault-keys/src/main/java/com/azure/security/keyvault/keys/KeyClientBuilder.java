@@ -3,28 +3,27 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.Configuration;
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.keys.implementation.AzureKeyVaultConfiguration;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -60,8 +59,12 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = KeyClient.class)
 public final class KeyClientBuilder {
     private final ClientLogger logger = new ClientLogger(KeyClientBuilder.class);
-
+    // This is properties file's name.
+    private static final String AZURE_KEY_VAULT_KEYS = "azure-key-vault-keys.properties";
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
     private final List<HttpPipelinePolicy> policies;
+    private final Map<String, String> properties;
     private TokenCredential credential;
     private HttpPipeline pipeline;
     private URL vaultUrl;
@@ -78,6 +81,7 @@ public final class KeyClientBuilder {
         retryPolicy = new RetryPolicy();
         httpLogOptions = new HttpLogOptions();
         policies = new ArrayList<>();
+        properties = CoreUtils.getProperties(AZURE_KEY_VAULT_KEYS);
     }
 
     /**
@@ -136,8 +140,11 @@ public final class KeyClientBuilder {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), AzureKeyVaultConfiguration.SDK_NAME, AzureKeyVaultConfiguration.SDK_VERSION,
-            buildConfiguration, serviceVersion));
+
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+            buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new KeyVaultCredentialPolicy(credential));

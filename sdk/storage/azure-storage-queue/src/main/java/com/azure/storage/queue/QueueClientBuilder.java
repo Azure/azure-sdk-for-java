@@ -6,11 +6,10 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -18,12 +17,9 @@ import com.azure.storage.common.implementation.connectionstring.StorageAuthentic
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
-import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-
 import com.azure.storage.queue.implementation.util.BuilderHelper;
 import java.util.ArrayList;
 import java.util.List;
@@ -139,17 +135,9 @@ public final class QueueClientBuilder {
         StorageImplUtils.assertNotNull("queueName", queueName);
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
-            if (storageSharedKeyCredential != null) {
-                return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-            } else if (tokenCredential != null) {
-                return new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint));
-            } else if (sasTokenCredential != null) {
-                return new SasTokenCredentialPolicy(sasTokenCredential);
-            } else {
-                return null;
-            }
-        }, retryOptions, logOptions, httpClient, additionalPolicies, configuration, serviceVersion);
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
+            httpClient, additionalPolicies, configuration, logger);
 
         AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageBuilder()
             .url(endpoint)
@@ -202,7 +190,7 @@ public final class QueueClientBuilder {
     /**
      * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link StorageSharedKeyCredential}.
      * @return the updated QueueClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
@@ -216,7 +204,7 @@ public final class QueueClientBuilder {
     /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link TokenCredential}.
      * @return the updated QueueClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
@@ -335,7 +323,7 @@ public final class QueueClientBuilder {
     /**
      * Sets the request retry options for all the requests made through the client.
      *
-     * @param retryOptions The options used to configure retry behavior.
+     * @param retryOptions {@link RequestRetryOptions}.
      * @return the updated QueueClientBuilder object
      * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
@@ -366,7 +354,9 @@ public final class QueueClientBuilder {
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
+     * newer version of the client library will have the result of potentially moving to a newer service version.
+     * <p>
+     * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
      * @param version {@link QueueServiceVersion} of the service to be used when making requests.
      * @return the updated QueueClientBuilder object

@@ -13,7 +13,7 @@ public class EventProcessorBuilderJavaDocCodeSamples {
      *
      * @return A new instance of {@link EventProcessorClient}
      */
-    // BEGIN: com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation
+    // BEGIN: com.azure.messaging.eventhubs.eventprocessorclientbuilder.instantiation
     public EventProcessorClient createEventProcessor() {
         String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
             + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
@@ -21,9 +21,9 @@ public class EventProcessorBuilderJavaDocCodeSamples {
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup("consumer-group")
             .checkpointStore(new InMemoryCheckpointStore())
-            .processEvent(partitionEvent -> {
-                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + partitionEvent.getData().getSequenceNumber());
+            .processEvent(eventContext -> {
+                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId()
+                    + "and sequence number of event = " + eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
                 System.out.printf("Error occurred in partition processor for partition {}, {}",
@@ -34,6 +34,6 @@ public class EventProcessorBuilderJavaDocCodeSamples {
             .buildEventProcessorClient();
         return eventProcessorClient;
     }
-    // END: com.azure.messaging.eventhubs.eventprocessorbuilder.instantiation
+    // END: com.azure.messaging.eventhubs.eventprocessorclientbuilder.instantiation
 
 }

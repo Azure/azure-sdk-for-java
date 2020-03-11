@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Represents an open restriction. License or key will be delivered on every
  * request.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = ContentKeyPolicyOpenRestriction.class)
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicyOpenRestriction")
 public class ContentKeyPolicyOpenRestriction extends ContentKeyPolicyRestriction {
 }

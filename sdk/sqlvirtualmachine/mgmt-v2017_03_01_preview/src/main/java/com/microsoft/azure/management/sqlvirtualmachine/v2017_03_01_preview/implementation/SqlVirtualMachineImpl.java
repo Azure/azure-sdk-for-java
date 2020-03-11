@@ -8,9 +8,10 @@
 
 package com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.implementation;
 
-import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.SqlVirtualMachine;
+import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+import java.util.Map;
 import com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.ResourceIdentity;
 import com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.SqlServerLicenseType;
 import com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.SqlManagementMode;
@@ -20,30 +21,55 @@ import com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.Auto
 import com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.AutoBackupSettings;
 import com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.KeyVaultCredentialSettings;
 import com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.ServerConfigurationsManagementSettings;
+import com.microsoft.azure.management.sqlvirtualmachine.v2017_03_01_preview.StorageConfigurationSettings;
 
-class SqlVirtualMachineImpl extends GroupableResourceCoreImpl<SqlVirtualMachine, SqlVirtualMachineInner, SqlVirtualMachineImpl, SqlVirtualMachineManager> implements SqlVirtualMachine, SqlVirtualMachine.Definition, SqlVirtualMachine.Update {
-    SqlVirtualMachineImpl(String name, SqlVirtualMachineInner inner, SqlVirtualMachineManager manager) {
-        super(name, inner, manager);
+class SqlVirtualMachineImpl extends CreatableUpdatableImpl<SqlVirtualMachine, SqlVirtualMachineInner, SqlVirtualMachineImpl> implements SqlVirtualMachine, SqlVirtualMachine.Definition, SqlVirtualMachine.Update {
+    private final SqlVirtualMachineManager manager;
+    private String resourceGroupName;
+    private String sqlVirtualMachineName;
+
+    SqlVirtualMachineImpl(String name, SqlVirtualMachineManager manager) {
+        super(name, new SqlVirtualMachineInner());
+        this.manager = manager;
+        // Set resource name
+        this.sqlVirtualMachineName = name;
+        //
+    }
+
+    SqlVirtualMachineImpl(SqlVirtualMachineInner inner, SqlVirtualMachineManager manager) {
+        super(inner.name(), inner);
+        this.manager = manager;
+        // Set resource name
+        this.sqlVirtualMachineName = inner.name();
+        // set resource ancestor and positional variables
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.sqlVirtualMachineName = IdParsingUtils.getValueFromIdByName(inner.id(), "sqlVirtualMachines");
+        //
+    }
+
+    @Override
+    public SqlVirtualMachineManager manager() {
+        return this.manager;
     }
 
     @Override
     public Observable<SqlVirtualMachine> createResourceAsync() {
         SqlVirtualMachinesInner client = this.manager().inner().sqlVirtualMachines();
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName, this.sqlVirtualMachineName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<SqlVirtualMachine> updateResourceAsync() {
         SqlVirtualMachinesInner client = this.manager().inner().sqlVirtualMachines();
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName, this.sqlVirtualMachineName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Observable<SqlVirtualMachineInner> getInnerAsync() {
         SqlVirtualMachinesInner client = this.manager().inner().sqlVirtualMachines();
-        return client.getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return null; // NOP getInnerAsync implementation as get is not supported
     }
 
     @Override
@@ -63,6 +89,11 @@ class SqlVirtualMachineImpl extends GroupableResourceCoreImpl<SqlVirtualMachine,
     }
 
     @Override
+    public String id() {
+        return this.inner().id();
+    }
+
+    @Override
     public ResourceIdentity identity() {
         return this.inner().identity();
     }
@@ -70,6 +101,16 @@ class SqlVirtualMachineImpl extends GroupableResourceCoreImpl<SqlVirtualMachine,
     @Override
     public KeyVaultCredentialSettings keyVaultCredentialSettings() {
         return this.inner().keyVaultCredentialSettings();
+    }
+
+    @Override
+    public String location() {
+        return this.inner().location();
+    }
+
+    @Override
+    public String name() {
+        return this.inner().name();
     }
 
     @Override
@@ -108,6 +149,21 @@ class SqlVirtualMachineImpl extends GroupableResourceCoreImpl<SqlVirtualMachine,
     }
 
     @Override
+    public StorageConfigurationSettings storageConfigurationSettings() {
+        return this.inner().storageConfigurationSettings();
+    }
+
+    @Override
+    public Map<String, String> tags() {
+        return this.inner().getTags();
+    }
+
+    @Override
+    public String type() {
+        return this.inner().type();
+    }
+
+    @Override
     public String virtualMachineResourceId() {
         return this.inner().virtualMachineResourceId();
     }
@@ -115,6 +171,18 @@ class SqlVirtualMachineImpl extends GroupableResourceCoreImpl<SqlVirtualMachine,
     @Override
     public WsfcDomainCredentials wsfcDomainCredentials() {
         return this.inner().wsfcDomainCredentials();
+    }
+
+    @Override
+    public SqlVirtualMachineImpl withExistingSqlVirtualMachineGroup(String resourceGroupName) {
+        this.resourceGroupName = resourceGroupName;
+        return this;
+    }
+
+    @Override
+    public SqlVirtualMachineImpl withLocation(String location) {
+        this.inner().withLocation(location);
+        return this;
     }
 
     @Override
@@ -174,6 +242,18 @@ class SqlVirtualMachineImpl extends GroupableResourceCoreImpl<SqlVirtualMachine,
     @Override
     public SqlVirtualMachineImpl withSqlVirtualMachineGroupResourceId(String sqlVirtualMachineGroupResourceId) {
         this.inner().withSqlVirtualMachineGroupResourceId(sqlVirtualMachineGroupResourceId);
+        return this;
+    }
+
+    @Override
+    public SqlVirtualMachineImpl withStorageConfigurationSettings(StorageConfigurationSettings storageConfigurationSettings) {
+        this.inner().withStorageConfigurationSettings(storageConfigurationSettings);
+        return this;
+    }
+
+    @Override
+    public SqlVirtualMachineImpl withTags(Map<String, String> tags) {
+        this.inner().withTags(tags);
         return this;
     }
 

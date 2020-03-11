@@ -340,12 +340,16 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                         for (final Map.Entry<String, ?> headerCollectionEntry : headerCollection.entrySet()) {
                             final String headerName = headerCollectionPrefix + headerCollectionEntry.getKey();
                             final String headerValue = serialize(headerCollectionEntry.getValue());
-                            result.put(headerName, headerValue);
+                            if (headerValue != null) {
+                                result.put(headerName, headerValue);
+                            }
                         }
                     } else {
                         final String headerName = headerSubstitution.getUrlParameterName();
                         final String headerValue = serialize(methodArgument);
-                        result.put(headerName, headerValue);
+                        if (headerValue != null) {
+                            result.put(headerName, headerValue);
+                        }
                     }
                 }
             }

@@ -81,8 +81,12 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
             logger.info("Already pushed events to partition. Skipping.");
         } else {
+            final EventHubClientBuilder builder2 = new EventHubClientBuilder()
+                .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .shareConnection()
+                .connectionString(getConnectionString());
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(builder.buildAsyncProducerClient(), NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(builder2.buildAsyncProducerClient(), NUMBER_OF_EVENTS, options);
         }
 
         consumer = builder.consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
@@ -100,6 +104,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
             .take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 }

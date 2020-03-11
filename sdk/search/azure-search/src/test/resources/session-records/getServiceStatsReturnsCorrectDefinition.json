@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdk07505664fea.search.windows.net/servicestats?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "49a83f8a-bc70-4d7a-a93b-0d9ad0388b24",
+      "StatusCode" : "200",
+      "Date" : "Mon, 24 Feb 2020 19:50:14 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "51",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "639",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk07505664fea.search.windows.net/$metadata#Microsoft.Azure.Search.V2019_05_06.ServiceStatistics\",\"counters\":{\"documentCount\":{\"usage\":0,\"quota\":null},\"indexesCount\":{\"usage\":0,\"quota\":3},\"indexersCount\":{\"usage\":0,\"quota\":3},\"dataSourcesCount\":{\"usage\":0,\"quota\":3},\"storageSize\":{\"usage\":0,\"quota\":52428800},\"synonymMaps\":{\"usage\":0,\"quota\":3}},\"limits\":{\"maxFieldsPerIndex\":1000,\"maxIndexerRunTime\":\"PT1M\",\"maxFileExtractionSize\":16777216,\"maxFileContentCharactersToExtract\":32768,\"maxFieldNestingDepthPerIndex\":10,\"maxComplexCollectionFieldsPerIndex\":40,\"maxComplexObjectsInCollectionsPerDocument\":3000}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk07505664fea" ]
+}

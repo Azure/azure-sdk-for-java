@@ -3,8 +3,13 @@
 
 package com.azure.storage.file.datalake
 
+import com.azure.core.http.rest.PagedIterable
 import com.azure.core.http.rest.Response
+import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils
+import com.azure.storage.file.datalake.models.DataLakeStorageException
 import com.azure.storage.file.datalake.models.FileSystemItem
 import com.azure.storage.file.datalake.models.FileSystemListDetails
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
@@ -29,8 +34,8 @@ class ServiceAPITest extends APISpec {
             assert c.getProperties().getLeaseState() != null
             assert c.getProperties().getLeaseDuration() == null
             assert c.getProperties().getPublicAccess() == null
-            assert !c.getProperties().isHasLegalHold()
-            assert !c.getProperties().isHasImmutabilityPolicy()
+            assert !c.getProperties().hasLegalHold()
+            assert !c.getProperties().hasImmutabilityPolicy()
         }
     }
 
@@ -39,7 +44,7 @@ class ServiceAPITest extends APISpec {
         primaryDataLakeServiceClient.listFileSystems().iterator().hasNext()
 
         then:
-        notThrown(BlobStorageException)
+        notThrown(DataLakeStorageException)
     }
 
     def "List file systems marker"() {
@@ -96,10 +101,11 @@ class ServiceAPITest extends APISpec {
 
     def "List file systems error"() {
         when:
-        primaryDataLakeServiceClient.listFileSystems().streamByPage("garbage continuation token").count()
+        PagedIterable<FileSystemItem> items =  primaryDataLakeServiceClient.listFileSystems()
+        items.streamByPage("garbage continuation token").count()
 
         then:
-        thrown(BlobStorageException)
+        thrown(DataLakeStorageException)
     }
 
     def "List file systems with timeout still backed by PagedFlux"() {
@@ -116,7 +122,7 @@ class ServiceAPITest extends APISpec {
         primaryDataLakeServiceClient.listFileSystems(new ListFileSystemsOptions().setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10)).streamByPage().count()
 
         then: "Still have paging functionality"
-        notThrown(Exception)
+        notThrown(DataLakeStorageException)
 
         cleanup:
         fileSystems.each { fileSystem -> fileSystem.delete() }
@@ -162,6 +168,21 @@ class ServiceAPITest extends APISpec {
         start                | expiry                            || exception
         null                 | null                              || NullPointerException
         OffsetDateTime.now() | OffsetDateTime.now().minusDays(1) || IllegalArgumentException
+    }
+
+    def "Builder bearer token validation"() {
+        // Technically no additional checks need to be added to datalake builder since the corresponding blob builder fails
+        setup:
+        String endpoint = BlobUrlParts.parse(primaryDataLakeServiceClient.getAccountUrl()).setScheme("http").toUrl()
+        def builder = new DataLakeServiceClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+
+        when:
+        builder.buildClient()
+
+        then:
+        thrown(IllegalArgumentException)
     }
 
 }

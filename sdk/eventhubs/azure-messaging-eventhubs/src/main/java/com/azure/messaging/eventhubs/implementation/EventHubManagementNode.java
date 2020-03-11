@@ -3,17 +3,14 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
-import com.azure.core.amqp.EndpointStateNotifier;
 import com.azure.messaging.eventhubs.EventHubProperties;
 import com.azure.messaging.eventhubs.PartitionProperties;
 import reactor.core.publisher.Mono;
 
-import java.io.Closeable;
-
 /**
  * The management node for fetching metadata about the Event Hub and its partitions.
  */
-public interface EventHubManagementNode extends EndpointStateNotifier, Closeable {
+public interface EventHubManagementNode extends AutoCloseable {
     /**
      * Gets the metadata associated with the Event Hub.
      *
@@ -28,4 +25,7 @@ public interface EventHubManagementNode extends EndpointStateNotifier, Closeable
      * @return The metadata associated with the partition.
      */
     Mono<PartitionProperties> getPartitionProperties(String partitionId);
+
+    @Override
+    void close();
 }

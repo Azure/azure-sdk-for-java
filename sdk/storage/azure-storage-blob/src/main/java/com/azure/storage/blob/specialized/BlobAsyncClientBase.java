@@ -15,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.ProgressReporter;
@@ -23,6 +24,8 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.BlobGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
@@ -41,8 +44,11 @@ import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -51,7 +57,6 @@ import reactor.core.scheduler.Schedulers;
 import reactor.util.function.Tuple3;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -59,16 +64,20 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static java.lang.StrictMath.toIntExact;
 
@@ -81,21 +90,19 @@ import static java.lang.StrictMath.toIntExact;
  */
 public class BlobAsyncClientBase {
 
-    private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
-    private static final int BLOB_MAX_DOWNLOAD_BLOCK_SIZE = 100 * Constants.MB;
-
     private final ClientLogger logger = new ClientLogger(BlobAsyncClientBase.class);
 
     protected final AzureBlobStorageImpl azureBlobStorage;
     private final String snapshot;
     private final CpkInfo customerProvidedKey;
+    protected final EncryptionScope encryptionScope;
     protected final String accountName;
     protected final String containerName;
     protected final String blobName;
     protected final BlobServiceVersion serviceVersion;
 
     /**
-     * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
+     * Protected constructor for use by {@link SpecializedBlobClientBuilder}.
      *
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
@@ -109,6 +116,27 @@ public class BlobAsyncClientBase {
      */
     protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
+        this(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, null);
+    }
+
+    /**
+     * Protected constructor for use by {@link SpecializedBlobClientBuilder}.
+     *
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     */
+    protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
+        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+        EncryptionScope encryptionScope) {
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -121,6 +149,19 @@ public class BlobAsyncClientBase {
         this.blobName = Utility.urlEncode(Utility.urlDecode(blobName));
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
+        this.encryptionScope = encryptionScope;
+    }
+
+    /**
+     * Gets the {@code encryption scope} used to encrypt this blob's content on the server.
+     *
+     * @return the encryption scope used for encryption.
+     */
+    protected String getEncryptionScope() {
+        if (encryptionScope == null) {
+            return null;
+        }
+        return encryptionScope.getEncryptionScope();
     }
 
     /**
@@ -131,7 +172,7 @@ public class BlobAsyncClientBase {
      */
     public BlobAsyncClientBase getSnapshotClient(String snapshot) {
         return new BlobAsyncClientBase(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey());
+            getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(), encryptionScope);
     }
 
     /**
@@ -315,10 +356,10 @@ public class BlobAsyncClientBase {
      * @param metadata Metadata to associate with the destination blob.
      * @param tier {@link AccessTier} for the destination blob.
      * @param priority {@link RehydratePriority} for rehydrating the blob.
-     * @param sourceModifiedRequestConditions {@link RequestConditions} against the source. Standard HTTP
-     * Access conditions related to the modification of data. ETag and LastModifiedTime are used to construct
-     * conditions related to when the blob was changed relative to the given request. The request will fail if the
-     * specified condition is not satisfied.
+     * @param sourceModifiedRequestConditions {@link RequestConditions} against the source. Standard HTTP Access
+     * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
+     * related to when the blob was changed relative to the given request. The request will fail if the specified
+     * condition is not satisfied.
      * @param destRequestConditions {@link BlobRequestConditions} against the destination.
      * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
      * is used.
@@ -326,8 +367,8 @@ public class BlobAsyncClientBase {
      * cancelled.
      */
     public PollerFlux<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
-                                        RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
-                                        BlobRequestConditions destRequestConditions, Duration pollInterval) {
+        RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
+        BlobRequestConditions destRequestConditions, Duration pollInterval) {
 
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
         final RequestConditions sourceModifiedCondition = sourceModifiedRequestConditions == null
@@ -360,9 +401,9 @@ public class BlobAsyncClientBase {
                 }
             },
             (pollingContext, firstResponse) -> {
-                if (firstResponse == null ||  firstResponse.getValue() == null) {
+                if (firstResponse == null || firstResponse.getValue() == null) {
                     return Mono.error(logger.logExceptionAsError(
-                            new IllegalArgumentException("Cannot cancel a poll response that never started.")));
+                        new IllegalArgumentException("Cannot cancel a poll response that never started.")));
                 }
                 final String copyIdentifier = firstResponse.getValue().getCopyId();
 
@@ -378,8 +419,8 @@ public class BlobAsyncClientBase {
     }
 
     private Mono<BlobCopyInfo> onStart(String sourceUrl, Map<String, String> metadata, AccessTier tier,
-            RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
-            BlobRequestConditions destinationRequestConditions) {
+        RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
+        BlobRequestConditions destinationRequestConditions) {
         URL url;
         try {
             url = new URL(sourceUrl);
@@ -413,7 +454,7 @@ public class BlobAsyncClientBase {
         if (lastInfo == null) {
             logger.warning("BlobCopyInfo does not exist. Activation operation failed.");
             return Mono.just(new PollResponse<>(
-                    LongRunningOperationStatus.fromString("COPY_START_FAILED", true), null));
+                LongRunningOperationStatus.fromString("COPY_START_FAILED", true), null));
         }
 
         return getProperties().map(response -> {
@@ -455,11 +496,11 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
+     * @param copyId The id of the copy operation to abort.
+     * @return A reactive response signalling completion.
      * @see #copyFromUrl(String)
      * @see #beginCopy(String, Duration)
      * @see #beginCopy(String, Map, AccessTier, RehydratePriority, RequestConditions, BlobRequestConditions, Duration)
-     * @param copyId The id of the copy operation to abort.
-     * @return A reactive response signalling completion.
      */
     public Mono<Void> abortCopyFromUrl(String copyId) {
         try {
@@ -479,12 +520,12 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/abort-copy-blob">Azure Docs</a></p>
      *
-     * @see #copyFromUrl(String)
-     * @see #beginCopy(String, Duration)
-     * @see #beginCopy(String, Map, AccessTier, RehydratePriority, RequestConditions, BlobRequestConditions, Duration)
      * @param copyId The id of the copy operation to abort.
      * @param leaseId The lease ID the active lease on the blob must match.
      * @return A reactive response signalling completion.
+     * @see #copyFromUrl(String)
+     * @see #beginCopy(String, Duration)
+     * @see #beginCopy(String, Map, AccessTier, RehydratePriority, RequestConditions, BlobRequestConditions, Duration)
      */
     public Mono<Response<Void>> abortCopyFromUrlWithResponse(String copyId, String leaseId) {
         try {
@@ -542,8 +583,8 @@ public class BlobAsyncClientBase {
      * @return A reactive response containing the copy ID for the long running operation.
      */
     public Mono<Response<String>> copyFromUrlWithResponse(String copySource, Map<String, String> metadata,
-            AccessTier tier, RequestConditions sourceModifiedRequestConditions,
-            BlobRequestConditions destRequestConditions) {
+        AccessTier tier, RequestConditions sourceModifiedRequestConditions,
+        BlobRequestConditions destRequestConditions) {
         try {
             return withContext(context -> copyFromUrlWithResponse(copySource, metadata, tier,
                 sourceModifiedRequestConditions, destRequestConditions, context));
@@ -553,8 +594,8 @@ public class BlobAsyncClientBase {
     }
 
     Mono<Response<String>> copyFromUrlWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
-            RequestConditions sourceModifiedRequestConditions, BlobRequestConditions destRequestConditions,
-            Context context) {
+        RequestConditions sourceModifiedRequestConditions, BlobRequestConditions destRequestConditions,
+        Context context) {
         sourceModifiedRequestConditions = sourceModifiedRequestConditions == null
             ? new RequestConditions() : sourceModifiedRequestConditions;
         destRequestConditions = destRequestConditions == null ? new BlobRequestConditions() : destRequestConditions;
@@ -571,7 +612,7 @@ public class BlobAsyncClientBase {
             sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
             sourceModifiedRequestConditions.getIfNoneMatch(), destRequestConditions.getIfModifiedSince(),
             destRequestConditions.getIfUnmodifiedSince(), destRequestConditions.getIfMatch(),
-            destRequestConditions.getIfNoneMatch(), destRequestConditions.getLeaseId(), null, context)
+            destRequestConditions.getIfNoneMatch(), destRequestConditions.getLeaseId(), null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
     }
 
@@ -659,9 +700,6 @@ public class BlobAsyncClientBase {
      * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
      * will be thrown.</p>
      *
-     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.</p>
-     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String}
@@ -669,12 +707,43 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @return A reactive response containing the blob properties and metadata.
      */
     public Mono<BlobProperties> downloadToFile(String filePath) {
+        return downloadToFile(filePath, false);
+    }
+
+    /**
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>If overwrite is set to false, the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String-boolean}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
+     * @param overwrite Whether or not to overwrite the file, should the file exist.
+     * @return A reactive response containing the blob properties and metadata.
+     */
+    public Mono<BlobProperties> downloadToFile(String filePath, boolean overwrite) {
         try {
-            return downloadToFileWithResponse(filePath, null, null, null, null, false).flatMap(FluxUtil::toMono);
+            Set<OpenOption> openOptions = null;
+            if (overwrite) {
+                openOptions = new HashSet<>();
+                openOptions.add(StandardOpenOption.CREATE);
+                openOptions.add(StandardOpenOption.TRUNCATE_EXISTING); // If the file already exists and it is opened
+                // for WRITE access, then its length is truncated to 0.
+                openOptions.add(StandardOpenOption.READ);
+                openOptions.add(StandardOpenOption.WRITE);
+            }
+            return downloadToFileWithResponse(filePath, null, null, null, null, false, openOptions)
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -686,12 +755,6 @@ public class BlobAsyncClientBase {
      * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
      * will be thrown.</p>
      *
-     * <p>Uploading data must be done from the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link
-     * AppendBlobClient}.</p>
-     *
-     * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra
-     * call, provide the {@link BlobRange} parameter.</p>
-     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean}
@@ -699,7 +762,7 @@ public class BlobAsyncClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * @param filePath A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
      * @param range {@link BlobRange}
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
      * transfers parameter is ignored.
@@ -713,9 +776,42 @@ public class BlobAsyncClientBase {
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5) {
+        return downloadToFileWithResponse(filePath, range, parallelTransferOptions, options, requestConditions,
+            rangeGetContentMd5, null);
+    }
+
+    /**
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>By default the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
+     * {@link OpenOption OpenOptions} </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
+     * @param range {@link BlobRange}
+     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to download to file. Number of parallel
+     * transfers parameter is ignored.
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param rangeGetContentMd5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param openOptions {@link OpenOption OpenOptions} to use to configure how to open or create the file.
+     * @return A reactive response containing the blob properties and metadata.
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions) {
         try {
             return withContext(context -> downloadToFileWithResponse(filePath, range, parallelTransferOptions, options,
-                requestConditions, rangeGetContentMd5, context));
+                requestConditions, rangeGetContentMd5, openOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -723,24 +819,32 @@ public class BlobAsyncClientBase {
 
     Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
-        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Context context) {
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
+        Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
         final ParallelTransferOptions finalParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
         BlobRequestConditions finalConditions = requestConditions == null
             ? new BlobRequestConditions() : requestConditions;
 
-        AsynchronousFileChannel channel = downloadToFileResourceSupplier(filePath);
+        // Default behavior is not to overwrite
+        if (openOptions == null) {
+            openOptions = new HashSet<>();
+            openOptions.add(StandardOpenOption.CREATE_NEW);
+            openOptions.add(StandardOpenOption.WRITE);
+            openOptions.add(StandardOpenOption.READ);
+        }
+
+        AsynchronousFileChannel channel = downloadToFileResourceSupplier(filePath, openOptions);
         return Mono.just(channel)
             .flatMap(c -> this.downloadToFileImpl(c, finalRange, finalParallelTransferOptions,
                 downloadRetryOptions, finalConditions, rangeGetContentMd5, context))
             .doFinally(signalType -> this.downloadToFileCleanup(channel, filePath, signalType));
     }
 
-    private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath) {
+    private AsynchronousFileChannel downloadToFileResourceSupplier(String filePath, Set<OpenOption> openOptions) {
         try {
-            return AsynchronousFileChannel.open(Paths.get(filePath), StandardOpenOption.READ, StandardOpenOption.WRITE,
-                StandardOpenOption.CREATE_NEW);
+            return AsynchronousFileChannel.open(Paths.get(filePath), openOptions, null);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -757,44 +861,42 @@ public class BlobAsyncClientBase {
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
         return getSetupMono(finalRange, finalParallelTransferOptions, downloadRetryOptions, requestConditions,
-           rangeGetContentMd5, context)
-        .flatMap(setupTuple3 -> {
-            long newCount = setupTuple3.getT1();
-            BlobRequestConditions finalConditions = setupTuple3.getT2();
+            rangeGetContentMd5, context)
+            .flatMap(setupTuple3 -> {
+                long newCount = setupTuple3.getT1();
+                BlobRequestConditions finalConditions = setupTuple3.getT2();
 
-            int numChunks = calculateNumBlocks(newCount, finalParallelTransferOptions.getBlockSize());
+                int numChunks = calculateNumBlocks(newCount, finalParallelTransferOptions.getBlockSize());
 
-            // In case it is an empty blob, this ensures we still actually perform a download operation.
-            numChunks = numChunks == 0 ? 1 : numChunks;
+                // In case it is an empty blob, this ensures we still actually perform a download operation.
+                numChunks = numChunks == 0 ? 1 : numChunks;
 
-            BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
-            return Flux.range(0, numChunks)
-                .flatMap(chunkNum -> {
-                    // The first chunk was retrieved during setup.
-                    if (chunkNum == 0) {
-                        return writeBodyToFile(initialResponse, file, 0, finalParallelTransferOptions, progressLock,
-                            totalProgress);
-                    }
+                BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
+                return Flux.range(0, numChunks)
+                    .flatMap(chunkNum -> {
+                        // The first chunk was retrieved during setup.
+                        if (chunkNum == 0) {
+                            return writeBodyToFile(initialResponse, file, 0, finalParallelTransferOptions, progressLock,
+                                totalProgress);
+                        }
 
-                    // Calculate whether we need a full chunk or something smaller because we are at the end.
-                    long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSize(),
-                        newCount - (chunkNum.longValue() * finalParallelTransferOptions.getBlockSize().longValue()));
-                    BlobRange chunkRange = new BlobRange(
-                        finalRange.getOffset()
-                            + (chunkNum.longValue() * finalParallelTransferOptions.getBlockSize().longValue()),
-                        chunkSizeActual);
+                        // Calculate whether we need a full chunk or something smaller because we are at the end.
+                        long modifier = chunkNum.longValue() * finalParallelTransferOptions.getBlockSize();
+                        long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSize(),
+                            newCount - modifier);
+                        BlobRange chunkRange = new BlobRange(finalRange.getOffset() + modifier, chunkSizeActual);
 
-                    // Make the download call.
-                    return this.downloadWithResponse(chunkRange, downloadRetryOptions, finalConditions,
-                        rangeGetContentMd5, null)
-                        .subscribeOn(Schedulers.elastic())
-                        .flatMap(response ->
-                            writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions, progressLock,
-                                totalProgress));
-                })
-                // Only the first download call returns a value.
-                .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
-        });
+                        // Make the download call.
+                        return this.downloadWithResponse(chunkRange, downloadRetryOptions, finalConditions,
+                            rangeGetContentMd5, null)
+                            .subscribeOn(Schedulers.elastic())
+                            .flatMap(response ->
+                                writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions, progressLock,
+                                    totalProgress));
+                    })
+                    // Only the first download call returns a value.
+                    .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
+            });
     }
 
     private int calculateNumBlocks(long dataSize, long blockLength) {
@@ -845,10 +947,10 @@ public class BlobAsyncClientBase {
             })
             .onErrorResume(BlobStorageException.class, blobStorageException -> {
                 /*
-                In the case of an empty blob, we still want to report success and give back valid headers. Attempting a
-                range download on an empty blob will return an InvalidRange error code and a Content-Range header of the
-                format "bytes * /0". We need to double check that the total size is zero in the case that the customer
-                has attempted an invalid range on a non-zero length blob.
+                 * In the case of an empty blob, we still want to report success and give back valid headers.
+                 * Attempting a range download on an empty blob will return an InvalidRange error code and a
+                 * Content-Range header of the format "bytes * /0". We need to double check that the total size is zero
+                 * in the case that the customer has attempted an invalid range on a non-zero length blob.
                  */
                 if (blobStorageException.getErrorCode() == BlobErrorCode.INVALID_RANGE
                     && extractTotalBlobLength(blobStorageException.getResponse()
@@ -869,6 +971,7 @@ public class BlobAsyncClientBase {
                             return Mono.zip(Mono.just(0L), Mono.just(requestConditions), Mono.just(response));
                         });
                 }
+
                 return Mono.error(blobStorageException);
             });
     }
@@ -898,17 +1001,17 @@ public class BlobAsyncClientBase {
             finalParallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
 
         // Write to the file.
-        return FluxUtil.writeFile(data, file,
-            chunkNum * finalParallelTransferOptions.getBlockSize());
+        return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSize());
     }
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
+        // blobSize determination - contentLength only returns blobSize if the download is not chunked.
+        long blobSize = response.getDeserializedHeaders().getContentRange() == null
+            ? response.getDeserializedHeaders().getContentLength()
+            : extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
         BlobProperties properties = new BlobProperties(null, response.getDeserializedHeaders().getLastModified(),
-            response.getDeserializedHeaders().getETag(),
-            response.getDeserializedHeaders().getContentLength() == null
-                ? 0 : response.getDeserializedHeaders().getContentLength(),
-            response.getDeserializedHeaders().getContentType(), null,
-            response.getDeserializedHeaders().getContentEncoding(),
+            response.getDeserializedHeaders().getETag(), blobSize, response.getDeserializedHeaders().getContentType(),
+            null, response.getDeserializedHeaders().getContentEncoding(),
             response.getDeserializedHeaders().getContentDisposition(),
             response.getDeserializedHeaders().getContentLanguage(), response.getDeserializedHeaders().getCacheControl(),
             response.getDeserializedHeaders().getBlobSequenceNumber(), response.getDeserializedHeaders().getBlobType(),
@@ -933,7 +1036,7 @@ public class BlobAsyncClientBase {
         try {
             channel.close();
             if (!signalType.equals(SignalType.ON_COMPLETE)) {
-                Files.delete(Paths.get(filePath));
+                Files.deleteIfExists(Paths.get(filePath));
                 logger.verbose("Downloading to file failed. Cleaning up resources.");
             }
         } catch (IOException e) {
@@ -1167,11 +1270,11 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions,
         Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-
+        
         return this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
+            requestConditions.getIfNoneMatch(), null, customerProvidedKey, encryptionScope, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1227,7 +1330,8 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getLeaseId(), null, customerProvidedKey, context)
+            requestConditions.getIfNoneMatch(), requestConditions.getLeaseId(), null, customerProvidedKey,
+            encryptionScope, context)
             .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.getDeserializedHeaders().getSnapshot())));
     }
 
@@ -1383,5 +1487,44 @@ public class BlobAsyncClientBase {
                 BlobGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
                 return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getSkuName(), hd.getAccountKind()));
             });
+    }
+
+    /**
+     * Generates a user delegation SAS for the blob using the specified {@link BlobServiceSasSignatureValues}.
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * @see BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to
+     * get a user delegation key.
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey) {
+        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(), getSnapshotId())
+            .generateUserDelegationSas(userDelegationKey, getAccountName());
+    }
+
+    /**
+     * Generates a service SAS for the blob using the specified {@link BlobServiceSasSignatureValues}
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
+        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(), getSnapshotId())
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
     }
 }

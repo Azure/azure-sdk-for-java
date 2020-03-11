@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Specifies a configuration for PlayReady licenses.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = ContentKeyPolicyPlayReadyConfiguration.class)
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicyPlayReadyConfiguration")
 public class ContentKeyPolicyPlayReadyConfiguration extends ContentKeyPolicyConfiguration {
     /**

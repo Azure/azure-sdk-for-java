@@ -1,0 +1,67 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azs-sdk93659d4172a.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "0ded35ba-cb1d-41fd-b014-425ac22734f5",
+      "StatusCode" : "201",
+      "Date" : "Mon, 24 Feb 2020 19:56:28 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7B963A3240EC7\"",
+      "elapsed-time" : "67",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "696",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk93659d4172a.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B963A3240EC7\\\"\",\"name\":\"ocr-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":null,\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk93659d4172a.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdk93659d4172a.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "212",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "5354031c-73b1-4b5e-85fb-8f0e97e8dbe0",
+      "StatusCode" : "204",
+      "Date" : "Mon, 24 Feb 2020 19:56:28 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdk93659d4172a.search.windows.net/skillsets('ocr-skillset')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "4bb1317c-269f-48ee-840e-dad58af11a75",
+      "StatusCode" : "412",
+      "Date" : "Mon, 24 Feb 2020 19:56:28 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "12",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "160",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The precondition given in one of the request headers evaluated to false. No change was made to the resource from this request.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk93659d4172a" ]
+}

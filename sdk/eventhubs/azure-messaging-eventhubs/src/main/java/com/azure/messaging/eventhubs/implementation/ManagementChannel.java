@@ -4,21 +4,20 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.EndpointStateNotifierBase;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubProperties;
 import com.azure.messaging.eventhubs.PartitionProperties;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -27,7 +26,7 @@ import java.util.Objects;
  * Channel responsible for Event Hubs related metadata and management plane operations. Management plane operations
  * include another partition, increasing quotas, etc.
  */
-public class ManagementChannel extends EndpointStateNotifierBase implements EventHubManagementNode {
+public class ManagementChannel implements EventHubManagementNode {
     // Well-known keys from the management service responses and requests.
     public static final String MANAGEMENT_ENTITY_NAME_KEY = "name";
     public static final String MANAGEMENT_PARTITION_NAME_KEY = "partition";
@@ -52,6 +51,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
 
     private final TokenCredential tokenProvider;
     private final Mono<RequestResponseChannel> channelMono;
+    private final Scheduler scheduler;
     private final String eventHubName;
     private final MessageSerializer messageSerializer;
     private final TokenManagerProvider tokenManagerProvider;
@@ -66,18 +66,16 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
      * @param messageSerializer Maps responses from the management channel.
      */
     ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String eventHubName, TokenCredential credential,
-                      TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
-        super(new ClientLogger(ManagementChannel.class));
+                      TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
+                      Scheduler scheduler) {
 
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
         this.tokenProvider = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
-
-        // Cache the first response from this mono, so we don't keep creating it.
-        this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.")
-            .cache();
+        this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.");
+        this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
     }
 
     /**
@@ -90,7 +88,7 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
         properties.put(MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
         properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
-        return getProperties(properties, EventHubProperties.class);
+        return getProperties(properties, EventHubProperties.class).publishOn(scheduler);
     }
 
     /**
@@ -104,11 +102,11 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
         properties.put(MANAGEMENT_PARTITION_NAME_KEY, partitionId);
         properties.put(MANAGEMENT_OPERATION_KEY, READ_OPERATION_VALUE);
 
-        return getProperties(properties, PartitionProperties.class);
+        return getProperties(properties, PartitionProperties.class).publishOn(scheduler);
     }
 
     private <T> Mono<T> getProperties(Map<String, Object> properties, Class<T> responseType) {
-        final String tokenAudience = tokenManagerProvider.getResourceString(eventHubName);
+        final String tokenAudience = tokenManagerProvider.getScopesFromResource(eventHubName);
 
         return tokenProvider.getToken(new TokenRequestContext().addScopes(tokenAudience)).flatMap(accessToken -> {
             properties.put(MANAGEMENT_SECURITY_TOKEN_KEY, accessToken.getToken());
@@ -127,9 +125,8 @@ public class ManagementChannel extends EndpointStateNotifierBase implements Even
      */
     @Override
     public void close() {
-        final RequestResponseChannel channel = channelMono.block(Duration.ofSeconds(60));
-        if (channel != null) {
-            channel.close();
+        if (channelMono instanceof Disposable) {
+            ((Disposable) channelMono).dispose();
         }
     }
 }

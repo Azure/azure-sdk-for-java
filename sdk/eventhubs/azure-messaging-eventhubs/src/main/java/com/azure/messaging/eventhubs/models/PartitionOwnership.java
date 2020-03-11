@@ -17,9 +17,6 @@ public class PartitionOwnership {
     private String consumerGroup;
     private String partitionId;
     private String ownerId;
-    private long ownerLevel;
-    private Long offset;
-    private Long sequenceNumber;
     private Long lastModifiedTime;
     private String eTag;
 
@@ -120,71 +117,6 @@ public class PartitionOwnership {
      */
     public PartitionOwnership setOwnerId(String ownerId) {
         this.ownerId = Objects.requireNonNull(ownerId, "ownerId cannot be null.");
-        return this;
-    }
-
-    /**
-     * Gets the owner level (aka epoch number) for the event processor identified by
-     * {@link #getOwnerId() this instance}.
-     *
-     * @return The owner level (aka epoch number) for the event processor identified by {@link #getOwnerId() this
-     *     instance}.
-     */
-    public long getOwnerLevel() {
-        return ownerLevel;
-    }
-
-    /**
-     * Sets the owner level (aka epoch number) for the event processor identified by
-     * {@link #getOwnerId() this instance}.
-     *
-     * @param ownerLevel The owner level (aka epoch number) for the event processor identified by {@link #getOwnerId()
-     *     this instance}.
-     * @return The updated {@link PartitionOwnership} instance.
-     */
-    public PartitionOwnership setOwnerLevel(long ownerLevel) {
-        this.ownerLevel = ownerLevel;
-        return this;
-    }
-
-    /**
-     * Gets the offset that serves as checkpoint for the partition id in this ownership record.
-     *
-     * @return The offset that serves as checkpoint for the partition id in this ownership record.
-     */
-    public Long getOffset() {
-        return offset;
-    }
-
-    /**
-     * Sets the offset that serves as checkpoint for the partition id in this ownership record.
-     *
-     * @param offset The offset that serves as checkpoint for the partition id in this ownership record.
-     * @return The updated {@link PartitionOwnership} instance.
-     */
-    public PartitionOwnership setOffset(Long offset) {
-        this.offset = offset;
-        return this;
-    }
-
-    /**
-     * Gets the sequence number that serves as checkpoint for the partition id in this ownership record.
-     *
-     * @return The sequence number that serves as checkpoint for the partition id in this ownership record.
-     */
-    public Long getSequenceNumber() {
-        return sequenceNumber;
-    }
-
-    /**
-     * Sets the sequence number that serves as checkpoint for the partition id in this ownership record.
-     *
-     * @param sequenceNumber The sequence number that serves as checkpoint for the partition id in this ownership
-     *     record.
-     * @return The updated {@link PartitionOwnership} instance.
-     */
-    public PartitionOwnership setSequenceNumber(Long sequenceNumber) {
-        this.sequenceNumber = sequenceNumber;
         return this;
     }
 

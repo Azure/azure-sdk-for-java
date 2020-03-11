@@ -11,7 +11,7 @@ import java.util.Locale;
  * This is a helper class to construct a string representing the permissions granted by an Account SAS. Setting a value
  * to true means that any SAS which uses these permissions will grant permissions for that operation. Once all the
  * values are set, this should be serialized with toString and set as the permissions field on
- * {@link AccountSasSignatureValues#setPermissions(AccountSasPermission) AccountSasSignatureValues}.
+ * {@link AccountSasSignatureValues AccountSasSignatureValues}.
  *
  * <p>
  * It is possible to construct the permissions string without this class, but the order of the permissions is particular

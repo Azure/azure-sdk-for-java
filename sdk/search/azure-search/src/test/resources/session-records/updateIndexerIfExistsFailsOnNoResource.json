@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azs-sdk69501020fa5.search.windows.net/indexers('name')?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "75461308-f394-4714-9693-ae8d1f2ad74d",
+      "StatusCode" : "412",
+      "Date" : "Mon, 24 Feb 2020 19:34:25 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "22",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "160",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The precondition given in one of the request headers evaluated to false. No change was made to the resource from this request.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk69501020fa5" ]
+}

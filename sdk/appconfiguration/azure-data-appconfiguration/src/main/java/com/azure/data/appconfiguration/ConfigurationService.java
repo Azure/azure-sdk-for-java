@@ -41,6 +41,7 @@ interface ConfigurationService {
         @HostParam("url") String url,
         @PathParam("key") String key,
         @QueryParam("label") String label,
+        @QueryParam("api-version") String apiVersion,
         @QueryParam("$select") String fields,
         @HeaderParam("Accept-Datetime") String acceptDatetime,
         @HeaderParam("If-Match") String ifMatch,
@@ -54,6 +55,7 @@ interface ConfigurationService {
         @HostParam("url") String url,
         @PathParam("key") String key,
         @QueryParam("label") String label,
+        @QueryParam("api-version") String apiVersion,
         @BodyParam(ContentType.APPLICATION_JSON) ConfigurationSetting keyValueParameters,
         @HeaderParam("If-Match") String ifMatch,
         @HeaderParam("If-None-Match") String ifNoneMatch,
@@ -66,6 +68,7 @@ interface ConfigurationService {
         @HostParam("url") String url,
         @PathParam("key") String key,
         @QueryParam("label") String label,
+        @QueryParam("api-version") String apiVersion,
         @HeaderParam("If-Match") String ifMatch,
         @HeaderParam("If-None-Match") String ifNoneMatch,
         Context context);
@@ -77,6 +80,7 @@ interface ConfigurationService {
         @HostParam("url") String url,
         @PathParam("key") String key,
         @QueryParam("label") String label,
+        @QueryParam("api-version") String apiVersion,
         @HeaderParam("If-Match") String ifMatch,
         @HeaderParam("If-None-Match") String ifNoneMatch,
         Context context);
@@ -88,6 +92,7 @@ interface ConfigurationService {
         @HostParam("url") String url,
         @PathParam("key") String key,
         @QueryParam("label") String label,
+        @QueryParam("api-version") String apiVersion,
         @HeaderParam("If-Match") String ifMatch,
         @HeaderParam("If-None-Match") String ifNoneMatch,
         Context context);
@@ -100,6 +105,7 @@ interface ConfigurationService {
         @HostParam("url") String url,
         @QueryParam("key") String key,
         @QueryParam("label") String label,
+        @QueryParam("api-version") String apiVersion,
         @QueryParam("$select") String fields,
         @HeaderParam("Accept-Datetime") String acceptDatetime,
         Context context);
@@ -121,6 +127,7 @@ interface ConfigurationService {
         @HostParam("url") String url,
         @QueryParam("key") String key,
         @QueryParam("label") String label,
+        @QueryParam("api-version") String apiVersion,
         @QueryParam("$select") String fields,
         @HeaderParam("Accept-Datetime") String acceptDatetime,
         @HeaderParam("Range") String range,

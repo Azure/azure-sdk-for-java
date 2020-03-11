@@ -15,60 +15,10 @@ Maven dependency for Azure Key Client library. Add it to your project's pom file
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-certificates</artifactId>
-    <version>4.0.0-preview.5</version>
+    <version>4.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-### Default HTTP Client
-All client libraries, by default, use Netty HTTP client. Adding the above dependency will automatically configure 
-KeyVault Certificates to use Netty HTTP client. 
-
-### Alternate HTTP client
-If, instead of Netty it is preferable to use OkHTTP, there is a HTTP client available for that too. Exclude the default
-Netty and include OkHTTP client in your pom.xml.
-
-[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-certificates;current})
-```xml
-<!-- Add KeyVault Certificates dependency without Netty HTTP client -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-security-keyvault-certificates</artifactId>
-    <version>4.0.0-preview.5</version>
-    <exclusions>
-      <exclusion>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-core-http-netty</artifactId>
-      </exclusion>
-    </exclusions>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
-```xml
-<!-- Add OkHTTP client to use with KeyVault Certificates -->
-<dependency>
-  <groupId>com.azure</groupId>
-  <artifactId>azure-core-http-okhttp</artifactId>
-  <version>1.0.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-### Configuring HTTP Clients
-When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-certificate-client), unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this, by allowing users to provide a custom (or customized) `com.azure.core.http.HttpClient` instances.
-
-For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
-
-```java
-HttpClient client = new NettyAsyncHttpClientBuilder()
-    .port(8080)
-    .wiretap(true)
-    .build();
-```
-
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ### Prerequisites
 
@@ -85,7 +35,7 @@ In order to interact with the Key Vault service, you'll need to create an instan
 
 The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
- #### Create/Get credentials
+#### Create/Get credentials
 To create/get client key credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
 
 Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
@@ -182,11 +132,11 @@ CertificateClient certificateClient = new CertificateClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
-CertificatePolicy certificatePolicyPkcsSelf = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
-SyncPoller<CertificateOperation, KeyVaultCertificate> certPoller = certificateClient.beginCreateCertificate("certificateName", certificatePolicyPkcsSelf);
-certPoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
-KeyVaultCertificate cert = certPoller.getFinalResult();
-System.out.printf("Certificate created with name %s", cert.getName());
+SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller = certificateClient
+    .beginCreateCertificate("certificateName", CertificatePolicy.getDefault());
+certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+KeyVaultCertificate certificate = certificatePoller.getFinalResult();
+System.out.printf("Certificate created with name %s", certificate.getName());
 ```
 
 ### Retrieve a Certificate
@@ -195,7 +145,8 @@ Retrieve a previously stored Certificate by calling `getCertificate` or `getCert
 
 ```Java
 KeyVaultCertificateWithPolicy certificate = certificateClient.getCertificate("certificateName");
-System.out.printf("Recevied certificate with name %s and version %s and secret id %s", certificate.getName(),
+System.out.printf("Recevied certificate with name %s and version %s and secret id",
+    certificate.getProperties().getName(),
     certificate.getProperties().getVersion(), certificate.getSecretId());
 ```
 
@@ -205,24 +156,26 @@ Update an existing Certificate by calling `updateCertificateProperties`.
 
 ```Java
 // Get the certificate to update.
-KeyVaultCertificateWithPolicy certificate = certificateClient.getCertificate("certificateName");
-Map<String, String> tags = new HashMap<>();
-tags.put("foo", "bar");
+KeyVaultCertificate certificate = certificateClient.getCertificate("certificateName");
 // Update certificate enabled status
 certificate.getProperties().setEnabled(false);
 KeyVaultCertificate updatedCertificate = certificateClient.updateCertificateProperties(certificate.getProperties());
-System.out.printf("Updated Certificate with name %s and enabled status %s", updatedCertificate.getName(),
-    updatedCertificate.getProperties().isEnabled());
+System.out.printf("Updated Certificate with name %s and enabled status %s",
+    updatedCertificate.getProperties().getName(), updatedCertificate.getProperties().isEnabled());
 ```
 
 ### Delete a Certificate
 
-Delete an existing Certificate by calling `deleteCertificate`.
+Delete an existing Certificate by calling `beginDeleteCertificate`.
 
 ```Java
-DeletedCertificate deletedCertificate = certificateClient.deleteCertificate("certificateName");
-System.out.printf("Deleted certificate with name %s and recovery id %s", deletedCertificate.getName(),
-    deletedCertificate.getRecoveryId());
+SyncPoller<DeletedCertificate, Void> deleteCertificatePoller =
+    certificateClient.beginDeleteCertificate("certificateName");
+// Deleted Certificate is accessible as soon as polling beings.
+PollResponse<DeletedCertificate> pollResponse = deleteCertificatePoller.poll();
+System.out.printf("Deleted certitifcate with name %s and recovery id %s", pollResponse.getValue().getName(),
+    pollResponse.getValue().getRecoveryId());
+deleteCertificatePoller.waitForCompletion();
 ```
 
 ### List Certificates
@@ -232,9 +185,9 @@ List the certificates in the key vault by calling `listPropertiesOfCertificates`
 ```java
 // List operations don't return the certificates with their full information. So, for each returned certificate we call getCertificate to get the certificate with all its properties excluding the policy.
 for (CertificateProperties certificateProperties : certificateClient.listPropertiesOfCertificates()) {
-    KeyVaultCertificate certificateWithAllProperties = certificateClient.getCertificate(certificateProperties);
-    System.out.printf("Received certificate with name %s and secret id %s", certificateWithAllProperties.getName(),
-        certificateWithAllProperties.getSecretId());
+    KeyVaultCertificate certificateWithAllProperties = certificateClient.getCertificateVersion(certificateProperties.getName(), certificateProperties.getVersion());
+    System.out.printf("Received certificate with name %s and secret id %s",
+        certificateWithAllProperties.getProperties().getName(), certificateWithAllProperties.getSecretId());
 }
 ```
 
@@ -260,12 +213,8 @@ import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 
-CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
-Map<String, String> tags = new HashMap<>();
-tags.put("foo", "bar");
-//Creates a certificate and polls on its progress.
-CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
-certificateAsyncClient.beginCreateCertificate("myCertificate", policy)
+//Creates a certificate using the default policy and polls on its progress.
+certificateAsyncClient.beginCreateCertificate("certificateName", CertificatePolicy.getDefault())
     .subscribe(pollResponse -> {
         System.out.println("---------------------------------------------------------------------------------");
         System.out.println(pollResponse.getStatus());
@@ -281,8 +230,8 @@ Retrieve a previously stored Certificate by calling `getCertificate` or `getCert
 ```Java
 certificateAsyncClient.getCertificate("certificateName")
     .subscribe(certificateResponse ->
-        System.out.printf("Certificate is returned with name %s and secretId %s %n", certificateResponse.getName(),
-            certificateResponse.getSecretId()));
+        System.out.printf("Certificate is returned with name %s and secretId %s %n",
+            certificateResponse.getProperties().getName(), certificateResponse.getSecretId()));
 ```
 
 ### Update an existing Certificate Asynchronously
@@ -297,19 +246,22 @@ certificateAsyncClient.getCertificate("certificateName")
         certificate.getProperties().setEnabled(false);
         certificateAsyncClient.updateCertificateProperties(certificate.getProperties())
             .subscribe(certificateResponse ->
-                System.out.printf("Certificate's enabled status %s \n",
+                System.out.printf("Certificate's enabled status %s %n",
                     certificateResponse.getProperties().isEnabled().toString()));
     });
 ```
 
 ### Delete a Certificate Asynchronously
 
-Delete an existing Certificate by calling `deleteCertificate`.
+Delete an existing Certificate by calling `beginDeleteCertificate`.
 
 ```java
-certificateAsyncClient.deleteCertificate("certificateName")
-    .subscribe(deletedSecretResponse ->
-        System.out.printf("Deleted Certificate's Recovery Id %s \n", deletedSecretResponse.getRecoveryId()));
+certificateAsyncClient.beginDeleteCertificate("certificateName")
+    .subscribe(pollResponse -> {
+        System.out.println("Delete Status: " + pollResponse.getStatus().toString());
+        System.out.println("Delete Certificate Name: " + pollResponse.getValue().getName());
+        System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
+    });
 ```
 
 ### List Certificates Asynchronously
@@ -319,7 +271,8 @@ List the certificates in the key vault by calling `listPropertiesOfCertificates`
 ```Java
 // The List Certificates operation returns certificates without their full properties, so for each certificate returned we call `getCertificate` to get all its attributes excluding the policy.
 certificateAsyncClient.listPropertiesOfCertificates()
-    .subscribe(certificateProperties -> certificateAsyncClient.getCertificate(certificateProperties)
+    .subscribe(certificateProperties -> certificateAsyncClient.getCertificate(certificateProperties.getName(),
+     certificateProperties.getVersion());
         .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s",
             certificateResponse.getName(), certificateResponse.getKeyId())));
 ```
@@ -335,6 +288,17 @@ try {
     System.out.println(e.getMessage());
 }
 ```
+
+### Default HTTP Client
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
+the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
+better performance compared to the default SSL implementation within the JDK. For more information, including how to 
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
 Several KeyVault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault:

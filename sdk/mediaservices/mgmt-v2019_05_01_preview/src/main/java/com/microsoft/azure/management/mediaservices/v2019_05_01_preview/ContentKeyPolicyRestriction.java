@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Base class for Content Key Policy restrictions. A derived class must be used
  * to create a restriction.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = ContentKeyPolicyRestriction.class)
 @JsonTypeName("ContentKeyPolicyRestriction")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.ContentKeyPolicyOpenRestriction", value = ContentKeyPolicyOpenRestriction.class),

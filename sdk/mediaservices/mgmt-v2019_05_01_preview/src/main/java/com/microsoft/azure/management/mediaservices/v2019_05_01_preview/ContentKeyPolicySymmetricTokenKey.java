@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Specifies a symmetric key for token validation.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type", defaultImpl = ContentKeyPolicySymmetricTokenKey.class)
 @JsonTypeName("#Microsoft.Media.ContentKeyPolicySymmetricTokenKey")
 public class ContentKeyPolicySymmetricTokenKey extends ContentKeyPolicyRestrictionTokenKey {
     /**

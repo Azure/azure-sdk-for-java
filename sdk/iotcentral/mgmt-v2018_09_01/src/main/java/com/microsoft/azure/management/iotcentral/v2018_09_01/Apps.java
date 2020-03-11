@@ -40,4 +40,12 @@ public interface Apps extends SupportsCreating<App.DefinitionStages.Blank>, Supp
      */
     Observable<AppAvailabilityInfo> checkSubdomainAvailabilityAsync(OperationInputs operationInputs);
 
+    /**
+     * Get all available application templates.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<AppTemplate> listTemplatesAsync();
+
 }

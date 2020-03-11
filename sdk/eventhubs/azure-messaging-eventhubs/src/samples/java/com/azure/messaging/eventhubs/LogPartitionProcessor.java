@@ -4,8 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
-import com.azure.messaging.eventhubs.models.EventProcessingErrorContext;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,23 +21,23 @@ public class LogPartitionProcessor extends PartitionProcessor {
      * {@inheritDoc}
      */
     @Override
-    public void processEvent(PartitionEvent partitionEvent) {
+    public void processEvent(EventContext eventContext) {
         logger.info(
             "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}",
-            partitionEvent.getPartitionContext().getEventHubName(),
-            partitionEvent.getPartitionContext().getConsumerGroup(),
-            partitionEvent.getPartitionContext().getPartitionId(),
-            partitionEvent.getData().getSequenceNumber());
-        partitionEvent.getPartitionContext().updateCheckpoint(partitionEvent.getData()).subscribe();
+            eventContext.getPartitionContext().getEventHubName(),
+            eventContext.getPartitionContext().getConsumerGroup(),
+            eventContext.getPartitionContext().getPartitionId(),
+            eventContext.getEventData().getSequenceNumber());
+        eventContext.updateCheckpoint();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void processError(EventProcessingErrorContext eventProcessingErrorContext) {
+    public void processError(ErrorContext errorContext) {
         logger.warn("Error occurred in partition processor for partition {}",
-            eventProcessingErrorContext.getPartitionContext().getPartitionId(),
-            eventProcessingErrorContext.getThrowable());
+            errorContext.getPartitionContext().getPartitionId(),
+            errorContext.getThrowable());
     }
 }

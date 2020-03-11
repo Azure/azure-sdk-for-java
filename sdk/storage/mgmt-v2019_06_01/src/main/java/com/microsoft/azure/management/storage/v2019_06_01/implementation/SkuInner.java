@@ -10,10 +10,6 @@ package com.microsoft.azure.management.storage.v2019_06_01.implementation;
 
 import com.microsoft.azure.management.storage.v2019_06_01.SkuName;
 import com.microsoft.azure.management.storage.v2019_06_01.SkuTier;
-import com.microsoft.azure.management.storage.v2019_06_01.Kind;
-import java.util.List;
-import com.microsoft.azure.management.storage.v2019_06_01.SKUCapability;
-import com.microsoft.azure.management.storage.v2019_06_01.Restriction;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -21,8 +17,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class SkuInner {
     /**
-     * Gets or sets the SKU name. Required for account creation; optional for
-     * update. Note that in older versions, SKU name was called accountType.
      * Possible values include: 'Standard_LRS', 'Standard_GRS',
      * 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS', 'Premium_ZRS',
      * 'Standard_GZRS', 'Standard_RAGZRS'.
@@ -31,50 +25,13 @@ public class SkuInner {
     private SkuName name;
 
     /**
-     * Gets the SKU tier. This is based on the SKU name. Possible values
-     * include: 'Standard', 'Premium'.
+     * Possible values include: 'Standard', 'Premium'.
      */
-    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "tier")
     private SkuTier tier;
 
     /**
-     * The type of the resource, usually it is 'storageAccounts'.
-     */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceType;
-
-    /**
-     * Indicates the type of storage account. Possible values include:
-     * 'Storage', 'StorageV2', 'BlobStorage', 'FileStorage',
-     * 'BlockBlobStorage'.
-     */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
-    private Kind kind;
-
-    /**
-     * The set of locations that the SKU is available. This will be supported
-     * and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia,
-     * etc.).
-     */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> locations;
-
-    /**
-     * The capability information in the specified SKU, including file
-     * encryption, network ACLs, change notification, etc.
-     */
-    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SKUCapability> capabilities;
-
-    /**
-     * The restrictions because of which SKU cannot be used. This is empty if
-     * there are no restrictions.
-     */
-    @JsonProperty(value = "restrictions")
-    private List<Restriction> restrictions;
-
-    /**
-     * Get gets or sets the SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was called accountType. Possible values include: 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS', 'Premium_ZRS', 'Standard_GZRS', 'Standard_RAGZRS'.
+     * Get possible values include: 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS', 'Premium_ZRS', 'Standard_GZRS', 'Standard_RAGZRS'.
      *
      * @return the name value
      */
@@ -83,7 +40,7 @@ public class SkuInner {
     }
 
     /**
-     * Set gets or sets the SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was called accountType. Possible values include: 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS', 'Premium_ZRS', 'Standard_GZRS', 'Standard_RAGZRS'.
+     * Set possible values include: 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS', 'Premium_ZRS', 'Standard_GZRS', 'Standard_RAGZRS'.
      *
      * @param name the name value to set
      * @return the SkuInner object itself.
@@ -94,7 +51,7 @@ public class SkuInner {
     }
 
     /**
-     * Get gets the SKU tier. This is based on the SKU name. Possible values include: 'Standard', 'Premium'.
+     * Get possible values include: 'Standard', 'Premium'.
      *
      * @return the tier value
      */
@@ -103,58 +60,13 @@ public class SkuInner {
     }
 
     /**
-     * Get the type of the resource, usually it is 'storageAccounts'.
+     * Set possible values include: 'Standard', 'Premium'.
      *
-     * @return the resourceType value
-     */
-    public String resourceType() {
-        return this.resourceType;
-    }
-
-    /**
-     * Get indicates the type of storage account. Possible values include: 'Storage', 'StorageV2', 'BlobStorage', 'FileStorage', 'BlockBlobStorage'.
-     *
-     * @return the kind value
-     */
-    public Kind kind() {
-        return this.kind;
-    }
-
-    /**
-     * Get the set of locations that the SKU is available. This will be supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.).
-     *
-     * @return the locations value
-     */
-    public List<String> locations() {
-        return this.locations;
-    }
-
-    /**
-     * Get the capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
-     *
-     * @return the capabilities value
-     */
-    public List<SKUCapability> capabilities() {
-        return this.capabilities;
-    }
-
-    /**
-     * Get the restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
-     *
-     * @return the restrictions value
-     */
-    public List<Restriction> restrictions() {
-        return this.restrictions;
-    }
-
-    /**
-     * Set the restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
-     *
-     * @param restrictions the restrictions value to set
+     * @param tier the tier value to set
      * @return the SkuInner object itself.
      */
-    public SkuInner withRestrictions(List<Restriction> restrictions) {
-        this.restrictions = restrictions;
+    public SkuInner withTier(SkuTier tier) {
+        this.tier = tier;
         return this;
     }
 

@@ -45,9 +45,9 @@ public class EventProcessorClientBuilderTest {
         assertThrows(NullPointerException.class, () -> {
             EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
                 .checkpointStore(new InMemoryCheckpointStore())
-                .processEvent(partitionEvent -> {
-                    System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
-                        + "sequence number of event = " + partitionEvent.getData().getSequenceNumber());
+                .processEvent(eventContext -> {
+                    System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+                        + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
                 })
                 .processError(errorContext -> {
                     System.out.printf("Error occurred in partition processor for partition {}, {}",
@@ -63,17 +63,18 @@ public class EventProcessorClientBuilderTest {
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .connectionString(CORRECT_CONNECTION_STRING)
             .consumerGroup("consumer-group")
-            .processEvent(partitionEvent -> {
-                System.out.println("Partition id = " + partitionEvent.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + partitionEvent.getData().getSequenceNumber());
+            .processEvent(eventContext -> {
+                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition {}, {}",
+                System.out.printf("Error occurred in partition processor for partition %s, %s",
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })
             .checkpointStore(new InMemoryCheckpointStore())
             .buildEventProcessorClient();
+
         assertNotNull(eventProcessorClient);
     }
 

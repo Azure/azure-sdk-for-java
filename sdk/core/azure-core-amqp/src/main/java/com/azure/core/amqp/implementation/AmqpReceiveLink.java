@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpLink;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 
-import java.io.Closeable;
 import java.util.function.Supplier;
 
 /**
@@ -21,7 +20,7 @@ public interface AmqpReceiveLink extends AmqpLink {
      * Initialises the link from the client to the message broker and begins to receive messages from the broker.
      *
      * @return A Flux of AMQP messages which completes when the client calls
-     * {@link Closeable#close() AmqpReceiveLink.close()} or an unrecoverable error occurs on the AMQP link.
+     * {@link AutoCloseable#close() AmqpReceiveLink.close()} or an unrecoverable error occurs on the AMQP link.
      */
     Flux<Message> receive();
 

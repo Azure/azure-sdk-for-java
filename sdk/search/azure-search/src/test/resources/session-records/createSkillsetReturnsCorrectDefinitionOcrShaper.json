@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk85982e7f136.search.windows.net/skillsets?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "afda694e-6443-4c9b-ac62-aca753c2b94b",
+      "StatusCode" : "201",
+      "Date" : "Mon, 24 Feb 2020 19:58:28 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7B963EAA1EE35\"",
+      "elapsed-time" : "67",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "957",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk85982e7f136.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B963EAA1EE35\\\"\",\"name\":\"ocr-shaper-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Util.ShaperSkill\",\"name\":\"mysharper\",\"description\":\"Tested Shaper skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"output\",\"targetName\":\"myOutput\"}]}],\"cognitiveServices\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk85982e7f136.search.windows.net/skillsets('ocr-shaper-skillset')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk85982e7f136" ]
+}

@@ -11,7 +11,12 @@ import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
+import com.azure.storage.common.sas.AccountSasPermission;
+import com.azure.storage.common.sas.AccountSasResourceType;
+import com.azure.storage.common.sas.AccountSasService;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -233,5 +238,25 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
             System.out.printf("Account kind: %s, SKU: %s%n", response.getValue().getAccountKind(),
                 response.getValue().getSkuName()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.getAccountInfoWithResponse
+    }
+
+    /**
+     * Code snippet for {@link BlobServiceAsyncClient#generateAccountSas(AccountSasSignatureValues)}
+     */
+    public void generateAccountSas() {
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true);
+        AccountSasService services = new AccountSasService().setBlobAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = client.generateAccountSas(sasValues);
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
     }
 }

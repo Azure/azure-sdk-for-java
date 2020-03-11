@@ -12,6 +12,7 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.storage.v2019_06_01.CorsRules;
+import com.microsoft.azure.management.storage.v2019_06_01.DeleteRetentionPolicy;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -222,8 +223,10 @@ public class FileServicesInner {
         }
         final String fileServicesName = "default";
         final CorsRules cors = null;
+        final DeleteRetentionPolicy shareDeleteRetentionPolicy = null;
         FileServicePropertiesInner parameters = new FileServicePropertiesInner();
         parameters.withCors(null);
+        parameters.withShareDeleteRetentionPolicy(null);
         return service.setServiceProperties(resourceGroupName, accountName, this.client.subscriptionId(), fileServicesName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FileServicePropertiesInner>>>() {
                 @Override
@@ -244,13 +247,14 @@ public class FileServicesInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param cors Specifies CORS rules for the File service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the File service.
+     * @param shareDeleteRetentionPolicy The file service properties for share soft delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FileServicePropertiesInner object if successful.
      */
-    public FileServicePropertiesInner setServiceProperties(String resourceGroupName, String accountName, CorsRules cors) {
-        return setServicePropertiesWithServiceResponseAsync(resourceGroupName, accountName, cors).toBlocking().single().body();
+    public FileServicePropertiesInner setServiceProperties(String resourceGroupName, String accountName, CorsRules cors, DeleteRetentionPolicy shareDeleteRetentionPolicy) {
+        return setServicePropertiesWithServiceResponseAsync(resourceGroupName, accountName, cors, shareDeleteRetentionPolicy).toBlocking().single().body();
     }
 
     /**
@@ -259,12 +263,13 @@ public class FileServicesInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param cors Specifies CORS rules for the File service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the File service.
+     * @param shareDeleteRetentionPolicy The file service properties for share soft delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<FileServicePropertiesInner> setServicePropertiesAsync(String resourceGroupName, String accountName, CorsRules cors, final ServiceCallback<FileServicePropertiesInner> serviceCallback) {
-        return ServiceFuture.fromResponse(setServicePropertiesWithServiceResponseAsync(resourceGroupName, accountName, cors), serviceCallback);
+    public ServiceFuture<FileServicePropertiesInner> setServicePropertiesAsync(String resourceGroupName, String accountName, CorsRules cors, DeleteRetentionPolicy shareDeleteRetentionPolicy, final ServiceCallback<FileServicePropertiesInner> serviceCallback) {
+        return ServiceFuture.fromResponse(setServicePropertiesWithServiceResponseAsync(resourceGroupName, accountName, cors, shareDeleteRetentionPolicy), serviceCallback);
     }
 
     /**
@@ -273,11 +278,12 @@ public class FileServicesInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param cors Specifies CORS rules for the File service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the File service.
+     * @param shareDeleteRetentionPolicy The file service properties for share soft delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FileServicePropertiesInner object
      */
-    public Observable<FileServicePropertiesInner> setServicePropertiesAsync(String resourceGroupName, String accountName, CorsRules cors) {
-        return setServicePropertiesWithServiceResponseAsync(resourceGroupName, accountName, cors).map(new Func1<ServiceResponse<FileServicePropertiesInner>, FileServicePropertiesInner>() {
+    public Observable<FileServicePropertiesInner> setServicePropertiesAsync(String resourceGroupName, String accountName, CorsRules cors, DeleteRetentionPolicy shareDeleteRetentionPolicy) {
+        return setServicePropertiesWithServiceResponseAsync(resourceGroupName, accountName, cors, shareDeleteRetentionPolicy).map(new Func1<ServiceResponse<FileServicePropertiesInner>, FileServicePropertiesInner>() {
             @Override
             public FileServicePropertiesInner call(ServiceResponse<FileServicePropertiesInner> response) {
                 return response.body();
@@ -291,10 +297,11 @@ public class FileServicesInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param cors Specifies CORS rules for the File service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the File service.
+     * @param shareDeleteRetentionPolicy The file service properties for share soft delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FileServicePropertiesInner object
      */
-    public Observable<ServiceResponse<FileServicePropertiesInner>> setServicePropertiesWithServiceResponseAsync(String resourceGroupName, String accountName, CorsRules cors) {
+    public Observable<ServiceResponse<FileServicePropertiesInner>> setServicePropertiesWithServiceResponseAsync(String resourceGroupName, String accountName, CorsRules cors, DeleteRetentionPolicy shareDeleteRetentionPolicy) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -308,9 +315,11 @@ public class FileServicesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(cors);
+        Validator.validate(shareDeleteRetentionPolicy);
         final String fileServicesName = "default";
         FileServicePropertiesInner parameters = new FileServicePropertiesInner();
         parameters.withCors(cors);
+        parameters.withShareDeleteRetentionPolicy(shareDeleteRetentionPolicy);
         return service.setServiceProperties(resourceGroupName, accountName, this.client.subscriptionId(), fileServicesName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FileServicePropertiesInner>>>() {
                 @Override

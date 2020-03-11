@@ -24,8 +24,6 @@ import java.util.Map;
 
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.FRAMEWORK;
 import static com.azure.core.amqp.implementation.handler.ConnectionHandler.PLATFORM;
-import static com.azure.core.amqp.implementation.handler.ConnectionHandler.PRODUCT;
-import static com.azure.core.amqp.implementation.handler.ConnectionHandler.VERSION;
 import static com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler.HTTPS_PORT;
 import static com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler.MAX_FRAME_SIZE;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,13 +37,16 @@ public class WebSocketsConnectionHandlerTest {
     private static final String HOSTNAME = "hostname-random";
     private WebSocketsConnectionHandler handler;
 
+    private static final String PRODUCT = "test";
+    private static final String CLIENT_VERSION = "1.0.0-test";
+
     @Captor
     ArgumentCaptor<Map<Symbol, Object>> argumentCaptor;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        handler = new WebSocketsConnectionHandler(CONNECTION_ID, HOSTNAME);
+        handler = new WebSocketsConnectionHandler(CONNECTION_ID, HOSTNAME, PRODUCT, CLIENT_VERSION);
     }
 
     @AfterEach
@@ -58,8 +59,6 @@ public class WebSocketsConnectionHandlerTest {
     public void createHandler() {
         // Arrange
         final Map<String, String> expected = new HashMap<>();
-        expected.put(PRODUCT.toString(), ClientConstants.PRODUCT_NAME);
-        expected.put(VERSION.toString(), ClientConstants.CURRENT_JAVA_CLIENT_VERSION);
         expected.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         expected.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 

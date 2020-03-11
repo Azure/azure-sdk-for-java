@@ -119,12 +119,7 @@ public final class DataLakeStorageClientBuilder {
      */
     public DataLakeStorageClientImpl build() {
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder()
-                                .policies(
-                                    new UserAgentPolicy(),
-                                    new RetryPolicy(),
-                                    new CookiePolicy())
-                                .build();
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
         }
         DataLakeStorageClientImpl client = new DataLakeStorageClientImpl(pipeline);
         if (this.url != null) {

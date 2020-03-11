@@ -4,7 +4,7 @@
 package com.azure.security.keyvault.certificates;
 
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.LifeTimeAction;
+import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -20,13 +20,13 @@ class CertificatePolicyRequest {
         this.x509CertificateProperties = new X509CertificateProperties(certificatePolicy);
         this.secretProperties = certificatePolicy.getContentType() != null ? new SecretProperties(certificatePolicy.getContentType().toString()) : null;
         this.issuerParameters = new IssuerParameters(certificatePolicy);
-        this.lifetimeActionRequests = certificatePolicy.getLifeTimeActions() != null ? parseLifeTimeActions(certificatePolicy.getLifeTimeActions()) : null;
+        this.lifetimeActionRequests = certificatePolicy.getLifetimeActions() != null ? parseLifeTimeActions(certificatePolicy.getLifetimeActions()) : null;
         this.attributes = new CertificateRequestAttributes().enabled(certificatePolicy.isEnabled());
     }
 
-    private List<LifetimeActionRequest> parseLifeTimeActions(List<LifeTimeAction> input) {
+    private List<LifetimeActionRequest> parseLifeTimeActions(List<LifetimeAction> input) {
         List<LifetimeActionRequest> output = new ArrayList<>();
-        for (LifeTimeAction action : input) {
+        for (LifetimeAction action : input) {
             output.add(new LifetimeActionRequest(action));
         }
         return output;

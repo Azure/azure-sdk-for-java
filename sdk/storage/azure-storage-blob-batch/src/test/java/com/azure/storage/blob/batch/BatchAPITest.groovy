@@ -7,6 +7,7 @@ import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
+import spock.lang.Unroll
 
 class BatchAPITest extends APISpec {
     static def setupCustomPolicyBatch(BlobServiceAsyncClient blobServiceAsyncClient, HttpPipelinePolicy customPolicy) {
@@ -26,9 +27,11 @@ class BatchAPITest extends APISpec {
     }
 
     BlobBatchClient batchClient
+    BlobBatchClient oauthBatchClient
 
     def setup() {
         batchClient = new BlobBatchClientBuilder(primaryBlobServiceClient).buildClient()
+        oauthBatchClient = new BlobBatchClientBuilder(getOAuthServiceClient()).buildClient()
     }
 
     def "Empty batch"() {
@@ -64,8 +67,7 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def batch = batchClient.getBlobBatch()
-        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
-        containerClient.create()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
         containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
         containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
 
@@ -78,6 +80,9 @@ class BatchAPITest extends APISpec {
         notThrown(BlobStorageException)
         response1.getStatusCode() == 200
         response2.getStatusCode() == 200
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
     def "Set tier some succeed throw on any error"() {
@@ -86,8 +91,7 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def batch = batchClient.getBlobBatch()
-        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
-        containerClient.create()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
         containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
 
         when:
@@ -104,6 +108,9 @@ class BatchAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
     def "Set tier some succeed do not throw on any error"() {
@@ -112,8 +119,7 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def batch = batchClient.getBlobBatch()
-        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
-        containerClient.create()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
         containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
 
         when:
@@ -130,6 +136,9 @@ class BatchAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
     def "Set tier none succeed throw on any error"() {
@@ -138,8 +147,7 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def batch = batchClient.getBlobBatch()
-        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
-        containerClient.create()
+        primaryBlobServiceClient.createBlobContainer(containerName)
 
         when:
         def response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT)
@@ -161,6 +169,9 @@ class BatchAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
     def "Set tier none succeed do not throw on any error"() {
@@ -169,8 +180,7 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def batch = batchClient.getBlobBatch()
-        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
-        containerClient.create()
+        primaryBlobServiceClient.createBlobContainer(containerName)
 
         when:
         def response1 = batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT)
@@ -191,6 +201,9 @@ class BatchAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
     def "Delete blob all succeed"() {
@@ -199,8 +212,7 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def batch = batchClient.getBlobBatch()
-        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
-        containerClient.create()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
         containerClient.getBlobClient(blobName1).getPageBlobClient().create(0)
         containerClient.getBlobClient(blobName2).getPageBlobClient().create(0)
 
@@ -213,6 +225,9 @@ class BatchAPITest extends APISpec {
         notThrown(BlobStorageException)
         response1.getStatusCode() == 202
         response2.getStatusCode() == 202
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
     def "Delete blob some succeed throw on any error"() {
@@ -221,8 +236,7 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def batch = batchClient.getBlobBatch()
-        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
-        containerClient.create()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
         containerClient.getBlobClient(blobName1).getPageBlobClient().create(0)
 
         when:
@@ -239,6 +253,9 @@ class BatchAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
     def "Delete blob some succeed do not throw on any error"() {
@@ -247,8 +264,7 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def batch = batchClient.getBlobBatch()
-        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
-        containerClient.create()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
         containerClient.getBlobClient(blobName1).getPageBlobClient().create(0)
 
         when:
@@ -265,6 +281,9 @@ class BatchAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
     def "Delete blob none succeed throw on any error"() {
@@ -273,8 +292,7 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def batch = batchClient.getBlobBatch()
-        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
-        containerClient.create()
+        primaryBlobServiceClient.createBlobContainer(containerName)
 
         when:
         def response1 = batch.deleteBlob(containerName, blobName1)
@@ -296,6 +314,9 @@ class BatchAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
     def "Delete blob none succeed do not throw on any error"() {
@@ -304,8 +325,7 @@ class BatchAPITest extends APISpec {
         def blobName1 = generateBlobName()
         def blobName2 = generateBlobName()
         def batch = batchClient.getBlobBatch()
-        def containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName)
-        containerClient.create()
+        primaryBlobServiceClient.createBlobContainer(containerName)
 
         when:
         def response1 = batch.deleteBlob(containerName, blobName1)
@@ -326,6 +346,9 @@ class BatchAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
     def "Accessing batch request before submission throws"() {
@@ -342,9 +365,11 @@ class BatchAPITest extends APISpec {
 
     def "Bulk delete blobs"() {
         setup:
+        def containerName = generateContainerName()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
         def blobUrls = new ArrayList<String>()
         for (def i = 0; i < 10; i++) {
-            def pageBlobClient = cc.getBlobClient(generateBlobName()).getPageBlobClient()
+            def pageBlobClient = containerClient.getBlobClient(generateBlobName()).getPageBlobClient()
             pageBlobClient.create(512)
             blobUrls.add(pageBlobClient.getBlobUrl())
         }
@@ -356,13 +381,18 @@ class BatchAPITest extends APISpec {
         for (def response : responses) {
             assert response.getStatusCode() == 202
         }
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
     def "Bulk set access tier"() {
         setup:
+        def containerName = generateContainerName()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
         def blobUrls = new ArrayList<String>()
         for (def i = 0; i < 10; i++) {
-            def pageBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+            def pageBlobClient = containerClient.getBlobClient(generateBlobName()).getBlockBlobClient()
             pageBlobClient.upload(defaultInputStream.get(), defaultDataSize)
             blobUrls.add(pageBlobClient.getBlobUrl())
         }
@@ -374,13 +404,18 @@ class BatchAPITest extends APISpec {
         for (def response : responses) {
             assert response.getStatusCode() == 200
         }
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
     def "Too many operations fails"() {
         setup:
+        def containerName = generateContainerName()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
         def blobUrls = new ArrayList<String>()
         for (def i = 0; i < 257; i++) {
-            def pageBlobClient = cc.getBlobClient(generateBlobName()).getPageBlobClient()
+            def pageBlobClient = containerClient.getBlobClient(generateBlobName()).getPageBlobClient()
             blobUrls.add(pageBlobClient.getBlobUrl())
         }
 
@@ -389,5 +424,87 @@ class BatchAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
+    }
+
+    def "Single operation exception throws BlobBatchStorageException"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobName1 = generateBlobName()
+        def batch = batchClient.getBlobBatch()
+        primaryBlobServiceClient.createBlobContainer(containerName)
+
+        when:
+        def response1 = batch.deleteBlob(containerName, blobName1)
+        batchClient.submitBatch(batch)
+
+        then:
+        thrown(BlobBatchStorageException)
+
+        when:
+        response1.getStatusCode()
+
+        then:
+        thrown(BlobStorageException)
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
+    }
+
+    @Unroll
+    def "Submitting same batch many times"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobName1 = generateBlobName()
+        def blobName2 = generateBlobName()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
+        containerClient.getBlobClient(blobName2).getPageBlobClient().create(0)
+
+        when:
+        def batch = batchClient.getBlobBatch()
+        batch.deleteBlob(containerName, blobName1, DeleteSnapshotsOptionType.INCLUDE, null)
+        batch.deleteBlob(containerName, blobName2, DeleteSnapshotsOptionType.INCLUDE, null)
+        batchClient.submitBatch(batch)
+
+        then:
+        thrown(BlobBatchStorageException)
+
+        when:
+        batchClient.submitBatch(batch)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
+
+        where:
+        i << (1..20)
+    }
+
+    def "Submit batch with oauth credentials"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobName1 = generateBlobName()
+        def blobName2 = generateBlobName()
+        def batch = oauthBatchClient.getBlobBatch()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
+        containerClient.getBlobClient(blobName1).getPageBlobClient().create(0)
+        containerClient.getBlobClient(blobName2).getPageBlobClient().create(0)
+
+        when:
+        def response1 = batch.deleteBlob(containerName, blobName1)
+        def response2 = batch.deleteBlob(containerName, blobName2)
+        oauthBatchClient.submitBatch(batch)
+
+        then:
+        notThrown(BlobStorageException)
+        response1.getStatusCode() == 202
+        response2.getStatusCode() == 202
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 }

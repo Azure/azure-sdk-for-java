@@ -1,0 +1,32 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://cameravault.vault.azure.net/certificates/non-existing/backup?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-IIS/10.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Date" : "Tue, 03 Dec 2019 13:16:53 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "X-AspNet-Version" : "4.0.30319",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "Content-Length" : "88",
+      "x-ms-request-id" : "8681d08c-14e2-4433-a250-d23df850d152",
+      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Certificate not found: non-existing\"}}",
+      "X-Powered-By" : "ASP.NET",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

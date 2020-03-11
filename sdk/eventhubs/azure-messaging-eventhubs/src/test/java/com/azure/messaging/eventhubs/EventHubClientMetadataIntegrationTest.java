@@ -15,14 +15,11 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
 /**
  * Tests the metadata operations such as fetching partition properties and event hub properties.
  */
 public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
-    private final String[] expectedPartitionIds = new String[]{"0", "1"};
+    private final String[] expectedPartitionIds = new String[]{"0", "1", "2"};
     private EventHubAsyncClient client;
     private String eventHubName;
 
@@ -97,6 +94,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(partitionProperties)
             .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
             .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
+            .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
             .verifyComplete();
     }
 
@@ -104,7 +102,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
      * Verifies that error conditions are handled for fetching Event Hub metadata.
      */
     @Test
-    public void getPartitionPropertiesInvalidToken() throws InvalidKeyException, NoSuchAlgorithmException {
+    public void getPartitionPropertiesInvalidToken() {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
         final TokenCredential invalidTokenCredential = new EventHubSharedKeyCredential(
@@ -114,23 +112,27 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
             .buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(invalidClient.getProperties())
-            .expectErrorSatisfies(error -> {
-                Assertions.assertTrue(error instanceof AmqpException);
+        try {
+            StepVerifier.create(invalidClient.getProperties())
+                .expectErrorSatisfies(error -> {
+                    Assertions.assertTrue(error instanceof AmqpException);
 
-                AmqpException exception = (AmqpException) error;
-                Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
-                Assertions.assertFalse(exception.isTransient());
-                Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
-            })
-            .verify();
+                    AmqpException exception = (AmqpException) error;
+                    Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
+                    Assertions.assertFalse(exception.isTransient());
+                    Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
+                })
+                .verify();
+        } finally {
+            invalidClient.close();
+        }
     }
 
     /**
      * Verifies that error conditions are handled for fetching partition metadata.
      */
     @Test
-    public void getPartitionPropertiesNonExistentHub() throws InvalidKeyException, NoSuchAlgorithmException {
+    public void getPartitionPropertiesNonExistentHub() {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
         final TokenCredential validCredentials = new EventHubSharedKeyCredential(
@@ -140,15 +142,19 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
             .buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(invalidClient.getPartitionIds())
-            .expectErrorSatisfies(error -> {
-                Assertions.assertTrue(error instanceof AmqpException);
+        try {
+            StepVerifier.create(invalidClient.getPartitionIds())
+                .expectErrorSatisfies(error -> {
+                    Assertions.assertTrue(error instanceof AmqpException);
 
-                AmqpException exception = (AmqpException) error;
-                Assertions.assertEquals(AmqpErrorCondition.NOT_FOUND, exception.getErrorCondition());
-                Assertions.assertFalse(exception.isTransient());
-                Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
-            })
-            .verify();
+                    AmqpException exception = (AmqpException) error;
+                    Assertions.assertEquals(AmqpErrorCondition.NOT_FOUND, exception.getErrorCondition());
+                    Assertions.assertFalse(exception.isTransient());
+                    Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
+                })
+                .verify();
+        } finally {
+            invalidClient.close();
+        }
     }
 }
