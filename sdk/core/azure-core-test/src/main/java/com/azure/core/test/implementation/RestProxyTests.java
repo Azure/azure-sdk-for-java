@@ -264,7 +264,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service5.class).getAnythingWithEncodedPathParam("with+path+param");
 
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("localhost:21354/anything/with path param", json.url());
+        assertMatchWithHttpOrHttps("localhost:21354/anything/with+path+param", json.url());
     }
 
     @Test
@@ -303,7 +303,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service6.class).getAnything("A%20Z", 15);
 
         assertNotNull(json);
-        assertMatchWithHttpOrHttps("localhost:21354/anything?a=A%20Z&b=15", json.url());
+        assertMatchWithHttpOrHttps("localhost:21354/anything?a=A%2520Z&b=15", json.url());
     }
 
     @Test

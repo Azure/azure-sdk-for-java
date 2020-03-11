@@ -22,8 +22,6 @@ import com.github.tomakehurst.wiremock.http.ResponseDefinition;
 
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -44,7 +42,8 @@ public final class RestProxyTestsWireMockServer {
         WireMockServer server = new WireMockServer(WireMockConfiguration.options()
             .extensions(new RestProxyResponseTransformer())
             .port(21354)
-            .disableRequestJournal());
+            .disableRequestJournal()
+            .gzipDisabled(true));
 
         // Stub that will return a response with a body containing the passed number of bytes.
         server.stubFor(get(urlPathMatching("/bytes/\\d+")));
@@ -90,14 +89,14 @@ public final class RestProxyTestsWireMockServer {
                         new HttpHeader("Access-Control-Allow-Credentials", "true"),
                         new HttpHeader("X-Processed-Time", String.valueOf(Math.random() * 10)),
                         new HttpHeader("Date", new DateTimeRfc1123(OffsetDateTime.now(ZoneOffset.UTC)).toString()),
-                        new HttpHeader("Content-Length", String.valueOf(bodySize)),
-                        new HttpHeader("Content-Type", "application/octet-stream")
+                        new HttpHeader("Content-Type", "application/octet-stream"),
+                        new HttpHeader("Content-Length", String.valueOf(bodySize))
                     ))
                     .withBody(new SecureRandom().generateSeed(bodySize))
                     .build();
             } else if (url.getPath().startsWith("/anything")) {
                 HttpBinJSON responseBody = new HttpBinJSON();
-                responseBody.url(URLDecoder.decode(request.getAbsoluteUrl(), StandardCharsets.UTF_8.toString()));
+                responseBody.url(url.toString().replace("%20", " "));
 
                 if (request.getHeaders() != null) {
                     responseBody.headers(request.getHeaders().all().stream()
@@ -157,7 +156,7 @@ public final class RestProxyTestsWireMockServer {
             } else if (url.getPath().startsWith("/put")) {
                 HttpBinJSON responseBody = new HttpBinJSON();
                 responseBody.data(request.getBodyAsString());
-                responseBody.url(URLDecoder.decode(request.getAbsoluteUrl(), StandardCharsets.UTF_8.toString()));
+                responseBody.url(url.toString().replace("%20", " "));
 
                 if (request.getHeaders() != null) {
                     responseBody.headers(request.getHeaders().all().stream()
@@ -191,7 +190,7 @@ public final class RestProxyTestsWireMockServer {
                     .build();
             } else if (url.getPath().startsWith("/get")) {
                 HttpBinJSON responseBody = new HttpBinJSON();
-                responseBody.url(URLDecoder.decode(request.getAbsoluteUrl(), StandardCharsets.UTF_8.toString()));
+                responseBody.url(url.toString().replace("%20", " "));
 
                 return new ResponseDefinitionBuilder()
                     .withStatus(200)

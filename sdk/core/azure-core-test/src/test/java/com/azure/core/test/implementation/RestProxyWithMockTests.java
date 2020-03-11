@@ -3,11 +3,6 @@
 
 package com.azure.core.test.implementation;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -16,9 +11,8 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ReturnValueWireType;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.http.ContentType;
-import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -28,16 +22,21 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.test.http.MockHttpClient;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
+import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.IterableStream;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -46,9 +45,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class RestProxyWithMockTests extends RestProxyTests {
     @Override
@@ -56,7 +57,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         return new MockHttpClient();
     }
 
-    @Host("http://httpbin.org")
+    @Host("http://localhost:21354")
     @ServiceInterface(name = "Service1")
     private interface Service1 {
         @Get("Base64UrlBytes/10")
@@ -87,7 +88,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Test
     public void service1GetBase64UrlBytes10() {
         final byte[] bytes = createService(Service1.class)
-                .getBase64UrlBytes10();
+            .getBase64UrlBytes10();
         assertNotNull(bytes);
         assertEquals(10, bytes.length);
         for (int i = 0; i < 10; ++i) {
@@ -98,7 +99,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Test
     public void service1GetBase64UrlListOfBytes() {
         final List<byte[]> bytesList = createService(Service1.class)
-                .getBase64UrlListOfBytes();
+            .getBase64UrlListOfBytes();
         assertNotNull(bytesList);
         assertEquals(3, bytesList.size());
 
@@ -115,7 +116,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Test
     public void service1GetBase64UrlListOfListOfBytes() {
         final List<List<byte[]>> bytesList = createService(Service1.class)
-                .getBase64UrlListOfListOfBytes();
+            .getBase64UrlListOfListOfBytes();
         assertNotNull(bytesList);
         assertEquals(2, bytesList.size());
 
@@ -137,7 +138,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Test
     public void service1GetBase64UrlMapOfBytes() {
         final Map<String, byte[]> bytesMap = createService(Service1.class)
-                .getBase64UrlMapOfBytes();
+            .getBase64UrlMapOfBytes();
         assertNotNull(bytesMap);
         assertEquals(2, bytesMap.size());
 
@@ -155,7 +156,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Test
     public void service1GetDateTimeRfc1123() {
         final OffsetDateTime dateTime = createService(Service1.class)
-                .getDateTimeRfc1123();
+            .getDateTimeRfc1123();
         assertNotNull(dateTime);
         assertEquals(OffsetDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC), dateTime);
     }
@@ -163,13 +164,13 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Test
     public void service1GetDateTimeUnix() {
         final OffsetDateTime dateTime = createService(Service1.class)
-                .getDateTimeUnix();
+            .getDateTimeUnix();
         assertNotNull(dateTime);
         assertEquals(OffsetDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC), dateTime);
     }
 
 
-    @Host("http://httpbin.org")
+    @Host("http://localhost:21354")
     @ServiceInterface(name = "ServiceErrorWithCharsetService")
     interface ServiceErrorWithCharsetService {
         @Get("/get")
@@ -180,17 +181,17 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Test
     public void serviceErrorWithResponseContentType() {
         ServiceErrorWithCharsetService service = RestProxy.create(
-                ServiceErrorWithCharsetService.class,
-                new HttpPipelineBuilder().httpClient(new SimpleMockHttpClient() {
-                    @Override
-                    public Mono<HttpResponse> send(HttpRequest request) {
-                        HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json");
+            ServiceErrorWithCharsetService.class,
+            new HttpPipelineBuilder().httpClient(new SimpleMockHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json");
 
-                        HttpResponse response = new MockHttpResponse(request, 200, headers,
-                                "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(StandardCharsets.UTF_8));
-                        return Mono.just(response);
-                    }
-                }).build());
+                    HttpResponse response = new MockHttpResponse(request, 200, headers,
+                        "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(StandardCharsets.UTF_8));
+                    return Mono.just(response);
+                }
+            }).build());
 
         try {
             service.get();
@@ -203,16 +204,16 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Test
     public void serviceErrorWithResponseContentTypeBadJSON() {
         ServiceErrorWithCharsetService service = RestProxy.create(
-                ServiceErrorWithCharsetService.class,
-                new HttpPipelineBuilder().httpClient(new SimpleMockHttpClient() {
-                    @Override
-                    public Mono<HttpResponse> send(HttpRequest request) {
-                        HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json");
+            ServiceErrorWithCharsetService.class,
+            new HttpPipelineBuilder().httpClient(new SimpleMockHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json");
 
-                        HttpResponse response = new MockHttpResponse(request, 200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
-                        return Mono.just(response);
-                    }
-                }).build());
+                    HttpResponse response = new MockHttpResponse(request, 200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
+                    return Mono.just(response);
+                }
+            }).build());
 
         try {
             service.get();
@@ -226,17 +227,17 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Test
     public void serviceErrorWithResponseContentTypeCharset() {
         ServiceErrorWithCharsetService service = RestProxy.create(
-                ServiceErrorWithCharsetService.class,
-                new HttpPipelineBuilder().httpClient(new SimpleMockHttpClient() {
-                    @Override
-                    public Mono<HttpResponse> send(HttpRequest request) {
-                        HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json; charset=UTF-8");
+            ServiceErrorWithCharsetService.class,
+            new HttpPipelineBuilder().httpClient(new SimpleMockHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json; charset=UTF-8");
 
-                        HttpResponse response = new MockHttpResponse(request, 200, headers,
-                                "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(StandardCharsets.UTF_8));
-                        return Mono.just(response);
-                    }
-                }).build());
+                    HttpResponse response = new MockHttpResponse(request, 200, headers,
+                        "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(StandardCharsets.UTF_8));
+                    return Mono.just(response);
+                }
+            }).build());
 
         try {
             service.get();
@@ -249,16 +250,16 @@ public class RestProxyWithMockTests extends RestProxyTests {
     @Test
     public void serviceErrorWithResponseContentTypeCharsetBadJSON() {
         ServiceErrorWithCharsetService service = RestProxy.create(
-                ServiceErrorWithCharsetService.class,
-                new HttpPipelineBuilder().httpClient(new SimpleMockHttpClient() {
-                    @Override
-                    public Mono<HttpResponse> send(HttpRequest request) {
-                        HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json; charset=UTF-8");
+            ServiceErrorWithCharsetService.class,
+            new HttpPipelineBuilder().httpClient(new SimpleMockHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/json; charset=UTF-8");
 
-                        HttpResponse response = new MockHttpResponse(request, 200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
-                        return Mono.just(response);
-                    }
-                }).build());
+                    HttpResponse response = new MockHttpResponse(request, 200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
+                    return Mono.just(response);
+                }
+            }).build());
 
         try {
             service.get();
@@ -437,7 +438,9 @@ public class RestProxyWithMockTests extends RestProxyTests {
         @JsonProperty("value")
         private String value;
 
-        KeyValue() { }
+        KeyValue() {
+        }
+
         KeyValue(int key, String value) {
             this.key = key;
             this.value = value;
@@ -542,7 +545,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
     /**
-     * Verifies that we can get a PagedResponse&lt;T&gt; when the user has implemented their own class from {@link Page}.
+     * Verifies that we can get a PagedResponse&lt;T&gt; when the user has implemented their own class from {@link
+     * Page}.
      */
     @Test
     public void service2getPage() {
