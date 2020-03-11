@@ -1,6 +1,9 @@
 # Release History
 
-## 4.1.0-beta.1 (Unreleased)
+## 4.0.2 (2020-03-11)
+
+### Fixed
+- Properly import PKCS12 or PEM-encoded certificate.
 
 
 ## 4.0.0 (2020-01-07)
