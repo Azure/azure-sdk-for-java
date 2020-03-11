@@ -127,6 +127,7 @@ public class RequestResponseChannel implements Disposable {
             linkName, entityPath);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
+        //@formatter:off
         this.subscriptions = Disposables.composite(
             receiveLinkHandler.getDeliveredMessages()
                 .map(this::decodeDelivery)
@@ -157,6 +158,18 @@ public class RequestResponseChannel implements Disposable {
                 dispose();
             })
         );
+        //@formatter:on
+
+        // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
+        // encounter a race condition. So, we are forced to use the dispatcher.
+        try {
+            provider.getReactorDispatcher().invoke(() -> {
+                sendLink.open();
+                receiveLink.open();
+            });
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new RuntimeException("Unable to open send and receive link.", e));
+        }
     }
 
     /**
@@ -165,7 +178,7 @@ public class RequestResponseChannel implements Disposable {
      * @return The endpoint states for the request/response channel.
      */
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStates.distinct();
+        return endpointStates;
     }
 
     /**
@@ -204,19 +217,6 @@ public class RequestResponseChannel implements Disposable {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(
                 "Cannot send a message when request response channel is disposed.")));
-        }
-
-        if (!hasOpened.getAndSet(true)) {
-            // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
-            // encounter a race condition. So, we are forced to use the dispatcher.
-            try {
-                provider.getReactorDispatcher().invoke(() -> {
-                    sendLink.open();
-                    receiveLink.open();
-                });
-            } catch (IOException e) {
-                return Mono.error(new RuntimeException("Unable to open send and receive link.", e));
-            }
         }
 
         if (message == null) {

@@ -245,13 +245,14 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     }
 
     private void requestUpstream() {
-        if (currentChannel != null) {
-            logger.verbose("connectionId[{}] entityPath[{}]: Connection exists, not requesting another.",
-                connectionId, entityPath);
-            return;
-        } else if (isDisposed()) {
-            logger.verbose("connectionId[{}] entityPath[{}]: Is already disposed.", connectionId, entityPath);
-            return;
+        if (isDisposed()) {
+            logger.warning("connectionId[{}] entityPath[{}]: Is already disposed.", connectionId, entityPath);
+        }
+
+        synchronized (connectionLock) {
+            if (currentChannel != null || pendingChannel != null) {
+                return;
+            }
         }
 
         final Subscription subscription = UPSTREAM.get(this);

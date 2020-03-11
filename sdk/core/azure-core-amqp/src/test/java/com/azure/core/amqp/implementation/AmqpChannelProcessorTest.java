@@ -20,6 +20,7 @@ import org.reactivestreams.Subscription;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
@@ -63,7 +64,8 @@ class AmqpChannelProcessorTest {
     }
 
     /**
-     * Verifies that we can get a new connection. This new connection is only emitted when the endpoint state is active.
+     * Verifies that we can get a new connection. This new connection is only emitted when the endpoint state is
+     * active.
      */
     @Test
     void createsNewConnection() {
@@ -309,6 +311,31 @@ class AmqpChannelProcessorTest {
             .expectNoEvent(Duration.ofMinutes(10))
             .then(() -> endpointSink.next(AmqpEndpointState.ACTIVE))
             .expectNext(connection1)
+            .verifyComplete();
+    }
+
+
+    /**
+     * Verifies that this AmqpChannelProcessor won't time out even if the 5 minutes default timeout occurs. This is
+     * possible when there is a disconnect for a long period of time.
+     */
+    @Test
+    void waitsLongPeriodOfTimeForChainedConnections() {
+        // Arrange
+        final TestPublisher<TestObject> publisher = TestPublisher.createCold();
+        final FluxSink<AmqpEndpointState> endpointSink = connection1.getSink();
+        final String contents = "Emitted something after 10 minutes.";
+
+        // Act & Assert
+        StepVerifier.withVirtualTime(() -> {
+            return publisher.next(connection1).flux()
+                .subscribeWith(channelProcessor).flatMap(e -> Mono.just(contents));
+        })
+            .expectSubscription()
+            .thenAwait(Duration.ofMinutes(10))
+            .expectNoEvent(Duration.ofMinutes(10))
+            .then(() -> endpointSink.next(AmqpEndpointState.ACTIVE))
+            .expectNext(contents)
             .verifyComplete();
     }
 
