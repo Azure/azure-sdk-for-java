@@ -28,8 +28,9 @@ public class ClientLoggerTests {
     private static final String PARAMETERIZED_TEST_NAME_TEMPLATE = "[" + ParameterizedTest.INDEX_PLACEHOLDER
         + "] " + ParameterizedTest.DISPLAY_NAME_PLACEHOLDER;
 
-    private PrintStream originalSystemErr;
+    private PrintStream originalSystemOut;
     private ByteArrayOutputStream logCaptureStream;
+
 
     @BeforeEach
     public void setupLoggingConfiguration() {
@@ -44,15 +45,16 @@ public class ClientLoggerTests {
          * The default configuration for SLF4J's SimpleLogger uses System.err to log. Inject a custom PrintStream to
          * log into for the duration of the test to capture the log messages.
          */
-        originalSystemErr = System.err;
+        originalSystemOut = System.out;
         logCaptureStream = new ByteArrayOutputStream();
-        System.setErr(new PrintStream(logCaptureStream));
+        System.setOut(new PrintStream(logCaptureStream));
     }
 
     @AfterEach
-    public void revertLoggingConfiguration() {
+    public void revertLoggingConfiguration() throws Exception {
         System.clearProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.ClientLoggerTests");
-        System.setErr(originalSystemErr);
+        System.setOut(originalSystemOut);
+        logCaptureStream.close();
     }
 
     private void setPropertyToOriginalOrClear(String propertyName, String originalValue) {
@@ -75,6 +77,7 @@ public class ClientLoggerTests {
 
         String originalLogLevel = setupLogLevel(logLevel);
         logMessage(new ClientLogger(ClientLoggerTests.class), logLevel, logMessage);
+
         setPropertyToOriginalOrClear(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
 
         String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
@@ -97,20 +100,6 @@ public class ClientLoggerTests {
 
         String logValues = new String(logCaptureStream.toByteArray(), StandardCharsets.UTF_8);
         assertFalse(logValues.contains(logMessage));
-    }
-
-    /**
-     * Tests that logging when the environment log level is disabled nothing is logged.
-     *
-     * @param logLevel Logging level to log a message
-     */
-    @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
-    @ValueSource(ints = { 1, 2, 3, 4 })
-    public void logWhenLoggingInvalidNumeric(int logLevel) {
-        String logMessage = "This is a test";
-        setupLogLevel(5);
-        assertThrows(IllegalArgumentException.class, () ->
-            logMessage(new ClientLogger(ClientLoggerTests.class), logLevel, logMessage));
     }
 
     /**
@@ -144,7 +133,7 @@ public class ClientLoggerTests {
      */
     @Test
     public void logExceptionStackTrace() {
-        String logMessage = "This is an exception";
+        String logMessage = "This is an exception fdsafdafdomcklamfd fdsafdafmlkdfmalsf fdsafdcacdalmd";
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createRuntimeException(exceptionMessage);
 
@@ -294,13 +283,13 @@ public class ClientLoggerTests {
     @ParameterizedTest(name = PARAMETERIZED_TEST_NAME_TEMPLATE)
     @ValueSource(strings = {"5", "invalid"})
     public void canLogAtLevelInvalid(String logLevelToValidate) {
-        setupLogLevel(2);
         assertThrows(IllegalArgumentException.class, () -> LogLevel.fromString(logLevelToValidate));
     }
 
     private String setupLogLevel(int logLevelToSet) {
-        String originalLogLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLOUD);
-        System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, Integer.toString(logLevelToSet));
+        String originalLogLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+        Configuration.getGlobalConfiguration()
+            .put(Configuration.PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
         return originalLogLevel;
     }
 

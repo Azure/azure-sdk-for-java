@@ -1,0 +1,23 @@
+parameters:
+  Artifacts: []
+  SDKType: data
+  ServiceDirectory: not-specified
+  
+stages:
+  - stage: Build
+    jobs:
+    - template: ../jobs/archetype-sdk-data.yml
+      parameters:
+        ServiceDirectory: ${{parameters.ServiceDirectory}}
+        SDKType: ${{parameters.SDKType}}
+        Artifacts: ${{parameters.Artifacts}}
+
+  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+    - template: pipelines/stages/archetype-java-release.yml@azure-sdk-build-tools
+      parameters:
+        DependsOn: Build
+        ServiceDirectory: ${{parameters.ServiceDirectory}}
+        SDKType: ${{parameters.SDKType}}
+        Artifacts: ${{parameters.Artifacts}}
+        ArtifactName: packages

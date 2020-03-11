@@ -28,7 +28,6 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
@@ -54,28 +53,21 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
     }
 
     HttpPipeline getHttpPipeline() {
-        final String endpoint = interceptorManager.isPlaybackMode()
-                ? "http://localhost:8080"
-                : System.getenv("AZURE_KEYVAULT_ENDPOINT");
-
         TokenCredential credential = null;
         HttpClient httpClient;
 
-        String tenantId = System.getenv("AZURE_TENANT_ID");
-        String clientId = System.getenv("AZURE_CLIENT_ID");
-        String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
         if (!interceptorManager.isPlaybackMode()) {
-            assertNotNull(tenantId);
-            assertNotNull(clientId);
-            assertNotNull(clientSecret);
-        }
-
-        if (!interceptorManager.isPlaybackMode()) {
+            String clientId = System.getenv("ARM_CLIENTID");
+            String clientKey = System.getenv("ARM_CLIENTKEY");
+            String tenantId = System.getenv("AZURE_TENANT_ID");
+            Objects.requireNonNull(clientId, "The client id cannot be null");
+            Objects.requireNonNull(clientKey, "The client key cannot be null");
+            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
             credential = new ClientSecretCredentialBuilder()
-                             .clientSecret(clientSecret)
-                             .tenantId(tenantId)
-                             .clientId(clientId)
-                             .build();
+                .clientSecret(clientKey)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .build();
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -107,7 +99,13 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
     public abstract void wrapUnwrapSymmetricAK128();
 
     @Test
+    public abstract void wrapUnwrapLocalSymmetricAK128();
+
+    @Test
     public abstract void wrapUnwrapSymmetricAK192();
+
+    @Test
+    public abstract void wrapUnwrapLocalSymmetricAK192();
 
 
     public String getEndpoint() {

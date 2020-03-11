@@ -4,20 +4,26 @@
 package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
+import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Map;
@@ -116,6 +122,70 @@ public class BlobClient extends BlobClientBase {
     }
 
     /**
+     * Creates a new blob. By default this method will not overwrite an existing blob.
+     *
+     * @param data The data to write to the blob.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data provided in the {@link InputStream}.
+     */
+    public void upload(InputStream data, long length) {
+        upload(data, length, false);
+    }
+
+    /**
+     * Creates a new blob, or updates the content of an existing blob.
+     *
+     * @param data The data to write to the blob.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data provided in the {@link InputStream}.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     */
+    public void upload(InputStream data, long length, boolean overwrite) {
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        uploadWithResponse(data, length, null, null, null, null, blobRequestConditions, null, Context.NONE);
+    }
+
+    /**
+     * Creates a new blob, or updates the content of an existing blob.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * @param data The data to write to the blob.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data provided in the {@link InputStream}.
+     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
+     * @param headers {@link BlobHttpHeaders}
+     * @param metadata Metadata to associate with the blob.
+     * @param tier {@link AccessTier} for the destination blob.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     */
+    public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
+        Duration timeout, Context context) {
+        BlockBlobClient blockBlobClient = this.getBlockBlobClient();
+        final ParallelTransferOptions validatedParallelTransferOptions =
+            ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
+        if (length < validatedParallelTransferOptions.getMaxSingleUploadSize()) {
+            blockBlobClient.uploadWithResponse(data, length, headers, metadata, tier, null, requestConditions,
+                timeout, context);
+        } else {
+            BlobOutputStream blobOutputStream = BlobOutputStream.blockBlobOutputStream(client,
+                validatedParallelTransferOptions, headers, metadata, tier, requestConditions);
+            try {
+                StorageImplUtils.copyToOutputStream(data, length, blobOutputStream);
+                blobOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * Creates a new block blob. By default this method will not overwrite an existing blob.
      *
      * <p><strong>Code Samples</strong></p>
@@ -145,7 +215,7 @@ public class BlobClient extends BlobClientBase {
 
         if (!overwrite) {
             // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
-            if (client.uploadInBlocks(filePath, BlockBlobClient.MAX_UPLOAD_BLOB_BYTES) && exists()) {
+            if (UploadUtils.shouldUploadInChunks(filePath, BlockBlobClient.MAX_UPLOAD_BLOB_BYTES, logger) && exists()) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);

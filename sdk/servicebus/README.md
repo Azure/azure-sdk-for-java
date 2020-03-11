@@ -33,7 +33,7 @@ The package can be downloaded from [Maven](http://search.maven.org/#search%7Cgav
 <dependency> 
   <groupId>com.microsoft.azure</groupId> 
   <artifactId>azure-servicebus</artifactId> 
-  <version>3.1.1</version>
+  <version>3.1.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

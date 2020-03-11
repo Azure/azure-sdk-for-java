@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
+
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
@@ -18,8 +20,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
@@ -27,9 +29,9 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -38,16 +40,13 @@ import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
-import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
-
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Blob clients.
@@ -242,7 +241,7 @@ public final class EncryptedBlobClientBuilder {
     /**
      * Sets the {@link StorageSharedKeyCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link StorageSharedKeyCredential}.
      * @return the updated EncryptedBlobClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
@@ -256,7 +255,7 @@ public final class EncryptedBlobClientBuilder {
     /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
-     * @param credential The credential to use for authenticating request.
+     * @param credential {@link TokenCredential}.
      * @return the updated EncryptedBlobClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
@@ -460,7 +459,7 @@ public final class EncryptedBlobClientBuilder {
     /**
      * Sets the request retry options for all the requests made through the client.
      *
-     * @param retryOptions The options used to configure retry behavior.
+     * @param retryOptions {@link RequestRetryOptions}.
      * @return the updated EncryptedBlobClientBuilder object
      * @throws NullPointerException If {@code retryOptions} is {@code null}.
      */
@@ -491,7 +490,9 @@ public final class EncryptedBlobClientBuilder {
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
+     * newer version of the client library will have the result of potentially moving to a newer service version.
+     * <p>
+     * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
      * @param version {@link BlobServiceVersion} of the service to be used when making requests.
      * @return the updated EncryptedBlobClientBuilder object

@@ -231,6 +231,8 @@ public final class BlobServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
+     * <p>This method checks to ensure the properties being sent follow the specifications indicated in the Azure Docs.
+     * If CORS policies are set, CORS parameters that are not set default to the empty string.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -247,6 +249,8 @@ public final class BlobServiceClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
      * Note that setting the default service version has no effect when using this client because this client explicitly
      * sets the version header on each request, overriding the default.
+     * <p>This method checks to ensure the properties being sent follow the specifications indicated in the Azure Docs.
+     * If CORS policies are set, CORS parameters that are not set default to the empty string.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *

@@ -5,9 +5,7 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.NamedEntity;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -17,67 +15,58 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously recognize the PII(Personally Identifiable Information) entities of a batch
- * input text.
+ * Sample demonstrates how to asynchronously recognize the PII(Personally Identifiable Information) entities of
+ * documents.
  */
 public class RecognizePiiBatchDocumentsAsync {
     /**
-     * Main method to invoke this demo about how to recognize the PII entities of a batch input text.
+     * Main method to invoke this demo about how to recognize the Personally Identifiable Information entities of
+     * documents.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("{subscription_key}")
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The texts that need be analysed.
+        // The texts that need be analyzed.
         List<TextDocumentInput> inputs = Arrays.asList(
             new TextDocumentInput("1", "My SSN is 555-55-5555", "en"),
             new TextDocumentInput("2", "Visa card 4111 1111 1111 1111", "en")
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         // Recognizing batch entities
-        client.recognizeBatchPiiEntitiesWithResponse(inputs, requestOptions).subscribe(
-            result -> {
-                final DocumentResultCollection<RecognizePiiEntitiesResult> recognizedBatchResult = result.getValue();
-                System.out.printf("Model version: %s%n", recognizedBatchResult.getModelVersion());
+        client.recognizePiiEntitiesBatch(inputs, requestOptions).byPage().subscribe(
+            pagedResponse -> {
+                System.out.printf("Model version: %s%n", pagedResponse.getModelVersion());
 
                 // Batch statistics
-                final TextDocumentBatchStatistics batchStatistics = recognizedBatchResult.getStatistics();
-                System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
-                    batchStatistics.getDocumentCount(),
-                    batchStatistics.getErroneousDocumentCount(),
-                    batchStatistics.getTransactionCount(),
-                    batchStatistics.getValidDocumentCount());
+                final TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
+                System.out.printf("A batch of documents statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
+                    batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                // Recognized PII entities for each of document from a batch of documents
-                for (RecognizePiiEntitiesResult piiEntityDocumentResult : recognizedBatchResult) {
-                    System.out.printf("Document ID: %s%n", piiEntityDocumentResult.getId());
-                    // Erroneous document
-                    if (piiEntityDocumentResult.isError()) {
-                        System.out.printf("Cannot recognize PII entities. Error: %s%n", piiEntityDocumentResult.getError().getMessage());
-                        continue;
+                // Recognized Personally Identifiable Information entities for each of documents from a batch of documents
+                pagedResponse.getElements().forEach(entitiesResult -> {
+                    System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
+                    if (entitiesResult.isError()) {
+                        // Erroneous document
+                        System.out.printf("Cannot recognize Personally Identifiable Information entities. Error: %s%n", entitiesResult.getError().getMessage());
+                    } else {
+                        // Valid document
+                        entitiesResult.getEntities().forEach(entity -> System.out.printf(
+                            "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
                     }
-                    // Valid document
-                    for (NamedEntity entity : piiEntityDocumentResult.getNamedEntities()) {
-                        System.out.printf("Recognized personal identifiable information entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
-                            entity.getText(),
-                            entity.getType(),
-                            entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),
-                            entity.getOffset(),
-                            entity.getLength(),
-                            entity.getScore());
-                    }
-                }
+                });
             },
-            error -> System.err.println("There was an error recognizing PII entities of the text inputs." + error),
-            () -> System.out.println("Batch of PII entities recognized."));
+            error -> System.err.printf("There was an error recognizing Personally Identifiable Information entities of the documents. %s%n", error),
+            () -> System.out.println("Batch of Personally Identifiable Information entities recognized."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

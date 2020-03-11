@@ -40,6 +40,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      */
     private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
     private final Mono<EventHubManagementNode> managementChannelMono;
+    private final String connectionId;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
     private final TokenManagerProvider tokenManagerProvider;
@@ -56,12 +57,13 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
      * @param messageSerializer Serializes and deserializes proton-j messages.
      */
-    public EventHubReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
+    public EventHubReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions, String eventHubName,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
         String clientVersion) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion);
+        this.connectionId = connectionId;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = tokenManagerProvider;
@@ -72,21 +74,20 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
             Mono.fromCallable(() -> {
                 return (EventHubManagementNode) new ManagementChannel(
                     createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
-                    connectionOptions.getEntityPath(), connectionOptions.getTokenCredential(),
-                    this.tokenManagerProvider, this.messageSerializer);
+                    eventHubName, connectionOptions.getTokenCredential(),
+                    this.tokenManagerProvider, this.messageSerializer, connectionOptions.getScheduler());
             }))
             .cache();
     }
 
     @Override
     public Mono<EventHubManagementNode> getManagementNode() {
-        return managementChannelMono;
-    }
+        if (isDisposed()) {
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "connectionId[%s]: Connection is disposed. Cannot get management instance", connectionId))));
+        }
 
-    @Override
-    protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
-        return new EventHubReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer);
+        return managementChannelMono;
     }
 
     /**
@@ -100,19 +101,13 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      */
     @Override
     public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions) {
-        final AmqpSendLink openLink = sendLinks.get(entityPath);
-
-        if (openLink != null) {
-            return Mono.just(openLink);
-        }
-
         return createSession(entityPath).flatMap(session -> {
-            logger.info("Creating producer for {}", entityPath);
+            logger.verbose("Get or create producer for path: '{}'", entityPath);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
             return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy)
                 .cast(AmqpSendLink.class);
-        }).map(link -> sendLinks.computeIfAbsent(entityPath, unusedKey -> link));
+        });
     }
 
     /**
@@ -130,7 +125,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         ReceiveOptions options) {
         return createSession(entityPath).cast(EventHubSession.class)
             .flatMap(session -> {
-                logger.verbose("Creating consumer for path: {}", entityPath);
+                logger.verbose("Get or create consumer for path: '{}'", entityPath);
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy,
@@ -139,11 +134,17 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     }
 
     @Override
-    public void close() {
+    public void dispose() {
         logger.info("Disposing of connection.");
-        sendLinks.forEach((key, value) -> value.close());
+        sendLinks.forEach((key, value) -> value.dispose());
         sendLinks.clear();
 
-        super.close();
+        super.dispose();
+    }
+
+    @Override
+    protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
+        return new EventHubReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
+            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer);
     }
 }

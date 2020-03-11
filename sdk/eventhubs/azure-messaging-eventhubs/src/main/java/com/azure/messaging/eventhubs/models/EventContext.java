@@ -3,9 +3,6 @@
 
 package com.azure.messaging.eventhubs.models;
 
-import static com.azure.core.util.FluxUtil.monoError;
-
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
@@ -21,7 +18,6 @@ import reactor.core.publisher.Mono;
  */
 public class EventContext {
 
-    private final ClientLogger logger = new ClientLogger(EventContext.class);
     private final PartitionContext partitionContext;
     private final EventData eventData;
     private final CheckpointStore checkpointStore;
@@ -78,16 +74,13 @@ public class EventContext {
     }
 
     /**
-     * Updates the checkpoint asynchronously for this partition using the event data. This will serve as the last known
-     * successfully processed event in this partition if the update is successful.
+     * Updates the checkpoint asynchronously for this partition using the event data in this
+     * {@link EventContext}. This will serve as the last known successfully processed event in this partition if the
+     * update is successful.
      *
-     * @param eventData The event data to use for updating the checkpoint.
      * @return a representation of deferred execution of this call.
      */
-    public Mono<Void> updateCheckpointAsync(EventData eventData) {
-        if (eventData == null) {
-            return monoError(logger, new NullPointerException("'eventData' cannot be null"));
-        }
+    public Mono<Void> updateCheckpointAsync() {
         Checkpoint checkpoint = new Checkpoint()
             .setFullyQualifiedNamespace(partitionContext.getFullyQualifiedNamespace())
             .setEventHubName(partitionContext.getEventHubName())
@@ -103,6 +96,6 @@ public class EventContext {
      * successfully processed event in this partition if the update is successful.
      */
     public void updateCheckpoint() {
-        this.updateCheckpointAsync(eventData).block();
+        this.updateCheckpointAsync().block();
     }
 }

@@ -10,6 +10,7 @@ import com.azure.messaging.eventhubs.jproxy.SimpleProxy;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -20,7 +21,7 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
-import java.time.Instant;
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -40,6 +41,8 @@ public class ProxySendTest extends IntegrationTestBase {
 
     @BeforeAll
     public static void initialize() throws Exception {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+
         proxyServer = new SimpleProxy(PROXY_PORT);
         proxyServer.start(t -> {
         });
@@ -60,6 +63,8 @@ public class ProxySendTest extends IntegrationTestBase {
 
     @AfterAll
     public static void cleanupClient() throws Exception {
+        StepVerifier.resetDefaultTimeout();
+
         if (proxyServer != null) {
             proxyServer.stop();
         }
@@ -89,7 +94,11 @@ public class ProxySendTest extends IntegrationTestBase {
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
         final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
         final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
-        final Instant sendTime = Instant.now();
+        final PartitionProperties information = producer.getPartitionProperties(PARTITION_ID).block();
+
+        Assertions.assertNotNull(information, "Should receive partition information.");
+
+        final EventPosition position = EventPosition.fromSequenceNumber(information.getLastEnqueuedSequenceNumber());
         final EventHubConsumerAsyncClient consumer = builder
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .buildAsyncConsumerClient();
@@ -101,7 +110,7 @@ public class ProxySendTest extends IntegrationTestBase {
                 .verify(TIMEOUT);
 
             // Assert
-            StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(sendTime))
+            StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
                 .filter(x -> TestUtils.isMatchingEvent(x, messageId)).take(NUMBER_OF_EVENTS))
                 .expectNextCount(NUMBER_OF_EVENTS)
                 .expectComplete()

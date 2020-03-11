@@ -1,0 +1,89 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdk412339c214d.search.windows.net/indexes('hotels')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "b5ea198c-2856-442d-a2a5-cd25bf132bdf",
+      "StatusCode" : "404",
+      "Date" : "Mon, 24 Feb 2020 19:42:18 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "35",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "116",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azs-sdk412339c214d'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk412339c214d.search.windows.net/indexes?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "2cf83ace-21e2-4966-a1dc-ae530710fb4f",
+      "StatusCode" : "201",
+      "Date" : "Mon, 24 Feb 2020 19:42:18 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7B961A873686D\"",
+      "elapsed-time" : "468",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "543",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk412339c214d.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D7B961A873686D\\\"\",\"name\":\"hotels\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[],\"corsOptions\":null,\"suggesters\":[],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk412339c214d.search.windows.net/indexes('hotels')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdk412339c214d.search.windows.net/indexes('hotels')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "282",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "02ce6801-4cd3-4265-a6af-bc10043b0938",
+      "StatusCode" : "204",
+      "Date" : "Mon, 24 Feb 2020 19:42:18 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdk412339c214d.search.windows.net/indexes('hotels')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "5a91de43-55e5-4c4d-9479-7c7867496778",
+      "StatusCode" : "404",
+      "Date" : "Mon, 24 Feb 2020 19:42:18 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "15",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "116",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'hotels' was found in a service named 'azs-sdk412339c214d'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk412339c214d" ]
+}

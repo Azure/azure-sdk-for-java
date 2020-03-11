@@ -61,7 +61,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.0.1</version>
+    <version>5.0.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -103,7 +103,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -319,7 +319,9 @@ managing the underlying consumer operations.
 
 In our example, we will focus on building the [`EventProcessorClient`][EventProcessorClient], use the
 [`InMemoryCheckpointStore`][InMemoryCheckpointStore] available in samples, and a callback function that processes events
-received from the Event Hub and writes to console.
+received from the Event Hub and writes to console. For production applications, it's recommended to use a durable
+store like [Checkpoint Store with Azure Storage Blobs][BlobCheckpointStore].
+
 
 <!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L155-L176 -->
 ```java
@@ -363,7 +365,9 @@ create a configuration file with the contents below. Or set `proton.trace.level=
 you want for the `java.util.logging.Handler` implementation. Implementation classes and their options can be found in
 [Java 8 SDK javadoc][java_8_sdk_javadocs].
 
-#### Sample "logging.config" file
+To trace the AMQP transport frames, set the environment variable: `PN_TRACE_FRM=1`.
+
+#### Sample "logging.properties" file
 
 The configuration file below logs trace output from proton-j to the file "proton-trace.log".
 
@@ -376,6 +380,7 @@ java.util.logging.FileHandler.pattern=proton-trace.log
 java.util.logging.FileHandler.formatter=java.util.logging.SimpleFormatter
 java.util.logging.SimpleFormatter.format=[%1$tF %1$tr] %3$s %4$s: %5$s %n
 ```
+
 
 ### Common exceptions
 
@@ -416,7 +421,7 @@ Exceptions][event_hubs_messaging_exceptions].
 
 ### Handling transient AMQP exceptions
 
-If a transient AMQP exception occurs, the client library retries the operation as many times as the 
+If a transient AMQP exception occurs, the client library retries the operation as many times as the
 [AmqpRetryOptions][AmqpRetryOptions] allows. Afterwards, the operation fails and an exception is propagated back to the
 user.
 
@@ -470,5 +475,6 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [InMemoryCheckpointStore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryCheckpointStore.java
 [LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [RetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
+[BlobCheckpointStore]: ../azure-messaging-eventhubs-checkpointstore-blob/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FREADME.png)

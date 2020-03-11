@@ -148,8 +148,7 @@ public class OkHttpClientTests {
         Assertions.assertTimeout(Duration.ofMillis(5000), () -> {
             CountDownLatch latch = new CountDownLatch(1);
             AtomicReference<Socket> sock = new AtomicReference<>();
-            ServerSocket ss = new ServerSocket(0);
-            try {
+            try (ServerSocket ss = new ServerSocket(0)) {
                 Mono.fromCallable(() -> {
                     latch.countDown();
                     Socket socket = ss.accept();
@@ -179,15 +178,15 @@ public class OkHttpClientTests {
                 HttpClient client = HttpClient.createDefault();
                 HttpRequest request = new HttpRequest(HttpMethod.GET,
                     new URL("http://localhost:" + ss.getLocalPort() + "/get"));
-                HttpResponse response = client.send(request).block();
-                Assertions.assertEquals(200, response.getStatusCode());
-                System.out.println("reading body");
-                //
-                StepVerifier.create(response.getBodyAsByteArray())
-                    // .awaitDone(20, TimeUnit.SECONDS)
-                    .verifyError(IOException.class);
-            } finally {
-                ss.close();
+
+                StepVerifier.create(client.send(request))
+                    .assertNext(response -> {
+                        Assertions.assertEquals(200, response.getStatusCode());
+                        System.out.println("reading body");
+                        StepVerifier.create(response.getBodyAsByteArray())
+                            .verifyError(IOException.class);
+                    })
+                    .verifyComplete();
             }
         });
     }
@@ -207,7 +206,7 @@ public class OkHttpClientTests {
                 .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
                     MessageDigest md = md5Digest();
                     return response.getBody()
-                            .doOnNext(bb -> md.update(bb))
+                            .doOnNext(md::update)
                             .map(bb -> new NumberedByteBuffer(n, bb))
 //                          .doOnComplete(() -> System.out.println("completed " + n))
                             .doOnComplete(() -> Assertions.assertArrayEquals(expectedDigest,
@@ -218,7 +217,7 @@ public class OkHttpClientTests {
                 // .doOnNext(g -> System.out.println(g.n + " " +
                 // Thread.currentThread().getName()))
                 .map(nbb -> (long) nbb.bb.limit())
-                .reduce((x, y) -> x + y)
+                .reduce(Long::sum)
                 .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
                 .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30));
 
@@ -244,8 +243,7 @@ public class OkHttpClientTests {
     private static byte[] digest(String s) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(s.getBytes(StandardCharsets.UTF_8));
-        byte[] expectedDigest = md.digest();
-        return expectedDigest;
+        return md.digest();
     }
 
     private static final class NumberedByteBuffer {
@@ -277,19 +275,19 @@ public class OkHttpClientTests {
     }
 
     private static String createLongBody() {
-        StringBuilder s = new StringBuilder(10000000);
+        StringBuilder builder = new StringBuilder("abcdefghijk".length() * 1000000);
         for (int i = 0; i < 1000000; i++) {
-            s.append("abcdefghijk");
+            builder.append("abcdefghijk");
         }
-        return s.toString();
+
+        return builder.toString();
     }
 
     private void checkBodyReceived(String expectedBody, String path) {
         HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
-        HttpResponse response = doRequest(client, path);
-        String s = new String(response.getBodyAsByteArray().block(),
-                StandardCharsets.UTF_8);
-        Assertions.assertEquals(expectedBody, s);
+        StepVerifier.create(doRequest(client, path).getBodyAsByteArray())
+            .assertNext(bytes -> Assertions.assertEquals(expectedBody, new String(bytes, StandardCharsets.UTF_8)))
+            .verifyComplete();
     }
 
     private HttpResponse doRequest(HttpClient client, String path) {
