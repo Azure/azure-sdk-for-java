@@ -10,12 +10,12 @@ package com.microsoft.azure.management.compute.v2017_12_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.compute.v2017_12_01.implementation.ComputeManager;
 import com.microsoft.azure.SubResource;
@@ -63,21 +63,25 @@ public interface Image extends HasInner<ImageInner>, Resource, GroupableResource
         }
 
         /**
-         * The stage of the image update allowing to specify SourceVirtualMachine.
+         * The stage of the image definition allowing to specify SourceVirtualMachine.
          */
         interface WithSourceVirtualMachine {
             /**
              * Specifies sourceVirtualMachine.
+             * @param sourceVirtualMachine The source virtual machine from which Image is created
+             * @return the next definition stage
              */
             WithCreate withSourceVirtualMachine(SubResource sourceVirtualMachine);
         }
 
         /**
-         * The stage of the image update allowing to specify StorageProfile.
+         * The stage of the image definition allowing to specify StorageProfile.
          */
         interface WithStorageProfile {
             /**
              * Specifies storageProfile.
+             * @param storageProfile Specifies the storage settings for the virtual machine disks
+             * @return the next definition stage
              */
             WithCreate withStorageProfile(ImageStorageProfile storageProfile);
         }
@@ -101,21 +105,25 @@ public interface Image extends HasInner<ImageInner>, Resource, GroupableResource
      */
     interface UpdateStages {
         /**
-         * The stage of the image {0} allowing to specify SourceVirtualMachine.
+         * The stage of the image update allowing to specify SourceVirtualMachine.
          */
         interface WithSourceVirtualMachine {
             /**
              * Specifies sourceVirtualMachine.
+             * @param sourceVirtualMachine The source virtual machine from which Image is created
+             * @return the next update stage
              */
             Update withSourceVirtualMachine(SubResource sourceVirtualMachine);
         }
 
         /**
-         * The stage of the image {0} allowing to specify StorageProfile.
+         * The stage of the image update allowing to specify StorageProfile.
          */
         interface WithStorageProfile {
             /**
              * Specifies storageProfile.
+             * @param storageProfile Specifies the storage settings for the virtual machine disks
+             * @return the next update stage
              */
             Update withStorageProfile(ImageStorageProfile storageProfile);
         }

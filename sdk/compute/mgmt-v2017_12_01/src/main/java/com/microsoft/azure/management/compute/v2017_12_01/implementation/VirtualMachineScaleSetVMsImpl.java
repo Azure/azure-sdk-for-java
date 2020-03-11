@@ -165,10 +165,14 @@ class VirtualMachineScaleSetVMsImpl extends WrapperImpl<VirtualMachineScaleSetVM
     public Observable<VirtualMachineScaleSetVM> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
         VirtualMachineScaleSetVMsInner client = this.inner();
         return client.getAsync(resourceGroupName, vmScaleSetName, instanceId)
-        .map(new Func1<VirtualMachineScaleSetVMInner, VirtualMachineScaleSetVM>() {
+        .flatMap(new Func1<VirtualMachineScaleSetVMInner, Observable<VirtualMachineScaleSetVM>>() {
             @Override
-            public VirtualMachineScaleSetVM call(VirtualMachineScaleSetVMInner inner) {
-                return wrapModel(inner);
+            public Observable<VirtualMachineScaleSetVM> call(VirtualMachineScaleSetVMInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((VirtualMachineScaleSetVM)wrapModel(inner));
+                }
             }
        });
     }
