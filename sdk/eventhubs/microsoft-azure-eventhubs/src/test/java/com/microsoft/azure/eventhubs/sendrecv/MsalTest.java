@@ -5,6 +5,7 @@ package com.microsoft.azure.eventhubs.sendrecv;
 
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
+import com.microsoft.aad.msal4j.ClientSecret;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.azure.eventhubs.AzureActiveDirectoryTokenProvider;
