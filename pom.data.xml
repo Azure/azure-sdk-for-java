@@ -604,7 +604,6 @@
 
   <modules>
     <module>./sdk/batch/microsoft-azure-batch</module>
-    <module>./sdk/applicationinsights/microsoft-azure-applicationinsights-query</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs/pom.xml</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs-extensions/pom.xml</module>
