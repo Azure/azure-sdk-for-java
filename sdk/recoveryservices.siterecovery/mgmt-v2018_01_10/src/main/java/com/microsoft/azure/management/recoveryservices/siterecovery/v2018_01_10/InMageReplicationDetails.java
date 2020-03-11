@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * InMage provider specific settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = InMageReplicationDetails.class)
 @JsonTypeName("InMage")
 public class InMageReplicationDetails extends ReplicationProviderSpecificSettings {
     /**

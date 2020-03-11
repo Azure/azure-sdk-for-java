@@ -140,10 +140,14 @@ class ReplicationRecoveryPlansImpl extends WrapperImpl<ReplicationRecoveryPlansI
     public Observable<RecoveryPlan> getAsync(String recoveryPlanName) {
         ReplicationRecoveryPlansInner client = this.inner();
         return client.getAsync(recoveryPlanName)
-        .map(new Func1<RecoveryPlanInner, RecoveryPlan>() {
+        .flatMap(new Func1<RecoveryPlanInner, Observable<RecoveryPlan>>() {
             @Override
-            public RecoveryPlan call(RecoveryPlanInner inner) {
-                return wrapModel(inner);
+            public Observable<RecoveryPlan> call(RecoveryPlanInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RecoveryPlan)wrapModel(inner));
+                }
             }
        });
     }

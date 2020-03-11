@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * VMwareCbt specific update migration item input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = VMwareCbtUpdateMigrationItemInput.class)
 @JsonTypeName("VMwareCbt")
 public class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItemProviderSpecificInput {
     /**
@@ -67,6 +67,12 @@ public class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItemProvid
      */
     @JsonProperty(value = "licenseType")
     private LicenseType licenseType;
+
+    /**
+     * A value indicating whether auto resync is to be done.
+     */
+    @JsonProperty(value = "performAutoResync")
+    private String performAutoResync;
 
     /**
      * Get the target VM name.
@@ -225,6 +231,26 @@ public class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItemProvid
      */
     public VMwareCbtUpdateMigrationItemInput withLicenseType(LicenseType licenseType) {
         this.licenseType = licenseType;
+        return this;
+    }
+
+    /**
+     * Get a value indicating whether auto resync is to be done.
+     *
+     * @return the performAutoResync value
+     */
+    public String performAutoResync() {
+        return this.performAutoResync;
+    }
+
+    /**
+     * Set a value indicating whether auto resync is to be done.
+     *
+     * @param performAutoResync the performAutoResync value to set
+     * @return the VMwareCbtUpdateMigrationItemInput object itself.
+     */
+    public VMwareCbtUpdateMigrationItemInput withPerformAutoResync(String performAutoResync) {
+        this.performAutoResync = performAutoResync;
         return this;
     }
 

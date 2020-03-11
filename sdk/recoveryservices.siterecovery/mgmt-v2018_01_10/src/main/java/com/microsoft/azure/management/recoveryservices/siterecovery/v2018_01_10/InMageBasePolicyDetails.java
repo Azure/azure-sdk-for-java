@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Base class for the policies of providers using InMage replication.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = InMageBasePolicyDetails.class)
 @JsonTypeName("InMageBasePolicyDetails")
 public class InMageBasePolicyDetails extends PolicyProviderSpecificDetails {
     /**
