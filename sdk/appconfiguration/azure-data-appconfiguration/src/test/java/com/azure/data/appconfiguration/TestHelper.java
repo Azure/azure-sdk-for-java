@@ -27,7 +27,7 @@ class TestHelper extends TestBase {
         getHttpClients()
             .forEach(httpClient -> {
                 Arrays.stream(ConfigurationServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion ->argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
             });
         return argumentsList.stream();
     }

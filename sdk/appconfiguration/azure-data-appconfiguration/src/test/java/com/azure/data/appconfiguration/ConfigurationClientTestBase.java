@@ -39,7 +39,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.provider.Arguments;
 
 public abstract class ConfigurationClientTestBase extends TestBase {
@@ -87,25 +86,6 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
     String getLabel() {
         return testResourceNamer.randomName(labelPrefix, RESOURCE_LENGTH);
-    }
-
-    /**
-     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
-     * service versions that should be tested.
-     *
-     * @return A stream of HttpClient and service version combinations to test.
-     */
-    protected Stream<Arguments> getTestParameters() {
-        // when this issues is closed, the newer version of junit will have better support for
-        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<Arguments> argumentsList = new ArrayList<>();
-        getHttpClients()
-            .forEach(httpClient -> {
-                for (ConfigurationServiceVersion serviceVersion : ConfigurationServiceVersion.values()) {
-                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
-                }
-            });
-        return argumentsList.stream();
     }
 
     @Test
