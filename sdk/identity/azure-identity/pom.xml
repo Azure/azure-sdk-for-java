@@ -19,6 +19,29 @@
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+        <analysisConfiguration>
+          <revapi.ignore combine.children="append">
+            <item>
+              <code>java.method.added</code>
+              <class>com.azure.core.http.ProxyOptions</class>
+              <justification>The new API added in azure core can be ignored, as it doesn't break the API. </justification>
+            </item>
+          </revapi.ignore>
+        </analysisConfiguration>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
