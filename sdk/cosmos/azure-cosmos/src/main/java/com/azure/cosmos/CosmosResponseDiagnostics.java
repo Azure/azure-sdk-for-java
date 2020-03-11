@@ -13,7 +13,7 @@ import java.time.Duration;
 /**
  * This class represents response diagnostic statistics associated with a request to Azure Cosmos DB
  */
-public class CosmosResponseDiagnostics {
+public final class CosmosResponseDiagnostics {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosResponseDiagnostics.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 

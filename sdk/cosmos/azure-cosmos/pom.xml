@@ -270,6 +270,7 @@ Licensed under the MIT License.
       </plugin>
 
       <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
+      <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
