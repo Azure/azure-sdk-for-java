@@ -3,22 +3,23 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.Resource;
 
 public abstract class DistinctMap {
 
     public static DistinctMap create(DistinctQueryType distinctQueryType, String previousHash) {
         switch (distinctQueryType) {
-            case None:
+            case NONE:
                 throw new IllegalArgumentException("distinct query type cannot be None");
-            case Unordered:
+            case UNORDERED:
                 return new UnorderedDistinctMap();
-            case Ordered:
+            case ORDERED:
                 return new OrderedDistinctMap(previousHash);
             default:
                 throw new IllegalArgumentException("Unrecognized DistinctQueryType");
         }
     }
 
-    public abstract boolean add(Object object, Utils.ValueHolder<String> outHash);
+    public abstract boolean add(Resource object, Utils.ValueHolder<String> outHash);
 
 }

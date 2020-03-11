@@ -105,7 +105,7 @@ public final class QueryInfo extends JsonSerializable {
     }
 
     public boolean hasDistinct() {
-        return this.getDistinctQueryType() != DistinctQueryType.None;
+        return this.getDistinctQueryType() != DistinctQueryType.NONE;
     }
 
     public DistinctQueryType getDistinctQueryType() {
@@ -115,13 +115,13 @@ public final class QueryInfo extends JsonSerializable {
             final String distinctType = super.getString("distinctType");
             switch (distinctType) {
                 case "Ordered":
-                    distinctQueryType = DistinctQueryType.Ordered;
+                    distinctQueryType = DistinctQueryType.ORDERED;
                     break;
                 case "Unordered":
-                    distinctQueryType = DistinctQueryType.Unordered;
+                    distinctQueryType = DistinctQueryType.UNORDERED;
                     break;
                 default:
-                    distinctQueryType = DistinctQueryType.None;
+                    distinctQueryType = DistinctQueryType.NONE;
                     break;
             }
             return distinctQueryType;

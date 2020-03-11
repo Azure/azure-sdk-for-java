@@ -33,13 +33,14 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DistinctQueryTests extends TestSuiteBase {
+    private final int TIMEOUT_120 = 120000;
     private final String FIELD = "name";
     private CosmosAsyncContainer createdCollection;
     private ArrayList<CosmosItemProperties> docs = new ArrayList<>();
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public DistinctQueryTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -55,14 +56,14 @@ public class DistinctQueryTests extends TestSuiteBase {
         int index = rand.nextInt(3);
         switch (index) {
             case 0:
-                return City.LosAngeles;
+                return City.LOS_ANGELES;
             case 1:
-                return City.NewYork;
+                return City.NEW_YORK;
             case 2:
-                return City.Seattle;
+                return City.SEATTLE;
         }
 
-        return City.LosAngeles;
+        return City.LOS_ANGELES;
     }
 
     private static double getRandomIncome(Random rand) {
@@ -98,7 +99,7 @@ public class DistinctQueryTests extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(), validator, TIMEOUT);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT_120)
     public void queryDistinctDocuments() {
 
         List<String> queries = Arrays.asList(
@@ -131,7 +132,6 @@ public class DistinctQueryTests extends TestSuiteBase {
             // string value distinct queries
             "SELECT %s  c.name from c",
             "SELECT %s VALUE c.city from c",
-            "SELECT %s VALUE c.partitionKey from c",
             "SELECT %s c.name, c.name AS name2 from c",
             "SELECT %s c.name, c.city from c",
 
@@ -151,7 +151,7 @@ public class DistinctQueryTests extends TestSuiteBase {
             "SELECT %s VALUE IS_DEFINED(c.city) FROM c",
             "SELECT %s VALUE (c.children[0].age ?? 0) + (c.children[1].age ?? 0) FROM c",
 
-            // distinct queries with order by : Value order by queries are not supported yet 
+            // distinct queries with order by
             "SELECT %s  c.name FROM c ORDER BY c.name ASC",
             "SELECT %s  c.age FROM c ORDER BY c.age",
             "SELECT %s  c.city FROM c ORDER BY c.city",
@@ -199,7 +199,8 @@ public class DistinctQueryTests extends TestSuiteBase {
             final String queryWithDistinct = String.format(query, "DISTINCT");
             final String queryWithoutDistinct = String.format(query, "");
 
-            CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(queryWithDistinct, options,
+            CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(queryWithoutDistinct,
+                                                                                                 options,
                                                                                                  CosmosItemProperties.class);
 
 
@@ -216,9 +217,8 @@ public class DistinctQueryTests extends TestSuiteBase {
                 }
             }
 
-
             CosmosPagedFlux<CosmosItemProperties> queryObservableWithDistinct = createdCollection
-                                                                                    .queryItems(queryWithoutDistinct, options,
+                                                                                    .queryItems(queryWithDistinct, options,
                                                                                                 CosmosItemProperties.class);
 
 
@@ -228,7 +228,7 @@ public class DistinctQueryTests extends TestSuiteBase {
                 FeedResponse<CosmosItemProperties> next = iterator.next();
                 documentsFromWithDistinct.addAll(next.getResults());
             }
-
+            assertThat(documentsFromWithDistinct.size()).isGreaterThanOrEqualTo(1);
             assertThat(documentsFromWithDistinct.size()).isEqualTo(documentsFromWithoutDistinct.size());
         }
 
@@ -248,7 +248,7 @@ public class DistinctQueryTests extends TestSuiteBase {
             try {
                 docs.add(new CosmosItemProperties(mapper.writeValueAsString(person)));
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
         }
     }
@@ -294,9 +294,9 @@ public class DistinctQueryTests extends TestSuiteBase {
     }
 
     public enum City {
-        NewYork,
-        LosAngeles,
-        Seattle
+        NEW_YORK,
+        LOS_ANGELES,
+        SEATTLE
     }
 
     public final class Pet extends JsonSerializable {

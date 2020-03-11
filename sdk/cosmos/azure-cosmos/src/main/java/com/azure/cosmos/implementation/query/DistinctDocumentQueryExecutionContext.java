@@ -26,7 +26,7 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
     public DistinctDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component,
                                                  DistinctQueryType distinctQueryType,
                                                  String previousHash) {
-        if (distinctQueryType == DistinctQueryType.None) {
+        if (distinctQueryType == DistinctQueryType.NONE) {
             throw new IllegalArgumentException("Invalid distinct query type");
         }
 
@@ -44,11 +44,6 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
         DistinctQueryType distinctQueryType,
         String continuationToken) {
 
-        if (distinctQueryType == DistinctQueryType.Ordered) {
-            CosmosClientException dce = new BadRequestException("Ordered distinct queries are not supported yet");
-            return Flux.error(dce);
-        }
-
         Utils.ValueHolder<DistinctContinuationToken> outDistinctcontinuationtoken = new Utils.ValueHolder<>();
         DistinctContinuationToken distinctContinuationToken = new DistinctContinuationToken(null /*lasthash*/,
                                                                                             null /*sourceToken*/);
@@ -58,7 +53,7 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
                 return Flux.error(new BadRequestException("Invalid DistinctContinuationToken" + continuationToken));
             } else {
                 distinctContinuationToken = outDistinctcontinuationtoken.v;
-                if (distinctQueryType != DistinctQueryType.Ordered && distinctContinuationToken.getLastHash() != null) {
+                if (distinctQueryType != DistinctQueryType.ORDERED && distinctContinuationToken.getLastHash() != null) {
                     CosmosClientException dce = new BadRequestException("DistinctContinuationToken is malformed." +
                                                                               " DistinctContinuationToken can not" +
                                                                               " have a 'lastHash', when the query" +
