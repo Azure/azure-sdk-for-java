@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
-import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
@@ -81,6 +80,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion,
             MANAGEMENT_SEND_SETTLE_MODE, MANAGEMENT_RECEIVE_SETTLE_MODE);
+
         this.connectionId = connectionId;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
@@ -119,12 +119,12 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
 
                     TokenManager cbsBasedTokenManager =  new AzureTokenManagerProvider(
                         CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, fullyQualifiedNamespace, entityPath)
-                        .getTokenManager(getClaimsBasedSecurityNode(), entityPath) ;
+                        .getTokenManager(getClaimsBasedSecurityNode(), entityPath);
 
                     final Mono<RequestResponseChannel> requestResponseChannel =
                         createRequestResponseChannel(sessionName, linkName, address);
-                    return new ManagementChannel(requestResponseChannel, entityPath, tokenCredential,
-                        tokenManagerProvider, messageSerializer, scheduler, cbsBasedTokenManager);
+                    return new ManagementChannel(requestResponseChannel, messageSerializer, scheduler,
+                        cbsBasedTokenManager);
                 });
 
                 return node;

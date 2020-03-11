@@ -49,40 +49,32 @@ public class ManagementChannel implements  ServiceBusManagementNode {
     private static final String MANAGEMENT_SECURITY_TOKEN_KEY = "security_token";
 
     // Well-known values for the service request.
-    private static final String READ_OPERATION_VALUE = "READ";
     private static final String PEEK_OPERATION_VALUE = AmqpConstants.VENDOR + ":peek-message";
     private static final String MANAGEMENT_SERVICEBUS_ENTITY_TYPE = AmqpConstants.VENDOR + ":servicebus";
     private static final String MANAGEMENT_SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 
-
-    private final TokenCredential tokenProvider;
     private final Mono<RequestResponseChannel> channelMono;
     private final Scheduler scheduler;
-    private final String topicOrQueueName;
     private final MessageSerializer messageSerializer;
-    private final TokenManagerProvider tokenManagerProvider;
 
     /*This is to maintain cbs node and get authorization.*/
     private final TokenManager cbsBasedTokenManager;
 
     // Maintain last peek sequence number
     private AtomicReference<Long>  lastPeekedSequenceNumber = new AtomicReference<>(0L);
+    private AtomicReference<Boolean> cbsBasedTokenManagerCalled = new AtomicReference<>(false);
 
 
-    ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String topicOrQueueName,
-                      TokenCredential credential, TokenManagerProvider tokenManagerProvider,
+
+    ManagementChannel(Mono<RequestResponseChannel> responseChannelMono,
                       MessageSerializer messageSerializer, Scheduler scheduler, TokenManager cbsBasedTokenManager
     ) {
-
-        this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
-            "'tokenManagerProvider' cannot be null.");
-        this.tokenProvider = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.topicOrQueueName = Objects.requireNonNull(topicOrQueueName, "'eventHubName' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
-        this.cbsBasedTokenManager = Objects.requireNonNull(cbsBasedTokenManager, "'cbsBasedTokenManager' cannot be null.");
-       }
+        this.cbsBasedTokenManager = Objects.requireNonNull(cbsBasedTokenManager,
+            "'cbsBasedTokenManager' cannot be null.");
+    }
 
     /**
      * {@inheritDoc}
@@ -103,18 +95,17 @@ public class ManagementChannel implements  ServiceBusManagementNode {
 
         return peek(this.lastPeekedSequenceNumber.get() + 1);
     }
-    boolean cbsBasedTokenManagerCalled = false;
 
     private <T> Flux<T> peek(Map<String, Object> appProperties, Class<T> responseType,
                              int maxMessages, long fromSequenceNumber, UUID sessionId) {
 
         return
             Mono.defer(() -> {
-                if (!cbsBasedTokenManagerCalled) {
+                if (!cbsBasedTokenManagerCalled.get()) {
                     return cbsBasedTokenManager
                         .authorize()
                         .doOnNext(refreshCBSTokenTime -> {
-                            cbsBasedTokenManagerCalled = true;
+                            cbsBasedTokenManagerCalled.set(true);
                         })
                         .then();
                 } else {
@@ -123,50 +114,49 @@ public class ManagementChannel implements  ServiceBusManagementNode {
             })
             .then(
                   channelMono.flatMap(requestResponseChannel -> {
-                    // set mandatory application properties for AMQP message.
-                    appProperties.put(MANAGEMENT_OPERATION_KEY, PEEK_OPERATION_VALUE);
-                    //TODO(hemanttanwar) fix timeour configuration
-                    appProperties.put(MANAGEMENT_SERVER_TIMEOUT, "" + 1000 * 30);
+                      // set mandatory application properties for AMQP message.
+                      appProperties.put(MANAGEMENT_OPERATION_KEY, PEEK_OPERATION_VALUE);
+                      //TODO(hemanttanwar) fix timeour configuration
+                      appProperties.put(MANAGEMENT_SERVER_TIMEOUT, "30000");
 
-                    final Message request = Proton.message();
-                    final ApplicationProperties applicationProperties = new ApplicationProperties(appProperties);
-                    request.setApplicationProperties(applicationProperties);
+                      final Message request = Proton.message();
+                      final ApplicationProperties applicationProperties = new ApplicationProperties(appProperties);
+                      request.setApplicationProperties(applicationProperties);
 
-                    // set mandatory properties on AMQP message body
-                    HashMap<String, Object> requestBodyMap = new HashMap<>();
-                    requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER, fromSequenceNumber);
-                    requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_MESSAGE_COUNT, maxMessages);
+                      // set mandatory properties on AMQP message body
+                      HashMap<String, Object> requestBodyMap = new HashMap<>();
+                      requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER, fromSequenceNumber);
+                      requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_MESSAGE_COUNT, maxMessages);
 
-                    if (!Objects.isNull(sessionId)) {
-                        requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_SESSION_ID, sessionId);
-                    }
+                      if (!Objects.isNull(sessionId)) {
+                          requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_SESSION_ID, sessionId);
+                      }
 
-                    request.setBody(new AmqpValue(requestBodyMap));
+                      request.setBody(new AmqpValue(requestBodyMap));
 
-                    return requestResponseChannel.sendWithAck(request);
-                })
+                      return requestResponseChannel.sendWithAck(request);
+                  })
             ).flatMapMany(amqpMessage -> {
-
                 @SuppressWarnings("unchecked")
                 List<T> messageListObj =  messageSerializer.deserialize(amqpMessage, List.class);
 
                  // Assign the last sequence number so that we can peek from next time
-                 if (messageListObj.size() > 0) {
-                     ServiceBusReceivedMessage receivedMessage = (ServiceBusReceivedMessage) messageListObj
-                         .get(messageListObj.size() - 1);
-                     if (receivedMessage.getSequenceNumber() > 0) {
-                         this.lastPeekedSequenceNumber.set(receivedMessage.getSequenceNumber());
-                     }
-                 }
-                 return Flux.fromIterable(messageListObj);
-                });
+                if (messageListObj.size() > 0) {
+                    ServiceBusReceivedMessage receivedMessage = (ServiceBusReceivedMessage) messageListObj
+                        .get(messageListObj.size() - 1);
+                    if (receivedMessage.getSequenceNumber() > 0) {
+                        this.lastPeekedSequenceNumber.set(receivedMessage.getSequenceNumber());
+                    }
+                }
+                return Flux.fromIterable(messageListObj);
+            });
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void close() {
-        System.out.println("Close Called ");
         if (channelMono instanceof Disposable) {
             ((Disposable) channelMono).dispose();
         }
