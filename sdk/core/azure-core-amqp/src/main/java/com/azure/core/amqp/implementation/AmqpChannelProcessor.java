@@ -287,14 +287,18 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 logger.info("connectionId[{}] entityPath[{}]: Current channel is closed.", connectionId, entityPath);
                 currentChannel.dispose();
                 currentChannel = null;
+                currentChannelIdentifier = null;
             } else if (identifier.equals(pendingChannelIdentifier)) {
                 logger.info("connectionId[{}] entityPath[{}]: Pending channel is closed.", connectionId, entityPath);
                 pendingChannel.dispose();
                 pendingChannel = null;
+                pendingChannelIdentifier = null;
             } else {
                 logger.warning("identifier[{}]: Unknown channel is closed. Skipping.", identifier);
             }
         }
+
+        requestUpstream();
     }
 
     private void onEndpointError(String identifier, Throwable error) {

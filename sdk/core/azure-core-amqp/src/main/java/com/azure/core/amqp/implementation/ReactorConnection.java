@@ -275,11 +275,13 @@ public class ReactorConnection implements AmqpConnection {
             return;
         }
 
+        logger.info("connectionId[{}]: Disposing of ReactorConnection.", connectionId);
         subscriptions.dispose();
         endpointStatesSink.complete();
 
         final String[] keys = sessionMap.keySet().toArray(new String[0]);
         for (String key : keys) {
+            logger.info("connectionId[{}]: Removing session '{}'", connectionId, key);
             removeSession(key);
         }
 

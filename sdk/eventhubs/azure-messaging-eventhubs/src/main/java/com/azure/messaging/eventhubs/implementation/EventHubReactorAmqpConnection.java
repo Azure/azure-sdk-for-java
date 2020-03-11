@@ -27,6 +27,7 @@ import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * A proton-j AMQP connection to an Azure Event Hub instance. Adds additional support for management operations.
@@ -136,10 +137,12 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
 
     @Override
     public void dispose() {
-        logger.info("connectionId[{}]: Disposing of connection.");
+        logger.info("connectionId[{}]: Disposing of connection.", connectionId);
 
         try {
-            final EventHubManagementNode node = managementCreation.block(retryOptions.getTryTimeout());
+            final EventHubManagementNode node = managementCreation
+                .publishOn(Schedulers.elastic())
+                .block(retryOptions.getTryTimeout());
             if (node != null) {
                 node.close();
             }
