@@ -3,6 +3,7 @@
 ## 12.0.0-beta.13 (Unreleased)
 - Fixed bug that caused rename to fail on paths that are url encoded.
 - Mapped StorageErrorException and BlobStorageException to DataLakeStorageException on DataLakeServiceClient.listFileSystems
+- Removed DataLakeFileSystem.getRootDirectory methods to get the root directory in a file system.
 
 ## 12.0.0-beta.12 (2020-02-12)
 - Added ability to rename files and directories across file systems.
