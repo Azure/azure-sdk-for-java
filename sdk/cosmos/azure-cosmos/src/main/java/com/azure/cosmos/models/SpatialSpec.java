@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * The type Spatial spec.
  */
-public class SpatialSpec extends JsonSerializable {
+public final class SpatialSpec extends JsonSerializable {
 
     private List<SpatialType> spatialTypes;
 

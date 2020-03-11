@@ -55,7 +55,7 @@ import java.util.function.Function;
  * This is meant to be used only internally as a bridge access to classes in
  * com.azure.cosmos
  **/
-public class BridgeInternal {
+public final class BridgeInternal {
 
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
         return Document.FromObject(document, mapper);

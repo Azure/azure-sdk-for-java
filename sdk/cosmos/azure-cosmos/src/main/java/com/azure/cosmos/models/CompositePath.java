@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
  * "SELECT * FROM c ORDER BY c.age, c.height", then you need to add "/age" and "/height"
  * as composite paths to your composite index.
  */
-public class CompositePath extends JsonSerializable {
+public final class CompositePath extends JsonSerializable {
     /**
      * Constructor.
      */

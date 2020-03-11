@@ -51,7 +51,7 @@ import java.util.concurrent.ConcurrentMap;
  * This is meant to be used only internally as a bridge access to classes in
  * com.azure.cosmos.model package
  **/
-public class ModelBridgeInternal {
+public final class ModelBridgeInternal {
 
     public static CosmosAsyncConflictResponse createCosmosAsyncConflictResponse(ResourceResponse<Conflict> response,
                                                                                 CosmosAsyncContainer container) {
