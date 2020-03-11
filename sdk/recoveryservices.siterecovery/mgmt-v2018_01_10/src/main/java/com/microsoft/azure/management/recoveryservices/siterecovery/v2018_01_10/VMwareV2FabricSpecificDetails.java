@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * VMwareV2 fabric specific details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = VMwareV2FabricSpecificDetails.class)
 @JsonTypeName("VMwareV2")
 public class VMwareV2FabricSpecificDetails extends FabricSpecificDetails {
     /**
@@ -23,6 +23,12 @@ public class VMwareV2FabricSpecificDetails extends FabricSpecificDetails {
      */
     @JsonProperty(value = "vmwareSiteId", access = JsonProperty.Access.WRITE_ONLY)
     private String vmwareSiteId;
+
+    /**
+     * The ARM Id of the physical site.
+     */
+    @JsonProperty(value = "physicalSiteId", access = JsonProperty.Access.WRITE_ONLY)
+    private String physicalSiteId;
 
     /**
      * The Migration solution ARM Id.
@@ -37,12 +43,27 @@ public class VMwareV2FabricSpecificDetails extends FabricSpecificDetails {
     private String serviceEndpoint;
 
     /**
+     * The service resource Id.
+     */
+    @JsonProperty(value = "serviceResourceId", access = JsonProperty.Access.WRITE_ONLY)
+    private String serviceResourceId;
+
+    /**
      * Get the ARM Id of the VMware site.
      *
      * @return the vmwareSiteId value
      */
     public String vmwareSiteId() {
         return this.vmwareSiteId;
+    }
+
+    /**
+     * Get the ARM Id of the physical site.
+     *
+     * @return the physicalSiteId value
+     */
+    public String physicalSiteId() {
+        return this.physicalSiteId;
     }
 
     /**
@@ -61,6 +82,15 @@ public class VMwareV2FabricSpecificDetails extends FabricSpecificDetails {
      */
     public String serviceEndpoint() {
         return this.serviceEndpoint;
+    }
+
+    /**
+     * Get the service resource Id.
+     *
+     * @return the serviceResourceId value
+     */
+    public String serviceResourceId() {
+        return this.serviceResourceId;
     }
 
 }

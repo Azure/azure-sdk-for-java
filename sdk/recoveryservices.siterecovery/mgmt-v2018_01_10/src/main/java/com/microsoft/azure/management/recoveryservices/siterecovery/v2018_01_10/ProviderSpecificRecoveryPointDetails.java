@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Replication provider specific recovery point details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = ProviderSpecificRecoveryPointDetails.class)
 @JsonTypeName("ProviderSpecificRecoveryPointDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2ARecoveryPointDetails.class),

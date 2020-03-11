@@ -46,6 +46,12 @@ public class EventQueryParameter {
     private String affectedObjectFriendlyName;
 
     /**
+     * The affected object correlationId for the events to be queried.
+     */
+    @JsonProperty(value = "affectedObjectCorrelationId", access = JsonProperty.Access.WRITE_ONLY)
+    private String affectedObjectCorrelationId;
+
+    /**
      * The start time of the time range within which the events are to be
      * queried.
      */
@@ -157,6 +163,15 @@ public class EventQueryParameter {
     public EventQueryParameter withAffectedObjectFriendlyName(String affectedObjectFriendlyName) {
         this.affectedObjectFriendlyName = affectedObjectFriendlyName;
         return this;
+    }
+
+    /**
+     * Get the affected object correlationId for the events to be queried.
+     *
+     * @return the affectedObjectCorrelationId value
+     */
+    public String affectedObjectCorrelationId() {
+        return this.affectedObjectCorrelationId;
     }
 
     /**

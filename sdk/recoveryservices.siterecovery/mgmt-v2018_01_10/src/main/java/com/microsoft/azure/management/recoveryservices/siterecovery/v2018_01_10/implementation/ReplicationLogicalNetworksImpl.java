@@ -54,10 +54,14 @@ class ReplicationLogicalNetworksImpl extends WrapperImpl<ReplicationLogicalNetwo
     public Observable<LogicalNetwork> getAsync(String fabricName, String logicalNetworkName) {
         ReplicationLogicalNetworksInner client = this.inner();
         return client.getAsync(fabricName, logicalNetworkName)
-        .map(new Func1<LogicalNetworkInner, LogicalNetwork>() {
+        .flatMap(new Func1<LogicalNetworkInner, Observable<LogicalNetwork>>() {
             @Override
-            public LogicalNetwork call(LogicalNetworkInner inner) {
-                return wrapModel(inner);
+            public Observable<LogicalNetwork> call(LogicalNetworkInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((LogicalNetwork)wrapModel(inner));
+                }
             }
        });
     }

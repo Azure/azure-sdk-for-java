@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.recoveryservices.siterecovery.v2018_01_10;
 
+import org.joda.time.DateTime;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -34,12 +35,6 @@ public class MigrationItemProperties {
     private String policyFriendlyName;
 
     /**
-     * The recovery services provider ARM Id.
-     */
-    @JsonProperty(value = "recoveryServicesProviderId", access = JsonProperty.Access.WRITE_ONLY)
-    private String recoveryServicesProviderId;
-
-    /**
      * The migration status. Possible values include: 'None',
      * 'EnableMigrationInProgress', 'EnableMigrationFailed',
      * 'DisableMigrationInProgress', 'DisableMigrationFailed',
@@ -56,6 +51,18 @@ public class MigrationItemProperties {
     private String migrationStateDescription;
 
     /**
+     * The last test migration time.
+     */
+    @JsonProperty(value = "lastTestMigrationTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime lastTestMigrationTime;
+
+    /**
+     * The status of the last test migration.
+     */
+    @JsonProperty(value = "lastTestMigrationStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private String lastTestMigrationStatus;
+
+    /**
      * The test migrate state. Possible values include: 'None',
      * 'TestMigrationInProgress', 'TestMigrationSucceeded',
      * 'TestMigrationFailed', 'TestMigrationCleanupInProgress'.
@@ -70,10 +77,11 @@ public class MigrationItemProperties {
     private String testMigrateStateDescription;
 
     /**
-     * The consolidated health.
+     * The consolidated health. Possible values include: 'None', 'Normal',
+     * 'Warning', 'Critical'.
      */
     @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
-    private String health;
+    private ProtectionHealth health;
 
     /**
      * The list of health errors.
@@ -93,6 +101,12 @@ public class MigrationItemProperties {
      */
     @JsonProperty(value = "currentJob", access = JsonProperty.Access.WRITE_ONLY)
     private CurrentJobDetails currentJob;
+
+    /**
+     * The correlation Id for events associated with this migration item.
+     */
+    @JsonProperty(value = "eventCorrelationId", access = JsonProperty.Access.WRITE_ONLY)
+    private String eventCorrelationId;
 
     /**
      * The migration provider custom settings.
@@ -128,15 +142,6 @@ public class MigrationItemProperties {
     }
 
     /**
-     * Get the recovery services provider ARM Id.
-     *
-     * @return the recoveryServicesProviderId value
-     */
-    public String recoveryServicesProviderId() {
-        return this.recoveryServicesProviderId;
-    }
-
-    /**
      * Get the migration status. Possible values include: 'None', 'EnableMigrationInProgress', 'EnableMigrationFailed', 'DisableMigrationInProgress', 'DisableMigrationFailed', 'InitialSeedingInProgress', 'InitialSeedingFailed', 'Replicating', 'MigrationInProgress', 'MigrationSucceeded', 'MigrationFailed'.
      *
      * @return the migrationState value
@@ -152,6 +157,24 @@ public class MigrationItemProperties {
      */
     public String migrationStateDescription() {
         return this.migrationStateDescription;
+    }
+
+    /**
+     * Get the last test migration time.
+     *
+     * @return the lastTestMigrationTime value
+     */
+    public DateTime lastTestMigrationTime() {
+        return this.lastTestMigrationTime;
+    }
+
+    /**
+     * Get the status of the last test migration.
+     *
+     * @return the lastTestMigrationStatus value
+     */
+    public String lastTestMigrationStatus() {
+        return this.lastTestMigrationStatus;
     }
 
     /**
@@ -173,11 +196,11 @@ public class MigrationItemProperties {
     }
 
     /**
-     * Get the consolidated health.
+     * Get the consolidated health. Possible values include: 'None', 'Normal', 'Warning', 'Critical'.
      *
      * @return the health value
      */
-    public String health() {
+    public ProtectionHealth health() {
         return this.health;
     }
 
@@ -206,6 +229,15 @@ public class MigrationItemProperties {
      */
     public CurrentJobDetails currentJob() {
         return this.currentJob;
+    }
+
+    /**
+     * Get the correlation Id for events associated with this migration item.
+     *
+     * @return the eventCorrelationId value
+     */
+    public String eventCorrelationId() {
+        return this.eventCorrelationId;
     }
 
     /**

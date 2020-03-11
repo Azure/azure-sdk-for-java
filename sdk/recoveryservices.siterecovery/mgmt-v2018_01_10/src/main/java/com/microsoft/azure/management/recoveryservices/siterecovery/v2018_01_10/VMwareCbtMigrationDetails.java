@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * VMwareCbt provider specific settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = VMwareCbtMigrationDetails.class)
 @JsonTypeName("VMwareCbt")
 public class VMwareCbtMigrationDetails extends MigrationProviderSpecificSettings {
     /**
@@ -115,6 +115,49 @@ public class VMwareCbtMigrationDetails extends MigrationProviderSpecificSettings
      */
     @JsonProperty(value = "lastRecoveryPointReceived", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastRecoveryPointReceived;
+
+    /**
+     * The last recovery point Id.
+     */
+    @JsonProperty(value = "lastRecoveryPointId", access = JsonProperty.Access.WRITE_ONLY)
+    private String lastRecoveryPointId;
+
+    /**
+     * The initial seeding progress percentage.
+     */
+    @JsonProperty(value = "initialSeedingProgressPercentage", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer initialSeedingProgressPercentage;
+
+    /**
+     * The migration progress percentage.
+     */
+    @JsonProperty(value = "migrationProgressPercentage", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer migrationProgressPercentage;
+
+    /**
+     * The resync progress percentage.
+     */
+    @JsonProperty(value = "resyncProgressPercentage", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer resyncProgressPercentage;
+
+    /**
+     * A value indicating whether resync is required.
+     */
+    @JsonProperty(value = "resyncRequired", access = JsonProperty.Access.WRITE_ONLY)
+    private String resyncRequired;
+
+    /**
+     * The resync state. Possible values include: 'None',
+     * 'PreparedForResynchronization', 'StartedResynchronization'.
+     */
+    @JsonProperty(value = "resyncState", access = JsonProperty.Access.WRITE_ONLY)
+    private ResyncState resyncState;
+
+    /**
+     * A value indicating whether auto resync is to be done.
+     */
+    @JsonProperty(value = "performAutoResync")
+    private String performAutoResync;
 
     /**
      * Get the ARM Id of the VM discovered in VMware.
@@ -357,6 +400,80 @@ public class VMwareCbtMigrationDetails extends MigrationProviderSpecificSettings
      */
     public DateTime lastRecoveryPointReceived() {
         return this.lastRecoveryPointReceived;
+    }
+
+    /**
+     * Get the last recovery point Id.
+     *
+     * @return the lastRecoveryPointId value
+     */
+    public String lastRecoveryPointId() {
+        return this.lastRecoveryPointId;
+    }
+
+    /**
+     * Get the initial seeding progress percentage.
+     *
+     * @return the initialSeedingProgressPercentage value
+     */
+    public Integer initialSeedingProgressPercentage() {
+        return this.initialSeedingProgressPercentage;
+    }
+
+    /**
+     * Get the migration progress percentage.
+     *
+     * @return the migrationProgressPercentage value
+     */
+    public Integer migrationProgressPercentage() {
+        return this.migrationProgressPercentage;
+    }
+
+    /**
+     * Get the resync progress percentage.
+     *
+     * @return the resyncProgressPercentage value
+     */
+    public Integer resyncProgressPercentage() {
+        return this.resyncProgressPercentage;
+    }
+
+    /**
+     * Get a value indicating whether resync is required.
+     *
+     * @return the resyncRequired value
+     */
+    public String resyncRequired() {
+        return this.resyncRequired;
+    }
+
+    /**
+     * Get the resync state. Possible values include: 'None', 'PreparedForResynchronization', 'StartedResynchronization'.
+     *
+     * @return the resyncState value
+     */
+    public ResyncState resyncState() {
+        return this.resyncState;
+    }
+
+    /**
+     * Get a value indicating whether auto resync is to be done.
+     *
+     * @return the performAutoResync value
+     */
+    public String performAutoResync() {
+        return this.performAutoResync;
+    }
+
+    /**
+     * Set a value indicating whether auto resync is to be done.
+     *
+     * @param performAutoResync the performAutoResync value to set
+     * @return the VMwareCbtMigrationDetails object itself.
+     */
+    public VMwareCbtMigrationDetails withPerformAutoResync(String performAutoResync) {
+        this.performAutoResync = performAutoResync;
+        return this;
     }
 
 }
