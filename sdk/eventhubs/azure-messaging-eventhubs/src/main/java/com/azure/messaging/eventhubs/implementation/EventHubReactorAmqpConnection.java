@@ -28,8 +28,6 @@ import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * A proton-j AMQP connection to an Azure Event Hub instance. Adds additional support for management operations.
  */
@@ -39,11 +37,6 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     private static final String MANAGEMENT_ADDRESS = "$management";
 
     private final ClientLogger logger = new ClientLogger(EventHubReactorAmqpConnection.class);
-    /**
-     * Keeps track of the opened send links. Links are key'd by their entityPath. The send link for allowing the service
-     * load balance messages is the eventHubName.
-     */
-    private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
     private final String connectionId;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
@@ -143,9 +136,16 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
 
     @Override
     public void dispose() {
-        logger.info("Disposing of connection.");
-        sendLinks.forEach((key, value) -> value.dispose());
-        sendLinks.clear();
+        logger.info("connectionId[{}]: Disposing of connection.");
+
+        try {
+            final EventHubManagementNode node = managementCreation.block(retryOptions.getTryTimeout());
+            if (node != null) {
+                node.close();
+            }
+        } catch (Exception e) {
+            logger.warning("connectionId[{}]: Error disposing of EventHubManagementNode.", connectionId, e);
+        }
 
         super.dispose();
     }
