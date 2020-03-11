@@ -22,7 +22,6 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -30,8 +29,6 @@ import java.time.ZoneOffset;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import org.junit.jupiter.params.provider.Arguments;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -431,30 +428,30 @@ public abstract class SecretClientTestBase extends TestBase {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
-     * service versions that should be tested.
-     *
-     * @return A stream of HttpClient and service version combinations to test.
-     */
-    static Stream<Arguments> getTestParameters() {
-        // when this issues is closed, the newer version of junit will have better support for
-        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<Arguments> argumentsList = new ArrayList<>();
-
-        getHttpClients()
-            .forEach(httpClient -> {
-                Arrays.stream(SecretServiceVersion.values()).filter(SecretClientTestBase::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-            });
-        return argumentsList.stream();
-    }
-
-    static boolean shouldServiceVersionBeTested(SecretServiceVersion serviceVersion) {
-        if (Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS) == null) {
-            return SecretServiceVersion.getLatest().equals(serviceVersion);
-        }
-        return true;
-    }
+//
+//    /**
+//     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
+//     * service versions that should be tested.
+//     *
+//     * @return A stream of HttpClient and service version combinations to test.
+//     */
+//    static Stream<Arguments> getTestParameters() {
+//        // when this issues is closed, the newer version of junit will have better support for
+//        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+//        List<Arguments> argumentsList = new ArrayList<>();
+//
+//        getHttpClients()
+//            .forEach(httpClient -> {
+//                Arrays.stream(SecretServiceVersion.values()).filter(SecretClientTestBase::shouldServiceVersionBeTested)
+//                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+//            });
+//        return argumentsList.stream();
+//    }
+//
+//    static boolean shouldServiceVersionBeTested(SecretServiceVersion serviceVersion) {
+//        if (Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS) == null) {
+//            return SecretServiceVersion.getLatest().equals(serviceVersion);
+//        }
+//        return true;
+//    }
 }
