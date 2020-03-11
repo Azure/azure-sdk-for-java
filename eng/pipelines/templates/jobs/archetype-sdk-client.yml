@@ -264,7 +264,7 @@ jobs:
 
       - template: ../steps/generate-project-list.yml
         parameters:
-        Artifacts: ${{parameters.Artifacts}}
+          Artifacts: ${{parameters.Artifacts}}
 
       - task: Maven@3
         displayName: 'Build and Install'
