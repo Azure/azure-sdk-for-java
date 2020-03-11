@@ -14,14 +14,14 @@ import java.util.List;
 import com.microsoft.azure.management.appservice.v2016_03_01.StackMajorVersion;
 
 class ApplicationStackImpl extends WrapperImpl<ApplicationStackInner> implements ApplicationStack {
-    private final AppServiceManager manager;
-    ApplicationStackImpl(ApplicationStackInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    ApplicationStackImpl(ApplicationStackInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
