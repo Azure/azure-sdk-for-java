@@ -131,7 +131,7 @@ public class ServiceBusReceiverAsyncClientPeek {
             .scheduler(Schedulers.parallel())
             .buildAsyncReceiverClient();
 
-        queueReceiverAsyncClient.inspectMessage()
+        queueReceiverAsyncClient.peek()
             .doOnNext(receivedMessage -> {
                 System.out.println("!!!!!! doOnNext Got message from queue: " + receivedMessage.getBodyAsString());
             })
@@ -143,7 +143,7 @@ public class ServiceBusReceiverAsyncClientPeek {
                 });
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(90000);
         } catch (Exception ex) {
 
         }

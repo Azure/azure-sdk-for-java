@@ -54,4 +54,28 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .verifyComplete();
     }
+
+    /**
+     * Verifies that we can send and peek a message.
+     */
+    @Test
+    void peekMessage() {
+        // Arrange
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+        final ReceiveMessageOptions options = new ReceiveMessageOptions().setAutoComplete(true);
+        receiver = createBuilder()
+            .receiveMessageOptions(options)
+            .buildAsyncReceiverClient();
+
+        // Assert & Act
+        StepVerifier.create(sender.send(message).thenMany(receiver.peek()))
+            .assertNext(receivedMessage -> {
+                Assertions.assertEquals(contents, receivedMessage.getBodyAsString());
+                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
+            })
+            .verifyComplete();
+    }
 }

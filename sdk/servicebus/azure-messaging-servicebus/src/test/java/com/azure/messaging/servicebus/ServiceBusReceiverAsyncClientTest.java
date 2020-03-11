@@ -15,6 +15,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
+import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.message.Message;
@@ -34,7 +35,10 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.Instant;
+
 import java.util.Collections;
+
 import java.util.Map;
 import java.util.UUID;
 
@@ -70,6 +74,9 @@ public class ServiceBusReceiverAsyncClientTest {
     private MessageSerializer messageSerializer;
     @Mock
     private TracerProvider tracerProvider;
+
+    @Mock
+    private ServiceBusManagementNode managementNode;
 
     private ServiceBusReceiverAsyncClient consumer;
 
@@ -107,6 +114,8 @@ public class ServiceBusReceiverAsyncClientTest {
         when(connection.createReceiveLink(anyString(), anyString(),
             any(ReceiveMode.class))).thenReturn(Mono.just(amqpReceiveLink));
 
+        when(connection.getManagementNode(anyString())).thenReturn(Mono.just(managementNode));
+
         ServiceBusConnectionProcessor connectionProcessor = Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
             .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 ENTITY_NAME, connectionOptions.getRetry()));
@@ -120,6 +129,41 @@ public class ServiceBusReceiverAsyncClientTest {
     void teardown() {
         Mockito.framework().clearInlineMocks();
         consumer.close();
+    }
+
+    /**
+     * Verifies that this peek one messages.
+     */
+    @Test
+    void peekOneMessage() {
+        // Arrange
+        final int numberOfEvents = 1;
+        when(managementNode.peek())
+            .thenReturn(Mono.just(mock(ServiceBusReceivedMessage.class)));
+
+        // Act & Assert
+        StepVerifier.create(consumer.peek())
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
+
+    }
+
+    /**
+     * Verifies that this peek one messages from a sequence Number.
+     */
+    @Test
+    void peekWithSequenceOneMessage() {
+        // Arrange
+        final int numberOfEvents = 1;
+        final int fromSequenceNumber = 10;
+
+        when(managementNode.peek(fromSequenceNumber))
+            .thenReturn(Mono.just(mock(ServiceBusReceivedMessage.class)));
+
+        // Act & Assert
+        StepVerifier.create(consumer.peek(fromSequenceNumber))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
     }
 
     /**

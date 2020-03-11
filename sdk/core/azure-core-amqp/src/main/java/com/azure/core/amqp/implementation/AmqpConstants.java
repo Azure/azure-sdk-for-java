@@ -19,4 +19,8 @@ public final class AmqpConstants {
 
     static final int AMQP_BATCH_MESSAGE_FORMAT = 0x80013700; // 2147563264L;
 
+    public static final String REQUEST_RESPONSE_LEGACY_STATUS_CODE = "status-code";
+    public static final String REQUEST_RESPONSE_STATUS_CODE = "statusCode";
+
+
 }
