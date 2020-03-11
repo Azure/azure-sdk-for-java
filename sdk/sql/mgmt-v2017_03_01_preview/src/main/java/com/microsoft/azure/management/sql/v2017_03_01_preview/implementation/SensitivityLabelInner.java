@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.sql.v2017_03_01_preview.implementation;
 
+import com.microsoft.azure.management.sql.v2017_03_01_preview.SensitivityLabelRank;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
@@ -48,6 +49,12 @@ public class SensitivityLabelInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.isDisabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDisabled;
+
+    /**
+     * Possible values include: 'None', 'Low', 'Medium', 'High', 'Critical'.
+     */
+    @JsonProperty(value = "properties.rank")
+    private SensitivityLabelRank rank;
 
     /**
      * Get the label name.
@@ -136,6 +143,26 @@ public class SensitivityLabelInner extends ProxyResource {
      */
     public Boolean isDisabled() {
         return this.isDisabled;
+    }
+
+    /**
+     * Get possible values include: 'None', 'Low', 'Medium', 'High', 'Critical'.
+     *
+     * @return the rank value
+     */
+    public SensitivityLabelRank rank() {
+        return this.rank;
+    }
+
+    /**
+     * Set possible values include: 'None', 'Low', 'Medium', 'High', 'Critical'.
+     *
+     * @param rank the rank value to set
+     * @return the SensitivityLabelInner object itself.
+     */
+    public SensitivityLabelInner withRank(SensitivityLabelRank rank) {
+        this.rank = rank;
+        return this;
     }
 
 }

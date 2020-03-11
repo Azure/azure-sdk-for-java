@@ -142,6 +142,11 @@ class ManagedDatabaseImpl extends CreatableUpdatableImpl<ManagedDatabase, Manage
     }
 
     @Override
+    public String longTermRetentionBackupResourceId() {
+        return this.inner().longTermRetentionBackupResourceId();
+    }
+
+    @Override
     public String name() {
         return this.inner().name();
     }
@@ -230,6 +235,16 @@ class ManagedDatabaseImpl extends CreatableUpdatableImpl<ManagedDatabase, Manage
             this.inner().withCreateMode(createMode);
         } else {
             this.updateParameter.withCreateMode(createMode);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedDatabaseImpl withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId) {
+        if (isInCreateMode()) {
+            this.inner().withLongTermRetentionBackupResourceId(longTermRetentionBackupResourceId);
+        } else {
+            this.updateParameter.withLongTermRetentionBackupResourceId(longTermRetentionBackupResourceId);
         }
         return this;
     }
