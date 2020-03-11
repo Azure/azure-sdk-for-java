@@ -20,7 +20,6 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.deploymentmanager.v2019_11_01_preview.implementation.DeploymentManagerManager;
 import java.util.List;
 import com.microsoft.azure.management.deploymentmanager.v2019_11_01_preview.implementation.RolloutInner;
-import com.microsoft.azure.management.deploymentmanager.v2019_11_01_preview.implementation.ServiceInner;
 
 /**
  * Type representing Rollout.
