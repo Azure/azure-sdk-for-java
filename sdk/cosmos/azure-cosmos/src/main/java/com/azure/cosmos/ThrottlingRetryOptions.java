@@ -8,7 +8,7 @@ import java.time.Duration;
 /**
  * Encapsulates retry options in the Azure Cosmos DB database service.
  */
-public class ThrottlingRetryOptions {
+public final class ThrottlingRetryOptions {
     private int maxRetryAttemptsOnThrottledRequests;
     private Duration maxRetryWaitTime;
 

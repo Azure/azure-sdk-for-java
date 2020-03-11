@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 /**
  * Contains the request options of CosmosAsyncPermission
  */
-public class CosmosPermissionRequestOptions {
+public final class CosmosPermissionRequestOptions {
     //TODO: Need to add respective options
     private AccessCondition accessCondition;
 

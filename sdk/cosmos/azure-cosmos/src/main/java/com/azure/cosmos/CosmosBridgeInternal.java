@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 /**
  * DO NOT USE. For internal use only by the SDK. These methods might break at any time. No support will be provided.
  */
-public class CosmosBridgeInternal {
+public final class CosmosBridgeInternal {
 
     public static DocumentCollection toDocumentCollection(CosmosContainerProperties cosmosContainerProperties) {
         return new DocumentCollection(cosmosContainerProperties.toJson());

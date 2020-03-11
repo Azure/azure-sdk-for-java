@@ -59,7 +59,7 @@ import com.azure.cosmos.implementation.Strings;
  * }
  * </pre>
  */
-public class ConflictResolutionPolicy extends JsonSerializable {
+public final class ConflictResolutionPolicy extends JsonSerializable {
 
     /**
      * Creates a LAST_WRITER_WINS {@link ConflictResolutionPolicy} with "/_ts" as the resolution path.

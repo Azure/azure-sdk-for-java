@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * The Cosmos user properties.
  */
-public class CosmosUserProperties extends Resource {
+public final class CosmosUserProperties extends Resource {
     /**
      * Initialize a user object.
      */

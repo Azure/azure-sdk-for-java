@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * The type Cosmos permission properties.
  */
-public class CosmosPermissionProperties extends Resource {
+public final class CosmosPermissionProperties extends Resource {
 
     static List<CosmosPermissionProperties> getFromV2Results(List<Permission> results) {
         return results.stream().map(permission -> new CosmosPermissionProperties(permission.toJson()))
