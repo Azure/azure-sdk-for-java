@@ -45,7 +45,7 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
     }
 
     private KeyEncryptionKey setupKeyEncryptionKey(KeyVaultKey kvKey, CryptographyServiceVersion serviceVersion) {
-        if (kvKey == null) {
+        if (kvKey != null) {
             return new KeyEncryptionKeyClientBuilder()
                 .pipeline(pipeline)
                 .serviceVersion(serviceVersion)
