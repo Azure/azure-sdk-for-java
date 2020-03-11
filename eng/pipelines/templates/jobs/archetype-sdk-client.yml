@@ -159,13 +159,17 @@ jobs:
           Options: --batch-mode
           MavenOptions: $(MemoryOptions) $(LoggingOptions)
 
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
         displayName: 'Build and Install'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -194,8 +198,8 @@ jobs:
       - task: Maven@3
         displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme-windows'
+          mavenPomFile: pom.xml
+          options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme-windows -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
