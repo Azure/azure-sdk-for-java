@@ -76,8 +76,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
                     logger.verbose("Connection state: {}", state);
                     endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
                 }, error -> {
-                    logger.error("linkName[{}] entityPath[{}] Error occurred in connection.", receiver.getName(),
-                        entityPath, error);
+                    logger.error("connectionId[{}] linkName[{}] entityPath[{}] Error occurred in connection.",
+                        handler.getConnectionId(), receiver.getName(), entityPath, error);
                     endpointStateSink.error(error);
                     dispose();
                 }, () -> {
@@ -86,7 +86,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 }),
 
             this.handler.getErrors().subscribe(error -> {
-                logger.error("Error occurred in link.", error);
+                logger.error("connectionId[{}] linkName[{}] entityPath[{}] Error occurred in link.",
+                    handler.getConnectionId(), receiver.getName(), entityPath, error);
                 endpointStateSink.error(error);
                 dispose();
             }),
@@ -96,7 +97,7 @@ public class ReactorReceiver implements AmqpReceiveLink {
                     logger.verbose("Token refreshed: {}", response);
                     hasAuthorized.set(true);
                 }, error -> {
-                    logger.info("clientId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
+                    logger.info("connectionId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
                         handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
                     hasAuthorized.set(false);
                 }, () -> hasAuthorized.set(false)));
