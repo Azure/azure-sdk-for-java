@@ -89,7 +89,7 @@ public class RequestResponseChannel implements Disposable {
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
 
      */
-    RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
+    protected RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
             String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
             ReactorProvider provider, MessageSerializer messageSerializer,
             SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
@@ -102,24 +102,19 @@ public class RequestResponseChannel implements Disposable {
         this.replyTo = entityPath.replace("$", "") + "-client-reply-to";
         this.messageSerializer = messageSerializer;
         this.sendLink = session.sender(linkName + ":sender");
-        final Target target = new Target();
-        target.setAddress(entityPath);
-        this.sendLink.setTarget(target);
-        sendLink.setSource(new Source());
-        this.sendLink.setSenderSettleMode(senderSettleMode);
+
+        configureSender(this.sendLink, new Source(), new Target(), entityPath);
+
         this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, fullyQualifiedNamespace, linkName,
             entityPath);
+
         BaseHandler.setHandler(sendLink, sendLinkHandler);
 
         this.receiveLink = session.receiver(linkName + ":receiver");
         final Source source = new Source();
-        source.setAddress(entityPath);
-        this.receiveLink.setSource(source);
         final Target receiverTarget = new Target();
-        receiverTarget.setAddress(replyTo);
-        this.receiveLink.setTarget(receiverTarget);
-        this.receiveLink.setSenderSettleMode(senderSettleMode);
-        this.receiveLink.setReceiverSettleMode(receiverSettleMode);
+        configureReceiver(receiveLink, source, receiverTarget, entityPath);
+
         this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace,
             linkName, entityPath);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
@@ -247,6 +242,25 @@ public class RequestResponseChannel implements Disposable {
                         sink.error(e);
                     }
                 }));
+    }
+
+    protected void configureSender(Sender sender, Source source, Target target, String entityPath) {
+        target.setAddress(entityPath);
+
+        sender.setTarget(target);
+        sender.setSource(source);
+        sender.setSenderSettleMode(SenderSettleMode.SETTLED);
+    }
+
+    protected void configureReceiver(Receiver receiver, Source source, Target target, String entityPath) {
+        source.setAddress(entityPath);
+
+        target.setAddress(replyTo);
+
+        receiver.setSource(source);
+        receiver.setTarget(target);
+        receiver.setSenderSettleMode(SenderSettleMode.SETTLED);
+        receiver.setReceiverSettleMode(ReceiverSettleMode.SECOND);
     }
 
     private Message decodeDelivery(Delivery delivery) {

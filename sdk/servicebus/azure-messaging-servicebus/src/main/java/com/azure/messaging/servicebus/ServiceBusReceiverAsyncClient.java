@@ -27,7 +27,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -113,8 +112,10 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             return Flux.error(new IllegalStateException("Cannot receive from a client that is already closed."));
         }
 
-        final String linkName = connectionProcessor.getEntityPath();
-        return getOrCreateConsumer(linkName)
+        // TODO (conniey): This returns the same consumer instance because the entityPath is not unique.
+        // Python and .NET does not have the same behaviour.
+        final String linkName = entityPath;
+        return getOrCreateConsumer(entityPath)
             .receive()
             .doOnCancel(() -> removeLink(linkName, SignalType.CANCEL))
             .doOnComplete(() -> removeLink(linkName, SignalType.ON_COMPLETE))
@@ -151,13 +152,13 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     /**
      * Completes a {@link ServiceBusMessage} using its lock token. This will delete the message from the service.
      *
-     * @param message to be used.
+     * @param message Message to be completed.
      *
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> complete(ServiceBusReceivedMessage receivedMessage) {
-        return getOrCreateConsumer(connectionProcessor.getEntityPath())
-            .complete(receivedMessage);
+    public Mono<Void> complete(ServiceBusReceivedMessage message) {
+        return getOrCreateConsumer(entityPath)
+            .complete(message);
     }
 
     /**
@@ -372,25 +373,14 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
             new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
 
-        return new ServiceBusAsyncConsumer(linkMessageProcessor, connectionProcessor, messageSerializer,
-            isAutoComplete, transferEntityPath, entityType);
+        return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, isAutoComplete, entityPath,
+            transferEntityPath, entityType);
     }
 
     private void ensurePeekLockReceiveMode() {
         if (this.receiveMode != ReceiveMode.PEEK_LOCK) {
             throw new UnsupportedOperationException("Operations complete/abandon/deadLetter/defer cannot be called on a"
                 + " receiver opened in " + ReceiveMode.RECEIVE_AND_DELETE + " mode.");
-        }
-    }
-
-        final ServiceBusAsyncConsumer removed = openConsumers.remove(linkName);
-        if (removed != null) {
-            try {
-                removed.close();
-            } catch (Throwable e) {
-                logger.warning("[{}][{}]: Error occurred while closing consumer '{}'",
-                    fullyQualifiedNamespace, entityPath, linkName, e);
-            }
         }
     }
 }

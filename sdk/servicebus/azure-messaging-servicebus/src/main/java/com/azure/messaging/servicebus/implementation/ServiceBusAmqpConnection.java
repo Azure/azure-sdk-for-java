@@ -18,7 +18,8 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      * @param entityPath Name of the Service bus resource.
      * @return A Mono that completes with that resources's management node.
      */
-    Mono<ServiceBusManagementNode> getManagementNode(String entityPath);
+    Mono<ServiceBusManagementNode> getManagementNode(String entityPath, String transferEntityName,
+        MessagingEntityType entityType);
 
     /**
      * Creates or gets a send link. The same link is returned if there is an existing send link with the same {@code

@@ -64,9 +64,17 @@ public class ManagementChannel implements  ServiceBusManagementNode {
 
 
 
-    ManagementChannel(Mono<RequestResponseChannel> responseChannelMono,
-                      MessageSerializer messageSerializer, Scheduler scheduler, TokenManager cbsBasedTokenManager
-    ) {
+    ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String fullyQualifiedNamespace,
+        String entityPath, TokenCredential credential, TokenManagerProvider tokenManagerProvider,
+        MessageSerializer messageSerializer, Scheduler scheduler, TokenManager cbsBasedTokenManager,
+        Duration operationTimeout) {
+
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+        this.logger = new ClientLogger(String.format("%s<%s>", ManagementChannel.class, entityPath));
+        this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
+            "'tokenManagerProvider' cannot be null.");
+        this.tokenProvider = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.topicOrQueueName = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");

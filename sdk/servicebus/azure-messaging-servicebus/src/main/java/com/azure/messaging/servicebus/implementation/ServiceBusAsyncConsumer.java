@@ -4,7 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.exception.SessionErrorContext;
+import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
@@ -22,21 +22,26 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String transferEntityPath;
     private final MessagingEntityType entityType;
+    private final ServiceBusConnectionProcessor connectionProcessor;
     private final ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor;
     private final MessageSerializer messageSerializer;
     private final ServiceBusMessageProcessor processor;
+    private final String fullyQualifiedNamespace;
+    private final String entityPath;
 
-    public ServiceBusAsyncConsumer(ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
-        MessageSerializer messageSerializer, boolean isAutoComplete, String transferEntityPath,
-        MessagingEntityType entityType, Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction) {
+    public ServiceBusAsyncConsumer(ServiceBusConnectionProcessor connectionProcessor,
+        ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor, MessageSerializer messageSerializer,
+        boolean isAutoComplete, String fullyQualifiedNamespace, String entityPath, String transferEntityPath,
+        MessagingEntityType entityType) {
+        this.connectionProcessor = connectionProcessor;
+        this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+        this.entityPath = entityPath;
         this.transferEntityPath = transferEntityPath;
         this.entityType = entityType;
-        this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
+
         this.processor = amqpReceiveLinkProcessor
-            .doOnSubscribe(e -> {
-                logger.info("There was a subscription.");
-            })
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
             .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, this::complete));
     }
@@ -76,7 +81,7 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
                 entityPath, receivedMessage.getSequenceNumber());
 
             return Mono.error(logger.logExceptionAsWarning(new AmqpException(false, message,
-                new SessionErrorContext(connectionProcessor.getFullyQualifiedNamespace(), entityPath))));
+                new LinkErrorContext(fullyQualifiedNamespace, entityPath, "", 0))));
         }
 
         logger.info("{}: Completing message. Sequence number: {}", entityPath, receivedMessage.getSequenceNumber());

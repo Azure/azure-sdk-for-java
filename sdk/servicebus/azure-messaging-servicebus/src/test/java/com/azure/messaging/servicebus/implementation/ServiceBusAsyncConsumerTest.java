@@ -59,7 +59,6 @@ class ServiceBusAsyncConsumerTest {
     @Mock
     private MessageSerializer serializer;
 
-
     @BeforeAll
     static void beforeAll() {
 //        StepVerifier.setDefaultTimeout(Duration.ofSeconds(20));

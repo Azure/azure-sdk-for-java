@@ -43,6 +43,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
     private final Mono<EventHubManagementNode> managementChannelMono;
     private final String connectionId;
+    private final String entityPath;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
     private final TokenManagerProvider tokenManagerProvider;
@@ -66,6 +67,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
         this.connectionId = connectionId;
+        this.entityPath = entityPath;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = tokenManagerProvider;
