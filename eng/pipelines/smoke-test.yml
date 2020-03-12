@@ -43,12 +43,12 @@ jobs:
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: windows-2019
-          CloudType: public
+          CloudType: gov
         Java LTS Windows (Gov):
           ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
           OSVmImage: windows-2019
-          CloudType: public
+          CloudType: gov
 
     pool:
       vmImage: $(OSVmImage)
@@ -121,7 +121,7 @@ jobs:
             Write-Host "##vso[task.setvariable variable=$key;]$($variables[$key])"
           }
         displayName: Set secrets for public cloud
-        condition: and(success(), eq(variables['CloudType'], 'public'))
+        condition: and(succeeded(), eq(variables['CloudType'], 'public'))
 
       - pwsh: |
           $variables = @{
@@ -141,7 +141,7 @@ jobs:
             Write-Host "##vso[task.setvariable variable=$key;]$($variables[$key])"
           }
         displayName: Set secrets for government cloud
-        condition: and(success(), eq(variables['CloudType'], 'gov'))
+        condition: and(succeeded(), eq(variables['CloudType'], 'gov'))
 
       - task: Maven@3
         displayName: 'Run Smoke Tests'
