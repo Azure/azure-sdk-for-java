@@ -15,9 +15,7 @@ import com.azure.search.models.SearchResult;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.ValueFacetResult;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.unitils.reflectionassert.ReflectionComparatorMode;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -31,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.unitils.reflectionassert.ReflectionComparatorMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -105,27 +104,27 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     }
 
     <T> void assertRangeFacets(List<RangeFacetResult<T>> baseRateFacets, List<RangeFacetResult<T>> lastRenovationDateFacets) {
-        Assert.assertNull(baseRateFacets.get(0).getFrom());
-        Assert.assertEquals(5.0, baseRateFacets.get(0).getTo());
-        Assert.assertEquals(5.0, baseRateFacets.get(1).getFrom());
-        Assert.assertEquals(8.0, baseRateFacets.get(1).getTo());
-        Assert.assertEquals(8.0, baseRateFacets.get(2).getFrom());
-        Assert.assertEquals(10.0, baseRateFacets.get(2).getTo());
-        Assert.assertEquals(10.0, baseRateFacets.get(3).getFrom());
-        Assert.assertNull(baseRateFacets.get(3).getTo());
+        assertNull(baseRateFacets.get(0).getFrom());
+        assertEquals(5.0, baseRateFacets.get(0).getTo());
+        assertEquals(5.0, baseRateFacets.get(1).getFrom());
+        assertEquals(8.0, baseRateFacets.get(1).getTo());
+        assertEquals(8.0, baseRateFacets.get(2).getFrom());
+        assertEquals(10.0, baseRateFacets.get(2).getTo());
+        assertEquals(10.0, baseRateFacets.get(3).getFrom());
+        assertNull(baseRateFacets.get(3).getTo());
 
-        Assert.assertEquals(1, baseRateFacets.get(0).getCount().intValue());
-        Assert.assertEquals(1, baseRateFacets.get(1).getCount().intValue());
-        Assert.assertEquals(1, baseRateFacets.get(2).getCount().intValue());
-        Assert.assertEquals(0, baseRateFacets.get(3).getCount().intValue());
+        assertEquals(1, baseRateFacets.get(0).getCount().intValue());
+        assertEquals(1, baseRateFacets.get(1).getCount().intValue());
+        assertEquals(1, baseRateFacets.get(2).getCount().intValue());
+        assertEquals(0, baseRateFacets.get(3).getCount().intValue());
 
-        Assert.assertNull(lastRenovationDateFacets.get(0).getFrom());
-        Assert.assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(0).getTo());
-        Assert.assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(1).getFrom());
-        Assert.assertNull(lastRenovationDateFacets.get(1).getTo());
+        assertNull(lastRenovationDateFacets.get(0).getFrom());
+        assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(0).getTo());
+        assertEquals("2000-01-01T00:00:00.000+0000", lastRenovationDateFacets.get(1).getFrom());
+        assertNull(lastRenovationDateFacets.get(1).getTo());
 
-        Assert.assertEquals(5, lastRenovationDateFacets.get(0).getCount().intValue());
-        Assert.assertEquals(2, lastRenovationDateFacets.get(1).getCount().intValue());
+        assertEquals(5, lastRenovationDateFacets.get(0).getCount().intValue());
+        assertEquals(2, lastRenovationDateFacets.get(1).getCount().intValue());
     }
 
     <T> List<RangeFacetResult<T>> getRangeFacetsForField(
@@ -159,7 +158,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     }
 
     <T> void assertValueFacetsEqual(List<ValueFacetResult<T>> actualFacets, ArrayList<ValueFacetResult<T>> expectedFacets) {
-        Assert.assertEquals(expectedFacets.size(), actualFacets.size());
+        assertEquals(expectedFacets.size(), actualFacets.size());
         for (int i = 0; i < actualFacets.size(); i++) {
             assertEquals(expectedFacets.get(i).getCount(), actualFacets.get(i).getCount());
             assertEquals(expectedFacets.get(i).getValue(), actualFacets.get(i).getValue());
