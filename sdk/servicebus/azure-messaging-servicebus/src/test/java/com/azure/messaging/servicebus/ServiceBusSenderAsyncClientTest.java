@@ -18,6 +18,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
+import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
@@ -38,6 +39,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -45,10 +47,13 @@ import java.util.stream.IntStream;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static reactor.core.publisher.Mono.just;
 
 public class ServiceBusSenderAsyncClientTest {
     private static final String NAMESPACE = "my-namespace";
@@ -62,6 +67,8 @@ public class ServiceBusSenderAsyncClientTest {
     private TokenCredential tokenCredential;
     @Mock
     private ErrorContextProvider errorContextProvider;
+    @Mock
+    private ServiceBusManagementNode managementNode;
 
     @Captor
     private ArgumentCaptor<org.apache.qpid.proton.message.Message> singleMessageCaptor;
@@ -112,6 +119,8 @@ public class ServiceBusSenderAsyncClientTest {
                 ENTITY_NAME, connectionOptions.getRetry()));
         sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, connectionProcessor, retryOptions,
             tracerProvider, messageSerializer);
+
+        when(connection.getManagementNode(anyString())).thenReturn(just(managementNode));
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES));
     }
@@ -184,5 +193,32 @@ public class ServiceBusSenderAsyncClientTest {
 
         final Message message = singleMessageCaptor.getValue();
         Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType());
+    }
+
+    @Test
+    void scheduleMessage() {
+        // Arrange
+        long sequenceNumberReturned =10;
+
+        when(managementNode.schedule(any(ServiceBusMessage.class), any(Instant.class)))
+            .thenReturn(just(sequenceNumberReturned));
+
+        // Act & Assert
+        StepVerifier.create(sender.scheduleMessage(mock(ServiceBusMessage.class), mock(Instant.class)))
+            .expectNext(sequenceNumberReturned)
+            .verifyComplete();
+    }
+
+    @Test
+    void cancelScheduleMessage() {
+        // Arrange
+        long sequenceNumberReturned =10;
+
+        when(managementNode.cancelSchedule(any(Long.class)))
+            .thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(sender.cancelScheduledMessage(sequenceNumberReturned))
+            .verifyComplete();
     }
 }

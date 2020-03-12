@@ -217,12 +217,17 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
      *
      * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
      */
-    public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime) {
+    public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
         Objects.requireNonNull(message, "'message' cannot be null.");
         Objects.requireNonNull(scheduledEnqueueTime, "'scheduledEnqueueTime' cannot be null.");
 
-        //TODO (hemanttanwar): Implement session id feature.
-        return Mono.error(new IllegalStateException("Not implemented."));
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityName))
+            .flatMap(x -> x.schedule(message, scheduledEnqueueTime))
+            .flatMap(scheduleSequenceNumber -> {
+                System.out.println(getClass().getName() + ".schedule scheduleSequenceNumber = " + scheduleSequenceNumber);
+                return Mono.just(scheduleSequenceNumber);
+            });
     }
 
     /**
@@ -233,8 +238,9 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
      * @return The {@link Mono} that finishes this operation on service bus resource.
      */
     public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
-        //TODO (hemanttanwar): Implement session id feature.
-        return Mono.error(new IllegalStateException("Not implemented."));
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityName))
+            .flatMap(x -> x.cancelSchedule(sequenceNumber));
     }
 
     /**

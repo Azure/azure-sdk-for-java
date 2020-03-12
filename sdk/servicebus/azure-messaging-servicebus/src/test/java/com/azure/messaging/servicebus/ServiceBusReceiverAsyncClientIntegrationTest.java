@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.UUID;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_TRACKING_ID;
@@ -73,6 +75,48 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
                 Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
             })
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can schedule and peek a message.
+     */
+    @Test
+    void scheduleMessage() {
+        // Arrange
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+        int enqueDelayInSec = 2;
+        // Assert & Act
+        StepVerifier.create(sender.scheduleMessage(message, Instant.now().plusSeconds(enqueDelayInSec))
+            .delaySubscription(Duration.ofSeconds(enqueDelayInSec+1))
+            .thenMany(receiver.receive().take(1)))
+            .assertNext(receivedMessage -> {
+                Assertions.assertEquals(contents, receivedMessage.getBodyAsString());
+                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
+            })
+            .verifyComplete();
+
+    }
+
+    /**
+     * Verifies that we can cancel a scheduled message.
+     */
+    @Test
+    void cancelScheduleMessage() {
+        // Arrange
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+        int enqueDelayInSec = 3;
+        // Assert & Act
+        StepVerifier.create(sender.scheduleMessage(message, Instant.now().plusSeconds(enqueDelayInSec))
+            .doOnSuccess(seqNumber -> sender.cancelScheduledMessage(seqNumber))
+            .delaySubscription(Duration.ofSeconds(enqueDelayInSec+1))
+            .thenMany(receiver.receive().take(1)))
+            .expectNoEvent(Duration.ofSeconds(5))
             .verifyComplete();
     }
 
