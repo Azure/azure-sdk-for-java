@@ -70,7 +70,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .buildAsyncReceiverClient();
 
         // Assert & Act
-        StepVerifier.create(sender.send(message).thenMany(receiver.peek()))
+        StepVerifier.create(sender.send(message).then(receiver.peek()))
             .assertNext(receivedMessage -> {
                 Assertions.assertEquals(contents, receivedMessage.getBodyAsString());
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
@@ -95,7 +95,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .buildAsyncReceiverClient();
 
         // Assert & Act
-        StepVerifier.create(sender.send(message).thenMany(receiver.peek(fromSequenceNumber)))
+        StepVerifier.create(sender.send(message).then(receiver.peek(fromSequenceNumber)))
             .assertNext(receivedMessage -> {
                 Assertions.assertEquals(contents, receivedMessage.getBodyAsString());
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));

@@ -163,6 +163,8 @@ public class ServiceBusReceiverAsyncClientTest {
         StepVerifier.create(consumer.peek(fromSequenceNumber))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
+
+        Mockito.framework().clearInlineMocks();
     }
 
     /**

@@ -9,7 +9,10 @@ import org.apache.qpid.proton.message.Message;
  * This consists of various utilities needed to manage Request/Response  channel.
  */
 public class RequestResponseUtils {
-    public static final int REQUEST_RESPONSE_UNDEFINED_STATUS_CODE = -1;
+    private static final int REQUEST_RESPONSE_UNDEFINED_STATUS_CODE = -1;
+    private static final String REQUEST_RESPONSE_STATUS_CODE = "statusCode";
+    private static final String REQUEST_RESPONSE_LEGACY_STATUS_CODE = "status-code";
+
 
     /**
      * There are different status code string returned by Service bus in response.
@@ -20,11 +23,11 @@ public class RequestResponseUtils {
         int statusCode = REQUEST_RESPONSE_UNDEFINED_STATUS_CODE;
 
         Object codeObject = responseMessage.getApplicationProperties().getValue()
-            .get(AmqpConstants.REQUEST_RESPONSE_STATUS_CODE);
+            .get(REQUEST_RESPONSE_STATUS_CODE);
 
         if (codeObject == null) {
             codeObject = responseMessage.getApplicationProperties().getValue()
-                .get(AmqpConstants.REQUEST_RESPONSE_LEGACY_STATUS_CODE);
+                .get(REQUEST_RESPONSE_LEGACY_STATUS_CODE);
         }
 
         if (codeObject != null) {

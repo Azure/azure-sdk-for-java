@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.ManagementConstants;
 import com.azure.messaging.servicebus.implementation.Messages;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -52,7 +51,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     private static final String PARTITION_KEY_NAME = "x-opt-partition-key";
     private static final String VIA_PARTITION_KEY_NAME = "x-opt-via-partition-key";
     private static final String DEAD_LETTER_SOURCE_NAME = "x-opt-deadletter-source";
-
+    private static final String REQUEST_RESPONSE_MESSAGES = "messages";
+    private static final String REQUEST_RESPONSE_MESSAGE = "message";
+    private static final int REQUEST_RESPONSE_OK_STATUS_CODE = 200;
 
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
 
@@ -183,8 +184,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         List<Message> listAmqpMessages = convertAMQPValueMessageToBrokeredMessage(amqpMessage);
 
         List<ServiceBusReceivedMessage> receivedMessageList = new ArrayList<>();
-        for (Message oneAmqpMessage:listAmqpMessages
-             ) {
+        for (Message oneAmqpMessage:listAmqpMessages) {
             ServiceBusReceivedMessage serviceBusReceivedMessage = deserializeMessage(oneAmqpMessage);
             receivedMessageList.add(serviceBusReceivedMessage);
         }
@@ -435,16 +435,16 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         List<Message> messageList = new ArrayList<>();
         int statusCode = RequestResponseUtils.getResponseStatusCode(amqpResponseMessage);
 
-        if (statusCode == ManagementConstants.REQUEST_RESPONSE_OK_STATUS_CODE) {
+        if (statusCode == REQUEST_RESPONSE_OK_STATUS_CODE) {
             Object responseBodyMap = ((AmqpValue) amqpResponseMessage.getBody()).getValue();
             if (responseBodyMap != null && responseBodyMap instanceof Map) {
-                Object messages = ((Map) responseBodyMap).get(ManagementConstants.REQUEST_RESPONSE_MESSAGES);
+                Object messages = ((Map) responseBodyMap).get(REQUEST_RESPONSE_MESSAGES);
                 if (messages != null && messages instanceof Iterable) {
                     for (Object message : (Iterable) messages) {
                         if (message instanceof Map) {
                             Message responseMessage = Message.Factory.create();
                             Binary messagePayLoad = (Binary) ((Map) message)
-                                .get(ManagementConstants.REQUEST_RESPONSE_MESSAGE);
+                                .get(REQUEST_RESPONSE_MESSAGE);
                             responseMessage.decode(messagePayLoad.getArray(), messagePayLoad.getArrayOffset(),
                                 messagePayLoad.getLength());
 

@@ -18,9 +18,4 @@ public final class AmqpConstants {
     public static final Symbol STRING_FILTER = Symbol.getSymbol(APACHE + ":selector-filter:string");
 
     static final int AMQP_BATCH_MESSAGE_FORMAT = 0x80013700; // 2147563264L;
-
-    public static final String REQUEST_RESPONSE_LEGACY_STATUS_CODE = "status-code";
-    public static final String REQUEST_RESPONSE_STATUS_CODE = "statusCode";
-
-
 }
