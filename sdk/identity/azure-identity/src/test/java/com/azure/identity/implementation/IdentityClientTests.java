@@ -6,11 +6,11 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.util.TestUtils;
-import com.microsoft.aad.msal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
-import com.microsoft.aad.msal4j.ClientSecret;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IClientCredential;
+import com.microsoft.aad.msal4j.IClientSecret;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import org.junit.Assert;
@@ -154,9 +154,10 @@ public class IdentityClientTests {
         ConfidentialClientApplication.Builder builder = PowerMockito.mock(ConfidentialClientApplication.Builder.class);
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
+        when(builder.httpClient(any())).thenReturn(builder);
         whenNew(ConfidentialClientApplication.Builder.class).withAnyArguments().thenAnswer(invocation -> {
             String cid = (String) invocation.getArguments()[0];
-            ClientSecret clientSecret = (ClientSecret) invocation.getArguments()[1];
+            IClientSecret clientSecret = (IClientSecret) invocation.getArguments()[1];
             if (!clientId.equals(cid)) {
                 throw new MsalServiceException("Invalid clientId", "InvalidClientId");
             }
@@ -182,13 +183,14 @@ public class IdentityClientTests {
         ConfidentialClientApplication.Builder builder = PowerMockito.mock(ConfidentialClientApplication.Builder.class);
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
+        when(builder.httpClient(any())).thenReturn(builder);
         whenNew(ConfidentialClientApplication.Builder.class).withAnyArguments().thenAnswer(invocation -> {
             String cid = (String) invocation.getArguments()[0];
-            AsymmetricKeyCredential keyCredential = (AsymmetricKeyCredential) invocation.getArguments()[1];
+            IClientCredential keyCredential = (IClientCredential) invocation.getArguments()[1];
             if (!clientId.equals(cid)) {
                 throw new MsalServiceException("Invalid clientId", "InvalidClientId");
             }
-            if (keyCredential == null || keyCredential.key() == null) {
+            if (keyCredential == null) {
                 throw new MsalServiceException("Invalid clientCertificate", "InvalidClientCertificate");
             }
             return builder;
@@ -216,6 +218,7 @@ public class IdentityClientTests {
         PublicClientApplication.Builder builder = PowerMockito.mock(PublicClientApplication.Builder.class);
         when(builder.build()).thenReturn(application);
         when(builder.authority(any())).thenReturn(builder);
+        when(builder.httpClient(any())).thenReturn(builder);
         whenNew(PublicClientApplication.Builder.class).withArguments(clientId).thenReturn(builder);
     }
 }
