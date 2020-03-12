@@ -5,6 +5,7 @@ package com.azure.identity.util;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.identity.implementation.MsalToken;
+import com.microsoft.aad.msal4j.Account;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import reactor.core.publisher.Mono;
@@ -38,22 +39,7 @@ public final class TestUtils {
 
             @Override
             public IAccount account() {
-                return new IAccount() {
-                    @Override
-                    public String homeAccountId() {
-                        return UUID.randomUUID().toString();
-                    }
-
-                    @Override
-                    public String environment() {
-                        return "http://login.microsoftonline.com";
-                    }
-
-                    @Override
-                    public String username() {
-                        return "testuser";
-                    }
-                };
+                return new Account(UUID.randomUUID().toString(), "http://login.microsoftonline.com", "testuser");
             }
 
             @Override

@@ -35,11 +35,15 @@ public final class MSIToken extends AccessToken {
      * @param token the token string.
      * @param expiresOn the expiration time.
      */
+    public MSIToken(String token, OffsetDateTime expiresOn) {
+        super(token, expiresOn);
+    }
+
     @JsonCreator
-    public MSIToken(
+    private MSIToken(
         @JsonProperty(value = "access_token") String token,
         @JsonProperty(value = "expires_on") String expiresOn) {
-        super(token, EPOCH.plusSeconds(parseDateToEpochSeconds(expiresOn)));
+        this(token, EPOCH.plusSeconds(parseDateToEpochSeconds(expiresOn)));
         this.accessToken = token;
         this.expiresOn =  expiresOn;
     }
@@ -49,13 +53,21 @@ public final class MSIToken extends AccessToken {
         return accessToken;
     }
 
+    @Override
+    public OffsetDateTime getExpiresAt() {
+        return EPOCH.plusSeconds(parseDateToEpochSeconds(this.expiresOn));
+    }
+
+    @Override
+    public boolean isExpired() {
+        OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime expireOn = EPOCH.plusSeconds(parseDateToEpochSeconds(this.expiresOn));
+        return now.plusMinutes(5).isAfter(expireOn);
+    }
+
     private static Long parseDateToEpochSeconds(String dateTime) {
         ClientLogger logger = new ClientLogger(MSIToken.class);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
-        // This is the format for app service on Windows as of API version 2017-09-01.
-        // The format is changed to Unix timestamp in 2019-08-01 but this API version
-        // has not been deployed to Linux app services.
-        DateTimeFormatter dtfWindows = DateTimeFormatter.ofPattern("M/d/yyyy K:mm:ss a XXX");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss XXX");
         try {
             return Long.parseLong(dateTime);
         } catch (NumberFormatException e) {
@@ -63,13 +75,7 @@ public final class MSIToken extends AccessToken {
         }
 
         try {
-            return Instant.from(dtf.parse(dateTime)).getEpochSecond();
-        } catch (DateTimeParseException e) {
-            logger.error(e.getMessage());
-        }
-
-        try {
-            return Instant.from(dtfWindows.parse(dateTime)).getEpochSecond();
+            return Instant.from(dtf.parse(dateTime)).toEpochMilli() / 1000L;
         } catch (DateTimeParseException e) {
             logger.error(e.getMessage());
         }

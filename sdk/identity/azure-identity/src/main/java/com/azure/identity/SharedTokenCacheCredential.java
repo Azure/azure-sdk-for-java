@@ -86,7 +86,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
 
                 if (accounts.size() == 0) {
                     if (username == null) {
-                        return Mono.error(new RuntimeException("No accounts were discovered in the shared token cache."
+                        return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable.No accounts were discovered in the shared token cache."
                             + " To fix, authenticate through tooling supporting azure developer sign on."));
                     } else {
                         return Mono.error(new RuntimeException(String.format("User account '%s' was not found in the "

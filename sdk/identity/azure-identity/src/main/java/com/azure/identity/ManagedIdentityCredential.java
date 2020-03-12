@@ -31,7 +31,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .clientId(clientId)
             .identityClientOptions(identityClientOptions)
             .build();
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        Configuration configuration = Configuration.getGlobalConfiguration();
         if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
             appServiceMSICredential = new AppServiceMsiCredential(clientId, identityClient);
             virtualMachineMSICredential = null;
@@ -55,6 +55,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return (appServiceMSICredential != null
             ? appServiceMSICredential.authenticate(request)
-            : virtualMachineMSICredential.authenticate(request));
+            : virtualMachineMSICredential.authenticate(request)).onErrorResume(t->Mono.error((new RuntimeException("ManagedIdentityCredential authentication unavailable, no managed identity endpoint found.",t))));
     }
 }
