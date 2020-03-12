@@ -367,7 +367,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         GatewayAddressCache spyCache = Mockito.spy(origCache);
 
         final AtomicInteger fetchCounter = new AtomicInteger(0);
-        Mockito.doAnswer(new Answer<>() {
+        Mockito.doAnswer(new Answer<Mono<List<Address>>>() {
             @Override
             public Mono<List<Address>> answer(InvocationOnMock invocationOnMock) throws Throwable {
 
@@ -588,7 +588,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         GatewayAddressCache spyCache = Mockito.spy(origCache);
 
         final AtomicInteger getMasterAddressesViaGatewayAsyncInvocation = new AtomicInteger(0);
-        Mockito.doAnswer(new Answer<>() {
+        Mockito.doAnswer(new Answer<Mono<List<Address>>>() {
             @Override
             public Mono<List<Address>> answer(InvocationOnMock invocationOnMock) throws Throwable {
 
@@ -678,7 +678,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         GatewayAddressCache spyCache = Mockito.spy(origCache);
 
         final AtomicInteger getMasterAddressesViaGatewayAsyncInvocation = new AtomicInteger(0);
-        Mockito.doAnswer(new Answer<>() {
+        Mockito.doAnswer(new Answer<Mono<List<Address>>>() {
             @Override
             public Mono<List<Address>> answer(InvocationOnMock invocationOnMock) throws Throwable {
 

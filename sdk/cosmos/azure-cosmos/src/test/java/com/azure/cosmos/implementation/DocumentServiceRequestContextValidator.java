@@ -41,7 +41,7 @@ public interface DocumentServiceRequestContextValidator<T extends DocumentServic
         }
 
         public Builder<T> qurorumSelectedLSN(long quoriumSelectedLSN) {
-            add(new DocumentServiceRequestContextValidator<>() {
+            add(new DocumentServiceRequestContextValidator<T>() {
                 @Override
                 public void validate(DocumentServiceRequestContext v) {
                     assertThat(v.quorumSelectedLSN).isEqualTo(quoriumSelectedLSN);
@@ -51,7 +51,7 @@ public interface DocumentServiceRequestContextValidator<T extends DocumentServic
         }
 
         public Builder<T> globalCommittedSelectedLSN(long globalCommittedSelectedLSN) {
-            add(new DocumentServiceRequestContextValidator<>() {
+            add(new DocumentServiceRequestContextValidator<T>() {
                 @Override
                 public void validate(DocumentServiceRequestContext v) {
                     assertThat(v.globalCommittedSelectedLSN).isEqualTo(globalCommittedSelectedLSN);
@@ -61,7 +61,7 @@ public interface DocumentServiceRequestContextValidator<T extends DocumentServic
         }
 
         public Builder<T> storeResponses(List<StoreResponse> storeResponses) {
-            add(new DocumentServiceRequestContextValidator<>() {
+            add(new DocumentServiceRequestContextValidator<T>() {
                 @Override
                 public void validate(DocumentServiceRequestContext v) {
                     assertThat(v.storeResponses).isEqualTo(storeResponses);
