@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -149,7 +150,9 @@ public class LocationCache {
      * @return Resolved getEndpoint
      */
     public URI resolveServiceEndpoint(RxDocumentServiceRequest request) {
-        if(request.requestContext != null && request.requestContext.locationEndpointToRoute != null) {
+        Objects.requireNonNull(request.requestContext,
+            "RxDocumentServiceRequest.requestContext is required and cannot be null.");
+        if(request.requestContext.locationEndpointToRoute != null) {
             return request.requestContext.locationEndpointToRoute;
         }
 

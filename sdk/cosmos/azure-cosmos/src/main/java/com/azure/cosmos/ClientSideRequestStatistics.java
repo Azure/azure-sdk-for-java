@@ -137,7 +137,9 @@ class ClientSideRequestStatistics {
             }
 
             this.gatewayStatistics = new GatewayStatistics();
-            this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
+            if (rxDocumentServiceRequest != null) {
+                this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
+            }
             if (storeResponse != null) {
                 this.gatewayStatistics.statusCode = storeResponse.getStatus();
                 this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);

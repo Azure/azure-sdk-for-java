@@ -89,6 +89,11 @@ public class DatabaseForTest {
                                  new SqlParameterList(new SqlParameter("@PREFIX", DatabaseForTest.SHARED_DB_ID_PREFIX))))
                 .flatMap(page -> Flux.fromIterable(page.getResults())).collectList().block();
 
+        // block() can return null if Flux is empty()
+        if (dbs == null) {
+            return;
+        }
+
         for (Database db : dbs) {
             assert(db.getId().startsWith(DatabaseForTest.SHARED_DB_ID_PREFIX));
 
