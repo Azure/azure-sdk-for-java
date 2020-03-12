@@ -22,6 +22,7 @@ public class EventHubPartitionConsumerWithBackpressure {
      * Main method to invoke this demo to receive events from a partition with backpressure.
      *
      * @param args Unused arguments to the program.
+     * @throws IOException If there's an error reading from stdin.
      */
     public static void main(String[] args) throws IOException {
         // Create an async consumer
@@ -37,7 +38,7 @@ public class EventHubPartitionConsumerWithBackpressure {
 
         // Create a receiver for partition "0" and subscribe with backpressure
         consumer.receiveFromPartition("0", EventPosition.earliest())
-            .subscribe(new Subscriber<>() {
+            .subscribe(new Subscriber<PartitionEvent>() {
                 Subscription subscription;
                 @Override
                 public void onSubscribe(Subscription subscription) {
