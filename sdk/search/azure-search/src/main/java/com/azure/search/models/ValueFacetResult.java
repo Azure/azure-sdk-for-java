@@ -12,6 +12,7 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public class ValueFacetResult<T> {
+    private static final String VALUE = "value";
     private final Long count;
     private final T value;
 
@@ -24,6 +25,17 @@ public class ValueFacetResult<T> {
     public ValueFacetResult(Long count, T value) {
         this.count = count;
         this.value = value;
+    }
+
+    /**
+     * Constructor from {@link FacetResult}
+     *
+     * @param facetResult {@link FacetResult}.
+     */
+    @SuppressWarnings("unchecked")
+    public ValueFacetResult(FacetResult facetResult) {
+        this.count = facetResult.getCount();
+        this.value = (T) facetResult.getDocument().get(VALUE);
     }
 
     /**

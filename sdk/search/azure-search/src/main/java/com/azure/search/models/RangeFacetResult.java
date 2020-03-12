@@ -4,6 +4,11 @@
 package com.azure.search.models;
 
 import com.azure.core.annotation.Immutable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * A single bucket of a range facet query result that reports the number of documents
@@ -11,6 +16,8 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public class RangeFacetResult<T> {
+    private static final String FROM = "from";
+    private static final String TO = "to";
     private final Long count;
     private final T from;
     private final T to;
@@ -26,6 +33,18 @@ public class RangeFacetResult<T> {
         this.count = count;
         this.from = from;
         this.to = to;
+    }
+
+    /**
+     * Constructor from {@link FacetResult}
+     *
+     * @param facetResult {@link FacetResult}.
+     */
+    @SuppressWarnings("unchecked")
+    public RangeFacetResult(FacetResult facetResult) {
+        this.count = facetResult.getCount();
+        this.from = (T) facetResult.getDocument().get(FROM);
+        this.to = (T) facetResult.getDocument().get(TO);
     }
 
     /**

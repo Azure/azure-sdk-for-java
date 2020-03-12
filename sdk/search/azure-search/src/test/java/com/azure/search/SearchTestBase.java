@@ -15,6 +15,7 @@ import com.azure.search.models.SearchResult;
 import com.azure.search.models.SynonymMap;
 import com.azure.search.models.ValueFacetResult;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import java.util.stream.Collector;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.unitils.reflectionassert.ReflectionComparatorMode;
@@ -124,21 +125,16 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         Assert.assertEquals(2, lastRenovationDateFacets.get(1).getCount().intValue());
     }
 
-    @SuppressWarnings("unchecked")
     <T> List<RangeFacetResult<T>> getRangeFacetsForField(
         Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
-        return facetCollection.stream().map(facetResult -> new RangeFacetResult<T>(facetResult.getCount(),
-            (T) facetResult.getDocument().get(FACET_FROM),  (T) facetResult.getDocument().get(FACET_TO)))
-            .collect(Collectors.toList());
+        return facetCollection.stream().map(RangeFacetResult<T>::new).collect(Collectors.toList());
     }
 
-    @SuppressWarnings("unchecked")
     <T> List<ValueFacetResult<T>> getValueFacetsForField(
         Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
-        return facetCollection.stream().map(facetResult -> new ValueFacetResult<T>(facetResult.getCount(),
-            (T) facetResult.getDocument().get(FACET_VALUE)))
+        return facetCollection.stream().map(ValueFacetResult<T>::new)
             .collect(Collectors.toList());
     }
 
