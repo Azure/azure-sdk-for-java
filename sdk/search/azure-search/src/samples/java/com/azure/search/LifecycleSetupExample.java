@@ -4,6 +4,7 @@
 package com.azure.search;
 
 import com.azure.core.util.Configuration;
+import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.DataContainer;
 import com.azure.search.models.DataSourceCredentials;
 import com.azure.search.models.DataSourceType;
@@ -156,7 +157,7 @@ public class LifecycleSetupExample {
                         .setRetrievable(Boolean.TRUE)
                         .setSearchable(Boolean.TRUE)
                         .setSortable(Boolean.FALSE)
-                        .setAnalyzer("en.microsoft"),
+                        .setAnalyzer(AnalyzerName.EN_MICROSOFT),
                     new Field()
                         .setName("Description")
                         .setType(DataType.EDM_STRING)
@@ -165,7 +166,7 @@ public class LifecycleSetupExample {
                         .setFilterable(Boolean.FALSE)
                         .setSortable(Boolean.FALSE)
                         .setFacetable(Boolean.FALSE)
-                        .setAnalyzer("en.microsoft"),
+                        .setAnalyzer(AnalyzerName.EN_MICROSOFT),
                     new Field()
                         .setName("Tags")
                         .setType(DataType.collection(DataType.EDM_STRING))
@@ -173,7 +174,7 @@ public class LifecycleSetupExample {
                         .setFilterable(Boolean.TRUE)
                         .setRetrievable(Boolean.TRUE)
                         .setSearchable(Boolean.TRUE)
-                        .setAnalyzer("en.microsoft")));
+                        .setAnalyzer(AnalyzerName.EN_MICROSOFT)));
 
         // Set Suggester
         index.setSuggesters(Collections.singletonList(new Suggester()

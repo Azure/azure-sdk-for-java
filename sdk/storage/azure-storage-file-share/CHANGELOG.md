@@ -1,5 +1,8 @@
 # Release History
 
+## 12.4.0-beta.1 (Unreleased)
+
+
 ## 12.3.0 (2020-03-11)
 - Added support for exists methods on Share, ShareDirectory and ShareFile clients.
 

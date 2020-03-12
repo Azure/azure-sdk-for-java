@@ -25,10 +25,14 @@ import java.util.List;
 public final class CustomAnalyzer extends Analyzer {
     /*
      * The name of the tokenizer to use to divide continuous text into a
-     * sequence of tokens, such as breaking a sentence into words.
+     * sequence of tokens, such as breaking a sentence into words. Possible
+     * values include: 'Classic', 'EdgeNGram', 'Keyword', 'Letter',
+     * 'Lowercase', 'MicrosoftLanguageTokenizer',
+     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
+     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'
      */
     @JsonProperty(value = "tokenizer", required = true)
-    private String tokenizer;
+    private TokenizerName tokenizer;
 
     /*
      * A list of token filters used to filter out or modify the tokens
@@ -37,7 +41,7 @@ public final class CustomAnalyzer extends Analyzer {
      * the order in which they are listed.
      */
     @JsonProperty(value = "tokenFilters")
-    private List<String> tokenFilters;
+    private List<TokenFilterName> tokenFilters;
 
     /*
      * A list of character filters used to prepare input text before it is
@@ -46,28 +50,34 @@ public final class CustomAnalyzer extends Analyzer {
      * are listed.
      */
     @JsonProperty(value = "charFilters")
-    private List<String> charFilters;
+    private List<CharFilterName> charFilters;
 
     /**
      * Get the tokenizer property: The name of the tokenizer to use to divide
      * continuous text into a sequence of tokens, such as breaking a sentence
-     * into words.
+     * into words. Possible values include: 'Classic', 'EdgeNGram', 'Keyword',
+     * 'Letter', 'Lowercase', 'MicrosoftLanguageTokenizer',
+     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
+     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'.
      *
      * @return the tokenizer value.
      */
-    public String getTokenizer() {
+    public TokenizerName getTokenizer() {
         return this.tokenizer;
     }
 
     /**
      * Set the tokenizer property: The name of the tokenizer to use to divide
      * continuous text into a sequence of tokens, such as breaking a sentence
-     * into words.
+     * into words. Possible values include: 'Classic', 'EdgeNGram', 'Keyword',
+     * 'Letter', 'Lowercase', 'MicrosoftLanguageTokenizer',
+     * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
+     * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'.
      *
      * @param tokenizer the tokenizer value to set.
      * @return the CustomAnalyzer object itself.
      */
-    public CustomAnalyzer setTokenizer(String tokenizer) {
+    public CustomAnalyzer setTokenizer(TokenizerName tokenizer) {
         this.tokenizer = tokenizer;
         return this;
     }
@@ -80,7 +90,7 @@ public final class CustomAnalyzer extends Analyzer {
      *
      * @return the tokenFilters value.
      */
-    public List<String> getTokenFilters() {
+    public List<TokenFilterName> getTokenFilters() {
         return this.tokenFilters;
     }
 
@@ -93,7 +103,7 @@ public final class CustomAnalyzer extends Analyzer {
      * @param tokenFilters the tokenFilters value to set.
      * @return the CustomAnalyzer object itself.
      */
-    public CustomAnalyzer setTokenFilters(List<String> tokenFilters) {
+    public CustomAnalyzer setTokenFilters(List<TokenFilterName> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
     }
@@ -106,7 +116,7 @@ public final class CustomAnalyzer extends Analyzer {
      *
      * @return the charFilters value.
      */
-    public List<String> getCharFilters() {
+    public List<CharFilterName> getCharFilters() {
         return this.charFilters;
     }
 
@@ -119,7 +129,7 @@ public final class CustomAnalyzer extends Analyzer {
      * @param charFilters the charFilters value to set.
      * @return the CustomAnalyzer object itself.
      */
-    public CustomAnalyzer setCharFilters(List<String> charFilters) {
+    public CustomAnalyzer setCharFilters(List<CharFilterName> charFilters) {
         this.charFilters = charFilters;
         return this;
     }
