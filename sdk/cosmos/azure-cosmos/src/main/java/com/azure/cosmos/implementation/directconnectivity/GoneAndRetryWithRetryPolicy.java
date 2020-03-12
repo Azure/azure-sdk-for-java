@@ -154,6 +154,8 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                         .error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, exception)));
             }
 
+            // Note: we access request above without any null check then another null check here doesn't make sense.
+            // @kushagraThapar/@moderakh/@mbhaskar
             if (this.request != null) {
                 logger.warn("Received invalid collection exception, will retry, {}", exception.toString());
                 this.request.forceNameCacheRefresh = true;

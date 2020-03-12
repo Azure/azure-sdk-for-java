@@ -94,7 +94,7 @@ public class DatabaseForTest {
 
             DatabaseForTest dbForTest = DatabaseForTest.from(db);
 
-            if (db != null && dbForTest.isStale()) {
+            if (dbForTest.isStale()) {
                 logger.info("Deleting database {}", db.getId());
                 client.deleteDatabase(db.getId()).block();
             }

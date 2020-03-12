@@ -806,4 +806,11 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
+  <!-- This code smells, created an issue: https://github.com/Azure/azure-sdk-for-java/issues/9039 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GoneAndRetryWithRetryPolicy" />
+    <Method name="shouldRetry"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
+  </Match>
+
 </FindBugsFilter>

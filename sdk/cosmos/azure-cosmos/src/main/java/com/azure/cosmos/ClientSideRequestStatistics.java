@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
@@ -82,6 +83,7 @@ class ClientSideRequestStatistics {
     }
 
     void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
+        Objects.requireNonNull(request, "request is required and cannot be null.");
         ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
         connectionMode = ConnectionMode.DIRECT;
 
@@ -92,7 +94,7 @@ class ClientSideRequestStatistics {
         storeResponseStatistics.requestResourceType = request.getResourceType();
 
         URI locationEndPoint = null;
-        if (request != null && request.requestContext != null) {
+        if (request.requestContext != null) {
             this.retryContext = new RetryContext(request.requestContext.retryContext);
             if (request.requestContext.locationEndpointToRoute != null) {
                 locationEndPoint = request.requestContext.locationEndpointToRoute;
