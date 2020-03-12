@@ -676,7 +676,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void importPemCertificate() throws IOException {
+    public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) throws IOException {
+        getCertificateClient(httpClient, serviceVersion);
         importPemCertificateRunner((importCertificateOptions) -> {
             KeyVaultCertificateWithPolicy importedCertificate = client.importCertificate(importCertificateOptions);
             assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
