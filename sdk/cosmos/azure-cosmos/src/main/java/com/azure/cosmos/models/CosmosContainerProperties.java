@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * Being schema-free, the items in a container do not need to share the same structure or fields. Since containers
  * are application resources, they can be authorized using either the master key or resource keys.
  */
-public class CosmosContainerProperties extends Resource {
+public final class CosmosContainerProperties extends Resource {
 
     private IndexingPolicy indexingPolicy;
     private UniqueKeyPolicy uniqueKeyPolicy;

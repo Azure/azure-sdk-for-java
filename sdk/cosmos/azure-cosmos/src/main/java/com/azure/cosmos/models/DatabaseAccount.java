@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Represents a database account in the Azure Cosmos DB database service.
  */
-public class DatabaseAccount extends Resource {
+public final class DatabaseAccount extends Resource {
     private ConsistencyPolicy consistencyPolicy;
 
     private long maxMediaStorageUsageInMB;

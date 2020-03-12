@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * The type Cosmos trigger properties.
  */
-public class CosmosTriggerProperties extends Resource {
+public final class CosmosTriggerProperties extends Resource {
 
     /**
      * Constructor

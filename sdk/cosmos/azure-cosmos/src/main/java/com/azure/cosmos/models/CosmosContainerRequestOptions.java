@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 /**
  * Encapsulates options that can be specified for a request issued to cosmos container.
  */
-public class CosmosContainerRequestOptions {
+public final class CosmosContainerRequestOptions {
     private Integer offerThroughput;
     private boolean populateQuotaInfo;
     private ConsistencyLevel consistencyLevel;

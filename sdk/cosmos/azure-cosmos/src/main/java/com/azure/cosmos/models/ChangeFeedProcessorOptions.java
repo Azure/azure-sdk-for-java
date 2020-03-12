@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 /**
  * Specifies the options associated with {@link ChangeFeedProcessor}.
  */
-public class ChangeFeedProcessorOptions {
+public final class ChangeFeedProcessorOptions {
     private static final Duration DEFAULT_RENEW_INTERVAL = Duration.ofMillis(0).plusSeconds(17);
     private static final Duration DEFAULT_ACQUIRE_INTERVAL = Duration.ofMillis(0).plusSeconds(13);
     private static final Duration DEFAULT_EXPIRATION_INTERVAL = Duration.ofMillis(0).plusSeconds(60);
