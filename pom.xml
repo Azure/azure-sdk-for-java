@@ -12,7 +12,6 @@
     <module>sdk/core</module>
     <module>sdk/identity</module>
     <module>sdk/appconfiguration</module>
-    <module>sdk/applicationinsights</module>
     <module>sdk/authorization</module>
     <module>sdk/batch</module>
     <module>sdk/cognitiveservices</module>
