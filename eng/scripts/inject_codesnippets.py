@@ -9,10 +9,12 @@ root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 SNIPPET_BEGIN = r"\s*\/\/\s*BEGIN\:\s*(?P<id>[a-zA-Z0-9\.\#\-\_]*)\s*"
 SNIPPET_END = r"\s*\/\/\s*END\:\s*(?P<id>[a-zA-Z0-9\.\#\-\_]*)\s*"
 
-
 class SnippetDict:
-  def __init__(self):
-    self.snippet_dict = {}
+  def __init__(self, start_dict):
+    if start_dict:
+      self.snippet_dict = start_dict
+    else:
+      self.snippet_dict = {}
 
   def __nonzero__(self):
     return self.snippet_dict
