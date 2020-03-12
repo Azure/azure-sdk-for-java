@@ -36,7 +36,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
 
-    private void getKeyAsyncClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+    private void createKeyAsyncClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         HttpPipeline httpPipeline = getHttpPipeline(httpClient, serviceVersion);
         client = new KeyClientBuilder()
             .vaultUrl(getEndpoint())
@@ -51,7 +51,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void setKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         setKeyRunner((expected) -> StepVerifier.create(client.createKey(expected))
             .assertNext(response -> assertKeyEquals(expected, response))
             .verifyComplete());
@@ -63,7 +63,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void setKeyEmptyName(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.createKey("", KeyType.RSA))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
     }
@@ -74,7 +74,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void setKeyNullType(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         setKeyEmptyValueRunner((key) -> {
 
             StepVerifier.create(client.createKey(key))
@@ -89,7 +89,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void setKeyNull(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.createKey(null))
             .verifyError(NullPointerException.class);
     }
@@ -100,7 +100,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void updateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         updateKeyRunner((original, updated) -> {
             StepVerifier.create(client.createKey(original))
                 .assertNext(response -> assertKeyEquals(original, response))
@@ -125,7 +125,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void updateDisabledKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         updateDisabledKeyRunner((original, updated) -> {
             StepVerifier.create(client.createKey(original))
                 .assertNext(response -> assertKeyEquals(original, response))
@@ -151,7 +151,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         getKeyRunner((original) -> {
             StepVerifier.create(client.createKey(original))
                 .assertNext(response -> assertKeyEquals(original, response))
@@ -169,7 +169,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getKeySpecificVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         getKeySpecificVersionRunner((key, keyWithNewVal) -> {
             final KeyVaultKey keyVersionOne = client.createKey(key).block();
             final KeyVaultKey keyVersionTwo = client.createKey(keyWithNewVal).block();
@@ -190,7 +190,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getKey("non-existing"))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
@@ -202,7 +202,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void deleteKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         deleteKeyRunner((keyToDelete) -> {
             StepVerifier.create(client.createKey(keyToDelete))
                 .assertNext(keyResponse -> assertKeyEquals(keyToDelete, keyResponse)).verifyComplete();
@@ -228,7 +228,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void deleteKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.beginDeleteKey("non-existing"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
@@ -239,7 +239,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getDeletedKey("non-existing"))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
@@ -250,7 +250,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void recoverDeletedKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
             StepVerifier.create(client.createKey(keyToDeleteAndRecover))
                 .assertNext(keyResponse -> assertKeyEquals(keyToDeleteAndRecover, keyResponse)).verifyComplete();
@@ -281,7 +281,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void recoverDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.beginRecoverDeletedKey("non-existing"))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
@@ -292,7 +292,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void backupKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         backupKeyRunner((keyToBackup) -> {
             StepVerifier.create(client.createKey(keyToBackup))
                 .assertNext(keyResponse -> assertKeyEquals(keyToBackup, keyResponse)).verifyComplete();
@@ -311,7 +311,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void backupKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.backupKey("non-existing"))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
@@ -322,7 +322,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void restoreKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         restoreKeyRunner((keyToBackupAndRestore) -> {
             StepVerifier.create(client.createKey(keyToBackupAndRestore))
                 .assertNext(keyResponse -> assertKeyEquals(keyToBackupAndRestore, keyResponse)).verifyComplete();
@@ -357,7 +357,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void restoreKeyFromMalformedBackup(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         byte[] keyBackupBytes = "non-existing".getBytes();
         StepVerifier.create(client.restoreKeyBackup(keyBackupBytes))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
@@ -369,7 +369,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getDeletedKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         getDeletedKeyRunner((keyToDeleteAndGet) -> {
 
             StepVerifier.create(client.createKey(keyToDeleteAndGet))
@@ -404,7 +404,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void listDeletedKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         if (!interceptorManager.isPlaybackMode()) {
             return;
         }
@@ -442,7 +442,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void listKeyVersions(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         listKeyVersionsRunner((keys) -> {
             List<KeyProperties> output = new ArrayList<>();
             String keyName = null;
@@ -476,7 +476,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void listKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        getKeyAsyncClient(httpClient, serviceVersion);
+        createKeyAsyncClient(httpClient, serviceVersion);
         listKeysRunner((keys) -> {
             for (CreateKeyOptions key : keys.values()) {
                 assertKeyEquals(key, client.createKey(key).block());

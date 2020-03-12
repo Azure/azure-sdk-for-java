@@ -33,6 +33,8 @@ import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPo
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
@@ -66,7 +68,6 @@ public abstract class CertificateClientTestBase extends TestBase {
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
-   // <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -400,7 +401,7 @@ public abstract class CertificateClientTestBase extends TestBase {
 
     void importPemCertificateRunner(Consumer<ImportCertificateOptions> testRunner) throws IOException {
 
-        byte[] certificateContent = readCertificate("certificate.pem");
+        byte[] certificateContent = readCertificate("pemCert.pem");
 
         String certificateName = generateResourceId("importCertPem");
         HashMap<String, String> tags = new HashMap<>();
@@ -418,10 +419,17 @@ public abstract class CertificateClientTestBase extends TestBase {
 
     private byte[] readCertificate(String certName) throws IOException {
         String pemPath = getClass().getClassLoader().getResource(certName).getPath();
-        if (pemPath.contains(":")) {
-            pemPath = pemPath.substring(1);
+        String pemCert = "";
+        BufferedReader br = new BufferedReader(new FileReader(pemPath));
+        try {
+            String line;
+            while ((line = br.readLine()) != null) {
+                pemCert += line + "\n";
+            }
+        } finally {
+            br.close();
         }
-        return Files.readAllBytes(Paths.get(pemPath));
+        return pemCert.getBytes();
     }
 
     CertificateIssuer setupIssuer(String issuerName) {
@@ -612,7 +620,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         return argumentsList.stream();
     }
 
-    static boolean shouldServiceVersionBeTested(CertificateServiceVersion serviceVersion) {
+    private static boolean shouldServiceVersionBeTested(CertificateServiceVersion serviceVersion) {
         if (Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS) == null) {
             return CertificateServiceVersion.getLatest().equals(serviceVersion);
         }

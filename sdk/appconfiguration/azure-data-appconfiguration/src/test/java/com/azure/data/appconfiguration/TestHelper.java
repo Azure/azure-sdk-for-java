@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,7 @@ class TestHelper extends TestBase {
      *
      * @return A stream of HttpClient and service version combinations to test.
      */
-    protected static Stream<Arguments> getTestParameters() {
+    static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
@@ -32,10 +33,11 @@ class TestHelper extends TestBase {
         return argumentsList.stream();
     }
 
-    protected static boolean shouldServiceVersionBeTested(ConfigurationServiceVersion serviceVersion) {
-        if (Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS) == null) {
+    static boolean shouldServiceVersionBeTested(ConfigurationServiceVersion serviceVersion) {
+        String serviceVersionFromEnv = Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
+        if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return ConfigurationServiceVersion.getLatest().equals(serviceVersion);
         }
-        return true;
+        return serviceVersionFromEnv.equalsIgnoreCase(serviceVersion.toString());
     }
 }

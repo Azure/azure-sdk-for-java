@@ -145,7 +145,9 @@ public abstract class TestBase implements BeforeEachCallback {
     }
 
     /**
-     * Filter out the http clients needs to run in test framework
+     * Filter out the http clients needs to run in test framework.
+     * Using Netty http client when no environment variable is set.
+     *
      * @param client Http client needs to check
      * @return Boolean indicates whether filters out the client or not.
      */

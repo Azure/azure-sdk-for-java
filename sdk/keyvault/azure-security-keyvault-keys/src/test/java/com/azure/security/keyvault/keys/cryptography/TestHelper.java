@@ -21,7 +21,7 @@ public class TestHelper extends TestBase {
      *
      * @return A stream of HttpClient and service version combinations to test.
      */
-    protected static Stream<Arguments> getTestParameters() {
+    static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
@@ -34,7 +34,7 @@ public class TestHelper extends TestBase {
         return argumentsList.stream();
     }
 
-    protected static boolean shouldServiceVersionBeTested(CryptographyServiceVersion serviceVersion) {
+    static boolean shouldServiceVersionBeTested(CryptographyServiceVersion serviceVersion) {
         if (Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS) == null) {
             return CryptographyServiceVersion.getLatest().equals(serviceVersion);
         }

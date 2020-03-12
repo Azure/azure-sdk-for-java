@@ -6,6 +6,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -22,15 +23,12 @@ import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Objects;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
 
-@TestInstance(PER_CLASS)
 public class ConfigurationClientBuilderTest extends TestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String DEFAULT_DOMAIN_NAME = ".azconfig.io";
@@ -148,7 +146,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void defaultPipeline(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void defaultPipeline(ConfigurationServiceVersion serviceVersion) {
         final String key = "newKey";
         final String value = "newValue";
 
@@ -172,9 +170,10 @@ public class ConfigurationClientBuilderTest extends TestBase {
             assertThrows(HttpResponseException.class,
                 () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
         }
+        HttpClient httpClient = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
+            : new NettyAsyncHttpClientBuilder().wiretap(true).build();
 
-        clientBuilder.pipeline(null).httpClient(httpClient == null ? interceptorManager.getPlaybackClient()
-            : httpClient);
+        clientBuilder.pipeline(null).httpClient(httpClient);
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
         Assertions.assertEquals(addedSetting.getKey(), key);
