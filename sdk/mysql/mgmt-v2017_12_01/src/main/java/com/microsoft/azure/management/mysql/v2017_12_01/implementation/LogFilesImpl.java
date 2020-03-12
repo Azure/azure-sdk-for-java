@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.mysql.v2017_12_01.LogFile;
 
 class LogFilesImpl extends WrapperImpl<LogFilesInner> implements LogFiles {
-    private final MySQLManager manager;
+    private final DBforMySQLManager manager;
 
-    LogFilesImpl(MySQLManager manager) {
+    LogFilesImpl(DBforMySQLManager manager) {
         super(manager.inner().logFiles());
         this.manager = manager;
     }
 
-    public MySQLManager manager() {
+    public DBforMySQLManager manager() {
         return this.manager;
     }
 
