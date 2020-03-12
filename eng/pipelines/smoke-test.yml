@@ -35,7 +35,7 @@ jobs:
           OSVmImage: macOS-10.15
 
     # Set default environment variables
-    - variables:
+    variables:
       AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
       AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
       AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
