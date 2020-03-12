@@ -14,6 +14,9 @@ import rx.Observable;
 import com.microsoft.azure.management.mariadb.v2018_06_01.ServerUpdateParameters;
 import com.microsoft.azure.management.mariadb.v2018_06_01.ServerForCreate;
 import org.joda.time.DateTime;
+import java.util.List;
+import com.microsoft.azure.management.mariadb.v2018_06_01.ServerPrivateEndpointConnection;
+import com.microsoft.azure.management.mariadb.v2018_06_01.PublicNetworkAccessEnum;
 import com.microsoft.azure.management.mariadb.v2018_06_01.Sku;
 import com.microsoft.azure.management.mariadb.v2018_06_01.SslEnforcementEnum;
 import com.microsoft.azure.management.mariadb.v2018_06_01.StorageProfile;
@@ -95,6 +98,16 @@ class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerIm
     @Override
     public String masterServerId() {
         return this.inner().masterServerId();
+    }
+
+    @Override
+    public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
+        return this.inner().privateEndpointConnections();
+    }
+
+    @Override
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        return this.inner().publicNetworkAccess();
     }
 
     @Override
