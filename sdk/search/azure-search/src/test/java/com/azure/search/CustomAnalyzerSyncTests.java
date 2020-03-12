@@ -5,72 +5,8 @@ package com.azure.search;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.search.models.AnalyzeRequest;
-import com.azure.search.models.Analyzer;
-import com.azure.search.models.AnalyzerName;
-import com.azure.search.models.AsciiFoldingTokenFilter;
-import com.azure.search.models.CharFilter;
-import com.azure.search.models.CharFilterName;
-import com.azure.search.models.CjkBigramTokenFilter;
-import com.azure.search.models.CjkBigramTokenFilterScripts;
-import com.azure.search.models.ClassicTokenizer;
-import com.azure.search.models.CommonGramTokenFilter;
-import com.azure.search.models.CustomAnalyzer;
-import com.azure.search.models.DataType;
-import com.azure.search.models.DictionaryDecompounderTokenFilter;
-import com.azure.search.models.EdgeNGramTokenFilterSide;
-import com.azure.search.models.EdgeNGramTokenFilterV2;
-import com.azure.search.models.EdgeNGramTokenizer;
-import com.azure.search.models.ElisionTokenFilter;
-import com.azure.search.models.Field;
-import com.azure.search.models.Index;
-import com.azure.search.models.KeepTokenFilter;
-import com.azure.search.models.KeywordMarkerTokenFilter;
-import com.azure.search.models.KeywordTokenizerV2;
-import com.azure.search.models.LengthTokenFilter;
-import com.azure.search.models.LimitTokenFilter;
-import com.azure.search.models.MappingCharFilter;
-import com.azure.search.models.MicrosoftLanguageStemmingTokenizer;
-import com.azure.search.models.MicrosoftLanguageTokenizer;
-import com.azure.search.models.MicrosoftStemmingTokenizerLanguage;
-import com.azure.search.models.MicrosoftTokenizerLanguage;
-import com.azure.search.models.NGramTokenFilterV2;
-import com.azure.search.models.NGramTokenizer;
-import com.azure.search.models.PathHierarchyTokenizerV2;
-import com.azure.search.models.PatternAnalyzer;
-import com.azure.search.models.PatternCaptureTokenFilter;
-import com.azure.search.models.PatternReplaceCharFilter;
-import com.azure.search.models.PatternReplaceTokenFilter;
-import com.azure.search.models.PatternTokenizer;
-import com.azure.search.models.PhoneticEncoder;
-import com.azure.search.models.PhoneticTokenFilter;
-import com.azure.search.models.RegexFlags;
-import com.azure.search.models.SearchOptions;
-import com.azure.search.models.SearchResult;
-import com.azure.search.models.ShingleTokenFilter;
-import com.azure.search.models.SnowballTokenFilter;
-import com.azure.search.models.SnowballTokenFilterLanguage;
-import com.azure.search.models.StandardAnalyzer;
-import com.azure.search.models.StandardTokenizerV2;
-import com.azure.search.models.StemmerOverrideTokenFilter;
-import com.azure.search.models.StemmerTokenFilter;
-import com.azure.search.models.StemmerTokenFilterLanguage;
-import com.azure.search.models.StopAnalyzer;
-import com.azure.search.models.StopwordsList;
-import com.azure.search.models.StopwordsTokenFilter;
-import com.azure.search.models.SynonymTokenFilter;
-import com.azure.search.models.TokenCharacterKind;
-import com.azure.search.models.TokenFilter;
-import com.azure.search.models.TokenFilterName;
-import com.azure.search.models.TokenInfo;
-import com.azure.search.models.Tokenizer;
-import com.azure.search.models.TokenizerName;
-import com.azure.search.models.TruncateTokenFilter;
-import com.azure.search.models.UaxUrlEmailTokenizer;
-import com.azure.search.models.UniqueTokenFilter;
-import com.azure.search.models.WordDelimiterTokenFilter;
+import com.azure.search.models.*;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import java.lang.reflect.Array;
 import org.junit.jupiter.api.Test;
 import org.unitils.reflectionassert.ReflectionAssert;
 
@@ -92,11 +28,23 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     private static final String NAME_PREFIX = "azsmnet";
 
     private SearchServiceClient searchServiceClient;
+    private static Collection<CharFilterName> charFilterNames;
+
+    static {
+        getAllCharFilterName();
+    }
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
         searchServiceClient = getSearchServiceClientBuilder().buildClient();
+    }
+
+    private static void getAllCharFilterName() {
+        charFilterNames = new ArrayList<>();
+        for(CharFilterName name : CharFilterName.values()) {
+            charFilterNames.add(name);
+        }
     }
 
     @Test
@@ -531,15 +479,11 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 .setTokenizer(TokenizerName.LOWERCASE)
                 .setTokenFilters(TokenFilterName.values()
                     .stream()
-                    .map(TokenFilterName::toString)
-                    .sorted()
-                    .map(TokenFilterName::fromString)
+                    .sorted(Comparator.comparing(TokenFilterName::toString))
                     .collect(Collectors.toList()))
-                .setCharFilters(CharFilterName.values()
+                .setCharFilters(charFilterNames
                     .stream()
-                    .map(CharFilterName::toString)
-                    .sorted()
-                    .map(CharFilterName::fromString)
+                    .sorted(Comparator.comparing(CharFilterName::toString))
                     .collect(Collectors.toList()))
                 .setName("abc");
 

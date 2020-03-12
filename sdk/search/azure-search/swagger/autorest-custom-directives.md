@@ -1,3 +1,5 @@
+# Azure Search for Java
+
 ```yaml
 # Declare a directive that can be invoked in the pipeline
 declare-directive:

@@ -1,4 +1,4 @@
-# SearchServiceClient and SearchIndexClient
+# Azure Search for Java
     
 > see https://aka.ms/autorest
 
