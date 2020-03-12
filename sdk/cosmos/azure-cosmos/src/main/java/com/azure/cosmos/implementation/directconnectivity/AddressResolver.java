@@ -316,7 +316,7 @@ public class AddressResolver implements IAddressResolver {
         });
     }
 
-    private class RefreshState {
+    private static class RefreshState {
 
         volatile boolean collectionCacheIsUptoDate;
         volatile boolean collectionRoutingMapCacheIsUptoDate;
@@ -687,7 +687,7 @@ public class AddressResolver implements IAddressResolver {
         return null;
     }
 
-    private class ResolutionResult {
+    private static class ResolutionResult {
         final PartitionKeyRange TargetPartitionKeyRange;
         final AddressInformation[] Addresses;
 

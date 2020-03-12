@@ -874,7 +874,7 @@ public class StoreReader {
         return;
     }
 
-    private class ReadReplicaResult {
+    private static class ReadReplicaResult {
         public ReadReplicaResult(boolean retryWithForceRefresh, List<StoreResult> responses) {
             this.retryWithForceRefresh = retryWithForceRefresh;
             this.responses = responses;

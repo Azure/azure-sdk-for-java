@@ -219,7 +219,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             request.requestContext.RouteToLocation(this.locationEndpoint);
         }
     }
-    private class RetryContext {
+    private static class RetryContext {
 
         public int retryCount;
         public boolean retryRequestOnPreferredLocations;

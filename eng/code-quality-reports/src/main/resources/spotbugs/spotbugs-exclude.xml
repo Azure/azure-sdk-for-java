@@ -791,5 +791,19 @@
     <Bug pattern="IS2_INCONSISTENT_SYNC"/>
   </Match>
 
+  <!-- The following two suggestion for _static_ inner class is suppressed,
+       first method is 1 line and second one is ~4 lines, doesn't worth a dedicated class.
+    -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.LocationCache"/>
+    <Method name="markEndpointUnavailable"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.models.DatabaseAccount"/>
+    <Method name="getQueryEngineConfiguration"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
 
 </FindBugsFilter>

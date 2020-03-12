@@ -337,7 +337,6 @@ public class LocationCache {
                 new BiFunction<URI, LocationUnavailabilityInfo, LocationUnavailabilityInfo>() {
                     @Override
                     public LocationUnavailabilityInfo apply(URI url, LocationUnavailabilityInfo info) {
-
                         if (info == null) {
                             // not already present, add
                             return new LocationUnavailabilityInfo(currentTime, unavailableOperationType);
@@ -494,7 +493,7 @@ public class LocationCache {
     }
 
 
-    private class LocationUnavailabilityInfo {
+    private static class LocationUnavailabilityInfo {
         LocationUnavailabilityInfo(Instant instant, OperationType type) {
             this.LastUnavailabilityCheckTimeStamp = instant;
             this.UnavailableOperations = type;
@@ -550,7 +549,7 @@ public class LocationCache {
         return durationPassed(Instant.now(), this.lastCacheUpdateTimestamp, this.unavailableLocationsExpirationTime);
     }
 
-    class DatabaseAccountLocationsInfo {
+    static class DatabaseAccountLocationsInfo {
         private UnmodifiableList<String> preferredLocations;
         // lower-case region
         private UnmodifiableList<String> availableWriteLocations;

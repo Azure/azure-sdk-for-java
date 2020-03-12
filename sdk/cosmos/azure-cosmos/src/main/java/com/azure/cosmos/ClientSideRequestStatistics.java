@@ -127,8 +127,8 @@ class ClientSideRequestStatistics {
                 this.requestEndTime = responseTime;
             }
 
-            if (rxDocumentServiceRequest != null 
-                    && rxDocumentServiceRequest.requestContext != null 
+            if (rxDocumentServiceRequest != null
+                    && rxDocumentServiceRequest.requestContext != null
                     && rxDocumentServiceRequest.requestContext.retryContext != null) {
                 rxDocumentServiceRequest.requestContext.retryContext.retryEndTime = ZonedDateTime.now(ZoneOffset.UTC);
                 this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
@@ -327,7 +327,7 @@ class ClientSideRequestStatistics {
         }
     }
 
-    private class AddressResolutionStatistics {
+    private static class AddressResolutionStatistics {
         @JsonSerialize(using = ZonedDateTimeSerializer.class)
         ZonedDateTime startTime;
         @JsonSerialize(using = ZonedDateTimeSerializer.class)
@@ -335,7 +335,7 @@ class ClientSideRequestStatistics {
         String targetEndpoint;
     }
 
-    private class GatewayStatistics {
+    private static class GatewayStatistics {
         String sessionToken;
         OperationType operationType;
         int statusCode;
