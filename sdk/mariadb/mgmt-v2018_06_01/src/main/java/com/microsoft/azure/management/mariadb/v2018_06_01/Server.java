@@ -19,6 +19,7 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.MariaDBManager;
 import org.joda.time.DateTime;
+import java.util.List;
 import com.microsoft.azure.management.mariadb.v2018_06_01.implementation.ServerInner;
 
 /**
@@ -44,6 +45,16 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
      * @return the masterServerId value.
      */
     String masterServerId();
+
+    /**
+     * @return the privateEndpointConnections value.
+     */
+    List<ServerPrivateEndpointConnection> privateEndpointConnections();
+
+    /**
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccessEnum publicNetworkAccess();
 
     /**
      * @return the replicaCapacity value.
