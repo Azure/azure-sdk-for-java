@@ -4,16 +4,9 @@
 package com.azure.storage.blob.nio
 
 import com.azure.core.http.HttpClient
-import com.azure.core.http.HttpHeaders
-import com.azure.core.http.HttpMethod
-import com.azure.core.http.HttpPipelineCallContext
-import com.azure.core.http.HttpPipelineNextPolicy
-import com.azure.core.http.HttpRequest
-import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.http.rest.Response
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
@@ -21,7 +14,6 @@ import com.azure.core.util.Configuration
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
-import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobClientBuilder
@@ -32,16 +24,7 @@ import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.BlobContainerItem
-import com.azure.storage.blob.models.BlobProperties
-import com.azure.storage.blob.models.BlobRetentionPolicy
-import com.azure.storage.blob.models.BlobServiceProperties
-import com.azure.storage.blob.models.CopyStatusType
-import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
-import com.azure.storage.blob.specialized.BlobAsyncClientBase
-import com.azure.storage.blob.specialized.BlobClientBase
-import com.azure.storage.blob.specialized.BlobLeaseClient
-import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import reactor.core.publisher.Flux
@@ -53,8 +36,8 @@ import spock.lang.Timeout
 
 import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousFileChannel
-import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
+import java.nio.file.attribute.FileAttribute
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
@@ -95,7 +78,7 @@ class APISpec extends Specification {
 
     String blobPrefix = "javablob"
 
-    public static final String defaultEndpointTemplate = "http://%s.blob.core.windows.net/"
+    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
@@ -406,6 +389,13 @@ class APISpec extends Specification {
         return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
     }
 
+    def createFS(Map<String,String> config) {
+        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
+        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
+
+        return new AzureFileSystem(new AzureFileSystemProvider(), getAccountName(PRIMARY_STORAGE), config)
+    }
+
     OffsetDateTime getUTCNow() {
         return resourceNamer.now()
     }
@@ -488,6 +478,30 @@ class APISpec extends Specification {
     def sleepIfRecord(long milliseconds) {
         if (testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
+        }
+    }
+
+    def rootToContainer(String root) {
+        return root.substring(0, root.length() - 1)
+    }
+
+    static class TestFileAttribute<T> implements  FileAttribute<T> {
+        String name
+        T value
+
+        TestFileAttribute(String name, T value) {
+            this.name = name
+            this.value = value
+        }
+
+        @Override
+        String name() {
+            return this.name
+        }
+
+        @Override
+        T value() {
+            return this.value
         }
     }
 }

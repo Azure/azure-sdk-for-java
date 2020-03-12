@@ -202,9 +202,7 @@ public class DataLakeServiceClient {
      * @return The list of file systems.
      */
     public PagedIterable<FileSystemItem> listFileSystems(ListFileSystemsOptions options, Duration timeout) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blobServiceClient.listBlobContainers(Transforms.toListBlobContainersOptions(options), timeout)
-            .mapPage(Transforms::toFileSystemItem), logger);
+        return new PagedIterable<>(dataLakeServiceAsyncClient.listFileSystemsWithOptionalTimeout(options, timeout));
     }
 
     /**

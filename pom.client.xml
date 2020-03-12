@@ -385,7 +385,7 @@
             </configurationFile>
           </analysisConfigurationFiles>
           <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
-          <checkDependencies>false</checkDependencies>
+          <checkDependencies>true</checkDependencies>
           <failBuildOnProblemsFound>true</failBuildOnProblemsFound>
         </configuration>
         <dependencies>
@@ -426,8 +426,15 @@
             <excludePackageNames>
               *.impl*:
               *.implementation*:
-              com.azure.tools.checkstyle*
+              com.azure.tools.checkstyle*:
+              com.azure.core.test*:
+              com.azure.endtoend*:
+              com.azure.perf*
             </excludePackageNames>
+            <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
+            <sourceFileExcludes>
+              <sourceFileExclude>com.azure.cosmos.*BridgeInternal.java</sourceFileExclude>
+            </sourceFileExcludes>
             <groups>
               <group>
                 <title>Azure Core</title>
@@ -460,6 +467,10 @@
                 <packages>com.azure.data.appconfiguration*</packages>
               </group>
               <group>
+                <title>Azure Cosmos</title>
+                <packages>com.azure.cosmos*</packages>
+              </group>
+              <group>
                 <title>Azure Event Hubs</title>
                 <packages>com.azure.messaging.eventhubs*</packages>
               </group>
@@ -470,6 +481,14 @@
               <group>
                 <title>Azure Key Vault</title>
                 <packages>com.azure.security.keyvault*</packages>
+              </group>
+              <group>
+                <title>Azure Search</title>
+                <packages>com.azure.search*</packages>
+              </group>
+              <group>
+                <title>Azure Service Bus</title>
+                <packages>com.azure.messaging.servicebus*</packages>
               </group>
               <group>
                 <title>Azure Storage - Common</title>
@@ -684,10 +703,12 @@
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
+                -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-cryptography/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-datalake/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-share/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
                 -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
@@ -933,6 +954,7 @@
                 <!-- JUnit5 and Mockito use reflection to create objects. -->
                 --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
@@ -1222,14 +1244,18 @@
   </profiles>
 
   <modules>
+    <module>common/perf-test-core</module>
     <module>sdk/appconfiguration/azure-data-appconfiguration</module>
     <module>sdk/core/azure-core</module>
     <module>sdk/core/azure-core-amqp</module>
-<!--    <module>sdk/core/azure-core-management</module>--> <!-- Removed for now, as this library is unused -->
+    <module>sdk/core/azure-core-management</module>
     <module>sdk/core/azure-core-http-netty</module>
     <module>sdk/core/azure-core-http-okhttp</module>
     <module>sdk/core/azure-core-test</module>
     <module>sdk/core/azure-core-tracing-opentelemetry</module>
+    <module>sdk/cosmos/azure-cosmos</module>
+    <module>sdk/cosmos/azure-cosmos-benchmark</module> <!-- CosmosSkip - Benchmark will go away, this is temporary -->
+    <module>sdk/cosmos/azure-cosmos-examples</module> <!-- CosmosSkip - Examples will go away, this is temporary -->
     <module>sdk/e2e</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
@@ -1238,6 +1264,7 @@
     <module>sdk/keyvault/azure-security-keyvault-keys</module>
     <module>sdk/keyvault/azure-security-keyvault-secrets</module>
 	  <module>sdk/search/azure-search</module>
+    <module>sdk/servicebus/azure-messaging-servicebus</module>
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>
     <module>sdk/storage/azure-storage-blob-cryptography</module>
@@ -1246,6 +1273,7 @@
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
     <module>sdk/storage/azure-storage-queue</module>
+    <module>sdk/storage/perf-test</module>
     <module>sdk/textanalytics/azure-ai-textanalytics</module>
   </modules>
 </project>

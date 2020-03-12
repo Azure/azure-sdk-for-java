@@ -1,5 +1,7 @@
 # Release History
 
+## 5.1.0-beta.1 (Unreleased)
+
 ## 5.0.2 (2020-02-13)
 - Fix bug where producers and consumers would not be able to block in their consuming code.
 

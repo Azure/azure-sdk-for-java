@@ -40,4 +40,3 @@ stages:
         - name: azure-identity
           groupId: com.azure
           safeName: azureidentity
-          stagingProfileId: 88192f04117501

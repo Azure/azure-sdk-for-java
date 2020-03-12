@@ -4,6 +4,7 @@
 package com.azure.search;
 
 import com.azure.core.util.Configuration;
+import com.azure.search.models.AnalyzerName;
 import com.azure.search.models.DataContainer;
 import com.azure.search.models.DataSourceCredentials;
 import com.azure.search.models.DataSourceType;
@@ -44,15 +45,14 @@ public class LifecycleSetupExample {
     private static final String COSMOS_CONNECTION_STRING = "AccountEndpoint=https://hotels-docbb.documents.azure.com:443/;AccountKey=4UPsNZyFAjgZ1tzHPGZaxS09XcwLrIawbXBWk6IixcxJoSePTcjBn0mi53XiKWu8MaUgowUhIovOv7kjksqAug==;Database=SampleData";
     private static final String COSMOS_COLLECTION_NAME = "hotels";
 
-    private static final String INDEX_NAME = "hotels-sample-index";
-    private static final String DATASOURCE_NAME = "hotels-sample-datasource";
-    private static final String SKILLSET_NAME = "hotels-sample-skillset";
-    private static final String INDEXER_NAME = "hotels-sample-indexer";
+    private static final String INDEX_NAME = "hotels-sample-index1";
+    private static final String DATASOURCE_NAME = "hotels-sample-datasource1";
+    private static final String SKILLSET_NAME = "hotels-sample-skillset1";
+    private static final String INDEXER_NAME = "hotels-sample-indexer1";
     private static final String SUGGESTER_NAME = "sg";
 
     public static void main(String[] args) {
         SearchServiceClient client = createServiceClient();
-
         // Create a data source for a Cosmos DB database
         DataSource dataSource = createCosmosDataSource(client);
         System.out.println("Created DataSource " + dataSource.getName());
@@ -72,6 +72,10 @@ public class LifecycleSetupExample {
         // Update indexer schedule
         updateIndexerSchedule(client, indexer);
         System.out.println("Updated Indexer Schedule " + indexer.getName());
+
+        // Clean up resources.
+        client.deleteIndex(INDEX_NAME);
+        client.deleteIndexer(INDEXER_NAME);
     }
 
     private static SearchServiceClient createServiceClient() {
@@ -153,7 +157,7 @@ public class LifecycleSetupExample {
                         .setRetrievable(Boolean.TRUE)
                         .setSearchable(Boolean.TRUE)
                         .setSortable(Boolean.FALSE)
-                        .setAnalyzer("en.microsoft"),
+                        .setAnalyzer(AnalyzerName.EN_MICROSOFT),
                     new Field()
                         .setName("Description")
                         .setType(DataType.EDM_STRING)
@@ -162,15 +166,15 @@ public class LifecycleSetupExample {
                         .setFilterable(Boolean.FALSE)
                         .setSortable(Boolean.FALSE)
                         .setFacetable(Boolean.FALSE)
-                        .setAnalyzer("en.microsoft"),
+                        .setAnalyzer(AnalyzerName.EN_MICROSOFT),
                     new Field()
                         .setName("Tags")
-                        .setType(DataType.Collection(DataType.EDM_STRING))
+                        .setType(DataType.collection(DataType.EDM_STRING))
                         .setFacetable(Boolean.TRUE)
                         .setFilterable(Boolean.TRUE)
                         .setRetrievable(Boolean.TRUE)
                         .setSearchable(Boolean.TRUE)
-                        .setAnalyzer("en.microsoft")));
+                        .setAnalyzer(AnalyzerName.EN_MICROSOFT)));
 
         // Set Suggester
         index.setSuggesters(Collections.singletonList(new Suggester()

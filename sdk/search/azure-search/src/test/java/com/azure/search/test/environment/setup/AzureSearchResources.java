@@ -3,19 +3,20 @@
 
 package com.azure.search.test.environment.setup;
 
-import com.azure.search.models.DataSource;
+import com.azure.core.test.utils.TestResourceNamer;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.search.SearchService;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
-import org.apache.commons.lang3.StringUtils;
 
+import java.security.SecureRandom;
 import java.util.Objects;
 
 public class AzureSearchResources {
@@ -23,22 +24,19 @@ public class AzureSearchResources {
     private static final String SEARCH_SERVICE_NAME_PREFIX = "azs-sdk";
     private static final String BLOB_DATASOURCE_NAME_PREFIX = "azsblob";
     private static final String STORAGE_NAME_PREFIX = "azsstor";
+    private static final String AZURE_RESOURCEGROUP_NAME = "AZURE_RESOURCEGROUP_NAME";
+    private static final char[] ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
 
-
-    private String resourceGroupName;
     private String searchServiceName;
     private String searchAdminKey;
-    private String blobContainerDatasourceName;
-    private String storageName;
 
     private AzureTokenCredentials azureTokenCredentials;
     private String subscriptionId;
     private Region location;
 
     private Azure azure = null;
-    private ResourceGroup resourceGroup = null;
+    private static ResourceGroup resourceGroup;
     private SearchService searchService = null;
-    private DataSource blobDatasource = null;
 
     /**
      * @return The created Azure Cognitive Search service name
@@ -55,16 +53,14 @@ public class AzureSearchResources {
     }
 
     /**
-     * Creates an instance of AzureTokenCredentials to be used in creating a Resource Group and Azure Cognitive Search service
-     * in Azure to be used for tests.
+     * Creates an instance of AzureTokenCredentials to be used in creating a Resource Group and Azure Cognitive Search
+     * service in Azure to be used for tests.
      *
      * @param azureTokenCredentials includes credentials to connect to Azure.
      * @param subscriptionId Azure subscription id.
      * @param location location of the resources to be created in.
      */
-    public AzureSearchResources(
-        AzureTokenCredentials azureTokenCredentials, String subscriptionId,
-        Region location) {
+    public AzureSearchResources(AzureTokenCredentials azureTokenCredentials, String subscriptionId, Region location) {
         this.azureTokenCredentials = azureTokenCredentials;
         this.subscriptionId = subscriptionId;
         this.location = location;
@@ -86,7 +82,7 @@ public class AzureSearchResources {
     private void validate() {
         Objects.requireNonNull(this.azureTokenCredentials, "azureTokenCredentials cannot be null");
         Objects.requireNonNull(this.location, "location cannot be null");
-        if (StringUtils.isBlank(this.subscriptionId)) {
+        if (CoreUtils.isNullOrEmpty(this.subscriptionId)) {
             throw new IllegalArgumentException("subscriptionId cannot be blank");
         }
     }
@@ -94,8 +90,8 @@ public class AzureSearchResources {
     /**
      * Creates an Azure Service in an existing resource group
      */
-    public void createService() {
-        searchServiceName = SdkContext.randomResourceName(SEARCH_SERVICE_NAME_PREFIX, 24);
+    public void createService(TestResourceNamer testResourceNamer) {
+        searchServiceName = testResourceNamer.randomName(SEARCH_SERVICE_NAME_PREFIX, 24);
         System.out.println("Creating Azure Cognitive Search service: " + searchServiceName);
         searchService = azure.searchServices()
             .define(searchServiceName)
@@ -121,8 +117,17 @@ public class AzureSearchResources {
      * Creates the Resource Group in Azure. This should be run at @BeforeAll
      */
     public void createResourceGroup() {
-        if (resourceGroup == null) {
-            resourceGroupName = SdkContext.randomResourceName(RESOURCE_GROUP_NAME_PREFIX, 24);
+        String resourceGroupName = Configuration.getGlobalConfiguration().get(AZURE_RESOURCEGROUP_NAME);
+        boolean resourceGroupNameSet = !CoreUtils.isNullOrEmpty(resourceGroupName);
+        if (!resourceGroupNameSet) {
+            resourceGroupName = randomResourceGroupName();
+        }
+
+        if (resourceGroupNameSet && azure.resourceGroups().checkExistence(resourceGroupName)) {
+            System.out.println("Fetching Resource Group: " + resourceGroupName);
+            resourceGroup = azure.resourceGroups()
+                .getByName(resourceGroupName);
+        } else {
             System.out.println("Creating Resource Group: " + resourceGroupName);
             resourceGroup = azure.resourceGroups()
                 .define(resourceGroupName)
@@ -144,10 +149,11 @@ public class AzureSearchResources {
 
     /**
      * Create a new storage account
+     *
      * @return the storage connection string
      */
-    public String createStorageAccount() {
-        storageName = SdkContext.randomResourceName(STORAGE_NAME_PREFIX, 15);
+    public String createStorageAccount(TestResourceNamer testResourceNamer) {
+        String storageName = testResourceNamer.randomName(STORAGE_NAME_PREFIX, 15);
 
         StorageAccount storageAccount = azure.storageAccounts().define(storageName)
             .withRegion(location)
@@ -158,26 +164,24 @@ public class AzureSearchResources {
         StorageAccountKey key = storageAccount.getKeys().get(0);
 
         // Currently this only works on PROD Azure and not on Dogfood
-        String storageConnString =
-            "DefaultEndpointsProtocol=https;AccountName="
-                + storageName + ";"
-                + "AccountKey="
-                + key.value()
-                + ";EndpointSuffix=core.windows.net";
 
-        return storageConnString;
+        return "DefaultEndpointsProtocol=https;AccountName="
+            + storageName + ";"
+            + "AccountKey="
+            + key.value()
+            + ";EndpointSuffix=core.windows.net";
     }
 
     /**
      * Create a blob container inside a given storage account
+     *
      * @param storageConnString a given connection string
      * @return the created container name
      */
-    public String createBlobContainer(String storageConnString) {
+    public String createBlobContainer(String storageConnString, TestResourceNamer testResourceNamer) {
 
         // now we create a blob container, no need for an actual blob to be uploaded
-        blobContainerDatasourceName =
-            SdkContext.randomResourceName(BLOB_DATASOURCE_NAME_PREFIX, 15);
+        String blobContainerDatasourceName = testResourceNamer.randomName(BLOB_DATASOURCE_NAME_PREFIX, 15);
 
         BlobServiceClient blobServiceClient =
             new BlobServiceClientBuilder()
@@ -186,5 +190,17 @@ public class AzureSearchResources {
         blobServiceClient.createBlobContainer(blobContainerDatasourceName);
 
         return blobContainerDatasourceName;
+    }
+
+    private static String randomResourceGroupName() {
+        StringBuilder builder = new StringBuilder(RESOURCE_GROUP_NAME_PREFIX);
+        SecureRandom random = new SecureRandom();
+
+        while (builder.length() < 18) {
+            int index = (int) (random.nextFloat() * ALLOWED_CHARS.length);
+            builder.append(ALLOWED_CHARS[index]);
+        }
+
+        return builder.toString();
     }
 }

@@ -39,4 +39,3 @@ stages:
       Artifacts:
         - name: azure-spring-something
           safeName: azurespringsomething
-          stagingProfileId: 88192f04117501

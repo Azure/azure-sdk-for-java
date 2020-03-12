@@ -15,6 +15,8 @@ import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
+import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -116,10 +118,11 @@ class ReactorConnectionTest {
 
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(0).setTryTimeout(TEST_DURATION);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
-            CREDENTIAL_INFO.getEntityPath(), tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
-            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER);
+            tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
+            ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER);
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
-            tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION);
+            tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION, SenderSettleMode.SETTLED,
+            ReceiverSettleMode.FIRST);
     }
 
     @AfterEach
@@ -311,12 +314,13 @@ class ReactorConnectionTest {
             .setMode(AmqpRetryMode.FIXED)
             .setTryTimeout(timeout);
         ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
-            CREDENTIAL_INFO.getEntityPath(), tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
-            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
+            tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
 
         // Act and Assert
         ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,
-            provider, tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION);
+            provider, tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION, SenderSettleMode.SETTLED,
+            ReceiverSettleMode.FIRST);
 
         try {
             StepVerifier.create(connectionBad.getClaimsBasedSecurityNode())

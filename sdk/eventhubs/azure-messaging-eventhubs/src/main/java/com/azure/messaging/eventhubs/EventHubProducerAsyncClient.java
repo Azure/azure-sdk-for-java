@@ -48,9 +48,11 @@ import java.util.stream.Collector;
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 
 /**
@@ -109,6 +111,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final MessageSerializer messageSerializer;
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
+    private final Runnable onClientClose;
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
@@ -117,7 +120,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection) {
+        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
@@ -126,6 +129,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
+        this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
         this.retryPolicy = getRetryPolicy(retryOptions);
         this.scheduler = scheduler;
@@ -420,7 +424,10 @@ public class EventHubProducerAsyncClient implements Closeable {
         if (isTracingEnabled) {
             final Context finalSharedContext = sharedContext == null
                 ? Context.NONE
-                : sharedContext.addData(ENTITY_PATH_KEY, eventHubName).addData(HOST_NAME_KEY, fullyQualifiedNamespace);
+                : sharedContext
+                    .addData(ENTITY_PATH_KEY, eventHubName)
+                    .addData(HOST_NAME_KEY, fullyQualifiedNamespace)
+                    .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
             // Start send span and store updated context
             parentContext.set(tracerProvider.startSpan(finalSharedContext, ProcessKind.SEND));
         }
@@ -497,7 +504,9 @@ public class EventHubProducerAsyncClient implements Closeable {
             return;
         }
 
-        if (!isSharedConnection) {
+        if (isSharedConnection) {
+            onClientClose.run();
+        } else {
             connectionProcessor.dispose();
         }
     }

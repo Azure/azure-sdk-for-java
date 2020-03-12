@@ -22,9 +22,15 @@ public class ValueFacetResult<T> {
      * @param count The approximate count of documents.
      * @param value The value of the facet.
      */
+<<<<<<< HEAD
     public ValueFacetResult(Long count, T value) {
         this.count = count;
         this.value = value;
+=======
+    public ValueFacetResult(FacetResult facetResult) {
+        this.count = facetResult.getCount();
+        this.value = facetResult.getAdditionalProperties().get("value");
+>>>>>>> bbf056defd2c174c65cddacfeaa220d3a2af1817
     }
 
     /**

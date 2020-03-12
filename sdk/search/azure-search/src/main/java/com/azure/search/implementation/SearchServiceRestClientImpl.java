@@ -16,14 +16,17 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.search.models.RequestOptions;
+import com.azure.search.models.SearchErrorException;
 import com.azure.search.models.ServiceStatistics;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -62,50 +65,26 @@ public final class SearchServiceRestClientImpl {
     }
 
     /**
-     * The name of the search service.
+     * The endpoint URL of the search service.
      */
-    private String searchServiceName;
+    private String endpoint;
 
     /**
-     * Gets The name of the search service.
+     * Gets The endpoint URL of the search service.
      *
-     * @return the searchServiceName value.
+     * @return the endpoint value.
      */
-    public String getSearchServiceName() {
-        return this.searchServiceName;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /**
-     * Sets The name of the search service.
+     * Sets The endpoint URL of the search service.
      *
-     * @param searchServiceName the searchServiceName value.
+     * @param endpoint the endpoint value.
      */
-    SearchServiceRestClientImpl setSearchServiceName(String searchServiceName) {
-        this.searchServiceName = searchServiceName;
-        return this;
-    }
-
-    /**
-     * The DNS suffix of the search service. The default is search.windows.net.
-     */
-    private String searchDnsSuffix;
-
-    /**
-     * Gets The DNS suffix of the search service. The default is search.windows.net.
-     *
-     * @return the searchDnsSuffix value.
-     */
-    public String getSearchDnsSuffix() {
-        return this.searchDnsSuffix;
-    }
-
-    /**
-     * Sets The DNS suffix of the search service. The default is search.windows.net.
-     *
-     * @param searchDnsSuffix the searchDnsSuffix value.
-     */
-    SearchServiceRestClientImpl setSearchDnsSuffix(String searchDnsSuffix) {
-        this.searchDnsSuffix = searchDnsSuffix;
+    SearchServiceRestClientImpl setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -197,7 +176,7 @@ public final class SearchServiceRestClientImpl {
      * Initializes an instance of SearchServiceRestClient client.
      */
     public SearchServiceRestClientImpl() {
-        new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
     }
 
     /**
@@ -219,12 +198,13 @@ public final class SearchServiceRestClientImpl {
      * The interface defining all the services for SearchServiceRestClient to
      * be used by the proxy service to perform REST calls.
      */
-    @Host("https://{searchServiceName}.{searchDnsSuffix}")
+    @Host("{endpoint}")
     @ServiceInterface(name = "SearchServiceRestClient")
     private interface SearchServiceRestClientService {
         @Get("servicestats")
         @ExpectedResponses({200})
-        Mono<SimpleResponse<ServiceStatistics>> getServiceStatistics(@HostParam("searchServiceName") String searchServiceName, @HostParam("searchDnsSuffix") String searchDnsSuffix, @QueryParam("api-version") String apiVersion, @HeaderParam("client-request-id") UUID clientRequestId, Context context);
+        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        Mono<SimpleResponse<ServiceStatistics>> getServiceStatistics(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
     }
 
     /**
@@ -236,8 +216,8 @@ public final class SearchServiceRestClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ServiceStatistics>> getServiceStatisticsWithRestResponseAsync(Context context) {
-        final UUID clientRequestId = null;
-        return service.getServiceStatistics(this.getSearchServiceName(), this.getSearchDnsSuffix(), this.getApiVersion(), clientRequestId, context);
+        final UUID xMsClientRequestId = null;
+        return service.getServiceStatistics(this.getEndpoint(), this.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -250,10 +230,10 @@ public final class SearchServiceRestClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ServiceStatistics>> getServiceStatisticsWithRestResponseAsync(RequestOptions requestOptions, Context context) {
-        UUID clientRequestId = null;
+        UUID xMsClientRequestId = null;
         if (requestOptions != null) {
-            clientRequestId = requestOptions.getClientRequestId();
+            xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.getServiceStatistics(this.getSearchServiceName(), this.getSearchDnsSuffix(), this.getApiVersion(), clientRequestId, context);
+        return service.getServiceStatistics(this.getEndpoint(), this.getApiVersion(), xMsClientRequestId, context);
     }
 }

@@ -40,6 +40,9 @@ public class SynonymMapsCreateExample {
         assignSynonymMapToIndex(synonymMapName);
 
         System.out.println("Complete....\n");
+
+        // Clean up resources
+        serviceClient.deleteSynonymMap(synonymMapName);
     }
 
     private static void createSynonymMap(SearchServiceClient serviceClient, String synonymMapName) {

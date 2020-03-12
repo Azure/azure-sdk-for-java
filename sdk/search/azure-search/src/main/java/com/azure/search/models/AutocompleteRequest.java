@@ -17,7 +17,7 @@ public final class AutocompleteRequest {
     /*
      * The search text on which to base autocomplete results.
      */
-    @JsonProperty(value = "search")
+    @JsonProperty(value = "search", required = true)
     private String searchText;
 
     /*
@@ -82,7 +82,7 @@ public final class AutocompleteRequest {
      * The name of the suggester as specified in the suggesters collection
      * that's part of the index definition.
      */
-    @JsonProperty(value = "suggesterName")
+    @JsonProperty(value = "suggesterName", required = true)
     private String suggesterName;
 
     /*

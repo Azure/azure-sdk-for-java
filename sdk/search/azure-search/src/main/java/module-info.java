@@ -13,4 +13,5 @@ module com.azure.search {
 
     exports com.azure.search;
     exports com.azure.search.models;
+    exports com.azure.search.util;
 }

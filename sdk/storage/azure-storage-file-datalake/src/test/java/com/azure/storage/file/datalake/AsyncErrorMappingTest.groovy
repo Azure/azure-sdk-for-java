@@ -1,6 +1,8 @@
 package com.azure.storage.file.datalake
 
+import com.azure.core.http.rest.PagedFlux
 import com.azure.storage.file.datalake.models.DataLakeStorageException
+import com.azure.storage.file.datalake.models.FileSystemItem
 import reactor.test.StepVerifier
 
 class AsyncErrorMappingTest extends APISpec {
@@ -127,6 +129,15 @@ class AsyncErrorMappingTest extends APISpec {
         def setAccessPolicyVerifier = StepVerifier.create(fsac.setAccessPolicyWithResponse(null, null, null))
         then:
         setAccessPolicyVerifier.verifyError(DataLakeStorageException)
+    }
+
+
+    def "List file systems"() {
+        when:
+        PagedFlux<FileSystemItem> items = getServiceAsyncClient(primaryCredential).listFileSystems()
+        def listFileSystemsVerifier = StepVerifier.create(items.byPage("garbage continuation token").count())
+        then:
+        listFileSystemsVerifier.verifyError(DataLakeStorageException)
     }
 
 }
