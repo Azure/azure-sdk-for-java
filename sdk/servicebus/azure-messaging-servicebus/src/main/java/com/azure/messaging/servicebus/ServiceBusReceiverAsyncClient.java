@@ -29,7 +29,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusMessage} from a specific queue or topic.
+ * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue
+ * or topic on Azure Service Bus.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements Closeable {
@@ -276,9 +277,11 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Peek single message on Service Bus Queue or Subscriber.
+     * Reads the next active message without changing the state of the receiver or the message source.
+     * The first call to {@link ServiceBusReceiverAsyncClient#peek()} fetches the first active message for
+     * this receiver. Each subsequent call fetches the subsequent message in the entity.
      *
-     * @return Single {@link ServiceBusReceivedMessage} .
+     * @return Single {@link ServiceBusReceivedMessage} peeked.
      */
     public Mono<ServiceBusReceivedMessage> peek() {
         return connectionProcessor
@@ -287,11 +290,11 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Peek single message on Service Bus Queue or Subscriber.
+     * Reads next the active message without changing the state of the receiver or the message source.
      *
-     * @param fromSequenceNumber to peek message from.
+     * @param fromSequenceNumber The sequence number from where to read the message.
      *
-     * @return Single {@link ServiceBusReceivedMessage} .
+     * @return Single {@link ServiceBusReceivedMessage} peeked.
      */
     public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber) {
         return connectionProcessor
@@ -305,6 +308,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return Flux of {@link ServiceBusReceivedMessage}.
      */
     public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
+        // TODO(hemanttanwar) implement
         return null;
     }
 
@@ -315,6 +319,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return Flux of {@link ServiceBusReceivedMessage}.
      */
     public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber) {
+        // TODO(hemanttanwar) implement
         return null;
     }
 

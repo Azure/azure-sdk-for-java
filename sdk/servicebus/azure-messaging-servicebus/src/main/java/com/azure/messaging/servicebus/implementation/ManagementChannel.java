@@ -80,7 +80,7 @@ public class ManagementChannel implements  ServiceBusManagementNode {
     @Override
     public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber) {
 
-        return peek(new HashMap<>(), ServiceBusReceivedMessage.class, 1, fromSequenceNumber, null)
+        return peek(ServiceBusReceivedMessage.class, 1, fromSequenceNumber, null)
             .last()
             .publishOn(scheduler);
     }
@@ -94,9 +94,8 @@ public class ManagementChannel implements  ServiceBusManagementNode {
         return peek(this.lastPeekedSequenceNumber.get() + 1);
     }
 
-    private <T> Flux<T> peek(Map<String, Object> appProperties, Class<T> responseType,
+    private <T> Flux<T> peek(Class<T> responseType,
                              int maxMessages, long fromSequenceNumber, UUID sessionId) {
-
         return
             Mono.defer(() -> {
                 if (!cbsBasedTokenManagerCalled.get()) {
@@ -112,6 +111,8 @@ public class ManagementChannel implements  ServiceBusManagementNode {
             })
             .then(
                   channelMono.flatMap(requestResponseChannel -> {
+
+                      Map<String, Object> appProperties = new HashMap<>();
                       // set mandatory application properties for AMQP message.
                       appProperties.put(MANAGEMENT_OPERATION_KEY, PEEK_OPERATION_VALUE);
                       //TODO(hemanttanwar) fix timeour configuration

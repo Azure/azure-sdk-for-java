@@ -181,7 +181,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
     private List<ServiceBusReceivedMessage> deserializeListOfMessages(Message amqpMessage) {
         //maintain the order of elements because last sequence number needs to be maintain.
-        List<Message> listAmqpMessages = convertAMQPValueMessageToBrokeredMessage(amqpMessage);
+        List<Message> listAmqpMessages = convertAmqpValueMessageToBrokeredMessage(amqpMessage);
 
         List<ServiceBusReceivedMessage> receivedMessageList = new ArrayList<>();
         for (Message oneAmqpMessage:listAmqpMessages) {
@@ -431,7 +431,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             "Encoding Type: %s is not supported", obj.getClass()));
     }
 
-    private List<Message> convertAMQPValueMessageToBrokeredMessage(Message amqpResponseMessage) {
+    private List<Message> convertAmqpValueMessageToBrokeredMessage(Message amqpResponseMessage) {
         List<Message> messageList = new ArrayList<>();
         int statusCode = RequestResponseUtils.getResponseStatusCode(amqpResponseMessage);
 

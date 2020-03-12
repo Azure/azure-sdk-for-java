@@ -41,11 +41,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private static final String MANAGEMENT_LINK_NAME = "mgmt";
     private static final String MANAGEMENT_ADDRESS = "$management";
 
-    /** This is used in setting up management chhannel and it is always fixed.
-     * This is not used by sdk user trying to receive/send messages.*/
-    public static final SenderSettleMode MANAGEMENT_SEND_SETTLE_MODE = SenderSettleMode.SETTLED;
-    public static final ReceiverSettleMode MANAGEMENT_RECEIVE_SETTLE_MODE = ReceiverSettleMode.FIRST;
-
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorAmqpConnection.class);
     /**
      * Keeps track of the opened send links. Links are key'd by their entityPath. The send link for allowing the service
@@ -79,7 +74,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                                            MessageSerializer messageSerializer, String product, String clientVersion) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion,
-            MANAGEMENT_SEND_SETTLE_MODE, MANAGEMENT_RECEIVE_SETTLE_MODE);
+            SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
         this.connectionId = connectionId;
         this.reactorProvider = reactorProvider;

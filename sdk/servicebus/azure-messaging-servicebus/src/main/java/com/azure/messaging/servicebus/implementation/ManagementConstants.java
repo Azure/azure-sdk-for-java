@@ -9,19 +9,19 @@ import com.azure.core.amqp.implementation.AmqpConstants;
  * Constants which is used for management calls to support operations for example renewlock, schedule, defer etc.
  */
 class ManagementConstants {
-    public static final String REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER = "from-sequence-number";
-    public static final String REQUEST_RESPONSE_MESSAGE_COUNT = "message-count";
-    public static final String REQUEST_RESPONSE_SESSION_ID = "session-id";
-    public static final String LOCKEDUNTILNAME = "x-opt-locked-until";
-    public static final String PARTITIONKEYNAME = "x-opt-partition-key";
-    public static final String VIAPARTITIONKEYNAME = "x-opt-via-partition-key";
-    public static final String DEADLETTERSOURCENAME = "x-opt-deadletter-source";
-    public static final String REQUEST_RESPONSE_MESSAGE_ID = "message-id";
-    public static final String REQUEST_RESPONSE_PARTITION_KEY = "partition-key";
-    public static final String REQUEST_RESPONSE_VIA_PARTITION_KEY = "via-partition-key";
-    public static final String REQUEST_RESPONSE_SCHEDULE_MESSAGE_OPERATION = AmqpConstants.VENDOR + ":schedule-message";
-    public static final String REQUEST_RESPONSE_OPERATION_NAME = "operation";
-    public static final String REQUEST_RESPONSE_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
-    public static final String REQUEST_RESPONSE_ASSOCIATED_LINK_NAME = "associated-link-name";
+    static final String REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER = "from-sequence-number";
+    static final String REQUEST_RESPONSE_MESSAGE_COUNT = "message-count";
+    static final String REQUEST_RESPONSE_SESSION_ID = "session-id";
+    static final String LOCKEDUNTILNAME = "x-opt-locked-until";
+    static final String PARTITIONKEYNAME = "x-opt-partition-key";
+    static final String VIAPARTITIONKEYNAME = "x-opt-via-partition-key";
+    static final String DEADLETTERSOURCENAME = "x-opt-deadletter-source";
+    static final String REQUEST_RESPONSE_MESSAGE_ID = "message-id";
+    static final String REQUEST_RESPONSE_PARTITION_KEY = "partition-key";
+    static final String REQUEST_RESPONSE_VIA_PARTITION_KEY = "via-partition-key";
+    static final String REQUEST_RESPONSE_SCHEDULE_MESSAGE_OPERATION = AmqpConstants.VENDOR + ":schedule-message";
+    static final String REQUEST_RESPONSE_OPERATION_NAME = "operation";
+    static final String REQUEST_RESPONSE_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
+    static final String REQUEST_RESPONSE_ASSOCIATED_LINK_NAME = "associated-link-name";
 
 }

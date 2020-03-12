@@ -30,14 +30,10 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
-
 import java.time.Duration;
-
 import java.util.Collections;
-
 import java.util.Map;
 import java.util.UUID;
 
@@ -50,6 +46,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static reactor.core.publisher.Mono.*;
 
 public class ServiceBusReceiverAsyncClientTest {
     private static final String PAYLOAD = "hello";
@@ -76,6 +73,11 @@ public class ServiceBusReceiverAsyncClientTest {
 
     @Mock
     private ServiceBusManagementNode managementNode;
+
+    @Mock
+    private ServiceBusReceivedMessage message1;
+    @Mock
+    private ServiceBusReceivedMessage message2;
 
     private ServiceBusReceiverAsyncClient consumer;
 
@@ -111,9 +113,9 @@ public class ServiceBusReceiverAsyncClientTest {
         endpointSink.next(AmqpEndpointState.ACTIVE);
 
         when(connection.createReceiveLink(anyString(), anyString(),
-            any(ReceiveMode.class))).thenReturn(Mono.just(amqpReceiveLink));
+            any(ReceiveMode.class))).thenReturn(just(amqpReceiveLink));
 
-        when(connection.getManagementNode(anyString())).thenReturn(Mono.just(managementNode));
+        when(connection.getManagementNode(anyString())).thenReturn(just(managementNode));
 
         ServiceBusConnectionProcessor connectionProcessor = Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
             .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
@@ -131,6 +133,29 @@ public class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
+     * Verifies that when user calls peek more than one time, It returns different object.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    void peekTwoMessages() {
+
+        /* Arrange */
+        final int numberOfEvents = 1;
+        when(managementNode.peek())
+            .thenReturn(just(message1), just(message2));
+
+        // Act & Assert
+        StepVerifier.create(consumer.peek())
+            .expectNext(message1)
+            .verifyComplete();
+
+        // Act & Assert
+        StepVerifier.create(consumer.peek())
+            .expectNext(message2)
+            .verifyComplete();
+    }
+
+    /**
      * Verifies that this peek one messages.
      */
     @Test
@@ -138,7 +163,7 @@ public class ServiceBusReceiverAsyncClientTest {
         // Arrange
         final int numberOfEvents = 1;
         when(managementNode.peek())
-            .thenReturn(Mono.just(mock(ServiceBusReceivedMessage.class)));
+            .thenReturn(just(mock(ServiceBusReceivedMessage.class)));
 
         // Act & Assert
         StepVerifier.create(consumer.peek())
@@ -157,14 +182,12 @@ public class ServiceBusReceiverAsyncClientTest {
         final int fromSequenceNumber = 10;
 
         when(managementNode.peek(fromSequenceNumber))
-            .thenReturn(Mono.just(mock(ServiceBusReceivedMessage.class)));
+            .thenReturn(just(mock(ServiceBusReceivedMessage.class)));
 
         // Act & Assert
         StepVerifier.create(consumer.peek(fromSequenceNumber))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
-
-        Mockito.framework().clearInlineMocks();
     }
 
     /**
