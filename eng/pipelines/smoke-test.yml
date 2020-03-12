@@ -61,6 +61,9 @@ jobs:
         continueOnError: true
         displayName: Validate consistent dependency dev versions for com.azure packages
 
+      - pwsh: Get-Content $(PomFile)
+        displayName: Show pom.xml
+
       - task: Maven@3
         displayName: Show dependency tree
         inputs:
