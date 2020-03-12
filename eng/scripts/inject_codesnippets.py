@@ -2,19 +2,22 @@ import os
 import glob
 import re
 import json
+import pprint
 
 # run this from the root of the repository
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 SNIPPET_BEGIN = r"\s*\/\/\s*BEGIN\:\s*(?P<id>[a-zA-Z0-9\.\#\-\_]*)\s*"
 SNIPPET_END = r"\s*\/\/\s*END\:\s*(?P<id>[a-zA-Z0-9\.\#\-\_]*)\s*"
+SNIPPET_CALL = r"(?P<leadingspace>.*)\{\@codesnippet(?P<snippetid>.*)\}"
+
+EXCLUSION_ARRAY = [
+  "JavadocCodeSnippetCheck.java"
+]
 
 class SnippetDict:
-  def __init__(self, start_dict):
-    if start_dict:
-      self.snippet_dict = start_dict
-    else:
-      self.snippet_dict = {}
+  def __init__(self, start_dict={}):
+    self.snippet_dict = start_dict
 
   def __nonzero__(self):
     return self.snippet_dict
@@ -38,7 +41,8 @@ def get_snippets_from_file(file):
   finished_snippets = {}
   running_dict = SnippetDict()
 
-  with open(file, 'r') as source:
+  with open(file, 'r', encoding="utf-8") as source:
+    print(file)
     for line in source.readlines():
       
       begin = re.match(SNIPPET_BEGIN, line)
@@ -65,16 +69,59 @@ def get_snippets_from_file(file):
 
 # 
 
+def check_exclusion(file_name, exclusion_array):
+  if not os.path.isdir(file_name):
+    name = os.path.basename(file_name)
+
+    return name in exclusion_array
+
 if __name__ == "__main__":
 
   # walk the codebase, find all java files
   all_files = glob.glob('**/*.java', recursive=True)
-  snippet_files = [source_file for source_file in all_files if "snippet" in source_file.lower()]
+  snippet_files = [source_file for source_file in all_files if "snippet" in source_file.lower() and not check_exclusion(source_file, EXCLUSION_ARRAY)]
   snippets = {}
 
   for file in snippet_files:
     snippet_dict = get_snippets_from_file(file)
     snippets.update(snippet_dict)
 
+  # print(snippets['com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatchWithResponse#Iterable-TextAnalyticsRequestOptions-Context'])
+  # exit(1)
 
+  for file in all_files:
+    needs_amend = False
+    amended_file = []
+    
+    with open(file, 'r', encoding="utf-8") as source:
+      for line in source.readlines():
+        snippet_ref = re.match(SNIPPET_CALL, line)
+
+        if snippet_ref:
+          id_ending = snippet_ref.groupdict()['snippetid'].strip()
+          lead_space = snippet_ref.groupdict()['leadingspace']
+
+          print("checking for snippet ref " + id_ending)
+
+
+
+          if id_ending in snippets:
+            result_array = [
+              lead_space + "<pre>\n",
+              "".join(map(lambda x: return lead_space + x, snippets[id_ending])),
+              lead_space + "</pre>\n"
+            ]
+            line_replacement = "".join(result_array)
+            amended_file.append(line_replacement)
+            needs_amend = True
+          else:
+            print("Can't find snippet for ref: " + id_ending)
+        else:
+          amended_file.append(line)
+
+    if needs_amend:
+      print("Replacing " + file)
+      with open(file, 'w') as out_file:
+        for line in amended_file:
+          out_file.write(line)
   # walk across all the lines looking for @codesnippet
