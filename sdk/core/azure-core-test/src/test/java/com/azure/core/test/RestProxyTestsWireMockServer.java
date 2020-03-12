@@ -102,9 +102,12 @@ public final class RestProxyTestsWireMockServer {
             rawHeaders.put("Content-Type", "application/octet-stream");
             rawHeaders.put("Content-Length", String.valueOf(bodySize));
 
+            byte[] body = new byte[bodySize];
+            new SecureRandom().nextBytes(body);
+
             return new ResponseDefinitionBuilder().withStatus(200)
                 .withHeaders(toWireMockHeaders(rawHeaders))
-                .withBody(new SecureRandom().generateSeed(bodySize))
+                .withBody(body)
                 .build();
         }
 
