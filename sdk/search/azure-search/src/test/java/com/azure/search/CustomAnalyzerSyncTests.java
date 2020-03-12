@@ -42,7 +42,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     private static void getAllCharFilterName() {
         charFilterNames = new ArrayList<>();
-        for(CharFilterName name : CharFilterName.values()) {
+        for (CharFilterName name : CharFilterName.values()) {
             charFilterNames.add(name);
         }
     }
