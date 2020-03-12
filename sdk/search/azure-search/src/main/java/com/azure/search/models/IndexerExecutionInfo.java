@@ -19,7 +19,7 @@ public final class IndexerExecutionInfo {
      * Overall indexer status. Possible values include: 'unknown', 'error',
      * 'running'
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private IndexerStatus status;
 
     /*
@@ -32,13 +32,13 @@ public final class IndexerExecutionInfo {
      * History of the recent indexer executions, sorted in reverse
      * chronological order.
      */
-    @JsonProperty(value = "executionHistory", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "executionHistory", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<IndexerExecutionResult> executionHistory;
 
     /*
      * The execution limits for the indexer.
      */
-    @JsonProperty(value = "limits", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "limits", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private IndexerLimits limits;
 
     /**

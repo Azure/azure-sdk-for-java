@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**

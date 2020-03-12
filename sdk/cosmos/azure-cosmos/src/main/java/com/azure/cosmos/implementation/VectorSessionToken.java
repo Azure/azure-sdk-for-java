@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 
 
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.InternalServerErrorException;
 import org.apache.commons.collections4.map.UnmodifiableMap;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;

@@ -27,6 +27,7 @@ import com.azure.search.models.ResourceCounter;
 import com.azure.search.models.ScoringFunctionAggregation;
 import com.azure.search.models.ScoringFunctionInterpolation;
 import com.azure.search.models.ScoringProfile;
+import com.azure.search.models.SearchErrorException;
 import com.azure.search.models.ServiceCounters;
 import com.azure.search.models.ServiceLimits;
 import com.azure.search.models.ServiceStatistics;
@@ -208,20 +209,20 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setName("Description")
                     .setType(DataType.EDM_STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setAnalyzer(AnalyzerName.EN_LUCENE.toString())
+                    .setAnalyzer(AnalyzerName.EN_LUCENE)
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("DescriptionFr")
                     .setType(DataType.EDM_STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setAnalyzer(AnalyzerName.FR_LUCENE.toString())
+                    .setAnalyzer(AnalyzerName.FR_LUCENE)
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Description_Custom")
                     .setType(DataType.EDM_STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setSearchAnalyzer(AnalyzerName.STOP.toString())
-                    .setIndexAnalyzer(AnalyzerName.STOP.toString())
+                    .setSearchAnalyzer(AnalyzerName.STOP)
+                    .setIndexAnalyzer(AnalyzerName.STOP)
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Category")
@@ -233,7 +234,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Tags")
-                    .setType(DataType.Collection(DataType.EDM_STRING))
+                    .setType(DataType.collection(DataType.EDM_STRING))
                     .setSearchable(Boolean.TRUE)
                     .setFilterable(Boolean.TRUE)
                     .setFacetable(Boolean.TRUE)
@@ -318,20 +319,20 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Rooms")
-                    .setType(DataType.Collection(DataType.EDM_COMPLEX_TYPE))
+                    .setType(DataType.collection(DataType.EDM_COMPLEX_TYPE))
                     .setFields(Arrays.asList(
                         new Field()
                             .setName("Description")
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
                             .setRetrievable(Boolean.TRUE)
-                            .setAnalyzer(AnalyzerName.EN_LUCENE.toString()),
+                            .setAnalyzer(AnalyzerName.EN_LUCENE),
                         new Field()
                             .setName("DescriptionFr")
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
                             .setRetrievable(Boolean.TRUE)
-                            .setAnalyzer(AnalyzerName.FR_LUCENE.toString()),
+                            .setAnalyzer(AnalyzerName.FR_LUCENE),
                         new Field()
                             .setName("Type")
                             .setType(DataType.EDM_STRING)
@@ -367,7 +368,7 @@ public abstract class SearchServiceTestBase extends TestBase {
                             .setRetrievable(Boolean.TRUE),
                         new Field()
                             .setName("Tags")
-                            .setType(DataType.Collection(DataType.EDM_STRING))
+                            .setType(DataType.collection(DataType.EDM_STRING))
                             .setSearchable(Boolean.TRUE)
                             .setFilterable(Boolean.TRUE)
                             .setFacetable(Boolean.TRUE)
@@ -581,7 +582,7 @@ public abstract class SearchServiceTestBase extends TestBase {
      * @return a RequestOptions object with ClientRequestId.
      */
     protected RequestOptions generateRequestOptions() {
-        return new RequestOptions().setClientRequestId(UUID.randomUUID());
+        return new RequestOptions().setXMsClientRequestId(UUID.randomUUID());
     }
 
     void assertHttpResponseException(Runnable exceptionThrower, HttpResponseStatus expectedResponseStatus,
@@ -604,7 +605,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     private void verifyHttpResponseError(
         Throwable ex, HttpResponseStatus expectedResponseStatus, String expectedMessage) {
 
-        assertEquals(HttpResponseException.class, ex.getClass());
+        assertEquals(SearchErrorException.class, ex.getClass());
 
         if (expectedResponseStatus != null) {
             assertEquals(

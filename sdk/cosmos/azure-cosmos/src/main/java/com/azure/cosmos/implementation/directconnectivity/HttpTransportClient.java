@@ -3,27 +3,27 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.BadRequestException;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConflictException;
+import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.ForbiddenException;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.InternalServerErrorException;
-import com.azure.cosmos.InvalidPartitionException;
-import com.azure.cosmos.LockedException;
-import com.azure.cosmos.MethodNotAllowedException;
-import com.azure.cosmos.NotFoundException;
-import com.azure.cosmos.PartitionIsMigratingException;
-import com.azure.cosmos.PartitionKeyRangeGoneException;
-import com.azure.cosmos.PartitionKeyRangeIsSplittingException;
-import com.azure.cosmos.PreconditionFailedException;
-import com.azure.cosmos.RequestEntityTooLargeException;
-import com.azure.cosmos.RequestRateTooLargeException;
-import com.azure.cosmos.RequestTimeoutException;
-import com.azure.cosmos.RetryWithException;
-import com.azure.cosmos.ServiceUnavailableException;
-import com.azure.cosmos.UnauthorizedException;
+import com.azure.cosmos.implementation.ForbiddenException;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.InternalServerErrorException;
+import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.LockedException;
+import com.azure.cosmos.implementation.MethodNotAllowedException;
+import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
+import com.azure.cosmos.implementation.PreconditionFailedException;
+import com.azure.cosmos.implementation.RequestEntityTooLargeException;
+import com.azure.cosmos.implementation.RequestRateTooLargeException;
+import com.azure.cosmos.implementation.RequestTimeoutException;
+import com.azure.cosmos.implementation.RetryWithException;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
+import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Integers;
@@ -51,11 +51,11 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static com.azure.cosmos.implementation.Utils.trimBeginningAndEndingSlashes;
 /*
@@ -67,16 +67,16 @@ public class HttpTransportClient extends TransportClient {
     private final Map<String, String> defaultHeaders;
     private final Configs configs;
 
-    HttpClient createHttpClient(int requestTimeout) {
+    HttpClient createHttpClient(Duration requestTimeout) {
         // TODO: use one instance of SSL context everywhere
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs);
-        httpClientConfig.withRequestTimeoutInMillis(requestTimeout * 1000);
+        httpClientConfig.withRequestTimeout(requestTimeout);
         httpClientConfig.withPoolSize(configs.getDirectHttpsMaxConnectionLimit());
 
         return HttpClient.createFixed(httpClientConfig);
     }
 
-    public HttpTransportClient(Configs configs, int requestTimeout, UserAgentContainer userAgent) {
+    public HttpTransportClient(Configs configs, Duration requestTimeout, UserAgentContainer userAgent) {
         this.configs = configs;
         this.httpClient = createHttpClient(requestTimeout);
 

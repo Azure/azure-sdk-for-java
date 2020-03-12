@@ -3,10 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ChangeFeedOptions;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -433,7 +432,6 @@ public class RxDocumentServiceRequest {
             QueryCompatibilityMode queryCompatibilityMode,
             Map<String, String> headers) {
         OperationType operation;
-        String queryText;
         switch (queryCompatibilityMode) {
         case SqlQuery:
             if (querySpec.getParameters() != null && querySpec.getParameters().size() > 0) {
@@ -443,19 +441,14 @@ public class RxDocumentServiceRequest {
             }
 
             operation = OperationType.SqlQuery;
-            queryText = querySpec.getQueryText();
-            break;
+            return new RxDocumentServiceRequest(operation, resourceType, relativePath, Utils.getUTF8Bytes(querySpec.getQueryText()), headers, AuthorizationTokenType.PrimaryMasterKey);
 
         case Default:
         case Query:
         default:
             operation = OperationType.Query;
-            queryText = querySpec.toJson();
-            break;
+            return new RxDocumentServiceRequest(operation, resourceType, relativePath, querySpec.serializeJsonToByteBuffer(), headers, AuthorizationTokenType.PrimaryMasterKey);
         }
-
-        byte[] bytes = Utils.getUTF8Bytes(queryText);
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath, bytes, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
     /**

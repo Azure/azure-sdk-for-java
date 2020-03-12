@@ -6,22 +6,21 @@ package com.azure.core.util.paging;
 import reactor.core.publisher.Flux;
 
 /**
- * A type representing the contract to retrieve one or more pages.
+ * This class handles retrieving pages.
  *
- * @param <C> the continuation token type
+ * @param <C> Type of the continuation token.
  * @param <P> the page elements type
  */
 @FunctionalInterface
 public interface PageRetriever<C, P> {
     /**
-     * Retrieve a set of one or more pages starting from the page identified by
-     * the given continuation token.
+     * Retrieves one or more pages starting from the page identified by the given continuation token.
      *
-     * @param continuationToken the token identifying the page set, a {@code null}
-     *                          value indicate that retrieve pages from the beginning
-     * @param pageSize the preferred number of items per page, a {@code null} value
-     *                 indicate that client prefer server's default page size
-     * @return a Flux that emits one or more pages
+     * @param continuationToken Token identifying which page to retrieve, passing {@code null} indicates to retrieve
+     * the first page.
+     * @param pageSize The number of items to retrieve per page, passing {@code null} will use the source's default
+     * page size.
+     * @return A {@link Flux} that emits one or more pages.
      */
     Flux<P> get(C continuationToken, Integer pageSize);
 }

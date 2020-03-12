@@ -8,7 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 
-public class FeedResponseDiagnostics {
+/**
+ * The type Feed response diagnostics.
+ */
+public final class FeedResponseDiagnostics {
 
     private Map<String, QueryMetrics> queryMetricsMap;
 

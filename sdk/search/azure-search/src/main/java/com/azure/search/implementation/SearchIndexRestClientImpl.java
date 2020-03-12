@@ -5,6 +5,7 @@
 // regenerated.
 
 package com.azure.search.implementation;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
 import com.azure.core.http.HttpPipeline;
@@ -42,50 +43,26 @@ public final class SearchIndexRestClientImpl {
     }
 
     /**
-     * The name of the search service.
+     * The endpoint URL of the search service.
      */
-    private String searchServiceName;
+    private String endpoint;
 
     /**
-     * Gets The name of the search service.
+     * Gets The endpoint URL of the search service.
      *
-     * @return the searchServiceName value.
+     * @return the endpoint value.
      */
-    public String getSearchServiceName() {
-        return this.searchServiceName;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /**
-     * Sets The name of the search service.
+     * Sets The endpoint URL of the search service.
      *
-     * @param searchServiceName the searchServiceName value.
+     * @param endpoint the endpoint value.
      */
-    SearchIndexRestClientImpl setSearchServiceName(String searchServiceName) {
-        this.searchServiceName = searchServiceName;
-        return this;
-    }
-
-    /**
-     * The DNS suffix of the search service. The default is search.windows.net.
-     */
-    private String searchDnsSuffix;
-
-    /**
-     * Gets The DNS suffix of the search service. The default is search.windows.net.
-     *
-     * @return the searchDnsSuffix value.
-     */
-    public String getSearchDnsSuffix() {
-        return this.searchDnsSuffix;
-    }
-
-    /**
-     * Sets The DNS suffix of the search service. The default is search.windows.net.
-     *
-     * @param searchDnsSuffix the searchDnsSuffix value.
-     */
-    SearchIndexRestClientImpl setSearchDnsSuffix(String searchDnsSuffix) {
-        this.searchDnsSuffix = searchDnsSuffix;
+    SearchIndexRestClientImpl setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -145,7 +122,7 @@ public final class SearchIndexRestClientImpl {
      * Initializes an instance of SearchIndexRestClient client.
      */
     public SearchIndexRestClientImpl() {
-        new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(), new JacksonAdapter());
     }
 
     /**

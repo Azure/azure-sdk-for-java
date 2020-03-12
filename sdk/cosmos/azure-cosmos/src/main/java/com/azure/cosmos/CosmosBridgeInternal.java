@@ -5,12 +5,14 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.DatabaseAccount;
 import reactor.core.publisher.Mono;
 
 /**
  * DO NOT USE. For internal use only by the SDK. These methods might break at any time. No support will be provided.
  */
-public class CosmosBridgeInternal {
+public final class CosmosBridgeInternal {
 
     public static DocumentCollection toDocumentCollection(CosmosContainerProperties cosmosContainerProperties) {
         return new DocumentCollection(cosmosContainerProperties.toJson());

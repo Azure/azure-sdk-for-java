@@ -5,10 +5,10 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.InvalidPartitionException;
-import com.azure.cosmos.RequestVerb;
-import com.azure.cosmos.ServiceUnavailableException;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.models.RequestVerb;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
@@ -36,7 +36,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.ArrayDeque;

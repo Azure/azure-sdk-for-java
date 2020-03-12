@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.models.FeedResponse;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 
@@ -25,7 +26,7 @@ import java.util.function.Function;
  * @see CosmosPagedFluxOptions
  * @see FeedResponse
  */
-public class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
+public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
 
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
 

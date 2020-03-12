@@ -27,7 +27,7 @@ public class FaceDescription {
     private Gender gender;
 
     /**
-     * The faceRectangle property.
+     * Rectangle in the image containing the identified face.
      */
     @JsonProperty(value = "faceRectangle")
     private FaceRectangle faceRectangle;

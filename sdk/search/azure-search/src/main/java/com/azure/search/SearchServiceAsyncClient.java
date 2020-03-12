@@ -4,6 +4,7 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -11,10 +12,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.SearchServiceUrlParser.SearchServiceUrlParts;
 import com.azure.search.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.implementation.SearchServiceRestClientImpl;
-import com.azure.search.models.AccessCondition;
 import com.azure.search.models.AnalyzeRequest;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.GetIndexStatisticsResult;
@@ -43,7 +42,7 @@ public final class SearchServiceAsyncClient {
     /**
      * Search REST API Version
      */
-    private final SearchServiceVersion searchServiceVersion;
+    private final SearchServiceVersion serviceVersion;
 
     /**
      * The endpoint for the Azure Cognitive Search service.
@@ -65,16 +64,14 @@ public final class SearchServiceAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    SearchServiceAsyncClient(String endpoint, SearchServiceVersion searchServiceVersion, HttpPipeline httpPipeline) {
-        SearchServiceUrlParts parts = SearchServiceUrlParser.parseServiceUrlParts(endpoint);
+    SearchServiceAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
         this.endpoint = endpoint;
-        this.searchServiceVersion = searchServiceVersion;
+        this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
 
         this.restClient = new SearchServiceRestClientBuilder()
-            .searchServiceName(parts.serviceName)
-            .searchDnsSuffix(parts.dnsSuffix)
-            .apiVersion(searchServiceVersion.getVersion())
+            .endpoint(endpoint)
+            .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
             .build();
     }
@@ -96,7 +93,7 @@ public final class SearchServiceAsyncClient {
      * @return a {@link SearchIndexAsyncClient} created from the service client configuration
      */
     public SearchIndexAsyncClient getIndexClient(String indexName) {
-        return new SearchIndexAsyncClient(endpoint, indexName, searchServiceVersion, httpPipeline);
+        return new SearchIndexAsyncClient(endpoint, indexName, serviceVersion, httpPipeline);
     }
 
     /**
@@ -105,7 +102,7 @@ public final class SearchServiceAsyncClient {
      * @return the search service version value.
      */
     public SearchServiceVersion getServiceVersion() {
-        return this.searchServiceVersion;
+        return this.serviceVersion;
     }
 
     /**
@@ -138,13 +135,13 @@ public final class SearchServiceAsyncClient {
      * @return a data source response.
      */
     public Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
-        AccessCondition accessCondition, RequestOptions requestOptions) {
+        MatchConditions accessCondition, RequestOptions requestOptions) {
         return withContext(context ->
             createOrUpdateDataSourceWithResponse(dataSource, accessCondition, requestOptions, context));
     }
 
     Mono<Response<DataSource>> createOrUpdateDataSourceWithResponse(DataSource dataSource,
-        AccessCondition accessCondition, RequestOptions requestOptions, Context context) {
+        MatchConditions accessCondition, RequestOptions requestOptions, Context context) {
         try {
             return restClient
                 .dataSources()
@@ -291,13 +288,13 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a mono response
      */
-    public Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName, AccessCondition accessCondition,
+    public Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName, MatchConditions accessCondition,
         RequestOptions requestOptions) {
         return withContext(context ->
             deleteDataSourceWithResponse(dataSourceName, accessCondition, requestOptions, context));
     }
 
-    Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName, AccessCondition accessCondition,
+    Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName, MatchConditions accessCondition,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.dataSources()
@@ -363,13 +360,13 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response containing the created Indexer.
      */
-    public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer, AccessCondition accessCondition,
+    public Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer, MatchConditions accessCondition,
         RequestOptions requestOptions) {
         return withContext(context ->
             createOrUpdateIndexerWithResponse(indexer, accessCondition, requestOptions, context));
     }
 
-    Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer, AccessCondition accessCondition,
+    Mono<Response<Indexer>> createOrUpdateIndexerWithResponse(Indexer indexer, MatchConditions accessCondition,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.indexers()
@@ -478,7 +475,7 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, AccessCondition accessCondition,
+    public Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, MatchConditions accessCondition,
         RequestOptions requestOptions) {
         return withContext(context -> deleteIndexerWithResponse(indexerName, accessCondition, requestOptions, context));
     }
@@ -494,7 +491,7 @@ public final class SearchServiceAsyncClient {
      * @param context the context
      * @return a response signalling completion.
      */
-    Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, AccessCondition accessCondition,
+    Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, MatchConditions accessCondition,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.indexers()
@@ -773,13 +770,13 @@ public final class SearchServiceAsyncClient {
      * @return a response containing the index that was created or updated
      */
     public Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index, boolean allowIndexDowntime,
-        AccessCondition accessCondition, RequestOptions requestOptions) {
+        MatchConditions accessCondition, RequestOptions requestOptions) {
         return withContext(context ->
             createOrUpdateIndexWithResponse(index, allowIndexDowntime, accessCondition, requestOptions, context));
     }
 
     Mono<Response<Index>> createOrUpdateIndexWithResponse(Index index, boolean allowIndexDowntime,
-        AccessCondition accessCondition, RequestOptions requestOptions, Context context) {
+        MatchConditions accessCondition, RequestOptions requestOptions, Context context) {
         try {
             return restClient.indexes()
                 .createOrUpdateWithRestResponseAsync(index.getName(), index, allowIndexDowntime, requestOptions,
@@ -810,12 +807,12 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteIndexWithResponse(String indexName, AccessCondition accessCondition,
+    public Mono<Response<Void>> deleteIndexWithResponse(String indexName, MatchConditions accessCondition,
         RequestOptions requestOptions) {
         return withContext(context -> deleteIndexWithResponse(indexName, accessCondition, requestOptions, context));
     }
 
-    Mono<Response<Void>> deleteIndexWithResponse(String indexName, AccessCondition accessCondition,
+    Mono<Response<Void>> deleteIndexWithResponse(String indexName, MatchConditions accessCondition,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.indexes()
@@ -1014,12 +1011,12 @@ public final class SearchServiceAsyncClient {
      * @return a response containing the skillset that was created or updated.
      */
     public Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset,
-        AccessCondition accessCondition, RequestOptions requestOptions) {
+        MatchConditions accessCondition, RequestOptions requestOptions) {
         return withContext(context ->
             createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions, context));
     }
 
-    Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset, AccessCondition accessCondition,
+    Mono<Response<Skillset>> createOrUpdateSkillsetWithResponse(Skillset skillset, MatchConditions accessCondition,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.skillsets()
@@ -1051,13 +1048,13 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, AccessCondition accessCondition,
+    public Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, MatchConditions accessCondition,
         RequestOptions requestOptions) {
         return withContext(context ->
             deleteSkillsetWithResponse(skillsetName, accessCondition, requestOptions, context));
     }
 
-    Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, AccessCondition accessCondition,
+    Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, MatchConditions accessCondition,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.skillsets()
@@ -1204,13 +1201,13 @@ public final class SearchServiceAsyncClient {
      * @return a response containing the synonym map that was created or updated.
      */
     public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
-        AccessCondition accessCondition, RequestOptions requestOptions) {
+        MatchConditions accessCondition, RequestOptions requestOptions) {
         return withContext(context ->
             createOrUpdateSynonymMapWithResponse(synonymMap, accessCondition, requestOptions, context));
     }
 
     Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
-        AccessCondition accessCondition, RequestOptions requestOptions, Context context) {
+        MatchConditions accessCondition, RequestOptions requestOptions, Context context) {
         try {
             return restClient.synonymMaps()
                 .createOrUpdateWithRestResponseAsync(synonymMap.getName(), synonymMap, requestOptions, accessCondition,
@@ -1241,13 +1238,13 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, AccessCondition accessCondition,
+    public Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, MatchConditions accessCondition,
         RequestOptions requestOptions) {
         return withContext(context ->
             deleteSynonymMapWithResponse(synonymMapName, accessCondition, requestOptions, context));
     }
 
-    Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, AccessCondition accessCondition,
+    Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, MatchConditions accessCondition,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.synonymMaps()

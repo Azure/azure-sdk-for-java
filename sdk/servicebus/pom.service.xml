@@ -8,7 +8,35 @@
   <artifactId>azure-servicebus-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
-    <module>microsoft-azure-servicebus</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>data</id>
+      <activation>
+        <property>
+          <name>env.SDKTYPE</name>
+          <value>data</value>
+        </property>
+      </activation>
+      <modules>
+        <module>microsoft-azure-servicebus</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>client</id>
+      <activation>
+        <property>
+          <name>env.SDKTYPE</name>
+          <value>!data</value>
+        </property>
+      </activation>
+      <modules>
+        <module>../core/azure-core</module>
+        <module>../core/azure-core-amqp</module>
+        <module>../core/azure-core-http-netty</module>
+        <module>../core/azure-core-test</module>
+        <module>../identity/azure-identity</module>
+        <module>azure-messaging-servicebus</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>

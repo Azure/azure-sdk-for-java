@@ -3,12 +3,14 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
  * Defines values for TextAnalyticsErrorCode.
  */
+@Immutable
 public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnalyticsErrorCode> {
     /**
      * Enum value invalidRequest.
@@ -78,8 +80,8 @@ public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnaly
     /**
      * Creates or finds a TextAnalyticsErrorCode from its string representation.
      *
-     * @param name the string name to look for.
-     * @return the corresponding TextAnalyticsErrorCode.
+     * @param name The string name to look for.
+     * @return The corresponding TextAnalyticsErrorCode.
      */
     @JsonCreator
     public static TextAnalyticsErrorCode fromString(String name) {

@@ -5,7 +5,8 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.RequestVerb;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -130,7 +131,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         // Skipping lower casing of resourceId since it may now contain "ID" of the resource as part of the FullName
         StringBuilder body = new StringBuilder();
-        body.append(BridgeInternal.toLower(verb))
+        body.append(ModelBridgeInternal.toLower(verb))
                 .append('\n')
                 .append(resourceSegment)
                 .append('\n')
@@ -289,7 +290,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         }
 
         StringBuilder payload = new StringBuilder();
-        payload.append(BridgeInternal.toLower(verb))
+        payload.append(ModelBridgeInternal.toLower(verb))
                 .append('\n')
                 .append(resourceType.toLowerCase())
                 .append('\n')

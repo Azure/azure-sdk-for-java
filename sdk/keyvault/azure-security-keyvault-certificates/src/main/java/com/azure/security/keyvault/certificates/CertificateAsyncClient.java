@@ -25,6 +25,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.DeletedCertificate;
@@ -40,6 +41,7 @@ import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
@@ -399,7 +401,7 @@ public final class CertificateAsyncClient {
         CertificateUpdateParameters parameters = new CertificateUpdateParameters()
             .tags(properties.getTags())
             .certificateAttributes(new CertificateRequestAttributes(properties));
-        return service.updateCertificate(vaultUrl, properties.getName(), apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
+        return service.updateCertificate(vaultUrl, properties.getName(), properties.getVersion(), apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Updating certificate - {}",  properties.getName()))
             .doOnSuccess(response -> logger.info("Updated the certificate - {}", properties.getName()))
             .doOnError(error -> logger.warning("Failed to update the certificate - {}", properties.getName(), error));
@@ -1710,14 +1712,30 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<KeyVaultCertificateWithPolicy>> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
+
         CertificateImportParameters parameters = new CertificateImportParameters()
-            .base64EncodedCertificate(Base64.getEncoder().encodeToString(importCertificateOptions.getCertificate()))
+            .base64EncodedCertificate(transformCertificateForImport(importCertificateOptions))
             .certificateAttributes(new CertificateRequestAttributes(importCertificateOptions))
-            .certificatePolicy(importCertificateOptions.getPolicy())
             .password(importCertificateOptions.getPassword())
             .tags(importCertificateOptions.getTags());
 
+        if (importCertificateOptions.getPolicy() != null) {
+            parameters.certificatePolicy(new CertificatePolicyRequest(importCertificateOptions.getPolicy()));
+        }
+
         return service.importCertificate(vaultUrl, importCertificateOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context);
+    }
+
+    private String transformCertificateForImport(ImportCertificateOptions options) {
+        CertificatePolicy policy = options.getPolicy();
+
+        if (policy != null) {
+            CertificateContentType contentType = policy.getContentType();
+            if (contentType != null && contentType.equals(CertificateContentType.PEM)) {
+                return new String(options.getCertificate(), StandardCharsets.US_ASCII);
+            }
+        }
+        return Base64.getEncoder().encodeToString(options.getCertificate());
     }
 }

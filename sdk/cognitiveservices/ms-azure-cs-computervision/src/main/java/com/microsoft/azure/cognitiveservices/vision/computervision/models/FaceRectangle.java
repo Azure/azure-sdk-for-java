@@ -15,25 +15,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FaceRectangle {
     /**
-     * X-coordinate of the top left point of the face.
+     * X-coordinate of the top left point of the face, in pixels.
      */
     @JsonProperty(value = "left")
     private int left;
 
     /**
-     * Y-coordinate of the top left point of the face.
+     * Y-coordinate of the top left point of the face, in pixels.
      */
     @JsonProperty(value = "top")
     private int top;
 
     /**
-     * Width measured from the top-left point of the face.
+     * Width measured from the top-left point of the face, in pixels.
      */
     @JsonProperty(value = "width")
     private int width;
 
     /**
-     * Height measured from the top-left point of the face.
+     * Height measured from the top-left point of the face, in pixels.
      */
     @JsonProperty(value = "height")
     private int height;

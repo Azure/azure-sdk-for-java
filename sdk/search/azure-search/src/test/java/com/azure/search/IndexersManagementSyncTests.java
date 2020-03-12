@@ -3,11 +3,11 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataSource;
 import com.azure.search.models.DataType;
 import com.azure.search.models.Field;
@@ -163,7 +163,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         client = getSearchServiceClientBuilder().buildClient();
     }
 
-    private Indexer createOrUpdateIndexer(Indexer indexer, AccessCondition accessCondition,
+    private Indexer createOrUpdateIndexer(Indexer indexer, MatchConditions accessCondition,
         RequestOptions requestOptions) {
         return client.createOrUpdateIndexerWithResponse(
             indexer, accessCondition, requestOptions, Context.NONE)
@@ -461,7 +461,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         indexer.setDataSourceName(SQL_DATASOURCE_NAME);
         client.createIndexerWithResponse(indexer, new RequestOptions(), Context.NONE);
 
-        client.deleteIndexerWithResponse(indexer.getName(), new AccessCondition(), new RequestOptions(), Context.NONE);
+        client.deleteIndexerWithResponse(indexer.getName(), new MatchConditions(), new RequestOptions(), Context.NONE);
         assertThrows(HttpResponseException.class, () -> client.getIndexer(indexer.getName()));
     }
 
@@ -476,7 +476,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
         // Try delete before the indexer even exists.
         Response<Void> result = client.deleteIndexerWithResponse(
-            indexer.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
+            indexer.getName(), new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
 
         // Actually create the indexer
@@ -484,11 +484,11 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
         // Now delete twice.
         result = client.deleteIndexerWithResponse(
-            indexer.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
+            indexer.getName(), new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, result.getStatusCode());
 
         result = client.deleteIndexerWithResponse(
-            indexer.getName(), new AccessCondition(), generateRequestOptions(), Context.NONE);
+            indexer.getName(), new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
     }
 

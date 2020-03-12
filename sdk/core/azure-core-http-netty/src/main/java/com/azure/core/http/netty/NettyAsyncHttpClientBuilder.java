@@ -13,10 +13,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.handler.proxy.Socks4ProxyHandler;
 import io.netty.handler.proxy.Socks5ProxyHandler;
-import java.nio.ByteBuffer;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 
+import java.nio.ByteBuffer;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -117,10 +117,6 @@ public class NettyAsyncHttpClientBuilder {
 
     /**
      * Sets the {@link ProxyOptions proxy options} that the client will use.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder#proxy}
      *
      * @param proxyOptions The proxy configuration to use.
      * @return the updated NettyAsyncHttpClientBuilder object.

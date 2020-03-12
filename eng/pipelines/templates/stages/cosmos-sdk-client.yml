@@ -19,7 +19,7 @@ stages:
             ProfileFlag: '-Punit'
           macOS - Java 8:
             OSName: 'macOS'
-            OSVmImage: 'macOS-10.13'
+            OSVmImage: 'macOS-10.15'
             JavaVersion: '1.8'
             RunTitle: 'macOS on Java 1.8'
             ProfileFlag: '-Punit'
@@ -37,7 +37,7 @@ stages:
             ProfileFlag: '-Punit'
           macOS - Java 11:
             OSName: 'macOS'
-            OSVmImage: 'macOS-10.13'
+            OSVmImage: 'macOS-10.15'
             JavaVersion: '1.11'
             RunTitle: 'macOS on Java 1.11'
             ProfileFlag: '-Punit'
