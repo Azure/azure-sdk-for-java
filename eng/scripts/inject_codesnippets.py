@@ -59,15 +59,6 @@ def get_snippets_from_file(file):
         running_dict.process_line(line)    
   
   return finished_snippets
-# walk the codebase, searching each file for 
-#    --> // BEGIN: <id>
-#        // END: <id>
-#   or 
-#    --> {@codesnippet <id>}
-#
-# generate code snippets
-
-# 
 
 def check_exclusion(file_name, exclusion_array):
   if not os.path.isdir(file_name):
@@ -85,9 +76,6 @@ if __name__ == "__main__":
   for file in snippet_files:
     snippet_dict = get_snippets_from_file(file)
     snippets.update(snippet_dict)
-
-  # print(snippets['com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatchWithResponse#Iterable-TextAnalyticsRequestOptions-Context'])
-  # exit(1)
 
   for file in all_files:
     needs_amend = False
@@ -108,7 +96,7 @@ if __name__ == "__main__":
           if id_ending in snippets:
             result_array = [
               lead_space + "<pre>\n",
-              "".join(map(lambda x: return lead_space + x, snippets[id_ending])),
+              "".join(map(lambda x : lead_space + x, snippets[id_ending])),
               lead_space + "</pre>\n"
             ]
             line_replacement = "".join(result_array)
@@ -124,4 +112,4 @@ if __name__ == "__main__":
       with open(file, 'w') as out_file:
         for line in amended_file:
           out_file.write(line)
-  # walk across all the lines looking for @codesnippet
+
