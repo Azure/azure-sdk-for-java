@@ -1,5 +1,8 @@
 # Release History
 
+## 12.1.0-beta.1 (Unreleased)
+
+
 ## 12.0.1 (2020-03-11)
 - GA release. 
 - Fixed bug that caused rename to fail on paths that are url encoded.
