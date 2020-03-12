@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.UnsignedLong;
+import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -46,7 +47,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * broker and receive the associated response.
  */
 public class RequestResponseChannel implements Disposable {
-    private static final String STATUS_CODE = "status-code";
     private static final String STATUS_DESCRIPTION = "status-description";
 
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
@@ -70,6 +70,8 @@ public class RequestResponseChannel implements Disposable {
     private final ReceiveLinkHandler receiveLinkHandler;
     private final Disposable.Composite subscriptions;
     private final AmqpRetryPolicy retryPolicy;
+    private final SenderSettleMode senderSettleMode;
+    private final ReceiverSettleMode receiverSettleMode;
 
     /**
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the
@@ -83,13 +85,19 @@ public class RequestResponseChannel implements Disposable {
      * @param retryOptions Retry options to use for sending the request response.
      * @param handlerProvider Provides handlers that interact with proton-j's reactor.
      * @param provider The reactor provider that the request will be sent with.
+     * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
+     * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
+
      */
     RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
             String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
-            ReactorProvider provider, MessageSerializer messageSerializer) {
+            ReactorProvider provider, MessageSerializer messageSerializer,
+            SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
         this.provider = provider;
         this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+        this.senderSettleMode = senderSettleMode;
+        this.receiverSettleMode = receiverSettleMode;
 
         this.replyTo = entityPath.replace("$", "") + "-client-reply-to";
         this.messageSerializer = messageSerializer;
@@ -98,7 +106,7 @@ public class RequestResponseChannel implements Disposable {
         target.setAddress(entityPath);
         this.sendLink.setTarget(target);
         sendLink.setSource(new Source());
-        this.sendLink.setSenderSettleMode(SenderSettleMode.SETTLED);
+        this.sendLink.setSenderSettleMode(senderSettleMode);
         this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, fullyQualifiedNamespace, linkName,
             entityPath);
         BaseHandler.setHandler(sendLink, sendLinkHandler);
@@ -110,8 +118,8 @@ public class RequestResponseChannel implements Disposable {
         final Target receiverTarget = new Target();
         receiverTarget.setAddress(replyTo);
         this.receiveLink.setTarget(receiverTarget);
-        this.receiveLink.setSenderSettleMode(SenderSettleMode.SETTLED);
-        this.receiveLink.setReceiverSettleMode(ReceiverSettleMode.SECOND);
+        this.receiveLink.setSenderSettleMode(senderSettleMode);
+        this.receiveLink.setReceiverSettleMode(receiverSettleMode);
         this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace,
             linkName, entityPath);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
@@ -224,13 +232,13 @@ public class RequestResponseChannel implements Disposable {
                         // If we try to do proton-j API calls such as sending on AMQP links, it may encounter a race
                         // condition. So, we are forced to use the dispatcher.
                         provider.getReactorDispatcher().invoke(() -> {
-                            sendLink.delivery(UUID.randomUUID().toString().replace("-", "").getBytes(UTF_8));
+                            sendLink.delivery(UUID.randomUUID().toString()
+                                .replace("-", "").getBytes(UTF_8));
 
                             final int payloadSize = messageSerializer.getSize(message)
                                 + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
                             final byte[] bytes = new byte[payloadSize];
                             final int encodedSize = message.encode(bytes, 0, payloadSize);
-
                             receiveLink.flow(1);
                             sendLink.send(bytes, 0, encodedSize);
                             sendLink.advance();
@@ -249,8 +257,11 @@ public class RequestResponseChannel implements Disposable {
         final int read = receiveLink.recv(buffer, 0, msgSize);
 
         response.decode(buffer, 0, read);
-        delivery.settle();
-
+        if (this.senderSettleMode == SenderSettleMode.SETTLED) {
+            // No op. Delivery comes settled from the sender
+            delivery.disposition(Accepted.getInstance());
+            delivery.settle();
+        }
         return response;
     }
 
@@ -265,7 +276,7 @@ public class RequestResponseChannel implements Disposable {
             return;
         }
 
-        final int statusCode = (int) message.getApplicationProperties().getValue().get(STATUS_CODE);
+        final int statusCode = RequestResponseUtils.getResponseStatusCode(message);
 
         if (statusCode != AmqpResponseCode.ACCEPTED.getValue() && statusCode != AmqpResponseCode.OK.getValue()) {
             final String statusDescription =

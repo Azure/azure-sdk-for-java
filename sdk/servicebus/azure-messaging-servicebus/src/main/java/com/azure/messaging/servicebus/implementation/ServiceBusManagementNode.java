@@ -14,10 +14,16 @@ import reactor.core.publisher.Mono;
 public interface ServiceBusManagementNode extends AutoCloseable {
 
     /**
-     *
-     * @return Flux of ReceivedMessage.
+     * This will return next available message to peek.
+     * @return {@link Mono} of {@link ServiceBusReceivedMessage}.
      */
     Mono<ServiceBusReceivedMessage> peek();
+
+    /**
+     * @param fromSequenceNumber to peek message from.
+     * @return {@link Mono} of {@link ServiceBusReceivedMessage}.
+     */
+    Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber);
 
     @Override
     void close();
