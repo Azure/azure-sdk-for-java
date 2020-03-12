@@ -102,6 +102,11 @@ jobs:
           BuildSHA: $(Build.SourceVersion)
           RepoId: 'Azure/azure-sdk-for-java'
 
+      - script: |
+          python ./eng/scripts/inject_codesnippets.py
+        displayName: 'Replace @codesnippet with embedded pre element'
+        workingDirectory: $(Build.SourcesDirectory)
+
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:

@@ -90,9 +90,6 @@ if __name__ == "__main__":
           lead_space = snippet_ref.groupdict()['leadingspace']
 
           print("checking for snippet ref " + id_ending)
-
-
-
           if id_ending in snippets:
             result_array = [
               lead_space + "<pre>\n",
