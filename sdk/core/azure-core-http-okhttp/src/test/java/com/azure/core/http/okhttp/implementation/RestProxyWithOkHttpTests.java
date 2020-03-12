@@ -28,6 +28,11 @@ public class RestProxyWithOkHttpTests extends RestProxyTests {
     }
 
     @Override
+    protected int getWireMockPort() {
+        return server.port();
+    }
+
+    @Override
     protected HttpClient createHttpClient() {
         return new OkHttpAsyncHttpClientBuilder().build();
     }

@@ -53,6 +53,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class RestProxyWithMockTests extends RestProxyTests {
     @Override
+    protected int getWireMockPort() {
+        return 80;
+    }
+
+    @Override
     protected HttpClient createHttpClient() {
         return new MockHttpClient();
     }
@@ -585,7 +590,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
             .assertNext(r -> {
                 assertEquals(page.continuationToken, r.getContinuationToken());
 
-                assertEquals(r.getItems().size(), 3);
+                assertEquals(r.getValue().size(), 3);
                 for (KeyValue keyValue : r.getValue()) {
                     assertTrue(array.removeIf(kv -> kv.key == keyValue.key && kv.value().equals(keyValue.value())));
                 }
@@ -615,7 +620,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         StepVerifier.create(createService(Service2.class).getPageAsyncSerializes(page))
             .assertNext(response -> {
                 assertEquals(page.getContinuationToken(), response.getContinuationToken());
-                assertEquals(0, response.getItems().size());
+                assertEquals(0, response.getValue().size());
             })
             .verifyComplete();
     }

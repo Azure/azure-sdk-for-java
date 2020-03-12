@@ -26,7 +26,9 @@ import java.security.SecureRandom;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
@@ -41,7 +43,7 @@ public final class RestProxyTestsWireMockServer {
     public static WireMockServer getRestProxyTestsServer() {
         WireMockServer server = new WireMockServer(WireMockConfiguration.options()
             .extensions(new RestProxyResponseTransformer())
-            .port(21354)
+            .dynamicPort()
             .disableRequestJournal()
             .gzipDisabled(true));
 
@@ -70,139 +72,129 @@ public final class RestProxyTestsWireMockServer {
         public ResponseDefinition transform(Request request, ResponseDefinition responseDefinition,
             FileSource fileSource, Parameters parameters) {
             try {
-                return transformImpl(request, responseDefinition);
+                URL url = new URL(request.getAbsoluteUrl());
+
+                String urlPath = url.getPath();
+                if (urlPath.startsWith("/bytes")) {
+                    return createBytesResponse(urlPath);
+                } else if (urlPath.startsWith("/status")) {
+                    return createStatusResponse(urlPath);
+                } else if (urlPath.startsWith("/post")) {
+                    if ("application/x-www-form-urlencoded".equalsIgnoreCase(request.getHeader("Content-Type"))) {
+                        return createFormResponse(request);
+                    } else {
+                        return createSimpleHttpBinResponse(request, url);
+                    }
+                } else if (urlPath.startsWith("/anything") || urlPath.startsWith("/put")
+                    || urlPath.startsWith("/delete") || urlPath.startsWith("/patch") || urlPath.startsWith("/get")) {
+                    return createSimpleHttpBinResponse(request, url);
+                }  else {
+                    return responseDefinition;
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        private ResponseDefinition transformImpl(Request request, ResponseDefinition responseDefinition)
-            throws IOException {
-            URL url = new URL(request.getAbsoluteUrl());
+        private static ResponseDefinition createBytesResponse(String urlPath) {
+            int bodySize = Integer.parseInt(urlPath.split("/", 3)[2]);
+            Map<String, String> rawHeaders = getBaseHttpHeaders();
+            rawHeaders.put("Content-Type", "application/octet-stream");
+            rawHeaders.put("Content-Length", String.valueOf(bodySize));
 
-            if (url.getPath().startsWith("/bytes")) {
-                int bodySize = Integer.parseInt(url.getPath().split("/", 3)[2]);
+            return new ResponseDefinitionBuilder().withStatus(200)
+                .withHeaders(toWireMockHeaders(rawHeaders))
+                .withBody(new SecureRandom().generateSeed(bodySize))
+                .build();
+        }
 
-                return new ResponseDefinitionBuilder()
-                    .withStatus(200)
-                    .withHeaders(new HttpHeaders().plus(
-                        new HttpHeader("Access-Control-Allow-Credentials", "true"),
-                        new HttpHeader("X-Processed-Time", String.valueOf(Math.random() * 10)),
-                        new HttpHeader("Date", new DateTimeRfc1123(OffsetDateTime.now(ZoneOffset.UTC)).toString()),
-                        new HttpHeader("Content-Type", "application/octet-stream"),
-                        new HttpHeader("Content-Length", String.valueOf(bodySize))
-                    ))
-                    .withBody(new SecureRandom().generateSeed(bodySize))
-                    .build();
-            } else if (url.getPath().startsWith("/anything")) {
-                HttpBinJSON responseBody = new HttpBinJSON();
-                responseBody.url(url.toString().replace("%20", " "));
+        private static ResponseDefinition createSimpleHttpBinResponse(Request request, URL url) throws IOException {
+            HttpBinJSON responseBody = new HttpBinJSON();
+            responseBody.url(cleanseUrl(url));
+            responseBody.data(request.getBodyAsString());
 
-                if (request.getHeaders() != null) {
-                    responseBody.headers(request.getHeaders().all().stream()
-                        .collect(Collectors.toMap(MultiValue::key, MultiValue::firstValue)));
-                }
-
-                return new ResponseDefinitionBuilder()
-                    .withStatus(200)
-                    .withBody(new JacksonAdapter().serialize(responseBody, SerializerEncoding.JSON))
-                    .build();
-            } else if (url.getPath().startsWith("/post")) {
-                if ("application/x-www-form-urlencoded".equalsIgnoreCase(request.getHeader("Content-Type"))) {
-                    HttpBinFormDataJSON formBody = new HttpBinFormDataJSON();
-                    HttpBinFormDataJSON.Form form = new HttpBinFormDataJSON.Form();
-                    List<String> toppings = new ArrayList<>();
-
-                    for (String formKvp : request.getBodyAsString().split("&")) {
-                        String[] kvpPieces = formKvp.split("=");
-
-                        switch (kvpPieces[0]) {
-                            case "custname":
-                                form.customerName(kvpPieces[1]);
-                                break;
-                            case "custtel":
-                                form.customerTelephone(kvpPieces[1]);
-                                break;
-                            case "custemail":
-                                form.customerEmail(kvpPieces[1]);
-                                break;
-                            case "size":
-                                form.pizzaSize(HttpBinFormDataJSON.PizzaSize.valueOf(kvpPieces[1]));
-                                break;
-                            case "toppings":
-                                toppings.add(kvpPieces[1]);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-
-                    form.toppings(toppings);
-                    formBody.form(form);
-
-                    return new ResponseDefinitionBuilder()
-                        .withStatus(200)
-                        .withBody(new JacksonAdapter().serialize(formBody, SerializerEncoding.JSON))
-                        .build();
-                } else {
-                    HttpBinJSON responseBody = new HttpBinJSON();
-                    responseBody.data(request.getBodyAsString());
-
-                    return new ResponseDefinitionBuilder()
-                        .withStatus(200)
-                        .withBody(new JacksonAdapter().serialize(responseBody, SerializerEncoding.JSON))
-                        .build();
-                }
-            } else if (url.getPath().startsWith("/put")) {
-                HttpBinJSON responseBody = new HttpBinJSON();
-                responseBody.data(request.getBodyAsString());
-                responseBody.url(url.toString().replace("%20", " "));
-
-                if (request.getHeaders() != null) {
-                    responseBody.headers(request.getHeaders().all().stream()
-                        .collect(Collectors.toMap(MultiValue::key, MultiValue::firstValue)));
-                }
-
-                return new ResponseDefinitionBuilder()
-                    .withStatus(200)
-                    .withHeaders(new HttpHeaders().plus(
-                        new HttpHeader("Access-Control-Allow-Credentials", "true"),
-                        new HttpHeader("X-Processed-Time", String.valueOf(Math.random() * 10)),
-                        new HttpHeader("Date", new DateTimeRfc1123(OffsetDateTime.now(ZoneOffset.UTC)).toString())
-                    ))
-                    .withBody(new JacksonAdapter().serialize(responseBody, SerializerEncoding.JSON))
-                    .build();
-            } else if (url.getPath().startsWith("/delete")) {
-                HttpBinJSON responseBody = new HttpBinJSON();
-                responseBody.data(request.getBodyAsString());
-
-                return new ResponseDefinitionBuilder()
-                    .withStatus(200)
-                    .withBody(new JacksonAdapter().serialize(responseBody, SerializerEncoding.JSON))
-                    .build();
-            } else if (url.getPath().startsWith("/patch")) {
-                HttpBinJSON responseBody = new HttpBinJSON();
-                responseBody.data(request.getBodyAsString());
-
-                return new ResponseDefinitionBuilder()
-                    .withStatus(200)
-                    .withBody(new JacksonAdapter().serialize(responseBody, SerializerEncoding.JSON))
-                    .build();
-            } else if (url.getPath().startsWith("/get")) {
-                HttpBinJSON responseBody = new HttpBinJSON();
-                responseBody.url(url.toString().replace("%20", " "));
-
-                return new ResponseDefinitionBuilder()
-                    .withStatus(200)
-                    .withBody(new JacksonAdapter().serialize(responseBody, SerializerEncoding.JSON))
-                    .build();
-            } else if (url.getPath().startsWith("/status")) {
-                return new ResponseDefinitionBuilder()
-                    .withStatus(Integer.parseInt(url.getPath().split("/", 3)[2]))
-                    .build();
-            } else {
-                return responseDefinition;
+            if (request.getHeaders() != null) {
+                responseBody.headers(request.getHeaders().all().stream()
+                    .collect(Collectors.toMap(MultiValue::key, MultiValue::firstValue)));
             }
+
+            return new ResponseDefinitionBuilder().withStatus(200)
+                .withHeaders(toWireMockHeaders(getBaseHttpHeaders()))
+                .withBody(new JacksonAdapter().serialize(responseBody, SerializerEncoding.JSON))
+                .build();
+        }
+
+        private static ResponseDefinition createStatusResponse(String urlPath) {
+            return new ResponseDefinitionBuilder().withStatus(Integer.parseInt(urlPath.split("/", 3)[2])).build();
+        }
+
+        private static ResponseDefinition createFormResponse(Request request) throws IOException {
+            HttpBinFormDataJSON formBody = new HttpBinFormDataJSON();
+            HttpBinFormDataJSON.Form form = new HttpBinFormDataJSON.Form();
+            List<String> toppings = new ArrayList<>();
+
+            for (String formKvp : request.getBodyAsString().split("&")) {
+                String[] kvpPieces = formKvp.split("=");
+
+                switch (kvpPieces[0]) {
+                    case "custname":
+                        form.customerName(kvpPieces[1]);
+                        break;
+                    case "custtel":
+                        form.customerTelephone(kvpPieces[1]);
+                        break;
+                    case "custemail":
+                        form.customerEmail(kvpPieces[1]);
+                        break;
+                    case "size":
+                        form.pizzaSize(HttpBinFormDataJSON.PizzaSize.valueOf(kvpPieces[1]));
+                        break;
+                    case "toppings":
+                        toppings.add(kvpPieces[1]);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            form.toppings(toppings);
+            formBody.form(form);
+
+            return new ResponseDefinitionBuilder()
+                .withStatus(200)
+                .withBody(new JacksonAdapter().serialize(formBody, SerializerEncoding.JSON))
+                .build();
+        }
+
+        private static String cleanseUrl(URL url) {
+            StringBuilder builder = new StringBuilder();
+            builder.append(url.getProtocol())
+                .append("://")
+                .append(url.getHost())
+                .append(url.getPath().replace("%20", " "));
+
+            if (url.getQuery() != null) {
+                builder.append("?").append(url.getQuery().replace("%20", " "));
+            }
+
+            return builder.toString();
+        }
+
+        private static Map<String, String> getBaseHttpHeaders() {
+            Map<String, String> baseHeaders = new HashMap<>();
+            baseHeaders.put("Date", new DateTimeRfc1123(OffsetDateTime.now(ZoneOffset.UTC)).toString());
+            baseHeaders.put("Connection", "keep-alive");
+            baseHeaders.put("X-Processed-Time", String.valueOf(Math.random() * 10));
+            baseHeaders.put("Access-Control-Allow-Credentials", "true");
+            baseHeaders.put("Content-Type", "application/json");
+
+            return baseHeaders;
+        }
+
+        private static HttpHeaders toWireMockHeaders(Map<String, String> rawHeaders) {
+            return new HttpHeaders(rawHeaders.entrySet().stream()
+                .map(kvp -> new HttpHeader(kvp.getKey(), kvp.getValue()))
+                .collect(Collectors.toList()));
         }
 
         @Override

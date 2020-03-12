@@ -28,6 +28,11 @@ public class RestProxyWithNettyTests extends RestProxyTests {
     }
 
     @Override
+    protected int getWireMockPort() {
+        return server.port();
+    }
+
+    @Override
     protected HttpClient createHttpClient() {
         return new NettyAsyncHttpClientBuilder().build();
     }
