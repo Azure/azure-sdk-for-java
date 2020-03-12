@@ -424,7 +424,7 @@ public abstract class KeyClientTestBase extends TestBase {
         return argumentsList.stream();
     }
 
-    static boolean shouldServiceVersionBeTested(KeyServiceVersion serviceVersion) {
+    private static boolean shouldServiceVersionBeTested(KeyServiceVersion serviceVersion) {
         if (Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS) == null) {
             return KeyServiceVersion.getLatest().equals(serviceVersion);
         }

@@ -474,30 +474,4 @@ public class KeyClientTest extends KeyClientTestBase {
         System.err.printf("Deleted Key %s was not purged \n", keyName);
         return null;
     }
-
-    /**
-     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
-     * service versions that should be tested.
-     *
-     * @return A stream of HttpClient and service version combinations to test.
-     */
-    static Stream<Arguments> getTestParameters() {
-        // when this issues is closed, the newer version of junit will have better support for
-        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<Arguments> argumentsList = new ArrayList<>();
-
-        getHttpClients()
-            .forEach(httpClient -> {
-                Arrays.stream(KeyServiceVersion.values()).filter(KeyClientTestBase::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-            });
-        return argumentsList.stream();
-    }
-
-    static boolean shouldServiceVersionBeTested(KeyServiceVersion serviceVersion) {
-        if (Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS) == null) {
-            return KeyServiceVersion.getLatest().equals(serviceVersion);
-        }
-        return true;
-    }
 }

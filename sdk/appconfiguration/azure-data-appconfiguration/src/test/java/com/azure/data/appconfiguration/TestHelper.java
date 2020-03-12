@@ -33,7 +33,7 @@ class TestHelper extends TestBase {
         return argumentsList.stream();
     }
 
-    static boolean shouldServiceVersionBeTested(ConfigurationServiceVersion serviceVersion) {
+    private static boolean shouldServiceVersionBeTested(ConfigurationServiceVersion serviceVersion) {
         String serviceVersionFromEnv = Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
         if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return ConfigurationServiceVersion.getLatest().equals(serviceVersion);

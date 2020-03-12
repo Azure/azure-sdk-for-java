@@ -8,6 +8,7 @@ import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import java.util.Arrays;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -146,7 +147,16 @@ public abstract class TestBase implements BeforeEachCallback {
 
     /**
      * Filter out the http clients needs to run in test framework.
-     * Using Netty http client when no environment variable is set.
+     *
+     * <ul>
+     * <li>Using Netty http client as default if no environment variable is set.</li>
+     * <li>If it's set to ALL, all HttpClients in the classpath will be tested.</li>
+     * <li>Otherwise, the name of the HttpClient class should match env variable.</li>
+     * </ul>
+     *
+     * Environment values currently supported are: "ALL", "NettyAsyncHttpClient", "OkHttpAsyncHttpClient".
+     * Use comma to separate http clients want to test.
+     * e.g. {@code set AZURE_TEST_HTTP_CLIENTS = NettyAsyncHttpClient, OkHttpAsyncHttpClient}
      *
      * @param client Http client needs to check
      * @return Boolean indicates whether filters out the client or not.
@@ -161,7 +171,9 @@ public abstract class TestBase implements BeforeEachCallback {
         if (configuredHttpClientToTest.equals(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL)) {
             return true;
         }
-        return client.getClass().getSimpleName().equals(configuredHttpClientToTest);
+        String[] configuredHttpClientList = configuredHttpClientToTest.split(",");
+        return Arrays.stream(configuredHttpClientList).anyMatch(configuredHttpClient ->
+            client.getClass().getSimpleName().equals(configuredHttpClient.trim()));
     }
 
     private static TestMode initializeTestMode() {

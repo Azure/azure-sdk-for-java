@@ -34,7 +34,7 @@ public class TestHelper extends TestBase {
         return argumentsList.stream();
     }
 
-    static boolean shouldServiceVersionBeTested(CryptographyServiceVersion serviceVersion) {
+    private static boolean shouldServiceVersionBeTested(CryptographyServiceVersion serviceVersion) {
         if (Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS) == null) {
             return CryptographyServiceVersion.getLatest().equals(serviceVersion);
         }

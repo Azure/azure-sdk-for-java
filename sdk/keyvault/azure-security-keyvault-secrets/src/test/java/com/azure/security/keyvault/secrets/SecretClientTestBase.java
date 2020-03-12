@@ -450,7 +450,7 @@ public abstract class SecretClientTestBase extends TestBase {
         return argumentsList.stream();
     }
 
-    static boolean shouldServiceVersionBeTested(SecretServiceVersion serviceVersion) {
+    private static boolean shouldServiceVersionBeTested(SecretServiceVersion serviceVersion) {
         if (Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS) == null) {
             return SecretServiceVersion.getLatest().equals(serviceVersion);
         }
