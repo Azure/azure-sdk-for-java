@@ -39,7 +39,7 @@ public class MessageSendAsyncSample {
 
         senderAsyncClient.send(message).subscribe();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(10000);
         } catch (Exception ee) {
 
         }
@@ -96,14 +96,13 @@ public class MessageSendAsyncSample {
             .buildAsyncSenderClient();
 
         // Create an event to send.
-        ServiceBusMessage message = new ServiceBusMessage(Instant.now().toString()
-            + "Hello Track2!! 5 Min, should be cancelled.".getBytes(UTF_8));
+        ServiceBusMessage message = new ServiceBusMessage("Hello Track2!! 1 Min, should be cancelled.".getBytes(UTF_8));
 
         // Send that event. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Event Hub. It completes with an error if an exception occurred while sending
         // the event.
 
-        senderAsyncClient.scheduleMessage(message, Instant.now().plusSeconds(5*60L))
+        senderAsyncClient.scheduleMessage(message, Instant.now().plusSeconds(1*60L))
             .onErrorContinue((throwable, o) -> {
                 System.out.println("Message Scheduled message failed : " + throwable);
             })

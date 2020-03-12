@@ -10,7 +10,6 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManager;
-import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.apache.qpid.proton.Proton;
@@ -77,7 +76,13 @@ public class ManagementChannel implements  ServiceBusManagementNode {
 
 
     private static final int REQUEST_RESPONSE_OK_STATUS_CODE = 200;
+
+
     private static Duration DEFAULT_REQUEST_RESPONSE_TIMEOUT = Duration.ofSeconds(60);
+
+    // TODO(Hemant) :This value should be read from Receive Link
+    private static final int MAX_MESSAGE_LENGTH_SENDER_LINK_BYTES = 512;
+
 
     private final Mono<RequestResponseChannel> channelMono;
     private final Scheduler scheduler;
@@ -204,9 +209,9 @@ public class ManagementChannel implements  ServiceBusManagementNode {
                     HashMap<String, Object> requestBodyMap = new HashMap<>();
                     requestBodyMap.put(REQUEST_RESPONSE_SEQUENCE_NUMBERS, cancelScheduleNumbers);
 
-                    Message requestMessage = createRequestMessageFromValueBody(REQUEST_RESPONSE_CANCEL_SCHEDULED_MESSAGE_OPERATION,
-                        requestBodyMap, MessageUtils.adjustServerTimeout(DEFAULT_REQUEST_RESPONSE_TIMEOUT),
-                        null);
+                    Message requestMessage = createRequestMessageFromValueBody(
+                        REQUEST_RESPONSE_CANCEL_SCHEDULED_MESSAGE_OPERATION, requestBodyMap,
+                        MessageUtils.adjustServerTimeout(DEFAULT_REQUEST_RESPONSE_TIMEOUT));
                     return requestResponseChannel.sendWithAck(requestMessage);
 
                 }))
@@ -254,60 +259,52 @@ public class ManagementChannel implements  ServiceBusManagementNode {
                     for (Message message : messagesToSchedule) {
                         HashMap<String, Object> messageEntry = new HashMap<>();
                         Pair<byte[], Integer> encodedPair;
-                        encodedPair = MessageUtils.encodeMessageToOptimalSizeArray(message, 2000);
-                        // TODO (hemanttanwar) : get max size from Receive link
+                        encodedPair = MessageUtils.encodeMessageToOptimalSizeArray(message,
+                            MAX_MESSAGE_LENGTH_SENDER_LINK_BYTES);
 
-                        messageEntry.put(REQUEST_RESPONSE_MESSAGE, new Binary(encodedPair.getFirstItem(), 0, encodedPair.getSecondItem()));
+                        messageEntry.put(REQUEST_RESPONSE_MESSAGE, new Binary(encodedPair.getFirstItem(),
+                            0, encodedPair.getSecondItem()));
                         messageEntry.put(REQUEST_RESPONSE_MESSAGE_ID, message.getMessageId());
                         messageList.add(messageEntry);
                     }
                     requestBodyMap.put(REQUEST_RESPONSE_MESSAGES, messageList);
 
-                    Message requestMessage = createRequestMessageFromValueBody(REQUEST_RESPONSE_SCHEDULE_MESSAGE_OPERATION,
-                        requestBodyMap, MessageUtils.adjustServerTimeout(DEFAULT_REQUEST_RESPONSE_TIMEOUT),null);
+                    Message requestMessage = createRequestMessageFromValueBody(
+                        REQUEST_RESPONSE_SCHEDULE_MESSAGE_OPERATION, requestBodyMap,
+                        MessageUtils.adjustServerTimeout(DEFAULT_REQUEST_RESPONSE_TIMEOUT));
                     return requestResponseChannel.sendWithAck(requestMessage);
                 })
             )
              .map(responseMessage -> {
-                    int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
 
-                    List<Long> sequenceNumbers = null;
+                    int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+                    List<T> sequenceNumbers = null;
                     if (statusCode ==  REQUEST_RESPONSE_OK_STATUS_CODE) {
-                        Object seqNumberListObj = getResponseBody(responseMessage).get(REQUEST_RESPONSE_SEQUENCE_NUMBERS);
+                        @SuppressWarnings("unchecked")
+                        Map<String, Object> responseBody = (Map<String, Object>) ((AmqpValue) responseMessage
+                            .getBody()).getValue();
+                        Object seqNumberListObj = responseBody.get(REQUEST_RESPONSE_SEQUENCE_NUMBERS);
+
                         if (seqNumberListObj instanceof  long[]){
-                            long[] sequenceNumbersPremitive = (long[])seqNumberListObj;
-                            sequenceNumbers = Arrays.stream(sequenceNumbersPremitive).boxed().collect(Collectors.toList());
+                            @SuppressWarnings("unchecked")
+                            List<T> seqNumbers  = (List<T>)Arrays.stream((long[])seqNumberListObj)
+                                .boxed().collect(Collectors.toList());
+                            sequenceNumbers = seqNumbers;
                         }
                     }
                     return sequenceNumbers;
                 })
-
-         .flatMapMany(longs -> {
-             @SuppressWarnings("unchecked")
-             T[] tArray = (T[])new Long[longs.size()];
-             int  i =0;
-             for (Long seq:longs) {
-                    tArray[i++] = (T)seq;
-             }
-             return Flux.fromArray(tArray );
-         });
+         .flatMapMany(Flux::fromIterable);
     }
 
-    public static Map getResponseBody(Message responseMessage) {
-        return (Map) ((AmqpValue) responseMessage.getBody()).getValue();
-    }
+    private Message createRequestMessageFromValueBody(String operation, Object valueBody, Duration timeout) {
 
-    private Message createRequestMessageFromValueBody(String operation, Object valueBody, Duration timeout,
-                                                      String associatedLinkName) {
         Message requestMessage = Message.Factory.create();
         requestMessage.setBody(new AmqpValue(valueBody));
-        HashMap applicationPropertiesMap = new HashMap();
+        HashMap<String, Object> applicationPropertiesMap = new HashMap<>();
         applicationPropertiesMap.put(REQUEST_RESPONSE_OPERATION_NAME, operation);
         applicationPropertiesMap.put(REQUEST_RESPONSE_TIMEOUT, timeout.toMillis());
 
-        if (!CoreUtils.isNullOrEmpty(associatedLinkName)) {
-            applicationPropertiesMap.put(REQUEST_RESPONSE_ASSOCIATED_LINK_NAME, associatedLinkName);
-        }
         requestMessage.setApplicationProperties(new ApplicationProperties(applicationPropertiesMap));
         return requestMessage;
     }

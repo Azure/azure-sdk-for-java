@@ -248,7 +248,8 @@ final class MessageUtils {
         if (obj instanceof Map) {
             // Size and Count each take a max of 4 bytes
             int size = 8;
-            Map map = (Map) obj;
+            @SuppressWarnings("unchecked")
+            Map<Object, Object> map = (Map<Object, Object>) obj;
             for (Object value : map.keySet()) {
                 size += sizeof(value);
             }
