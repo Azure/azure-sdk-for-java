@@ -52,7 +52,7 @@ jobs:
         goals: 'install site:site site:stage'
 
     - task: Maven@3
-      displayName: 'Generate aggregate code coverage report'
+      displayName: 'Generate aggregate code coverage and dependency reports'
       inputs:
         mavenPomFile: 'pom.client.xml'
         options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
