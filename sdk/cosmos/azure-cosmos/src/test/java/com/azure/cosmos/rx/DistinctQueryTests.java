@@ -234,6 +234,33 @@ public class DistinctQueryTests extends TestSuiteBase {
 
     }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    public void queryDocumentsForDistinctIntValues(boolean qmEnabled) {
+        String query = "SELECT DISTINCT c.intprop from c";
+        FeedOptions options = new FeedOptions();
+        options.setMaxItemCount(5);
+        options.setPopulateQueryMetrics(qmEnabled);
+        options.setMaxDegreeOfParallelism(2);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options,
+                                                                                             CosmosItemProperties.class);
+
+        Iterator<FeedResponse<CosmosItemProperties>> iterator = queryObservable.byPage().collectList().single().block()
+                                                                    .iterator();
+        List<CosmosItemProperties> itemPropertiesList = new ArrayList<>();
+        while (iterator.hasNext()) {
+            FeedResponse<CosmosItemProperties> next = iterator.next();
+            itemPropertiesList.addAll(next.getResults());
+        }
+        
+        assertThat(itemPropertiesList.size()).isEqualTo(2);
+        List<Object> intpropList = itemPropertiesList.stream()
+                                   .map(cosmosItemProperties -> cosmosItemProperties.get("intprop"))
+                                   .collect(Collectors.toList());
+        // We insert two documents witn intprop as 5.0 and 5. Distinct should consider them as one
+        assertThat(intpropList).containsExactlyInAnyOrder(null, 5);
+        
+    }
+
     public void bulkInsert() {
         generateTestData();
         voidBulkInsertBlocking(createdCollection, docs);
@@ -251,6 +278,14 @@ public class DistinctQueryTests extends TestSuiteBase {
                 logger.error(e.getMessage());
             }
         }
+        String resourceJson = String.format("{ " + "\"id\": \"%s\", \"intprop\": %d }", UUID.randomUUID().toString(),
+                                            5);
+        String resourceJson2 = String.format("{ " + "\"id\": \"%s\", \"intprop\": %f }", UUID.randomUUID().toString(),
+                                             5.0f);
+
+        docs.add(new CosmosItemProperties(resourceJson));
+        docs.add(new CosmosItemProperties(resourceJson2));
+
     }
 
     private Pet getRandomPet(Random rand) {

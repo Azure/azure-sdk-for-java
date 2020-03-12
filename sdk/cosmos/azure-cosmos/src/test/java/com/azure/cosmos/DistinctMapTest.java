@@ -41,11 +41,11 @@ public class DistinctMapTest {
 
     @Test(groups = "unit", dataProvider = "distinctMapArgProvider")
     public void stringValue(DistinctQueryType queryType) {
-        String resourceString = String.format("{ " + "\"id\": \"a\" }");
+        String resourceString = String.format("{ " + "\"id\": \"a\" }");        Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
+
         Document resource = new Document(resourceString);
         DistinctMap distinctMap = DistinctMap.create(queryType, null);
 
-        Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
         boolean add = distinctMap.add(resource, outHash);
         assertThat(add).as("Value should be added first time").isTrue();
         boolean add2 = distinctMap.add(resource, outHash);
@@ -53,7 +53,8 @@ public class DistinctMapTest {
         resource = new Document(String.format("{ " + "\"id\": \"b\" }"));
         boolean add3 = distinctMap.add(resource, outHash);
         assertThat(add3).as("different value should be added again").isTrue();
-    }
+
+     }
 
     @Test(groups = "unit", dataProvider = "distinctMapArgProvider")
     public void objectValue(DistinctQueryType queryType) {
@@ -76,6 +77,29 @@ public class DistinctMapTest {
                                      + "\"mypk\": \"%s\", "
                                      + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
                                      + "}", 117546, "xxy%zz-abc");
+        resource = new Document(resourceString);
+        boolean add3 = distinctMap.add(resource, outHash);
+        assertThat(add3).as("different value should be added again").isTrue();
+
+    }
+
+    @Test(groups = "unit", dataProvider = "distinctMapArgProvider")
+    public void arrayValue(DistinctQueryType queryType) {
+        String resourceString = String.format("{ "
+                                                  + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
+                                                  + "}");
+        Document resource = new Document(resourceString);
+        DistinctMap distinctMap = DistinctMap.create(queryType, null);
+
+        Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
+        boolean add = distinctMap.add(resource, outHash);
+        assertThat(add).as("Value should be added first time").isTrue();
+        boolean add2 = distinctMap.add(resource, outHash);
+        assertThat(add2).as("same value should not be added again").isFalse();
+
+        resourceString = String.format("{ "
+                                                  + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671441]]"
+                                                  + "}");
         resource = new Document(resourceString);
         boolean add3 = distinctMap.add(resource, outHash);
         assertThat(add3).as("different value should be added again").isTrue();
