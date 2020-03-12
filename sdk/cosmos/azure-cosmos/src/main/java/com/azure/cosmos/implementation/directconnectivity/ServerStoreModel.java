@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 
-import com.azure.cosmos.BadRequestException;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RMResources;

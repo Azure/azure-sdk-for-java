@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 /**
  * The type Cosmos conflict request options.
  */
-public class CosmosConflictRequestOptions {
+public final class CosmosConflictRequestOptions {
     private AccessCondition accessCondition;
 
     /**

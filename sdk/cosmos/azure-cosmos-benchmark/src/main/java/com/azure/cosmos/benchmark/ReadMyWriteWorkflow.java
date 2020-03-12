@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.NotFoundException;
+import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlParameterList;

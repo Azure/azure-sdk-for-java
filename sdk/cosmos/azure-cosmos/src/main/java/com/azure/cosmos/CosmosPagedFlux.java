@@ -26,7 +26,7 @@ import java.util.function.Function;
  * @see CosmosPagedFluxOptions
  * @see FeedResponse
  */
-public class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
+public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
 
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
 

@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * The type Feed response diagnostics.
  */
-public class FeedResponseDiagnostics {
+public final class FeedResponseDiagnostics {
 
     private Map<String, QueryMetrics> queryMetricsMap;
 

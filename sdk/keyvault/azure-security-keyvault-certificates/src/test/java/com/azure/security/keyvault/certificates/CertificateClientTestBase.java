@@ -36,7 +36,9 @@ import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -394,6 +396,39 @@ public abstract class CertificateClientTestBase extends TestBase {
             .setEnabled(true)
             .setTags(tags);
         testRunner.accept(importCertificateOptions);
+    }
+
+    @Test
+    public abstract  void importPemCertificate() throws IOException;
+
+    void importPemCertificateRunner(Consumer<ImportCertificateOptions> testRunner) throws IOException {
+
+        byte[] certificateContent = readCertificate("pemCert.pem");
+
+        String certificateName = generateResourceId("importCertPem");
+        HashMap<String, String> tags = new HashMap<>();
+        tags.put("key", "val");
+        ImportCertificateOptions importCertificateOptions = new ImportCertificateOptions(certificateName, certificateContent)
+                                                                .setPolicy(new CertificatePolicy("Self", "CN=AzureSDK")
+                                                                                .setContentType(CertificateContentType.PEM))
+                                                                .setEnabled(true)
+                                                                .setTags(tags);
+        testRunner.accept(importCertificateOptions);
+    }
+
+    private byte[] readCertificate(String certName) throws IOException {
+        String pemPath = getClass().getClassLoader().getResource(certName).getPath();
+        String pemCert = "";
+        BufferedReader br = new BufferedReader(new FileReader(pemPath));
+        try {
+            String line;
+            while ((line = br.readLine()) != null) {
+                pemCert += line + "\n";
+            }
+        } finally {
+            br.close();
+        }
+        return pemCert.getBytes();
     }
 
     CertificateIssuer setupIssuer(String issuerName) {

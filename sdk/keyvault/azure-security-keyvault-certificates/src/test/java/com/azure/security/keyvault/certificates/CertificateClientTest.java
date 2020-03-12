@@ -13,6 +13,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 
 import com.azure.security.keyvault.certificates.models.CertificateContact;
+import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
@@ -673,6 +674,17 @@ public class CertificateClientTest extends CertificateClientTestBase {
             HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void importPemCertificate() throws IOException {
+        importPemCertificateRunner((importCertificateOptions) -> {
+            KeyVaultCertificateWithPolicy importedCertificate = client.importCertificate(importCertificateOptions);
+            assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
+            assertEquals(CertificateContentType.PEM, importedCertificate.getPolicy().getContentType());
+
+            deleteAndPurgeCertificate(importCertificateOptions.getName());
+        });
+    }
 
     private DeletedCertificate pollOnCertificatePurge(String certificateName) {
         int pendingPollCount = 0;
