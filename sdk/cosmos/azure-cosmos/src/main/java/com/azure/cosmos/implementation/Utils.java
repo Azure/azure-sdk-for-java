@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.FeedOptions;
 import com.fasterxml.jackson.core.JsonParser;

@@ -452,6 +452,9 @@ public class DataLakePathAsyncClient {
 
     /**
      * Determines if the path this client represents exists in the cloud.
+     * <p>Note that this method does not guarantee that the path type (file/directory) matches expectations.</p>
+     * <p>For example, a DataLakeFileClient representing a path to a datalake directory will return true, and vice
+     * versa.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -469,6 +472,9 @@ public class DataLakePathAsyncClient {
 
     /**
      * Determines if the path this client represents exists in the cloud.
+     * <p>Note that this method does not guarantee that the path type (file/directory) matches expectations.</p>
+     * <p>For example, a DataLakeFileClient representing a path to a datalake directory will return true, and vice
+     * versa.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *

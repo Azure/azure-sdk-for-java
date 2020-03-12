@@ -12,7 +12,10 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobOutputStream;
+import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
@@ -118,6 +121,7 @@ public class EncryptedBlobClient extends BlobClient {
      *
      * @param filePath Path of the file to upload
      */
+    @Override
     public void uploadFromFile(String filePath) {
         uploadFromFile(filePath, false);
     }
@@ -132,6 +136,7 @@ public class EncryptedBlobClient extends BlobClient {
      * @param filePath Path of the file to upload
      * @param overwrite Whether or not to overwrite should data already exist on the blob
      */
+    @Override
     public void uploadFromFile(String filePath, boolean overwrite) {
         if (!overwrite && exists()) {
             throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
@@ -156,6 +161,7 @@ public class EncryptedBlobClient extends BlobClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @Override
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) throws UncheckedIOException {
@@ -167,6 +173,33 @@ public class EncryptedBlobClient extends BlobClient {
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }
+    }
+
+    /**
+     * Unsupported.
+     */
+    @Override
+    public AppendBlobClient getAppendBlobClient() {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an append"
+            + " blob client"));
+    }
+
+    /**
+     * Unsupported.
+     */
+    @Override
+    public BlockBlobClient getBlockBlobClient() {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as a block"
+            + " blob client"));
+    }
+
+    /**
+     * Unsupported.
+     */
+    @Override
+    public PageBlobClient getPageBlobClient() {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an page"
+            + " blob client"));
     }
 
 }

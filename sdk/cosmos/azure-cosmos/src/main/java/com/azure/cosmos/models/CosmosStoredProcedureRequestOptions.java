@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 /**
  * Encapsulates options that can be specified for a request issued to cosmos stored procedure.
  */
-public class CosmosStoredProcedureRequestOptions {
+public final class CosmosStoredProcedureRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private PartitionKey partitionKey;
     private String sessionToken;

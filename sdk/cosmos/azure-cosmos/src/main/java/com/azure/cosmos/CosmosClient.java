@@ -21,7 +21,7 @@ import java.io.Closeable;
  * SyncClient is used to perform operations in a synchronous way
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
-public class CosmosClient implements Closeable {
+public final class CosmosClient implements Closeable {
     private final CosmosAsyncClient asyncClientWrapper;
 
     CosmosClient(CosmosClientBuilder builder) {
