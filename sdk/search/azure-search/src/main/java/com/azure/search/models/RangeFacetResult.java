@@ -42,15 +42,9 @@ public class RangeFacetResult<T> {
      */
     @SuppressWarnings("unchecked")
     public RangeFacetResult(FacetResult facetResult) {
-<<<<<<< HEAD
         this.count = facetResult.getCount();
-        this.from = (T) facetResult.getDocument().get(FROM);
-        this.to = (T) facetResult.getDocument().get(TO);
-=======
-        count = facetResult.getCount();
-        from = facetResult.getAdditionalProperties().get("from");
-        to = facetResult.getAdditionalProperties().get("to");
->>>>>>> bbf056defd2c174c65cddacfeaa220d3a2af1817
+        this.from = (T) facetResult.getAdditionalProperties().get(FROM);
+        this.to = (T) facetResult.getAdditionalProperties().get(TO);
     }
 
     /**

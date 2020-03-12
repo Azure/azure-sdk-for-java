@@ -271,15 +271,9 @@ public class SearchAsyncTests extends SearchTestBase {
             .assertNext(res -> {
                 assertContainHotelIds(hotels, res.getValue());
                 Map<String, List<FacetResult>> facets = res.getFacets();
-<<<<<<< HEAD
-                Assert.assertNotNull(facets);
+                assertNotNull(facets);
                 List<RangeFacetResult<Double>> baseRateFacets = getRangeFacetsForField(facets, "Rooms/BaseRate", 4);
                 List<RangeFacetResult<Double>> lastRenovationDateFacets = getRangeFacetsForField(
-=======
-                assertNotNull(facets);
-                List<RangeFacetResult> baseRateFacets = getRangeFacetsForField(facets, "Rooms/BaseRate", 4);
-                List<RangeFacetResult> lastRenovationDateFacets = getRangeFacetsForField(
->>>>>>> bbf056defd2c174c65cddacfeaa220d3a2af1817
                     facets, "LastRenovationDate", 2);
                 assertRangeFacets(baseRateFacets, lastRenovationDateFacets);
             }).verifyComplete();

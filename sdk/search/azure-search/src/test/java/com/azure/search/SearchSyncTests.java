@@ -377,19 +377,11 @@ public class SearchSyncTests extends SearchTestBase {
         SearchPagedIterable results = client.search("*", getSearchOptionsForRangeFacets(), generateRequestOptions(),
             Context.NONE);
 
-<<<<<<< HEAD
-        for (SearchPagedResponse result : pagesIterable) {
-            assertContainHotelIds(hotels, result.getItems());
-            Assert.assertNotNull(result.getFacets());
-            List<RangeFacetResult<String>> baseRateFacets = getRangeFacetsForField(result.getFacets(), "Rooms/BaseRate", 4);
-            List<RangeFacetResult<String>> lastRenovationDateFacets = getRangeFacetsForField(
-=======
         for (SearchPagedResponse result : results.iterableByPage()) {
             assertContainHotelIds(hotels, result.getValue());
             assertNotNull(result.getFacets());
-            List<RangeFacetResult> baseRateFacets = getRangeFacetsForField(result.getFacets(), "Rooms/BaseRate", 4);
-            List<RangeFacetResult> lastRenovationDateFacets = getRangeFacetsForField(
->>>>>>> bbf056defd2c174c65cddacfeaa220d3a2af1817
+            List<RangeFacetResult<String>> baseRateFacets = getRangeFacetsForField(result.getFacets(), "Rooms/BaseRate", 4);
+            List<RangeFacetResult<String>> lastRenovationDateFacets = getRangeFacetsForField(
                 result.getFacets(), "LastRenovationDate", 2);
             assertRangeFacets(baseRateFacets, lastRenovationDateFacets);
         }
