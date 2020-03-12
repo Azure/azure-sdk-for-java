@@ -26,7 +26,7 @@ public class CosmosItemResponse<T> {
      *
      * @return the resource
      */
-    public T getResource() {
+    public T getItem() {
         return responseWrapper.getItem();
     }
 
