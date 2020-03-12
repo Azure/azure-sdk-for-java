@@ -136,14 +136,6 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             this.settings.getLeaseCollectionLink(),
             this.requestOptionsFactory);
 
-        if (this.settings.getLeaseCollectionLink() == null) {
-            throw new IllegalArgumentException("leaseCollectionLink was not specified");
-        }
-
-        if (this.requestOptionsFactory == null) {
-            throw new IllegalArgumentException("requestOptionsFactory was not specified");
-        }
-
         return Mono.just(this);
     }
 
@@ -234,7 +226,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
         return this.leaseUpdater.updateLease(
             lease,
-            lease.getId(), 
+            lease.getId(),
             new PartitionKey(lease.getId()),
             this.requestOptionsFactory.createRequestOptions(lease),
             serverLease -> {
@@ -273,7 +265,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
-                lease.getId(), 
+                lease.getId(),
                 new PartitionKey(lease.getId()),
                 this.requestOptionsFactory.createRequestOptions(lease),
                 serverLease ->
@@ -319,7 +311,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
-                lease.getId(), 
+                lease.getId(),
                 new PartitionKey(lease.getId()),
                 this.requestOptionsFactory.createRequestOptions(lease),
                 serverLease ->
@@ -347,7 +339,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
         return this.leaseUpdater.updateLease(
             lease,
-            lease.getId(), 
+            lease.getId(),
             new PartitionKey(lease.getId()),
             this.requestOptionsFactory.createRequestOptions(lease),
             serverLease -> {
@@ -466,5 +458,5 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     private String getPartitionLeasePrefix() {
         return this.settings.getContainerNamePrefix() + LEASE_STORE_MANAGER_LEASE_SUFFIX;
     }
-    
+
 }

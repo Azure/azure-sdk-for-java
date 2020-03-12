@@ -141,33 +141,31 @@ public final class BridgeInternal {
             headers.put(HttpConstants.HttpHeaders.CONTINUATION, options.getRequestContinuation());
         }
 
-        if (options != null) {
-            if (options.getSessionToken() != null) {
-                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, options.getSessionToken());
-            }
+        if (options.getSessionToken() != null) {
+            headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, options.getSessionToken());
+        }
 
-            if (options.isScanInQueryEnabled() != null) {
-                headers.put(HttpConstants.HttpHeaders.ENABLE_SCAN_IN_QUERY, options.isScanInQueryEnabled().toString());
-            }
+        if (options.isScanInQueryEnabled() != null) {
+            headers.put(HttpConstants.HttpHeaders.ENABLE_SCAN_IN_QUERY, options.isScanInQueryEnabled().toString());
+        }
 
-            if (options.isEmitVerboseTracesInQuery() != null) {
-                headers.put(HttpConstants.HttpHeaders.EMIT_VERBOSE_TRACES_IN_QUERY,
-                    options.isEmitVerboseTracesInQuery().toString());
-            }
+        if (options.isEmitVerboseTracesInQuery() != null) {
+            headers.put(HttpConstants.HttpHeaders.EMIT_VERBOSE_TRACES_IN_QUERY,
+                options.isEmitVerboseTracesInQuery().toString());
+        }
 
-            if (options.getMaxDegreeOfParallelism() != 0) {
-                headers.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Boolean.TRUE.toString());
-            }
+        if (options.getMaxDegreeOfParallelism() != 0) {
+            headers.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Boolean.TRUE.toString());
+        }
 
-            if (options.setResponseContinuationTokenLimitInKb() > 0) {
-                headers.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
-                    Strings.toString(options.setResponseContinuationTokenLimitInKb()));
-            }
+        if (options.setResponseContinuationTokenLimitInKb() > 0) {
+            headers.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
+                Strings.toString(options.setResponseContinuationTokenLimitInKb()));
+        }
 
-            if (options.isPopulateQueryMetrics()) {
-                headers.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS,
-                    String.valueOf(options.isPopulateQueryMetrics()));
-            }
+        if (options.isPopulateQueryMetrics()) {
+            headers.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS,
+                String.valueOf(options.isPopulateQueryMetrics()));
         }
 
         return headers;

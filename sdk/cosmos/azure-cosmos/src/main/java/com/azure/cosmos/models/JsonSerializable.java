@@ -186,12 +186,8 @@ public class JsonSerializable {
         } else if (value instanceof JsonSerializable) {
             // JsonSerializable
             JsonSerializable castedValue = (JsonSerializable) value;
-            if (castedValue != null) {
-                castedValue.populatePropertyBag();
-            }
-            this.propertyBag.set(propertyName, castedValue != null
-                                                   ? castedValue.propertyBag
-                                                   : null);
+            castedValue.populatePropertyBag();
+            this.propertyBag.set(propertyName, castedValue.propertyBag);
         } else {
             // POJO, ObjectNode, number (includes int, float, double etc), boolean,
             // and string.

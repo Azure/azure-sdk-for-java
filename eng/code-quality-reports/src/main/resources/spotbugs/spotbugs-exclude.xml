@@ -761,4 +761,25 @@
     </Or>
     <Bug pattern="BC_UNCONFIRMED_CAST, DM_EXIT, RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>
+
+  <!-- StringUtils.strip can return NULL so the NULL check is required -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.PathsHelper"/>
+    <Method name="parsePathSegments"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
+  <!-- Suppress false positive, there is no null in the flagged code -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.TestConfigurations"/>
+    <Method name="loadFromPathIfExists"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
+  <!-- ClassLoader::getResourceAsStream can return null, ref: https://docs.oracle.com/javase/8/docs/technotes/guides/lang/resources.html -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient$Options$Builder"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
 </FindBugsFilter>
