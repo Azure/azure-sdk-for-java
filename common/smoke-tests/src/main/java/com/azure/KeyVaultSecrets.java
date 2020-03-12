@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure;
 
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
@@ -47,16 +47,19 @@ public class KeyVaultSecrets {
         LOGGER.info("IDENTITY - CREDENTIAL");
         LOGGER.info("---------------------");
 
-        /* DefaultAzureCredentialBuilder() is expecting the following environment variables:
+        /* EnvironmentCredentialBuilder() is expecting the following environment variables:
          * AZURE_CLIENT_ID
          * AZURE_CLIENT_SECRET
          * AZURE_TENANT_ID
+         * AZURE_AUTHORITY_HOST
          */
         secretClient = new SecretClientBuilder()
             .vaultUrl(System.getenv("AZURE_PROJECT_URL"))
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
-
+            .credential(
+                new EnvironmentCredentialBuilder()
+                    .authorityHost(System.getenv("AZURE_AUTHORITY_HOST"))
+                    .build()
+            ).buildClient();
         try {
             setSecret();
             getSecret();
