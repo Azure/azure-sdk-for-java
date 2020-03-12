@@ -782,4 +782,14 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
+  <!-- Tracking work-item: https://github.com/Azure/azure-sdk-for-java/issues/9037 -->
+  <Match>
+    <Or>
+      <Class name="com.azure.cosmos.ClientSideRequestStatistics"/>
+      <Class name="com.azure.cosmos.models.CosmosAsyncItemResponse"/>
+    </Or>
+    <Bug pattern="IS2_INCONSISTENT_SYNC"/>
+  </Match>
+
+
 </FindBugsFilter>
