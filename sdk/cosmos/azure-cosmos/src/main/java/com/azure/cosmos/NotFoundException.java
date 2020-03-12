@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.models.CosmosError;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -77,7 +78,7 @@ public class NotFoundException extends CosmosClientException {
     }
 
     NotFoundException(Exception innerException) {
-        this(RMResources.NotFound, innerException, (Map) null, null);
+        this(RMResources.NotFound, innerException, new HashMap<>(), null);
     }
 
     NotFoundException(String message,

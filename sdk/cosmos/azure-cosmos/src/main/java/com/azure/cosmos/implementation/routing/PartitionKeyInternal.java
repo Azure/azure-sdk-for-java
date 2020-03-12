@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.google.common.base.Objects;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -168,6 +169,18 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
         }
 
         return this.compareTo(pki) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        if (this.components == null || this.components.size() == 0) {
+            return 0;
+        }
+        int [] ordinals = new int[this.components.size()];
+        for (int i = 0; i < this.components.size(); i++) {
+            ordinals[i] = this.components.get(i).GetTypeOrdinal();
+        }
+        return Objects.hashCode(ordinals);
     }
 
     public int compareTo(PartitionKeyInternal other) {

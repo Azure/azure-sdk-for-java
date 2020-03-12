@@ -9,7 +9,7 @@ import io.netty.handler.codec.MessageToByteEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-final class RntbdContextRequestEncoder extends MessageToByteEncoder {
+final class RntbdContextRequestEncoder extends MessageToByteEncoder<RntbdContextRequest> {
 
     private static final Logger Logger = LoggerFactory.getLogger(RntbdContextRequestEncoder.class);
 
@@ -37,9 +37,9 @@ final class RntbdContextRequestEncoder extends MessageToByteEncoder {
      * @throws IllegalStateException is thrown if an error occurs
      */
     @Override
-    protected void encode(final ChannelHandlerContext context, final Object message, final ByteBuf out) throws IllegalStateException {
+    protected void encode(final ChannelHandlerContext context, final RntbdContextRequest message, final ByteBuf out) throws IllegalStateException {
 
-        final RntbdContextRequest request = (RntbdContextRequest)message;
+        final RntbdContextRequest request = message;
         out.markWriterIndex();
 
         try {

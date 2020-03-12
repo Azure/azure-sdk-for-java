@@ -18,6 +18,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * This class uses a shared RntbdTransportClient for multiple Cosmos Clients.
  * The benefit is the underlying connections can be shared if possible across multiple Cosmos client instances.
  */
+// We suppress the "try" warning here because the close() method's signature
+// allows it to throw InterruptedException which is strongly advised against
+// by AutoCloseable (see: http://docs.oracle.com/javase/7/docs/api/java/lang/AutoCloseable.html#close()).
+// close() will never throw an InterruptedException but the exception remains in the
+// signature for backwards compatibility purposes.
+@SuppressWarnings("try")
 public class SharedTransportClient extends TransportClient {
     private static final Logger logger = LoggerFactory.getLogger(SharedTransportClient.class);
     private static final AtomicInteger counter = new AtomicInteger(0);

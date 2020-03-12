@@ -140,6 +140,7 @@ public class JsonSerializable {
      *
      * @return the HashMap.
      */
+    @SuppressWarnings("unchecked")
     public Map<String, Object> getMap() {
         return getMapper().convertValue(this.propertyBag, HashMap.class);
     }
@@ -321,6 +322,8 @@ public class JsonSerializable {
      * @return the object value.
      * @throws IllegalStateException thrown if an error occurs
      */
+    @SuppressWarnings("unchecked")
+    // Implicit or explicit cast to T is done only after checking values are assignable from Class<T>.
     public <T> T getObject(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             JsonNode jsonObj = propertyBag.get(propertyName);
@@ -367,6 +370,8 @@ public class JsonSerializable {
      * @return the object collection.
      * @throws IllegalStateException thrown if an error occurs
      */
+    @SuppressWarnings("unchecked")
+    // Implicit or explicit cast to T is done only after checking values are assignable from Class<T>.
     public <T> List<T> getList(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             ArrayNode jsonArray = (ArrayNode) this.propertyBag.get(propertyName);
@@ -567,6 +572,8 @@ public class JsonSerializable {
      * @throws IllegalArgumentException thrown if an error occurs
      * @throws IllegalStateException thrown when objectmapper is unable to read tree
      */
+    @SuppressWarnings("unchecked")
+    // Implicit or explicit cast to T is done after checking values are assignable from Class<T>.
     public <T> T toObject(Class<T> c) {
         // TODO: We have to remove this if we do not want to support CosmosItemProperties anymore, and change all the
         //  tests accordingly

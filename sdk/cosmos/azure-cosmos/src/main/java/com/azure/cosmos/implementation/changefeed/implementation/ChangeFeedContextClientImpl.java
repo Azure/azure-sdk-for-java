@@ -123,7 +123,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Mono<CosmosAsyncItemResponse> deleteItem(String itemId, PartitionKey partitionKey,
+    public Mono<CosmosAsyncItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey,
                                                     CosmosItemRequestOptions options) {
         return cosmosContainer.deleteItem(itemId, partitionKey, options)
             .publishOn(this.rxScheduler);
@@ -137,7 +137,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public <T> Mono<CosmosAsyncItemResponse<T>> readItem(String itemId, PartitionKey partitionKey, 
+    public <T> Mono<CosmosAsyncItemResponse<T>> readItem(String itemId, PartitionKey partitionKey,
                                                   CosmosItemRequestOptions options, Class<T> itemType) {
         return cosmosContainer.readItem(itemId, partitionKey, options, itemType)
             .publishOn(this.rxScheduler);

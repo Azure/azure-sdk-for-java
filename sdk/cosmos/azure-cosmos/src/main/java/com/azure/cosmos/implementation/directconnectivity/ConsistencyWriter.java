@@ -310,7 +310,7 @@ public class ConsistencyWriter {
 
                     //get max global committed lsn from current batch of responses, then update if greater than max of all batches.
                     long maxGlobalCommittedLsn = (responses != null) ?
-                        (Long) responses.stream().map(s -> s.globalCommittedLSN).max(ComparatorUtils.NATURAL_COMPARATOR).orElse(0L) :
+                        responses.stream().map(s -> s.globalCommittedLSN).max(ComparatorUtils.naturalComparator()).orElse(0L) :
                         0L;
                     maxGlobalCommittedLsnReceived.set(maxGlobalCommittedLsnReceived.get() > maxGlobalCommittedLsn ?
                         maxGlobalCommittedLsnReceived.get() : maxGlobalCommittedLsn);

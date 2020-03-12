@@ -34,7 +34,8 @@ public final class RntbdResponse implements ReferenceCounted {
 
     // region Fields
 
-    private static final AtomicIntegerFieldUpdater REFERENCE_COUNT =
+    @SuppressWarnings("rawtypes")
+    private static final AtomicIntegerFieldUpdater<RntbdResponse> REFERENCE_COUNT =
         AtomicIntegerFieldUpdater.newUpdater(RntbdResponse.class, "referenceCount");
 
     @JsonSerialize(using = PayloadSerializer.class)

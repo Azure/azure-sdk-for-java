@@ -320,9 +320,9 @@ public class QuorumReader {
                         (ReplicatedResourceClient.isGlobalStrongEnabled() && this.serviceConfigReader.getDefaultConsistencyLevel() == ConsistencyLevel.STRONG) &&
                             (entity.requestContext.originalRequestConsistencyLevel == null || entity.requestContext.originalRequestConsistencyLevel == ConsistencyLevel.STRONG);
 
-                    ValueHolder<Long> readLsn = new ValueHolder(-1);
-                    ValueHolder<Long> globalCommittedLSN = new ValueHolder(-1);
-                    ValueHolder<StoreResult> storeResult = new ValueHolder(null);
+                    ValueHolder<Long> readLsn = new ValueHolder<Long>(-1L);
+                    ValueHolder<Long> globalCommittedLSN = new ValueHolder<Long>(-1L);
+                    ValueHolder<StoreResult> storeResult = new ValueHolder<StoreResult>(null);
 
                     if (this.isQuorumMet(
                         responseResult,
