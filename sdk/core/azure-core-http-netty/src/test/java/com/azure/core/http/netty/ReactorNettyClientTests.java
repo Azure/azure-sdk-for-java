@@ -210,7 +210,7 @@ public class ReactorNettyClientTests {
                 latch.await();
                 HttpClient client = new NettyAsyncHttpClientBuilder().build();
                 HttpRequest request = new HttpRequest(HttpMethod.GET,
-                    new URL("http://localhost:" + ss.getLocalPort() + "/getIOException"));
+                    new URL("http://localhost:" + ss.getLocalPort() + "/ioException"));
 
                 HttpResponse response = client.send(request).block();
 

@@ -60,7 +60,7 @@ public final class RestProxyTestsWireMockServer {
         server.stubFor(head(urlPathMatching("/anything")));
         server.stubFor(delete("delete"));
         server.stubFor(patch(urlPathMatching("/patch")));
-        server.stubFor(get(urlPathMatching("/get")));
+        server.stubFor(get("/get"));
 
         return server;
     }
