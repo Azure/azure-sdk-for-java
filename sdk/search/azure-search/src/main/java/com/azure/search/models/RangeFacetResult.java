@@ -4,11 +4,6 @@
 package com.azure.search.models;
 
 import com.azure.core.annotation.Immutable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * A single bucket of a range facet query result that reports the number of documents
