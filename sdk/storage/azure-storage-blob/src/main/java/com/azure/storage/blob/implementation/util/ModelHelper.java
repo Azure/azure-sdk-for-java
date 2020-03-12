@@ -4,6 +4,7 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 
@@ -35,5 +36,23 @@ public class ModelHelper {
             other.getProgressReceiver(),
             other.getMaxSingleUploadSize() == null ? Integer.valueOf(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES)
                 : other.getMaxSingleUploadSize());
+    }
+
+    /**
+     * Transforms a blob type into a common type.
+     * @param blobOptions {@link ParallelTransferOptions}
+     * @return {@link com.azure.storage.common.ParallelTransferOptions}
+     */
+    public static com.azure.storage.common.ParallelTransferOptions wrapBlobOptions(
+        ParallelTransferOptions blobOptions) {
+        Integer blockSize = blobOptions.getBlockSize();
+        Integer numBuffers = blobOptions.getNumBuffers();
+        com.azure.storage.common.ProgressReceiver wrappedReceiver = blobOptions.getProgressReceiver() == null
+            ? null
+            : blobOptions.getProgressReceiver()::reportProgress;
+        Integer maxSingleUploadSize = blobOptions.getMaxSingleUploadSize();
+
+        return new com.azure.storage.common.ParallelTransferOptions(blockSize, numBuffers, wrappedReceiver,
+            maxSingleUploadSize);
     }
 }
