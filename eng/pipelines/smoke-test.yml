@@ -34,6 +34,18 @@ jobs:
           JavaVersion: '1.11'
           OSVmImage: macOS-10.15
 
+    # Set default environment variables
+    - variables:
+      AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
+      AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+      AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
+      AZURE_AUTHORITY_HOST: $(aad-azure-sdk-test-authority-uri)
+      AZURE_PROJECT_URL: $(smoke-tests-key-vault-project-url)
+      AZURE_EVENT_HUBS_CONNECTION_STRING: $(smoke-tests-event-hubs-connection-string)
+      AZURE_STORAGE_CONNECTION_STRING: $(smoke-tests-storage-connection-string)
+      AZURE_COSMOS_KEY: $(smoke-tests-cosmos-key)
+      AZURE_COSMOS_ENDPOINT: $(smoke-tests-cosmos-endpoint)
+
     pool:
       vmImage: $(OSVmImage)
 
@@ -97,13 +109,5 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
         env:
-          AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
-          AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-          AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
-          AZURE_AUTHORITY_HOST: $(aad-azure-sdk-test-authority-uri)
-          AZURE_PROJECT_URL: $(smoke-tests-key-vault-project-url)
-          AZURE_EVENT_HUBS_CONNECTION_STRING: $(smoke-tests-event-hubs-connection-string)
-          AZURE_STORAGE_CONNECTION_STRING: $(smoke-tests-storage-connection-string)
-          AZURE_COSMOS_KEY: $(smoke-tests-cosmos-key)
-          AZURE_COSMOS_ENDPOINT: $(smoke-tests-cosmos-endpoint)
+
           AZURE_LOG_LEVEL: 2
