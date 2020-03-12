@@ -89,17 +89,17 @@ public class SharedTokenCacheCredential implements TokenCredential {
                         return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable.No accounts were discovered in the shared token cache."
                             + " To fix, authenticate through tooling supporting azure developer sign on."));
                     } else {
-                        return Mono.error(new RuntimeException(String.format("User account '%s' was not found in the "
+                        return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential authentication unavailable. User account '%s' was not found in the "
                             + "shared token cache. Discovered Accounts: [ '%s' ]", username, accounts.values().stream()
                             .map(IAccount::username).collect(Collectors.joining(", ")))));
                     }
                 } else if (accounts.size() > 1) {
                     if (username == null) {
-                        return Mono.error(new RuntimeException("Multiple accounts were discovered in the shared token "
+                        return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. Multiple accounts were discovered in the shared token "
                             + "cache. To fix, set the AZURE_USERNAME environment variable to the preferred username, "
                             + "or specify it when constructing SharedTokenCacheCredential."));
                     } else {
-                        return Mono.error(new RuntimeException("Multiple entries for the user account " + username
+                        return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. Multiple entries for the user account " + username
                             + " were found in the shared token cache. This is not currently supported by the"
                             + " SharedTokenCacheCredential."));
                     }
@@ -120,7 +120,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
 
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
-                    return Mono.error(new RuntimeException("Token was not found"));
+                    return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication failed. Token was not found"));
                 }
             });
     }

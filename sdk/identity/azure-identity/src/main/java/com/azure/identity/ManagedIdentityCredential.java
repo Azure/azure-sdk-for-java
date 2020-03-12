@@ -8,6 +8,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -20,6 +21,7 @@ import reactor.core.publisher.Mono;
 public final class ManagedIdentityCredential implements TokenCredential {
     private final AppServiceMsiCredential appServiceMSICredential;
     private final VirtualMachineMsiCredential virtualMachineMSICredential;
+    private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
 
     /**
      * Creates an instance of the ManagedIdentityCredential.
@@ -54,7 +56,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return (appServiceMSICredential != null
-            ? appServiceMSICredential.authenticate(request)
-            : virtualMachineMSICredential.authenticate(request)).onErrorResume(t->Mono.error((new RuntimeException("ManagedIdentityCredential authentication unavailable, no managed identity endpoint found.",t))));
+        ? appServiceMSICredential.authenticate(request).onErrorResume(t->Mono.error(logger.logExceptionAsError(new RuntimeException("ManagedIdentityCredential authentication failed",t))))
+        : virtualMachineMSICredential.authenticate(request).onErrorResume(t->Mono.error(logger.logExceptionAsError(new RuntimeException("ManagedIdentityCredential authentication unavailable, no managed identity endpoint found.",t)))));
     }
 }

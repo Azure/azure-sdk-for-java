@@ -14,7 +14,6 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 /**
  * Creates a credential using environment variables or the shared token cache. It tries to create a valid credential in
@@ -52,7 +51,6 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
         final AtomicReference<Throwable> cause = new AtomicReference<>();
         StringBuilder errorMsg = new StringBuilder();
         return Flux.fromIterable(credentials).flatMap(p -> p.getToken(request).onErrorResume(t -> {
-            System.out.println(t.getMessage()+"aaaaaaaaaaaaaaaaaaa");
             if (t.getMessage() != null && !t.getMessage().contains("authentication unavailable")) {
                 if (cause.get() != null) {
                     t=new Throwable(t.getMessage(),cause.get());
