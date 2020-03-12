@@ -258,8 +258,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         }
     }
     Write-Host "processing pomFile=$($pomFile)"
-    $dependencyManagement = $xmlPomFile.GetElementsByTagName("dependencyManagement")[0]
-    if ($dependencyManagement)
+    if ($xmlPomFile.project.dependencyManagement)
     {
         Write-Error-With-Color "Error: <dependencyManagement> is not allowed. Every dependency must have its own version and version update tag"
     }
@@ -289,7 +288,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 else
                 {
                     # verify the version tag and version are correct
-                    $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText $versionNode.NextSibling.Value
+                    $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
                     if ($retVal)
                     {
                         $script:FoundError = $true
@@ -333,7 +332,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 else
                 {
                     # verify the version tag and version are correct
-                    $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText $versionNode.NextSibling.Value
+                    $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
                     if ($retVal)
                     {
                         $script:FoundError = $true
@@ -381,7 +380,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             else
             {
                 # verify the version tag and version are correct
-                $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText $versionNode.NextSibling.Value
+                $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
                 if ($retVal)
                 {
                     $script:FoundError = $true
@@ -428,7 +427,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             else
             {
                 # verify the version tag and version are correct
-                $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText $versionNode.NextSibling.Value
+                $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
                 if ($retVal)
                 {
                     $script:FoundError = $true
