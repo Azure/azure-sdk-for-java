@@ -257,6 +257,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             return
         }
     }
+    
     Write-Host "processing pomFile=$($pomFile)"
     if ($xmlPomFile.project.dependencyManagement)
     {
