@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/keys/javaKeyTemp/create?api-version=7.1-preview",
+    "Uri" : "https://azure-java-live-test2.vault.azure.net/keys/javaKeyTemp/create?api-version=7.1-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (12.0.1; Mac OS X 10.14.6)",
       "Content-Type" : "application/json"
@@ -12,15 +12,15 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Mon, 09 Mar 2020 14:38:32 GMT",
+      "Date" : "Thu, 12 Mar 2020 17:03:49 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=43.241.70.141;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.178;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "108",
-      "x-ms-request-id" : "b6cfb9c6-8024-4874-a908-3f1ea83f8171",
+      "x-ms-request-id" : "75cb6115-62fa-4718-bb93-078ec64f14b4",
       "x-ms-keyvault-service-version" : "1.1.0.897",
       "Body" : "{\"error\":{\"code\":\"BadParameter\",\"message\":\"Property  has invalid value\\r\\nProperty  has invalid value\\r\\n\"}}",
       "X-Powered-By" : "ASP.NET",

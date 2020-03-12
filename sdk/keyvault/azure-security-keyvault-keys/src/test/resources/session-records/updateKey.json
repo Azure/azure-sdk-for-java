@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/keys/82f8f705-d872-4dc2-ac47-71c9b9d66ab1-testKey1/create?api-version=7.1-preview",
+    "Uri" : "https://azure-java-live-test2.vault.azure.net/keys/testKey1/create?api-version=7.1-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (12.0.1; Mac OS X 10.14.6)",
       "Content-Type" : "application/json"
@@ -12,24 +12,24 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 09 Mar 2020 14:36:47 GMT",
+      "Date" : "Thu, 12 Mar 2020 17:02:27 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=43.241.70.141;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.178;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "Content-Length" : "721",
-      "x-ms-request-id" : "71924032-ab9b-4df8-8f54-d6f2021d90a7",
+      "Content-Length" : "681",
+      "x-ms-request-id" : "cb1cb19b-099c-47fa-8014-9df0816e8b00",
       "x-ms-keyvault-service-version" : "1.1.0.897",
-      "Body" : "{\"key\":{\"kid\":\"https://azure-sdk-java-key-vault.vault.azure.net/keys/82f8f705-d872-4dc2-ac47-71c9b9d66ab1-testKey1/4e9995e664d54af29052373fbe4e9dba\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"mNkZrB-h3rbW0ka0zaX-2kEiMAFWP5cZNJ9Aa2rL2T9KKRQrYZqH0YzpFz9mfTk546WrS_wKactMubjUyKH3q0jFFprEaoymljKJ6MiEuNl0a_MH2PBKiFWwPuhNmb9tqc0XMz2vrZrnz6dWrgXSxndERBrYrYJIjiZi0IgFOSZjXbRMHxz9ep9jZp52xxDoxiB82zMmJewQZ_xoujHvdzKPoRzroFRqT7dzFzceSDtOoviPhR71YzWfR_HmYAZsmwi7giXxDuh9_7IltnA-ROff_GPzxLyMyF46vFqcl4ZeAFlJmGtyBbHpBk4ux1YAupu7m9yhCQ3UfONY8-coTw\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1583764607,\"updated\":1583764607,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-java-live-test2.vault.azure.net/keys/testKey1/4de3609c79e0406eb26f11c1dc793b53\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"hSK_S0OC7pj_KjDjmKzn8UWVeVbTjmBuFUhyz4HM5mNNUvvQHV6xjNrcosPD5_7kaMkVv5FMQ_mGd63xvuMyJd0QPMs01N9DyX7YYDcWOM37RBJP18yCvo38zbMqUZdJRcg-lyzSwwWjDsBPeNppP4HeFiKX5ePcXxGQbb33f50Aa9yWFgyy-cpNk9ckhLOcvXvQTGB3kLBguUp95qkpiZ0QZaMzFf7BR2orf5ZtyXEl6WGlOVrYZIzGTwxBvR-p0FsCL-pl3cN44SxFOdP9M3GEBQSd0xjwAGSmBPm9_n_6OuMDtMJNIDAAL15obwli7Tl3mpdrS3iOHFFu0B2Lnw\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1584032548,\"updated\":1584032548,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/keys/82f8f705-d872-4dc2-ac47-71c9b9d66ab1-testKey1/?api-version=7.1-preview",
+    "Uri" : "https://azure-java-live-test2.vault.azure.net/keys/testKey1/?api-version=7.1-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (12.0.1; Mac OS X 10.14.6)",
       "Content-Type" : "application/json"
@@ -40,24 +40,24 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 09 Mar 2020 14:36:48 GMT",
+      "Date" : "Thu, 12 Mar 2020 17:02:27 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=43.241.70.141;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.178;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "Content-Length" : "721",
-      "x-ms-request-id" : "5cfaa215-b1e6-4775-9b68-2a25fbb9a10b",
+      "Content-Length" : "681",
+      "x-ms-request-id" : "50a88841-da73-4cd4-af00-e466dc317bd1",
       "x-ms-keyvault-service-version" : "1.1.0.897",
-      "Body" : "{\"key\":{\"kid\":\"https://azure-sdk-java-key-vault.vault.azure.net/keys/82f8f705-d872-4dc2-ac47-71c9b9d66ab1-testKey1/4e9995e664d54af29052373fbe4e9dba\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"mNkZrB-h3rbW0ka0zaX-2kEiMAFWP5cZNJ9Aa2rL2T9KKRQrYZqH0YzpFz9mfTk546WrS_wKactMubjUyKH3q0jFFprEaoymljKJ6MiEuNl0a_MH2PBKiFWwPuhNmb9tqc0XMz2vrZrnz6dWrgXSxndERBrYrYJIjiZi0IgFOSZjXbRMHxz9ep9jZp52xxDoxiB82zMmJewQZ_xoujHvdzKPoRzroFRqT7dzFzceSDtOoviPhR71YzWfR_HmYAZsmwi7giXxDuh9_7IltnA-ROff_GPzxLyMyF46vFqcl4ZeAFlJmGtyBbHpBk4ux1YAupu7m9yhCQ3UfONY8-coTw\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1583764607,\"updated\":1583764607,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-java-live-test2.vault.azure.net/keys/testKey1/4de3609c79e0406eb26f11c1dc793b53\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"hSK_S0OC7pj_KjDjmKzn8UWVeVbTjmBuFUhyz4HM5mNNUvvQHV6xjNrcosPD5_7kaMkVv5FMQ_mGd63xvuMyJd0QPMs01N9DyX7YYDcWOM37RBJP18yCvo38zbMqUZdJRcg-lyzSwwWjDsBPeNppP4HeFiKX5ePcXxGQbb33f50Aa9yWFgyy-cpNk9ckhLOcvXvQTGB3kLBguUp95qkpiZ0QZaMzFf7BR2orf5ZtyXEl6WGlOVrYZIzGTwxBvR-p0FsCL-pl3cN44SxFOdP9M3GEBQSd0xjwAGSmBPm9_n_6OuMDtMJNIDAAL15obwli7Tl3mpdrS3iOHFFu0B2Lnw\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2537049600,\"created\":1584032548,\"updated\":1584032548,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/keys/82f8f705-d872-4dc2-ac47-71c9b9d66ab1-testKey1/4e9995e664d54af29052373fbe4e9dba?api-version=7.1-preview",
+    "Uri" : "https://azure-java-live-test2.vault.azure.net/keys/testKey1/4de3609c79e0406eb26f11c1dc793b53?api-version=7.1-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (12.0.1; Mac OS X 10.14.6)",
       "Content-Type" : "application/json"
@@ -68,24 +68,24 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 09 Mar 2020 14:36:48 GMT",
+      "Date" : "Thu, 12 Mar 2020 17:02:27 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=43.241.70.141;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.178;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "Content-Length" : "721",
-      "x-ms-request-id" : "9c877077-1cd1-493f-95ee-7a980eea65cf",
+      "Content-Length" : "681",
+      "x-ms-request-id" : "a1f7d5e6-ee50-44c1-8dd4-7f673d1abcf0",
       "x-ms-keyvault-service-version" : "1.1.0.897",
-      "Body" : "{\"key\":{\"kid\":\"https://azure-sdk-java-key-vault.vault.azure.net/keys/82f8f705-d872-4dc2-ac47-71c9b9d66ab1-testKey1/4e9995e664d54af29052373fbe4e9dba\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"mNkZrB-h3rbW0ka0zaX-2kEiMAFWP5cZNJ9Aa2rL2T9KKRQrYZqH0YzpFz9mfTk546WrS_wKactMubjUyKH3q0jFFprEaoymljKJ6MiEuNl0a_MH2PBKiFWwPuhNmb9tqc0XMz2vrZrnz6dWrgXSxndERBrYrYJIjiZi0IgFOSZjXbRMHxz9ep9jZp52xxDoxiB82zMmJewQZ_xoujHvdzKPoRzroFRqT7dzFzceSDtOoviPhR71YzWfR_HmYAZsmwi7giXxDuh9_7IltnA-ROff_GPzxLyMyF46vFqcl4ZeAFlJmGtyBbHpBk4ux1YAupu7m9yhCQ3UfONY8-coTw\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2852668800,\"created\":1583764607,\"updated\":1583764608,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-java-live-test2.vault.azure.net/keys/testKey1/4de3609c79e0406eb26f11c1dc793b53\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"hSK_S0OC7pj_KjDjmKzn8UWVeVbTjmBuFUhyz4HM5mNNUvvQHV6xjNrcosPD5_7kaMkVv5FMQ_mGd63xvuMyJd0QPMs01N9DyX7YYDcWOM37RBJP18yCvo38zbMqUZdJRcg-lyzSwwWjDsBPeNppP4HeFiKX5ePcXxGQbb33f50Aa9yWFgyy-cpNk9ckhLOcvXvQTGB3kLBguUp95qkpiZ0QZaMzFf7BR2orf5ZtyXEl6WGlOVrYZIzGTwxBvR-p0FsCL-pl3cN44SxFOdP9M3GEBQSd0xjwAGSmBPm9_n_6OuMDtMJNIDAAL15obwli7Tl3mpdrS3iOHFFu0B2Lnw\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2852668800,\"created\":1584032548,\"updated\":1584032548,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-sdk-java-key-vault.vault.azure.net/keys/82f8f705-d872-4dc2-ac47-71c9b9d66ab1-testKey1/?api-version=7.1-preview",
+    "Uri" : "https://azure-java-live-test2.vault.azure.net/keys/testKey1/?api-version=7.1-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (12.0.1; Mac OS X 10.14.6)",
       "Content-Type" : "application/json"
@@ -96,17 +96,17 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 09 Mar 2020 14:36:48 GMT",
+      "Date" : "Thu, 12 Mar 2020 17:02:27 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
-      "x-ms-keyvault-region" : "eastus2",
-      "x-ms-keyvault-network-info" : "addr=43.241.70.141;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.178;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "Content-Length" : "721",
-      "x-ms-request-id" : "c41e59b2-217b-41be-827a-0350f6e4c8bb",
+      "Content-Length" : "681",
+      "x-ms-request-id" : "c14a59e5-63b6-40da-a9f6-3ec9b5f28727",
       "x-ms-keyvault-service-version" : "1.1.0.897",
-      "Body" : "{\"key\":{\"kid\":\"https://azure-sdk-java-key-vault.vault.azure.net/keys/82f8f705-d872-4dc2-ac47-71c9b9d66ab1-testKey1/4e9995e664d54af29052373fbe4e9dba\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"mNkZrB-h3rbW0ka0zaX-2kEiMAFWP5cZNJ9Aa2rL2T9KKRQrYZqH0YzpFz9mfTk546WrS_wKactMubjUyKH3q0jFFprEaoymljKJ6MiEuNl0a_MH2PBKiFWwPuhNmb9tqc0XMz2vrZrnz6dWrgXSxndERBrYrYJIjiZi0IgFOSZjXbRMHxz9ep9jZp52xxDoxiB82zMmJewQZ_xoujHvdzKPoRzroFRqT7dzFzceSDtOoviPhR71YzWfR_HmYAZsmwi7giXxDuh9_7IltnA-ROff_GPzxLyMyF46vFqcl4ZeAFlJmGtyBbHpBk4ux1YAupu7m9yhCQ3UfONY8-coTw\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2852668800,\"created\":1583764607,\"updated\":1583764608,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-java-live-test2.vault.azure.net/keys/testKey1/4de3609c79e0406eb26f11c1dc793b53\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"hSK_S0OC7pj_KjDjmKzn8UWVeVbTjmBuFUhyz4HM5mNNUvvQHV6xjNrcosPD5_7kaMkVv5FMQ_mGd63xvuMyJd0QPMs01N9DyX7YYDcWOM37RBJP18yCvo38zbMqUZdJRcg-lyzSwwWjDsBPeNppP4HeFiKX5ePcXxGQbb33f50Aa9yWFgyy-cpNk9ckhLOcvXvQTGB3kLBguUp95qkpiZ0QZaMzFf7BR2orf5ZtyXEl6WGlOVrYZIzGTwxBvR-p0FsCL-pl3cN44SxFOdP9M3GEBQSd0xjwAGSmBPm9_n_6OuMDtMJNIDAAL15obwli7Tl3mpdrS3iOHFFu0B2Lnw\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"exp\":2852668800,\"created\":1584032548,\"updated\":1584032548,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     },
