@@ -120,7 +120,7 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
-        CosmosItemResponse<CosmosItemProperties> deleteResponse = container.deleteItem(properties.getId(),
+        CosmosItemResponse<?> deleteResponse = container.deleteItem(properties.getId(),
                                                                     new PartitionKey(properties.get("mypk")),
                                                                     options);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);

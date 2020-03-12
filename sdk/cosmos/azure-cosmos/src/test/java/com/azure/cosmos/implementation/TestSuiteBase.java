@@ -255,6 +255,8 @@ public class TestSuiteBase extends DocumentClientTest {
         logger.info("Finished truncating collection {}.", collection.getId());
     }
 
+    @SuppressWarnings("fallthrough")
+    // Note: @kushagraThapar @moderakh to evaluate whether fallthrough intentional
     protected static void waitIfNeededForReplicasToCatchUp(Builder clientBuilder) {
         switch (clientBuilder.getDesiredConsistencyLevel()) {
             case EVENTUAL:
@@ -866,6 +868,8 @@ public class TestSuiteBase extends DocumentClientTest {
         }
     }
 
+    @SuppressWarnings("fallthrough")
+    // Note: @kushagraThapar @moderakh to evaluate whether fallthrough intentional
     static List<ConsistencyLevel> allEqualOrLowerConsistencies(ConsistencyLevel accountConsistency) {
         List<ConsistencyLevel> testConsistencies = new ArrayList<>();
         switch (accountConsistency) {

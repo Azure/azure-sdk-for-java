@@ -26,8 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public interface ResourceResponseValidator<T extends Resource> {
 
-    static <T extends Resource> Builder builder() {
-        return new Builder();
+    static <T extends Resource> Builder<T> builder() {
+        return new Builder<>();
     }
 
     void validate(ResourceResponse<T> resourceResponse);

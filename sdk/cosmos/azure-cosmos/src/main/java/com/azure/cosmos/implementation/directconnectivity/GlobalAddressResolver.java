@@ -126,7 +126,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         });
 
         if (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
-            List<URI> allEndpoints = new ArrayList<URI>(this.endpointManager.getWriteEndpoints());
+            List<URI> allEndpoints = new ArrayList<>(this.endpointManager.getWriteEndpoints());
             allEndpoints.addAll(this.endpointManager.getReadEndpoints());
             Collections.reverse(allEndpoints);
             LinkedList<URI> endpoints = new LinkedList<>(allEndpoints);

@@ -192,7 +192,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         String propValue = "hello";
         BridgeInternal.setProperty(document, propName, propValue);
 
-        ResourceResponseValidator<Document> validator = ResourceResponseValidator.builder()
+        ResourceResponseValidator<Document> validator = ResourceResponseValidator.<Document>builder()
             .withProperty(propName, propValue)
             .build();
         validateSuccess(client.upsertDocument(getCollectionLink(), document, options, false), validator, TIMEOUT);
@@ -237,11 +237,12 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
     private void validateNoStoredProcExecutionOperationThroughGateway() {
         // this validates that Document related requests don't go through gateway
-        DocumentServiceRequestValidator validateResourceTypesSentToGateway = DocumentServiceRequestValidator.builder()
-                .resourceTypeIn(ResourceType.DatabaseAccount,
-                                ResourceType.Database,
-                                ResourceType.DocumentCollection,
-                                ResourceType.PartitionKeyRange)
+        DocumentServiceRequestValidator<RxDocumentServiceRequest> validateResourceTypesSentToGateway
+            = DocumentServiceRequestValidator.<RxDocumentServiceRequest>builder()
+            .resourceTypeIn(ResourceType.DatabaseAccount,
+                ResourceType.Database,
+                ResourceType.DocumentCollection,
+                ResourceType.PartitionKeyRange)
                 .build();
 
         // validate that all gateway captured requests are non document resources
@@ -252,11 +253,12 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
     private void validateNoDocumentOperationThroughGateway() {
         // this validates that Document related requests don't go through gateway
-        DocumentServiceRequestValidator validateResourceTypesSentToGateway = DocumentServiceRequestValidator.builder()
-                .resourceTypeIn(ResourceType.DatabaseAccount,
-                                ResourceType.Database,
-                                ResourceType.DocumentCollection,
-                                ResourceType.PartitionKeyRange)
+        DocumentServiceRequestValidator<RxDocumentServiceRequest> validateResourceTypesSentToGateway
+            = DocumentServiceRequestValidator.<RxDocumentServiceRequest>builder()
+            .resourceTypeIn(ResourceType.DatabaseAccount,
+                ResourceType.Database,
+                ResourceType.DocumentCollection,
+                ResourceType.PartitionKeyRange)
                 .build();
 
         // validate that all gateway captured requests are non document resources
@@ -267,11 +269,12 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
     private void validateNoDocumentQueryOperationThroughGateway() {
         // this validates that Document related requests don't go through gateway
-        DocumentServiceRequestValidator validateResourceTypesSentToGateway = DocumentServiceRequestValidator.builder()
-                .resourceTypeIn(ResourceType.DatabaseAccount,
-                                ResourceType.Database,
-                                ResourceType.DocumentCollection,
-                                ResourceType.PartitionKeyRange)
+        DocumentServiceRequestValidator<RxDocumentServiceRequest> validateResourceTypesSentToGateway
+            = DocumentServiceRequestValidator.builder()
+            .resourceTypeIn(ResourceType.DatabaseAccount,
+                ResourceType.Database,
+                ResourceType.DocumentCollection,
+                ResourceType.PartitionKeyRange)
                 .build();
 
         // validate that all gateway captured requests are non document resources

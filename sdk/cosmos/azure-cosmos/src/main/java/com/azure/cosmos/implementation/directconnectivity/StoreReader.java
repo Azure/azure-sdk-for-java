@@ -386,9 +386,9 @@ public class StoreReader {
                                     boolean enforceSessionCheck = true;
 
                                     MutableVolatile<Boolean> hasGoneException
-                                        = new MutableVolatile<Boolean>(false);
+                                        = new MutableVolatile<>(false);
                                     MutableVolatile<ReadReplicaResult> shortCircuitResult
-                                        = new MutableVolatile<ReadReplicaResult>();
+                                        = new MutableVolatile<>();
 
                                     return Flux.defer(() ->
                                                                     readFromReplicas(

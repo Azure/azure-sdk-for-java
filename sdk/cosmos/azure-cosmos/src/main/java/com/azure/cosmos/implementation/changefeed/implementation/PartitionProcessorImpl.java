@@ -128,16 +128,20 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         BridgeInternal.getPartitionKeyInternal(this.options.getPartitionKey()), Thread.currentThread().getId(), clientException);
                     StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
 
+                    // Note: @kushagraThapar and @moderakh to ensure fallthrough is not expected and break is good
                     switch (docDbError) {
                         case PARTITION_NOT_FOUND: {
                             this.resultException = new PartitionNotFoundException("Partition not found.", this.lastContinuation);
                         }
+                        break;
                         case PARTITION_SPLIT: {
                             this.resultException = new PartitionSplitException("Partition split.", this.lastContinuation);
                         }
+                        break;
                         case UNDEFINED: {
                             this.resultException = new RuntimeException(clientException);
                         }
+                        break;
                         case MAX_ITEM_COUNT_TOO_LARGE: {
                             if (this.options.getMaxItemCount() == null) {
                                 this.options.setMaxItemCount(DefaultMaxItemCount);
@@ -163,6 +167,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                                     }).flatMap(values -> Flux.empty());
                             }
                         }
+                        break;
                         default: {
                             logger.error("Unrecognized Cosmos exception returned error code {}", docDbError, clientException);
                             this.resultException = new RuntimeException(clientException);

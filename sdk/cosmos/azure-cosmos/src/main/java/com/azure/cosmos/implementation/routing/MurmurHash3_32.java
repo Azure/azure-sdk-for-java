@@ -24,6 +24,7 @@ public class MurmurHash3_32  {
      * @param seed an integer to be used as hash seed
      * @return     the hash value
      */
+    @SuppressWarnings("fallthrough") // Fall through is expected
     public static int hash(byte[] data, int len, int seed) {
         final int c1 = 0xcc9e2d51;
         final int c2 = 0x1b873593;

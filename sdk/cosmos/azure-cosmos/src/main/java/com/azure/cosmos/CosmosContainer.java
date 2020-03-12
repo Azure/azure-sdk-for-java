@@ -203,6 +203,8 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
+    @SuppressWarnings("unchecked")
+    // Note: @kushagraThapar and @moderakh to ensure this casting is valid
     public <T> CosmosItemResponse<T> upsertItem(Object item, CosmosItemRequestOptions options) throws
         CosmosClientException {
         return (CosmosItemResponse<T>) this.mapItemResponseAndBlock(this.asyncContainer.upsertItem(item, options));
