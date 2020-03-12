@@ -123,7 +123,7 @@ jobs:
         displayName: Set secrets for public cloud
         condition: and(success(), eq(variables['CloudType'], 'public'))
 
-        - pwsh: |
+      - pwsh: |
           $variables = @{
             AZURE_CLIENT_SECRET='$(aad-azure-sdk-test-client-secret-gov)'
             AZURE_TENANT_ID='$(aad-azure-sdk-test-tenant-id-gov)'
