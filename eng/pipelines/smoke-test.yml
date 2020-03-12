@@ -99,7 +99,7 @@ jobs:
             AZURE_COSMOS_KEY='$(smoke-tests-cosmos-key)'
             AZURE_COSMOS_ENDPOINT='$(smoke-tests-cosmos-endpoint)'
           };
-          foreach ($key in $variables) {
+          foreach ($key in $variables.Keys) {
             Write-Host "Setting variable '$key'"
             Write-Host "##vso[task.setvariable variable=_$key;issecret=true;]$($variables[$key])"
             Write-Host "##vso[task.setvariable variable=$key;]$($variables[$key])"
