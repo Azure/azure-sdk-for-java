@@ -9,6 +9,8 @@ import com.azure.search.SearchDocument;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
+
 /**
  * A result containing a document found by a suggestion query, plus associated
  * metadata.

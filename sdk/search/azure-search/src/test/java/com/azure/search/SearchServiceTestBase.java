@@ -209,20 +209,20 @@ public abstract class SearchServiceTestBase extends TestBase {
                     .setName("Description")
                     .setType(DataType.EDM_STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setAnalyzer(AnalyzerName.EN_LUCENE.toString())
+                    .setAnalyzer(AnalyzerName.EN_LUCENE)
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("DescriptionFr")
                     .setType(DataType.EDM_STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setAnalyzer(AnalyzerName.FR_LUCENE.toString())
+                    .setAnalyzer(AnalyzerName.FR_LUCENE)
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Description_Custom")
                     .setType(DataType.EDM_STRING)
                     .setSearchable(Boolean.TRUE)
-                    .setSearchAnalyzer(AnalyzerName.STOP.toString())
-                    .setIndexAnalyzer(AnalyzerName.STOP.toString())
+                    .setSearchAnalyzer(AnalyzerName.STOP)
+                    .setIndexAnalyzer(AnalyzerName.STOP)
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Category")
@@ -326,13 +326,13 @@ public abstract class SearchServiceTestBase extends TestBase {
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
                             .setRetrievable(Boolean.TRUE)
-                            .setAnalyzer(AnalyzerName.EN_LUCENE.toString()),
+                            .setAnalyzer(AnalyzerName.EN_LUCENE),
                         new Field()
                             .setName("DescriptionFr")
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
                             .setRetrievable(Boolean.TRUE)
-                            .setAnalyzer(AnalyzerName.FR_LUCENE.toString()),
+                            .setAnalyzer(AnalyzerName.FR_LUCENE),
                         new Field()
                             .setName("Type")
                             .setType(DataType.EDM_STRING)
