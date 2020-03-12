@@ -55,9 +55,7 @@ public class MockHttpClient extends NoOpHttpClient {
                         response = new MockHttpResponse(request, 200, new byte[0]);
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
-                        json.url(request.getUrl().toString()
-                            // This is just to mimic the behavior we've seen with httpbin.org.
-                            .replace("%20", " "));
+                        json.url(cleanseUrl(requestUrl));
                         json.headers(toMap(request.getHeaders()));
                         response = new MockHttpResponse(request, 200, json);
                     }
@@ -129,17 +127,17 @@ public class MockHttpClient extends NoOpHttpClient {
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, 0);
                 } else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.getUrl().toString());
+                    json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/get")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.getUrl().toString());
+                    json.url(cleanseUrl(requestUrl));
                     json.headers(toMap(request.getHeaders()));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.getUrl().toString());
+                    json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
                     response = new MockHttpResponse(request, 200, json);
                 } else if (requestPathLower.equals("/post")) {
@@ -156,14 +154,14 @@ public class MockHttpClient extends NoOpHttpClient {
                         response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
-                        json.url(request.getUrl().toString());
+                        json.url(cleanseUrl(requestUrl));
                         json.data(createHttpBinResponseDataForRequest(request));
                         json.headers(toMap(request.getHeaders()));
                         response = new MockHttpResponse(request, 200, json);
                     }
                 } else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url(request.getUrl().toString());
+                    json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
                     json.headers(toMap(request.getHeaders()));
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
@@ -223,5 +221,19 @@ public class MockHttpClient extends NoOpHttpClient {
             }
         }
         return result;
+    }
+
+    private static String cleanseUrl(URL url) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(url.getProtocol())
+            .append("://")
+            .append(url.getHost())
+            .append(url.getPath().replace("%20", " "));
+
+        if (url.getQuery() != null) {
+            builder.append("?").append(url.getQuery().replace("%20", " "));
+        }
+
+        return builder.toString();
     }
 }

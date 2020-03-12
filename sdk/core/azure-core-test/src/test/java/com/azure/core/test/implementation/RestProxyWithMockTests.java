@@ -62,7 +62,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         return new MockHttpClient();
     }
 
-    @Host("http://localhost:21354")
+    @Host("http://localhost")
     @ServiceInterface(name = "Service1")
     private interface Service1 {
         @Get("Base64UrlBytes/10")
@@ -175,7 +175,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
     }
 
 
-    @Host("http://localhost:21354")
+    @Host("http://localhost")
     @ServiceInterface(name = "ServiceErrorWithCharsetService")
     interface ServiceErrorWithCharsetService {
         @Get("/get")
