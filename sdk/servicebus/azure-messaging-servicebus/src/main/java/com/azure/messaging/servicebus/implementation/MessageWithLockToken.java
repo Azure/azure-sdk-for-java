@@ -11,7 +11,7 @@ import java.util.UUID;
 /**
  * Represents a received message containing a lock token.
  */
-class MessageWithLockToken extends MessageImpl {
+public class MessageWithLockToken extends MessageImpl {
     private final UUID lockToken;
 
     MessageWithLockToken(Message message, UUID lockToken) {
@@ -25,7 +25,7 @@ class MessageWithLockToken extends MessageImpl {
      *
      * @return The lock token associated with this message or {@link MessageUtils#ZERO_LOCK_TOKEN} if there is none.
      */
-    UUID getLockToken() {
+    public UUID getLockToken() {
         return lockToken;
     }
 }

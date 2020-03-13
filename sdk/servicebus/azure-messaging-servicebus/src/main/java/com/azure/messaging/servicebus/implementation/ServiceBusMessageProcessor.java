@@ -6,7 +6,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
-import reactor.core.Exceptions;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
@@ -213,7 +212,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             downstream.onNext(message);
         } catch (Exception e) {
             logger.error("Exception occurred while handling downstream onNext operation.", e);
-            throw Exceptions.propagate(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
+            downstream.onError(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
         }
 
         try {
@@ -223,7 +222,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         } catch (Exception e) {
             logger.error("Exception occurred while auto-completing message. Sequence: {}. Lock token: {}",
                 message.getSequenceNumber(), message.getLockToken(), e);
-            throw Exceptions.propagate(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
+            downstream.onError(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
         }
     }
 }

@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -48,6 +49,6 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
      * @return A stream of events received from the partition.
      */
     public Flux<ServiceBusReceivedMessage> receive() {
-        return processor;
+        return processor.subscribeOn(Schedulers.elastic());
     }
 }

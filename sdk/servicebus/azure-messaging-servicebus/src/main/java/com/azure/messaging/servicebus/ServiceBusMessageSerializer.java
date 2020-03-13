@@ -7,6 +7,7 @@ import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.Messages;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -328,15 +329,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             }
         }
 
-        // TODO (conniey): Set delivery tag and lock token. .NET does not expose delivery tag. Do we need it?
-
-        // if (deliveryTag != null && deliveryTag.length == LOCK_TOKEN_SIZE) {
-        //     UUID lockToken = Util.convertDotNetBytesToUUID(deliveryTag);
-        //     brokeredMessage.setLockToken(lockToken);
-        // } else {
-        //     brokeredMessage.setLockToken(ZERO_LOCK_TOKEN);
-        // }
-        // brokeredMessage.setDeliveryTag(deliveryTag);
+        if (amqpMessage instanceof MessageWithLockToken) {
+            brokeredMessage.setLockToken(((MessageWithLockToken) amqpMessage).getLockToken());
+        }
 
         return brokeredMessage;
     }
