@@ -930,4 +930,150 @@
     <Bug pattern="SF_SWITCH_FALLTHROUGH"/>
   </Match>
 
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Field name="endTime"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Field name="startTime"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Field name="targetEndpoint"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Field name="requestResourceType"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Field name="requestResponseTime"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$StoreResponseStatistics"/>
+    <Field name="storeResult"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RequestTimeline$Event"/>
+    <Field name="durationInMicroSec"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- The entire class is unused. Bug: https://github.com/Azure/azure-sdk-for-java/issues/9075 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.implementation.RemainingWorkEstimatorImpl"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- serviceConfigReader type is not used, but comment seems this is be used in future updates -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver"/>
+    <Field name="serviceConfigReader"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- gatewayAddressCache also seems associated with serviceConfigReader suppressed previously -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver"/>
+    <Field name="gatewayAddressCache"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- addressResolver also seems associated with serviceConfigReader suppressed previously -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver"/>
+    <Field name="addressResolver"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9076 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreClientFactory"/>
+    <Field name="maxConcurrentConnectionOpenRequests"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9076 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreClientFactory"/>
+    <Field name="requestTimeout"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9076 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreClientFactory"/>
+    <Field name="enableTransportClientSharing"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseHeaders"/>
+    <Field name="indexTermsGenerated"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseHeaders"/>
+    <Field name="queriesPerformed"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseHeaders"/>
+    <Field name="readsPerformed"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseHeaders"/>
+    <Field name="scriptsExecuted"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseHeaders"/>
+    <Field name="writesPerformed"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- This field is set to false as of today, looks like the field it left for future enhancement -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.DefaultDocumentQueryExecutionContext"/>
+    <Field name="isContinuationExpected"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9077 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext"/>
+    <Field name="correlatedActivityId"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
 </FindBugsFilter>
