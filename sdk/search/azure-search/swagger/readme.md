@@ -62,7 +62,7 @@ input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchindex.json
 title: SearchIndexRestClient
 models-subpackage: implementation.models
-custom-types: QueryType,AutocompleteResult,AutocompleteOptions,AutocompleteRequest,AutocompleteItem,IndexDocumentsResult,IndexingResult,SearchErrorException,SearchResult,SearchRequest,SearchOptions,RequestOptions,IndexBatchBase,IndexAction,FacetResult,SuggestOptions,SuggestResult,SuggestRequest
+custom-types: QueryType,AutocompleteResult,AutocompleteOptions,AutocompleteRequest,AutocompleteItem,IndexDocumentsResult,IndexingResult,SearchError,SearchErrorException,SearchResult,SearchRequest,SearchOptions,RequestOptions,IndexBatchBase,IndexAction,FacetResult,SuggestOptions,SuggestResult,SuggestRequest
 custom-types-subpackage: models
 ```
 
