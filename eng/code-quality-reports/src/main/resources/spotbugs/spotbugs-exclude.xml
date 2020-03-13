@@ -923,4 +923,11 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
 
+  <!-- Fallthrough is by design -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.MurmurHash3_32"/>
+    <Method name="hash"/>
+    <Bug pattern="SF_SWITCH_FALLTHROUGH"/>
+  </Match>
+
 </FindBugsFilter>
