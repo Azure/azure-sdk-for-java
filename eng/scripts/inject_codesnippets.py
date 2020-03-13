@@ -3,6 +3,7 @@ import glob
 import re
 import json
 import pprint
+import cgi
 
 # run this from the root of the repository
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -91,12 +92,10 @@ if __name__ == "__main__":
 
           print("checking for snippet ref " + id_ending)
 
-
-
           if id_ending in snippets:
             result_array = [
               lead_space + "<pre>\n",
-              "".join(map(lambda x : lead_space + x, snippets[id_ending])),
+              "".join(map(lambda x : lead_space + x, cgi.escape(snippets[id_ending]), quote=True)),
               lead_space + "</pre>\n"
             ]
             line_replacement = "".join(result_array)
