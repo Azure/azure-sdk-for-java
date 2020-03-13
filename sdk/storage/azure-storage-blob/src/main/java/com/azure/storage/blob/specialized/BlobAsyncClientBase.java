@@ -682,8 +682,8 @@ public class BlobAsyncClientBase {
             .setCount(range.getCount())
             .setETag(requestConditions.getIfMatch());
 
-        return azureBlobStorage.blobs().downloadWithRestResponseAsync(null, null, snapshot, null, range.toHeaderValue(),
-            requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
+        return azureBlobStorage.blobs().downloadWithRestResponseAsync(null, null, snapshot, null /* versionId */, null,
+            range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
             .map(response -> {
@@ -1093,8 +1093,8 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        return this.azureBlobStorage.blobs().deleteWithRestResponseAsync(null, null, snapshot, null,
-            requestConditions.getLeaseId(), deleteBlobSnapshotOptions, requestConditions.getIfModifiedSince(),
+        return this.azureBlobStorage.blobs().deleteWithRestResponseAsync(null, null, snapshot, null /* versionId */,
+            null, requestConditions.getLeaseId(), deleteBlobSnapshotOptions, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), null, context)
             .map(response -> new SimpleResponse<>(response, null));
@@ -1145,9 +1145,9 @@ public class BlobAsyncClientBase {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         return this.azureBlobStorage.blobs().getPropertiesWithRestResponseAsync(
-            null, null, snapshot, null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
+            null, null, snapshot, null /* versionId */, null, requestConditions.getLeaseId(),
+            requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
             .map(rb -> {
                 BlobGetPropertiesHeaders hd = rb.getDeserializedHeaders();
                 BlobProperties properties = new BlobProperties(hd.getCreationTime(), hd.getLastModified(), hd.getETag(),
@@ -1274,7 +1274,8 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, customerProvidedKey, encryptionScope, context)
+            requestConditions.getIfNoneMatch(), null, null /* versionId */, customerProvidedKey, encryptionScope,
+            context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
