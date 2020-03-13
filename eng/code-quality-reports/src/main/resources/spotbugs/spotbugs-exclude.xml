@@ -1076,4 +1076,25 @@
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestHeaders"/>
+    <Method name="addResourceIdOrPathHeaders"/>
+    <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.MurmurHash3_32"/>
+    <Method name="hash"/>
+    <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9078 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.PartitionKeyInternal"/>
+    <Method name="fromObjectArray"/>
+    <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
+  </Match>
+
 </FindBugsFilter>
