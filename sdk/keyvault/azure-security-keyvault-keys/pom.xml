@@ -41,11 +41,6 @@
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
           <rerunFailingTestsCount>3</rerunFailingTestsCount>
-          <argLine>
-            --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-            --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.cryptography=ALL-UNNAMED
-            --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys=ALL-UNNAMED
-          </argLine>
         </configuration>
       </plugin>
     </plugins>
