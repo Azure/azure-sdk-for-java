@@ -23,6 +23,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -467,8 +468,8 @@ public class LocationCache {
         for (DatabaseAccountLocation location: locations) {
             if (!Strings.isNullOrEmpty(location.getName())) {
                 try {
-                    URI endpoint = new URI(location.getEndpoint().toLowerCase());
-                    endpointsByLocation.put(location.getName().toLowerCase(), endpoint);
+                    URI endpoint = new URI(location.getEndpoint().toLowerCase(Locale.ROOT));
+                    endpointsByLocation.put(location.getName().toLowerCase(Locale.ROOT), endpoint);
                     parsedLocations.add(location.getName());
 
                 } catch (Exception e) {
@@ -566,7 +567,7 @@ public class LocationCache {
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             URI defaultEndpoint) {
-            this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> loc.toLowerCase()).collect(Collectors.toList()));
+            this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> loc.toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
             this.availableWriteEndpointByLocation
                 = (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(new CaseInsensitiveMap<>());
             this.availableReadEndpointByLocation
