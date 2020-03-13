@@ -20,11 +20,13 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
 import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
+import java.time.Duration;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -41,7 +43,6 @@ class ServiceBusAsyncConsumerTest {
     private final FluxSink<AmqpEndpointState> endpointProcessorSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
 
     private ServiceBusReceiveLinkProcessor linkProcessor;
-    private TestPublisher<AmqpReceiveLink> linkTestPublisher;
 
     @Mock
     private ServiceBusAmqpConnection connection;
@@ -58,7 +59,7 @@ class ServiceBusAsyncConsumerTest {
 
     @BeforeAll
     static void beforeAll() {
-//        StepVerifier.setDefaultTimeout(Duration.ofSeconds(20));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(20));
     }
 
     @AfterAll
@@ -69,7 +70,7 @@ class ServiceBusAsyncConsumerTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
-        linkProcessor = linkTestPublisher.next(link).flux()
+        linkProcessor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link))
             .subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy, parentConnection));
 
         TestPublisher<AmqpEndpointState> endpointStateTestPublisher = TestPublisher.createCold();

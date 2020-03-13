@@ -97,10 +97,11 @@ public class ManagementChannel implements  ServiceBusManagementNode {
         return tokenManager.getAuthorizationResults().switchOnFirst((signal, publisher) -> {
             if (signal.hasValue() && (signal.get() == AmqpResponseCode.ACCEPTED)) {
                 return createRequestResponse.flatMap(channel -> {
+                    final Duration serviceTimeout = MessageUtils.adjustServerTimeout(operationTimeout);
                     final Map<String, Object> appProperties = new HashMap<>();
                     // set mandatory application properties for AMQP message.
                     appProperties.put(MANAGEMENT_OPERATION_KEY, PEEK_OPERATION_VALUE);
-                    appProperties.put(MANAGEMENT_SERVER_TIMEOUT, operationTimeout);
+                    appProperties.put(MANAGEMENT_SERVER_TIMEOUT, serviceTimeout.toMillis());
 
                     final Message request = Proton.message();
                     final ApplicationProperties applicationProperties = new ApplicationProperties(appProperties);
