@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.UUID;
 
 /**
@@ -70,5 +71,9 @@ public final class MessageUtils {
         long mostSignificantBits = buffer.getLong();
         long leastSignificantBits = buffer.getLong();
         return new UUID(mostSignificantBits, leastSignificantBits);
+    }
+    // Pass little less than client timeout to the server so client doesn't time out before server times out
+    public static Duration adjustServerTimeout(Duration clientTimeout) {
+        return clientTimeout.minusMillis(200);
     }
 }

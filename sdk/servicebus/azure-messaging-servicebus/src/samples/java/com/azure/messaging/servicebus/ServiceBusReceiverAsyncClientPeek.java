@@ -182,6 +182,25 @@ public class ServiceBusReceiverAsyncClientPeek {
         return message;
     }
 
+
+
+    @Test
+
+    public void receiveAndExtendLockMessage() {
+
+        // Arrange
+        final int numberOfEvents = 1;
+
+        consumer.receive()
+            .take(numberOfEvents)
+            .subscribe(receivedMessage -> {
+
+                consumer.renewMessageLock(receivedMessage)
+                .subscribe(instant ->  {
+                    log(" New time " + receivedMessage.getLockedUntil());
+                });
+        }); }
+
     private void log(String message) {
         System.out.println(message);
     }

@@ -14,6 +14,7 @@ import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -34,7 +35,9 @@ import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -250,19 +253,23 @@ public class RequestResponseChannel implements Disposable {
     }
 
     private Message decodeDelivery(Delivery delivery) {
+        ExtendedAmqpMessage extendedAmqpMessage = null;
         final Message response = Proton.message();
         final int msgSize = delivery.pending();
         final byte[] buffer = new byte[msgSize];
-
         final int read = receiveLink.recv(buffer, 0, msgSize);
 
         response.decode(buffer, 0, read);
-        if (this.senderSettleMode == SenderSettleMode.SETTLED) {
+        if (senderSettleMode == SenderSettleMode.SETTLED) {
             // No op. Delivery comes settled from the sender
             delivery.disposition(Accepted.getInstance());
             delivery.settle();
+            extendedAmqpMessage =  new ExtendedAmqpMessage(response, null);
+        } else {
+            extendedAmqpMessage =  new ExtendedAmqpMessage(response,
+                ByteBuffer.wrap(delivery.getTag()));
         }
-        return response;
+        return extendedAmqpMessage;
     }
 
     private void settleMessage(Message message) {

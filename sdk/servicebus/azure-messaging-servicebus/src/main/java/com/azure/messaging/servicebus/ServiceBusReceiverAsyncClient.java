@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue
- * or topic on Azure Service Bus. 
+ * or topic on Azure Service Bus.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements Closeable {
@@ -255,13 +255,16 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * (LockDuration). If processing of the message requires longer than this duration, the lock needs to be renewed.
      * For each renewal, the lock is reset to the entity's LockDuration value.
      *
-     * @param message to be used.
+     * @param receivedMessage to be used.
      *
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Instant renewMessageLock(ServiceBusReceivedMessage message) {
-        //TODO(feature-to-implement)
-        return null;
+    public Mono<Instant> renewMessageLock(ServiceBusReceivedMessage receivedMessage) {
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath))
+            .flatMap(serviceBusManagementNode -> {
+                return serviceBusManagementNode.renewMessageLock(receivedMessage);
+            });
     }
 
     /**

@@ -30,9 +30,11 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
@@ -207,6 +209,25 @@ public class ServiceBusReceiverAsyncClientTest {
 
         verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
 
+
+    }
+
+    /**
+     * Verifies that this renew the message lock for the message.
+     */
+    @Test
+    void renewMessageLock() {
+        // Arrange
+        final int numberOfEvents = 1;
+        Instant renewTime = mock(Instant.class);
+
+        when(managementNode.renewMessageLock(message1))
+            .thenReturn(just(renewTime));
+
+        // Act & Assert
+        StepVerifier.create(consumer.renewMessageLock(message1))
+            .expectNext(renewTime)
+            .verifyComplete();
 
     }
 

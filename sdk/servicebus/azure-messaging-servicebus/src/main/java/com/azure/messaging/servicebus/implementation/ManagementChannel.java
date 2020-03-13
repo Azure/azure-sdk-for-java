@@ -6,7 +6,9 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
+import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManager;
+import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -17,12 +19,17 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * Channel responsible for Service Bus related metadata, peek  and management plane operations.
@@ -40,16 +47,25 @@ public class ManagementChannel implements  ServiceBusManagementNode {
     public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC = "last_enqueued_time_utc";
     public static final String MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC = "runtime_info_retrieval_time_utc";
     public static final String MANAGEMENT_RESULT_PARTITION_IS_EMPTY = "is_partition_empty";
+    public static final String REQUEST_RESPONSE_LOCKTOKENS = "lock-tokens";
+    public static final String REQUEST_RESPONSE_EXPIRATIONS = "expirations";
 
-    // Well-known keys for management plane service requests.
-    private static final String MANAGEMENT_ENTITY_TYPE_KEY = "type";
-    private static final String MANAGEMENT_OPERATION_KEY = "operation";
-    private static final String MANAGEMENT_SECURITY_TOKEN_KEY = "security_token";
+    public static final String REQUEST_RESPONSE_MESSAGES = "messages";
+    public static final String REQUEST_RESPONSE_MESSAGE = "message";
+    public static final String REQUEST_RESPONSE_MESSAGE_ID = "message-id";
+    public static final String REQUEST_RESPONSE_SEQUENCE_NUMBERS = "sequence-numbers";
+    public static final String REQUEST_RESPONSE_OPERATION_NAME = "operation";
+    public static final String REQUEST_RESPONSE_ASSOCIATED_LINK_NAME = "associated-link-name";
+    public static final String REQUEST_RESPONSE_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 
     // Well-known values for the service request.
     private static final String PEEK_OPERATION_VALUE = AmqpConstants.VENDOR + ":peek-message";
     private static final String MANAGEMENT_SERVICEBUS_ENTITY_TYPE = AmqpConstants.VENDOR + ":servicebus";
     private static final String MANAGEMENT_SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
+    public static final String REQUEST_RESPONSE_RENEWLOCK_OPERATION = AmqpConstants.VENDOR + ":renew-lock";
+
+    private static final int REQUEST_RESPONSE_OK_STATUS_CODE = 200;
+    private static Duration DEFAULT_REQUEST_RESPONSE_TIMEOUT = Duration.ofSeconds(60);
 
     private final Mono<RequestResponseChannel> channelMono;
     private final Scheduler scheduler;
@@ -62,8 +78,6 @@ public class ManagementChannel implements  ServiceBusManagementNode {
     private AtomicReference<Long>  lastPeekedSequenceNumber = new AtomicReference<>(0L);
     private AtomicReference<Boolean> cbsBasedTokenManagerCalled = new AtomicReference<>(false);
 
-
-
     ManagementChannel(Mono<RequestResponseChannel> responseChannelMono,
                       MessageSerializer messageSerializer, Scheduler scheduler, TokenManager cbsBasedTokenManager
     ) {
@@ -72,6 +86,16 @@ public class ManagementChannel implements  ServiceBusManagementNode {
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
         this.cbsBasedTokenManager = Objects.requireNonNull(cbsBasedTokenManager,
             "'cbsBasedTokenManager' cannot be null.");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Instant> renewMessageLock(ServiceBusReceivedMessage messageForLockRenew) {
+        return renewMessageLock(new ServiceBusReceivedMessage[]{messageForLockRenew})
+            .elementAt(0)
+            .publishOn(scheduler);
     }
 
     /**
@@ -114,7 +138,7 @@ public class ManagementChannel implements  ServiceBusManagementNode {
 
                       Map<String, Object> appProperties = new HashMap<>();
                       // set mandatory application properties for AMQP message.
-                      appProperties.put(MANAGEMENT_OPERATION_KEY, PEEK_OPERATION_VALUE);
+                      appProperties.put(REQUEST_RESPONSE_OPERATION_NAME, PEEK_OPERATION_VALUE);
                       //TODO(hemanttanwar) fix timeour configuration
                       appProperties.put(MANAGEMENT_SERVER_TIMEOUT, "30000");
 
@@ -149,6 +173,73 @@ public class ManagementChannel implements  ServiceBusManagementNode {
                 }
                 return Flux.fromIterable(messageListObj);
             });
+    }
+
+    private Flux<Instant> renewMessageLock(ServiceBusReceivedMessage[] messagesforRenewLock) {
+
+        return  cbsAuthorizationOnce()
+            .then(
+                channelMono.flatMap(requestResponseChannel -> {
+                    UUID[] lockTokens = new UUID[messagesforRenewLock.length];
+                    int index = 0;
+                    for (ServiceBusReceivedMessage receivedMessage : messagesforRenewLock
+                    ) {
+                        lockTokens[index++] = receivedMessage.getLockToken();
+                    }
+                    HashMap<String, UUID[]> requestBodyMap = new HashMap<>();
+                    requestBodyMap.put(REQUEST_RESPONSE_LOCKTOKENS, lockTokens);
+                    Message requestMessage = createRequestMessageFromValueBody(REQUEST_RESPONSE_RENEWLOCK_OPERATION,
+                        requestBodyMap, MessageUtils.adjustServerTimeout(Duration.ofSeconds(60)));
+                    return requestResponseChannel.sendWithAck(requestMessage);
+                })
+            )
+            .flatMapMany(responseMessage -> {
+                   int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+
+                    List<Instant> expirationsForLocks = null;
+
+                    if (statusCode ==  REQUEST_RESPONSE_OK_STATUS_CODE) {
+                        @SuppressWarnings("unchecked")
+                        Map<String, Object> responseBody = (Map<String, Object>) ((AmqpValue) responseMessage
+                            .getBody()).getValue();
+                        Object expirationListObj = responseBody.get(REQUEST_RESPONSE_EXPIRATIONS);
+
+                        if (expirationListObj instanceof  Date[]){
+                            Date[] expirations = (Date[]) expirationListObj;
+                                expirationsForLocks =  Arrays.stream(expirations)
+                                .map(Date::toInstant)
+                                .collect(Collectors.toList());
+                        }
+                    }
+                    return Flux.fromIterable(expirationsForLocks);
+                });
+    }
+
+    private Message createRequestMessageFromValueBody(String operation, Object valueBody, Duration timeout) {
+        Message requestMessage = Message.Factory.create();
+        requestMessage.setBody(new AmqpValue(valueBody));
+        HashMap applicationPropertiesMap = new HashMap();
+        applicationPropertiesMap.put(REQUEST_RESPONSE_OPERATION_NAME, operation);
+        applicationPropertiesMap.put(REQUEST_RESPONSE_TIMEOUT, timeout.toMillis());
+
+
+        requestMessage.setApplicationProperties(new ApplicationProperties(applicationPropertiesMap));
+        return requestMessage;
+    }
+
+    private Mono<Void>  cbsAuthorizationOnce() {
+        return Mono.defer(() -> {
+            if (!cbsBasedTokenManagerCalled.get()) {
+                return cbsBasedTokenManager
+                    .authorize()
+                    .doOnNext(refreshCBSTokenTime -> {
+                        cbsBasedTokenManagerCalled.set(true);
+                    })
+                    .then();
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**

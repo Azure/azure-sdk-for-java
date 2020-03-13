@@ -3,9 +3,12 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.implementation.ExtendedAmqpMessage;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.AmqpMessageWithLockToken;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.Messages;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -38,6 +41,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Deserializes and serializes messages to and from Azure Service Bus.
@@ -54,6 +58,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     private static final String REQUEST_RESPONSE_MESSAGES = "messages";
     private static final String REQUEST_RESPONSE_MESSAGE = "message";
     private static final int REQUEST_RESPONSE_OK_STATUS_CODE = 200;
+    private static final UUID ZEROLOCKTOKEN = new UUID(0L, 0L);
+    private static final String REQUEST_RESPONSE_LOCKTOKEN = "lock-token";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
 
@@ -169,8 +175,15 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         Objects.requireNonNull(message, "'message' cannot be null.");
         Objects.requireNonNull(clazz, "'clazz' cannot be null.");
 
+        ExtendedAmqpMessage extendedAmqpMessage =  null;
+
+        if (message instanceof ExtendedAmqpMessage) {
+            extendedAmqpMessage = (ExtendedAmqpMessage) message;
+        }
         if (clazz == ServiceBusReceivedMessage.class) {
-            return (T) deserializeMessage(message);
+            ServiceBusReceivedMessage brokeredMessage = deserializeMessage(message);
+            brokeredMessage.setLockToken(MessageUtils.convertDotNetBytesToUUID(extendedAmqpMessage.getDeliveryTag().array()));
+            return (T) brokeredMessage;
         } else if (clazz == List.class) {
             return (T) deserializeListOfMessages(message);
         } else {
@@ -181,15 +194,16 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
     private List<ServiceBusReceivedMessage> deserializeListOfMessages(Message amqpMessage) {
         //maintain the order of elements because last sequence number needs to be maintain.
-        List<Message> listAmqpMessages = convertAmqpValueMessageToBrokeredMessage(amqpMessage);
-
-        List<ServiceBusReceivedMessage> receivedMessageList = new ArrayList<>();
-        for (Message oneAmqpMessage:listAmqpMessages) {
-            ServiceBusReceivedMessage serviceBusReceivedMessage = deserializeMessage(oneAmqpMessage);
-            receivedMessageList.add(serviceBusReceivedMessage);
-        }
-
-        return receivedMessageList;
+        List<AmqpMessageWithLockToken> amqpMessageList = convertAmqpValueMessageToBrokeredMessage(amqpMessage);
+        return amqpMessageList.stream()
+            .map(oneAmqpMessageWithLock -> {
+                ServiceBusReceivedMessage receivedMessage = deserializeMessage(oneAmqpMessageWithLock.getMessage());
+                if (!oneAmqpMessageWithLock.getLockToken().equals(ZEROLOCKTOKEN)) {
+                    receivedMessage.setLockToken(oneAmqpMessageWithLock.getLockToken());
+                }
+                return receivedMessage;
+            })
+            .collect(Collectors.toList());
     }
 
     private ServiceBusReceivedMessage deserializeMessage(org.apache.qpid.proton.message.Message amqpMessage) {
@@ -431,8 +445,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             "Encoding Type: %s is not supported", obj.getClass()));
     }
 
-    private List<Message> convertAmqpValueMessageToBrokeredMessage(Message amqpResponseMessage) {
-        List<Message> messageList = new ArrayList<>();
+    private List<AmqpMessageWithLockToken> convertAmqpValueMessageToBrokeredMessage(Message amqpResponseMessage) {
+        List<AmqpMessageWithLockToken> messageList = new ArrayList<>();
         int statusCode = RequestResponseUtils.getResponseStatusCode(amqpResponseMessage);
 
         if (statusCode == REQUEST_RESPONSE_OK_STATUS_CODE) {
@@ -447,8 +461,11 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                                 .get(REQUEST_RESPONSE_MESSAGE);
                             responseMessage.decode(messagePayLoad.getArray(), messagePayLoad.getArrayOffset(),
                                 messagePayLoad.getLength());
-
-                            messageList.add(responseMessage);
+                            UUID lockToken = ZEROLOCKTOKEN;
+                            if (((Map) message).containsKey(REQUEST_RESPONSE_LOCKTOKEN)) {
+                                lockToken = (UUID) ((Map) message).get(REQUEST_RESPONSE_LOCKTOKEN);
+                            }
+                            messageList.add(new AmqpMessageWithLockToken(responseMessage, lockToken));
                         }
                     }
                 }

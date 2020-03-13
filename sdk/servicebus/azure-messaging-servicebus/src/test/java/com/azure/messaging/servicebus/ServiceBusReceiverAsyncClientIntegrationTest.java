@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.UUID;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_TRACKING_ID;
@@ -94,6 +95,27 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
                 Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
             })
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can renew message lock.
+     */
+    @Test
+    void renewMessageLock() {
+        // Arrange
+        Duration renewAfterSeconds = Duration.ofSeconds(1);
+
+        // Assert & Act
+        StepVerifier.create(receiver.receive().take(1)
+            .delayElements(renewAfterSeconds)
+            .doOnNext(receivedMessage -> {
+
+                Assertions.assertNotNull(receivedMessage.getLockToken());
+                receiver.renewMessageLock(receivedMessage)
+                    .doOnSuccess(Assertions::assertNotNull);
+            })
+        )
             .verifyComplete();
     }
 }
