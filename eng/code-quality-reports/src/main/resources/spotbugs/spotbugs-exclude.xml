@@ -1139,4 +1139,11 @@
     <Bug pattern="NM_FIELD_NAMING_CONVENTION"/>
   </Match>
 
+  <!-- The static field sharedGatewayHttpClient is cleared using synchronized ref count mechanism -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.http.SharedGatewayHttpClient"/>
+    <Field name="sharedGatewayHttpClient"/>
+    <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
+  </Match>
+
 </FindBugsFilter>
