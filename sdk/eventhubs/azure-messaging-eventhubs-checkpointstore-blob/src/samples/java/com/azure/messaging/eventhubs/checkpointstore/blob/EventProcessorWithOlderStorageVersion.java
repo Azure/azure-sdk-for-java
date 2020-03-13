@@ -23,7 +23,7 @@ public class EventProcessorWithOlderStorageVersion {
 
     private static final String EH_CONNECTION_STRING = "";
     private static final String CONSUMER_GROUP = "";
-    public static final String EVENT_HUB_NAME = "";
+    private static final String EVENT_HUB_NAME = "";
 
     /**
      * The main method to run this sample.
