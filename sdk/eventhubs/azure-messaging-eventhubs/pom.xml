@@ -58,6 +58,12 @@
       <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency> <!-- HACK: Adding this here to work around a limitation with the -amd switch in Maven. -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.4.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
