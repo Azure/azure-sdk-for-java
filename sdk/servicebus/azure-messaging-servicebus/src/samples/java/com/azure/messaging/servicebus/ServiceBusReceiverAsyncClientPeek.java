@@ -26,13 +26,16 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import reactor.core.Disposable;
 import reactor.core.publisher.DirectProcessor;
 
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -92,6 +96,7 @@ public class ServiceBusReceiverAsyncClientPeek {
 
         consumer = new ServiceBusClientBuilder()
             .connectionString(connectionString)
+            .scheduler(Schedulers.elastic())
             .buildAsyncReceiverClient();
     }
 
@@ -190,7 +195,7 @@ public class ServiceBusReceiverAsyncClientPeek {
 
     @Test
 
-    public void receiveAndExtendLockMessage() {
+    public void receiveAndExtendLockMessage() throws InterruptedException {
 
         // Arrange
         final int numberOfEvents = 1;
@@ -198,12 +203,29 @@ public class ServiceBusReceiverAsyncClientPeek {
         consumer.receive()
             .take(numberOfEvents)
             .subscribe(receivedMessage -> {
+                Disposable renewDisposable = consumer.renewMessageLock(receivedMessage)
+                    .delayElement(Duration.ofSeconds(1))
+                    .repeat(() -> true)
+                    .publishOn(Schedulers.elastic())
+                    .subscribeOn(Schedulers.elastic())
+                    .subscribe(instant ->  {
+                        log(" New time " + receivedMessage.getLockedUntil());
+                    });
+                // processing the messaging
+                int count = 0;
+                while (count < 5 ) {
+                    ++count;
+                    try{Thread.sleep(1000); }catch(Exception e ) {}
+                    log("processing message ");
+                }
+                log("processing done");
+                //renewDisposable.dispose();
 
-                consumer.renewMessageLock(receivedMessage)
-                .subscribe(instant ->  {
-                    log(" New time " + receivedMessage.getLockedUntil());
-                });
-        }); }
+        });
+
+    Thread.sleep(TimeUnit.SECONDS.toMillis(15));
+    }
+
 
     private void log(String message) {
         System.out.println(message);
