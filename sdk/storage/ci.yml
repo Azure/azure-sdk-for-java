@@ -56,6 +56,9 @@ stages:
         - name: azure-storage-blob-nio
           groupId: com.azure
           safeName: azurestorageblobnio
+        - name: azure-storage-blob-changefeed
+          groupId: com.azure
+          safeName: azurestorageblobchangefeed
         - name: azure-storage-file-share
           groupId: com.azure
           safeName: azurestoragefileshare
