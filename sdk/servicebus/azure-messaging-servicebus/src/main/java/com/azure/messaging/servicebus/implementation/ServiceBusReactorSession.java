@@ -10,9 +10,11 @@ import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
@@ -21,6 +23,7 @@ import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
+import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
 
@@ -61,9 +64,6 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
             messageSerializer, openTimeout);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
         Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode, boolean isSession) {
@@ -99,5 +99,12 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
         return createConsumer(linkName, entityPath, timeout, retry, filter, linkProperties, null, senderSettleMode,
             receiverSettleMode);
+    }
+
+    @Override
+    protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
+        ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
+        return new ServiceBusReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager,
+            reactorProvider.getReactorDispatcher());
     }
 }

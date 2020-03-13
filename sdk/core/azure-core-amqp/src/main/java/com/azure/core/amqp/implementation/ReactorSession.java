@@ -293,6 +293,15 @@ public class ReactorSession implements AmqpSession {
     }
 
     /**
+     * Given the entity path, associated receiver and link handler, creates the receive link instance.
+     */
+    protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
+        ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
+        return new ReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager,
+            reactorProvider.getReactorDispatcher());
+    }
+
+    /**
      * NOTE: Ensure this is invoked using the reactor dispatcher because proton-j is not thread-safe.
      */
     private LinkSubscription<AmqpSendLink> getSubscription(String linkName, String entityPath, Duration timeout,
@@ -368,8 +377,8 @@ public class ReactorSession implements AmqpSession {
 
         receiver.open();
 
-        final ReactorReceiver reactorReceiver = new ReactorReceiver(entityPath, receiver, receiveLinkHandler,
-            tokenManager, provider.getReactorDispatcher());
+        final ReactorReceiver reactorReceiver = createConsumer(entityPath, receiver, receiveLinkHandler,
+            tokenManager, provider);
 
         final Disposable subscription = reactorReceiver.getEndpointStates().subscribe(state -> {
         }, error -> {

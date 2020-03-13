@@ -12,7 +12,8 @@ import java.util.UUID;
  */
 final class MessageUtils {
     public static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
-    private static final int LOCK_TOKEN_SIZE = 16;
+    static final int LOCK_TOKEN_SIZE = 16;
+
     private static final int GUID_SIZE = 16;
 
     private MessageUtils() {
