@@ -115,7 +115,10 @@ public class VectorSessionToken implements ISessionToken {
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.version, this.globalLsn, this.localLsnByRegion);
+//      Note: @kushagraThapar, @moderakh, mbhaskar to identify proper implementation.
+//      Issue: https://github.com/Azure/azure-sdk-for-java/issues/9046
+//      return Objects.hash(this.version, this.globalLsn, this.localLsnByRegion);
+        return super.hashCode();
     }
 
     public boolean isValid(ISessionToken otherSessionToken) throws CosmosClientException {

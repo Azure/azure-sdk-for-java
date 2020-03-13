@@ -172,14 +172,17 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
 
     @Override
     public int hashCode() {
-        if (this.components == null || this.components.size() == 0) {
-            return 0;
-        }
-        int [] ordinals = new int[this.components.size()];
-        for (int i = 0; i < this.components.size(); i++) {
-            ordinals[i] = this.components.get(i).GetTypeOrdinal();
-        }
-        return Arrays.hashCode(ordinals);
+//        Note: @kushagraThapar, @moderakh, mbhaskar to identify proper implementation.
+//        Issue: https://github.com/Azure/azure-sdk-for-java/issues/9046
+//        if (this.components == null || this.components.size() == 0) {
+//            return 0;
+//        }
+//        int [] ordinals = new int[this.components.size()];
+//        for (int i = 0; i < this.components.size(); i++) {
+//            ordinals[i] = this.components.get(i).GetTypeOrdinal();
+//        }
+//        return Arrays.hashCode(ordinals);
+        return super.hashCode();
     }
 
     public int compareTo(PartitionKeyInternal other) {

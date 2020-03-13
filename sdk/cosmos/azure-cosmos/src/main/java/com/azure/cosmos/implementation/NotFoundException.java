@@ -80,7 +80,7 @@ public class NotFoundException extends CosmosClientException {
     }
 
     NotFoundException(Exception innerException) {
-        this(RMResources.NotFound, innerException, new HashMap<>(), null);
+        this(RMResources.NotFound, innerException, (Map<String, String>) null, null);
     }
 
     NotFoundException(String message,
