@@ -839,4 +839,32 @@
     <Bug pattern="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE"/>
   </Match>
 
+  <!-- The following 3 suppression are valid, the types uses default value if parse fails  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.Configs"/>
+    <Method name="getIntValue"/>
+    <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.Integers"/>
+    <Method name="tryParse"/>
+    <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.Longs"/>
+    <Method name="tryParse"/>
+    <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING"/>
+  </Match>
+
+  <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/9048 -->
+  <Match>
+    <Class name="com.azure.cosmos.models.ModelBridgeInternal"/>
+    <Method name="toDatabaseAccount"/>
+    <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING"/>
+  </Match>
+
+
+
 </FindBugsFilter>
