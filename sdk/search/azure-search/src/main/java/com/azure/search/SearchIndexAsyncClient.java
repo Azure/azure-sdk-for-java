@@ -452,7 +452,6 @@ public final class SearchIndexAsyncClient {
                 .getWithRestResponseAsync(key, selectedFields, requestOptions, context)
                 .map(res -> {
                     SearchDocument doc = new SearchDocument(res.getValue());
-                    DocumentResponseConversions.cleanupDocument(doc);
                     return new SimpleResponse<>(res, doc);
                 })
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)

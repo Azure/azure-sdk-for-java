@@ -12,8 +12,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePage;
+import com.azure.search.implementation.models.SearchDocumentsResult;
 import com.azure.search.models.FacetResult;
-import com.azure.search.models.SearchDocumentsResult;
 import com.azure.search.models.SearchRequest;
 import com.azure.search.models.SearchResult;
 
