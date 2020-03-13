@@ -1,8 +1,10 @@
+Change for testing PR triggers...
+
 # Azure cognitive search client library for Java
 
 This is the Java client library for [Azure Cognitive Search](https://docs.microsoft.com/en-us/rest/api/searchservice/).
 Azure Cognitive Search is a fully managed cloud search service that provides a rich search experience to custom applications.
-This library provides an easy (native) way for a Java developer to interact with the service to accomplish tasks like: 
+This library provides an easy (native) way for a Java developer to interact with the service to accomplish tasks like:
 create and manage indexes, load data, implement search features, execute queries, and handle results.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation]| [Product documentation][search_docs] | [Samples][samples]
@@ -29,9 +31,9 @@ create and manage indexes, load data, implement search features, execute queries
 
 ## Key concepts
 
-Azure Cognitive Search has the concepts of search services and indexes and documents, where a search service contains 
-one or more indexes that provides persistent storage of searchable data, and data is loaded in the form of JSON documents. 
-Data can be pushed to an index from an external data source, but if you use an indexer, it's possible to crawl a data 
+Azure Cognitive Search has the concepts of search services and indexes and documents, where a search service contains
+one or more indexes that provides persistent storage of searchable data, and data is loaded in the form of JSON documents.
+Data can be pushed to an index from an external data source, but if you use an indexer, it's possible to crawl a data
 source to extract and load data into an index.
 
 There are several types of operations that can be executed against the service:
@@ -44,7 +46,7 @@ There are several types of operations that can be executed against the service:
 
 ### Authenticate the client
 
-In order to interact with the Cognitive Search service you'll need to create an instance of the Search Client class. 
+In order to interact with the Cognitive Search service you'll need to create an instance of the Search Client class.
 To make this possible you will need an [api-key of the Cognitive Search service](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
 
 The SDK provides two clients.
@@ -54,7 +56,7 @@ The SDK provides two clients.
 
 #### Create a SearchServiceClient
 
-Once you have the values of the Cognitive Search Service [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) 
+Once you have the values of the Cognitive Search Service [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint)
 and [admin key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys) you can create the Search Service client:
 
 <!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L31-L34 -->
@@ -77,8 +79,8 @@ SearchServiceAsyncClient client = new SearchServiceClientBuilder()
 
 #### Create a SearchIndexClient
 
-To create a SearchIndexClient, you will need an existing index name as well as the values of the Cognitive Search Service 
-[URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and 
+To create a SearchIndexClient, you will need an existing index name as well as the values of the Cognitive Search Service
+[URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and
 [query key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
 Note that you will need an admin key to index documents (query keys only work for queries).
 
@@ -142,19 +144,19 @@ Samples are explained in detail [here][samples_readme].
 
 ### General
 
-When you interact with Azure Cognitive Search using this Java client library, errors returned by the service correspond 
-to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a document 
+When you interact with Azure Cognitive Search using this Java client library, errors returned by the service correspond
+to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a document
 that doesn't exist in your index, a `404` error is returned, indicating `Not Found`.
 
 ### Enabling Logging
 
-Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite 
-their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help 
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
 locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Default HTTP Client
 
-By default a Netty based HTTP client will be used, for more information on configuring or changing the HTTP client is 
+By default a Netty based HTTP client will be used, for more information on configuring or changing the HTTP client is
 detailed in the [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
 
 ## Next steps
@@ -163,15 +165,15 @@ detailed in the [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/
 
 ## Contributing
 
-This project welcomes contributions and suggestions. Most contributions require you to agree to a 
-[Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights 
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
+[Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights
 to use your contribution.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate 
-the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to 
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate
+the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to
 do this once across all repos using our CLA.
 
-This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] 
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq]
 or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
