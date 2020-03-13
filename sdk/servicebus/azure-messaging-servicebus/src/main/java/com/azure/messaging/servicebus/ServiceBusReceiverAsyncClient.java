@@ -4,12 +4,16 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAsyncConsumer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -27,6 +31,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -38,6 +43,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
+    private final ConcurrentHashMap<UUID, Instant> lockTokenExpirationMap = new ConcurrentHashMap<>();
     private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final MessagingEntityType entityType;
@@ -104,14 +110,33 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      */
     public Flux<ServiceBusReceivedMessage> receive() {
         if (isDisposed.get()) {
-            return Flux.error(new IllegalStateException("Cannot receive from a client that is already closed."));
+            return Flux.error(logger.logExceptionAsError(
+                new IllegalStateException("Cannot receive from a client that is already closed.")));
+        }
+
+        if (receiveMode != ReceiveMode.PEEK_LOCK && isAutoComplete) {
+            return Flux.error(logger.logExceptionAsError(new UnsupportedOperationException(
+                "Auto-complete is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.")));
         }
 
         // TODO (conniey): This returns the same consumer instance because the entityPath is not unique.
         // Python and .NET does not have the same behaviour.
         final String linkName = entityPath;
         return getOrCreateConsumer(entityPath)
-            .receive()
+            .receive().map(message -> {
+                if (!MessageUtils.ZERO_LOCK_TOKEN.equals(message.getLockToken())) {
+                    lockTokenExpirationMap.compute(message.getLockToken(), (key, existing) -> {
+                        if (existing == null) {
+                            return message.getLockedUntil();
+                        } else {
+                            return existing.isBefore(message.getLockedUntil())
+                                ? message.getLockedUntil()
+                                : existing;
+                        }
+                    });
+                }
+                return message;
+            })
             .doOnCancel(() -> removeLink(linkName, SignalType.CANCEL))
             .doOnComplete(() -> removeLink(linkName, SignalType.ON_COMPLETE))
             .doOnError(error -> removeLink(linkName, SignalType.ON_ERROR));
@@ -154,16 +179,21 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     public Mono<Void> complete(ServiceBusReceivedMessage message) {
         Objects.requireNonNull(message, "'message' cannot be null.");
 
-        if (message.getLockToken() == null) {
-            throw new IllegalArgumentException("'message.getLockToken()' cannot be null.");
+        if (receiveMode != ReceiveMode.PEEK_LOCK && isAutoComplete) {
+            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(
+                "Complete is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.")));
+        } else if (message.getLockToken() == null) {
+            return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(
+                "'message.getLockToken()' cannot be null.")));
         }
 
-        logger.info("{}: Completing message. Sequence number: {}. Lock: {}",
-            entityPath, message.getSequenceNumber(), message.getLockToken());
+        logger.info("{}: Completing message. Sequence number: {}. Lock: {}. Expiration: {}", entityPath,
+            message.getSequenceNumber(), message.getLockToken(), lockTokenExpirationMap.get(message.getLockToken()));
 
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(node -> node.complete(message.getLockToken()));
+        return isLockTokenValid(message.getLockToken()).then(
+            connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+                .flatMap(node -> node.complete(message.getLockToken()))
+                .then(Mono.fromRunnable(() -> lockTokenExpirationMap.remove(message.getLockToken()))));
     }
 
     /**
@@ -341,10 +371,45 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         connectionProcessor.dispose();
     }
 
+    private Mono<Boolean> isLockTokenValid(UUID lockToken) {
+        final Instant lockedUntilUtc = lockTokenExpirationMap.get(lockToken);
+        if (lockedUntilUtc == null) {
+            logger.warning("lockToken[{}] is not owned by this receiver.", lockToken);
+            return Mono.just(false);
+        }
+
+        //TODO (conniey): This check is done locally in Track 1. It's possible there is server skew.
+        // who knows how reliable this is.
+        final Instant now = Instant.now();
+        if (lockedUntilUtc.isBefore(now)) {
+            return Mono.error(logger.logExceptionAsError(new AmqpException(false, String.format(
+                "Lock already expired for the lock token. Expiration: '%s'. Now: '%s'", lockedUntilUtc, now),
+                getErrorContext())));
+        }
+
+        return Mono.just(true);
+    }
+
     private ServiceBusAsyncConsumer getOrCreateConsumer(String linkName) {
         return openConsumers.computeIfAbsent(linkName, name -> {
             logger.info("{}: Creating consumer for link '{}'", entityPath, linkName);
-            return createServiceBusConsumer(linkName);
+
+            final Flux<AmqpReceiveLink> receiveLinkMono =
+                connectionProcessor.flatMap(connection -> connection.createReceiveLink(linkName, entityPath,
+                    receiveMode, isSessionEnabled, null, entityType))
+                    .doOnNext(next -> {
+                        final String format = "Created consumer for Service Bus resource: [{}] mode: [{}]"
+                            + " sessionEnabled? {} transferEntityPath: [{}], entityType: [{}]";
+                        logger.verbose(format, next.getEntityPath(), receiveMode, isSessionEnabled, "N/A",
+                            entityType);
+                    })
+                    .repeat();
+
+            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
+            final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
+                new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
+
+            return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, isAutoComplete, this::complete);
         });
     }
 
@@ -362,29 +427,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         }
     }
 
-    private ServiceBusAsyncConsumer createServiceBusConsumer(String linkName) {
-        final Flux<AmqpReceiveLink> receiveLinkMono =
-            connectionProcessor.flatMap(connection -> connection.createReceiveLink(linkName, entityPath, receiveMode,
-                isSessionEnabled, null, entityType))
-                .doOnNext(next -> {
-                    final String format = "Created consumer for Service Bus resource: [{}] mode: [{}]"
-                        + " sessionEnabled? {} transferEntityPath: [{}], entityType: [{}]";
-                    logger.verbose(format, next.getEntityPath(), receiveMode, isSessionEnabled, "N/A",
-                        entityType);
-                })
-                .repeat();
-
-        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
-        final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
-            new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
-
-        return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, isAutoComplete, this::complete);
-    }
-
-    private void ensurePeekLockReceiveMode() {
-        if (this.receiveMode != ReceiveMode.PEEK_LOCK) {
-            throw new UnsupportedOperationException("Operations complete/abandon/deadLetter/defer cannot be called on a"
-                + " receiver opened in " + ReceiveMode.RECEIVE_AND_DELETE + " mode.");
-        }
+    private AmqpErrorContext getErrorContext() {
+        return new SessionErrorContext(getFullyQualifiedNamespace(), getServiceBusResourceName());
     }
 }

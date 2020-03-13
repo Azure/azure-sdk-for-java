@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * Contains helper methods for message conversions.
  */
-final class MessageUtils {
+public final class MessageUtils {
     public static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
     static final int LOCK_TOKEN_SIZE = 16;
 

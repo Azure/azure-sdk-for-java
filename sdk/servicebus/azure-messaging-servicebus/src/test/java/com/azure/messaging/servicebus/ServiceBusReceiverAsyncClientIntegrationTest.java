@@ -53,6 +53,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
+
+        System.out.println("Completed.");
     }
 
     /**
@@ -90,7 +92,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .assertNext(receivedMessage -> {
                 Assertions.assertEquals(contents, receivedMessage.getBodyAsString());
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
     }

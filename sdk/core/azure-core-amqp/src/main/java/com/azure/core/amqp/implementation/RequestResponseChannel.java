@@ -155,6 +155,10 @@ public class RequestResponseChannel implements Disposable {
         return endpointStates.distinct();
     }
 
+    public String getReceiveLinkName() {
+        return receiveLink.getName();
+    }
+
     @Override
     public void dispose() {
         if (isDisposed.getAndSet(true)) {
