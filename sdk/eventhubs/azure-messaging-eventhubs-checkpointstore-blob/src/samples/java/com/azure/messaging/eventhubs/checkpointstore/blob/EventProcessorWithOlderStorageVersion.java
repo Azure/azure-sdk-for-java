@@ -17,7 +17,7 @@ import java.util.concurrent.CountDownLatch;
  */
 public class EventProcessorWithOlderStorageVersion {
 
-    private static final String STORAGE_CONNECTION_STRING ="";
+    private static final String STORAGE_CONNECTION_STRING = "";
     private static final String SAS_TOKEN = "";
     private static final String CONTAINER_NAME = "";
 
