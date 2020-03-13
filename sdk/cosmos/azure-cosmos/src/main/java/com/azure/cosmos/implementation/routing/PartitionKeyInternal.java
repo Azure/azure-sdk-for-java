@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -243,6 +244,8 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
     @SuppressWarnings("serial")
     static final class PartitionKeyInternalJsonSerializer extends StdSerializer<PartitionKeyInternal> {
 
+        private static final long serialVersionUID = 2258093043805843865L;
+
         protected PartitionKeyInternalJsonSerializer() { this(null); }
 
         protected PartitionKeyInternalJsonSerializer(Class<PartitionKeyInternal> t) {
@@ -296,7 +299,10 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
     }
 
     @SuppressWarnings("serial")
-    static final class PartitionKeyInternalJsonDeserializer extends StdDeserializer<PartitionKeyInternal> {
+    static final class PartitionKeyInternalJsonDeserializer extends StdDeserializer<PartitionKeyInternal>
+        implements Serializable {
+
+        private static final long serialVersionUID = -6531933186096854710L;
 
         protected PartitionKeyInternalJsonDeserializer() { this(null); }
 

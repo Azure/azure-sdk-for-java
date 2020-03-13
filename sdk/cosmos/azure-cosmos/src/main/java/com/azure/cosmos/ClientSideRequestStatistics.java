@@ -262,6 +262,8 @@ class ClientSideRequestStatistics {
 
     private static class ZonedDateTimeSerializer extends StdSerializer<ZonedDateTime> {
 
+        private static final long serialVersionUID = -1029068207700658765L;
+
         ZonedDateTimeSerializer() {
             super(ZonedDateTime.class);
         }
@@ -276,6 +278,8 @@ class ClientSideRequestStatistics {
     }
 
     public static class ClientSideRequestStatisticsSerializer extends StdSerializer<ClientSideRequestStatistics> {
+
+        private static final long serialVersionUID = -2746532297176812860L;
 
         ClientSideRequestStatisticsSerializer() {
             super(ClientSideRequestStatistics.class);
