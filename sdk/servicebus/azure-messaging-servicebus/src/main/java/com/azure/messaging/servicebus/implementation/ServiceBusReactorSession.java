@@ -17,6 +17,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnknownDescribedType;
+import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
+import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
 
@@ -68,7 +70,13 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         final Map<Symbol, UnknownDescribedType> filter = new HashMap<>();
 
         final Map<Symbol, Object> properties = new HashMap<>();
+        if (receiveMode == ReceiveMode.PEEK_LOCK) {
+            return createConsumer(linkName, entityPath, timeout, retry, filter, properties, null,
+                SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND);
+        } else {
+            return createConsumer(linkName, entityPath, timeout, retry, filter, properties, null,
+                SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
+        }
 
-        return createConsumer(linkName, entityPath, timeout, retry, filter, properties, null);
     }
 }

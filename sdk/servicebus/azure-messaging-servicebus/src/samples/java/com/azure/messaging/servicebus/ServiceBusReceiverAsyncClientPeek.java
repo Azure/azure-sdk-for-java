@@ -9,6 +9,8 @@ import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -69,6 +71,7 @@ public class ServiceBusReceiverAsyncClientPeek {
     private List<org.apache.qpid.proton.message.Message> messages = new ArrayList<>();
 
     private ServiceBusReceiverAsyncClient consumer;
+    private ServiceBusReceiverAsyncClient consumerDeleteMode;
 
 
     @BeforeEach
@@ -89,6 +92,14 @@ public class ServiceBusReceiverAsyncClientPeek {
         consumer = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .buildAsyncReceiverClient();
+
+        ReceiveMessageOptions receiveMessageOptionsDeleteMode = new ReceiveMessageOptions().setAutoComplete(true)
+            .setReceiveMode(ReceiveMode.RECEIVE_AND_DELETE);
+        ;
+        consumerDeleteMode = new ServiceBusClientBuilder()
+            .connectionString(connectionString)
+            .receiveMessageOptions(receiveMessageOptionsDeleteMode)
+            .buildAsyncReceiverClient();
     }
 
     @AfterEach
@@ -96,6 +107,7 @@ public class ServiceBusReceiverAsyncClientPeek {
         messages.clear();
         Mockito.framework().clearInlineMocks();
         consumer.close();
+        consumerDeleteMode.close();
     }
 
     /**
@@ -114,6 +126,19 @@ public class ServiceBusReceiverAsyncClientPeek {
             .verifyComplete();
 
         verify(amqpReceiveLink, times(1)).addCredits(PREFETCH);
+    }
+
+    @Test
+    public void receivesInDeleteMode()  throws Exception{
+        // Arrange
+        final int numberOfEvents = 1;
+
+        // Act & Assert
+         StepVerifier.create(consumerDeleteMode.receive().take(numberOfEvents))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
+
+         verify(amqpReceiveLink, times(1));
     }
 
     @Test

@@ -80,6 +80,7 @@ public class ServiceBusReceiverAsyncClientTest {
     private ServiceBusReceivedMessage message2;
 
     private ServiceBusReceiverAsyncClient consumer;
+    private ServiceBusReceiverAsyncClient consumerReceiveAndDelete;
 
     @BeforeAll
     static void beforeAll() {
@@ -122,14 +123,19 @@ public class ServiceBusReceiverAsyncClientTest {
                 ENTITY_NAME, connectionOptions.getRetry()));
 
         ReceiveMessageOptions receiveOptions = new ReceiveMessageOptions().setPrefetchCount(PREFETCH);
+        ReceiveMessageOptions receiveAndDeleteOptions = new ReceiveMessageOptions().setPrefetchCount(PREFETCH)
+            .setReceiveMode(ReceiveMode.RECEIVE_AND_DELETE);
         consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_NAME, connectionProcessor, tracerProvider,
             messageSerializer, receiveOptions);
+        consumerReceiveAndDelete = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_NAME, connectionProcessor, tracerProvider,
+            messageSerializer, receiveAndDeleteOptions);
     }
 
     @AfterEach
     void teardown() {
         Mockito.framework().clearInlineMocks();
         consumer.close();
+        consumerReceiveAndDelete.close();
     }
 
     /**
@@ -209,6 +215,26 @@ public class ServiceBusReceiverAsyncClientTest {
 
 
     }
+
+
+    /**
+     * Verifies that this receives a number of messages and delete them.
+     */
+    @Test
+    void receivesInReceiveAndDeleteMode() {
+        // Arrange
+        final int numberOfEvents = 1;
+
+        // Act & Assert
+        StepVerifier.create(consumerReceiveAndDelete.receive().take(numberOfEvents))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
+
+        verify(amqpReceiveLink, times(1));
+
+
+    }
+
 
     private void sendMessages(FluxSink<Message> sink, int numberOfEvents) {
         // When we start receiving, then send those numberOfEvents messages.

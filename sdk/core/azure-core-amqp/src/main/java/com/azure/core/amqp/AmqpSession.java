@@ -4,6 +4,8 @@
 package com.azure.core.amqp;
 
 import com.azure.core.amqp.exception.AmqpException;
+import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
+import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -47,10 +49,14 @@ public interface AmqpSession extends Disposable {
      * @param entityPath The entity path this link connects to, so that it may read events from the message broker.
      * @param timeout Timeout required for creating and opening an AMQP link.
      * @param retryPolicy The retry policy to use when consuming messages.
-     *
+     * @param senderSettleMode property to set on Receiver Link.
+     * @param receiverSettleMode property to set on Receiver Link.
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retryPolicy);
+    Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout,
+                                  AmqpRetryPolicy retryPolicy,
+                                  SenderSettleMode senderSettleMode,
+                                  ReceiverSettleMode receiverSettleMode);
 
     /**
      * Removes an {@link AmqpLink} with the given {@code linkName}.
