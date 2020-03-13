@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
@@ -61,7 +61,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = KeyService.class)
 public final class KeyAsyncClient {
-    static final String API_VERSION = "7.0";
+    private final String apiVersion;
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
@@ -84,6 +84,7 @@ public final class KeyAsyncClient {
             KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         this.vaultUrl = vaultUrl.toString();
         this.service = RestProxy.create(KeyService.class, pipeline);
+        apiVersion = version.getVersion();
     }
 
     /**
@@ -113,7 +114,7 @@ public final class KeyAsyncClient {
      * @param keyType The type of key to create. For valid values, see {@link KeyType KeyType}.
      * @return A {@link Mono} containing the {@link KeyVaultKey created key}.
      * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws HttpResponseException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultKey> createKey(String name, KeyType keyType) {
@@ -143,7 +144,7 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey
      *     created key}.
      * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws HttpResponseException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> createKeyWithResponse(CreateKeyOptions createKeyOptions) {
@@ -156,7 +157,7 @@ public final class KeyAsyncClient {
 
     Mono<Response<KeyVaultKey>> createKeyWithResponse(String name, KeyType keyType, Context context) {
         KeyRequestParameters parameters = new KeyRequestParameters().setKty(keyType);
-        return service.createKey(vaultUrl, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
+        return service.createKey(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Creating key - {}", name))
             .doOnSuccess(response -> logger.info("Created key - {}", response.getValue().getName()))
@@ -202,7 +203,7 @@ public final class KeyAsyncClient {
             .setKty(createKeyOptions.getKeyType())
             .setKeyOps(createKeyOptions.getKeyOperations())
             .setKeyAttributes(new KeyRequestAttributes(createKeyOptions));
-        return service.createKey(vaultUrl, createKeyOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.createKey(vaultUrl, createKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Creating key - {}", createKeyOptions.getName()))
             .doOnSuccess(response -> logger.info("Created key - {}", response.getValue().getName()))
@@ -281,7 +282,7 @@ public final class KeyAsyncClient {
             .setKeySize(createRsaKeyOptions.getKeySize())
             .setKeyOps(createRsaKeyOptions.getKeyOperations())
             .setKeyAttributes(new KeyRequestAttributes(createRsaKeyOptions));
-        return service.createKey(vaultUrl, createRsaKeyOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.createKey(vaultUrl, createRsaKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Creating Rsa key - {}", createRsaKeyOptions.getName()))
             .doOnSuccess(response -> logger.info("Created Rsa key - {}", response.getValue().getName()))
@@ -366,7 +367,7 @@ public final class KeyAsyncClient {
             .setCurve(createEcKeyOptions.getCurveName())
             .setKeyOps(createEcKeyOptions.getKeyOperations())
             .setKeyAttributes(new KeyRequestAttributes(createEcKeyOptions));
-        return service.createKey(vaultUrl, createEcKeyOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.createKey(vaultUrl, createEcKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Creating Ec key - {}", createEcKeyOptions.getName()))
             .doOnSuccess(response -> logger.info("Created Ec key - {}", response.getValue().getName()))
@@ -388,7 +389,7 @@ public final class KeyAsyncClient {
      * @param keyMaterial The Json web key being imported.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey
      *     imported key}.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws HttpResponseException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultKey> importKey(String name, JsonWebKey keyMaterial) {
@@ -401,7 +402,7 @@ public final class KeyAsyncClient {
 
     Mono<Response<KeyVaultKey>> importKeyWithResponse(String name, JsonWebKey keyMaterial, Context context) {
         KeyImportRequestParameters parameters = new KeyImportRequestParameters().setKey(keyMaterial);
-        return service.importKey(vaultUrl, name, API_VERSION, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
+        return service.importKey(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Importing key - {}", name))
             .doOnSuccess(response -> logger.info("Imported key - {}", response.getValue().getName()))
@@ -478,7 +479,7 @@ public final class KeyAsyncClient {
             .setKey(importKeyOptions.getKey())
             .setHsm(importKeyOptions.isHardwareProtected())
             .setKeyAttributes(new KeyRequestAttributes(importKeyOptions));
-        return service.importKey(vaultUrl, importKeyOptions.getName(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.importKey(vaultUrl, importKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Importing key - {}", importKeyOptions.getName()))
             .doOnSuccess(response -> logger.info("Imported key - {}", response.getValue().getName()))
@@ -499,9 +500,9 @@ public final class KeyAsyncClient {
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is
      *     equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
      * @return A {@link Mono} containing the requested {@link KeyVaultKey key}.
-     * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key
+     * @throws ResourceNotFoundException when a key with {@code name} and valid {@code version} doesn't exist in the key
      *     vault.
-     * @throws HttpRequestException if {@code name} or {@code version} is empty string.
+     * @throws HttpResponseException if an invalid {@code version} is specified.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultKey> getKey(String name, String version) {
@@ -527,9 +528,9 @@ public final class KeyAsyncClient {
      *     equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested
      *     {@link KeyVaultKey key}.
-     * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key
+     * @throws ResourceNotFoundException when a key with {@code name} and valid {@code version} doesn't exist in the key
      *     vault.
-     * @throws HttpRequestException if {@code name} or {@code version} is empty string.
+     * @throws HttpResponseException if an invalid {@code version} is specified.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> getKeyWithResponse(String name, String version) {
@@ -541,7 +542,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<KeyVaultKey>> getKeyWithResponse(String name, String version, Context context) {
-        return service.getKey(vaultUrl, name, version, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+        return service.getKey(vaultUrl, name, version, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Retrieving key - {}", name))
             .doOnSuccess(response -> logger.info("Retrieved key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
@@ -560,7 +561,7 @@ public final class KeyAsyncClient {
      * @param name The name of the key.
      * @return A {@link Mono} containing the requested {@link KeyVaultKey key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws HttpResponseException if an invalid {@code version} is specified.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultKey> getKey(String name) {
@@ -591,7 +592,7 @@ public final class KeyAsyncClient {
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
+     * @throws HttpResponseException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -622,7 +623,7 @@ public final class KeyAsyncClient {
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
+     * @throws HttpResponseException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -642,7 +643,7 @@ public final class KeyAsyncClient {
         if (keyOperations.length > 0) {
             parameters.setKeyOps(Arrays.asList(keyOperations));
         }
-        return service.updateKey(vaultUrl, keyProperties.getName(), keyProperties.getVersion(), API_VERSION, ACCEPT_LANGUAGE, parameters,
+        return service.updateKey(vaultUrl, keyProperties.getName(), keyProperties.getVersion(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Updating key - {}", keyProperties.getName()))
             .doOnSuccess(response -> logger.info("Updated key - {}", response.getValue().getName()))
@@ -666,7 +667,7 @@ public final class KeyAsyncClient {
      * @param name The name of the key to be deleted.
      * @return A {@link PollerFlux} to poll on the {@link DeletedKey deleted key} status.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<DeletedKey, Void> beginDeleteKey(String name) {
@@ -687,7 +688,7 @@ public final class KeyAsyncClient {
     */
     private Function<PollingContext<DeletedKey>, Mono<PollResponse<DeletedKey>>> createPollOperation(String keyName) {
         return pollingContext ->
-            withContext(context -> service.getDeletedKeyPoller(vaultUrl, keyName, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            withContext(context -> service.getDeletedKeyPoller(vaultUrl, keyName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .flatMap(deletedKeyResponse -> {
                     if (deletedKeyResponse.getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
                         return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -701,7 +702,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<DeletedKey>> deleteKeyWithResponse(String name, Context context) {
-        return service.deleteKey(vaultUrl, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+        return service.deleteKey(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Deleting key - {}", name))
             .doOnSuccess(response -> logger.info("Deleted key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to delete key - {}", name, error));
@@ -721,7 +722,7 @@ public final class KeyAsyncClient {
      * @param name The name of the deleted key.
      * @return A {@link Mono} containing the {@link DeletedKey deleted key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKey> getDeletedKey(String name) {
@@ -747,7 +748,7 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
      *     DeletedKey deleted key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name) {
@@ -759,7 +760,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name, Context context) {
-        return service.getDeletedKey(vaultUrl, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+        return service.getDeletedKey(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Retrieving deleted key - {}", name))
             .doOnSuccess(response -> logger.info("Retrieved deleted key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
@@ -779,7 +780,7 @@ public final class KeyAsyncClient {
      * @param name The name of the deleted key.
      * @return An empty {@link Mono}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purgeDeletedKey(String name) {
@@ -804,7 +805,7 @@ public final class KeyAsyncClient {
      * @param name The name of the deleted key.
      * @return A {@link Mono} containing a Response containing status code and HTTP headers.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedKeyWithResponse(String name) {
@@ -816,7 +817,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<Void>> purgeDeletedKeyWithResponse(String name, Context context) {
-        return service.purgeDeletedKey(vaultUrl, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+        return service.purgeDeletedKey(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Purging deleted key - {}", name))
             .doOnSuccess(response -> logger.info("Purged deleted key - {}", name))
             .doOnError(error -> logger.warning("Failed to purge deleted key - {}", name, error));
@@ -836,7 +837,7 @@ public final class KeyAsyncClient {
      * @param name The name of the deleted key to be recovered.
      * @return A {@link PollerFlux} to poll on the {@link KeyVaultKey recovered key} status.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
@@ -857,7 +858,7 @@ public final class KeyAsyncClient {
     */
     private Function<PollingContext<KeyVaultKey>, Mono<PollResponse<KeyVaultKey>>> createRecoverPollOperation(String keyName) {
         return pollingContext ->
-            withContext(context -> service.getKeyPoller(vaultUrl, keyName, "", API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+            withContext(context -> service.getKeyPoller(vaultUrl, keyName, "", apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
                 .flatMap(keyResponse -> {
                     if (keyResponse.getStatusCode() == 404) {
                         return Mono.defer(() -> Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
@@ -873,7 +874,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<KeyVaultKey>> recoverDeletedKeyWithResponse(String name, Context context) {
-        return service.recoverDeletedKey(vaultUrl, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
+        return service.recoverDeletedKey(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Recovering deleted key - {}", name))
             .doOnSuccess(response -> logger.info("Recovered deleted key - {}", response.getValue().getName()))
@@ -901,7 +902,7 @@ public final class KeyAsyncClient {
      * @param name The name of the key.
      * @return A {@link Mono} containing the backed up key blob.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> backupKey(String name) {
@@ -934,7 +935,7 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the backed up
      *     key blob.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupKeyWithResponse(String name) {
@@ -946,7 +947,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<byte[]>> backupKeyWithResponse(String name, Context context) {
-        return service.backupKey(vaultUrl, name, API_VERSION, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+        return service.backupKey(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Backing up key - {}", name))
             .doOnSuccess(response -> logger.info("Backed up key - {}", name))
             .doOnError(error -> logger.warning("Failed to backup key - {}", name, error))
@@ -1019,7 +1020,7 @@ public final class KeyAsyncClient {
 
     Mono<Response<KeyVaultKey>> restoreKeyBackupWithResponse(byte[] backup, Context context) {
         KeyRestoreRequestParameters parameters = new KeyRestoreRequestParameters().setKeyBackup(backup);
-        return service.restoreKey(vaultUrl, API_VERSION, parameters, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
+        return service.restoreKey(vaultUrl, apiVersion, parameters, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context)
             .doOnRequest(ignored -> logger.info("Attempting to restore key"))
             .doOnSuccess(response -> logger.info("Restored Key - {}", response.getValue().getName()))
@@ -1083,7 +1084,7 @@ public final class KeyAsyncClient {
      */
     private Mono<PagedResponse<KeyProperties>> listKeysFirstPage(Context context) {
         try {
-            return service.getKeys(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE,
+            return service.getKeys(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Listing keys"))
                 .doOnSuccess(response -> logger.info("Listed keys"))
@@ -1149,7 +1150,7 @@ public final class KeyAsyncClient {
      */
     private Mono<PagedResponse<DeletedKey>> listDeletedKeysFirstPage(Context context) {
         try {
-            return service.getDeletedKeys(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE,
+            return service.getDeletedKeys(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Listing deleted keys"))
                 .doOnSuccess(response -> logger.info("Listed deleted keys"))
@@ -1174,7 +1175,7 @@ public final class KeyAsyncClient {
      * @return A {@link PagedFlux} containing {@link KeyProperties key} of all the versions of the specified key in the vault.
      *     Flux is empty if key with {@code name} does not exist in key vault.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listPropertiesOfKeyVersions(String name) {
@@ -1195,7 +1196,7 @@ public final class KeyAsyncClient {
 
     private Mono<PagedResponse<KeyProperties>> listKeyVersionsFirstPage(String name, Context context) {
         try {
-            return service.getKeyVersions(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS, API_VERSION, ACCEPT_LANGUAGE,
+            return service.getKeyVersions(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS, apiVersion, ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Listing key versions - {}", name))
                 .doOnSuccess(response -> logger.info("Listed key versions - {}", name))
