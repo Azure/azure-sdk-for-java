@@ -826,4 +826,11 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
+  <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/9044 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxGatewayStoreModel"/>
+    <Method name="validateOrThrow"/>
+    <Bug pattern="DM_DEFAULT_ENCODING"/>
+  </Match>
+
 </FindBugsFilter>
