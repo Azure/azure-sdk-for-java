@@ -21,14 +21,14 @@ jobs:
         # 59m 59s, timed out
         Http_E2E:
           DisplayName: ReadMyWrites Integration Tests
-          OSVmImage: 'windows-2019'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Session'
         # 59m 59s, timed out
         Session_Tcp_E2E:
           DisplayName: ReadMyWrites Integration Tests
-          OSVmImage: 'windows-2019'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
           DESIRED_CONSISTENCY: 'Session'
@@ -207,28 +207,28 @@ jobs:
         # 59m 58s, timed out
         Https_E2E:
           DisplayName: Single Region ReadMyWrites
-          OSVmImage: 'windows-2019'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Strong'
         Bounded_Staleness_Https_E2E:
           DisplayName: Bounded Staleness Single Region ReadMyWrites
-          OSVmImage: 'windows-2019'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'BoundedStaleness'
         # 59m 58s, timed out
         Strong_Tcp_E2E:
           DisplayName: Single Region ReadMyWrites
-          OSVmImage: 'windows-2019'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
           DESIRED_CONSISTENCY: 'Strong'
         Bounded_Staleness_Tcp_E2E:
           DisplayName: Bounded Staleness Single Region ReadMyWrites
-          OSVmImage: 'windows-2019'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Tcp"'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
           DESIRED_CONSISTENCY: 'BoundedStaleness'
         # 08m 50s, expect passed
         Strong_Https_Fast:
@@ -306,7 +306,7 @@ jobs:
           DisplayName: Multimaster Multi Region Long
           OSVmImage: 'windows-2019'
           ProfileFlag: '-e -Plong'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
         # 06m 34s, previously failing
         MultiMaster:
           DisplayName: Multimaster Multi Region Multi-Master

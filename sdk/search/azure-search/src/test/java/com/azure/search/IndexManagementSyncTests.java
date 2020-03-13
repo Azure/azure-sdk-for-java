@@ -366,7 +366,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
 
         Field tagsField = getFieldByName(existingIndex, "Description_Custom");
         tagsField.setRetrievable(false)
-            .setSearchAnalyzer(AnalyzerName.WHITESPACE.toString())
+            .setSearchAnalyzer(AnalyzerName.WHITESPACE)
             .setSynonymMaps(Collections.singletonList(synonymMap.getName()));
 
         Field hotelWebSiteField = new Field()
