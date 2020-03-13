@@ -212,7 +212,7 @@ public class ServiceBusReceiverAsyncClientTest {
 
 
     /**
-     * Verifies that this peek batch of messages from a sequence Number.
+     * Verifies that this peek batch of messages.
      */
     @Test
     void peekBatchMessages() {
