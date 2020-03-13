@@ -17,11 +17,20 @@ To see additional help and options, run:
 
 ---
 ### Generation
+
+There are two swaggers for search: index and service. They always under same package version, e.g. `--tag=package-2019-05-searchindex-preview` and `--tag=package-2019-05-searchservice-preview`.
+
 ```ps
 cd <swagger-folder>
 autorest --use=@microsoft.azure/autorest.java@3.0.3 --tag=${package} --version=2.0.4413 
 ```
 
+e.g.
+```ps
+cd <swagger-folder>
+autorest --use=@microsoft.azure/autorest.java@3.0.3 --tag=package-2019-05-searchindex-preview --version=2.0.4413 
+autorest --use=@microsoft.azure/autorest.java@3.0.3 --tag=package-2019-05-searchservice-preview --version=2.0.4413 
+```
 ## Configuration
 
 ### Basic Information 
@@ -41,7 +50,7 @@ input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchservice.json
 title: SearchServiceRestClient
 custom-types-subpackage: implementation.models
-custom-types: AnalyzeResult,SuggestRequest,AutocompleteRequest,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,AccessCondition
+custom-types: AnalyzeResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,AccessCondition
 ```
 
 ### Tag: package-2019-05-searchindex-preview
@@ -52,6 +61,9 @@ These settings apply only when `--tag=package-2019-05-searchindex-preview` is sp
 input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchindex.json
 title: SearchIndexRestClient
+models-subpackage: implementation.models
+custom-types: QueryType,AutocompleteResult,AutocompleteOptions,AutocompleteRequest,AutocompleteItem,IndexDocumentsResult,IndexingResult,SearchError,SearchErrorException,SearchResult,SearchRequest,SearchOptions,RequestOptions,IndexBatchBase,IndexAction,FacetResult,SuggestOptions,SuggestResult,SuggestRequest
+custom-types-subpackage: models
 ```
 
 ### Tag: package-2019-05-searchservice
