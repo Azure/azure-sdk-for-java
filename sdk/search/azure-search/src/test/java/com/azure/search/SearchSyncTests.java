@@ -569,7 +569,7 @@ public class SearchSyncTests extends SearchTestBase {
         expectedHotel.put("Rating", 1);
 
         assertEquals(1, resultsList.size());
-        assertEquals(dropUnnecessaryFields(resultsList.get(0)), expectedHotel);
+        assertEquals(resultsList.get(0), expectedHotel);
     }
 
     @Test
@@ -702,15 +702,14 @@ public class SearchSyncTests extends SearchTestBase {
         while (resultsIterator.hasNext()) {
             SearchPagedResponse result = resultsIterator.next();
             assertNotNull(result.getValue());
-            result.getElements().forEach(item -> searchResults.add(dropUnnecessaryFields(item.getDocument())));
+            result.getElements().forEach(item -> searchResults.add(item.getDocument()));
         }
 
         return searchResults;
     }
 
     private Map<String, Object> extractAndTransformSingleResult(SearchResult result) {
-        return dropUnnecessaryFields(convertHashMapToMap(
-            (result.getDocument())));
+        return convertHashMapToMap((result.getDocument()));
     }
 
     /**
