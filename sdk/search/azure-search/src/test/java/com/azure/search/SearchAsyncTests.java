@@ -147,8 +147,8 @@ public class SearchAsyncTests extends SearchTestBase {
 
         StepVerifier.create(results.byPage()).assertNext(res -> {
             Iterator<SearchResult> iterator = res.getElements().iterator();
-            assertEquals(expectedHotel1, dropUnnecessaryFields(iterator.next().getDocument()));
-            assertEquals(expectedHotel2, dropUnnecessaryFields(iterator.next().getDocument()));
+            assertEquals(expectedHotel1, iterator.next().getDocument());
+            assertEquals(expectedHotel2, iterator.next().getDocument());
             assertFalse(iterator.hasNext());
         }).verifyComplete();
     }
@@ -190,8 +190,8 @@ public class SearchAsyncTests extends SearchTestBase {
         Flux<SearchResult> results = client.search("*", searchOptions, generateRequestOptions()).log();
         assertNotNull(results);
         StepVerifier.create(results)
-            .assertNext(res -> TestHelpers.assertDocumentsEqual(dropUnnecessaryFields(res.getDocument()), expectedDocsList.get(0)))
-            .assertNext(res -> TestHelpers.assertDocumentsEqual(dropUnnecessaryFields(res.getDocument()), expectedDocsList.get(1)))
+            .assertNext(res -> TestHelpers.assertDocumentsEqual(res.getDocument(), expectedDocsList.get(0)))
+            .assertNext(res -> TestHelpers.assertDocumentsEqual(res.getDocument(), expectedDocsList.get(1)))
             .verifyComplete();
     }
 
@@ -367,7 +367,7 @@ public class SearchAsyncTests extends SearchTestBase {
         StepVerifier.create(results.byPage())
             .assertNext(res -> {
                 Iterator<SearchResult> iterator = res.getElements().iterator();
-                assertEquals(expectedResult, dropUnnecessaryFields(iterator.next().getDocument()));
+                assertEquals(expectedResult, iterator.next().getDocument());
                 assertFalse(iterator.hasNext());
             }).verifyComplete();
     }
@@ -393,7 +393,7 @@ public class SearchAsyncTests extends SearchTestBase {
                 res.getElements().forEach(item -> {
                     assertEquals(1, item.getScore(), 0);
                     assertNull(item.getHighlights());
-                    actualResults.add(dropUnnecessaryFields(item.getDocument()));
+                    actualResults.add(item.getDocument());
                 });
             }).verifyComplete();
 
@@ -578,7 +578,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         assertNotNull(results);
         StepVerifier.create(results)
-            .assertNext(res -> assertEquals(dropUnnecessaryFields(res.getDocument()), expectedHotel))
+            .assertNext(res -> assertEquals(res.getDocument(), expectedHotel))
             .verifyComplete();
     }
 

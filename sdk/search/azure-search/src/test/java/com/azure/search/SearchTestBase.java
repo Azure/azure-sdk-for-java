@@ -70,17 +70,6 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         return documents;
     }
 
-    /**
-     * Drop fields that shouldn't be in the returned object
-     *
-     * @param map the map to drop items from
-     * @return the new map
-     */
-    static Map<String, Object> dropUnnecessaryFields(Map<String, Object> map) {
-        map.remove(SEARCH_SCORE_FIELD);
-        return map;
-    }
-
     boolean compareResults(List<Map<String, Object>> searchResults, List<Map<String, Object>> hotels) {
         Iterator<Map<String, Object>> searchIterator = searchResults.iterator();
         Iterator<Map<String, Object>> hotelsIterator = hotels.iterator();
