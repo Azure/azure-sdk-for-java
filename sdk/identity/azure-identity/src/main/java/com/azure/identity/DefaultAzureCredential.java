@@ -59,7 +59,7 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
             }
             errorMsg.append(" ").append(t.getMessage());
             return Mono.empty();
-        }))
+        }), 1)
             .next()
             .switchIfEmpty(Mono.defer(() -> { 
                 if(cause.get() == null){
