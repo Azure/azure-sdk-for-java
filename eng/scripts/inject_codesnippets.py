@@ -3,7 +3,7 @@ import glob
 import re
 import json
 import pprint
-import cgi
+from xml.sax.saxutils import escape, unescape
 
 # run this from the root of the repository
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -15,6 +15,17 @@ SNIPPET_CALL = r"(?P<leadingspace>.*)\{\@codesnippet(?P<snippetid>.*)\}"
 EXCLUSION_ARRAY = [
   "JavadocCodeSnippetCheck.java"
 ]
+
+html_escape_table = {
+  "&": "&amp;",
+  '"': "&quot;",
+  "'": "&apos;",
+  ">": "&gt;",
+  "<": "&lt;",
+  "@": "&#64;",
+  "{": "&#123;",
+  "}": "&#125;"
+}
 
 class SnippetDict:
   def __init__(self, start_dict={}):
@@ -92,7 +103,7 @@ if __name__ == "__main__":
           if id_ending in snippets:
             result_array = [
               lead_space + "<pre>\n",
-              cgi.escape(("".join(map(lambda x : lead_space + x, snippets[id_ending]))), quote=True),
+              escape(("".join(map(lambda x : lead_space + x, snippets[id_ending]))), html_escape_table),
               lead_space + "</pre>\n"
             ]
             line_replacement = "".join(result_array)
