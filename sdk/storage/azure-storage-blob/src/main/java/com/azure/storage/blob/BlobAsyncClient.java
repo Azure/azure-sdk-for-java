@@ -539,6 +539,21 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .then();
     }
 
+    /**
+     * RESERVED FOR INTERNAL USE.
+     *
+     * Resource Supplier for UploadFile.
+     *
+     * @param filePath The path for the file
+     * @return {@code AsynchronousFileChannel}
+     * @throws UncheckedIOException an input output exception.
+     * @deprecated due to refactoring code to be in the common storage library.
+     */
+    @Deprecated
+    protected AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
+        return UploadUtils.uploadFileResourceSupplier(filePath, logger);
+    }
+
     private String getBlockID() {
         return Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
     }
