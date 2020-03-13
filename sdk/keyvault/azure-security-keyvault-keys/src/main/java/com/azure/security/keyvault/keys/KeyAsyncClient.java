@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
@@ -114,7 +114,7 @@ public final class KeyAsyncClient {
      * @param keyType The type of key to create. For valid values, see {@link KeyType KeyType}.
      * @return A {@link Mono} containing the {@link KeyVaultKey created key}.
      * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws HttpResponseException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultKey> createKey(String name, KeyType keyType) {
@@ -144,7 +144,7 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey
      *     created key}.
      * @throws ResourceModifiedException if {@code name} or {@code keyType} is null.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws HttpResponseException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> createKeyWithResponse(CreateKeyOptions createKeyOptions) {
@@ -389,7 +389,7 @@ public final class KeyAsyncClient {
      * @param keyMaterial The Json web key being imported.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey
      *     imported key}.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws HttpResponseException if {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultKey> importKey(String name, JsonWebKey keyMaterial) {
@@ -500,9 +500,9 @@ public final class KeyAsyncClient {
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is
      *     equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
      * @return A {@link Mono} containing the requested {@link KeyVaultKey key}.
-     * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key
+     * @throws ResourceNotFoundException when a key with {@code name} and valid {@code version} doesn't exist in the key
      *     vault.
-     * @throws HttpRequestException if {@code name} or {@code version} is empty string.
+     * @throws HttpResponseException if an invalid {@code version} is specified.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultKey> getKey(String name, String version) {
@@ -528,9 +528,9 @@ public final class KeyAsyncClient {
      *     equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested
      *     {@link KeyVaultKey key}.
-     * @throws ResourceNotFoundException when a key with {@code name} and {@code version} doesn't exist in the key
+     * @throws ResourceNotFoundException when a key with {@code name} and valid {@code version} doesn't exist in the key
      *     vault.
-     * @throws HttpRequestException if {@code name} or {@code version} is empty string.
+     * @throws HttpResponseException if an invalid {@code version} is specified.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> getKeyWithResponse(String name, String version) {
@@ -561,7 +561,7 @@ public final class KeyAsyncClient {
      * @param name The name of the key.
      * @return A {@link Mono} containing the requested {@link KeyVaultKey key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@code name} is empty string.
+     * @throws HttpResponseException if an invalid {@code version} is specified.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultKey> getKey(String name) {
@@ -592,7 +592,7 @@ public final class KeyAsyncClient {
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
+     * @throws HttpResponseException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -623,7 +623,7 @@ public final class KeyAsyncClient {
      * @throws NullPointerException if {@code key} is {@code null}.
      * @throws ResourceNotFoundException when a key with {@link KeyProperties#getName() name} and {@link KeyProperties#getVersion()
      *     version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
+     * @throws HttpResponseException if {@link KeyProperties#getName() name} or {@link KeyProperties#getVersion() version} is empty
      *     string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -667,7 +667,7 @@ public final class KeyAsyncClient {
      * @param name The name of the key to be deleted.
      * @return A {@link PollerFlux} to poll on the {@link DeletedKey deleted key} status.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<DeletedKey, Void> beginDeleteKey(String name) {
@@ -722,7 +722,7 @@ public final class KeyAsyncClient {
      * @param name The name of the deleted key.
      * @return A {@link Mono} containing the {@link DeletedKey deleted key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedKey> getDeletedKey(String name) {
@@ -748,7 +748,7 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link
      *     DeletedKey deleted key}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name) {
@@ -780,7 +780,7 @@ public final class KeyAsyncClient {
      * @param name The name of the deleted key.
      * @return An empty {@link Mono}.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purgeDeletedKey(String name) {
@@ -805,7 +805,7 @@ public final class KeyAsyncClient {
      * @param name The name of the deleted key.
      * @return A {@link Mono} containing a Response containing status code and HTTP headers.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedKeyWithResponse(String name) {
@@ -837,7 +837,7 @@ public final class KeyAsyncClient {
      * @param name The name of the deleted key to be recovered.
      * @return A {@link PollerFlux} to poll on the {@link KeyVaultKey recovered key} status.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
@@ -902,7 +902,7 @@ public final class KeyAsyncClient {
      * @param name The name of the key.
      * @return A {@link Mono} containing the backed up key blob.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> backupKey(String name) {
@@ -935,7 +935,7 @@ public final class KeyAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the backed up
      *     key blob.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupKeyWithResponse(String name) {
@@ -1175,7 +1175,7 @@ public final class KeyAsyncClient {
      * @return A {@link PagedFlux} containing {@link KeyProperties key} of all the versions of the specified key in the vault.
      *     Flux is empty if key with {@code name} does not exist in key vault.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listPropertiesOfKeyVersions(String name) {
