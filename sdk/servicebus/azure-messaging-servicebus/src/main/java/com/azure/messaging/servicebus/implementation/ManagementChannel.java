@@ -119,9 +119,8 @@ public class ManagementChannel implements  ServiceBusManagementNode {
 
                     return channel.sendWithAck(request);
                 }).flatMapMany(amqpMessage -> {
-                    @SuppressWarnings("unchecked")
                     final List<ServiceBusReceivedMessage> messageList =
-                        messageSerializer.deserialize(amqpMessage, List.class);
+                        messageSerializer.deserializeList(amqpMessage, ServiceBusReceivedMessage.class);
 
                     // Assign the last sequence number so that we can peek from next time
                     if (messageList.size() > 0) {
