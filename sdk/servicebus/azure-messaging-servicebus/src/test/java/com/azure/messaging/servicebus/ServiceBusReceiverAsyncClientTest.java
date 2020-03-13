@@ -30,7 +30,6 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import java.time.Duration;
@@ -125,7 +124,7 @@ public class ServiceBusReceiverAsyncClientTest {
 
         ReceiveMessageOptions receiveOptions = new ReceiveMessageOptions().setPrefetchCount(PREFETCH);
         consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_NAME, connectionProcessor, tracerProvider,
-            messageSerializer, receiveOptions);
+            messageSerializer, receiveOptions, Schedulers.elastic());
     }
 
     @AfterEach

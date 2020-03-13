@@ -182,7 +182,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
         if (clazz == ServiceBusReceivedMessage.class) {
             ServiceBusReceivedMessage brokeredMessage = deserializeMessage(message);
-            brokeredMessage.setLockToken(MessageUtils.convertDotNetBytesToUUID(extendedAmqpMessage.getDeliveryTag().array()));
+            brokeredMessage.setLockToken(MessageUtils.convertDotNetBytesToUUID(
+                extendedAmqpMessage.getDeliveryTag().array()));
             return (T) brokeredMessage;
         } else if (clazz == List.class) {
             return (T) deserializeListOfMessages(message);

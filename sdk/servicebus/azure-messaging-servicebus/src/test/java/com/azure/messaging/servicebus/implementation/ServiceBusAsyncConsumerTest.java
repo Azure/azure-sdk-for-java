@@ -23,6 +23,7 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -48,6 +49,8 @@ class ServiceBusAsyncConsumerTest {
     private Disposable parentConnection;
     @Mock
     private MessageSerializer serializer;
+
+    private reactor.core.scheduler.Scheduler scheduler = Schedulers.elastic();
 
 
     @BeforeAll
@@ -87,7 +90,8 @@ class ServiceBusAsyncConsumerTest {
         };
 
         final boolean isAutoComplete = true;
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete, onComplete);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete,
+            onComplete, scheduler);
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
@@ -121,7 +125,8 @@ class ServiceBusAsyncConsumerTest {
             return Mono.empty();
         };
 
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete, onComplete);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete,
+            onComplete, scheduler);
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
 

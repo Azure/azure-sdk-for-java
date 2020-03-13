@@ -16,10 +16,10 @@ import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import org.apache.qpid.proton.engine.Receiver;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
+import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.io.Serializable;
@@ -45,6 +45,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final int prefetch;
     private final boolean isAutoComplete;
     private final ReceiveMode receiveMode;
+    private final Scheduler scheduler;
 
     // Client will maintain the sequence number of last peeked message.
     //private long lastPeekedSequenceNumber = 0;
@@ -56,8 +57,9 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final ConcurrentHashMap<String, ServiceBusAsyncConsumer> openConsumers = new ConcurrentHashMap<>();
 
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath,
-        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, ReceiveMessageOptions receiveMessageOptions) {
+                                  ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
+                                  MessageSerializer messageSerializer, ReceiveMessageOptions receiveMessageOptions,
+                                  Scheduler scheduler) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.entityPath = entityPath;
         this.connectionProcessor = connectionProcessor;
@@ -66,6 +68,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         this.maxAutoRenewDuration = receiveMessageOptions.getMaxAutoRenewDuration();
         this.isAutoComplete = receiveMessageOptions.isAutoComplete();
         this.receiveMode = receiveMessageOptions.getReceiveMode();
+        this.scheduler = scheduler;
     }
 
     /**
@@ -356,6 +359,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
             new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
 
-        return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, isAutoComplete, this::complete);
+        return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, isAutoComplete,
+            this::complete, scheduler);
     }
 }

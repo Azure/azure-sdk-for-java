@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -191,41 +191,42 @@ public class ServiceBusReceiverAsyncClientPeek {
         return message;
     }
 
-
-
     @Test
-
-    public void receiveAndExtendLockMessage() throws InterruptedException {
+    public void receiveAndExtendLockMessage() {
 
         // Arrange
         final int numberOfEvents = 1;
 
+        // Act & Assert
+        StepVerifier.create(
         consumer.receive()
-            .take(numberOfEvents)
-            .subscribe(receivedMessage -> {
+            .take(numberOfEvents))
+            .assertNext(receivedMessage -> {
+                AtomicReference<Instant> timeToRefresh = new AtomicReference<>(receivedMessage.getLockedUntil());
+                log(" Got message time to refresh in " + receivedMessage.getLockedUntil());
                 Disposable renewDisposable = consumer.renewMessageLock(receivedMessage)
-                    .delayElement(Duration.ofSeconds(1))
                     .repeat(() -> true)
-                    .publishOn(Schedulers.elastic())
-                    .subscribeOn(Schedulers.elastic())
-                    .subscribe(instant ->  {
-                        log(" New time " + receivedMessage.getLockedUntil());
+                    .delayElements(Duration.ofSeconds(1))
+                    .subscribe(instant -> {
+                        log(" New time instant:" + instant);
+                        timeToRefresh.set(instant);
                     });
+
                 // processing the messaging
                 int count = 0;
-                while (count < 5 ) {
+                while (count < 15) {
                     ++count;
-                    try{Thread.sleep(1000); }catch(Exception e ) {}
-                    log("processing message ");
+                    log(count + ". processing message ");
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception ignored) {
+
+                    }
                 }
                 log("processing done");
-                //renewDisposable.dispose();
-
-        });
-
-    Thread.sleep(TimeUnit.SECONDS.toMillis(15));
+                renewDisposable.dispose();
+            }).verifyComplete();
     }
-
 
     private void log(String message) {
         System.out.println(message);

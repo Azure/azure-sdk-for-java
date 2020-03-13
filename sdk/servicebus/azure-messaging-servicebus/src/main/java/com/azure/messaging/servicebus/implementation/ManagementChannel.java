@@ -8,7 +8,6 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManager;
-import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -21,6 +20,7 @@ import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -65,7 +65,6 @@ public class ManagementChannel implements  ServiceBusManagementNode {
     public static final String REQUEST_RESPONSE_RENEWLOCK_OPERATION = AmqpConstants.VENDOR + ":renew-lock";
 
     private static final int REQUEST_RESPONSE_OK_STATUS_CODE = 200;
-    private static Duration DEFAULT_REQUEST_RESPONSE_TIMEOUT = Duration.ofSeconds(60);
 
     private final Mono<RequestResponseChannel> channelMono;
     private final Scheduler scheduler;
@@ -194,34 +193,31 @@ public class ManagementChannel implements  ServiceBusManagementNode {
                 })
             )
             .flatMapMany(responseMessage -> {
-                   int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+                int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+                List<Instant> expirationsForLocks = new ArrayList<>();
+                if (statusCode ==  REQUEST_RESPONSE_OK_STATUS_CODE) {
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> responseBody = (Map<String, Object>) ((AmqpValue) responseMessage
+                        .getBody()).getValue();
+                    Object expirationListObj = responseBody.get(REQUEST_RESPONSE_EXPIRATIONS);
 
-                    List<Instant> expirationsForLocks = null;
-
-                    if (statusCode ==  REQUEST_RESPONSE_OK_STATUS_CODE) {
-                        @SuppressWarnings("unchecked")
-                        Map<String, Object> responseBody = (Map<String, Object>) ((AmqpValue) responseMessage
-                            .getBody()).getValue();
-                        Object expirationListObj = responseBody.get(REQUEST_RESPONSE_EXPIRATIONS);
-
-                        if (expirationListObj instanceof  Date[]){
-                            Date[] expirations = (Date[]) expirationListObj;
-                                expirationsForLocks =  Arrays.stream(expirations)
-                                .map(Date::toInstant)
-                                .collect(Collectors.toList());
-                        }
+                    if (expirationListObj instanceof  Date[]) {
+                        Date[] expirations = (Date[]) expirationListObj;
+                        expirationsForLocks =  Arrays.stream(expirations)
+                            .map(Date::toInstant)
+                            .collect(Collectors.toList());
                     }
-                    return Flux.fromIterable(expirationsForLocks);
-                });
+                }
+                return Flux.fromIterable(expirationsForLocks);
+            });
     }
 
     private Message createRequestMessageFromValueBody(String operation, Object valueBody, Duration timeout) {
         Message requestMessage = Message.Factory.create();
         requestMessage.setBody(new AmqpValue(valueBody));
-        HashMap applicationPropertiesMap = new HashMap();
+        HashMap<String, Object> applicationPropertiesMap = new HashMap<>();
         applicationPropertiesMap.put(REQUEST_RESPONSE_OPERATION_NAME, operation);
         applicationPropertiesMap.put(REQUEST_RESPONSE_TIMEOUT, timeout.toMillis());
-
 
         requestMessage.setApplicationProperties(new ApplicationProperties(applicationPropertiesMap));
         return requestMessage;
