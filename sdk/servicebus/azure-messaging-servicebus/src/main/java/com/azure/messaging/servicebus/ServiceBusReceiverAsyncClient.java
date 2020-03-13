@@ -16,6 +16,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import org.apache.qpid.proton.engine.Receiver;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -263,7 +264,11 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath))
             .flatMap(serviceBusManagementNode -> {
-                return serviceBusManagementNode.renewMessageLock(receivedMessage);
+                return serviceBusManagementNode
+                    .renewMessageLock(receivedMessage)
+                    .doOnNext(instant -> {
+                        receivedMessage.setLockedUntil(instant);
+                    });
             });
     }
 
