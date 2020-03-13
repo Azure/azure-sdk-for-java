@@ -99,7 +99,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         }
     }
 
-    protected <TContinuationToken> int FindTargetRangeAndExtractContinuationTokens(
+    protected <TContinuationToken> int findTargetRangeAndExtractContinuationTokens(
             List<PartitionKeyRange> partitionKeyRanges, Range<String> range) throws CosmosClientException {
         if (partitionKeyRanges == null) {
             throw new IllegalArgumentException("partitionKeyRanges can not be null.");

@@ -39,7 +39,7 @@ public class NumberPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public int CompareTo(IPartitionKeyComponent other) {
+    public int compareTo(IPartitionKeyComponent other) {
         NumberPartitionKeyComponent otherBool = Utils.as(other, NumberPartitionKeyComponent.class);
         if (otherBool == null) {
             throw new IllegalArgumentException("other");
@@ -49,12 +49,12 @@ public class NumberPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public int GetTypeOrdinal() {
+    public int getTypeOrdinal() {
         return PartitionKeyComponentType.NUMBER.type;
     }
 
     @Override
-    public void JsonEncode(JsonGenerator writer) {
+    public void jsonEncode(JsonGenerator writer) {
         try {
             writer.writeNumber(String.valueOf(value));
         } catch (IOException e) {
@@ -63,7 +63,7 @@ public class NumberPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public void WriteForHashing(OutputStream outputStream) {
+    public void writeForHashing(OutputStream outputStream) {
         try {
             outputStream.write((byte) PartitionKeyComponentType.NUMBER.type);
             outputStream.write(doubleToByteArray(this.value));
@@ -73,7 +73,7 @@ public class NumberPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public void WriteForHashingV2(OutputStream outputStream) {
+    public void writeForHashingV2(OutputStream outputStream) {
         try {
             outputStream.write((byte) PartitionKeyComponentType.NUMBER.type);
             outputStream.write(doubleToByteArray(this.value));
@@ -83,7 +83,7 @@ public class NumberPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public void WriteForBinaryEncoding(OutputStream outputStream) {
+    public void writeForBinaryEncoding(OutputStream outputStream) {
         try {
             outputStream.write((byte) PartitionKeyComponentType.NUMBER.type);
 
@@ -115,7 +115,7 @@ public class NumberPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public IPartitionKeyComponent Truncate() {
+    public IPartitionKeyComponent truncate() {
         return this;
     }
 }

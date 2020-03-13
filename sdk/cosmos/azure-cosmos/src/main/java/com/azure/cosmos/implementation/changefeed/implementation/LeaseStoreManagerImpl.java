@@ -42,7 +42,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     private LeaseStore leaseStore;
 
 
-    public static LeaseStoreManagerBuilderDefinition Builder() {
+    public static LeaseStoreManagerBuilderDefinition builder() {
         return new LeaseStoreManagerImpl();
     }
 

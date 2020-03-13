@@ -501,7 +501,7 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     private static AddressInformation toAddressInformation(Address address) {
-        return new AddressInformation(true, address.IsPrimary(), address.getPhyicalUri(), address.getProtocolScheme());
+        return new AddressInformation(true, address.isPrimary(), address.getPhyicalUri(), address.getProtocolScheme());
     }
 
     public Mono<Void> openAsync(

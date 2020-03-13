@@ -12,7 +12,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 
 public class RequestHelper {
-    public static ConsistencyLevel GetConsistencyLevelToUse(GatewayServiceConfigurationReader serviceConfigReader,
+    public static ConsistencyLevel getConsistencyLevelToUse(GatewayServiceConfigurationReader serviceConfigReader,
                                                             RxDocumentServiceRequest request) throws CosmosClientException {
         ConsistencyLevel consistencyLevelToUse = serviceConfigReader.getDefaultConsistencyLevel();
 

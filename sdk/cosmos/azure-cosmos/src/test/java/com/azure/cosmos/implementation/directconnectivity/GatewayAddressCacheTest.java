@@ -770,7 +770,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     private static void assertEqual(AddressInformation actual, Address expected) {
         assertThat(actual.getPhysicalUri().getURIAsString()).isEqualTo(expected.getPhyicalUri().replaceAll("/+$", "/"));
         assertThat(actual.getProtocolScheme()).isEqualTo(expected.getProtocolScheme().toLowerCase());
-        assertThat(actual.isPrimary()).isEqualTo(expected.IsPrimary());
+        assertThat(actual.isPrimary()).isEqualTo(expected.isPrimary());
     }
 
     private static void assertEqual(AddressInformation actual, AddressInformation expected) {

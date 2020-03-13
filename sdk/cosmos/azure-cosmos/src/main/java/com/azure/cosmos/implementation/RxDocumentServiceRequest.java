@@ -954,7 +954,7 @@ public class RxDocumentServiceRequest {
         this.headers.put(HttpConstants.HttpHeaders.PREFER, preferHeader);
     }
 
-    public static RxDocumentServiceRequest CreateFromResource(RxDocumentServiceRequest request, Resource modifiedResource) {
+    public static RxDocumentServiceRequest createFromResource(RxDocumentServiceRequest request, Resource modifiedResource) {
         RxDocumentServiceRequest modifiedRequest;
         if (!request.getIsNameBased()) {
             modifiedRequest = RxDocumentServiceRequest.create(request.getOperationType(),
@@ -1006,7 +1006,7 @@ public class RxDocumentServiceRequest {
         return rxDocumentServiceRequest;
     }
 
-    public void Dispose() {
+    public void dispose() {
         if (this.isDisposed) {
             return;
         }

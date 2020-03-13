@@ -544,7 +544,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         String queryResourceLink = parentResourceLinkToQueryLink(parentResourceLink, resourceTypeEnum);
 
         UUID activityId = Utils.randomUUID();
-        IDocumentQueryClient queryClient = DocumentQueryClientImpl(RxDocumentClientImpl.this);
+        IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this);
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
                 DocumentQueryExecutionContextFactory.createDocumentQueryExecutionContextAsync(queryClient, resourceTypeEnum, klass, sqlQuery , options, queryResourceLink, false, activityId);
         return executionContext.flatMap(IDocumentQueryExecutionContext<T>::executeAsync);
@@ -1558,7 +1558,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap) {
 
         UUID activityId = Utils.randomUUID();
-        IDocumentQueryClient queryClient = DocumentQueryClientImpl(RxDocumentClientImpl.this);
+        IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this);
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
             DocumentQueryExecutionContextFactory.createReadManyQueryAsync(queryClient, collection.getResourceId(),
                                                                           sqlQuery,
@@ -1578,7 +1578,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return queryDocuments(collectionLink, new SqlQuerySpec(query), options);
     }
 
-    private IDocumentQueryClient DocumentQueryClientImpl(RxDocumentClientImpl rxDocumentClientImpl) {
+    private IDocumentQueryClient documentQueryClientImpl(RxDocumentClientImpl rxDocumentClientImpl) {
 
         return new IDocumentQueryClient () {
 

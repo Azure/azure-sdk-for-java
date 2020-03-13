@@ -58,7 +58,7 @@ import java.util.function.Function;
 public final class BridgeInternal {
 
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
-        return Document.FromObject(document, mapper);
+        return Document.fromObject(document, mapper);
     }
 
     public static ByteBuffer serializeJsonToByteBuffer(Document document, ObjectMapper mapper) {

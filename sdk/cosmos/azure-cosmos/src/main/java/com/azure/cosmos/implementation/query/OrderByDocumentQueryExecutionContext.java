@@ -161,7 +161,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             }
 
             // At this point the token is valid.
-            ImmutablePair<Integer, FormattedFilterInfo> targetIndexAndFilters = this.GetFiltersForPartitions(
+            ImmutablePair<Integer, FormattedFilterInfo> targetIndexAndFilters = this.getFiltersForPartitions(
                     orderByContinuationToken,
                     partitionKeyRanges,
                     sortOrders,
@@ -229,17 +229,17 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                         querySpec.getParameters()));
     }
 
-    private ImmutablePair<Integer, FormattedFilterInfo> GetFiltersForPartitions(
+    private ImmutablePair<Integer, FormattedFilterInfo> getFiltersForPartitions(
             OrderByContinuationToken orderByContinuationToken,
             List<PartitionKeyRange> partitionKeyRanges,
             List<SortOrder> sortOrders,
             Collection<String> orderByExpressions) throws CosmosClientException {
         // Find the partition key range we left off on
-        int startIndex = this.FindTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
+        int startIndex = this.findTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
                 orderByContinuationToken.getCompositeContinuationToken().getRange());
 
         // Get the filters.
-        FormattedFilterInfo formattedFilterInfo = this.GetFormattedFilters(orderByExpressions,
+        FormattedFilterInfo formattedFilterInfo = this.getFormattedFilters(orderByExpressions,
                 orderByContinuationToken.getOrderByItems(),
                 sortOrders,
                 orderByContinuationToken.getInclusive());
@@ -248,7 +248,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 formattedFilterInfo);
     }
 
-    private OrderByDocumentQueryExecutionContext<T>.FormattedFilterInfo GetFormattedFilters(
+    private OrderByDocumentQueryExecutionContext<T>.FormattedFilterInfo getFormattedFilters(
             Collection<String> orderByExpressionCollection,
             QueryItem[] orderByItems,
             Collection<SortOrder> sortOrderCollection,

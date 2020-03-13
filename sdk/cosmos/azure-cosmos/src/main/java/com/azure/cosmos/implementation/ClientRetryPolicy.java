@@ -198,25 +198,25 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
         this.isReadRequest = request.isReadOnlyRequest();
-        this.canUseMultipleWriteLocations = this.globalEndpointManager.CanUseMultipleWriteLocations(request);
+        this.canUseMultipleWriteLocations = this.globalEndpointManager.canUseMultipleWriteLocations(request);
         if (request.requestContext != null) {
             request.requestContext.cosmosResponseDiagnostics = this.cosmosResponseDiagnostics;
         }
 
         // clear previous location-based routing directive
         if (request.requestContext != null) {
-            request.requestContext.ClearRouteToLocation();
+            request.requestContext.clearRouteToLocation();
         }
         if (this.retryContext != null) {
             // set location-based routing directive based on request retry context
-            request.requestContext.RouteToLocation(this.retryContext.retryCount, this.retryContext.retryRequestOnPreferredLocations);
+            request.requestContext.routeToLocation(this.retryContext.retryCount, this.retryContext.retryRequestOnPreferredLocations);
         }
 
         // Resolve the endpoint for the request and pin the resolution to the resolved endpoint
         // This enables marking the endpoint unavailability on endpoint failover/unreachability
         this.locationEndpoint = this.globalEndpointManager.resolveServiceEndpoint(request);
         if (request.requestContext != null) {
-            request.requestContext.RouteToLocation(this.locationEndpoint);
+            request.requestContext.routeToLocation(this.locationEndpoint);
         }
     }
     private static class RetryContext {
