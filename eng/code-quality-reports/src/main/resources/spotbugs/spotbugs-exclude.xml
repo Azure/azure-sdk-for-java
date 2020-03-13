@@ -833,4 +833,10 @@
     <Bug pattern="DM_DEFAULT_ENCODING"/>
   </Match>
 
+  <!-- The in-memory map is not serializable, given value is of type IServerIdentity which is not serializable -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap$MinPartitionKeyPairComparator"/>
+    <Bug pattern="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE"/>
+  </Match>
+
 </FindBugsFilter>
