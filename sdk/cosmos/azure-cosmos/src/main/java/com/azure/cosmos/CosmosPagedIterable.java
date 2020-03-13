@@ -20,7 +20,7 @@ import com.azure.cosmos.models.FeedResponse;
  * @see com.azure.core.util.paging.ContinuablePage
  * @see FeedResponse
  */
-public class CosmosPagedIterable<T> extends ContinuablePagedIterable<String, T, FeedResponse<T>> {
+public final class CosmosPagedIterable<T> extends ContinuablePagedIterable<String, T, FeedResponse<T>> {
 
     /**
      * Creates instance given {@link ContinuablePagedFlux}.

@@ -33,7 +33,7 @@ import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxIt
 @ServiceClient(
     builder = CosmosClientBuilder.class,
     isAsync = true)
-public class CosmosAsyncClient implements Closeable {
+public final class CosmosAsyncClient implements Closeable {
 
     // Async document client wrapper
     private final Configs configs;

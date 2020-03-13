@@ -5,70 +5,7 @@ package com.azure.search;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.search.models.AnalyzeRequest;
-import com.azure.search.models.Analyzer;
-import com.azure.search.models.AnalyzerName;
-import com.azure.search.models.AsciiFoldingTokenFilter;
-import com.azure.search.models.CharFilter;
-import com.azure.search.models.CharFilterName;
-import com.azure.search.models.CjkBigramTokenFilter;
-import com.azure.search.models.CjkBigramTokenFilterScripts;
-import com.azure.search.models.ClassicTokenizer;
-import com.azure.search.models.CommonGramTokenFilter;
-import com.azure.search.models.CustomAnalyzer;
-import com.azure.search.models.DataType;
-import com.azure.search.models.DictionaryDecompounderTokenFilter;
-import com.azure.search.models.EdgeNGramTokenFilterSide;
-import com.azure.search.models.EdgeNGramTokenFilterV2;
-import com.azure.search.models.EdgeNGramTokenizer;
-import com.azure.search.models.ElisionTokenFilter;
-import com.azure.search.models.Field;
-import com.azure.search.models.Index;
-import com.azure.search.models.KeepTokenFilter;
-import com.azure.search.models.KeywordMarkerTokenFilter;
-import com.azure.search.models.KeywordTokenizerV2;
-import com.azure.search.models.LengthTokenFilter;
-import com.azure.search.models.LimitTokenFilter;
-import com.azure.search.models.MappingCharFilter;
-import com.azure.search.models.MicrosoftLanguageStemmingTokenizer;
-import com.azure.search.models.MicrosoftLanguageTokenizer;
-import com.azure.search.models.MicrosoftStemmingTokenizerLanguage;
-import com.azure.search.models.MicrosoftTokenizerLanguage;
-import com.azure.search.models.NGramTokenFilterV2;
-import com.azure.search.models.NGramTokenizer;
-import com.azure.search.models.PathHierarchyTokenizerV2;
-import com.azure.search.models.PatternAnalyzer;
-import com.azure.search.models.PatternCaptureTokenFilter;
-import com.azure.search.models.PatternReplaceCharFilter;
-import com.azure.search.models.PatternReplaceTokenFilter;
-import com.azure.search.models.PatternTokenizer;
-import com.azure.search.models.PhoneticEncoder;
-import com.azure.search.models.PhoneticTokenFilter;
-import com.azure.search.models.RegexFlags;
-import com.azure.search.models.SearchOptions;
-import com.azure.search.models.SearchResult;
-import com.azure.search.models.ShingleTokenFilter;
-import com.azure.search.models.SnowballTokenFilter;
-import com.azure.search.models.SnowballTokenFilterLanguage;
-import com.azure.search.models.StandardAnalyzer;
-import com.azure.search.models.StandardTokenizerV2;
-import com.azure.search.models.StemmerOverrideTokenFilter;
-import com.azure.search.models.StemmerTokenFilter;
-import com.azure.search.models.StemmerTokenFilterLanguage;
-import com.azure.search.models.StopAnalyzer;
-import com.azure.search.models.StopwordsList;
-import com.azure.search.models.StopwordsTokenFilter;
-import com.azure.search.models.SynonymTokenFilter;
-import com.azure.search.models.TokenCharacterKind;
-import com.azure.search.models.TokenFilter;
-import com.azure.search.models.TokenFilterName;
-import com.azure.search.models.TokenInfo;
-import com.azure.search.models.Tokenizer;
-import com.azure.search.models.TokenizerName;
-import com.azure.search.models.TruncateTokenFilter;
-import com.azure.search.models.UaxUrlEmailTokenizer;
-import com.azure.search.models.UniqueTokenFilter;
-import com.azure.search.models.WordDelimiterTokenFilter;
+import com.azure.search.models.*;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 import org.unitils.reflectionassert.ReflectionAssert;
@@ -91,6 +28,11 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     private static final String NAME_PREFIX = "azsmnet";
 
     private SearchServiceClient searchServiceClient;
+    private static Collection<CharFilterName> charFilterNames;
+
+    static {
+        getAllCharFilterName();
+    }
 
     @Override
     protected void beforeTest() {
@@ -98,10 +40,17 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         searchServiceClient = getSearchServiceClientBuilder().buildClient();
     }
 
+    private static void getAllCharFilterName() {
+        charFilterNames = new ArrayList<>();
+        for (CharFilterName name : CharFilterName.values()) {
+            charFilterNames.add(name);
+        }
+    }
+
     @Test
     public void canSearchWithCustomAnalyzer() {
-        final String customAnalyzerName = "my_email_analyzer";
-        final String customCharFilterName = "my_email_filter";
+        final AnalyzerName customAnalyzerName = AnalyzerName.fromString("my_email_analyzer");
+        final CharFilterName customCharFilterName = CharFilterName.fromString("my_email_filter");
 
         Index index = new Index()
             .setName("testindex")
@@ -118,15 +67,15 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             ))
             .setAnalyzers(Collections.singletonList(
                 new CustomAnalyzer()
-                    .setTokenizer(TokenizerName.STANDARD.toString())
+                    .setTokenizer(TokenizerName.STANDARD)
                     .setCharFilters(Collections.singletonList(customCharFilterName))
-                    .setName(customAnalyzerName)
+                    .setName(customAnalyzerName.toString())
             ))
             .setCharFilters(Collections.singletonList(
                 new PatternReplaceCharFilter()
                     .setPattern("@")
                     .setReplacement("_")
-                    .setName(customCharFilterName)
+                    .setName(customCharFilterName.toString())
             ));
 
         searchServiceClient.createIndex(index);
@@ -165,7 +114,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             new Field()
                 .setName("field")
                 .setType(DataType.EDM_STRING)
-                .setSearchAnalyzer(AnalyzerName.EN_LUCENE.toString());
+                .setSearchAnalyzer(AnalyzerName.EN_LUCENE);
         } catch (Exception ex) {
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals("Only non-language analyzer can be used as search analyzer.", ex.getMessage());
@@ -174,7 +123,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             new Field()
                 .setName("field")
                 .setType(DataType.EDM_STRING)
-                .setIndexAnalyzer(AnalyzerName.AR_MICROSOFT.toString());
+                .setIndexAnalyzer(AnalyzerName.AR_MICROSOFT);
         } catch (Exception ex) {
             assertEquals(IllegalArgumentException.class, ex.getClass());
             assertEquals("Only non-language analyzer can be used as index analyzer.", ex.getMessage());
@@ -356,7 +305,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
         if (expectedAnalyzers != null && actualAnalyzers != null) {
             Comparator<Analyzer> customAnalyzerComparator = Comparator
-                .comparing((Analyzer a) -> ((CustomAnalyzer) a).getTokenizer());
+                .comparing((Analyzer a) -> ((CustomAnalyzer) a).getTokenizer().toString());
 
             expectedAnalyzers.sort(customAnalyzerComparator);
             actualAnalyzers.sort(customAnalyzerComparator);
@@ -499,7 +448,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             fields.add(new Field()
                 .setName("field" + (fieldNumber++))
                 .setType(fieldType)
-                .setAnalyzer(allAnalyzerNames.get(i).toString()));
+                .setAnalyzer(allAnalyzerNames.get(i)));
         }
 
         List<AnalyzerName> searchAnalyzersAndIndexAnalyzers = getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer();
@@ -510,8 +459,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 .setName("field" + (fieldNumber++))
                 .setType(fieldType)
                 .setSearchable(true)
-                .setSearchAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i).toString())
-                .setIndexAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i).toString()));
+                .setSearchAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i))
+                .setIndexAnalyzer(searchAnalyzersAndIndexAnalyzers.get(i)));
         }
 
         fields.add(new Field()
@@ -527,16 +476,14 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     Index prepareIndexWithAllAnalysisComponentNames() {
         Analyzer analyzerWithAllTokenFilterAndCharFilters =
             new CustomAnalyzer()
-                .setTokenizer(TokenizerName.LOWERCASE.toString())
+                .setTokenizer(TokenizerName.LOWERCASE)
                 .setTokenFilters(TokenFilterName.values()
                     .stream()
-                    .map(TokenFilterName::toString)
-                    .sorted()
+                    .sorted(Comparator.comparing(TokenFilterName::toString))
                     .collect(Collectors.toList()))
-                .setCharFilters(CharFilterName.values()
+                .setCharFilters(charFilterNames
                     .stream()
-                    .map(CharFilterName::toString)
-                    .sorted()
+                    .sorted(Comparator.comparing(CharFilterName::toString))
                     .collect(Collectors.toList()))
                 .setName("abc");
 
@@ -547,7 +494,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             .stream()
             .sorted(Comparator.comparing(TokenizerName::toString))
             .map(tn -> new CustomAnalyzer()
-                .setTokenizer(tn.toString())
+                .setTokenizer(tn)
                 .setName(generateName()))
             .collect(Collectors.toList()));
 
@@ -611,9 +558,9 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     }
 
     Index prepareIndexWithAllAnalysisComponentTypes() {
-        final String customTokenizerName = "my_tokenizer";
-        final String customTokenFilterName = "my_tokenfilter";
-        final String customCharFilterName = "my_charfilter";
+        final TokenizerName customTokenizerName = TokenizerName.fromString("my_tokenizer");
+        final TokenFilterName customTokenFilterName = TokenFilterName.fromString("my_tokenfilter");
+        final CharFilterName customCharFilterName = CharFilterName.fromString("my_charfilter");
 
         return createTestIndex()
             .setAnalyzers(Arrays.asList(
@@ -623,7 +570,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                     .setCharFilters(Collections.singletonList(customCharFilterName))
                     .setName(generateName()),
                 new CustomAnalyzer()
-                    .setTokenizer(TokenizerName.EDGE_NGRAM.toString())
+                    .setTokenizer(TokenizerName.EDGE_NGRAM)
                     .setName(generateName()),
                 new PatternAnalyzer()
                     .setLowerCaseTerms(false)
@@ -645,7 +592,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 new EdgeNGramTokenizer()
                     .setMinGram(1)
                     .setMaxGram(2)
-                    .setName(customTokenizerName),
+                    .setName(customTokenizerName.toString()),
                 new EdgeNGramTokenizer()
                     .setMinGram(2)
                     .setMaxGram(4)
@@ -693,7 +640,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             ))
             .setTokenFilters(Arrays.asList(
                 new CjkBigramTokenFilter()
-                    .setName(customTokenFilterName),  // One custom token filter for CustomAnalyzer above.
+                    .setName(customTokenFilterName.toString()),  // One custom token filter for CustomAnalyzer above.
                 new CjkBigramTokenFilter()
                     .setIgnoreScripts(Collections.singletonList(CjkBigramTokenFilterScripts.HAN))
                     .setOutputUnigrams(true)
@@ -822,7 +769,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             .setCharFilters(Arrays.asList(
                 new MappingCharFilter()
                     .setMappings(Collections.singletonList("a => b")) // One custom char filter for CustomeAnalyer above.
-                    .setName(customCharFilterName),
+                    .setName(customCharFilterName.toString()),
                 new MappingCharFilter()
                     .setMappings(Arrays.asList("s => $", "S => $"))
                     .setName(generateName()),

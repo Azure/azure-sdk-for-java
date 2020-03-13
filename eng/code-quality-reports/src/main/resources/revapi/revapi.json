@@ -97,6 +97,12 @@
         "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "(class|interface|enum) com\\.azure\\.storage\\..*",
         "justification": "azure-storage-common and storage blob classes are allowed to be exposed."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(class|interface|enum) com\\.azure\\.perf\\.test\\.core\\..*",
+        "justification": "perf-test classes are allowed to be exposed."
       }
     ]
   }

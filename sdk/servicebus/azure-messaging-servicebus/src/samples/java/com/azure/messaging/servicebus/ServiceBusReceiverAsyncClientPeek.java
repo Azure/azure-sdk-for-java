@@ -28,7 +28,6 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Instant;
@@ -121,33 +120,15 @@ public class ServiceBusReceiverAsyncClientPeek {
     public void peekOneMessage() {
         // Arrange
         final int numberOfEvents = 1;
-        String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING")
-            + ";EntityPath=hemant-test1";
-        log(connectionString);
-        // Instantiate a client that will be used to call the service.
+        // Act & Assert
+        StepVerifier.create(consumer.peek())
+            .then(() -> sendMessages(numberOfEvents))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
 
-        ServiceBusReceiverAsyncClient queueReceiverAsyncClient = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .scheduler(Schedulers.parallel())
-            .buildAsyncReceiverClient();
+        verify(amqpReceiveLink, times(1));
 
-        queueReceiverAsyncClient.inspectMessage()
-            .doOnNext(receivedMessage -> {
-                System.out.println("!!!!!! doOnNext Got message from queue: " + receivedMessage.getBodyAsString());
-            })
-            .subscribe(receivedMessage -> {
-                System.out.println("!!!!!! subscribe Got message from queue: " + receivedMessage.getBodyAsString());
-            },
-                error -> {
-                    System.err.println("!!!!!! Error occurred while consuming messages: " + error);
-                });
 
-        try {
-            Thread.sleep(5000);
-        } catch (Exception ex) {
-
-        }
-        System.out.println("!!!!!! Completed.");
     }
 
     private void sendMessages(int numberOfEvents) {

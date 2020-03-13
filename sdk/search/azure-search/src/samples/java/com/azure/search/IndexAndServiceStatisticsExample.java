@@ -152,7 +152,7 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.FALSE)
                     .setSortable(Boolean.FALSE)
                     .setFacetable(Boolean.FALSE)
-                    .setAnalyzer(AnalyzerName.EN_LUCENE.toString())
+                    .setAnalyzer(AnalyzerName.EN_LUCENE)
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("DescriptionFr")
@@ -161,7 +161,7 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.FALSE)
                     .setSortable(Boolean.FALSE)
                     .setFacetable(Boolean.FALSE)
-                    .setAnalyzer(AnalyzerName.FR_LUCENE.toString())
+                    .setAnalyzer(AnalyzerName.FR_LUCENE)
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Description_Custom")
@@ -170,8 +170,8 @@ public class IndexAndServiceStatisticsExample {
                     .setFilterable(Boolean.FALSE)
                     .setSortable(Boolean.FALSE)
                     .setFacetable(Boolean.FALSE)
-                    .setSearchAnalyzer(AnalyzerName.STOP.toString())
-                    .setIndexAnalyzer(AnalyzerName.STOP.toString())
+                    .setSearchAnalyzer(AnalyzerName.STOP)
+                    .setIndexAnalyzer(AnalyzerName.STOP)
                     .setRetrievable(Boolean.TRUE),
                 new Field()
                     .setName("Category")
@@ -277,13 +277,13 @@ public class IndexAndServiceStatisticsExample {
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
                             .setRetrievable(Boolean.TRUE)
-                            .setAnalyzer(AnalyzerName.EN_LUCENE.toString()),
+                            .setAnalyzer(AnalyzerName.EN_LUCENE),
                         new Field()
                             .setName("DescriptionFr")
                             .setType(DataType.EDM_STRING)
                             .setSearchable(Boolean.TRUE)
                             .setRetrievable(Boolean.TRUE)
-                            .setAnalyzer(AnalyzerName.FR_LUCENE.toString()),
+                            .setAnalyzer(AnalyzerName.FR_LUCENE),
                         new Field()
                             .setName("Type")
                             .setType(DataType.EDM_STRING)

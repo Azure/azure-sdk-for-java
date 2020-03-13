@@ -5,12 +5,12 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.NotFoundException;
-import com.azure.cosmos.PartitionIsMigratingException;
-import com.azure.cosmos.PartitionKeyRangeGoneException;
-import com.azure.cosmos.PartitionKeyRangeIsSplittingException;
-import com.azure.cosmos.RequestRateTooLargeException;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
+import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.HttpConstants;

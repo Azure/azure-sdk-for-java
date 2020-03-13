@@ -15,6 +15,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
+import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.message.Message;
@@ -29,10 +30,8 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
-
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
@@ -47,6 +46,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static reactor.core.publisher.Mono.*;
 
 public class ServiceBusReceiverAsyncClientTest {
     private static final String PAYLOAD = "hello";
@@ -70,6 +70,14 @@ public class ServiceBusReceiverAsyncClientTest {
     private MessageSerializer messageSerializer;
     @Mock
     private TracerProvider tracerProvider;
+
+    @Mock
+    private ServiceBusManagementNode managementNode;
+
+    @Mock
+    private ServiceBusReceivedMessage message1;
+    @Mock
+    private ServiceBusReceivedMessage message2;
 
     private ServiceBusReceiverAsyncClient consumer;
 
@@ -97,7 +105,7 @@ public class ServiceBusReceiverAsyncClientTest {
                 return mock(ServiceBusReceivedMessage.class);
             });
 
-        ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, ENTITY_NAME, tokenCredential,
+        ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
 
@@ -105,11 +113,13 @@ public class ServiceBusReceiverAsyncClientTest {
         endpointSink.next(AmqpEndpointState.ACTIVE);
 
         when(connection.createReceiveLink(anyString(), anyString(),
-            any(ReceiveMode.class))).thenReturn(Mono.just(amqpReceiveLink));
+            any(ReceiveMode.class))).thenReturn(just(amqpReceiveLink));
+
+        when(connection.getManagementNode(anyString())).thenReturn(just(managementNode));
 
         ServiceBusConnectionProcessor connectionProcessor = Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
             .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getEntityPath(), connectionOptions.getRetry()));
+                ENTITY_NAME, connectionOptions.getRetry()));
 
         ReceiveMessageOptions receiveOptions = new ReceiveMessageOptions().setPrefetchCount(PREFETCH);
         consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_NAME, connectionProcessor, tracerProvider,
@@ -120,6 +130,64 @@ public class ServiceBusReceiverAsyncClientTest {
     void teardown() {
         Mockito.framework().clearInlineMocks();
         consumer.close();
+    }
+
+    /**
+     * Verifies that when user calls peek more than one time, It returns different object.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    void peekTwoMessages() {
+
+        /* Arrange */
+        final int numberOfEvents = 1;
+        when(managementNode.peek())
+            .thenReturn(just(message1), just(message2));
+
+        // Act & Assert
+        StepVerifier.create(consumer.peek())
+            .expectNext(message1)
+            .verifyComplete();
+
+        // Act & Assert
+        StepVerifier.create(consumer.peek())
+            .expectNext(message2)
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that this peek one messages.
+     */
+    @Test
+    void peekOneMessage() {
+        // Arrange
+        final int numberOfEvents = 1;
+        when(managementNode.peek())
+            .thenReturn(just(mock(ServiceBusReceivedMessage.class)));
+
+        // Act & Assert
+        StepVerifier.create(consumer.peek())
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
+
+    }
+
+    /**
+     * Verifies that this peek one messages from a sequence Number.
+     */
+    @Test
+    void peekWithSequenceOneMessage() {
+        // Arrange
+        final int numberOfEvents = 1;
+        final int fromSequenceNumber = 10;
+
+        when(managementNode.peek(fromSequenceNumber))
+            .thenReturn(just(mock(ServiceBusReceivedMessage.class)));
+
+        // Act & Assert
+        StepVerifier.create(consumer.peek(fromSequenceNumber))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
     }
 
     /**

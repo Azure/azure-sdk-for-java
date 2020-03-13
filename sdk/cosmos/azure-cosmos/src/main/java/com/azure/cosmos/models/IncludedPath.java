@@ -14,7 +14,7 @@ import java.util.Collection;
 /**
  * Represents an included path of the IndexingPolicy in the Azure Cosmos DB database service.
  */
-public class IncludedPath extends JsonSerializable {
+public final class IncludedPath extends JsonSerializable {
     private Collection<Index> indexes;
 
     /**

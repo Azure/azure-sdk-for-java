@@ -60,7 +60,7 @@ final class TestUtils {
         "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check.");
 
     static final List<String> DETECT_LANGUAGE_INPUTS = Arrays.asList(
-        "This is written in English", "Este es un documento  escrito en Español.", "~@!~:)");
+        "This is written in English", "Este es un documento escrito en Español.", "~@!~:)");
 
     static List<DetectLanguageInput> getDetectLanguageInputs() {
         return Arrays.asList(
@@ -93,7 +93,7 @@ final class TestUtils {
         DetectedLanguage detectedLanguage3 = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0);
 
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(26, 1);
-        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(39, 1);
+        TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(40, 1);
         TextDocumentStatistics textDocumentStatistics3 = new TextDocumentStatistics(6, 1);
 
         DetectLanguageResult detectLanguageResult1 = new DetectLanguageResult("0", textDocumentStatistics1, null, detectedLanguage1);

@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
  * Represents a per-User Permission to access a specific resource e.g. Document or Collection in the Azure Cosmos DB 
  * database service.
  */
-public class Permission extends Resource {
+public final class Permission extends Resource {
     /**
      * Initialize a permission object.
      */

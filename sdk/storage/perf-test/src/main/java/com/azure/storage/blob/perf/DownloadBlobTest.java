@@ -28,8 +28,8 @@ public class DownloadBlobTest extends ContainerTest<SizeOptions> {
     // Required resource setup goes here, upload the file to be downloaded during tests.
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
-            .then(blobAsyncClient.upload(RandomFlux.create(options.getSize()), null))
-            .then();
+                   .then(blobAsyncClient.upload(RandomFlux.create(options.getSize()), null))
+                   .then();
     }
 
     // Perform the API call to be tested here
@@ -38,7 +38,7 @@ public class DownloadBlobTest extends ContainerTest<SizeOptions> {
         blobClient.download(new NullOutputStream());
     }
 
-    class NullOutputStream extends OutputStream {
+    static class NullOutputStream extends OutputStream {
         @Override
         public void write(int b) throws IOException {
 
