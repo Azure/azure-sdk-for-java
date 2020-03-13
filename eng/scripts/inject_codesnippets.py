@@ -95,7 +95,7 @@ if __name__ == "__main__":
           if id_ending in snippets:
             result_array = [
               lead_space + "<pre>\n",
-              "".join(map(lambda x : lead_space + x, cgi.escape(snippets[id_ending]), quote=True)),
+              cgi.escape(("".join(map(lambda x : lead_space + x, snippets[id_ending]))), quote=True),
               lead_space + "</pre>\n"
             ]
             line_replacement = "".join(result_array)
