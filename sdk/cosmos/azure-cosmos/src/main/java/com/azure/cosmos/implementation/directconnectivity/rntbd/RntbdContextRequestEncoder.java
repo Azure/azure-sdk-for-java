@@ -23,7 +23,7 @@ final class RntbdContextRequestEncoder extends MessageToByteEncoder<RntbdContext
      */
     @Override
     public boolean acceptOutboundMessage(final Object message) {
-        return message instanceof RntbdContextRequest;
+        return message.getClass() == RntbdContextRequest.class;
     }
 
     /**
@@ -39,16 +39,15 @@ final class RntbdContextRequestEncoder extends MessageToByteEncoder<RntbdContext
     @Override
     protected void encode(final ChannelHandlerContext context, final RntbdContextRequest message, final ByteBuf out) throws IllegalStateException {
 
-        final RntbdContextRequest request = message;
         out.markWriterIndex();
 
         try {
-            request.encode(out);
+            message.encode(out);
         } catch (final IllegalStateException error) {
             out.resetWriterIndex();
             throw error;
         }
 
-        Logger.debug("{}: ENCODE COMPLETE: request={}", context.channel(), request);
+        Logger.debug("{}: ENCODE COMPLETE: request={}", context.channel(), message);
     }
 }

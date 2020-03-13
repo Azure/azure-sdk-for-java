@@ -172,7 +172,7 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
 
     @Override
     public int hashCode() {
-//        Note: @kushagraThapar, @moderakh, mbhaskar to identify proper implementation.
+//        TODO: @kushagraThapar, @moderakh, mbhaskar to identify proper implementation.
 //        Issue: https://github.com/Azure/azure-sdk-for-java/issues/9046
 //        if (this.components == null || this.components.size() == 0) {
 //            return 0;
