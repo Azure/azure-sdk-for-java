@@ -68,7 +68,6 @@ class ClientSideRequestStatistics {
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
         this.connectionMode = ConnectionMode.DIRECT;
-        this.retryContext = retryContext;
     }
 
     private static String formatDateTime(ZonedDateTime dateTime) {
