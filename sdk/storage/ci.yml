@@ -65,6 +65,3 @@ stages:
         - name: azure-storage-queue
           groupId: com.azure
           safeName: azurestoragequeue
-        - name: azure-storage-perf
-          groupId: com.azure
-          safeName: azurestorageperf
