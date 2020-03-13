@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.FeedResponse;
