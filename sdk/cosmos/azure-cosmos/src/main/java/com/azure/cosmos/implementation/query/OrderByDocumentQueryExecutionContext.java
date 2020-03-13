@@ -42,8 +42,8 @@ import java.util.function.Function;
  */
 public class OrderByDocumentQueryExecutionContext<T extends Resource>
         extends ParallelDocumentQueryExecutionContextBase<T> {
-    private final String FormatPlaceHolder = "{documentdb-formattableorderbyquery-filter}";
-    private final String True = "true";
+    private final static String FormatPlaceHolder = "{documentdb-formattableorderbyquery-filter}";
+    private final static String True = "true";
     private final String collectionRid;
     private final OrderbyRowComparer<T> consumeComparer;
     private final RequestChargeTracker tracker;
