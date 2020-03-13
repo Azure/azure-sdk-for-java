@@ -237,7 +237,8 @@ public final class ServiceBusClientBuilder {
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
-            serviceBusResourceName, connectionProcessor, tracerProvider, messageSerializer, receiveMessageOptions);
+            serviceBusResourceName, MessagingEntityType.QUEUE, false, receiveMessageOptions,
+            connectionProcessor, tracerProvider, messageSerializer);
     }
 
     /**

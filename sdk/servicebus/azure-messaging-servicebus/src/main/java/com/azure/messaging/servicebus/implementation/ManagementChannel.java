@@ -3,20 +3,23 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManager;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
-import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,62 +27,52 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_SERVER_TIMEOUT;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.PEEK_OPERATION_VALUE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_MESSAGE_COUNT;
+
 /**
  * Channel responsible for Service Bus related metadata, peek  and management plane operations.
  * Management plane operations increasing quotas, etc.
  */
 public class ManagementChannel implements  ServiceBusManagementNode {
-    // Well-known keys from the management service responses and requests.
-    public static final String MANAGEMENT_ENTITY_NAME_KEY = "name";
-    public static final String MANAGEMENT_PARTITION_NAME_KEY = "partition";
-    public static final String MANAGEMENT_RESULT_PARTITION_IDS = "partition_ids";
-    public static final String MANAGEMENT_RESULT_CREATED_AT = "created_at";
-    public static final String MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER = "begin_sequence_number";
-    public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER = "last_enqueued_sequence_number";
-    public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET = "last_enqueued_offset";
-    public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC = "last_enqueued_time_utc";
-    public static final String MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC = "runtime_info_retrieval_time_utc";
-    public static final String MANAGEMENT_RESULT_PARTITION_IS_EMPTY = "is_partition_empty";
 
-    // Well-known keys for management plane service requests.
-    private static final String MANAGEMENT_ENTITY_TYPE_KEY = "type";
-    private static final String MANAGEMENT_OPERATION_KEY = "operation";
-    private static final String MANAGEMENT_SECURITY_TOKEN_KEY = "security_token";
-
-    // Well-known values for the service request.
-    private static final String PEEK_OPERATION_VALUE = AmqpConstants.VENDOR + ":peek-message";
-    private static final String MANAGEMENT_SERVICEBUS_ENTITY_TYPE = AmqpConstants.VENDOR + ":servicebus";
-    private static final String MANAGEMENT_SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
-
-    private final Mono<RequestResponseChannel> channelMono;
     private final Scheduler scheduler;
     private final MessageSerializer messageSerializer;
+    private final TokenManager tokenManager;
+    private final Duration operationTimeout;
+    private final Mono<RequestResponseChannel> createRequestResponse;
+    private final String fullyQualifiedNamespace;
+    private final ClientLogger logger;
+    private final String entityPath;
+    private final AtomicReference<Long> lastPeekedSequenceNumber = new AtomicReference<>(0L);
 
-    /*This is to maintain cbs node and get authorization.*/
-    private final TokenManager cbsBasedTokenManager;
+    private volatile boolean isDisposed;
 
-    // Maintain last peek sequence number
-    private AtomicReference<Long>  lastPeekedSequenceNumber = new AtomicReference<>(0L);
-    private AtomicReference<Boolean> cbsBasedTokenManagerCalled = new AtomicReference<>(false);
-
-
-
-    ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String fullyQualifiedNamespace,
-        String entityPath, TokenCredential credential, TokenManagerProvider tokenManagerProvider,
-        MessageSerializer messageSerializer, Scheduler scheduler, TokenManager cbsBasedTokenManager,
+    ManagementChannel(Mono<RequestResponseChannel> createRequestResponse, String fullyQualifiedNamespace,
+        String entityPath, TokenManager tokenManager, MessageSerializer messageSerializer, Scheduler scheduler,
         Duration operationTimeout) {
-
+        this.createRequestResponse = createRequestResponse;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.logger = new ClientLogger(String.format("%s<%s>", ManagementChannel.class, entityPath));
-        this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
-            "'tokenManagerProvider' cannot be null.");
-        this.tokenProvider = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.topicOrQueueName = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
-        this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
-        this.cbsBasedTokenManager = Objects.requireNonNull(cbsBasedTokenManager,
-            "'cbsBasedTokenManager' cannot be null.");
+        this.tokenManager = Objects.requireNonNull(tokenManager, "'tokenManager' cannot be null.");
+        this.operationTimeout = operationTimeout;
+    }
+
+    /**
+     * Completes a message given its lock token.
+     *
+     * @param lockToken Lock token to complete.
+     * @return Mono that completes successfully when the message is completed. Otherwise, returns an error.
+     */
+    @Override
+    public Mono<Void> complete(UUID lockToken) {
+        return Mono.empty();
     }
 
     /**
@@ -87,8 +80,7 @@ public class ManagementChannel implements  ServiceBusManagementNode {
      */
     @Override
     public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber) {
-
-        return peek(ServiceBusReceivedMessage.class, 1, fromSequenceNumber, null)
+        return peek(fromSequenceNumber, 1, null)
             .last()
             .publishOn(scheduler);
     }
@@ -98,65 +90,57 @@ public class ManagementChannel implements  ServiceBusManagementNode {
      */
     @Override
     public Mono<ServiceBusReceivedMessage> peek() {
-
-        return peek(this.lastPeekedSequenceNumber.get() + 1);
+        return peek(lastPeekedSequenceNumber.get() + 1);
     }
 
-    private <T> Flux<T> peek(Class<T> responseType,
-                             int maxMessages, long fromSequenceNumber, UUID sessionId) {
-        return
-            Mono.defer(() -> {
-                if (!cbsBasedTokenManagerCalled.get()) {
-                    return cbsBasedTokenManager
-                        .authorize()
-                        .doOnNext(refreshCBSTokenTime -> {
-                            cbsBasedTokenManagerCalled.set(true);
-                        })
-                        .then();
-                } else {
-                    return Mono.empty();
-                }
-            })
-            .then(
-                  channelMono.flatMap(requestResponseChannel -> {
+    private Flux<ServiceBusReceivedMessage> peek(long fromSequenceNumber, int maxMessages, UUID sessionId) {
+        return tokenManager.getAuthorizationResults().switchOnFirst((signal, publisher) -> {
+            if (signal.hasValue() && (signal.get() == AmqpResponseCode.ACCEPTED)) {
+                return createRequestResponse.flatMap(channel -> {
+                    final Map<String, Object> appProperties = new HashMap<>();
+                    // set mandatory application properties for AMQP message.
+                    appProperties.put(MANAGEMENT_OPERATION_KEY, PEEK_OPERATION_VALUE);
+                    appProperties.put(MANAGEMENT_SERVER_TIMEOUT, operationTimeout);
 
-                      Map<String, Object> appProperties = new HashMap<>();
-                      // set mandatory application properties for AMQP message.
-                      appProperties.put(MANAGEMENT_OPERATION_KEY, PEEK_OPERATION_VALUE);
-                      //TODO(hemanttanwar) fix timeour configuration
-                      appProperties.put(MANAGEMENT_SERVER_TIMEOUT, "30000");
+                    final Message request = Proton.message();
+                    final ApplicationProperties applicationProperties = new ApplicationProperties(appProperties);
+                    request.setApplicationProperties(applicationProperties);
 
-                      final Message request = Proton.message();
-                      final ApplicationProperties applicationProperties = new ApplicationProperties(appProperties);
-                      request.setApplicationProperties(applicationProperties);
+                    // set mandatory properties on AMQP message body
+                    HashMap<String, Object> requestBodyMap = new HashMap<>();
+                    requestBodyMap.put(REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER, fromSequenceNumber);
+                    requestBodyMap.put(REQUEST_RESPONSE_MESSAGE_COUNT, maxMessages);
 
-                      // set mandatory properties on AMQP message body
-                      HashMap<String, Object> requestBodyMap = new HashMap<>();
-                      requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER, fromSequenceNumber);
-                      requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_MESSAGE_COUNT, maxMessages);
-
-                      if (!Objects.isNull(sessionId)) {
-                          requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_SESSION_ID, sessionId);
-                      }
-
-                      request.setBody(new AmqpValue(requestBodyMap));
-
-                      return requestResponseChannel.sendWithAck(request);
-                  })
-            ).flatMapMany(amqpMessage -> {
-                @SuppressWarnings("unchecked")
-                List<T> messageListObj =  messageSerializer.deserialize(amqpMessage, List.class);
-
-                 // Assign the last sequence number so that we can peek from next time
-                if (messageListObj.size() > 0) {
-                    ServiceBusReceivedMessage receivedMessage = (ServiceBusReceivedMessage) messageListObj
-                        .get(messageListObj.size() - 1);
-                    if (receivedMessage.getSequenceNumber() > 0) {
-                        this.lastPeekedSequenceNumber.set(receivedMessage.getSequenceNumber());
+                    if (!Objects.isNull(sessionId)) {
+                        requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_SESSION_ID, sessionId);
                     }
-                }
-                return Flux.fromIterable(messageListObj);
-            });
+
+                    request.setBody(new AmqpValue(requestBodyMap));
+
+                    return channel.sendWithAck(request);
+                }).flatMapMany(amqpMessage -> {
+                    @SuppressWarnings("unchecked")
+                    final List<ServiceBusReceivedMessage> messageList =
+                        messageSerializer.deserialize(amqpMessage, List.class);
+
+                    // Assign the last sequence number so that we can peek from next time
+                    if (messageList.size() > 0) {
+                        final ServiceBusReceivedMessage receivedMessage = messageList.get(messageList.size() - 1);
+
+                        logger.info("Setting last peeked sequence number: {}", receivedMessage.getSequenceNumber());
+
+                        if (receivedMessage.getSequenceNumber() > 0) {
+                            this.lastPeekedSequenceNumber.set(receivedMessage.getSequenceNumber());
+                        }
+                    }
+
+                    return Flux.fromIterable(messageList);
+                });
+            }
+
+            return Flux.error(new AmqpException(false, "User does not have authorization to entity: " + entityPath,
+                new SessionErrorContext(fullyQualifiedNamespace, entityPath)));
+        });
     }
 
     /**
@@ -164,8 +148,11 @@ public class ManagementChannel implements  ServiceBusManagementNode {
      */
     @Override
     public void close() {
-        if (channelMono instanceof Disposable) {
-            ((Disposable) channelMono).dispose();
+        if (isDisposed) {
+            return;
         }
+
+        isDisposed = true;
+        tokenManager.close();
     }
 }

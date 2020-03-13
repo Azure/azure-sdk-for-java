@@ -40,7 +40,6 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
     private final String fullyQualifiedNamespace;
     private final String entityPath;
-    private final String transferEntityPath;
     private final MessagingEntityType entityType;
     private final boolean isSessionEnabled;
     private final ServiceBusConnectionProcessor connectionProcessor;
@@ -51,19 +50,16 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final boolean isAutoComplete;
     private final ReceiveMode receiveMode;
 
-    // Client will maintain the sequence number of last peeked message.
-    //private long lastPeekedSequenceNumber = 0;
-
     /**
      * Map containing linkNames and their associated consumers. Key: linkName Value: consumer associated with that
      * linkName.
      */
     private final ConcurrentHashMap<String, ServiceBusAsyncConsumer> openConsumers = new ConcurrentHashMap<>();
 
-    ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, boolean isSessionEnabled,
+    ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
+        boolean isSessionEnabled, ReceiveMessageOptions receiveMessageOptions,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, ReceiveMessageOptions receiveMessageOptions, String transferEntityPath,
-        MessagingEntityType entityType) {
+        MessageSerializer messageSerializer) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
@@ -78,7 +74,6 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         this.isAutoComplete = receiveMessageOptions.isAutoComplete();
         this.receiveMode = receiveMessageOptions.getReceiveMode();
 
-        this.transferEntityPath = transferEntityPath;
         this.entityType = entityType;
         this.isSessionEnabled = isSessionEnabled;
     }
@@ -157,8 +152,18 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message) {
-        return getOrCreateConsumer(entityPath)
-            .complete(message);
+        Objects.requireNonNull(message, "'message' cannot be null.");
+
+        if (message.getLockToken() == null) {
+            throw new IllegalArgumentException("'message.getLockToken()' cannot be null.");
+        }
+
+        logger.info("{}: Completing message. Sequence number: {}. Lock: {}",
+            entityPath, message.getSequenceNumber(), message.getLockToken());
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(node -> node.complete(message.getLockToken()));
     }
 
     /**
@@ -281,7 +286,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      */
     public Mono<ServiceBusReceivedMessage> peek() {
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath))
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(ServiceBusManagementNode::peek);
     }
 
@@ -294,7 +299,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      */
     public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber) {
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath))
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.peek(fromSequenceNumber));
     }
 
@@ -360,11 +365,11 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private ServiceBusAsyncConsumer createServiceBusConsumer(String linkName) {
         final Flux<AmqpReceiveLink> receiveLinkMono =
             connectionProcessor.flatMap(connection -> connection.createReceiveLink(linkName, entityPath, receiveMode,
-                isSessionEnabled, transferEntityPath, entityType))
+                isSessionEnabled, null, entityType))
                 .doOnNext(next -> {
                     final String format = "Created consumer for Service Bus resource: [{}] mode: [{}]"
                         + " sessionEnabled? {} transferEntityPath: [{}], entityType: [{}]";
-                    logger.verbose(format, next.getEntityPath(), receiveMode, isSessionEnabled, transferEntityPath,
+                    logger.verbose(format, next.getEntityPath(), receiveMode, isSessionEnabled, "N/A",
                         entityType);
                 })
                 .repeat();
@@ -373,8 +378,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
             new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
 
-        return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, isAutoComplete, entityPath,
-            transferEntityPath, entityType);
+        return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, isAutoComplete, this::complete);
     }
 
     private void ensurePeekLockReceiveMode() {

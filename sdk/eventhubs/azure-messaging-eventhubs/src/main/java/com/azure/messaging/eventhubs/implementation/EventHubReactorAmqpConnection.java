@@ -67,7 +67,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
         this.connectionId = connectionId;
-        this.entityPath = entityPath;
+        this.entityPath = eventHubName;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = tokenManagerProvider;

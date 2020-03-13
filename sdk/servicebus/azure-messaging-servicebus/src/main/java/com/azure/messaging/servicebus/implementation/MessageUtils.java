@@ -4,12 +4,13 @@
 package com.azure.messaging.servicebus.implementation;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.UUID;
 
 /**
  * Contains helper methods for message conversions.
  */
-public final class MessageUtils {
+final class MessageUtils {
     public static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
     private static final int LOCK_TOKEN_SIZE = 16;
     private static final int GUID_SIZE = 16;
@@ -24,7 +25,7 @@ public final class MessageUtils {
      *
      * @return the equivalent UUID.
      */
-    public static UUID convertDotNetBytesToUUID(byte[] dotNetBytes) {
+    static UUID convertDotNetBytesToUUID(byte[] dotNetBytes) {
         // First 4 bytes are in reverse order, 5th and 6th bytes are in reverse order,
         // 7th and 8th bytes are also in reverse order
         if (dotNetBytes == null || dotNetBytes.length != GUID_SIZE) {
@@ -70,5 +71,10 @@ public final class MessageUtils {
         long mostSignificantBits = buffer.getLong();
         long leastSignificantBits = buffer.getLong();
         return new UUID(mostSignificantBits, leastSignificantBits);
+    }
+
+    // Pass little less than client timeout to the server so client doesn't time out before server times out
+    static Duration adjustServerTimeout(Duration clientTimeout) {
+        return clientTimeout.minusMillis(200);
     }
 }

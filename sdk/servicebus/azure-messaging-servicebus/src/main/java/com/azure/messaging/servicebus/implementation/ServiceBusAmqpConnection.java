@@ -11,15 +11,13 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Mono;
 
 public interface ServiceBusAmqpConnection extends AmqpConnection {
-
     /**
      * Gets the management node for a Service Bus resource and performs metadata and management operations using it.
      *
      * @param entityPath Name of the Service bus resource.
      * @return A Mono that completes with that resources's management node.
      */
-    Mono<ServiceBusManagementNode> getManagementNode(String entityPath, String transferEntityName,
-        MessagingEntityType entityType);
+    Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType);
 
     /**
      * Creates or gets a send link. The same link is returned if there is an existing send link with the same {@code

@@ -6,6 +6,8 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 
 /**
  * The management node for fetching metadata about the Service Bus and peek operation.
@@ -16,7 +18,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @param lockToken Lock token to complete
      * @return Mono that completes successfully when the message is completed. Otherwise, returns an error.
      */
-    Mono<Void> complete(long lockToken);
+    Mono<Void> complete(UUID lockToken);
 
     /**
      * This will return next available message to peek.
