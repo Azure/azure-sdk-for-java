@@ -1097,4 +1097,46 @@
     <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9082 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.ServiceItemLease"/>
+    <Field name="ContinuationToken"/>
+    <Bug pattern="NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9082 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.ServiceItemLease"/>
+    <Field name="LeaseToken"/>
+    <Bug pattern="NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9082 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.ServiceItemLease"/>
+    <Field name="Owner"/>
+    <Bug pattern="NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9082 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.LocationCache$LocationUnavailabilityInfo"/>
+    <Field name="LastUnavailabilityCheckTimeStamp"/>
+    <Bug pattern="NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9082 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.LocationCache$LocationUnavailabilityInfo"/>
+    <Field name="UnavailableOperations"/>
+    <Bug pattern="NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9082 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentServiceRequest"/>
+    <Field name="UseGatewayMode"/>
+    <Bug pattern="NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+
 </FindBugsFilter>
