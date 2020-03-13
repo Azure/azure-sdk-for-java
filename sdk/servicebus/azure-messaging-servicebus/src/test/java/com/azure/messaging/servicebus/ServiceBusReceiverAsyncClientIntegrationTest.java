@@ -96,4 +96,43 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .verifyComplete();
     }
+
+
+    /**
+     * Verifies that we can send and peek a message.
+     */
+    @Test
+    void peekBatchMessages() {
+        // Arrange
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+        int maxMessages = 2;
+
+        // Assert & Act
+        StepVerifier.create(sender.send(message)
+            .then(sender.send(message))
+            .thenMany(receiver.peekBatch(maxMessages)))
+            .expectNextCount(maxMessages)
+            .verifyComplete();
+    }
+    /**
+     * Verifies that we can send and peek a message.
+     */
+    @Test
+    void peekBatchMessagesFromSequence() {
+        // Arrange
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+        int maxMessages = 2;
+        int fromSequenceNumber = 1;
+
+        // Assert & Act
+        StepVerifier.create(sender.send(message)
+            .then(sender.send(message))
+            .thenMany(receiver.peekBatch(maxMessages, fromSequenceNumber)))
+            .expectNextCount(maxMessages)
+            .verifyComplete();
+    }
 }

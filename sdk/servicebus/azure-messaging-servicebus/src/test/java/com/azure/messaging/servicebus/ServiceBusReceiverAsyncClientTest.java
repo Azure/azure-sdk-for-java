@@ -210,6 +210,42 @@ public class ServiceBusReceiverAsyncClientTest {
 
     }
 
+
+    /**
+     * Verifies that this peek batch of messages from a sequence Number.
+     */
+    @Test
+    void peekBatchMessages() {
+        // Arrange
+        final int numberOfEvents = 2;
+
+        when(managementNode.peekBatch(numberOfEvents))
+            .thenReturn(Flux.fromArray(new ServiceBusReceivedMessage[]{message1, message2}));
+
+        // Act & Assert
+        StepVerifier.create(consumer.peekBatch(numberOfEvents))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that this peek batch of messages from a sequence Number.
+     */
+    @Test
+    void peekBatchWithSequenceNumberMessages() {
+        // Arrange
+        final int numberOfEvents = 2;
+        final int fromSequenceNumber = 10;
+
+        when(managementNode.peekBatch(numberOfEvents, fromSequenceNumber))
+            .thenReturn(Flux.fromArray(new ServiceBusReceivedMessage[]{message1, message2}));
+
+        // Act & Assert
+        StepVerifier.create(consumer.peekBatch(numberOfEvents, fromSequenceNumber))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
+    }
+
     private void sendMessages(FluxSink<Message> sink, int numberOfEvents) {
         // When we start receiving, then send those numberOfEvents messages.
         Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");

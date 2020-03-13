@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue
- * or topic on Azure Service Bus. 
+ * or topic on Azure Service Bus.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements Closeable {
@@ -303,24 +303,28 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * @param maxMessages to peek.
+     * Reads the next batch of active messages without changing the state of the receiver or the message source.
      *
-     * @return Flux of {@link ServiceBusReceivedMessage}.
+     * @param maxMessages The number of messages.
+     * @return The {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
      */
     public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
-        // TODO(hemanttanwar) implement
-        return null;
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath))
+            .flatMapMany(node -> node.peekBatch(maxMessages));
     }
 
     /**
-     * @param maxMessages to peek.
-     * @param fromSequenceNumber to peek message from.
+     * Reads the next batch of active messages without changing the state of the receiver or the message source.
      *
-     * @return Flux of {@link ServiceBusReceivedMessage}.
+     * @param maxMessages The number of messages.
+     * @param fromSequenceNumber The sequence number from where to read the message.
+     * @return The {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
      */
     public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber) {
-        // TODO(hemanttanwar) implement
-        return null;
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath))
+            .flatMapMany(node -> node.peekBatch(maxMessages, fromSequenceNumber));
     }
 
     private void removeLink(String linkName, SignalType signalType) {

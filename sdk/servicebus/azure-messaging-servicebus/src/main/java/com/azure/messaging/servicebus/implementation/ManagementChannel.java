@@ -89,6 +89,27 @@ public class ManagementChannel implements  ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
+    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
+
+        return peek(ServiceBusReceivedMessage.class, maxMessages,
+            this.lastPeekedSequenceNumber.get() + 1, null)
+            .publishOn(scheduler);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber) {
+
+        return peek(ServiceBusReceivedMessage.class, maxMessages, fromSequenceNumber, null)
+            .publishOn(scheduler);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Mono<ServiceBusReceivedMessage> peek() {
 
         return peek(this.lastPeekedSequenceNumber.get() + 1);
