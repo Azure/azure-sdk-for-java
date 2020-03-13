@@ -552,7 +552,7 @@ public class AddressResolver implements IAddressResolver {
         // Optimization to not refresh routing map unnecessary. As we keep track of parent child relationships,
         // we can determine that a range is gone just by looking up in the routing map.
         if (collectionCacheIsUpToDate && routingMapCacheIsUpToDate ||
-            collectionCacheIsUpToDate && routingMap.IsGone(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId())) {
+            collectionCacheIsUpToDate && routingMap.isGone(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId())) {
             String errorMessage = String.format(
                 RMResources.PartitionKeyRangeNotFound,
                 request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId(),

@@ -30,7 +30,7 @@ public class NumberPartitionKeyComponent implements IPartitionKeyComponent {
         return output;
     }
 
-    private static long EncodeDoubleAsUInt64(double value) {
+    private static long encodeDoubleAsUInt64(double value) {
         long rawLongBits = Double.doubleToRawLongBits(value);
         long mask = 0x8000000000000000L;
         return Long.compareUnsigned(rawLongBits, mask) < 0
@@ -87,7 +87,7 @@ public class NumberPartitionKeyComponent implements IPartitionKeyComponent {
         try {
             outputStream.write((byte) PartitionKeyComponentType.NUMBER.type);
 
-            long payload = NumberPartitionKeyComponent.EncodeDoubleAsUInt64(this.value);
+            long payload = NumberPartitionKeyComponent.encodeDoubleAsUInt64(this.value);
 
             // Encode first chunk with 8-bits of payload
             outputStream.write((byte) (payload >> (64 - 8)));
