@@ -900,4 +900,27 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
+  <!-- Extra null check is for assertion -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.AddressResolver"/>
+    <Method name="~(.*)\$resolveAddressesAndIdentityAsync\$(.*)"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+  </Match>
+
+  <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/9050 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelPool"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+  </Match>
+
+  <!-- Code is doing DCL, this needs to be evaluated
+   https://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
+   Issue: https://github.com/Azure/azure-sdk-for-java/issues/9054
+   -->
+  <Match>
+    <Class name="com.azure.cosmos.models.CosmosAsyncItemResponse"/>
+    <Method name="getItem"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+  </Match>
+
 </FindBugsFilter>
