@@ -1,9 +1,9 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://cameravault.vault.azure.net/certificates/non-existing/pending?api-version=7.0",
+    "Uri" : "https://azure-java-live-test2.vault.azure.net/certificates/non-existing/pending?api-version=7.1-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/4.0.0-beta.6 (11.0.5; Mac OS X 10.14.3)",
+      "User-Agent" : "azsdk-java-client_name/client_version (12.0.1; Mac OS X 10.14.6)",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,16 +12,16 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Tue, 03 Dec 2019 12:59:26 GMT",
+      "Date" : "Thu, 12 Mar 2020 17:14:49 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
-      "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "addr=182.68.240.118;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.178;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
       "Content-Length" : "103",
-      "x-ms-request-id" : "be48b338-b172-4276-a7bf-a33a67ddd4ad",
-      "x-ms-keyvault-service-version" : "1.1.0.883",
+      "x-ms-request-id" : "e40d4580-2dd0-4415-8ea2-1935748c9f4b",
+      "x-ms-keyvault-service-version" : "1.1.0.897",
       "Body" : "{\"error\":{\"code\":\"PendingCertificateNotFound\",\"message\":\"Pending certificate not found: non-existing\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
