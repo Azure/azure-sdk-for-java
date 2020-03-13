@@ -128,7 +128,6 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         BridgeInternal.getPartitionKeyInternal(this.options.getPartitionKey()), Thread.currentThread().getId(), clientException);
                     StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
 
-                    // Note: @kushagraThapar and @moderakh to ensure fallthrough is not expected and break is good
                     switch (docDbError) {
                         case PARTITION_NOT_FOUND: {
                             this.resultException = new PartitionNotFoundException("Partition not found.", this.lastContinuation);

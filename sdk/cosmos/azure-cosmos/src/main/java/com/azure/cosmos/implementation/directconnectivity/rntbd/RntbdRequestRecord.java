@@ -35,15 +35,12 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestRecord.class);
 
-    @SuppressWarnings("rawtypes")
     private static final AtomicIntegerFieldUpdater<RntbdRequestRecord> REQUEST_LENGTH =
             AtomicIntegerFieldUpdater.newUpdater(RntbdRequestRecord.class, "requestLength");
 
-    @SuppressWarnings("rawtypes")
     private static final AtomicIntegerFieldUpdater<RntbdRequestRecord> RESPONSE_LENGTH =
         AtomicIntegerFieldUpdater.newUpdater(RntbdRequestRecord.class, "responseLength");
 
-    @SuppressWarnings("rawtypes")
     private static final AtomicReferenceFieldUpdater<RntbdRequestRecord, Stage> STAGE =
         AtomicReferenceFieldUpdater.newUpdater(
             RntbdRequestRecord.class,

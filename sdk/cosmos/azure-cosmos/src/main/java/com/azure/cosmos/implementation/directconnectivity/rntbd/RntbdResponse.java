@@ -34,7 +34,6 @@ public final class RntbdResponse implements ReferenceCounted {
 
     // region Fields
 
-    @SuppressWarnings("rawtypes")
     private static final AtomicIntegerFieldUpdater<RntbdResponse> REFERENCE_COUNT =
         AtomicIntegerFieldUpdater.newUpdater(RntbdResponse.class, "referenceCount");
 
