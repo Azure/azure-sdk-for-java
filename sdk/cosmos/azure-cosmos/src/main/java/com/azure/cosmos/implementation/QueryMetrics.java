@@ -19,7 +19,7 @@ import java.util.List;
  * This metric represents a moving average for a set of queries whose metrics have been aggregated together.
  */
 public final class QueryMetrics {
-    public static QueryMetrics ZERO = new QueryMetrics(
+    public final static QueryMetrics ZERO = new QueryMetrics(
             new ArrayList<>(), /* */
             0, /* retrievedDocumentCount */
             0, /* retrievedDocumentSize */

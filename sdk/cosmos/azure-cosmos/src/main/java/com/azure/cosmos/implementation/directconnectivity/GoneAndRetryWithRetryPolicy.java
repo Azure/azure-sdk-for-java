@@ -38,7 +38,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
     private final StopWatch durationTimer = new StopWatch();
     private final int waitTimeInSeconds;
     //TODO once this is moved to IRetryPolicy, remove from here.
-    public static Quadruple<Boolean, Boolean, Duration, Integer> INITIAL_ARGUMENT_VALUE_POLICY_ARG = Quadruple.with(false, false,
+    public final static Quadruple<Boolean, Boolean, Duration, Integer> INITIAL_ARGUMENT_VALUE_POLICY_ARG = Quadruple.with(false, false,
             Duration.ofSeconds(60), 0);
 
     public GoneAndRetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
