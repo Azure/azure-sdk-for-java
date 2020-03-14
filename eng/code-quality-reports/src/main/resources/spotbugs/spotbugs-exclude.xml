@@ -1569,4 +1569,19 @@
     <Bug pattern="UUF_UNUSED_FIELD"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9096 -->
+  <Match>
+    <Class name="com.azure.cosmos.models.CosmosAsyncConflictResponse"/>
+    <Method name="getProperties"/>
+    <Bug pattern="IL_INFINITE_RECURSIVE_LOOP"/>
+  </Match>
+
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9096 -->
+  <Match>
+    <Class name="com.azure.cosmos.models.SqlParameterList"/>
+    <Method name="listIterator"/>
+    <Bug pattern="IL_INFINITE_RECURSIVE_LOOP"/>
+  </Match>
+
 </FindBugsFilter>
