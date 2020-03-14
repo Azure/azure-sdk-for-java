@@ -72,7 +72,6 @@ public class RequestResponseChannel implements Disposable {
     private final Disposable.Composite subscriptions;
     private final AmqpRetryPolicy retryPolicy;
     private final SenderSettleMode senderSettleMode;
-    private final ReceiverSettleMode receiverSettleMode;
 
     /**
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the
@@ -90,7 +89,7 @@ public class RequestResponseChannel implements Disposable {
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
 
      */
-    RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
+    protected RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
             String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
             ReactorProvider provider, MessageSerializer messageSerializer,
             SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
@@ -98,7 +97,6 @@ public class RequestResponseChannel implements Disposable {
         this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
         this.senderSettleMode = senderSettleMode;
-        this.receiverSettleMode = receiverSettleMode;
 
         this.replyTo = entityPath.replace("$", "") + "-client-reply-to";
         this.messageSerializer = messageSerializer;
@@ -108,19 +106,23 @@ public class RequestResponseChannel implements Disposable {
         this.sendLink.setTarget(target);
         sendLink.setSource(new Source());
         this.sendLink.setSenderSettleMode(senderSettleMode);
+
         this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, fullyQualifiedNamespace, linkName,
             entityPath);
+
         BaseHandler.setHandler(sendLink, sendLinkHandler);
 
         this.receiveLink = session.receiver(linkName + ":receiver");
         final Source source = new Source();
         source.setAddress(entityPath);
         this.receiveLink.setSource(source);
+
         final Target receiverTarget = new Target();
         receiverTarget.setAddress(replyTo);
         this.receiveLink.setTarget(receiverTarget);
         this.receiveLink.setSenderSettleMode(senderSettleMode);
         this.receiveLink.setReceiverSettleMode(receiverSettleMode);
+
         this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace,
             linkName, entityPath);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
@@ -159,6 +161,10 @@ public class RequestResponseChannel implements Disposable {
 
     public Flux<AmqpEndpointState> getEndpointStates() {
         return endpointStates.distinct();
+    }
+
+    public String getReceiveLinkName() {
+        return receiveLink.getName();
     }
 
     @Override

@@ -29,9 +29,10 @@ public interface ServiceBusSession extends AmqpSession {
      * @param timeout Timeout required for creating and opening an AMQP link.
      * @param retryPolicy The retry policy to use when consuming messages.
      * @param receiveMode  The {@link ReceiveMode} for the messages to be received.
+     * @param isSession {@code true} if the receive link is a session, otherwise, false.
      *
      * @return A newly created AMQP link.
      */
-    Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout,
-        AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode);
+    Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
+        Duration timeout, AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode, boolean isSession);
 }

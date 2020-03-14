@@ -7,8 +7,6 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.messaging.Accepted;
-import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
@@ -20,7 +18,6 @@ import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -186,16 +183,8 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
         final Message message = Proton.message();
         message.decode(buffer, 0, read);
-        ExtendedAmqpMessage extendedAmqpMessage = null;
-        if (receiver.getSenderSettleMode() == SenderSettleMode.SETTLED) {
-            // No op. Delivery comes settled from the sender
-            delivery.disposition(Accepted.getInstance());
-            delivery.settle();
-            extendedAmqpMessage =  new ExtendedAmqpMessage(message, null);
-        } else {
-            extendedAmqpMessage =  new ExtendedAmqpMessage(message,
-                ByteBuffer.wrap(delivery.getTag()));
-        }
-        return extendedAmqpMessage;
+
+        delivery.settle();
+        return message;
     }
 }

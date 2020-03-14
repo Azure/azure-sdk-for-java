@@ -210,12 +210,19 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private void next(ServiceBusReceivedMessage message) {
         try {
             downstream.onNext(message);
+        } catch (Exception e) {
+            logger.error("Exception occurred while handling downstream onNext operation.", e);
+            downstream.onError(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
+        }
+
+        try {
             if (isAutoComplete) {
                 completeFunction.apply(message).block();
             }
         } catch (Exception e) {
-            logger.error("Exception occurred while handling downstream onNext operation.", e);
-            Operators.onOperatorError(upstream, e, message, downstream.currentContext());
+            logger.error("Exception occurred while auto-completing message. Sequence: {}. Lock token: {}",
+                message.getSequenceNumber(), message.getLockToken(), e);
+            downstream.onError(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
         }
     }
 }

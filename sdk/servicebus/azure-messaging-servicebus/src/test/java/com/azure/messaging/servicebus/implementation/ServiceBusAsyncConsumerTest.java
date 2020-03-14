@@ -25,12 +25,17 @@ import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.TestPublisher;
+import reactor.core.scheduler.Scheduler;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.time.Duration;
+import java.util.UUID;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 class ServiceBusAsyncConsumerTest {
@@ -42,6 +47,8 @@ class ServiceBusAsyncConsumerTest {
     private ServiceBusReceiveLinkProcessor linkProcessor;
 
     @Mock
+    private ServiceBusAmqpConnection connection;
+    @Mock
     private AmqpReceiveLink link;
     @Mock
     private AmqpRetryPolicy retryPolicy;
@@ -50,12 +57,14 @@ class ServiceBusAsyncConsumerTest {
     @Mock
     private MessageSerializer serializer;
 
-    private reactor.core.scheduler.Scheduler scheduler = Schedulers.elastic();
+    private Scheduler scheduler = Schedulers.elastic();
 
+    @Mock
+    private Function<ServiceBusReceivedMessage, Mono<Void>> onComplete;
 
     @BeforeAll
     static void beforeAll() {
-//        StepVerifier.setDefaultTimeout(Duration.ofSeconds(20));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(20));
     }
 
     @AfterAll
@@ -69,8 +78,14 @@ class ServiceBusAsyncConsumerTest {
         linkProcessor = Flux.<AmqpReceiveLink>create(sink -> sink.next(link))
             .subscribeWith(new ServiceBusReceiveLinkProcessor(10, retryPolicy, parentConnection));
 
+        TestPublisher<AmqpEndpointState> endpointStateTestPublisher = TestPublisher.createCold();
+        when(connection.getEndpointStates()).thenReturn(
+            endpointStateTestPublisher.next(AmqpEndpointState.ACTIVE).flux());
+
         when(link.getEndpointStates()).thenReturn(endpointProcessor);
         when(link.receive()).thenReturn(messageProcessor);
+
+        when(onComplete.apply(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
     }
 
     @AfterEach
@@ -79,23 +94,25 @@ class ServiceBusAsyncConsumerTest {
     }
 
     /**
-     * Verifies that we can receive messages from the processor.
+     * Verifies that we can receive messages from the processor and auto complete them.
      */
     @Test
-    void canReceive() {
+    void receiveAutoComplete() {
         // Arrange
-        final AtomicInteger counter = new AtomicInteger();
-        final Function<ServiceBusReceivedMessage, Mono<Void>> onComplete = (message) -> {
-            return Mono.fromRunnable(() -> counter.incrementAndGet());
-        };
-
         final boolean isAutoComplete = true;
+
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete,
             onComplete, scheduler);
+
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
+        final UUID lockToken1 = UUID.randomUUID();
         final ServiceBusReceivedMessage receivedMessage2 = mock(ServiceBusReceivedMessage.class);
+        final UUID lockToken2 = UUID.randomUUID();
+
+        when(receivedMessage1.getLockToken()).thenReturn(lockToken1);
+        when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
 
         when(serializer.deserialize(message1, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage1);
         when(serializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
@@ -110,7 +127,44 @@ class ServiceBusAsyncConsumerTest {
             .expectNext(receivedMessage1, receivedMessage2)
             .verifyComplete();
 
-        assertEquals(2, counter.get());
+        verify(onComplete).apply(receivedMessage1);
+        verify(onComplete).apply(receivedMessage2);
+    }
+
+    /**
+     * Verifies that we can receive messages from the processor and it does not auto complete them.
+     */
+    @Test
+    void receiveNoAutoComplete() {
+        // Arrange
+        final boolean isAutoComplete = false;
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete,
+            onComplete, scheduler);
+
+        final Message message1 = mock(Message.class);
+        final Message message2 = mock(Message.class);
+        final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
+        final UUID lockToken1 = UUID.randomUUID();
+        final ServiceBusReceivedMessage receivedMessage2 = mock(ServiceBusReceivedMessage.class);
+        final UUID lockToken2 = UUID.randomUUID();
+
+        when(receivedMessage1.getLockToken()).thenReturn(lockToken1);
+        when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
+
+        when(serializer.deserialize(message1, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage1);
+        when(serializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
+
+        // Act and Assert
+        StepVerifier.create(consumer.receive().take(2))
+            .then(() -> {
+                endpointProcessorSink.next(AmqpEndpointState.ACTIVE);
+                messageProcessorSink.next(message1);
+                messageProcessorSink.next(message2);
+            })
+            .expectNext(receivedMessage1, receivedMessage2)
+            .verifyComplete();
+
+        verifyZeroInteractions(onComplete);
     }
 
     /**
@@ -125,6 +179,7 @@ class ServiceBusAsyncConsumerTest {
             return Mono.empty();
         };
 
+        final String transferEntityPath = "some-transfer-path";
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete,
             onComplete, scheduler);
         final Message message1 = mock(Message.class);

@@ -8,16 +8,15 @@ import org.apache.qpid.proton.message.impl.MessageImpl;
 
 import java.nio.ByteBuffer;
 
-/***
- *  Keep additional information for example delivery tag which represent lock token.
+/**
+ * Keep additional information for example delivery tag which represent lock token.
  */
-
 public class ExtendedAmqpMessage extends MessageImpl {
 
     private final ByteBuffer deliveryTag;
 
     /**
-     *
+     * Constructor
      * @param message The message.
      * @param deliveryTag delivery tag.
      */
@@ -28,11 +27,10 @@ public class ExtendedAmqpMessage extends MessageImpl {
         this.deliveryTag = deliveryTag;
     }
 
-    /***
-     *
-     * @return the delivery tag.
+    /**
+     * Get delivery tag
+     * @return {@link ByteBuffer} representing delivery tag.
      */
-
     public ByteBuffer getDeliveryTag() {
         return this.deliveryTag;
     }

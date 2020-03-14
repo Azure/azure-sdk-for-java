@@ -25,6 +25,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
@@ -236,8 +237,9 @@ public final class ServiceBusClientBuilder {
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
-            serviceBusResourceName, connectionProcessor, tracerProvider, messageSerializer,
-            receiveMessageOptions, scheduler);
+            serviceBusResourceName, MessagingEntityType.QUEUE, false, receiveMessageOptions,
+            connectionProcessor, tracerProvider, messageSerializer, scheduler);
+
     }
 
     /**
@@ -273,8 +275,7 @@ public final class ServiceBusClientBuilder {
         }).repeat();
 
         return connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
-            connectionOptions.getFullyQualifiedNamespace(), serviceBusResourceName,
-            connectionOptions.getRetry()));
+            connectionOptions.getFullyQualifiedNamespace(), serviceBusResourceName, connectionOptions.getRetry()));
     }
 
     private ConnectionOptions getConnectionOptions() {
