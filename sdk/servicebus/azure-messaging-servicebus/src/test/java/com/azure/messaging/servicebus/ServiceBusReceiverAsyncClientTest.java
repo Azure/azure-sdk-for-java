@@ -39,6 +39,7 @@ import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -306,9 +307,10 @@ public class ServiceBusReceiverAsyncClientTest {
 
     private List<Message> getMessages(int numberOfEvents) {
         final Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");
-
-        return IntStream.range(0, numberOfEvents)
+        List<Message> messages =  new ArrayList<>();
+          IntStream.range(0, numberOfEvents)
             .mapToObj(index -> getMessage(PAYLOAD_BYTES, messageTrackingUUID, map))
-            .collect(Collectors.toUnmodifiableList());
+            .forEach(message -> messages.add(message));
+          return messages;
     }
 }
