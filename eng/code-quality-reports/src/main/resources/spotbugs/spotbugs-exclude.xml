@@ -1625,4 +1625,18 @@
     <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9100 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache"/>
+    <Method name="~(.*)\$tryGetRangeByPartitionKeyRangeId\$(.*)"/>
+    <Bug pattern="NP_NULL_PARAM_DEREF"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9100 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache"/>
+    <Method name="getServerAddressesViaGatewayAsync"/>
+    <Bug pattern="NP_NULL_PARAM_DEREF"/>
+  </Match>
+
 </FindBugsFilter>
