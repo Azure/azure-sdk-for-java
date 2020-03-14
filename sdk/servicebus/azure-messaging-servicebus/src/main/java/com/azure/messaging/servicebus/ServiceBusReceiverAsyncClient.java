@@ -269,8 +269,9 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             .flatMap(serviceBusManagementNode -> {
                 return serviceBusManagementNode
                     .renewMessageLock(receivedMessage)
-                    .doOnNext(instant -> {
+                    .map(instant -> {
                         receivedMessage.setLockedUntil(instant);
+                        return instant;
                     });
             });
     }
