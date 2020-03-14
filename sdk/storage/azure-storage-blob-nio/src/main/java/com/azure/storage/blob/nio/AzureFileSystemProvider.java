@@ -213,6 +213,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
+     * Creates a new directory at the specified path.
+     * <p>
      * The existence of a directory in the {@code AzureFileSystem} is defined on two levels. <i>Weak existence</i> is
      * defined by the presence of a non-zero number of blobs prefixed with the directory's path. This concept is also
      * known as a  <i>virtual directory</i> and enables the file system to work with containers that were pre-loaded
@@ -358,7 +360,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * As noted by the NIO docs, this method is not atomic. It is possible to delete a file in use by another process,
+     * Deletes the specified resource.
+     * <p>
+     * This method is not atomic. It is possible to delete a file in use by another process,
      * and doing so will not immediately invalidate any channels open to that file--they will simply start to fail.
      * Root directories cannot be deleted even when empty.
      *
@@ -386,12 +390,17 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         try {
             blobClient.delete();
         } catch (BlobStorageException e) {
+            if (e.getErrorCode().equals(BlobErrorCode.BLOB_NOT_FOUND)) {
+                throw Utility.logError(logger, new NoSuchFileException(path.toString()));
+            }
             throw Utility.logError(logger, new IOException(e));
         }
     }
 
     /**
-     * As stated in the nio docs, this method is not atomic. More specifically, the checks necessary to validate the
+     * Copies the resource at the source location to the destination.
+     * <p>
+     * This method is not atomic. More specifically, the checks necessary to validate the
      * inputs and state of the file system are not atomic with the actual copying of data. If the copy is triggered,
      * the copy itself is atomic and only a complete copy will ever be left at the destination.
      *

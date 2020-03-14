@@ -523,8 +523,9 @@ class APISpec extends Specification {
     }
 
     def checkBlobIsDir(BlobClient blobClient) {
-        return blobClient.getPropertiesWithResponse(null, null, null).getValue().getMetadata()
-            .containsKey(AzureFileSystemProvider.DIR_METADATA_MARKER)
+         String isDir = blobClient.getPropertiesWithResponse(null, null, null)
+             .getValue().getMetadata().get(AzureFileSystemProvider.DIR_METADATA_MARKER)
+        return isDir != null && isDir == "true"
     }
 
     static class TestFileAttribute<T> implements  FileAttribute<T> {
