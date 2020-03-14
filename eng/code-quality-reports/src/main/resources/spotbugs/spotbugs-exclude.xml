@@ -1167,4 +1167,11 @@
     <Bug pattern="VO_VOLATILE_INCREMENT"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9054 -->
+  <Match>
+    <Class name="com.azure.cosmos.models.CosmosAsyncItemResponse"/>
+    <Field name="item"/>
+    <Bug pattern="DC_DOUBLECHECK"/>
+  </Match>
+
 </FindBugsFilter>
