@@ -1458,4 +1458,67 @@
     <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.PathsHelper"/>
+    <Method name="tryParsePathSegments"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE_OF_NULL"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.QueryMetrics"/>
+    <Method name="createFromDelimitedString"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ReplicationPolicy"/>
+    <Method name="setMaxReplicaSetSize"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ResourceThrottleRetryPolicy"/>
+    <Method name="shouldRetry"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ResourceTokenAuthorizationHelper"/>
+    <Method name="getAuthorizationTokenUsingResourceTokens"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GoneAndRetryWithRetryPolicy"/>
+    <Method name="shouldRetry"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.StoreReader"/>
+    <Method name="readFromStoreAsync"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.LocationCache"/>
+    <Method name="anyEndpointsAvailable"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
+  <Match>
+    <Class name="com.azure.cosmos.models.JsonSerializable"/>
+    <Method name="getObjectByPath"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
 </FindBugsFilter>
