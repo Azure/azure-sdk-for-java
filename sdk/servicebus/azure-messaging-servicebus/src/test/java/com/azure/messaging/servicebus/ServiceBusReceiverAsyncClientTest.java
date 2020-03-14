@@ -44,7 +44,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
@@ -309,8 +308,8 @@ public class ServiceBusReceiverAsyncClientTest {
         final Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");
         List<Message> messages =  new ArrayList<>();
           IntStream.range(0, numberOfEvents)
-            .mapToObj(index -> getMessage(PAYLOAD_BYTES, messageTrackingUUID, map))
-            .forEach(message -> messages.add(message));
+              .mapToObj(index -> getMessage(PAYLOAD_BYTES, messageTrackingUUID, map))
+              .forEach(messages::add);
           return messages;
     }
 }
