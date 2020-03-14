@@ -24,7 +24,7 @@ import java.util.UUID;
 /**
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
  */
-public class RxDocumentServiceRequest {
+public class RxDocumentServiceRequest implements Cloneable {
     private static final char PREFER_HEADER_SEPERATOR = ';';
     private static final String PREFER_HEADER_VALUE_FORMAT = "%s=%s";
 
@@ -988,6 +988,7 @@ public class RxDocumentServiceRequest {
         return contentAsByteArray;
     }
 
+    @Override
     public RxDocumentServiceRequest clone() {
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
