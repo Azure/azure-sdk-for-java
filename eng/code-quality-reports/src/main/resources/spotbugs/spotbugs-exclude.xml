@@ -1618,6 +1618,11 @@
     <Bug pattern="ES_COMPARING_STRINGS_WITH_EQ"/>
   </Match>
 
-
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9099 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentServiceRequest"/>
+    <Field name="entityId"/>
+    <Bug pattern="UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
+  </Match>
 
 </FindBugsFilter>
