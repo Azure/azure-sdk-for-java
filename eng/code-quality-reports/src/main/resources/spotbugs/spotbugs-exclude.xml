@@ -1576,12 +1576,17 @@
     <Bug pattern="IL_INFINITE_RECURSIVE_LOOP"/>
   </Match>
 
-
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9096 -->
   <Match>
     <Class name="com.azure.cosmos.models.SqlParameterList"/>
     <Method name="listIterator"/>
     <Bug pattern="IL_INFINITE_RECURSIVE_LOOP"/>
+  </Match>
+
+  <!-- False positive, IPartitionKeyComponent does not extend from Comparable -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.IPartitionKeyComponent"/>
+    <Bug pattern="CO_ABSTRACT_SELF"/>
   </Match>
 
 </FindBugsFilter>
