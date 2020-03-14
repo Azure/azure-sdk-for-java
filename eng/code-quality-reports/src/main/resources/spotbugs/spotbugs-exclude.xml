@@ -1251,4 +1251,34 @@
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9089 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.PathsHelper"/>
+    <Method name="getResourcePathArray"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9089 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentServiceRequest"/>
+    <Method name="toByteArray"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9089 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.Utils"/>
+    <Method name="getUTF8BytesOrNull"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9089 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse"/>
+    <Method name="toByteArray"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+
+
+
 </FindBugsFilter>
