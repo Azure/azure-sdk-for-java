@@ -1322,5 +1322,94 @@
     <Bug pattern="DC_PARTIALLY_CONSTRUCTED"/>
   </Match>
 
+  <!--  ChannelHandlerContext::fireUserEventTriggered is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextDecoder"/>
+    <Method name="decode"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::channelRead is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextRequestDecoder"/>
+    <Method name="channelRead"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireChannelActive is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="channelActive"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireChannelInactive is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="channelInactive"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="channelReadComplete"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireChannelRegistered is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="channelRegistered"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireChannelUnregistered is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="channelUnregistered"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireChannelWritabilityChanged is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="channelWritabilityChanged"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::flush is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="flush"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::read is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="read"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::flush is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="removeContextNegotiatorAndFlushPendingWrites"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireUserEventTriggered is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="userEventTriggered"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
+  <!--  ChannelHandlerContext::fireChannelRead is fluent method and return ref can be ignored -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestDecoder"/>
+    <Method name="channelRead"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
 
 </FindBugsFilter>
