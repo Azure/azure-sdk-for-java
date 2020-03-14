@@ -1146,4 +1146,25 @@
     <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RetryPolicyWithDiagnostics"/>
+    <Field name="retriesCountForDiagnostics"/>
+    <Bug pattern="VO_VOLATILE_INCREMENT"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.implementation.AutoCheckpointer"/>
+    <Field name="processedDocCount"/>
+    <Bug pattern="VO_VOLATILE_INCREMENT"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9087 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.DefaultDocumentQueryExecutionContext"/>
+    <Field name="retries"/>
+    <Bug pattern="VO_VOLATILE_INCREMENT"/>
+  </Match>
+
 </FindBugsFilter>
