@@ -307,9 +307,9 @@ public class ServiceBusReceiverAsyncClientTest {
     private List<Message> getMessages(int numberOfEvents) {
         final Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");
         List<Message> messages =  new ArrayList<>();
-          IntStream.range(0, numberOfEvents)
-              .mapToObj(index -> getMessage(PAYLOAD_BYTES, messageTrackingUUID, map))
-              .forEach(messages::add);
-          return messages;
+        IntStream.range(0, numberOfEvents)
+            .mapToObj(index -> getMessage(PAYLOAD_BYTES, messageTrackingUUID, map))
+            .forEach(messages::add);
+        return messages;
     }
 }
