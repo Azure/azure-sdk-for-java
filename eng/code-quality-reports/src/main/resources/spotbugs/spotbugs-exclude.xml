@@ -1534,4 +1534,11 @@
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
   </Match>
 
+  <!-- The static field sharedTransportClient is cleared using synchronized ref count mechanism -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.SharedTransportClient"/>
+    <Field name="sharedTransportClient"/>
+    <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
+  </Match>
+
 </FindBugsFilter>
