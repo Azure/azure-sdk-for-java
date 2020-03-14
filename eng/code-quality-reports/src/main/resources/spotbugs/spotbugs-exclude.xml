@@ -1589,4 +1589,18 @@
     <Bug pattern="CO_ABSTRACT_SELF"/>
   </Match>
 
+  <!--Bug: https://github.com/Azure/azure-sdk-for-java/issues/9097 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.ConsistencyReader"/>
+    <Method name="readAsync"/>
+    <Bug pattern="DB_DUPLICATE_SWITCH_CLAUSES"/>
+  </Match>
+
+  <!--Bug: https://github.com/Azure/azure-sdk-for-java/issues/9097 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.HttpTransportClient"/>
+    <Method name="prepareHttpMessage"/>
+    <Bug pattern="DB_DUPLICATE_SWITCH_CLAUSES"/>
+  </Match>
+
 </FindBugsFilter>
