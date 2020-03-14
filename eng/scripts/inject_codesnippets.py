@@ -25,7 +25,9 @@ html_escape_table = {
   "@": "&#64;",
   "{": "&#123;",
   "}": "&#125;",
-  "*": "&#42;",
+  "(": "&#40;",
+  ")": "&rpar;",
+  ";": "&#x3b;"
   "/": "&#47;",
   "\\" :"&#92;"
 }
@@ -85,7 +87,7 @@ if __name__ == "__main__":
 
   # walk the codebase, find all java files
   all_files = glob.glob('**/*.java', recursive=True)
-  snippet_files = [source_file for source_file in all_files if "snippet" in source_file.lower() and not check_exclusion(source_file, EXCLUSION_ARRAY)]
+  snippet_files = [source_file for source_file in all_files if ("snippet" in source_file.lower() or "sample" in source_file.lower())) and not check_exclusion(source_file, EXCLUSION_ARRAY)]
   snippets = {}
 
   for file in snippet_files:
