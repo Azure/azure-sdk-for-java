@@ -1412,4 +1412,36 @@
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
   </Match>
 
+  <!-- CompletableFuture.getNow(null) is valid (null param), suppressing false positive
+        https://github.com/spotbugs/spotbugs/issues/1001 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="hasRequestedRntbdContext"/>
+    <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+  </Match>
+
+  <!-- CompletableFuture.getNow(null) is valid (null param), suppressing false positive
+      https://github.com/spotbugs/spotbugs/issues/1001 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="hasRntbdContext"/>
+    <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+  </Match>
+
+  <!-- CompletableFuture.getNow(null) is valid (null param), suppressing false positive
+      https://github.com/spotbugs/spotbugs/issues/1001 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="messageReceived"/>
+    <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+  </Match>
+
+  <!-- CompletableFuture.getNow(null) is valid (null param), suppressing false positive
+      https://github.com/spotbugs/spotbugs/issues/1001 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="rntbdContext"/>
+    <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+  </Match>
+
 </FindBugsFilter>
