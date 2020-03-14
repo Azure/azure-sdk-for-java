@@ -1315,5 +1315,12 @@
     <Bug pattern="URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9091 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
+    <Method name="compare"/>
+    <Bug pattern="DC_PARTIALLY_CONSTRUCTED"/>
+  </Match>
+
 
 </FindBugsFilter>
