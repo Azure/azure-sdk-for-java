@@ -1541,4 +1541,32 @@
     <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9095 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentServiceRequest"/>
+    <Field name="resourceFullName"/>
+    <Bug pattern="UUF_UNUSED_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9095 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.AddressResolver$RefreshState"/>
+    <Field name="resolutionResult"/>
+    <Bug pattern="UUF_UNUSED_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9095 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver"/>
+    <Field name="addressResolver"/>
+    <Bug pattern="UUF_UNUSED_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9095 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver"/>
+    <Field name="gatewayAddressCache"/>
+    <Bug pattern="UUF_UNUSED_FIELD"/>
+  </Match>
+
 </FindBugsFilter>
