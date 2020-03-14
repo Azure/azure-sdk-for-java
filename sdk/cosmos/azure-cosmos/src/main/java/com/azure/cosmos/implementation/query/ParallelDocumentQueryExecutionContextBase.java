@@ -170,12 +170,11 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
 
-                PartitionKeyInternal partitionKeyInternal = null;
                 return this.createDocumentServiceRequest(headers,
-                                                         query,
-                                                         partitionKeyInternal,
-                                                         partitionKeyRange,
-                                                         collectionRid);
+                    query,
+                    null,
+                    partitionKeyRange,
+                    collectionRid);
             };
 
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = (request) -> {

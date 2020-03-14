@@ -1521,4 +1521,17 @@
     <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9094 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.caches.AsyncCache"/>
+    <Method name="getAsync"/>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9050 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelPool"/>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
+  </Match>
+
 </FindBugsFilter>

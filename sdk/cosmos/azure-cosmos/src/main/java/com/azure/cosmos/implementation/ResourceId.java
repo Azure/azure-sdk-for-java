@@ -231,8 +231,7 @@ public class ResourceId {
         }
 
         if (buffer == null || buffer.length > ResourceId.Length) {
-            buffer = null;
-            return Pair.of(false, buffer);
+            return Pair.of(false, null);
         }
 
         return Pair.of(true, buffer);
