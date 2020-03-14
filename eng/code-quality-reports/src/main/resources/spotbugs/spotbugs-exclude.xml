@@ -1603,4 +1603,11 @@
     <Bug pattern="DB_DUPLICATE_SWITCH_CLAUSES"/>
   </Match>
 
+  <!-- Field is not initialized in Ctr but is set using setters -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.ProcessorSettings"/>
+    <Field name="maxItemCount"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
 </FindBugsFilter>
