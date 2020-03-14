@@ -1216,4 +1216,39 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
+  <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
+    <Method name="compare"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Exception is required to handle null location names, malformed endpoint, ref: code comment  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.LocationCache"/>
+    <Method name="getEndpointByLocation"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Code has a TODO to handle Exception case  -->
+  <Match>
+    <Class name="~com\.azure\.cosmos\.implementation\.directconnectivity\.StoreReader(.*)"/>
+    <Method name="~(.*)\$readFromReplicas\$(.*)"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Exception is required to handle when parsing system information  -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$ClientSideRequestStatisticsSerializer"/>
+    <Method name="serialize"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Exception is required to handle and fallback to default pair  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ResourceId"/>
+    <Method name="tryParse"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
 </FindBugsFilter>
