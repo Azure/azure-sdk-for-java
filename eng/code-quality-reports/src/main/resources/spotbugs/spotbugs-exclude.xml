@@ -1444,4 +1444,18 @@
     <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.OrderByUtils$PageToItemTransformer"/>
+    <Method name="~(.*)\$apply\$(.*)"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.AggregateDocumentQueryExecutionContext"/>
+    <Method name="~(.*)\$drainAsync\$(.*)"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
+  </Match>
+
 </FindBugsFilter>
