@@ -187,20 +187,26 @@ public class AddressSelectorWrapper {
                 VerifierBuilder resolveAllUriAsync_IncludePrimary(boolean primaryIncluded) {
                     methodName(resolveAllUriAsync);
 
-                    Condition alwaysTrue = new Condition(Predicates.alwaysTrue(), "no getCondition");
-                    Condition primaryIncludedCond = new Condition(Predicates.equalTo(primaryIncluded), String.format("%b (primaryIncluded)", primaryIncluded));
+                    Condition<Boolean> alwaysTrue = new Condition<>(Predicates.alwaysTrue(), "no getCondition");
+                    Condition<Boolean> primaryIncludedCond = new Condition<>(Predicates.equalTo(primaryIncluded), String.format("%b (primaryIncluded)", primaryIncluded));
 
-                    resolveAllUriAsync(alwaysTrue, primaryIncludedCond, alwaysTrue);
+                    resolveAllUriAsync(
+                        new Condition<>(Predicates.alwaysTrue(), "no condition"),
+                        primaryIncludedCond,
+                        alwaysTrue);
                     return this;
                 }
 
                 VerifierBuilder resolveAllUriAsync_ForceRefresh(boolean forceRefresh) {
                     methodName(resolveAllUriAsync);
 
-                    Condition alwaysTrue = new Condition(Predicates.alwaysTrue(), "no condition");
-                    Condition forceRefreshCond = new Condition(Predicates.equalTo(forceRefresh), String.format("%b (forceRefresh)", forceRefresh));
+                    Condition<Boolean> alwaysTrue = new Condition<>(Predicates.alwaysTrue(), "no condition");
+                    Condition<Boolean> forceRefreshCond = new Condition<>(Predicates.equalTo(forceRefresh), String.format("%b (forceRefresh)", forceRefresh));
 
-                    resolveAllUriAsync(alwaysTrue, alwaysTrue, forceRefreshCond);
+                    resolveAllUriAsync(
+                        new Condition<>(Predicates.alwaysTrue(), "no condition"),
+                        alwaysTrue,
+                        forceRefreshCond);
                     return this;
                 }
             }

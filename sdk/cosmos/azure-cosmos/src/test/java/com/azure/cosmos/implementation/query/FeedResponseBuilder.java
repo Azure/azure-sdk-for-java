@@ -45,8 +45,12 @@ public class FeedResponseBuilder<T extends Resource> {
         return this;
     }
 
-    public FeedResponseBuilder<T> withResults(T... results) {
-        this.results = Arrays.asList(results);
+
+    // https://stackoverflow.com/a/47949197
+    @SafeVarargs
+    @SuppressWarnings("varargs")
+    public final FeedResponseBuilder<T> withResults(T... results) {
+        this.results = Arrays.<T>asList(results);
         return this;
     }
 

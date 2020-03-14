@@ -72,8 +72,8 @@ public final class ModelBridgeInternal {
         return new CosmosAsyncItemResponse<>(response, classType);
     }
 
-    public static CosmosAsyncItemResponse createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response, Class classType) {
-        return new CosmosAsyncItemResponse(response, classType);
+    public static CosmosAsyncItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
+        return new CosmosAsyncItemResponse<>(response, Object.class);
     }
 
     public static CosmosAsyncPermissionResponse createCosmosAsyncPermissionResponse(ResourceResponse<Permission> response,
@@ -405,7 +405,7 @@ public final class ModelBridgeInternal {
         jsonSerializable.populatePropertyBag();
     }
 
-    public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class klassType) {
+    public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class<?> klassType) {
         try {
             // the hot path should come through here to avoid serialization/deserialization
             if (klassType.equals(Document.class) || klassType.equals(OrderByRowResult.class) || klassType.equals(CosmosItemProperties.class)

@@ -547,7 +547,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         IDocumentQueryClient queryClient = DocumentQueryClientImpl(RxDocumentClientImpl.this);
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
                 DocumentQueryExecutionContextFactory.createDocumentQueryExecutionContextAsync(queryClient, resourceTypeEnum, klass, sqlQuery , options, queryResourceLink, false, activityId);
-        return executionContext.flatMap(IDocumentQueryExecutionContext::executeAsync);
+        return executionContext.flatMap(IDocumentQueryExecutionContext<T>::executeAsync);
     }
 
 
@@ -1569,7 +1569,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                           activityId,
                                                                           klass,
                                                                           resourceTypeEnum);
-        return executionContext.flatMap(IDocumentQueryExecutionContext::executeAsync);
+        return executionContext.flatMap(IDocumentQueryExecutionContext<T>::executeAsync);
     }
 
     @Override

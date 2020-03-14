@@ -142,7 +142,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         CosmosItemResponse<CosmosItemProperties> itemResponse = container1.createItem(properties);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
-        CosmosItemResponse<CosmosItemProperties> deleteResponse = container1.deleteItem(properties.getId(),
+        CosmosItemResponse<?> deleteResponse = container1.deleteItem(properties.getId(),
                                                                     new PartitionKey(properties.get("mypk")),
                                                                     options);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);

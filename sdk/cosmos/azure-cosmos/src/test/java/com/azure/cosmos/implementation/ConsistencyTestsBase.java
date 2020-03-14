@@ -77,10 +77,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(documentDefinition.get("mypk")));
         Document document = createDocument(this.writeClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
-        ResourceResponse response = this.writeClient.deleteDocument(document.getSelfLink(), options).single().block();
+        ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options).single().block();
         assertThat(response.getStatusCode()).isEqualTo(204);
 
-        long quorumAckedLSN = Long.parseLong((String) response.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
+        long quorumAckedLSN = Long.parseLong(response.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
         assertThat(quorumAckedLSN > 0).isTrue();
         FailureValidator validator = new FailureValidator.Builder().statusCode(404).lsnGreaterThan(quorumAckedLSN).build();
         Mono<ResourceResponse<Document>> readObservable = this.readClient.readDocument(document.getSelfLink(), options);
@@ -92,10 +92,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(documentDefinition.get("mypk")));
         Document document = createDocument(this.writeClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
-        ResourceResponse response = this.writeClient.deleteDocument(document.getSelfLink(), options).single().block();
+        ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options).single().block();
         assertThat(response.getStatusCode()).isEqualTo(204);
 
-        long quorumAckedLSN = Long.parseLong((String) response.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
+        long quorumAckedLSN = Long.parseLong(response.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
         assertThat(quorumAckedLSN > 0).isTrue();
 
         FailureValidator validator = new FailureValidator.Builder().statusCode(404).lsnGreaterThanEqualsTo(quorumAckedLSN).exceptionQuorumAckedLSNInNotNull().build();
@@ -765,6 +765,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         return String.format("%s:%s", tokenParts[0], differentSessionToken.convertToString());
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static ISessionToken createSessionToken(ISessionToken from, long globalLSN) throws Exception {
         // Creates session token with specified GlobalLSN
         if (from instanceof VectorSessionToken) {
@@ -797,6 +798,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         return doc;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private boolean isSessionEqual(SessionContainer sessionContainer1, SessionContainer sessionContainer2) throws Exception {
         if (sessionContainer1 == null) {
             return false;

@@ -311,6 +311,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Finished truncating collection {}.", cosmosContainerId);
     }
 
+    @SuppressWarnings({"fallthrough"})
     protected static void waitIfNeededForReplicasToCatchUp(CosmosClientBuilder clientBuilder) {
         switch (clientBuilder.getConsistencyLevel()) {
             case EVENTUAL:
@@ -466,7 +467,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return BridgeInternal.getProperties(cosmosContainer.createItem(item).block());
     }
 
-    public Flux<CosmosAsyncItemResponse> bulkInsert(CosmosAsyncContainer cosmosContainer,
+    public Flux<CosmosAsyncItemResponse<CosmosItemProperties>> bulkInsert(CosmosAsyncContainer cosmosContainer,
                                                     List<CosmosItemProperties> documentDefinitionList,
                                                     int concurrencyLevel) {
         List<Mono<CosmosAsyncItemResponse<CosmosItemProperties>>> result =
@@ -481,7 +482,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                          List<CosmosItemProperties> documentDefinitionList) {
         return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
-            .map(itemResponse -> (CosmosItemProperties)itemResponse.getItem())
+            .map(itemResponse -> itemResponse.getItem())
             .collectList()
             .block();
     }
@@ -737,14 +738,17 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public <T extends CosmosResponse> void validateSuccess(Mono<T> single, CosmosResponseValidator<T> validator) {
         validateSuccess(single, validator, subscriberValidationTimeout);
     }
 
+    @SuppressWarnings("rawtypes")
     public <T extends CosmosResponse> void validateSuccess(Mono<T> single, CosmosResponseValidator<T> validator, long timeout) {
         validateSuccess(single.flux(), validator, timeout);
     }
 
+    @SuppressWarnings("rawtypes")
     public static <T extends CosmosResponse> void validateSuccess(Flux<T> flowable,
                                                                   CosmosResponseValidator<T> validator, long timeout) {
 
@@ -758,11 +762,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         validator.validate(testSubscriber.values().get(0));
     }
 
+    @SuppressWarnings("rawtypes")
     public <T extends Resource, U extends CosmosResponse> void validateFailure(Mono<U> mono, FailureValidator validator)
         throws InterruptedException {
         validateFailure(mono.flux(), validator, subscriberValidationTimeout);
     }
 
+    @SuppressWarnings("rawtypes")
     public static <T extends Resource, U extends CosmosResponse> void validateFailure(Flux<U> flowable,
                                                                                       FailureValidator validator, long timeout) throws InterruptedException {
 
@@ -776,6 +782,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
     }
 
+    @SuppressWarnings("rawtypes")
     public <T extends CosmosAsyncItemResponse> void validateItemSuccess(
         Mono<T> responseMono, CosmosItemResponseValidator validator) {
 
@@ -788,6 +795,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         validator.validate(testSubscriber.values().get(0));
     }
 
+    @SuppressWarnings("rawtypes")
     public <T extends CosmosAsyncItemResponse> void validateItemFailure(
         Mono<T> responseMono, FailureValidator validator) {
         TestSubscriber<CosmosAsyncItemResponse> testSubscriber = new TestSubscriber<>();
@@ -973,6 +981,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    @SuppressWarnings("fallthrough")
     static List<ConsistencyLevel> allEqualOrLowerConsistencies(ConsistencyLevel accountConsistency) {
         List<ConsistencyLevel> testConsistencies = new ArrayList<>();
         switch (accountConsistency) {

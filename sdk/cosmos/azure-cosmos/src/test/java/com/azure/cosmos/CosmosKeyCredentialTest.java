@@ -248,7 +248,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         ModelBridgeInternal.setPartitionKey(options, new PartitionKey(docDefinition.get("mypk")));
-        Mono<CosmosAsyncItemResponse> deleteObservable = container.deleteItem(docDefinition.getId(),
+        Mono<CosmosAsyncItemResponse<Object>> deleteObservable = container.deleteItem(docDefinition.getId(),
                                                                               new PartitionKey(docDefinition.get(
                                                                                   "mypk")), options);
 
@@ -373,6 +373,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         safeClose(client);
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public <T extends CosmosResponse> void validateSuccess(Mono<T> single, CosmosResponseValidator<T> validator) {
         validateSuccess(single, validator, TIMEOUT);
     }

@@ -560,6 +560,7 @@ public class StoreReaderDotNetTest {
      * StoreClient uses ReplicatedResourceClient uses ConsistencyReader uses QuorumReader uses StoreReader uses TransportClient uses RntbdConnection
      */
     @Test(groups = "unit", enabled = false)
+    @SuppressWarnings("unchecked")
     public void storeClient() throws URISyntaxException {
         // create a real document service request (with auth token level = god)
         RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
@@ -647,6 +648,7 @@ public class StoreReaderDotNetTest {
      * test consistency writer for global strong
      */
     @Test(groups = "unit")
+    @SuppressWarnings("unchecked")
     public void globalStrongConsistentWrite() {
         // create a real document service request (with auth token level = god)
         RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document);
@@ -733,6 +735,7 @@ public class StoreReaderDotNetTest {
      * Mocking Consistency
      */
     @Test(groups = "unit", priority = 1)
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void globalStrongConsistency() {
         // create a real document service request (with auth token level = god)
         RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);

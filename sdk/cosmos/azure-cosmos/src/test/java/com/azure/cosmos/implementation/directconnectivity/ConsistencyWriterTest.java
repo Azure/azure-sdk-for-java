@@ -165,7 +165,7 @@ public class ConsistencyWriterTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         Mockito.doReturn(true).when(timeoutHelper).isElapsed();
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
-        TestSubscriber<StoreResponse> subscriber = new TestSubscriber();
+        TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
 
         spyConsistencyWriter.writeAsync(Mockito.mock(RxDocumentServiceRequest.class), timeoutHelper, false)
                 .subscribe(subscriber);
@@ -182,7 +182,7 @@ public class ConsistencyWriterTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         Mockito.doReturn(false).doReturn(true).when(timeoutHelper).isElapsed();
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
-        TestSubscriber<StoreResponse> subscriber = new TestSubscriber();
+        TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
 
         spyConsistencyWriter.writeAsync(Mockito.mock(RxDocumentServiceRequest.class), timeoutHelper, false)
                 .subscribe(subscriber);

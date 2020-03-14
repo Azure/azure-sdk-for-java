@@ -15,9 +15,9 @@ import java.util.Map;
  * @param <T> the type parameter
  */
 public class CosmosItemResponse<T> {
-    private final CosmosAsyncItemResponse responseWrapper;
+    private final CosmosAsyncItemResponse<T> responseWrapper;
 
-    CosmosItemResponse(CosmosAsyncItemResponse response) {
+    CosmosItemResponse(CosmosAsyncItemResponse<T> response) {
         this.responseWrapper = response;
     }
 
@@ -26,9 +26,8 @@ public class CosmosItemResponse<T> {
      *
      * @return the resource
      */
-    @SuppressWarnings("unchecked")
-    public T getResource() {
-        return (T) responseWrapper.getItem();
+    public T getItem() {
+        return responseWrapper.getItem();
     }
 
     /**

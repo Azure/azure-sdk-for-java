@@ -214,6 +214,7 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
+        @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         return database.getDocClientWrapper()
@@ -256,6 +257,7 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
+        @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
         return this.getDatabase().getDocClientWrapper()
                    .upsertDocument(this.getLink(), item,
@@ -312,7 +314,7 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter
      * @param query the query.
      * @param classType the class type
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
     public <T> CosmosPagedFlux<T> queryItems(String query, Class<T> classType) {
@@ -330,7 +332,7 @@ public class CosmosAsyncContainer {
      * @param query the query.
      * @param options the feed options.
      * @param classType the class type
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
     public <T> CosmosPagedFlux<T> queryItems(String query, FeedOptions options, Class<T> classType) {
@@ -347,7 +349,7 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter
      * @param querySpec the SQL query specification.
      * @param classType the class type
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
     public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, Class<T> classType) {
@@ -365,7 +367,7 @@ public class CosmosAsyncContainer {
      * @param querySpec the SQL query specification.
      * @param options the feed options.
      * @param classType the class type
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
     public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> classType) {
@@ -475,6 +477,7 @@ public class CosmosAsyncContainer {
             options = new CosmosItemRequestOptions();
         }
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
+        @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
         return this.getDatabase()
                    .getDocClientWrapper()
@@ -494,7 +497,7 @@ public class CosmosAsyncContainer {
      * @param partitionKey the partition key
      * @return an {@link Mono} containing the  cosmos item resource response.
      */
-    public Mono<CosmosAsyncItemResponse> deleteItem(String itemId, PartitionKey partitionKey) {
+    public Mono<CosmosAsyncItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey) {
         return deleteItem(itemId, partitionKey, new CosmosItemRequestOptions());
     }
 
@@ -510,7 +513,7 @@ public class CosmosAsyncContainer {
      * @param options the request options
      * @return an {@link Mono} containing the  cosmos item resource response.
      */
-    public Mono<CosmosAsyncItemResponse> deleteItem(
+    public Mono<CosmosAsyncItemResponse<Object>> deleteItem(
         String itemId, PartitionKey partitionKey,
         CosmosItemRequestOptions options) {
         if (options == null) {
@@ -521,7 +524,7 @@ public class CosmosAsyncContainer {
         return this.getDatabase()
                    .getDocClientWrapper()
                    .deleteDocument(getItemLink(itemId), requestOptions)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response, Object.class))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response))
                    .single();
     }
 
