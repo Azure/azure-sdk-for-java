@@ -69,7 +69,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         this.pageSize = initialPageSize;
         Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
 
-        for (PartitionKeyRange targetRange : partitionKeyRangeToContinuationTokenMap.keySet()) {
+        for (Map.Entry<PartitionKeyRange, String> entry : partitionKeyRangeToContinuationTokenMap.entrySet()) {
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc = (partitionKeyRange,
                                                                                                      continuationToken, pageSize) -> {
                 Map<String, String> headers = new HashMap<>(commonRequestHeaders);
@@ -90,10 +90,12 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 return this.executeRequestAsync(request);
             };
 
+            final PartitionKeyRange targetRange = entry.getKey();
+            final String continuationToken = entry.getValue();
             DocumentProducer<T> dp = createDocumentProducer(collectionRid, targetRange,
-                    partitionKeyRangeToContinuationTokenMap.get(targetRange), initialPageSize, feedOptions,
-                    querySpecForInit, commonRequestHeaders, createRequestFunc, executeFunc,
-                    () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy());
+                continuationToken, initialPageSize, feedOptions,
+                querySpecForInit, commonRequestHeaders, createRequestFunc, executeFunc,
+                () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy());
 
             documentProducers.add(dp);
         }
@@ -158,7 +160,9 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         String collectionRid) {
         Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
 
-        for (PartitionKeyRange targetRange : rangeQueryMap.keySet()) {
+        for (Map.Entry<PartitionKeyRange, SqlQuerySpec> entry : rangeQueryMap.entrySet()) {
+            final PartitionKeyRange targetRange = entry.getKey();
+            final SqlQuerySpec query = entry.getValue();
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc = (
                 partitionKeyRange,
                 continuationToken, pageSize) -> {
@@ -168,7 +172,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
 
                 PartitionKeyInternal partitionKeyInternal = null;
                 return this.createDocumentServiceRequest(headers,
-                                                         rangeQueryMap.get(targetRange),
+                                                         query,
                                                          partitionKeyInternal,
                                                          partitionKeyRange,
                                                          collectionRid);
@@ -181,7 +185,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
             // TODO: Review pagesize -1
             DocumentProducer<T> dp = createDocumentProducer(collectionRid, targetRange,
                                                             null, -1, feedOptions,
-                                                            rangeQueryMap.get(targetRange),
+                                                            query,
                                                             commonRequestHeaders, createRequestFunc, executeFunc,
                                                             () -> client.getResetSessionTokenRetryPolicy()
                                                                       .getRequestPolicy());

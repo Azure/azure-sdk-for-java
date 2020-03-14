@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -105,8 +106,8 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                     headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
                     FeedResponse<Document> frp = BridgeInternal.createFeedResponse(aggregateResults, headers);
                     if(!queryMetricsMap.isEmpty()) {
-                        for(String key: queryMetricsMap.keySet()) {
-                            BridgeInternal.putQueryMetricsIntoMap(frp, key, queryMetricsMap.get(key));
+                        for(Map.Entry<String, QueryMetrics> entry: queryMetricsMap.entrySet()) {
+                            BridgeInternal.putQueryMetricsIntoMap(frp, entry.getKey(), entry.getValue());
                         }
                     }
                     return (FeedResponse<T>) frp;

@@ -439,10 +439,10 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                                 orderByRowResults,
                                 headerResponse(tracker.getAndResetCharge()));
                         if (!queryMetricMap.isEmpty()) {
-                            for (String key : queryMetricMap.keySet()) {
+                            for (Map.Entry<String, QueryMetrics> entry : queryMetricMap.entrySet()) {
                                 BridgeInternal.putQueryMetricsIntoMap(feedResponse,
-                                        key,
-                                        queryMetricMap.get(key));
+                                    entry.getKey(),
+                                    entry.getValue());
                             }
                         }
                         return feedResponse;
