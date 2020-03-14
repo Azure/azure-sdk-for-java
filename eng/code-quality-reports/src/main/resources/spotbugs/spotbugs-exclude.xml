@@ -1174,4 +1174,46 @@
     <Bug pattern="DC_DOUBLECHECK"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
+  <Match>
+    <Class name="com.azure.cosmos.CosmosClientException"/>
+    <Field name="cosmosError"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
+  <Match>
+    <Class name="com.azure.cosmos.CosmosClientException"/>
+    <Field name="cosmosResponseDiagnostics"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
+  <Match>
+    <Class name="com.azure.cosmos.CosmosClientException"/>
+    <Field name="requestTimeline"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
+  <Match>
+    <Class name="com.azure.cosmos.CosmosClientException"/>
+    <Field name="requestUri"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextException"/>
+    <Field name="cosmosError"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextException"/>
+    <Field name="status"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
 </FindBugsFilter>
