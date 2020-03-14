@@ -1610,4 +1610,14 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9098 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.AddressResolver"/>
+    <Method name="~(.*)\$resolveAddressesAndIdentityAsync\$(.*)"/>
+    <Bug pattern="ES_COMPARING_STRINGS_WITH_EQ"/>
+  </Match>
+
+
+
 </FindBugsFilter>
