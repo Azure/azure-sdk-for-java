@@ -170,11 +170,6 @@ public class Configs {
         return REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE;
     }
 
-    private static String getJVMConfigAsString(String propName, String defaultValue) {
-        String propValue = System.getProperty(propName);
-        return StringUtils.defaultString(propValue, defaultValue);
-    }
-
     private static int getJVMConfigAsInt(String propName, int defaultValue) {
         String propValue = System.getProperty(propName);
         return getIntValue(propValue, defaultValue);

@@ -1543,11 +1543,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .collect(Collectors.joining());
     }
 
-
-    private String getCurentParamName(int paramCnt){
-        return "@param" + paramCnt;
-    }
-
     private <T extends Resource> Flux<FeedResponse<T>> createReadManyQuery(
         String parentResourceLink,
         SqlQuerySpec sqlQuery,
@@ -2827,41 +2822,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public Flux<FeedResponse<Offer>> readOffers(FeedOptions options) {
         return readFeed(options, ResourceType.Offer, Offer.class,
                 Utils.joinPath(Paths.OFFERS_PATH_SEGMENT, null));
-    }
-
-    private <T extends Resource> Flux<FeedResponse<T>> readFeedCollectionChild(FeedOptions options, ResourceType resourceType,
-                                                                                     Class<T> klass, String resourceLink) {
-        if (options == null) {
-            options = new FeedOptions();
-        }
-
-        int maxPageSize = options.getMaxItemCount() != null ? options.getMaxItemCount() : -1;
-
-        final FeedOptions finalFeedOptions = options;
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setPartitionKey(options.getPartitionKey());
-        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
-            Map<String, String> requestHeaders = new HashMap<>();
-            if (continuationToken != null) {
-                requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
-            }
-            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
-            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.ReadFeed,
-                    resourceType, resourceLink, requestHeaders, finalFeedOptions);
-            return request;
-        };
-
-        Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = request -> {
-            return ObservableHelper.inlineIfPossibleAsObs(() -> {
-                Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
-                Mono<RxDocumentServiceRequest> requestObs = this.addPartitionKeyInformation(request, null, null, requestOptions, collectionObs);
-
-                return requestObs.flatMap(req -> this.readFeed(req)
-                        .map(response -> toFeedResponsePage(response, klass)));
-            }, this.resetSessionTokenRetryPolicy.getRequestPolicy());
-        };
-
-        return Paginator.getPaginatedQueryResultAsObservable(options, createRequestFunc, executeFunc, klass, maxPageSize);
     }
 
     private <T extends Resource> Flux<FeedResponse<T>> readFeed(FeedOptions options, ResourceType resourceType, Class<T> klass, String resourceLink) {

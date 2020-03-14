@@ -131,10 +131,6 @@ public class GatewayAddressCache implements IAddressCache {
              DefaultSuboptimalPartitionForceRefreshIntervalInSeconds);
     }
 
-    private URI getServiceEndpoint() {
-        return this.serviceEndpoint;
-    }
-
     @Override
     public Mono<Utils.ValueHolder<AddressInformation[]>> tryGetAddresses(RxDocumentServiceRequest request,
                                                                         PartitionKeyRangeIdentity partitionKeyRangeIdentity,

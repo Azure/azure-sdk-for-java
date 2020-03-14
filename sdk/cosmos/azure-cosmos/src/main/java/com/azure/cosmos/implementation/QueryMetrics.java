@@ -188,10 +188,6 @@ public final class QueryMetrics {
         return QueryMetrics.createFromCollection(queryMetricsList);
     }
 
-    private String toTextString() {
-        return toTextString(0);
-    }
-
     private String toTextString(int indentLevel) {
         StringBuilder stringBuilder = new StringBuilder();
         QueryMetricsTextWriter queryMetricsTextWriter = new QueryMetricsTextWriter(stringBuilder);
@@ -241,11 +237,6 @@ public final class QueryMetrics {
                 QueryPreparationTimes.createFromCollection(queryPreparationTimesCollection), indexLookupTime, documentLoadTime,
                 vmExecutionTime, RuntimeExecutionTimes.createFromCollection(runtimeExecutionTimesCollection),
                 documentWriteTime, ClientSideMetrics.createFromCollection(clientSideMetricsCollection));
-    }
-
-    private static double getOrDefault(HashMap<String, Double> metrics, String key) {
-        Double doubleReference = metrics.get(key);
-        return doubleReference == null ? 0 : doubleReference;
     }
 
     public static QueryMetrics createFromDelimitedString(String delimitedString) {
