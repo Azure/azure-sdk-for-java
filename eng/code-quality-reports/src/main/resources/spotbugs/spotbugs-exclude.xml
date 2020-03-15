@@ -1744,4 +1744,11 @@
     <Bug pattern="HE_HASHCODE_USE_OBJECT_EQUALS"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9046 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ResourceId"/>
+    <Method name="equals"/>
+    <Bug pattern="HE_EQUALS_USE_HASHCODE"/>
+  </Match>
+
 </FindBugsFilter>
