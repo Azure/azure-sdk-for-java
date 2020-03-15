@@ -1787,12 +1787,18 @@
     <Bug pattern="LI_LAZY_INIT_STATIC"/>
   </Match>
 
-
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9108 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.changefeed.CancellationTokenSource"/>
     <Method name="close"/>
     <Bug pattern="UC_USELESS_VOID_METHOD"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9109 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
+    <Method name="compare"/>
+    <Bug pattern="RV_NEGATING_RESULT_OF_COMPARETO"/>
   </Match>
 
 </FindBugsFilter>
