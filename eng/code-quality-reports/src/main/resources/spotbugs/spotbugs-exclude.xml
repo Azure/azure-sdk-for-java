@@ -1714,4 +1714,18 @@
     <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
   </Match>
 
+  <!-- Exception is ignored by design which indicate that error while evaluating system information -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$ClientSideRequestStatisticsSerializer"/>
+    <Method name="serialize"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+
+  <!-- Exception is ignored by design which indicate that non-parsable id -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ResourceId"/>
+    <Method name="verify"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+
 </FindBugsFilter>
