@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.micrometer.core.lang.Nullable;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -255,6 +256,10 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the boolean value.
      */
+    // The method returning Boolean can be invoked as though it returned a value of type boolean,
+    // and the compiler will insert automatic unboxing of the Boolean value. If a null value is
+    // returned, this will result in a NPE. @Nullable is used indicate that returning null is permitted.
+    @Nullable
     public Boolean getBoolean(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             return this.propertyBag.get(propertyName).asBoolean();
@@ -299,7 +304,7 @@ public class JsonSerializable {
      */
     public Double getDouble(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            return new Double(this.propertyBag.get(propertyName).asDouble());
+            return this.propertyBag.get(propertyName).asDouble();
         } else {
             return null;
         }
