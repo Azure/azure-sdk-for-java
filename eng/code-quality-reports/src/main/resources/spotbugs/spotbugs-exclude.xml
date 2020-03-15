@@ -1735,5 +1735,13 @@
     <Bug pattern="INT_BAD_COMPARISON_WITH_SIGNED_BYTE"/>
   </Match>
 
-  
+  <!-- The Bug was reported because StringPartitionKeyComponent's hashCode() implementation is
+        based only on the hashCode() method of it's member variable 'value'.
+        This is valid since the StringPartitionKeyComponent has only one member variable so
+        delegating to that member variable's hashCode is fine -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.StringPartitionKeyComponent"/>
+    <Bug pattern="HE_HASHCODE_USE_OBJECT_EQUALS"/>
+  </Match>
+
 </FindBugsFilter>
