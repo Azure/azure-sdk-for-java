@@ -1773,4 +1773,11 @@
     <Bug pattern="EQ_UNUSUAL"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9106 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.PathsHelper"/>
+    <Method name="generatePathForNameBased"/>
+    <Bug pattern="BC_VACUOUS_INSTANCEOF"/>
+  </Match>
+
 </FindBugsFilter>
