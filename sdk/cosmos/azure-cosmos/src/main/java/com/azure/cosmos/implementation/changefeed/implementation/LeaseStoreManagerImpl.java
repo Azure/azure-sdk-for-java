@@ -186,7 +186,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
                 return documentServiceLease
                     .withId(document.getId())
-                    .withEtag(document.getETag())
+                    .withETag(document.getETag())
                     .withTs(document.getString(Constants.Properties.LAST_MODIFIED));
             });
     }
