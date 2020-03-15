@@ -1695,4 +1695,11 @@
     <Bug pattern="UC_USELESS_OBJECT"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9103 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.ServiceConfig"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="ISC_INSTANTIATE_STATIC_CLASS"/>
+  </Match>
+
 </FindBugsFilter>
