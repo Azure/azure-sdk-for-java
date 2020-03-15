@@ -1801,4 +1801,40 @@
     <Bug pattern="RV_NEGATING_RESULT_OF_COMPARETO"/>
   </Match>
 
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9110 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.Address"/>
+    <Method name="isPrimary"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9110 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.OrderByContinuationToken"/>
+    <Method name="getInclusive"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9110 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.query.QueryInfo"/>
+    <Method name="hasSelectValue"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9110 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.Range"/>
+    <Method name="isMaxInclusive"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9110 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.Range"/>
+    <Method name="isMinInclusive"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
 </FindBugsFilter>
