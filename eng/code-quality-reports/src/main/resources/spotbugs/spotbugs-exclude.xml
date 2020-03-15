@@ -1777,7 +1777,7 @@
   <Match>
     <Class name="com.azure.cosmos.implementation.PathsHelper"/>
     <Method name="generatePathForNameBased"/>
-    <Bug pattern="BC_VACUOUS_INSTANCEOF"/>
+    <Bug pattern="BC_VACUOUS_INSTANCEOF,SIO_SUPERFLUOUS_INSTANCEOF"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9107 -->
