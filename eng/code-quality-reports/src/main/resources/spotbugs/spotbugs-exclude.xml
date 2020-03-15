@@ -1787,4 +1787,12 @@
     <Bug pattern="LI_LAZY_INIT_STATIC"/>
   </Match>
 
+
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9108 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.changefeed.CancellationTokenSource"/>
+    <Method name="close"/>
+    <Bug pattern="UC_USELESS_VOID_METHOD"/>
+  </Match>
+
 </FindBugsFilter>
