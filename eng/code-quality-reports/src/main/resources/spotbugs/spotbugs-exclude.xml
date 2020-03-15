@@ -1751,4 +1751,11 @@
     <Bug pattern="HE_EQUALS_USE_HASHCODE"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9105 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ResourceId"/>
+    <Method name="tryParse"/>
+    <Bug pattern="BIT_SIGNED_CHECK"/>
+  </Match>
+
 </FindBugsFilter>
