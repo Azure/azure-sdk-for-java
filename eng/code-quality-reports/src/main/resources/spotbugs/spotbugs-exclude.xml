@@ -1780,4 +1780,11 @@
     <Bug pattern="BC_VACUOUS_INSTANCEOF"/>
   </Match>
 
+  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9107 -->
+  <Match>
+    <Class name="com.azure.cosmos.ConnectionPolicy"/>
+    <Field name="defaultPolicy"/>
+    <Bug pattern="LI_LAZY_INIT_STATIC"/>
+  </Match>
+
 </FindBugsFilter>
