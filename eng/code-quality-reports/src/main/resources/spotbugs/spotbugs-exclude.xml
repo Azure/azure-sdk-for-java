@@ -1681,4 +1681,18 @@
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
 
+  <!-- https://github.com/Azure/azure-sdk-for-java/issues/9102 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.ItemOperations"/>
+    <Method name="readManyAsync"/>
+    <Bug pattern="UC_USELESS_OBJECT"/>
+  </Match>
+
+  <!-- https://github.com/Azure/azure-sdk-for-java/issues/9102 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentClientImpl"/>
+    <Method name="~(.*)\$readMany\$(.*)"/>
+    <Bug pattern="UC_USELESS_OBJECT"/>
+  </Match>
+
 </FindBugsFilter>
