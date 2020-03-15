@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DocumentServiceRequestContext implements Cloneable{
+public class DocumentServiceRequestContext implements Cloneable {
     public volatile boolean forceAddressRefresh;
     public volatile boolean forceRefreshAddressCache;
     public volatile RequestChargeTracker requestChargeTracker;

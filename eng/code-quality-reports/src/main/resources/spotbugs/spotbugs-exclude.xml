@@ -1702,4 +1702,16 @@
     <Bug pattern="ISC_INSTANTIATE_STATIC_CLASS"/>
   </Match>
 
+  <!-- Super doesn't need to be cloned since it is Object -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.DocumentServiceRequestContext"/>
+    <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
+  </Match>
+
+  <!-- Super doesn't need to be cloned since it is Object -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.RxDocumentServiceRequest"/>
+    <Bug pattern="CN_IDIOM_NO_SUPER_CALL"/>
+  </Match>
+
 </FindBugsFilter>
