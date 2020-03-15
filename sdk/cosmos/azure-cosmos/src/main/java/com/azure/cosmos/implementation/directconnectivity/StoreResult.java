@@ -103,7 +103,7 @@ public class StoreResult {
             throw this.exception;
         }
 
-        if (requestChargeTracker != null && this.isValid) {
+        if (requestChargeTracker != null) {
             StoreResult.setRequestCharge(this.storeResponse, this.exception, requestChargeTracker.getTotalRequestCharge());
         }
 
