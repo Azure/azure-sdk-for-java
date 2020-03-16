@@ -20,10 +20,10 @@ import java.security.SecureRandom;
 import java.util.Objects;
 
 public class AzureSearchResources {
-    private static final String RESOURCE_GROUP_NAME_PREFIX = "azs-sdk";
-    private static final String SEARCH_SERVICE_NAME_PREFIX = "azs-sdk";
-    private static final String BLOB_DATASOURCE_NAME_PREFIX = "azsblob";
-    private static final String STORAGE_NAME_PREFIX = "azsstor";
+    private static final String RESOURCE_GROUP_NAME_PREFIX = "azs-java";
+    private static final String SEARCH_SERVICE_NAME_PREFIX = "azs-java";
+    private static final String BLOB_DATASOURCE_NAME_PREFIX = "azsjavablob";
+    private static final String STORAGE_NAME_PREFIX = "azsjavastor";
     private static final String AZURE_RESOURCEGROUP_NAME = "AZURE_RESOURCEGROUP_NAME";
     private static final char[] ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
 
