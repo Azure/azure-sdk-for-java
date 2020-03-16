@@ -40,8 +40,8 @@ public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {
      * @return IndexBatch with the desired actions added.
      */
     @SuppressWarnings("unchecked")
-    public IndexDocumentsBatch<T> addUploadAction(T... documents) {
-        addDocumentAction(Arrays.asList(documents), IndexActionType.UPLOAD);
+    public IndexDocumentsBatch<T> addUploadActions(T... documents) {
+        addDocumentActions(Arrays.asList(documents), IndexActionType.UPLOAD);
         return this;
     }
 
@@ -51,8 +51,8 @@ public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {
      * @param documents The document collection to be uploaded.
      * @return IndexBatch with the desired actions added.
      */
-    public IndexDocumentsBatch<T> addUploadAction(Iterable<T> documents) {
-        addDocumentAction(documents, IndexActionType.UPLOAD);
+    public IndexDocumentsBatch<T> addUploadActions(Iterable<T> documents) {
+        addDocumentActions(documents, IndexActionType.UPLOAD);
         return this;
     }
 
@@ -63,8 +63,8 @@ public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {
      * @return IndexBatch with the desired actions added.
      */
     @SuppressWarnings("unchecked")
-    public IndexDocumentsBatch<T> addDeleteAction(T... documents) {
-        addDocumentAction(Arrays.asList(documents), IndexActionType.DELETE);
+    public IndexDocumentsBatch<T> addDeleteActions(T... documents) {
+        addDocumentActions(Arrays.asList(documents), IndexActionType.DELETE);
         return this;
     }
 
@@ -74,8 +74,8 @@ public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {
      * @param documents The document collection to be deleted.
      * @return IndexBatch with the desired actions added.
      */
-    public IndexDocumentsBatch<T> addDeleteAction(Iterable<T> documents) {
-        addDocumentAction(documents, IndexActionType.DELETE);
+    public IndexDocumentsBatch<T> addDeleteActions(Iterable<T> documents) {
+        addDocumentActions(documents, IndexActionType.DELETE);
         return this;
     }
 
@@ -87,7 +87,7 @@ public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {
      * @return IndexBatch with the desired actions added.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public IndexDocumentsBatch<T> addDeleteAction(String keyName, Iterable<String> keyValues) {
+    public IndexDocumentsBatch<T> addDeleteActions(String keyName, Iterable<String> keyValues) {
         for (String val : keyValues) {
             SearchDocument doc = new SearchDocument();
             doc.put(keyName, val);
@@ -106,8 +106,8 @@ public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {
      * @param keyValues The keys of the documents to delete.
      * @return IndexBatch with the desired actions added.
      */
-    public IndexDocumentsBatch<T> addDeleteAction(String keyName, String... keyValues) {
-        return this.addDeleteAction(keyName, Arrays.asList(keyValues));
+    public IndexDocumentsBatch<T> addDeleteActions(String keyName, String... keyValues) {
+        return this.addDeleteActions(keyName, Arrays.asList(keyValues));
     }
 
     /**
@@ -117,8 +117,8 @@ public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {
      * @return IndexBatch with the desired actions added.
      */
     @SuppressWarnings("unchecked")
-    public IndexDocumentsBatch<T> addMergeAction(T... documents) {
-        addDocumentAction(Arrays.asList(documents), IndexActionType.MERGE);
+    public IndexDocumentsBatch<T> addMergeActions(T... documents) {
+        addDocumentActions(Arrays.asList(documents), IndexActionType.MERGE);
         return this;
     }
 
@@ -128,8 +128,8 @@ public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {
      * @param documents The document collection to be merged.
      * @return IndexBatch with the desired actions added.
      */
-    public IndexDocumentsBatch<T> addMergeAction(Iterable<T> documents) {
-        addDocumentAction(documents, IndexActionType.MERGE);
+    public IndexDocumentsBatch<T> addMergeActions(Iterable<T> documents) {
+        addDocumentActions(documents, IndexActionType.MERGE);
         return this;
     }
 
@@ -140,8 +140,8 @@ public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {
      * @return IndexBatch with the desired actions added.
      */
     @SuppressWarnings("unchecked")
-    public IndexDocumentsBatch<T> addMergeOrUploadAction(T... documents) {
-        addDocumentAction(Arrays.asList(documents), IndexActionType.MERGE_OR_UPLOAD);
+    public IndexDocumentsBatch<T> addMergeOrUploadActions(T... documents) {
+        addDocumentActions(Arrays.asList(documents), IndexActionType.MERGE_OR_UPLOAD);
         return this;
     }
 
@@ -151,12 +151,12 @@ public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {
      * @param documents The document collection to be merged or uploaded.
      * @return IndexBatch with the desired actions added.
      */
-    public IndexDocumentsBatch<T> addMergeOrUploadAction(Iterable<T> documents) {
-        addDocumentAction(documents, IndexActionType.MERGE_OR_UPLOAD);
+    public IndexDocumentsBatch<T> addMergeOrUploadActions(Iterable<T> documents) {
+        addDocumentActions(documents, IndexActionType.MERGE_OR_UPLOAD);
         return this;
     }
 
-    private void addDocumentAction(Iterable<T> documents, IndexActionType actionType) {
+    private void addDocumentActions(Iterable<T> documents, IndexActionType actionType) {
         documents.forEach(d -> {
             this.getActions().add(new IndexAction<T>()
                 .setActionType(actionType)
