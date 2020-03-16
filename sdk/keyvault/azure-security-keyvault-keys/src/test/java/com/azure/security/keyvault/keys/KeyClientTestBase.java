@@ -44,10 +44,9 @@ public abstract class KeyClientTestBase extends TestBase {
     private static final KeyType EC_KEY_TYPE = KeyType.EC;
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
-    private static final String AZURE_TEST_SERVICE_VERSIONS = "AZURE_KEYVAULT_KEYS_SERVICE_VERSIONS";
-    private static final String serviceVersionFromEnv =
-        Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
-    private static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
+    private static final String AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS = "AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS";
+    private static final String SERVICE_VERSION_FROM_ENV =
+        Configuration.getGlobalConfiguration().get(AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS);
 
     @Override
     protected String getTestName() {
@@ -446,13 +445,13 @@ public abstract class KeyClientTestBase extends TestBase {
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(KeyServiceVersion serviceVersion) {
-        if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
+        if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
             return KeyServiceVersion.getLatest().equals(serviceVersion);
         }
-        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(serviceVersionFromEnv)) {
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
             return true;
         }
-        String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
+        String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.toString().equals(configuredServiceVersion.trim()));
     }

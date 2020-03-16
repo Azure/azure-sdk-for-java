@@ -39,9 +39,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class SecretClientTestBase extends TestBase {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    private static final String AZURE_TEST_SERVICE_VERSIONS = "AZURE_KEYVAULT_SECRETS_SERVICE_VERSIONS";
-    private static final String serviceVersionFromEnv = Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
-    private static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
+    private static final String AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS = "AZURE_KEYVAULT_TEST_SECRETS_SERVICE_VERSIONS";
+    private static final String SERVICE_VERSION_FROM_ENV = Configuration.getGlobalConfiguration().get(AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS);
 
     private static final String SECRET_NAME = "javaSecretTemp";
     private static final String SECRET_VALUE = "Chocolate is hidden in the toothpaste cabinet";
@@ -471,13 +470,13 @@ public abstract class SecretClientTestBase extends TestBase {
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(SecretServiceVersion serviceVersion) {
-        if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
+        if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
             return SecretServiceVersion.getLatest().equals(serviceVersion);
         }
-        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(serviceVersionFromEnv)) {
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
             return true;
         }
-        String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
+        String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.toString().equals(configuredServiceVersion.trim()));
     }

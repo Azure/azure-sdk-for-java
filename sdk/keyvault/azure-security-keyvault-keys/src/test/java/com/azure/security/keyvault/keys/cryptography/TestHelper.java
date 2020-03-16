@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.provider.Arguments;
 
+import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestBase.getHttpClients;
 
 public class TestHelper {
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    private static final String AZURE_TEST_SERVICE_VERSIONS ="AZURE_KEYVAULT_CRYPTOGRAPHY_SERVICE_VERSIONS";
-    private static final String serviceVersionFromEnv =
-        Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
-    private static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
+    private static final String AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS ="AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS";
+    private static final String SERVICE_VERSION_FROM_ENV =
+        Configuration.getGlobalConfiguration().get(AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS);
 
     /**
      * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
@@ -57,13 +57,13 @@ public class TestHelper {
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(CryptographyServiceVersion serviceVersion) {
-        if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
+        if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
             return CryptographyServiceVersion.getLatest().equals(serviceVersion);
         }
-        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(serviceVersionFromEnv)) {
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
             return true;
         }
-        String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
+        String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.toString().equals(configuredServiceVersion.trim()));
     }
