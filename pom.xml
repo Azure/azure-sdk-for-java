@@ -8,18 +8,19 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-    <module>common/perf-test-core</module>
-    <module>sdk/core</module>
-    <module>sdk/identity</module>
     <module>sdk/appconfiguration</module>
     <module>sdk/authorization</module>
     <module>sdk/batch</module>
-    <module>sdk/cognitiveservices</module>
+    <module>sdk/core</module>
     <module>sdk/cosmos</module>
+    <module>sdk/cognitiveservices</module>
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
+    <module>sdk/identity</module>
     <module>sdk/keyvault</module>
+    <module>sdk/loganalytics</module>
     <module>sdk/mediaservices</module>
+    <module>common/perf-test-core</module>
     <module>sdk/search</module>
     <module>sdk/servicebus</module>
     <module>sdk/storage</module>
