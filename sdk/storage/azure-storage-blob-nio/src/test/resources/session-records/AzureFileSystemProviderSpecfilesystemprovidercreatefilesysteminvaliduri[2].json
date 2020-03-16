@@ -5,7 +5,11 @@
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+<<<<<<< HEAD
       "x-ms-client-request-id" : "c70f944e-70e0-401c-9b17-a3c9821e783a"
+=======
+      "x-ms-client-request-id" : "6e658f4f-34b2-4fa7-afd0-446ad1d33560"
+>>>>>>> upstream/master
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -13,13 +17,24 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
+<<<<<<< HEAD
       "x-ms-request-id" : "81c6cb98-c01e-00e4-326e-f60217000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcfilesystemprovidercreatefilesysteminvaliduri</Prefix><Containers /><NextMarker /></EnumerationResults>",
       "Date" : "Mon, 09 Mar 2020 23:59:08 GMT",
       "x-ms-client-request-id" : "c70f944e-70e0-401c-9b17-a3c9821e783a",
+=======
+      "x-ms-request-id" : "67503ee1-101e-010c-337d-eeb9b9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcfilesystemprovidercreatefilesysteminvaliduri</Prefix><Containers /><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 28 Feb 2020 21:24:49 GMT",
+      "x-ms-client-request-id" : "6e658f4f-34b2-4fa7-afd0-446ad1d33560",
+>>>>>>> upstream/master
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
+<<<<<<< HEAD
   "variables" : [ "jtcfilesystemprovidercreatefilesysteminvaliduri007210ff5b9" ]
+=======
+  "variables" : [ "jtcfilesystemprovidercreatefilesysteminvaliduri036829e0b02" ]
+>>>>>>> upstream/master
 }

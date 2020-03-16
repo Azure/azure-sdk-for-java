@@ -7,23 +7,22 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.rx.proxy.HttpProxyServer;
 import org.apache.logging.log4j.Level;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.io.StringWriter;
 import java.lang.reflect.Method;
+import java.net.InetSocketAddress;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -71,7 +70,7 @@ public class ProxyHostTest extends TestSuiteBase {
         CosmosAsyncClient clientWithRightProxy = null;
         try {
             ConnectionPolicy connectionPolicy =new ConnectionPolicy();
-            connectionPolicy.setProxy(PROXY_HOST, PROXY_PORT);
+            connectionPolicy.setProxy(new InetSocketAddress(PROXY_HOST, PROXY_PORT));
             clientWithRightProxy = new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
                     .setKey(TestConfigurations.MASTER_KEY)
                     .setConnectionPolicy(connectionPolicy)
@@ -85,7 +84,7 @@ public class ProxyHostTest extends TestSuiteBase {
                     .withId(docDefinition.getId())
                     .build();
             this.validateItemSuccess(createObservable, validator);
-            
+
         } finally {
             safeClose(clientWithRightProxy);
         }
@@ -105,7 +104,7 @@ public class ProxyHostTest extends TestSuiteBase {
                 "ProxyStringAppender", consoleWriter);
 
             ConnectionPolicy connectionPolicy =new ConnectionPolicy();
-            connectionPolicy.setProxy(PROXY_HOST, PROXY_PORT);
+            connectionPolicy.setProxy(new InetSocketAddress(PROXY_HOST, PROXY_PORT));
             clientWithRightProxy = new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
                     .setKey(TestConfigurations.MASTER_KEY)
                     .setConnectionPolicy(connectionPolicy)

@@ -7,12 +7,15 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceAsyncClient;
+import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -25,10 +28,13 @@ import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -256,12 +262,39 @@ public class DataLakeServiceAsyncClient {
      */
     public PagedFlux<FileSystemItem> listFileSystems(ListFileSystemsOptions options) {
         try {
-            return blobServiceAsyncClient.listBlobContainers(Transforms.toListBlobContainersOptions(options))
-//                .onErrorMap(ex -> DataLakeImplUtils.transformBlobStorageException((BlobStorageException) ex))
-                .mapPage(Transforms::toFileSystemItem);
+            return listFileSystemsWithOptionalTimeout(options, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
+    }
+
+    PagedFlux<FileSystemItem> listFileSystemsWithOptionalTimeout(ListFileSystemsOptions options, Duration timeout) {
+        PagedFlux<BlobContainerItem> inputPagedFlux = blobServiceAsyncClient
+            .listBlobContainers(Transforms.toListBlobContainersOptions(options));
+        /* We need to create a new PagedFlux here because PagedFlux extends Flux, but not all operations were
+            overriden to return PagedFlux - so we need to do the transformations and recreate a PagedFlux. */
+        /* Note: pageSize is not passed in as a parameter since the underlying implementation of listBlobContainers
+           does not use the pageSize parameter. Passing it in will have no effect. */
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BlobContainerItem>> flux = (continuationToken == null)
+                ? inputPagedFlux.byPage()
+                : inputPagedFlux.byPage(continuationToken);
+            flux = flux.onErrorMap(DataLakeImplUtils::transformBlobStorageException);
+            if (timeout != null) {
+                flux = flux.timeout(timeout);
+            }
+            return flux
+                .map(blobsPagedResponse -> new PagedResponseBase<Void, FileSystemItem>(
+                    blobsPagedResponse.getRequest(),
+                    blobsPagedResponse.getStatusCode(),
+                    blobsPagedResponse.getHeaders(),
+                    blobsPagedResponse
+                        .getValue()
+                        .stream()
+                        .map(Transforms::toFileSystemItem).collect(Collectors.toList()),
+                    blobsPagedResponse.getContinuationToken(),
+                    null));
+        });
     }
 
     /**

@@ -4,9 +4,9 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.models.AccessCondition;
 import com.azure.search.models.DataContainer;
 import com.azure.search.models.DataDeletionDetectionPolicy;
 import com.azure.search.models.DataSource;
@@ -62,7 +62,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
     }
 
     private DataSource createOrUpdateDataSource(DataSource datasource,
-        AccessCondition accessCondition,
+        MatchConditions accessCondition,
         RequestOptions requestOptions) {
         return client.createOrUpdateDataSourceWithResponse(datasource, accessCondition, requestOptions, Context.NONE)
             .getValue();
@@ -89,9 +89,9 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         DataSource dataSource2 = createTestSqlDataSourceObject();
 
         client.createOrUpdateDataSourceWithResponse(
-            dataSource1, new AccessCondition(), new RequestOptions(), Context.NONE);
+            dataSource1, new MatchConditions(), new RequestOptions(), Context.NONE);
         client.createOrUpdateDataSourceWithResponse(
-            dataSource2, new AccessCondition(), new RequestOptions(), Context.NONE);
+            dataSource2, new MatchConditions(), new RequestOptions(), Context.NONE);
 
         Iterator<DataSource> results = client.listDataSources("name", new RequestOptions(), Context.NONE).iterator();
 
@@ -114,7 +114,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
 
         // Try to delete before the data source exists, expect a NOT FOUND return status code
         Response<Void> result = client.deleteDataSourceWithResponse(dataSource.getName(),
-            new AccessCondition(), generateRequestOptions(), Context.NONE);
+            new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
 
         // Create the data source
@@ -122,11 +122,11 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
 
         // Delete twice, expect the first to succeed (with NO CONTENT status code) and the second to return NOT FOUND
         result = client.deleteDataSourceWithResponse(dataSource.getName(),
-            new AccessCondition(), generateRequestOptions(), Context.NONE);
+            new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NO_CONTENT, result.getStatusCode());
         // Again, expect to fail
         result = client.deleteDataSourceWithResponse(dataSource.getName(),
-            new AccessCondition(), generateRequestOptions(), Context.NONE);
+            new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, result.getStatusCode());
     }
 
@@ -335,19 +335,19 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
     }
 
     DataSource createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
-        return DataSources.azureBlobStorage(BLOB_DATASOURCE_TEST_NAME, FAKE_STORAGE_CONNECTION_STRING, "fakecontainer",
+        return DataSources.createFromAzureBlobStorage(BLOB_DATASOURCE_TEST_NAME, FAKE_STORAGE_CONNECTION_STRING, "fakecontainer",
             "/fakefolder/", FAKE_DESCRIPTION, deletionDetectionPolicy);
     }
 
     DataSource createTestTableStorageDataSource() {
-        return DataSources.azureTableStorage("azs-java-test-tablestorage", FAKE_STORAGE_CONNECTION_STRING, "faketable",
+        return DataSources.createFromAzureTableStorage("azs-java-test-tablestorage", FAKE_STORAGE_CONNECTION_STRING, "faketable",
             "fake query", FAKE_DESCRIPTION, null);
     }
 
     DataSource createTestCosmosDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy,
         boolean useChangeDetection) {
 
-        return DataSources.cosmos("azs-java-test-cosmos", FAKE_COSMOS_CONNECTION_STRING, "faketable",
+        return DataSources.createFromCosmos("azs-java-test-cosmos", FAKE_COSMOS_CONNECTION_STRING, "faketable",
             "SELECT ... FROM x where x._ts > @HighWaterMark", useChangeDetection, FAKE_DESCRIPTION,
             deletionDetectionPolicy);
     }

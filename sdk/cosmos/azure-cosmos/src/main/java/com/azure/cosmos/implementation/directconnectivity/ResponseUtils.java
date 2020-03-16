@@ -7,32 +7,27 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
-import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Mono;
 
 class ResponseUtils {
+    private static byte[] EMPTY_BYTE_ARRAY = {};
 
     static Mono<StoreResponse> toStoreResponse(HttpResponse httpClientResponse, HttpRequest httpRequest) {
 
         HttpHeaders httpResponseHeaders = httpClientResponse.headers();
 
-        Mono<String> contentObservable;
+        Mono<byte[]> contentObservable;
 
         if (httpRequest.httpMethod() == HttpMethod.DELETE) {
             // for delete we don't expect any body
-            contentObservable = Mono.just(StringUtils.EMPTY);
+            contentObservable = Mono.just(EMPTY_BYTE_ARRAY);
         } else {
-            contentObservable = httpClientResponse.bodyAsString().switchIfEmpty(Mono.just(StringUtils.EMPTY));
+            contentObservable = httpClientResponse.bodyAsByteArray().switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
         }
 
-        return contentObservable.flatMap(content -> {
-            try {
-                // transforms to Mono<StoreResponse>
-                StoreResponse rsp = new StoreResponse(httpClientResponse.statusCode(), HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()), content);
-                return Mono.just(rsp);
-            } catch (Exception e) {
-                return Mono.error(e);
-            }
+        return contentObservable.map(byteArrayContent -> {
+            // transforms to Mono<StoreResponse>
+            return new StoreResponse(httpClientResponse.statusCode(), HttpUtils.unescape(httpResponseHeaders.toMap().entrySet()), byteArrayContent);
         });
     }
 }

@@ -20,7 +20,7 @@ public final class IndexerExecutionResult {
      * The outcome of this indexer execution. Possible values include:
      * 'transientFailure', 'success', 'inProgress', 'reset'
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private IndexerExecutionStatus status;
 
     /*
@@ -45,13 +45,13 @@ public final class IndexerExecutionResult {
     /*
      * The item-level indexing errors.
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "errors", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<ItemError> errors;
 
     /*
      * The item-level indexing warnings.
      */
-    @JsonProperty(value = "warnings", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "warnings", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<ItemWarning> warnings;
 
     /*
@@ -59,14 +59,14 @@ public final class IndexerExecutionResult {
      * This includes both successfully processed items and items where indexing
      * was attempted but failed.
      */
-    @JsonProperty(value = "itemsProcessed", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "itemsProcessed", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int itemCount;
 
     /*
      * The number of items that failed to be indexed during this indexer
      * execution.
      */
-    @JsonProperty(value = "itemsFailed", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "itemsFailed", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int failedItemCount;
 
     /*

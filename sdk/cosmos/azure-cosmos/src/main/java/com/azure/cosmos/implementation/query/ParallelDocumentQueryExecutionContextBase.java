@@ -4,11 +4,11 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -77,8 +77,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
 
                 PartitionKeyInternal partitionKeyInternal = null;
-                if (feedOptions.partitionKey() != null && feedOptions.partitionKey() != PartitionKey.NONE) {
-                    partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey());
+                if (feedOptions.getPartitionKey() != null && feedOptions.getPartitionKey() != PartitionKey.NONE) {
+                    partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(feedOptions.getPartitionKey());
                     headers.put(HttpConstants.HttpHeaders.PARTITION_KEY,
                         partitionKeyInternal.toJson());
 

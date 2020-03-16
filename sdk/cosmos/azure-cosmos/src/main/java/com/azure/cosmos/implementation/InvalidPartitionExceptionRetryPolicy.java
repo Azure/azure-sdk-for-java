@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.models.FeedOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -51,7 +51,7 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
                 //this.clientCollectionCache.Refresh(clientException.ResourceAddress);
                 // TODO: this is blocking. is that fine?
                 if(this.feedOptions != null) {
-                    this.clientCollectionCache.refresh(collectionLink,this.feedOptions.properties());
+                    this.clientCollectionCache.refresh(collectionLink,this.feedOptions.getProperties());
                 } else {
                     this.clientCollectionCache.refresh(collectionLink,null);
                 }

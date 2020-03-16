@@ -7,8 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
-import com.azure.cosmos.CosmosItemResponse;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;
@@ -355,6 +354,6 @@ abstract class SyncBenchmark<T> {
     }
 
     PojoizedJson toPojoizedJson(CosmosItemResponse<PojoizedJson> resp) throws Exception {
-        return resp.getResource();
+        return resp.getItem();
     }
 }

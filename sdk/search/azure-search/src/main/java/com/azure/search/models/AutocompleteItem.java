@@ -17,13 +17,13 @@ public final class AutocompleteItem {
     /*
      * The completed term.
      */
-    @JsonProperty(value = "text", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "text", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String text;
 
     /*
      * The query along with the completed term.
      */
-    @JsonProperty(value = "queryPlusText", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "queryPlusText", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String queryPlusText;
 
     /**

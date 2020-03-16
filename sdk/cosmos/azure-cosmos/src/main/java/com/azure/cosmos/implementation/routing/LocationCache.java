@@ -4,8 +4,8 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.DatabaseAccount;
-import com.azure.cosmos.DatabaseAccountLocation;
+import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.models.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -175,7 +175,7 @@ public class LocationCache {
         }
     }
 
-    public boolean shouldRefreshEndpoints(Utils.ValueHolder canRefreshInBackground) {
+    public boolean shouldRefreshEndpoints(Utils.ValueHolder<Boolean> canRefreshInBackground) {
         canRefreshInBackground.v = true;
         DatabaseAccountLocationsInfo currentLocationInfo = this.locationInfo;
         String mostPreferredLocation = Utils.firstOrDefault(currentLocationInfo.preferredLocations);
@@ -454,7 +454,7 @@ public class LocationCache {
             endpoints.add(fallbackEndpoint);
         }
 
-        return new UnmodifiableList(endpoints);
+        return new UnmodifiableList<URI>(endpoints);
     }
 
     private UnmodifiableMap<String, URI> getEndpointByLocation(Iterable<DatabaseAccountLocation> locations,
@@ -477,8 +477,9 @@ public class LocationCache {
             }
         }
 
-        orderedLocations.v = new UnmodifiableList(parsedLocations);
-        return (UnmodifiableMap) UnmodifiableMap.unmodifiableMap(endpointsByLocation);
+        orderedLocations.v = new UnmodifiableList<String>(parsedLocations);
+
+        return (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(endpointsByLocation);
     }
 
     private boolean canUseMultipleWriteLocations() {
@@ -564,8 +565,10 @@ public class LocationCache {
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             URI defaultEndpoint) {
             this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> loc.toLowerCase()).collect(Collectors.toList()));
-            this.availableWriteEndpointByLocation = (UnmodifiableMap) UnmodifiableMap.unmodifiableMap(new CaseInsensitiveMap<>());
-            this.availableReadEndpointByLocation = (UnmodifiableMap) UnmodifiableMap.unmodifiableMap(new CaseInsensitiveMap<>());
+            this.availableWriteEndpointByLocation
+                = (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(new CaseInsensitiveMap<>());
+            this.availableReadEndpointByLocation
+                = (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(new CaseInsensitiveMap<>());
             this.availableReadLocations = new UnmodifiableList<>(Collections.emptyList());
             this.availableWriteLocations = new UnmodifiableList<>(Collections.emptyList());
             this.readEndpoints = new UnmodifiableList<>(Collections.singletonList(defaultEndpoint));

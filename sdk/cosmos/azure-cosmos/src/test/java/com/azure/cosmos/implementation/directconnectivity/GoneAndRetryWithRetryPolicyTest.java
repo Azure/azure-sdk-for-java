@@ -3,12 +3,12 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.BadRequestException;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.InvalidPartitionException;
-import com.azure.cosmos.PartitionIsMigratingException;
-import com.azure.cosmos.PartitionKeyRangeIsSplittingException;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.OperationType;

@@ -96,7 +96,7 @@ public class TransportClientWrapper {
         }
 
         class ReplicaResponseBuilder implements Builder {
-            Map<Uri, Function2WithCheckedException> responseFunctionDictionary = new HashMap<>();
+            Map<Uri, Function2WithCheckedException<Integer, RxDocumentServiceRequest, StoreResponse>> responseFunctionDictionary = new HashMap<>();
 
             public ReplicaResponseBuilder addReplica(Uri replicaURI,
                                                      Function2WithCheckedException<Integer, RxDocumentServiceRequest, StoreResponse> invocationNumberToStoreResponse) {
@@ -118,7 +118,8 @@ public class TransportClientWrapper {
                     i.incrementAndGet();
                     Uri physicalUri = invocation.getArgumentAt(0, Uri.class);
                     RxDocumentServiceRequest request = invocation.getArgumentAt(1, RxDocumentServiceRequest.class);
-                    Function2WithCheckedException function = responseFunctionDictionary.get(physicalUri);
+                    Function2WithCheckedException<Integer, RxDocumentServiceRequest, StoreResponse> function
+                        = responseFunctionDictionary.get(physicalUri);
                     if (function == null) {
                         valid.set(false);
                         return Mono.error(new IllegalStateException("no registered function for replica " + physicalUri));

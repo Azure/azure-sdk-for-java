@@ -5,10 +5,12 @@
 // regenerated.
 
 package com.azure.search.models;
+import com.azure.search.SearchDocument;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.azure.search.Document;
+import java.util.Map;
+
 /**
  * A result containing a document found by a suggestion query, plus associated
  * metadata.
@@ -19,12 +21,12 @@ public final class SuggestResult {
      * Unmatched properties from the message are deserialized this collection
      */
     @JsonProperty(value = "")
-    private Document additionalProperties;
+    private SearchDocument additionalProperties;
 
     /*
      * The text of the suggestion result.
      */
-    @JsonProperty(value = "@search.text", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String text;
 
     /**
@@ -33,7 +35,7 @@ public final class SuggestResult {
      *
      * @return the additionalProperties value.
      */
-    public Document getDocument() {
+    public SearchDocument getDocument() {
         return this.additionalProperties;
     }
 
@@ -44,7 +46,7 @@ public final class SuggestResult {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SuggestResult object itself.
      */
-    SuggestResult setDocument(Document additionalProperties) {
+    SuggestResult setDocument(SearchDocument additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

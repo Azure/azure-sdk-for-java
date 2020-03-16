@@ -3,9 +3,9 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CompositePath;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.time.Duration;
@@ -267,11 +267,12 @@ public interface FeedResponseListValidator<T extends Resource> {
             return this;
         }
 
+        @SuppressWarnings("unchecked")
         public Builder<T> hasValidQueryMetrics(boolean shouldHaveMetrics) {
             validators.add(new FeedResponseListValidator<T>() {
                 @Override
                 public void validate(List<FeedResponse<T>> feedList) {
-                    for(FeedResponse feedPage: feedList) {
+                    for(FeedResponse<T> feedPage: feedList) {
                         if (shouldHaveMetrics) {
                             QueryMetrics queryMetrics = BridgeInternal.createQueryMetricsFromCollection(BridgeInternal.queryMetricsFromFeedResponse(feedPage).values());
                             assertThat(queryMetrics.getIndexHitDocumentCount()).isGreaterThanOrEqualTo(0);

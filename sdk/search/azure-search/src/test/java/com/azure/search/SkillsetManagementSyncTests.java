@@ -3,10 +3,10 @@
 package com.azure.search;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.models.AccessCondition;
 import com.azure.search.models.ConditionalSkill;
 import com.azure.search.models.DefaultCognitiveServicesAccount;
 import com.azure.search.models.EntityCategory;
@@ -75,7 +75,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     private BiConsumer<String, AccessOptions> deleteSkillsetFunc = (String name, AccessOptions ac) ->
         client.deleteSkillsetWithResponse(name, ac.getAccessCondition(), ac.getRequestOptions(), Context.NONE);
 
-    private Skillset createSkillset(Skillset skillset, AccessCondition accessCondition, RequestOptions requestOptions) {
+    private Skillset createSkillset(Skillset skillset, MatchConditions accessCondition, RequestOptions requestOptions) {
         return client.createOrUpdateSkillsetWithResponse(skillset, accessCondition, requestOptions, Context.NONE)
             .getValue();
     }
@@ -357,18 +357,18 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     public void deleteSkillsetIsIdempotent() {
         Skillset skillset = createSkillsetWithOcrDefaultSettings(false);
 
-        Response<Void> deleteResponse = client.deleteSkillsetWithResponse(skillset.getName(), new AccessCondition(),
+        Response<Void> deleteResponse = client.deleteSkillsetWithResponse(skillset.getName(), new MatchConditions(),
             generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
         client.createSkillset(skillset);
 
         // Delete the same skillset twice
-        deleteResponse = client.deleteSkillsetWithResponse(skillset.getName(), new AccessCondition(),
+        deleteResponse = client.deleteSkillsetWithResponse(skillset.getName(), new MatchConditions(),
             generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
 
-        deleteResponse = client.deleteSkillsetWithResponse(skillset.getName(), new AccessCondition(),
+        deleteResponse = client.deleteSkillsetWithResponse(skillset.getName(), new MatchConditions(),
             generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
@@ -395,7 +395,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         Skillset expected = createTestOcrSkillSet(1, TextExtractionAlgorithm.PRINTED);
 
         Response<Skillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(expected,
-            new AccessCondition(), generateRequestOptions(), Context.NONE);
+            new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
     }
 
@@ -404,11 +404,11 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
         Skillset skillset = createTestOcrSkillSet(1, TextExtractionAlgorithm.HANDWRITTEN);
 
         Response<Skillset> createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset,
-            new AccessCondition(), generateRequestOptions(), Context.NONE);
+            new MatchConditions(), generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
 
         skillset = createTestOcrSkillSet(2, TextExtractionAlgorithm.PRINTED);
-        createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, new AccessCondition(),
+        createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, new MatchConditions(),
             generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.OK.code(), createOrUpdateResponse.getStatusCode());
     }

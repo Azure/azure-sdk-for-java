@@ -75,7 +75,7 @@ public final class SuggestRequest {
      * The search text to use to suggest documents. Must be at least 1
      * character, and no more than 100 characters.
      */
-    @JsonProperty(value = "search")
+    @JsonProperty(value = "search", required = true)
     private String searchText;
 
     /*
@@ -96,7 +96,7 @@ public final class SuggestRequest {
      * The name of the suggester as specified in the suggesters collection
      * that's part of the index definition.
      */
-    @JsonProperty(value = "suggesterName")
+    @JsonProperty(value = "suggesterName", required = true)
     private String suggesterName;
 
     /*

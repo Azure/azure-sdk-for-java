@@ -4,10 +4,10 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -108,7 +108,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     partitionedQueryExecutionInfo.getQueryInfo().getOrderBy(),
                     partitionedQueryExecutionInfo.getQueryInfo().getOrderByExpressions(),
                     initialPageSize,
-                    feedOptions.requestContinuation());
+                    feedOptions.getRequestContinuation());
 
             return Flux.just(context);
         } catch (CosmosClientException dce) {
@@ -547,7 +547,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
 
     @Override
     public Flux<FeedResponse<T>> executeAsync() {
-        return drainAsync(feedOptions.maxItemCount());
+        return drainAsync(feedOptions.getMaxItemCount());
     }
 
     private String getContinuationToken(

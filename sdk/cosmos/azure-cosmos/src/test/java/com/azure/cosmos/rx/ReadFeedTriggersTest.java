@@ -6,10 +6,10 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosPagedFlux;
-import com.azure.cosmos.CosmosTriggerProperties;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.TriggerOperation;
-import com.azure.cosmos.TriggerType;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.TriggerOperation;
+import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
@@ -38,11 +38,11 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
     public void readTriggers() throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
+        options.setMaxItemCount(2);
 
         CosmosPagedFlux<CosmosTriggerProperties> feedObservable = createdCollection.getScripts().readAllTriggers(options);
         int maxItemCount = 2;
-        int expectedPageSize = (createdTriggers.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (createdTriggers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
                 .totalSize(createdTriggers.size())

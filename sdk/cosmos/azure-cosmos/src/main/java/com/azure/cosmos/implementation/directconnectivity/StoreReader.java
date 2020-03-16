@@ -3,14 +3,14 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.BadRequestException;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.InternalServerErrorException;
-import com.azure.cosmos.PartitionIsMigratingException;
-import com.azure.cosmos.PartitionKeyRangeGoneException;
-import com.azure.cosmos.PartitionKeyRangeIsSplittingException;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.InternalServerErrorException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ISessionToken;
@@ -31,7 +31,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -386,8 +385,10 @@ public class StoreReader {
                                     // TODO: enforceSessionCheck is true, replace with true
                                     boolean enforceSessionCheck = true;
 
-                                    MutableVolatile<Boolean> hasGoneException = new MutableVolatile(false);
-                                    MutableVolatile<ReadReplicaResult> shortCircuitResult = new MutableVolatile();
+                                    MutableVolatile<Boolean> hasGoneException
+                                        = new MutableVolatile<>(false);
+                                    MutableVolatile<ReadReplicaResult> shortCircuitResult
+                                        = new MutableVolatile<>();
 
                                     return Flux.defer(() ->
                                                                     readFromReplicas(

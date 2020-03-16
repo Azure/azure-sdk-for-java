@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 
 
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.InternalServerErrorException;
 import org.apache.commons.collections4.map.UnmodifiableMap;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Utils.ValueHolder;
@@ -110,6 +110,15 @@ public class VectorSessionToken implements ISessionToken {
         return this.version == other.version
                 && this.globalLsn == other.globalLsn
                 && this.areRegionProgressEqual(other.localLsnByRegion);
+
+    }
+
+    @Override
+    public int hashCode() {
+//      TODO: @kushagraThapar, @moderakh, mbhaskar to identify proper implementation.
+//      Issue: https://github.com/Azure/azure-sdk-for-java/issues/9046
+//      return Objects.hash(this.version, this.globalLsn, this.localLsnByRegion);
+        return super.hashCode();
     }
 
     public boolean isValid(ISessionToken otherSessionToken) throws CosmosClientException {
@@ -199,7 +208,7 @@ public class VectorSessionToken implements ISessionToken {
         return new VectorSessionToken(
                 Math.max(this.version, other.version),
                 Math.max(this.globalLsn, other.globalLsn),
-                (UnmodifiableMap) UnmodifiableMap.unmodifiableMap(highestLocalLsnByRegion));
+                (UnmodifiableMap<Integer, Long>) UnmodifiableMap.unmodifiableMap(highestLocalLsnByRegion));
     }
 
     public String convertToString() {
@@ -276,7 +285,7 @@ public class VectorSessionToken implements ISessionToken {
             lsnByRegion.put(regionId.v, localLsn.v);
         }
 
-        localLsnByRegion.v = (UnmodifiableMap) UnmodifiableMap.unmodifiableMap(lsnByRegion);
+        localLsnByRegion.v = (UnmodifiableMap<Integer, Long>) UnmodifiableMap.unmodifiableMap(lsnByRegion);
         return true;
     }
 

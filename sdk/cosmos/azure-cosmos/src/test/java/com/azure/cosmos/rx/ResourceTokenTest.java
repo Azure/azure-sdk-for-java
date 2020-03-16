@@ -5,16 +5,16 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.PermissionMode;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceResponseValidator;
@@ -27,9 +27,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -274,7 +272,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                     .withConsistencyLevel(ConsistencyLevel.SESSION).build();
             RequestOptions options = new RequestOptions();
             if (StringUtils.isNotEmpty(partitionKey)) {
-                options.setPartitionKey(new PartitionKey((String)partitionKey));
+                options.setPartitionKey(new PartitionKey(partitionKey));
             } else {
                 options.setPartitionKey(PartitionKey.NONE);
             }

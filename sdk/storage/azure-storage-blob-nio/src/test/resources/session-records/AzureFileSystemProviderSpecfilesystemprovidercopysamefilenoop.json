@@ -1,11 +1,19 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
+<<<<<<< HEAD
     "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemprovidercopysamefilenoop191823d57e2eb359?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
       "x-ms-client-request-id" : "890ad1d2-ef27-4a93-87b3-0398f70b30d0"
+=======
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemprovidercopysamefilenoop1405135506eb5346?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "63d00519-6820-48a2-864d-43ffb47be04a"
+>>>>>>> upstream/master
     },
     "Response" : {
       "x-ms-version" : "2019-07-07",
@@ -14,24 +22,40 @@
       "retry-after" : "0",
       "Content-Length" : "225",
       "StatusCode" : "404",
+<<<<<<< HEAD
       "x-ms-request-id" : "81c6e1dd-c01e-00e4-5e6e-f60217000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:81c6e1dd-c01e-00e4-5e6e-f60217000000\nTime:2020-03-09T23:59:39.0880652Z</Message></Error>",
       "Date" : "Mon, 09 Mar 2020 23:59:38 GMT",
       "x-ms-client-request-id" : "890ad1d2-ef27-4a93-87b3-0398f70b30d0",
+=======
+      "x-ms-request-id" : "67505d83-101e-010c-2b7d-eeb9b9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:67505d83-101e-010c-2b7d-eeb9b9000000\nTime:2020-02-28T21:25:19.5182554Z</Message></Error>",
+      "Date" : "Fri, 28 Feb 2020 21:25:19 GMT",
+      "x-ms-client-request-id" : "63d00519-6820-48a2-864d-43ffb47be04a",
+>>>>>>> upstream/master
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
+<<<<<<< HEAD
     "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemprovidercopysamefilenoop191823d57e2eb359?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
       "x-ms-client-request-id" : "40368a5e-4c05-4788-8dee-94c0b43e1c82"
+=======
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemprovidercopysamefilenoop1405135506eb5346?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "2a15d158-3e10-4039-bbbb-073c01f0aeea"
+>>>>>>> upstream/master
     },
     "Response" : {
       "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+<<<<<<< HEAD
       "ETag" : "0x8D7C485ED8A6B7F",
       "Last-Modified" : "Mon, 09 Mar 2020 23:59:39 GMT",
       "retry-after" : "0",
@@ -40,15 +64,33 @@
       "x-ms-request-id" : "81c6e1e2-c01e-00e4-626e-f60217000000",
       "Date" : "Mon, 09 Mar 2020 23:59:38 GMT",
       "x-ms-client-request-id" : "40368a5e-4c05-4788-8dee-94c0b43e1c82"
+=======
+      "ETag" : "0x8D7BC94B64664AA",
+      "Last-Modified" : "Fri, 28 Feb 2020 21:25:19 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "67505d87-101e-010c-2d7d-eeb9b9000000",
+      "Date" : "Fri, 28 Feb 2020 21:25:19 GMT",
+      "x-ms-client-request-id" : "2a15d158-3e10-4039-bbbb-073c01f0aeea"
+>>>>>>> upstream/master
     },
     "Exception" : null
   }, {
     "Method" : "GET",
+<<<<<<< HEAD
     "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemprovidercopysamefilenoop251731b4c3da6136?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
       "x-ms-client-request-id" : "a7065946-480b-4d12-b3f0-b8af44edce5f"
+=======
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemprovidercopysamefilenoop230318be1c3149f1?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b7264af7-21ea-4da3-aa1f-a99979a55ae0"
+>>>>>>> upstream/master
     },
     "Response" : {
       "x-ms-version" : "2019-07-07",
@@ -57,24 +99,40 @@
       "retry-after" : "0",
       "Content-Length" : "225",
       "StatusCode" : "404",
+<<<<<<< HEAD
       "x-ms-request-id" : "81c6e1e9-c01e-00e4-676e-f60217000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:81c6e1e9-c01e-00e4-676e-f60217000000\nTime:2020-03-09T23:59:39.1530703Z</Message></Error>",
       "Date" : "Mon, 09 Mar 2020 23:59:38 GMT",
       "x-ms-client-request-id" : "a7065946-480b-4d12-b3f0-b8af44edce5f",
+=======
+      "x-ms-request-id" : "67505d91-101e-010c-347d-eeb9b9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:67505d91-101e-010c-347d-eeb9b9000000\nTime:2020-02-28T21:25:19.5793138Z</Message></Error>",
+      "Date" : "Fri, 28 Feb 2020 21:25:19 GMT",
+      "x-ms-client-request-id" : "b7264af7-21ea-4da3-aa1f-a99979a55ae0",
+>>>>>>> upstream/master
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
+<<<<<<< HEAD
     "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemprovidercopysamefilenoop251731b4c3da6136?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
       "x-ms-client-request-id" : "399d725a-a243-4766-adfc-ebb1ee88da09"
+=======
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemprovidercopysamefilenoop230318be1c3149f1?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "0dd68a01-7c3e-4a9f-9dad-a8911d79f36c"
+>>>>>>> upstream/master
     },
     "Response" : {
       "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+<<<<<<< HEAD
       "ETag" : "0x8D7C485ED945645",
       "Last-Modified" : "Mon, 09 Mar 2020 23:59:39 GMT",
       "retry-after" : "0",
@@ -83,6 +141,16 @@
       "x-ms-request-id" : "81c6e1f5-c01e-00e4-6e6e-f60217000000",
       "Date" : "Mon, 09 Mar 2020 23:59:38 GMT",
       "x-ms-client-request-id" : "399d725a-a243-4766-adfc-ebb1ee88da09"
+=======
+      "ETag" : "0x8D7BC94B64F8EAA",
+      "Last-Modified" : "Fri, 28 Feb 2020 21:25:19 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "67505d9a-101e-010c-3b7d-eeb9b9000000",
+      "Date" : "Fri, 28 Feb 2020 21:25:19 GMT",
+      "x-ms-client-request-id" : "0dd68a01-7c3e-4a9f-9dad-a8911d79f36c"
+>>>>>>> upstream/master
     },
     "Exception" : null
   }, {
@@ -91,7 +159,11 @@
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+<<<<<<< HEAD
       "x-ms-client-request-id" : "eaa4e4f9-1794-4fda-b71c-689af7c476e7"
+=======
+      "x-ms-client-request-id" : "55fb55cd-cfd5-4c80-b63f-cd4bb4593919"
+>>>>>>> upstream/master
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
@@ -99,20 +171,35 @@
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
+<<<<<<< HEAD
       "x-ms-request-id" : "81c6e220-c01e-00e4-0c6e-f60217000000",
       "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcfilesystemprovidercopysamefilenoop</Prefix><Containers><Container><Name>jtcfilesystemprovidercopysamefilenoop191823d57e2eb359</Name><Properties><Last-Modified>Mon, 09 Mar 2020 23:59:39 GMT</Last-Modified><Etag>\"0x8D7C485ED8A6B7F\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtcfilesystemprovidercopysamefilenoop251731b4c3da6136</Name><Properties><Last-Modified>Mon, 09 Mar 2020 23:59:39 GMT</Last-Modified><Etag>\"0x8D7C485ED945645\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
       "Date" : "Mon, 09 Mar 2020 23:59:38 GMT",
       "x-ms-client-request-id" : "eaa4e4f9-1794-4fda-b71c-689af7c476e7",
+=======
+      "x-ms-request-id" : "67505da4-101e-010c-447d-eeb9b9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"http://xclientdev2.blob.core.windows.net/\"><Prefix>jtcfilesystemprovidercopysamefilenoop</Prefix><Containers><Container><Name>jtcfilesystemprovidercopysamefilenoop1405135506eb5346</Name><Properties><Last-Modified>Fri, 28 Feb 2020 21:25:19 GMT</Last-Modified><Etag>\"0x8D7BC94B64664AA\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtcfilesystemprovidercopysamefilenoop230318be1c3149f1</Name><Properties><Last-Modified>Fri, 28 Feb 2020 21:25:19 GMT</Last-Modified><Etag>\"0x8D7BC94B64F8EAA\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 28 Feb 2020 21:25:19 GMT",
+      "x-ms-client-request-id" : "55fb55cd-cfd5-4c80-b63f-cd4bb4593919",
+>>>>>>> upstream/master
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
+<<<<<<< HEAD
     "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemprovidercopysamefilenoop191823d57e2eb359?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
       "x-ms-client-request-id" : "582e5a2e-ecae-4d77-9d89-01d85584fc68"
+=======
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemprovidercopysamefilenoop1405135506eb5346?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "0f5bd6be-5117-4743-9e8f-549e6546954c"
+>>>>>>> upstream/master
     },
     "Response" : {
       "x-ms-version" : "2019-07-07",
@@ -120,18 +207,32 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
+<<<<<<< HEAD
       "x-ms-request-id" : "81c6e224-c01e-00e4-106e-f60217000000",
       "Date" : "Mon, 09 Mar 2020 23:59:38 GMT",
       "x-ms-client-request-id" : "582e5a2e-ecae-4d77-9d89-01d85584fc68"
+=======
+      "x-ms-request-id" : "67505dab-101e-010c-497d-eeb9b9000000",
+      "Date" : "Fri, 28 Feb 2020 21:25:19 GMT",
+      "x-ms-client-request-id" : "0f5bd6be-5117-4743-9e8f-549e6546954c"
+>>>>>>> upstream/master
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
+<<<<<<< HEAD
     "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemprovidercopysamefilenoop251731b4c3da6136?restype=container",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
       "x-ms-client-request-id" : "64f9a9ca-52cb-4359-8ac6-477b30512105"
+=======
+    "Uri" : "http://xclientdev2.blob.core.windows.net/jtcfilesystemprovidercopysamefilenoop230318be1c3149f1?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "03c16c66-51ce-4208-9131-ef4211b2e408"
+>>>>>>> upstream/master
     },
     "Response" : {
       "x-ms-version" : "2019-07-07",
@@ -139,6 +240,7 @@
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
+<<<<<<< HEAD
       "x-ms-request-id" : "81c6e22a-c01e-00e4-156e-f60217000000",
       "Date" : "Mon, 09 Mar 2020 23:59:38 GMT",
       "x-ms-client-request-id" : "64f9a9ca-52cb-4359-8ac6-477b30512105"
@@ -146,4 +248,13 @@
     "Exception" : null
   } ],
   "variables" : [ "jtcfilesystemprovidercopysamefilenoop063683c80f8cc363", "jtcfilesystemprovidercopysamefilenoop191823d57e2eb359", "jtcfilesystemprovidercopysamefilenoop251731b4c3da6136", "javablobfilesystemprovidercopysamefilenoop351596565e09d", "javablobfilesystemprovidercopysamefilenoop482213956db1e" ]
+=======
+      "x-ms-request-id" : "67505db8-101e-010c-537d-eeb9b9000000",
+      "Date" : "Fri, 28 Feb 2020 21:25:19 GMT",
+      "x-ms-client-request-id" : "03c16c66-51ce-4208-9131-ef4211b2e408"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcfilesystemprovidercopysamefilenoop02182919a58d58ac", "jtcfilesystemprovidercopysamefilenoop1405135506eb5346", "jtcfilesystemprovidercopysamefilenoop230318be1c3149f1", "javablobfilesystemprovidercopysamefilenoop358927b24ea60" ]
+>>>>>>> upstream/master
 }

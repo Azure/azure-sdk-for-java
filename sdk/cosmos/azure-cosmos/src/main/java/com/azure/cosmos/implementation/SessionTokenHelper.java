@@ -3,9 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.InternalServerErrorException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

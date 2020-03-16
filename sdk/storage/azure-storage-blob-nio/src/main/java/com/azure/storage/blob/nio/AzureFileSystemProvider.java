@@ -6,10 +6,19 @@ package com.azure.storage.blob.nio;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.storage.blob.models.BlobCopyInfo;
-import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
+import com.azure.storage.blob.models.BlobCopyInfo;
+import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.BlobListDetails;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -38,6 +47,9 @@ import java.nio.file.spi.FileSystemProvider;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -118,6 +130,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     public static final String CACHE_CONTROL = "Cache-Control";
 
     private static final String ACCOUNT_QUERY_KEY = "account";
+    private static final int COPY_TIMEOUT_SECONDS = 30;
+    static final String DIR_METADATA_MARKER = "is_hdi_folder";
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
@@ -201,6 +215,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
+     * Creates a new directory at the specified path.
+     * <p>
      * The existence of a directory in the {@code AzureFileSystem} is defined on two levels. <i>Weak existence</i> is
      * defined by the presence of a non-zero number of blobs prefixed with the directory's path. This concept is also
      * known as a  <i>virtual directory</i> and enables the file system to work with containers that were pre-loaded
@@ -265,7 +281,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 azureResource.setFileAttributes(Arrays.asList(fileAttributes))
                     .putDirectoryBlob(new BlobRequestConditions().setIfNoneMatch("*"));
             } catch (BlobStorageException e) {
-                if (e.getStatusCode() == HttpURLConnection.HTTP_CONFLICT) {
+                if (e.getStatusCode() == HttpURLConnection.HTTP_CONFLICT
+                    && e.getErrorCode().equals(BlobErrorCode.BLOB_ALREADY_EXISTS)) {
                     throw LoggingUtility.logError(logger,
                         new FileAlreadyExistsException(azureResource.getPath().toString()));
                 } else {
@@ -280,10 +297,11 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * As noted by the NIO docs, this method is not atomic. It is possible to delete a file in use by another process,
+     * Deletes the specified resource.
+     * <p>
+     * This method is not atomic. It is possible to delete a file in use by another process,
      * and doing so will not immediately invalidate any channels open to that file--they will simply start to fail.
      * Root directories cannot be deleted even when empty.
-     *
      * {@inheritDoc}
      */
     @Override
@@ -304,12 +322,17 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         try {
             azureResource.getBlobClient().delete();
         } catch (BlobStorageException e) {
+            if (e.getErrorCode().equals(BlobErrorCode.BLOB_NOT_FOUND)) {
+                throw LoggingUtility.logError(logger, new NoSuchFileException(path.toString()));
+            }
             throw LoggingUtility.logError(logger, new IOException(e));
         }
     }
 
     /**
-     * As stated in the nio docs, this method is not atomic. More specifically, the checks necessary to validate the
+     * Copies the resource at the source location to the destination.
+     * <p>
+     * This method is not atomic. More specifically, the checks necessary to validate the
      * inputs and state of the file system are not atomic with the actual copying of data. If the copy is triggered,
      * the copy itself is atomic and only a complete copy will ever be left at the destination.
      *
@@ -342,8 +365,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         boolean replaceExisting = false;
         List<CopyOption> optionsList = new ArrayList<>(Arrays.asList(copyOptions));
         if (!optionsList.contains(StandardCopyOption.COPY_ATTRIBUTES)) {
-            throw LoggingUtility.logError(logger, new UnsupportedOperationException("StandardCopyOption.COPY_ATTRIBUTES "
-                + "must be specified as the service will always copy file attributes."));
+            throw LoggingUtility.logError(logger, new UnsupportedOperationException(
+                "StandardCopyOption.COPY_ATTRIBUTES must be specified as the service will always copy "
+                    + "file attributes."));
         }
         optionsList.remove(StandardCopyOption.COPY_ATTRIBUTES);
         if (optionsList.contains(StandardCopyOption.REPLACE_EXISTING)) {
@@ -351,8 +375,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             optionsList.remove(StandardCopyOption.REPLACE_EXISTING);
         }
         if (!optionsList.isEmpty()) {
-            throw LoggingUtility.logError(logger, new UnsupportedOperationException("Unsupported copy option found. Only "
-                + "StandardCopyOption.COPY_ATTRIBUTES and StandareCopyOption.REPLACE_EXISTING are supported."));
+            throw LoggingUtility.logError(logger, new UnsupportedOperationException("Unsupported copy option found. "
+                + "Only StandardCopyOption.COPY_ATTRIBUTES and StandareCopyOption.REPLACE_EXISTING are supported."));
         }
 
         // Validate paths. Build resources.
@@ -387,7 +411,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         currently at the destination, for if the destination exists, its parent at least weakly exists and we
         can skip a service call.
          */
-        if (destinationStatus.equals(DirectoryStatus.DOES_NOT_EXIST) &&!destinationRes.checkParentDirectoryExists()) {
+        if (destinationStatus.equals(DirectoryStatus.DOES_NOT_EXIST) && !destinationRes.checkParentDirectoryExists()) {
             throw LoggingUtility.logError(logger, new IOException("Parent directory of destination location does not "
                 + "exist. The destination path is therefore invalid. Destination: "
                 + destinationRes.getPath().toString()));
@@ -406,7 +430,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             SyncPoller<BlobCopyInfo, Void> pollResponse =
                 destinationRes.getBlobClient().beginCopy(sourceRes.getBlobClient().getBlobUrl(), null, null, null,
                     null, requestConditions, null);
-            pollResponse.waitForCompletion(Duration.ofSeconds(30));
+            pollResponse.waitForCompletion(Duration.ofSeconds(COPY_TIMEOUT_SECONDS));
         } catch (BlobStorageException e) {
             // If the source was not found, it could be because it's a virtual directory. Check the status.
             // If a non-dir resource existed, it would have been copied above. This check is therefore sufficient.

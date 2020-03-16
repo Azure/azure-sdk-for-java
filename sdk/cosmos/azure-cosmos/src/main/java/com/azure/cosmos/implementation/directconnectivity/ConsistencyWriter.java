@@ -6,14 +6,14 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.implementation.ISessionContainer;
-import com.azure.cosmos.RequestTimeoutException;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.Integers;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
+import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Strings;
@@ -310,7 +310,7 @@ public class ConsistencyWriter {
 
                     //get max global committed lsn from current batch of responses, then update if greater than max of all batches.
                     long maxGlobalCommittedLsn = (responses != null) ?
-                        (Long) responses.stream().map(s -> s.globalCommittedLSN).max(ComparatorUtils.NATURAL_COMPARATOR).orElse(0L) :
+                        responses.stream().map(s -> s.globalCommittedLSN).max(ComparatorUtils.naturalComparator()).orElse(0L) :
                         0L;
                     maxGlobalCommittedLsnReceived.set(maxGlobalCommittedLsnReceived.get() > maxGlobalCommittedLsn ?
                         maxGlobalCommittedLsnReceived.get() : maxGlobalCommittedLsn);

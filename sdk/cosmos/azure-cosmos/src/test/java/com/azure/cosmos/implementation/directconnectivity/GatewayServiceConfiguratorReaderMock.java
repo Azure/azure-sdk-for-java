@@ -4,10 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.DatabaseAccount;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import org.mockito.Mockito;
-import reactor.core.publisher.Mono;
 
 public class GatewayServiceConfiguratorReaderMock {
 
@@ -47,7 +45,6 @@ public class GatewayServiceConfiguratorReaderMock {
                                                 ConsistencyLevel defaultConsistencyLevel) {
         this.gatewayServiceConfigurationReader = Mockito.mock(GatewayServiceConfigurationReader.class);
 
-        Mockito.doReturn(Mono.just(Mockito.mock(DatabaseAccount.class))).when(this.gatewayServiceConfigurationReader).initializeReaderAsync();
         Mockito.doReturn(defaultConsistencyLevel).when(this.gatewayServiceConfigurationReader).getDefaultConsistencyLevel();
         Mockito.doReturn(systemReplicationPolicy).when(this.gatewayServiceConfigurationReader).getSystemReplicationPolicy();
         Mockito.doReturn(userReplicationPolicy).when(this.gatewayServiceConfigurationReader).getUserReplicationPolicy();

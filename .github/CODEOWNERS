@@ -16,9 +16,9 @@
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft
-/sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli
+/sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang
-/sdk/identity/                                      @g2vinay @jianghaolu
+/sdk/identity/                                      @schaabs @g2vinay @jianghaolu
 /sdk/keyvault/                                      @g2vinay @samvaity
 /sdk/search/                                        @alzimmermsft @sima-zhu
 /sdk/servicebus/                                    @yvgopal @nemakam

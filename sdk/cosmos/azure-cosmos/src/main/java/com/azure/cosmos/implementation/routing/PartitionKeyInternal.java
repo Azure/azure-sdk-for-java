@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.routing;
 
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.Strings;
@@ -168,6 +168,21 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
         }
 
         return this.compareTo(pki) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+//        TODO: @kushagraThapar, @moderakh, mbhaskar to identify proper implementation.
+//        Issue: https://github.com/Azure/azure-sdk-for-java/issues/9046
+//        if (this.components == null || this.components.size() == 0) {
+//            return 0;
+//        }
+//        int [] ordinals = new int[this.components.size()];
+//        for (int i = 0; i < this.components.size(); i++) {
+//            ordinals[i] = this.components.get(i).GetTypeOrdinal();
+//        }
+//        return Arrays.hashCode(ordinals);
+        return super.hashCode();
     }
 
     public int compareTo(PartitionKeyInternal other) {

@@ -59,7 +59,6 @@ class AmqpReceiveLinkProcessorTest {
     @Captor
     private ArgumentCaptor<Supplier<Integer>> creditSupplierCaptor;
 
-
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
     private final FluxSink<Message> messageProcessorSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
@@ -347,7 +346,7 @@ class AmqpReceiveLinkProcessorTest {
     }
 
     /**
-     * Verifies that when there are no subscribers, no request is fetched from upstream.
+     * Verifies that when there are no subscribers, one request is fetched up stream.
      */
     @Test
     void noSubscribers() {

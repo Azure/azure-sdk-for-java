@@ -3,6 +3,20 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
+import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosResponse;
+import com.azure.cosmos.models.IndexingMode;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -204,7 +218,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(clientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setPartitionKey(new PartitionKey(docDefinition.get("mypk")));
+        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(docDefinition.get("mypk")));
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readObservable = container.readItem(docDefinition.getId(),
                                                                                                 new PartitionKey(docDefinition.get("mypk")),
                                                                                                 options,
@@ -233,8 +247,8 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setPartitionKey(new PartitionKey(docDefinition.get("mypk")));
-        Mono<CosmosAsyncItemResponse> deleteObservable = container.deleteItem(docDefinition.getId(),
+        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(docDefinition.get("mypk")));
+        Mono<CosmosAsyncItemResponse<Object>> deleteObservable = container.deleteItem(docDefinition.getId(),
                                                                               new PartitionKey(docDefinition.get(
                                                                                   "mypk")), options);
 
@@ -359,6 +373,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         safeClose(client);
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public <T extends CosmosResponse> void validateSuccess(Mono<T> single, CosmosResponseValidator<T> validator) {
         validateSuccess(single, validator, TIMEOUT);
     }

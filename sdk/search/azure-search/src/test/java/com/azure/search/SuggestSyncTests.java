@@ -10,6 +10,7 @@ import com.azure.search.models.SuggestResult;
 import com.azure.search.test.environment.models.Author;
 import com.azure.search.test.environment.models.Book;
 import com.azure.search.test.environment.models.Hotel;
+import com.azure.search.util.SuggestPagedResponse;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -356,9 +357,9 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
     void verifyCanSuggestStaticallyTypedDocuments(SuggestPagedResponse suggestResultPagedResponse, List<Map<String, Object>> expectedHotels) {
         //sanity
         assertNotNull(suggestResultPagedResponse);
-        List<Document> docs = suggestResultPagedResponse.getValue()
+        List<SearchDocument> docs = suggestResultPagedResponse.getValue()
             .stream()
-            .map(SuggestResult::getDocument)
+            .map(suggestResult -> new SearchDocument(suggestResult.getDocument()))
             .collect(Collectors.toList());
         List<SuggestResult> hotelsList = suggestResultPagedResponse.getValue();
 
@@ -406,9 +407,9 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
     void verifyCanSuggestWithDateTimeInStaticModel(SuggestPagedResponse suggestResultPagedResponse) {
         List<SuggestResult> books = suggestResultPagedResponse.getValue();
-        List<Document> docs = suggestResultPagedResponse.getValue()
+        List<SearchDocument> docs = suggestResultPagedResponse.getValue()
             .stream()
-            .map(SuggestResult::getDocument)
+            .map(suggestResult -> new SearchDocument(suggestResult.getDocument()))
             .collect(Collectors.toList());
 
         assertEquals(1, docs.size());
@@ -418,7 +419,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
     @SuppressWarnings("unchecked")
     void verifySuggestWithSelectedFields(PagedResponse<SuggestResult> suggestResultPagedResponse) {
         assertEquals(1, suggestResultPagedResponse.getValue().size());
-        Document result = suggestResultPagedResponse.getValue().get(0).getDocument();
+        SearchDocument result = suggestResultPagedResponse.getValue().get(0).getDocument();
 
         assertEquals("Secret Point Motel", result.get("HotelName"));
         assertEquals(4, result.get("Rating"));

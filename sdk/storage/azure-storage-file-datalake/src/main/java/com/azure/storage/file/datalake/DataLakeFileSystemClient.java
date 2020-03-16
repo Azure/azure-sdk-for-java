@@ -60,11 +60,6 @@ public class DataLakeFileSystemClient {
 
     private static final String ROOT_DIRECTORY_NAME = "";
 
-//    public static final String STATIC_WEBSITE_FILESYSTEM_NAME =
-//    DataLakeFileSystemAsyncClient.STATIC_WEBSITE_FILESYSTEM_NAME;
-
-//    public static final String LOG_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.LOG_FILESYSTEM_NAME;
-
     /**
      * Package-private constructor for use by {@link DataLakeFileSystemClientBuilder}.
      *
@@ -129,7 +124,7 @@ public class DataLakeFileSystemClient {
      *
      * @return A new {@link DataLakeDirectoryClient} object which references the root directory in this file system.
      */
-    public DataLakeDirectoryClient getRootDirectoryClient() {
+    DataLakeDirectoryClient getRootDirectoryClient() {
         return getDirectoryClient(DataLakeFileSystemClient.ROOT_DIRECTORY_NAME);
     }
 

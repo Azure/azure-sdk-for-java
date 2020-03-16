@@ -4,8 +4,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-
-import java.util.List;
+import com.azure.core.util.IterableStream;
 
 /**
  * The {@link DocumentSentiment} model that contains sentiment label of a document, confidence score of the sentiment
@@ -13,9 +12,9 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentSentiment {
-    private final DocumentSentimentLabel sentiment;
-    private final SentimentConfidenceScorePerLabel confidenceScores;
-    private final List<SentenceSentiment> sentences;
+    private final TextSentiment sentiment;
+    private final SentimentConfidenceScores confidenceScores;
+    private final IterableStream<SentenceSentiment> sentences;
 
     /**
      * Creates a {@link DocumentSentiment} model that describes the sentiment of the document.
@@ -25,8 +24,8 @@ public final class DocumentSentiment {
      *   Higher values signify higher confidence.
      * @param sentences a list of sentence sentiments.
      */
-    public DocumentSentiment(DocumentSentimentLabel sentiment, SentimentConfidenceScorePerLabel confidenceScores,
-        List<SentenceSentiment> sentences) {
+    public DocumentSentiment(TextSentiment sentiment, SentimentConfidenceScores confidenceScores,
+        IterableStream<SentenceSentiment> sentences) {
         this.sentiment = sentiment;
         this.confidenceScores = confidenceScores;
         this.sentences = sentences;
@@ -35,9 +34,9 @@ public final class DocumentSentiment {
     /**
      * Get the text sentiment label: POSITIVE, NEGATIVE, NEUTRAL, or MIXED.
      *
-     * @return the {@link DocumentSentimentLabel}.
+     * @return the {@link TextSentiment}.
      */
-    public DocumentSentimentLabel getSentiment() {
+    public TextSentiment getSentiment() {
         return sentiment;
     }
 
@@ -45,9 +44,9 @@ public final class DocumentSentiment {
      * Get the sentiment confidence score (Softmax score) between 0 and 1, for each sentiment label.
      * Higher values signify higher confidence.
      *
-     * @return the {@link SentimentConfidenceScorePerLabel}.
+     * @return the {@link SentimentConfidenceScores}.
      */
-    public SentimentConfidenceScorePerLabel getConfidenceScores() {
+    public SentimentConfidenceScores getConfidenceScores() {
         return confidenceScores;
     }
 
@@ -56,7 +55,7 @@ public final class DocumentSentiment {
      *
      * @return a list of sentence sentiments.
      */
-    public List<SentenceSentiment> getSentences() {
+    public IterableStream<SentenceSentiment> getSentences() {
         return sentences;
     }
 }

@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.NotFoundException;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import io.netty.handler.timeout.ReadTimeoutException;

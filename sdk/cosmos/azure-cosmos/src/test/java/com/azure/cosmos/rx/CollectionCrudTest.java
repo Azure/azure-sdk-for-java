@@ -3,26 +3,26 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CompositePath;
-import com.azure.cosmos.CompositePathSortOrder;
+import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosAsyncContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContainerProperties;
-import com.azure.cosmos.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.CosmosResponseValidator;
-import com.azure.cosmos.IndexingMode;
-import com.azure.cosmos.IndexingPolicy;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.SpatialSpec;
-import com.azure.cosmos.SpatialType;
+import com.azure.cosmos.models.IndexingMode;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.SpatialSpec;
+import com.azure.cosmos.models.SpatialType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
@@ -330,7 +330,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getRequestLatency());
 
             BridgeInternal.setProperty(document, "name", "New Updated Document");
-            CosmosAsyncItemResponse upsertDocumentResponse = collection.upsertItem(document).block();
+            CosmosAsyncItemResponse<CosmosItemProperties> upsertDocumentResponse = collection.upsertItem(document).block();
             logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getCosmosResponseDiagnostics());
             logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getRequestLatency());
 
@@ -348,7 +348,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             readDocumentResponse = client1.getDatabase(dbId)
                                        .getContainer(collectionId)
                                        .readItem(newDocument.getId(),
-                                                 new PartitionKey(newDocument.get("mypk")), 
+                                                 new PartitionKey(newDocument.get("mypk")),
                                                  CosmosItemProperties.class)
                                        .block();
             logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getCosmosResponseDiagnostics());

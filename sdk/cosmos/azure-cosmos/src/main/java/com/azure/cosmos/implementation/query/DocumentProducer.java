@@ -4,10 +4,10 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.JsonSerializable;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -144,7 +144,7 @@ class DocumentProducer<T extends Resource> {
         this.correlatedActivityId = correlatedActivityId;
 
         this.feedOptions = feedOptions != null ? feedOptions : new FeedOptions();
-        this.feedOptions.requestContinuation(initialContinuationToken);
+        this.feedOptions.setRequestContinuation(initialContinuationToken);
         this.lastResponseContinuationToken = initialContinuationToken;
         this.resourceType = resourceType;
         this.targetRange = targetRange;
@@ -159,7 +159,7 @@ class DocumentProducer<T extends Resource> {
                 (token, maxItemCount) -> createRequestFunc.apply(targetRange, token, maxItemCount);
         Flux<FeedResponse<T>> obs = Paginator
                 .getPaginatedQueryResultAsObservable(
-                        feedOptions.requestContinuation(),
+                        feedOptions.getRequestContinuation(),
                         sourcePartitionCreateRequestFunc,
                         executeRequestFuncWithRetries,
                         resourceType,
@@ -242,7 +242,7 @@ class DocumentProducer<T extends Resource> {
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getReplacementRanges(Range<String> range) {
-        return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(collectionRid, range, true, feedOptions.properties());
+        return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(collectionRid, range, true, feedOptions.getProperties());
     }
 
     private boolean isSplit(CosmosClientException e) {

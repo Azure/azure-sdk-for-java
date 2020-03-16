@@ -28,10 +28,10 @@ jobs:
         goals: 'install'
 
     - task: Maven@3
-      displayName: 'Install Module and Run SpotBugs, Checkstyle, RevApi, and Javadoc'
+      displayName: 'Install Module'
       inputs:
         mavenPomFile: sdk/core/pom.service.xml
-        options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme'
+        options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dcheckstyle.skip=true -Dspotbugs.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true'
         mavenOptions: '$(MemoryOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
@@ -49,13 +49,13 @@ jobs:
         jdkVersionOption: '1.11'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        goals: 'install site:site site:stage'
+        goals: 'site:site site:stage'
 
     - task: Maven@3
-      displayName: 'Generate aggregate code coverage report'
+      displayName: 'Generate aggregate code coverage and dependency reports'
       inputs:
         mavenPomFile: 'pom.client.xml'
-        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true'
+        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
         mavenOptions: '-Xmx3072m $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
@@ -86,31 +86,14 @@ jobs:
         artifactName: coverage
         targetPath: eng/jacoco-test-coverage/target/site/
 
-    - script: |
-        git clone https://github.com/JonathanGiles/DependencyChecker.git
-        mkdir input && cp eng/DependencyChecker/client_dependencies.json input/dependencies.json
-      displayName: 'Download dependency checker'
-
-    - task: Maven@3
-      displayName: 'Analyze dependencies'
-      inputs:
-        mavenPomFile: 'DependencyChecker/core/pom.xml'
-        options: '-Dexec.args="-showall -dependencymanagement"'
-        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'clean package exec:java'
-
     - pwsh: |
         $(Build.SourcesDirectory)/eng/DependencyGraph/gen-dep-graph-data.ps1
       displayName: Generate Interdependency Report Data
 
-    - pwsh: |   
+    - pwsh: |
         copy -r target/staging $(Build.ArtifactStagingDirectory)
         copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
-        copy output/dependencies.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
+        copy output/pom.client.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         copy eng/common/InterdependencyGraph.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         copy data.js (Join-Path $(Build.ArtifactStagingDirectory) "staging")
       displayName: 'Copy reports to artifact staging'

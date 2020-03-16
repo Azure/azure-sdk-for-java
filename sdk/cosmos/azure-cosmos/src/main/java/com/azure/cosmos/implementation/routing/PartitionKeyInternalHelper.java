@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.implementation.routing;
 
-import com.azure.cosmos.CommonsBridgeInternal;
-import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.PartitionKind;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.implementation.ByteBufferOutputStream;
 import com.azure.cosmos.implementation.Bytes;
 import com.azure.cosmos.implementation.RMResources;
@@ -147,7 +147,7 @@ public class PartitionKeyInternalHelper {
 
         switch (kind) {
             case HASH:
-                if (CommonsBridgeInternal.isV2(partitionKeyDefinition)) {
+                if (ModelBridgeInternal.isV2(partitionKeyDefinition)) {
                     // V2
                     return getEffectivePartitionKeyForHashPartitioningV2(partitionKeyInternal);
                 } else {

@@ -5,19 +5,21 @@ package com.azure.search;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.models.AutocompleteItem;
 import com.azure.search.models.AutocompleteOptions;
-import com.azure.search.models.IndexBatch;
+import com.azure.search.models.IndexDocumentsBatch;
 import com.azure.search.models.IndexDocumentsResult;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
 import com.azure.search.models.SearchResult;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
+import com.azure.search.util.AutocompletePagedIterable;
+import com.azure.search.util.SearchPagedIterable;
+import com.azure.search.util.SearchPagedResponse;
+import com.azure.search.util.SuggestPagedIterable;
+import com.azure.search.util.SuggestPagedResponse;
 
 import java.util.List;
 
@@ -25,7 +27,7 @@ import java.util.List;
  * Cognitive Search Synchronous Client to query an index and upload, merge, or delete documents
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class)
-public class SearchIndexClient {
+public final class SearchIndexClient {
 
     private final SearchIndexAsyncClient asyncClient;
 
@@ -95,11 +97,11 @@ public class SearchIndexClient {
      * Merges a collection of documents with existing documents in the target index.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
-     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended
-     * that you always declare primitive-typed properties with their class equivalents (for example, an integer
-     * property should be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
+     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
+     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
+     * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged
      * @return document index result
@@ -119,11 +121,11 @@ public class SearchIndexClient {
      * Merges a collection of documents with existing documents in the target index.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
-     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended
-     * that you always declare primitive-typed properties with their class equivalents (for example, an integer
-     * property should be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
+     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
+     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
+     * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -145,11 +147,11 @@ public class SearchIndexClient {
      * not exist, it behaves like upload with a new document.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
-     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended
-     * that you always declare primitive-typed properties with their class equivalents (for example, an integer
-     * property should be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
+     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
+     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
+     * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
@@ -170,11 +172,11 @@ public class SearchIndexClient {
      * not exist, it behaves like upload with a new document.
      * <p>
      * If the type of the document contains non-nullable primitive-typed properties, these properties may not merge
-     * correctly. If you do not set such a property, it will automatically take its default value (for example,
-     * {@code 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property
-     * currently stored in the index, even if this was not your intent. For this reason, it is strongly recommended
-     * that you always declare primitive-typed properties with their class equivalents (for example, an integer
-     * property should be of type {@code Integer} instead of {@code int}).
+     * correctly. If you do not set such a property, it will automatically take its default value (for example, {@code
+     * 0} for {@code int} or {@code false} for {@code boolean}), which will override the value of the property currently
+     * stored in the index, even if this was not your intent. For this reason, it is strongly recommended that you
+     * always declare primitive-typed properties with their class equivalents (for example, an integer property should
+     * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @param context additional context that is passed through the Http pipeline during the service call
@@ -231,8 +233,8 @@ public class SearchIndexClient {
      *
      * @return The version of the Search service the client is using.
      */
-    public SearchServiceVersion getApiVersion() {
-        return asyncClient.getApiVersion();
+    public SearchServiceVersion getServiceVersion() {
+        return asyncClient.getServiceVersion();
     }
 
     /**
@@ -271,11 +273,12 @@ public class SearchIndexClient {
      * syntax in Azure Search</a> for more information about search query syntax.
      *
      * @param searchText A full-text search query expression.
-     * @return A {@link PagedIterable} that iterates over {@link SearchResult} objects and provides access to the {@link
-     * SearchPagedResponse} object for each page containing HTTP response and count, facet, and coverage information.
+     * @return A {@link SearchPagedIterable} that iterates over {@link SearchResult} objects and provides access to the
+     * {@link SearchPagedResponse} object for each page containing HTTP response and count, facet, and coverage
+     * information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
-    public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText) {
+    public SearchPagedIterable search(String searchText) {
         return search(searchText, null, null, Context.NONE);
     }
 
@@ -291,13 +294,14 @@ public class SearchIndexClient {
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
-     * @return A {@link PagedIterable} that iterates over {@link SearchResult} objects and provides access to the {@link
-     * SearchPagedResponse} object for each page containing HTTP response and count, facet, and coverage information.
+     * @return A {@link SearchPagedIterable} that iterates over {@link SearchResult} objects and provides access to the
+     * {@link SearchPagedResponse} object for each page containing HTTP response and count, facet, and coverage
+     * information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
-    public PagedIterableBase<SearchResult, SearchPagedResponse> search(String searchText, SearchOptions searchOptions,
+    public SearchPagedIterable search(String searchText, SearchOptions searchOptions,
         RequestOptions requestOptions, Context context) {
-        return new PagedIterableBase<>(asyncClient.search(searchText, searchOptions, requestOptions, context));
+        return new SearchPagedIterable(asyncClient.search(searchText, searchOptions, requestOptions, context));
     }
 
     /**
@@ -310,7 +314,7 @@ public class SearchIndexClient {
      * @return document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
-    public Document getDocument(String key) {
+    public SearchDocument getDocument(String key) {
         return getDocumentWithResponse(key, null, null, Context.NONE).getValue();
     }
 
@@ -329,7 +333,7 @@ public class SearchIndexClient {
      * @return response containing a document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
-    public Response<Document> getDocumentWithResponse(String key, List<String> selectedFields,
+    public Response<SearchDocument> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions, Context context) {
         return asyncClient.getDocumentWithResponse(key, selectedFields, requestOptions, context).block();
     }
@@ -340,11 +344,11 @@ public class SearchIndexClient {
      * @param searchText The search text on which to base suggestions
      * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
      * definition
-     * @return A {@link PagedIterableBase} that iterates over {@link SuggestResult} objects and provides access to the
-     * {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
+     * @return A {@link SuggestPagedIterable} that iterates over {@link SuggestResult} objects and provides access to
+     * the {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
-    public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName) {
+    public SuggestPagedIterable suggest(String searchText, String suggesterName) {
         return suggest(searchText, suggesterName, null, null, Context.NONE);
     }
 
@@ -358,13 +362,13 @@ public class SearchIndexClient {
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the Http pipeline during the service call
-     * @return A {@link PagedIterableBase} that iterates over {@link SuggestResult} objects and provides access to the
-     * {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
+     * @return A {@link SuggestPagedIterable} that iterates over {@link SuggestResult} objects and provides access to
+     * the {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
-    public PagedIterableBase<SuggestResult, SuggestPagedResponse> suggest(String searchText, String suggesterName,
-        SuggestOptions suggestOptions, RequestOptions requestOptions, Context context) {
-        return new PagedIterableBase<>(asyncClient.suggest(searchText, suggesterName, suggestOptions, requestOptions,
+    public SuggestPagedIterable suggest(String searchText, String suggesterName, SuggestOptions suggestOptions,
+        RequestOptions requestOptions, Context context) {
+        return new SuggestPagedIterable(asyncClient.suggest(searchText, suggesterName, suggestOptions, requestOptions,
             context));
     }
 
@@ -381,8 +385,8 @@ public class SearchIndexClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
-    public IndexDocumentsResult index(IndexBatch<?> batch) {
-        return indexWithResponse(batch, Context.NONE).getValue();
+    public IndexDocumentsResult indexDocuments(IndexDocumentsBatch<?> batch) {
+        return indexDocumentsWithResponse(batch, Context.NONE).getValue();
     }
 
     /**
@@ -399,8 +403,8 @@ public class SearchIndexClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Add, update, or
      * delete documents</a>
      */
-    public Response<IndexDocumentsResult> indexWithResponse(IndexBatch<?> batch, Context context) {
-        return asyncClient.indexWithResponse(batch, context).block();
+    public Response<IndexDocumentsResult> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch, Context context) {
+        return asyncClient.indexDocumentsWithResponse(batch, context).block();
     }
 
     /**
@@ -410,8 +414,7 @@ public class SearchIndexClient {
      * @param suggesterName suggester name
      * @return auto complete result.
      */
-    public PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
-        String suggesterName) {
+    public AutocompletePagedIterable autocomplete(String searchText, String suggesterName) {
         return autocomplete(searchText, suggesterName, null, null, Context.NONE);
     }
 
@@ -426,9 +429,9 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return auto complete result.
      */
-    public PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> autocomplete(String searchText,
-        String suggesterName, AutocompleteOptions autocompleteOptions, RequestOptions requestOptions, Context context) {
-        return new PagedIterableBase<>(asyncClient.autocomplete(searchText, suggesterName, autocompleteOptions,
+    public AutocompletePagedIterable autocomplete(String searchText, String suggesterName,
+        AutocompleteOptions autocompleteOptions, RequestOptions requestOptions, Context context) {
+        return new AutocompletePagedIterable(asyncClient.autocomplete(searchText, suggesterName, autocompleteOptions,
             requestOptions, context));
     }
 }

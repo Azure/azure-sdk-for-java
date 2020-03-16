@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseForTest;
@@ -48,11 +48,11 @@ public class ReadFeedOffersTest extends TestSuiteBase {
     public void readOffers() throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
+        options.setMaxItemCount(2);
 
         Flux<FeedResponse<Offer>> feedObservable = client.readOffers(options);
 
-        int expectedPageSize = (allOffers.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (allOffers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
                 .totalSize(allOffers.size())

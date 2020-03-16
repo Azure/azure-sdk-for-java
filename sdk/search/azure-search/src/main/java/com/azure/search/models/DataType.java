@@ -60,7 +60,7 @@ public final class DataType extends ExpandableStringEnum<DataType> {
      * @return a Collection of the corresponding DataType
      */
     @JsonCreator
-    public static DataType Collection(DataType dataType) {
+    public static DataType collection(DataType dataType) {
         return fromString(String.format("Collection(%s)", dataType.toString()));
     }
 

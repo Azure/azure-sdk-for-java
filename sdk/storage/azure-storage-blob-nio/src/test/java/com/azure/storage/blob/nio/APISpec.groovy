@@ -534,11 +534,6 @@ class APISpec extends Specification {
             [(AzureResource.DIR_METADATA_MARKER): "true"], null, null, null, null)
     }
 
-    def checkBlobIsDir(BlobClient blobClient) {
-        return blobClient.getPropertiesWithResponse(null, null, null).getValue().getMetadata()
-            .containsKey(AzureResource.DIR_METADATA_MARKER)
-    }
-
     /**
      * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
      * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
@@ -557,6 +552,12 @@ class APISpec extends Specification {
         } else {
             return match
         }
+    }
+
+    def checkBlobIsDir(BlobClient blobClient) {
+         String isDir = blobClient.getPropertiesWithResponse(null, null, null)
+             .getValue().getMetadata().get(AzureFileSystemProvider.DIR_METADATA_MARKER)
+        return isDir != null && isDir == "true"
     }
 
     static class TestFileAttribute<T> implements  FileAttribute<T> {

@@ -5,6 +5,7 @@ package com.azure.storage.blob.nio
 
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.specialized.AppendBlobClient
+import com.azure.storage.blob.specialized.BlockBlobClient
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -186,10 +187,10 @@ class AzureFileSystemProviderSpec extends APISpec {
         def fs = createFS(config)
         def fileName = generateBlobName()
         def containerClient = rootNameToContainerClient(getDefaultDir(fs))
-        AppendBlobClient blobClient = containerClient.getBlobClient(fileName).getAppendBlobClient()
+        BlockBlobClient blobClient = containerClient.getBlobClient(fileName).getBlockBlobClient()
 
         when:
-        blobClient.create()
+        blobClient.commitBlockList(Collections.emptyList(), false)
         fs.provider().createDirectory(fs.getPath(fileName)) // Will go to default directory
 
         then:
@@ -407,6 +408,7 @@ class AzureFileSystemProviderSpec extends APISpec {
         setup:
         def fs = createFS(config)
         basicSetupForCopyTest(fs)
+
         def destChildClient
 
         // Create resources as necessary
@@ -645,10 +647,6 @@ class AzureFileSystemProviderSpec extends APISpec {
         isDir | _
         true  | _
         false | _
-
-        // File, concrete dir
-        // File not exist, non-empty dir (virtual, concrete)
-        // Non default directory
     }
 
     @Unroll

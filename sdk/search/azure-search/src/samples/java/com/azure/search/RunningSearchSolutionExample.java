@@ -13,9 +13,11 @@ import com.azure.search.models.GetIndexStatisticsResult;
 import com.azure.search.models.IndexerExecutionInfo;
 import com.azure.search.models.RequestOptions;
 import com.azure.search.models.SearchOptions;
-import com.azure.search.models.SearchResult;
 import com.azure.search.models.SuggestOptions;
 import com.azure.search.models.SuggestResult;
+import com.azure.search.util.AutocompletePagedResponse;
+import com.azure.search.util.SearchPagedIterable;
+import com.azure.search.util.SuggestPagedResponse;
 
 import java.util.Iterator;
 
@@ -98,12 +100,11 @@ public class RunningSearchSolutionExample {
         SearchOptions searchOptions = new SearchOptions()
             .setIncludeTotalResultCount(true)
             .setSearchFields("HotelName");
-        PagedIterableBase<SearchResult, SearchPagedResponse> searchResults = client.search("Resort",
-            searchOptions, new RequestOptions(), Context.NONE);
+        SearchPagedIterable searchResults = client.search("Resort", searchOptions, new RequestOptions(), Context.NONE);
 
         System.out.println("Search query results:");
         searchResults.forEach(result -> {
-            Document doc = result.getDocument();
+            SearchDocument doc = result.getDocument();
             String hotelName = (String) doc.get("HotelName");
             System.out.printf("     Hotel: %s%n", hotelName);
         });
