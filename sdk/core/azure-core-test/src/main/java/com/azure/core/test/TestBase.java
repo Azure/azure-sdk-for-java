@@ -29,10 +29,10 @@ public abstract class TestBase implements BeforeEachCallback {
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
     private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
-    protected static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
-    protected static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
-    protected static final String AZURE_TEST_HTTP_CLIENTS_VALUE_OKHTTP = "OkHttpAsyncHttpClient";
-    protected static final String AZURE_TEST_SERVICE_VERSIONS = "AZURE_TEST_SERVICE_VERSIONS";
+    public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
+    public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
+    public static final String AZURE_TEST_SERVICE_VERSIONS = "AZURE_TEST_SERVICE_VERSIONS";
+    public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
     private static TestMode testMode;
 
@@ -134,9 +134,10 @@ public abstract class TestBase implements BeforeEachCallback {
 
     /**
      * Returns a list of {@link HttpClient HttpClients} that should be tested.
+     *
      * @return A list of {@link HttpClient HttpClients} to be tested.
      */
-    protected static Stream<HttpClient> getHttpClients() {
+    public static Stream<HttpClient> getHttpClients() {
         if (testMode == TestMode.PLAYBACK) {
             // Call to @MethodSource method happens @BeforeEach call, so the interceptorManager is
             // not yet initialized. So, playbackClient will not be available until later.
@@ -146,7 +147,7 @@ public abstract class TestBase implements BeforeEachCallback {
     }
 
     /**
-     * Filter out the http clients needs to run in test framework.
+     * Returns whether the given http clients match the rules of test framework.
      *
      * <ul>
      * <li>Using Netty http client as default if no environment variable is set.</li>
@@ -161,9 +162,7 @@ public abstract class TestBase implements BeforeEachCallback {
      * @param client Http client needs to check
      * @return Boolean indicates whether filters out the client or not.
      */
-    protected static boolean shouldClientBeTested(HttpClient client) {
-        // This is for when we decide to filter some http clients based on some criteria
-        // to reduce the time take to run the tests.
+    public static boolean shouldClientBeTested(HttpClient client) {
         String configuredHttpClientToTest = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS);
         if (CoreUtils.isNullOrEmpty(configuredHttpClientToTest)) {
             return client.getClass().getSimpleName().equals(AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY);

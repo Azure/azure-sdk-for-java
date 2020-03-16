@@ -27,7 +27,7 @@ public class AadCredentialTest extends TestBase {
     static String connectionString;
     static TokenCredential tokenCredential;
 
-    public void setup(HttpClient httpClient, ConfigurationServiceVersion serviceVersion)
+    private void setup(HttpClient httpClient, ConfigurationServiceVersion serviceVersion)
         throws InvalidKeyException, NoSuchAlgorithmException {
         if (interceptorManager.isPlaybackMode()) {
             connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";

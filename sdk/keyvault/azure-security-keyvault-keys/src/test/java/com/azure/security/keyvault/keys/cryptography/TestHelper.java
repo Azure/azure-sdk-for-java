@@ -6,6 +6,8 @@ package com.azure.security.keyvault.keys.cryptography;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,10 +36,32 @@ public class TestHelper extends TestBase {
         return argumentsList.stream();
     }
 
+    /**
+     * Returns whether the given service version match the rules of test framework.
+     *
+     * <ul>
+     * <li>Using latest service version as default if no environment variable is set.</li>
+     * <li>If it's set to ALL, all Service versions in {@link CryptographyServiceVersion} will be tested.</li>
+     * <li>Otherwise, Service version string should match env variable.</li>
+     * </ul>
+     *
+     * Environment values currently supported are: "ALL", "${version}".
+     * Use comma to separate http clients want to test.
+     * e.g. {@code set AZURE_TEST_SERVICE_VERSIONS = V1_0, V2_0}
+     *
+     * @param serviceVersion ServiceVersion needs to check
+     * @return Boolean indicates whether filters out the service version or not.
+     */
     private static boolean shouldServiceVersionBeTested(CryptographyServiceVersion serviceVersion) {
-        if (Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS) == null) {
+        String serviceVersionFromEnv = Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
+        if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return CryptographyServiceVersion.getLatest().equals(serviceVersion);
         }
-        return true;
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(serviceVersionFromEnv)) {
+            return true;
+        }
+        String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
+        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
+            serviceVersion.toString().equals(configuredServiceVersion.trim()));
     }
 }

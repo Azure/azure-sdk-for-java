@@ -18,6 +18,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -618,11 +619,33 @@ public abstract class CertificateClientTestBase extends TestBase {
         return argumentsList.stream();
     }
 
+    /**
+     * Returns whether the given service version match the rules of test framework.
+     *
+     * <ul>
+     * <li>Using latest service version as default if no environment variable is set.</li>
+     * <li>If it's set to ALL, all Service versions in {@link CertificateServiceVersion} will be tested.</li>
+     * <li>Otherwise, Service version string should match env variable.</li>
+     * </ul>
+     *
+     * Environment values currently supported are: "ALL", "${version}".
+     * Use comma to separate http clients want to test.
+     * e.g. {@code set AZURE_TEST_SERVICE_VERSIONS = V1_0, V2_0}
+     *
+     * @param serviceVersion ServiceVersion needs to check
+     * @return Boolean indicates whether filters out the service version or not.
+     */
     private static boolean shouldServiceVersionBeTested(CertificateServiceVersion serviceVersion) {
-        if (Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS) == null) {
+        String serviceVersionFromEnv = Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
+        if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return CertificateServiceVersion.getLatest().equals(serviceVersion);
         }
-        return true;
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(serviceVersionFromEnv)) {
+            return true;
+        }
+        String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
+        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
+            serviceVersion.toString().equals(configuredServiceVersion.trim()));
     }
 }
 

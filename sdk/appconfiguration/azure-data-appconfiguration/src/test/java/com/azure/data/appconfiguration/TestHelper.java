@@ -3,7 +3,6 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import java.util.ArrayList;
@@ -12,7 +11,11 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.provider.Arguments;
 
-class TestHelper extends TestBase {
+import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS;
+import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
+import static com.azure.core.test.TestBase.getHttpClients;
+
+class TestHelper {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 
     /**
@@ -33,11 +36,32 @@ class TestHelper extends TestBase {
         return argumentsList.stream();
     }
 
+    /**
+     * Returns whether the given service version match the rules of test framework.
+     *
+     * <ul>
+     * <li>Using latest service version as default if no environment variable is set.</li>
+     * <li>If it's set to ALL, all Service versions in {@link ConfigurationServiceVersion} will be tested.</li>
+     * <li>Otherwise, Service version string should match env variable.</li>
+     * </ul>
+     *
+     * Environment values currently supported are: "ALL", "${version}".
+     * Use comma to separate http clients want to test.
+     * e.g. {@code set AZURE_TEST_SERVICE_VERSIONS = V1_0, V2_0}
+     *
+     * @param serviceVersion ServiceVersion needs to check
+     * @return Boolean indicates whether filters out the service version or not.
+     */
     private static boolean shouldServiceVersionBeTested(ConfigurationServiceVersion serviceVersion) {
         String serviceVersionFromEnv = Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
         if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return ConfigurationServiceVersion.getLatest().equals(serviceVersion);
         }
-        return serviceVersionFromEnv.equalsIgnoreCase(serviceVersion.toString());
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(serviceVersionFromEnv)) {
+            return true;
+        }
+        String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
+        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
+            serviceVersion.toString().equals(configuredServiceVersion.trim()));
     }
 }
