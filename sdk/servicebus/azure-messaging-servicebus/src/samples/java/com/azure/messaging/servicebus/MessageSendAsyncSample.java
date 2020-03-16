@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sending message async.
+ * Sample demonstrates how to send an {@link ServiceBusMessage} to an Azure Service Bus queue or topic.
  */
 public class MessageSendAsyncSample {
     /**

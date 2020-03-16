@@ -9,12 +9,15 @@ import reactor.core.Disposable;
 
 import java.time.Duration;
 
-
+/**
+ * Sample demonstrates how to peek an {@link ServiceBusReceivedMessage} from an Azure Service Bus using Azure Identity.
+ */
 public class PeekMessageWithAzureIdentity {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(20);
 
     /**
-     * Main method to invoke this demo on how to send an {@link ServiceBusMessage} to an Azure Event Hub.
+     * Main method to invoke this demo on how to send an {@link ServiceBusMessage} to an Azure Service Bus
+     * Queue or Topic.
      *
      * @param args Unused arguments to the program.
      */

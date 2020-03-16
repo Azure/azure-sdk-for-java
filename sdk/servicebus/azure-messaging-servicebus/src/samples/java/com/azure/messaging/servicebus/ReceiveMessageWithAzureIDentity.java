@@ -9,6 +9,10 @@ import reactor.core.Disposable;
 
 import java.time.Duration;
 
+/**
+ * Sample demonstrates how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus using
+ * Azure Identity.
+ */
 public class ReceiveMessageWithAzureIDentity {
 
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(20);

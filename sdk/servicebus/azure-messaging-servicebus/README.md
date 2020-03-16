@@ -25,6 +25,13 @@ have to be online at the same time.
   - [Authenticate the client](#authenticate-the-client)
 - [Key concepts](#key-concepts)
 - [Examples](#examples)
+  - [Create a sender or receiver using connection string](#create-a-sender-or-receiver-using-connection-string)
+  - [Send Message to Queue or Topic](#send-message-to-queue-or-topic)
+  - [Receive message from Queue or Subscription](#receive-message-from-queue-or-subscription)
+  - [Peek message from Queue or Subscription](#peek-message-from-queue-or-subscription)
+  - [Send message with Azure Active Directory credentials](#send-message-with-azure-active-directory-credentials)
+  - [Receive message with Azure Active Directory credentials](#receive-message-with-azure-active-directory-credentials)
+  - [Peek message with Azure Active Directory credentials](#peek-message-with-azure-active-directory-credentials)
 - [Troubleshooting](#troubleshooting)
   - [Enable client logging](#enable-client-logging)
   - [Enable AMQP transport logging](#enable-amqp-transport-logging)
@@ -60,7 +67,7 @@ have to be online at the same time.
 For the Service Bus client library to interact with an Service Bus, it will need to understand how to connect 
 and authorize with it.
 
-#### Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)
+#### Create an Service Bus client using Microsoft identity platform (formerly Azure Active Directory)
 
 Azure SDK for Java supports an Azure Identity package, making it simple get credentials from Microsoft identity
 platform. First, add the package:
@@ -76,8 +83,7 @@ platform. First, add the package:
 [//]: # ({x-version-update-end})
 
 All the implemented ways to request a credential can be found under the `com.azure.identity.credential` package. The
-sample below shows how to use an Azure Active Directory (AAD) application client secret to authorize with Azure Event
-Hubs.
+sample below shows how to use an Azure Active Directory (AAD) application client secret to authorize with Azure Service Bus.
 
 #### Authorizing with AAD application client secret
 
@@ -85,13 +91,59 @@ Follow the instructions in [Creating a service principal using Azure Portal][app
 service principal and a client secret. The corresponding `clientId` and `tenantId` for the service principal can be
 obtained from the [App registration page][app_registration_page].
 
-When using Azure Active Directory, your principal must be assigned a role which allows access to Event Hubs, such
-as the `Azure Event Hubs Data Owner` role. For more information about using Azure Active Directory authorization
+When using Azure Active Directory, your principal must be assigned a role which allows access toService Bus, such
+as the `Azure Service Bus Data Owner` role. For more information about using Azure Active Directory authorization
 with Event Hubs, please refer to [the associated documentation][aad_authorization].
 
 ## Key concepts
+#### Queues
+#### Topics
+#### Subscriber
 
 ## Examples
+### Create a sender or receiver using connection string
+The easiest means for doing so is to use a connection string, which is created automatically when creating an Service Bus
+namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the step-by-step guide to
+[get an Service Bus connection string][service_bus_connection_string].
+
+Both the asynchronous and synchronous Service Bus sender and receiver clients can be created using
+`ServiceBusClientBuilder`.The examples are explained blow.
+
+The snippet below creates an asynchronous Service Bus Sender.
+
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L18-L21 -->
+```java
+String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+```
+
+The snippet below creates an asynchronous Service Bus Receiver.
+
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L28-L31 -->
+```java
+String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+```
+
+### Send message to Queue or Topic
+
+You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient] or
+a synchronous [`ServiceBusSenderClient`][ServiceBusSenderClient] to send message. Each sender can send message to either, a queue,
+or topic. 
+
+#### Create a Sender and send message to Queue or Topic
+Example of sending a message asynchronously is documented [here][sample-send-async-message].
+
+### Receive message from Queue or Subscription
+You'll need to create an asynchronous [`ServiceBusReceiverAsyncClient`][ServiceBusReceiverAsyncClient] or
+a synchronous [`ServiceBusReceiverClient`][ServiceBusReceiverClient]. Each receiver can receive message from either, a queue,
+or subscriber. 
+
+#### Create a Receiver and receive message from queue or subscriber
+Example of receiving a message asynchronously is documented [here][sample-receive-async-message].
+
+### Peek message from Queue or Subscription
+### Send message with Azure Active Directory credentials
+### Receive message with Azure Active Directory credentials
+### Peek message with Azure Active Directory credentials
 
 ## Troubleshooting
 
@@ -172,7 +224,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 
 <!-- Links -->
 [amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
-[aad_authorization]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-authentication-and-authorization
+[aad_authorization]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/authenticate-application
 [api_documentation]: https://aka.ms/java-docs
 [app_registration_page]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#get-values-for-signing-in
 [application_client_secret]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret
@@ -190,5 +242,10 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [AmqpErrorContext]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorContext.java
 [LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [RetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
+[ServiceBusSenderAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusSenderAsyncClient.java
+[ServiceBusReceiverAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusClientBuilder.java
+[service_bus_connection_string]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
+[sample-send-async-message]: ./src/samples/java/com/azure/messaging/servicebus/MessageSendAsyncSample.java
+[sample-receive-async-message]: ./src/samples/java/com/azure/messaging/servicebus/MessageReceiverAsyncClient.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FREADME.png)
