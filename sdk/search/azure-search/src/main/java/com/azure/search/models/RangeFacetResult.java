@@ -10,20 +10,36 @@ import com.azure.core.annotation.Immutable;
  * with a field value falling within a particular range.
  */
 @Immutable
-public class RangeFacetResult {
+public class RangeFacetResult<T> {
+    private static final String FROM = "from";
+    private static final String TO = "to";
     private final Long count;
-    private final Object from;
-    private final Object to;
+    private final T from;
+    private final T to;
 
     /**
-     * Constructor
+     * Constructor of RangeFacetResult.
      *
-     * @param facetResult facet result object
+     * @param count The count of the result.
+     * @param from Value indicates the lower bound of facet's range
+     * @param to Value indicates the upper bound of facet's range
      */
+    public RangeFacetResult(Long count, T from, T to) {
+        this.count = count;
+        this.from = from;
+        this.to = to;
+    }
+
+    /**
+     * Constructor from {@link FacetResult}
+     *
+     * @param facetResult {@link FacetResult}.
+     */
+    @SuppressWarnings("unchecked")
     public RangeFacetResult(FacetResult facetResult) {
-        count = facetResult.getCount();
-        from = facetResult.getAdditionalProperties().get("from");
-        to = facetResult.getAdditionalProperties().get("to");
+        this.count = facetResult.getCount();
+        this.from = (T) facetResult.getAdditionalProperties().get(FROM);
+        this.to = (T) facetResult.getAdditionalProperties().get(TO);
     }
 
     /**
@@ -40,7 +56,7 @@ public class RangeFacetResult {
      * no lower bound (i.e. -- for the first bucket).
      * @return from
      */
-    public Object getFrom() {
+    public T getFrom() {
         return from;
     }
 
@@ -50,7 +66,7 @@ public class RangeFacetResult {
      *
      * @return to
      */
-    public Object getTo() {
+    public T getTo() {
         return to;
     }
 }

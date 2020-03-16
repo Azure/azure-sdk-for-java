@@ -255,6 +255,7 @@ public class TestSuiteBase extends DocumentClientTest {
         logger.info("Finished truncating collection {}.", collection.getId());
     }
 
+    @SuppressWarnings("fallthrough")
     protected static void waitIfNeededForReplicasToCatchUp(Builder clientBuilder) {
         switch (clientBuilder.getDesiredConsistencyLevel()) {
             case EVENTUAL:
@@ -866,6 +867,7 @@ public class TestSuiteBase extends DocumentClientTest {
         }
     }
 
+    @SuppressWarnings("fallthrough")
     static List<ConsistencyLevel> allEqualOrLowerConsistencies(ConsistencyLevel accountConsistency) {
         List<ConsistencyLevel> testConsistencies = new ArrayList<>();
         switch (accountConsistency) {

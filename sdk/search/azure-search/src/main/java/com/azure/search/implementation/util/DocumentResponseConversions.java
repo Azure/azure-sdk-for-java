@@ -13,11 +13,6 @@ import com.azure.search.SearchDocument;
 public final class DocumentResponseConversions {
 
     /*
-     * Represents the OData context field.
-     */
-    private static final String ODATA_CONTEXT = "@odata.context";
-
-    /*
      * Exception message to check for before mapping to document not found.
      */
     private static final String EMPTY_BODY_404 = "Status code 404, (empty body)";
@@ -38,15 +33,6 @@ public final class DocumentResponseConversions {
         return (throwable instanceof HttpResponseException && EMPTY_BODY_404.equalsIgnoreCase(throwable.getMessage()))
             ? new ResourceNotFoundException(DOCUMENT_NOT_FOUND, ((HttpResponseException) throwable).getResponse())
             : throwable;
-    }
-
-    /**
-     * Removes {@code @odata.context} from the returned document. This field shouldn't be returned.
-     *
-     * @param document The {@link SearchDocument} returned from the service.
-     */
-    public static void cleanupDocument(SearchDocument document) {
-        document.remove(ODATA_CONTEXT);
     }
 
     private DocumentResponseConversions() {

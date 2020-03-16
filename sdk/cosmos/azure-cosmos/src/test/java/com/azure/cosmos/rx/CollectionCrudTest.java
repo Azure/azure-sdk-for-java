@@ -330,7 +330,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getRequestLatency());
 
             BridgeInternal.setProperty(document, "name", "New Updated Document");
-            CosmosAsyncItemResponse upsertDocumentResponse = collection.upsertItem(document).block();
+            CosmosAsyncItemResponse<CosmosItemProperties> upsertDocumentResponse = collection.upsertItem(document).block();
             logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getCosmosResponseDiagnostics());
             logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getRequestLatency());
 
@@ -348,7 +348,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             readDocumentResponse = client1.getDatabase(dbId)
                                        .getContainer(collectionId)
                                        .readItem(newDocument.getId(),
-                                                 new PartitionKey(newDocument.get("mypk")), 
+                                                 new PartitionKey(newDocument.get("mypk")),
                                                  CosmosItemProperties.class)
                                        .block();
             logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getCosmosResponseDiagnostics());

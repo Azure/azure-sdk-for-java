@@ -89,7 +89,7 @@ public class CryptographyAsyncClient {
         service = RestProxy.create(CryptographyService.class, pipeline);
         if (!Strings.isNullOrEmpty(key.getId())) {
             unpackAndValidateId(key.getId());
-            cryptographyServiceClient = new CryptographyServiceClient(key.getId(), service);
+            cryptographyServiceClient = new CryptographyServiceClient(key.getId(), service, version);
         } else {
             cryptographyServiceClient = null;
         }
@@ -107,7 +107,7 @@ public class CryptographyAsyncClient {
         unpackAndValidateId(keyId);
         this.keyId = keyId;
         service = RestProxy.create(CryptographyService.class, pipeline);
-        cryptographyServiceClient = new CryptographyServiceClient(keyId, service);
+        cryptographyServiceClient = new CryptographyServiceClient(keyId, service, version);
         this.key = null;
     }
 

@@ -48,6 +48,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void backoffRetryUtilityExecuteRetry() throws Exception {
+        @SuppressWarnings("unchecked")
         Callable<Mono<StoreResponse>> callbackMethod = Mockito.mock(Callable.class);
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
@@ -64,6 +65,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void backoffRetryUtilityExecuteRetryWithFailure() throws Exception {
+        @SuppressWarnings("unchecked")
         Callable<Mono<StoreResponse>> callbackMethod = Mockito.mock(Callable.class);
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
@@ -81,6 +83,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"})
+    @SuppressWarnings("unchecked")
     public void backoffRetryUtilityExecuteAsync() {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod = Mockito.mock(Function.class);
@@ -100,6 +103,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"})
+    @SuppressWarnings("unchecked")
     public void backoffRetryUtilityExecuteAsyncWithFailure() {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod = Mockito.mock(Function.class);

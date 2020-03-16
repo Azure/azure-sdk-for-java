@@ -17,7 +17,7 @@ com.azure:azure-cosmos-examples;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-data-appconfiguration;1.1.0;1.2.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-identity;1.0.4;1.1.0-beta.2
+com.azure:azure-identity;1.0.4;1.1.0-beta.3
 com.azure:azure-messaging-eventhubs;5.0.2;5.1.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.0.2;1.1.0-beta.1
 com.azure:azure-messaging-servicebus;1.0.0-beta.1;1.0.0-beta.1
@@ -42,6 +42,7 @@ com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 # Format;
 # unreleased_<groupId>:<artifactId>;dependency-version
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
+unreleased_com.azure:azure-core;1.4.0-beta.1
 unreleased_com.azure:azure-core-amqp;1.1.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current

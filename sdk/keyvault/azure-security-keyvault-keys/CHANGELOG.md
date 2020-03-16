@@ -1,6 +1,10 @@
 # Release History
 
-## 4.2.0-beta.2 (Unreleased)
+## 4.2.0-beta.2 (2020-03-10)
+### Added
+- Added `recoverableDays` property to `KeyProperties`.
+- Added `Import` operation to `KeyOperation`.
+- Added support for `7.1-Preview` service version
 
 
 ## 4.2.0-beta.1

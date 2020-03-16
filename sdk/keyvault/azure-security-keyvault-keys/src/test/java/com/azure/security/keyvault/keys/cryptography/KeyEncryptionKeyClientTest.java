@@ -32,7 +32,8 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
 
     private void setupSecretKeyAndClient(byte[] kek) {
         if (secretKey == null) {
-            CryptographyServiceClient serviceClient = new CryptographyServiceClient(getEndpoint(), RestProxy.create(CryptographyService.class, pipeline));
+            CryptographyServiceClient serviceClient = new CryptographyServiceClient(getEndpoint(),
+                RestProxy.create(CryptographyService.class, pipeline), CryptographyServiceVersion.getLatest());
             secretKey = serviceClient.setSecretKey(new SecretKey("secretKey", Base64.getEncoder().encodeToString(kek)), Context.NONE).block().getValue();
             client = new KeyEncryptionKeyClientBuilder()
                          .pipeline(pipeline)

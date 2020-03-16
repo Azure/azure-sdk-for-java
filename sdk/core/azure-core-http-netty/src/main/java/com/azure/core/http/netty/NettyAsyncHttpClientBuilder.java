@@ -9,6 +9,7 @@ import com.azure.core.http.netty.implementation.HttpProxyHandler;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.handler.proxy.Socks4ProxyHandler;
@@ -40,7 +41,7 @@ public class NettyAsyncHttpClientBuilder {
     private ConnectionProvider connectionProvider;
     private boolean enableWiretap;
     private int port = 80;
-    private NioEventLoopGroup nioEventLoopGroup;
+    private EventLoopGroup eventLoopGroup;
     private Configuration configuration;
     private boolean disableBufferCopy;
 
@@ -99,7 +100,7 @@ public class NettyAsyncHttpClientBuilder {
             : new AuthorizationChallengeHandler(buildProxyOptions.getUsername(), buildProxyOptions.getPassword());
         AtomicReference<ChallengeHolder> proxyChallengeHolder = new AtomicReference<>();
 
-        return new NettyAsyncHttpClient(nettyHttpClient, nioEventLoopGroup,
+        return new NettyAsyncHttpClient(nettyHttpClient, eventLoopGroup,
             () -> getProxyHandler(handler, proxyChallengeHolder), nonProxyHosts, disableBufferCopy);
     }
 
@@ -152,15 +153,28 @@ public class NettyAsyncHttpClientBuilder {
     /**
      * Sets the NIO event loop group that will be used to run IO loops.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder#nioEventLoopGroup}
-     *
+     * @deprecated deprecated in favor of {@link #eventLoopGroup(EventLoopGroup)}.
      * @param nioEventLoopGroup The {@link NioEventLoopGroup} that will run IO loops.
      * @return the updated NettyAsyncHttpClientBuilder object.
      */
+    @Deprecated
     public NettyAsyncHttpClientBuilder nioEventLoopGroup(NioEventLoopGroup nioEventLoopGroup) {
-        this.nioEventLoopGroup = nioEventLoopGroup;
+        this.eventLoopGroup = nioEventLoopGroup;
+        return this;
+    }
+
+    /**
+     * Sets the IO event loop group that will be used to run IO loops.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup}
+     *
+     * @param eventLoopGroup The {@link EventLoopGroup} that will run IO loops.
+     * @return the updated NettyAsyncHttpClientBuilder object.
+     */
+    public NettyAsyncHttpClientBuilder eventLoopGroup(EventLoopGroup eventLoopGroup) {
+        this.eventLoopGroup = eventLoopGroup;
         return this;
     }
 

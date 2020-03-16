@@ -314,18 +314,18 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <executions>
-        <execution>
-          <id>default-instrument</id>
-          <goals>
-            <goal>instrument</goal>
-          </goals>
-        </execution>
-        <execution>
-          <id>default-restore-instrumented-classes</id>
-          <goals>
-            <goal>restore-instrumented-classes</goal>
-          </goals>
-        </execution>
+          <execution>
+            <id>default-instrument</id>
+            <goals>
+              <goal>instrument</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>default-restore-instrumented-classes</id>
+            <goals>
+              <goal>restore-instrumented-classes</goal>
+            </goals>
+          </execution>
           <execution>
             <!-- This generates the unit test reports for individual modules.
               jacoco-test-coverage generates aggregate reports for all modules -->
@@ -907,7 +907,8 @@
                 <arg>-Xlint:unchecked</arg>
                 <arg>-Xlint:varargs</arg>
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
-                <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+                <arg>-Xlint:-requires-transitive-automatic
+                </arg> <!-- FIXME: this is required for now as it introduces a build failure -->
               </compilerArgs>
             </configuration>
             <executions>
@@ -1061,7 +1062,7 @@
               <quiet>true</quiet>
             </configuration>
           </plugin>
-         </plugins>
+        </plugins>
       </build>
     </profile>
 
@@ -1084,7 +1085,9 @@
                 <phase>package</phase>
                 <configuration>
                   <target>
-                    <echo>Copying ${project.basedir}/CHANGELOG.md to ${packageOutputDirectory}/${project.build.finalName}-changelog.md</echo>
+                    <echo>Copying ${project.basedir}/CHANGELOG.md to
+                      ${packageOutputDirectory}/${project.build.finalName}-changelog.md
+                    </echo>
                     <copy file="${project.basedir}/CHANGELOG.md" tofile="${packageOutputDirectory}/${project.build.finalName}-changelog.md"/>
                   </target>
                 </configuration>
@@ -1241,6 +1244,40 @@
         </plugins>
       </build>
     </profile>
+
+    <!-- Runs the dependency checker. -->
+    <profile>
+      <id>dependency-checker</id>
+      <activation>
+        <property>
+          <name>dependency-checker</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>net.jonathangiles.tools</groupId>
+            <artifactId>dependencyChecker-maven-plugin</artifactId>
+            <version>1.0.3</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
+            <inherited>false</inherited>
+            <executions>
+              <execution>
+                <id>generateReport</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <configuration>
+                  <reporters>html</reporters>
+                  <showAll>true</showAll>
+                  <dependencyManagement>true</dependencyManagement>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
   <modules>
@@ -1263,7 +1300,7 @@
     <module>sdk/keyvault/azure-security-keyvault-certificates</module>
     <module>sdk/keyvault/azure-security-keyvault-keys</module>
     <module>sdk/keyvault/azure-security-keyvault-secrets</module>
-	  <module>sdk/search/azure-search</module>
+    <module>sdk/search/azure-search</module>
     <module>sdk/servicebus/azure-messaging-servicebus</module>
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>
