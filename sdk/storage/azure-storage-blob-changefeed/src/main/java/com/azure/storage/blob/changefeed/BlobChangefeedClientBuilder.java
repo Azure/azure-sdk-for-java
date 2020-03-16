@@ -12,7 +12,7 @@ import com.azure.storage.blob.BlobServiceVersion;
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of
  * {@link BlobChangefeedClient BlobChangefeedClients} and {@link BlobChangefeedAsyncClient BlobChangefeedAsyncClients}
- * when {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} as called respectively.
+ * when {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} are called respectively.
  */
 @ServiceClientBuilder(serviceClients = {BlobChangefeedClient.class, BlobChangefeedAsyncClient.class})
 public final class BlobChangefeedClientBuilder {
@@ -21,9 +21,7 @@ public final class BlobChangefeedClientBuilder {
     private final BlobServiceVersion version;
 
     /**
-     * Constructs the {@link BlobChangefeedClientBuilder} using the {@link BlobServiceClient#getAccountUrl() account
-     * URL} and {@link BlobServiceClient#getHttpPipeline() HttpPipeline} properties of the passed {@link
-     * BlobServiceClient}.
+     * Constructs the {@link BlobChangefeedClientBuilder} from the URL and pipeline of the {@link BlobServiceClient}.
      *
      * @param client {@link BlobServiceClient} whose properties are used to configure the builder.
      */
@@ -34,9 +32,8 @@ public final class BlobChangefeedClientBuilder {
     }
 
     /**
-     * Constructs the {@link BlobChangefeedClientBuilder} using the {@link BlobServiceAsyncClient#getAccountUrl()
-     * account URL} and {@link BlobServiceAsyncClient#getHttpPipeline() HttpPipeline} properties of the passed {@link
-     * BlobServiceAsyncClient}.
+     * Constructs the {@link BlobChangefeedClientBuilder} from from the URL and pipeline of the
+     * {@link BlobServiceAsyncClient}.
      *
      * @param client {@link BlobServiceClient} whose properties are used to configure the builder.
      */
@@ -47,7 +44,7 @@ public final class BlobChangefeedClientBuilder {
     }
 
     /**
-     * Creates a {@link BlobChangefeedClient} based on options set in the builder.
+     * Creates a {@link BlobChangefeedClient}.
      *
      * <p><strong>Code sample</strong></p>
      *
@@ -60,7 +57,7 @@ public final class BlobChangefeedClientBuilder {
     }
 
     /**
-     * Creates a {@link BlobChangefeedAsyncClient} based on options set in the builder.
+     * Creates a {@link BlobChangefeedAsyncClient}.
      *
      * <p><strong>Code sample</strong></p>
      *
