@@ -28,10 +28,8 @@ have to be online at the same time.
   - [Create a sender or receiver using connection string](#create-a-sender-or-receiver-using-connection-string)
   - [Send Message to Queue or Topic](#send-message-to-queue-or-topic)
   - [Receive message from Queue or Subscription](#receive-message-from-queue-or-subscription)
-  - [Peek message from Queue or Subscription](#peek-message-from-queue-or-subscription)
   - [Send message with Azure Active Directory credentials](#send-message-with-azure-active-directory-credentials)
   - [Receive message with Azure Active Directory credentials](#receive-message-with-azure-active-directory-credentials)
-  - [Peek message with Azure Active Directory credentials](#peek-message-with-azure-active-directory-credentials)
 - [Troubleshooting](#troubleshooting)
   - [Enable client logging](#enable-client-logging)
   - [Enable AMQP transport logging](#enable-amqp-transport-logging)
@@ -91,7 +89,7 @@ Follow the instructions in [Creating a service principal using Azure Portal][app
 service principal and a client secret. The corresponding `clientId` and `tenantId` for the service principal can be
 obtained from the [App registration page][app_registration_page].
 
-When using Azure Active Directory, your principal must be assigned a role which allows access toService Bus, such
+When using Azure Active Directory, your principal must be assigned a role which allows access to Service Bus, such
 as the `Azure Service Bus Data Owner` role. For more information about using Azure Active Directory authorization
 with Service Bus, please refer to [the associated documentation][aad_authorization].
 
@@ -146,17 +144,11 @@ or subscriber.
 #### Create a Receiver and receive message from queue or subscriber
 Example of receiving a message asynchronously is documented [here][sample-receive-async-message].
 
-### Peek message from queue or subscription
-Example of peeking a message asynchronously is documented [here][sample-peek-using-connection-string-async-message].
-
 ### Send message with Azure Active Directory credentials
 Example of sending a message asynchronously using active directory credential is documented [here][sample-send-async-aad-message].
 
 ### Receive message with Azure Active Directory credentials
 Example of receiving a message asynchronously using active directory credential is documented [here][sample-receive-async-aad-message].
-
-### Peek message with Azure Active Directory credentials
-Example of peeking a message asynchronously using active directory credential is documented [here][sample-peek-aad-async-message].
 
 ## Troubleshooting
 
@@ -260,9 +252,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [service_bus_connection_string]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
 [sample-send-async-message]: ./src/samples/java/com/azure/messaging/servicebus/MessageSendAsyncSample.java
 [sample-receive-async-message]: ./src/samples/java/com/azure/messaging/servicebus/MessageReceiverAsyncClient.java
-[sample-peek-using-connection-string-async-message]: ./src/samples/java/com/azure/messaging/servicebus/PeekMessageWithConnectionStringSample.java
 [sample-send-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageWithAzureIdentity.java
 [sample-receive-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageWithAzureIDentity.java
-[sample-peek-aad-async-message]: ./src/samples/java/com/azure/messaging/servicebus/PeekMessageWithAzureIdentity.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FREADME.png)
