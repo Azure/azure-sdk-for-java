@@ -45,6 +45,8 @@ public abstract class KeyClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
     private static final String AZURE_TEST_SERVICE_VERSIONS = "AZURE_KEYVAULT_KEYS_SERVICE_VERSIONS";
+    private static final String serviceVersionFromEnv =
+        Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
     private static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
     @Override
@@ -444,7 +446,6 @@ public abstract class KeyClientTestBase extends TestBase {
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(KeyServiceVersion serviceVersion) {
-        String serviceVersionFromEnv = Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
         if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return KeyServiceVersion.getLatest().equals(serviceVersion);
         }

@@ -4,19 +4,21 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.security.keyvault.keys.KeyServiceVersion;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.params.provider.Arguments;
 
+import static com.azure.core.test.TestBase.getHttpClients;
+
 public class TestHelper {
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    private static final String AZURE_TEST_SERVICE_VERSIONS = "AZURE_KEYVAULT_CRYPTOGRAPHY_SERVICE_VERSIONS";
+    private static final String AZURE_TEST_SERVICE_VERSIONS ="AZURE_KEYVAULT_CRYPTOGRAPHY_SERVICE_VERSIONS";
+    private static final String serviceVersionFromEnv =
+        Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
     private static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
     /**
@@ -55,7 +57,6 @@ public class TestHelper {
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(CryptographyServiceVersion serviceVersion) {
-        String serviceVersionFromEnv = Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
         if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return CryptographyServiceVersion.getLatest().equals(serviceVersion);
         }

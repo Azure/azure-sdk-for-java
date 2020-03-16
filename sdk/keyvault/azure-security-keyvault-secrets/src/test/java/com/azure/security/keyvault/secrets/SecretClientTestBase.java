@@ -40,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public abstract class SecretClientTestBase extends TestBase {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_TEST_SERVICE_VERSIONS = "AZURE_KEYVAULT_SECRETS_SERVICE_VERSIONS";
+    private static final String serviceVersionFromEnv = Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
     private static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
     private static final String SECRET_NAME = "javaSecretTemp";
@@ -470,7 +471,6 @@ public abstract class SecretClientTestBase extends TestBase {
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(SecretServiceVersion serviceVersion) {
-        String serviceVersionFromEnv = Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
         if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return SecretServiceVersion.getLatest().equals(serviceVersion);
         }

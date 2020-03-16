@@ -16,6 +16,7 @@ import static com.azure.core.test.TestBase.getHttpClients;
 class TestHelper {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_TEST_SERVICE_VERSIONS = "AZURE_APPCONFIG_SERVICE_VERSIONS";
+    private static final String serviceVersionFromEnv = Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
     private static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
     /**
@@ -53,7 +54,6 @@ class TestHelper {
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(ConfigurationServiceVersion serviceVersion) {
-        String serviceVersionFromEnv = Configuration.getGlobalConfiguration().get(AZURE_TEST_SERVICE_VERSIONS);
         if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return ConfigurationServiceVersion.getLatest().equals(serviceVersion);
         }
