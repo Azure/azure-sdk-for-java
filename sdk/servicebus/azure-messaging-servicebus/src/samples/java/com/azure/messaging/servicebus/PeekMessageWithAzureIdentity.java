@@ -17,7 +17,7 @@ public class PeekMessageWithAzureIdentity {
 
     /**
      * Main method to invoke this demo on how to send an {@link ServiceBusMessage} to an Azure Service Bus
-     * Queue or Topic.
+     * queue or topic.
      *
      * @param args Unused arguments to the program.
      */
@@ -35,7 +35,7 @@ public class PeekMessageWithAzureIdentity {
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .build();
 
-        // Create a sender.
+        // Create the client.
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<queue-or-topic-name>>" will be the name of the Service Bus queue or topic instance you created
         // inside the Service Bus namespace.
@@ -54,13 +54,13 @@ public class PeekMessageWithAzureIdentity {
             })
             .subscribe();
 
-        //wait for async receiver to finish processing.
+        //wait for client to finish processing.
         try {
             Thread.sleep(OPERATION_TIMEOUT.toMillis());
         } catch (InterruptedException ignored) {
 
         }
-        log("Closing the consumer");
+        log("Closing the receiver");
         disposable.dispose();
         log("End!! ");
     }

@@ -1,9 +1,9 @@
-# Azure Event Hubs client library for Java
+# Azure Service Bus client library for Java
 
 Microsoft Azure Service Bus is a fully managed enterprise integration message broker. Service Bus can decouple 
 applications and services. Service Bus offers a reliable and secure platform for asynchronous transfer of data 
 and state. Data is transferred between different applications and services using messages. If you would like to know 
-more about Azure Service Bus, you may wish to review: [What is Event Hubs](https://docs.microsoft.com/en-us/azure/service-bus-messaging)?
+more about Azure Service Bus, you may wish to review: [What is Service Bus](https://docs.microsoft.com/en-us/azure/service-bus-messaging)?
 
 The Azure Service Bus client library allows for sending and receiving of Azure Service Bus messages and may be used to:
 
@@ -93,7 +93,7 @@ obtained from the [App registration page][app_registration_page].
 
 When using Azure Active Directory, your principal must be assigned a role which allows access toService Bus, such
 as the `Azure Service Bus Data Owner` role. For more information about using Azure Active Directory authorization
-with Event Hubs, please refer to [the associated documentation][aad_authorization].
+with Service Bus, please refer to [the associated documentation][aad_authorization].
 
 ## Key concepts
 #### Queues
@@ -114,6 +114,9 @@ The snippet below creates an asynchronous Service Bus Sender.
 <!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L18-L21 -->
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
+    .connectionString(connectionString)
+    .buildAsyncSenderClient();
 ```
 
 The snippet below creates an asynchronous Service Bus Receiver.
@@ -121,6 +124,9 @@ The snippet below creates an asynchronous Service Bus Receiver.
 <!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L28-L31 -->
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+    .connectionString(connectionString)
+    .buildAsyncReceiverClient();
 ```
 
 ### Send message to Queue or Topic
@@ -129,7 +135,7 @@ You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBus
 a synchronous [`ServiceBusSenderClient`][ServiceBusSenderClient] to send message. Each sender can send message to either, a queue,
 or topic. 
 
-#### Create a Sender and send message to Queue or Topic
+#### Create a Sender and send message to queue or topic
 Example of sending a message asynchronously is documented [here][sample-send-async-message].
 
 ### Receive message from Queue or Subscription
@@ -140,10 +146,17 @@ or subscriber.
 #### Create a Receiver and receive message from queue or subscriber
 Example of receiving a message asynchronously is documented [here][sample-receive-async-message].
 
-### Peek message from Queue or Subscription
+### Peek message from queue or subscription
+Example of peeking a message asynchronously is documented [here][sample-peek-using-connection-string-async-message].
+
 ### Send message with Azure Active Directory credentials
+Example of sending a message asynchronously using active directory credential is documented [here][sample-send-async-aad-message].
+
 ### Receive message with Azure Active Directory credentials
+Example of receiving a message asynchronously using active directory credential is documented [here][sample-receive-async-aad-message].
+
 ### Peek message with Azure Active Directory credentials
+Example of peeking a message asynchronously using active directory credential is documented [here][sample-peek-aad-async-message].
 
 ## Troubleshooting
 
@@ -247,5 +260,9 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [service_bus_connection_string]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
 [sample-send-async-message]: ./src/samples/java/com/azure/messaging/servicebus/MessageSendAsyncSample.java
 [sample-receive-async-message]: ./src/samples/java/com/azure/messaging/servicebus/MessageReceiverAsyncClient.java
+[sample-peek-using-connection-string-async-message]: ./src/samples/java/com/azure/messaging/servicebus/PeekMessageWithConnectionStringSample.java
+[sample-send-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageWithAzureIdentity.java
+[sample-receive-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageWithAzureIDentity.java
+[sample-peek-aad-async-message]: ./src/samples/java/com/azure/messaging/servicebus/PeekMessageWithAzureIdentity.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FREADME.png)

@@ -57,7 +57,7 @@ public class ReceiveMessageWithAzureIDentity {
             .subscribe();
 
 
-        // Wait for Async receiver to finish
+        // Wait for receiver to finish
         try {
             Thread.sleep(OPERATION_TIMEOUT.toMillis());
         } catch (InterruptedException ignored) {

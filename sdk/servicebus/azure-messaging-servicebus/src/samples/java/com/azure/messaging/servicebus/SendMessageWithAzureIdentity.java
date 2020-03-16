@@ -58,7 +58,7 @@ public class SendMessageWithAzureIdentity {
             .timeout(OPERATION_TIMEOUT)
             .subscribe();
 
-        // Wait for Async sender to finish
+        // Wait for sender to finish
         try {
             Thread.sleep(OPERATION_TIMEOUT.toMillis());
         } catch (InterruptedException ignored) {
