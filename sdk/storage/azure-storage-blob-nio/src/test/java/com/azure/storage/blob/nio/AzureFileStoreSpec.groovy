@@ -16,10 +16,10 @@ class AzureFileStoreSpec extends APISpec {
     AzureFileSystem fs
 
     // Just need one fs instance for creating the stores.
-    def setupSpec() {
+    def setup() {
         def config = initializeConfigMap()
         config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
-        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = "jtcazurepath1,jtcazurepath2"
+        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
         fs = new AzureFileSystem(new AzureFileSystemProvider(), getAccountName(PRIMARY_STORAGE), config)
     }
 
