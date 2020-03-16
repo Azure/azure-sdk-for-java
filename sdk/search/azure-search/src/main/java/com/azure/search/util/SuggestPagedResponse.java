@@ -7,7 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.search.models.SuggestDocumentsResult;
+import com.azure.search.implementation.models.SuggestDocumentsResult;
 import com.azure.search.models.SuggestResult;
 
 /**

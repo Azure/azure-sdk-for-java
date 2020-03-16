@@ -90,7 +90,9 @@ public class SessionContainerTest {
         respHeaders.put(HttpConstants.HttpHeaders.OWNER_ID, collectionRid);
         sessionContainer.setSessionToken(request1, resp.getResponseHeaders());
 
+        @SuppressWarnings("unchecked")
         ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId = (ConcurrentHashMap<String, Long>) FieldUtils.readField(sessionContainer, "collectionNameToCollectionResourceId", true);
+        @SuppressWarnings("unchecked")
         ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>> collectionResourceIdToSessionTokens = (ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>>) FieldUtils.readField(sessionContainer, "collectionResourceIdToSessionTokens", true);
         assertThat(collectionNameToCollectionResourceId).hasSize(1);
         assertThat(collectionResourceIdToSessionTokens).hasSize(1);

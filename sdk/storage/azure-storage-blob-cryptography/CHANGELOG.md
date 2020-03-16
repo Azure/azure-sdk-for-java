@@ -1,5 +1,8 @@
 # Release History
 
+## 12.6.0-beta.1 (Unreleased)
+
+
 ## 12.5.0 (2020-03-11)
 - Fixed a bug where the EncryptedBlockClientBuilder.pipeline method would not allow the client to support decryption.
 - Added support for specifying a customer provided key.

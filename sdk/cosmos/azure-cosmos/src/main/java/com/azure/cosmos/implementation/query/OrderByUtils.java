@@ -29,6 +29,7 @@ class OrderByUtils {
                                                                               List<DocumentProducer<T>> documentProducers,
                                                                               Map<String, QueryMetrics> queryMetricsMap,
                                                                               Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap) {
+        @SuppressWarnings("unchecked")
         Flux<OrderByRowResult<T>>[] fluxes = documentProducers
                 .subList(0, documentProducers.size())
                 .stream()

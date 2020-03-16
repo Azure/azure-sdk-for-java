@@ -108,8 +108,8 @@ public class CosmosItemProperties extends Resource {
      * @return the object
      * @throws IOException the io exception
      */
-    public <T> T getObject(Class<?> klass) throws IOException {
-        return (T) MAPPER.readValue(this.toJson(), klass);
+    public <T> T getObject(Class<T> klass) throws IOException {
+        return MAPPER.readValue(this.toJson(), klass);
     }
 
 }

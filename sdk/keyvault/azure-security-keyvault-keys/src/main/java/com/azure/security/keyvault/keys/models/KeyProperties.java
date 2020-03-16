@@ -93,6 +93,20 @@ public class KeyProperties {
     private Boolean managed;
 
     /**
+     * The number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
+     */
+    @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer recoverableDays;
+
+    /**
+     * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
+     * @return the recoverable days.
+     */
+    public Integer getRecoverableDays() {
+        return recoverableDays;
+    }
+
+    /**
      * Get the recoveryLevel value.
      *
      * @return the recoveryLevel value
@@ -254,6 +268,7 @@ public class KeyProperties {
         this.recoveryLevel = (String) attributes.get("recoveryLevel");
         this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
         this.managed = (Boolean) lazyValueSelection(attributes.get("managed"), this.managed);
+        this.recoverableDays = (Integer) attributes.get("recoverableDays");
         unpackId((String) lazyValueSelection(attributes.get("id"), this.id));
     }
 

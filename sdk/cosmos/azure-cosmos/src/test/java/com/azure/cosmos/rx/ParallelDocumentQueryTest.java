@@ -300,6 +300,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" })
+    @SuppressWarnings("rawtypes")
     public void queryDocumentsArrayValue(){
         FeedOptions options = new FeedOptions();
 
@@ -539,6 +540,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
             testSubscriber.assertNoErrors();
             testSubscriber.assertComplete();
 
+            @SuppressWarnings("unchecked")
             FeedResponse<CosmosItemProperties> firstPage = (FeedResponse<CosmosItemProperties>) testSubscriber.getEvents().get(0).get(0);
             requestContinuation = firstPage.getContinuationToken();
             receivedDocuments.addAll(firstPage.getResults());

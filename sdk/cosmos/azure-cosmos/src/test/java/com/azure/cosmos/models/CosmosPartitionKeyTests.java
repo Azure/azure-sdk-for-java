@@ -244,7 +244,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .build();
         validateQuerySuccess(queryFlux.byPage(), queryValidator);
         CosmosItemResponseValidator deleteResponseValidator;
-        Mono<CosmosAsyncItemResponse> deleteMono =
+        Mono<CosmosAsyncItemResponse<Object>> deleteMono =
             createdContainer.deleteItem(upsertedItemId, PartitionKey.NONE);
         deleteResponseValidator =
             new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()

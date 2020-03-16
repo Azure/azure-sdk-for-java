@@ -330,7 +330,7 @@ public class LocationCacheTest {
         IntStream.range(0, 10)
                 .mapToObj(index -> this.endpointManager.refreshLocationAsync(null, false))
                 .collect(Collectors.toList());
-        for (Mono completable : list) {
+        for (Mono<Void> completable : list) {
             completable.block();
         }
 

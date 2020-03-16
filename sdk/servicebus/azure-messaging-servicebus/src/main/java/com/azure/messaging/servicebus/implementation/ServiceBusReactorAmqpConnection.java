@@ -8,6 +8,8 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
+import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
+import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnection;
@@ -15,11 +17,14 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.RetryUtil;
+import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
+import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
@@ -51,6 +56,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private final MessageSerializer messageSerializer;
     private final TokenCredential tokenCredential;
     private final Scheduler scheduler;
+    private final String fullyQualifiedNamespace;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -67,7 +73,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                                            TokenManagerProvider tokenManagerProvider,
                                            MessageSerializer messageSerializer, String product, String clientVersion) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
-            messageSerializer, product, clientVersion);
+            messageSerializer, product, clientVersion,
+            SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
+
         this.connectionId = connectionId;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
@@ -76,6 +84,8 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         this.messageSerializer = messageSerializer;
         this.tokenCredential = connectionOptions.getTokenCredential();
         this.scheduler = connectionOptions.getScheduler();
+        this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
+
     }
 
     @Override
@@ -91,6 +101,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
             return Mono.just(existing);
         }
 
+
         return getReactorConnection().then(
             Mono.fromCallable(() -> {
                 final ServiceBusManagementNode node = managementNodes.computeIfAbsent(entityPath, key -> {
@@ -101,10 +112,14 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                     logger.info("Creating management node. entityPath: [{}]. address: [{}]. linkName: [{}]",
                         entityPath, address, linkName);
 
+                    TokenManager cbsBasedTokenManager =  new AzureTokenManagerProvider(
+                        CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, fullyQualifiedNamespace, entityPath)
+                        .getTokenManager(getClaimsBasedSecurityNode(), entityPath);
+
                     final Mono<RequestResponseChannel> requestResponseChannel =
                         createRequestResponseChannel(sessionName, linkName, address);
-                    return new ManagementChannel(requestResponseChannel, entityPath, tokenCredential,
-                        tokenManagerProvider, messageSerializer, scheduler);
+                    return new ManagementChannel(requestResponseChannel, messageSerializer, scheduler,
+                        cbsBasedTokenManager);
                 });
 
                 return node;

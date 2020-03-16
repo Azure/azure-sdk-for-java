@@ -180,7 +180,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             ResourceResponse<Document> childResource = writeClient.createDocument(parentResource.getSelfLink(), documentDefinition, null, true).block();
             logger.info("Created {} child resource", childResource.getResource().getResourceId());
 
-            String token = childResource.getSessionToken().split(":")[0] + ":" + this.createSessionToken(SessionTokenHelper.parse(childResource.getSessionToken()), 100000000).convertToString();
+            String token = childResource.getSessionToken().split(":")[0] + ":" + ConsistencyTestsBase.createSessionToken(SessionTokenHelper.parse(childResource.getSessionToken()), 100000000).convertToString();
 
             FeedOptions feedOptions = new FeedOptions();
             feedOptions.setPartitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));

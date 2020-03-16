@@ -16,14 +16,19 @@ import static com.azure.messaging.servicebus.TestUtils.MESSAGE_TRACKING_ID;
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusSenderAsyncClient sender;
+    private ReceiveMessageOptions receiveMessageOptions;
 
     ServiceBusReceiverAsyncClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class));
+        receiveMessageOptions = new ReceiveMessageOptions().setAutoComplete(true);
     }
 
     @Override
     protected void beforeTest() {
         sender = createBuilder().buildAsyncSenderClient();
+        receiver = createBuilder()
+            .receiveMessageOptions(receiveMessageOptions)
+            .buildAsyncReceiverClient();
     }
 
     @Override
@@ -40,13 +45,50 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final String contents = "Some-contents";
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
-        final ReceiveMessageOptions options = new ReceiveMessageOptions().setAutoComplete(true);
-        receiver = createBuilder()
-            .receiveMessageOptions(options)
-            .buildAsyncReceiverClient();
 
         // Assert & Act
         StepVerifier.create(sender.send(message).thenMany(receiver.receive().take(1)))
+            .assertNext(receivedMessage -> {
+                Assertions.assertEquals(contents, receivedMessage.getBodyAsString());
+                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
+            })
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can send and peek a message.
+     */
+    @Test
+    void peekMessage() {
+        // Arrange
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+
+        // Assert & Act
+        StepVerifier.create(sender.send(message).then(receiver.peek()))
+            .assertNext(receivedMessage -> {
+                Assertions.assertEquals(contents, receivedMessage.getBodyAsString());
+                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
+            })
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can send and peek a message.
+     */
+    @Test
+    void peekFromSequencenumberMessage() {
+        // Arrange
+        final long fromSequenceNumber = 1;
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+
+        // Assert & Act
+        StepVerifier.create(sender.send(message).then(receiver.peek(fromSequenceNumber)))
             .assertNext(receivedMessage -> {
                 Assertions.assertEquals(contents, receivedMessage.getBodyAsString());
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));

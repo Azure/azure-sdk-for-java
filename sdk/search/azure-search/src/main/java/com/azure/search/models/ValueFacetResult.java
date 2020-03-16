@@ -11,29 +11,31 @@ import com.azure.core.annotation.Immutable;
  * falling within a particular interval or having a specific value.
  */
 @Immutable
-public class ValueFacetResult {
+public class ValueFacetResult<T> {
+    private static final String VALUE = "value";
     private final Long count;
-    private final Object value;
+    private final T value;
 
     /**
      * Constructor
      *
-     * @param facetResult facet result object
+     * @param count The approximate count of documents.
+     * @param value The value of the facet.
      */
-    public ValueFacetResult(FacetResult facetResult) {
-        this.count = facetResult.getCount();
-        this.value = facetResult.getAdditionalProperties().get("value");
+    public ValueFacetResult(Long count, T value) {
+        this.count = count;
+        this.value = value;
     }
 
     /**
-     * Constructor
+     * Constructor from {@link FacetResult}
      *
-     * @param count count
-     * @param value value
+     * @param facetResult {@link FacetResult}.
      */
-    public ValueFacetResult(Long count, Object value) {
-        this.count = count;
-        this.value = value;
+    @SuppressWarnings("unchecked")
+    public ValueFacetResult(FacetResult facetResult) {
+        this.count = facetResult.getCount();
+        this.value = (T) facetResult.getAdditionalProperties().get(VALUE);
     }
 
     /**
@@ -50,7 +52,7 @@ public class ValueFacetResult {
      *
      * @return value
      */
-    public Object getValue() {
+    public T getValue() {
         return value;
     }
 }

@@ -114,6 +114,8 @@ public class RxDocumentServiceResponse {
         return resource;
     }
 
+    @SuppressWarnings("unchecked")
+    // Given cls (where cls == Class<T>), objectNode is first decoded to cls and then casted to T.
     public <T extends Resource> List<T> getQueryResponse(Class<T> c) {
         byte[] responseBody = this.getResponseBodyAsByteArray();
         if (responseBody == null) {
