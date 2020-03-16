@@ -28,7 +28,7 @@ public class SecretClientTest extends SecretClientTestBase {
     @Override
     protected void beforeTest() {
         beforeTestSetup();
-
+        System.out.println("for test purpose");
         if (interceptorManager.isPlaybackMode()) {
             client = clientSetup(pipeline -> new SecretClientBuilder()
                 .pipeline(pipeline)
