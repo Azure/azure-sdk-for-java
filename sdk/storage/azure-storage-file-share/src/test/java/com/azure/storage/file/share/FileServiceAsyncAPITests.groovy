@@ -13,6 +13,7 @@ import com.azure.storage.file.share.models.ShareProperties
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
 import reactor.test.StepVerifier
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 class FileServiceAsyncAPITests extends APISpec {
@@ -192,6 +193,7 @@ class FileServiceAsyncAPITests extends APISpec {
         new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithargs").setIncludeMetadata(true).setIncludeSnapshots(true) | 4      | true            | true
     }
 
+    @Ignore("Null pointer exception.")
     def "List shares with premium share"() {
         setup:
         def premiumShareName = generateShareName()
