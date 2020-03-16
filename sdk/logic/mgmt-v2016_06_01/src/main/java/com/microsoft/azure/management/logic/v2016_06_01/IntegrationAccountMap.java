@@ -111,6 +111,9 @@ public interface IntegrationAccountMap extends HasInner<IntegrationAccountMapInn
         interface WithIntegrationAccount {
            /**
             * Specifies resourceGroupName, integrationAccountName.
+            * @param resourceGroupName The resource group name
+            * @param integrationAccountName The integration account name
+            * @return the next definition stage
             */
             WithMapType withExistingIntegrationAccount(String resourceGroupName, String integrationAccountName);
         }
@@ -121,6 +124,8 @@ public interface IntegrationAccountMap extends HasInner<IntegrationAccountMapInn
         interface WithMapType {
            /**
             * Specifies mapType.
+            * @param mapType The map type. Possible values include: 'NotSpecified', 'Xslt'
+            * @return the next definition stage
             */
             WithCreate withMapType(MapType mapType);
         }
@@ -131,6 +136,8 @@ public interface IntegrationAccountMap extends HasInner<IntegrationAccountMapInn
         interface WithContent {
             /**
              * Specifies content.
+             * @param content The content
+             * @return the next definition stage
              */
             WithCreate withContent(String content);
         }
@@ -141,6 +148,8 @@ public interface IntegrationAccountMap extends HasInner<IntegrationAccountMapInn
         interface WithContentType {
             /**
              * Specifies contentType.
+             * @param contentType The content type
+             * @return the next definition stage
              */
             WithCreate withContentType(String contentType);
         }
@@ -151,6 +160,8 @@ public interface IntegrationAccountMap extends HasInner<IntegrationAccountMapInn
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The resource location
+             * @return the next definition stage
              */
             WithCreate withLocation(String location);
         }
@@ -161,6 +172,8 @@ public interface IntegrationAccountMap extends HasInner<IntegrationAccountMapInn
         interface WithMetadata {
             /**
              * Specifies metadata.
+             * @param metadata The metadata
+             * @return the next definition stage
              */
             WithCreate withMetadata(Object metadata);
         }
@@ -171,6 +184,8 @@ public interface IntegrationAccountMap extends HasInner<IntegrationAccountMapInn
         interface WithParametersSchema {
             /**
              * Specifies parametersSchema.
+             * @param parametersSchema The parameters schema of integration account map
+             * @return the next definition stage
              */
             WithCreate withParametersSchema(IntegrationAccountMapPropertiesParametersSchema parametersSchema);
         }
@@ -181,6 +196,8 @@ public interface IntegrationAccountMap extends HasInner<IntegrationAccountMapInn
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -209,6 +226,8 @@ public interface IntegrationAccountMap extends HasInner<IntegrationAccountMapInn
         interface WithContent {
             /**
              * Specifies content.
+             * @param content The content
+             * @return the next update stage
              */
             Update withContent(String content);
         }
@@ -219,6 +238,8 @@ public interface IntegrationAccountMap extends HasInner<IntegrationAccountMapInn
         interface WithContentType {
             /**
              * Specifies contentType.
+             * @param contentType The content type
+             * @return the next update stage
              */
             Update withContentType(String contentType);
         }
@@ -229,6 +250,8 @@ public interface IntegrationAccountMap extends HasInner<IntegrationAccountMapInn
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The resource location
+             * @return the next update stage
              */
             Update withLocation(String location);
         }
@@ -239,6 +262,8 @@ public interface IntegrationAccountMap extends HasInner<IntegrationAccountMapInn
         interface WithMetadata {
             /**
              * Specifies metadata.
+             * @param metadata The metadata
+             * @return the next update stage
              */
             Update withMetadata(Object metadata);
         }
@@ -249,6 +274,8 @@ public interface IntegrationAccountMap extends HasInner<IntegrationAccountMapInn
         interface WithParametersSchema {
             /**
              * Specifies parametersSchema.
+             * @param parametersSchema The parameters schema of integration account map
+             * @return the next update stage
              */
             Update withParametersSchema(IntegrationAccountMapPropertiesParametersSchema parametersSchema);
         }
@@ -259,6 +286,8 @@ public interface IntegrationAccountMap extends HasInner<IntegrationAccountMapInn
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }

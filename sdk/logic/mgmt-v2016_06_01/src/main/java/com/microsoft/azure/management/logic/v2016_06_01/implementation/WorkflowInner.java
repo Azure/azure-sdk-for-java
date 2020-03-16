@@ -80,7 +80,9 @@ public class WorkflowInner extends Resource {
     private ResourceReference integrationAccount;
 
     /**
-     * The definition.
+     * The definition. See [Schema reference for Workflow Definition Language
+     * in Azure Logic
+     * Apps](https://aka.ms/logic-apps-workflow-definition-language).
      */
     @JsonProperty(value = "properties.definition")
     private Object definition;
@@ -197,7 +199,7 @@ public class WorkflowInner extends Resource {
     }
 
     /**
-     * Get the definition.
+     * Get the definition. See [Schema reference for Workflow Definition Language in Azure Logic Apps](https://aka.ms/logic-apps-workflow-definition-language).
      *
      * @return the definition value
      */
@@ -206,7 +208,7 @@ public class WorkflowInner extends Resource {
     }
 
     /**
-     * Set the definition.
+     * Set the definition. See [Schema reference for Workflow Definition Language in Azure Logic Apps](https://aka.ms/logic-apps-workflow-definition-language).
      *
      * @param definition the definition value to set
      * @return the WorkflowInner object itself.

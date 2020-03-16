@@ -78,10 +78,14 @@ class PartnersImpl extends WrapperImpl<PartnersInner> implements Partners {
     public Observable<IntegrationAccountPartner> getAsync(String resourceGroupName, String integrationAccountName, String partnerName) {
         PartnersInner client = this.inner();
         return client.getAsync(resourceGroupName, integrationAccountName, partnerName)
-        .map(new Func1<IntegrationAccountPartnerInner, IntegrationAccountPartner>() {
+        .flatMap(new Func1<IntegrationAccountPartnerInner, Observable<IntegrationAccountPartner>>() {
             @Override
-            public IntegrationAccountPartner call(IntegrationAccountPartnerInner inner) {
-                return wrapModel(inner);
+            public Observable<IntegrationAccountPartner> call(IntegrationAccountPartnerInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((IntegrationAccountPartner)wrapModel(inner));
+                }
             }
        });
     }
