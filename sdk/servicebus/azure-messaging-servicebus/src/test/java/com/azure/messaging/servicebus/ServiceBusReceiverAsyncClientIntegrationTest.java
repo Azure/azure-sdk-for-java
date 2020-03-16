@@ -49,9 +49,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(sender.send(message).thenMany(receiver.receive().take(1)))
             .assertNext(receivedMessage -> {
-                Assertions.assertEquals(contents, receivedMessage.getBodyAsString());
+                Assertions.assertEquals(contents, new String(receivedMessage.getBody()));
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
     }
@@ -69,9 +68,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(sender.send(message).then(receiver.peek()))
             .assertNext(receivedMessage -> {
-                Assertions.assertEquals(contents, receivedMessage.getBodyAsString());
+                Assertions.assertEquals(contents, new String(receivedMessage.getBody()));
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
     }
@@ -80,7 +78,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send and peek a message.
      */
     @Test
-    void peekFromSequencenumberMessage() {
+    void peekFromSequenceNumberMessage() {
         // Arrange
         final long fromSequenceNumber = 1;
         final String messageId = UUID.randomUUID().toString();
@@ -90,9 +88,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(sender.send(message).then(receiver.peek(fromSequenceNumber)))
             .assertNext(receivedMessage -> {
-                Assertions.assertEquals(contents, receivedMessage.getBodyAsString());
+                Assertions.assertEquals(contents, new String(receivedMessage.getBody()));
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
     }

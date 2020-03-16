@@ -47,12 +47,12 @@ import static org.mockito.Mockito.when;
 /**
  * Sample example showing how peek would work.
  */
-public class ServiceBusReceiverAsyncClientPeek {
+public class MessageReceiverAsyncClient {
     private static final String PAYLOAD = "hello";
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
     private static final int PREFETCH = 1;
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientPeek.class);
+    private final ClientLogger logger = new ClientLogger(MessageReceiverAsyncClient.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final DirectProcessor<org.apache.qpid.proton.message.Message> messageProcessor = DirectProcessor.create();
     private final DirectProcessor<Throwable> errorProcessor = DirectProcessor.create();

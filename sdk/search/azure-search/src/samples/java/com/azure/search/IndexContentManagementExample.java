@@ -65,8 +65,8 @@ public class IndexContentManagementExample {
             .buildClient();
 
         IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
-            .addMergeOrUploadAction(new Hotel().setHotelId("100"))
-            .addDeleteAction(new Hotel().setHotelId("200"));
+            .addMergeOrUploadActions(new Hotel().setHotelId("100"))
+            .addDeleteActions(new Hotel().setHotelId("200"));
 
         // Send a single batch that performs many different actions
         IndexDocumentsResult result = client.indexDocuments(batch);
