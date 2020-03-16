@@ -50,18 +50,6 @@ public final class SearchResult {
     }
 
     /**
-     * Set the additionalProperties property: Unmatched properties from the
-     * message are deserialized this collection.
-     *
-     * @param additionalProperties the additionalProperties value to set.
-     * @return the SearchResult object itself.
-     */
-    SearchResult setDocument(SearchDocument additionalProperties) {
-        this.additionalProperties = additionalProperties;
-        return this;
-    }
-
-    /**
      * Get the score property: The relevance score of the document compared to
      * other documents returned by the query.
      *
