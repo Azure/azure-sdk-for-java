@@ -25,10 +25,10 @@ public class RecognizePiiAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that needs be analyzed.
-        String text = "My SSN is 555-55-5555";
+        // The document that needs be analyzed.
+        String document = "My SSN is 555-55-5555";
 
-        client.recognizePiiEntities(text).subscribe(
+        client.recognizePiiEntities(document).subscribe(
             entity -> System.out.printf(
                 "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()),

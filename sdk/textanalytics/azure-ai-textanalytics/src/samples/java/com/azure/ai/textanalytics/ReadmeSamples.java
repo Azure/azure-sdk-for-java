@@ -96,7 +96,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for analyzing sentiment of a text.
+     * Code snippet for analyzing sentiment of a document.
      */
     public void analyzeSentiment() {
         String document = "The hotel was dark and unclean. I like microsoft.";
@@ -107,7 +107,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for detecting language in a text.
+     * Code snippet for detecting language in a document.
      */
     public void detectLanguages() {
         String document = "Bonjour tout le monde";
@@ -117,7 +117,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for recognizing category entity in a text.
+     * Code snippet for recognizing category entity in a document.
      */
     public void recognizeEntity() {
         String document = "Satya Nadella is the CEO of Microsoft";
@@ -127,7 +127,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for recognizing Personally Identifiable Information entity in a text.
+     * Code snippet for recognizing Personally Identifiable Information entity in a document.
      */
     public void recognizePiiEntity() {
         String document = "My SSN is 555-55-5555";
@@ -137,7 +137,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for recognizing linked entity in a text.
+     * Code snippet for recognizing linked entity in a document.
      */
     public void recognizeLinkedEntity() {
         String document = "Old Faithful is a geyser at Yellowstone Park.";
@@ -151,7 +151,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for extracting key phrases in a text.
+     * Code snippet for extracting key phrases in a document.
      */
     public void extractKeyPhrases() {
         String document = "My cat might need to see a veterinarian.";

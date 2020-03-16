@@ -23,10 +23,10 @@ public class RecognizeEntitiesAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that needs be analyzed.
-        String text = "Satya Nadella is the CEO of Microsoft";
+        // The document that needs be analyzed.
+        String document = "Satya Nadella is the CEO of Microsoft";
 
-        client.recognizeEntities(text).subscribe(
+        client.recognizeEntities(document).subscribe(
             entity -> System.out.printf(
                 "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()),

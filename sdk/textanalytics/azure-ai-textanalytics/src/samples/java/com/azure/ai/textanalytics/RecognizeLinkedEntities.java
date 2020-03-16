@@ -21,8 +21,8 @@ public class RecognizeLinkedEntities {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that needs be analyzed.
-        String text = "Old Faithful is a geyser at Yellowstone Park.";
+        // The document that needs be analyzed.
+        String document = "Old Faithful is a geyser at Yellowstone Park.";
 
         client.recognizeLinkedEntities(text).forEach(linkedEntity -> {
             System.out.println("Linked Entities:");
