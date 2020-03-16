@@ -242,7 +242,7 @@ public class ServiceBusReceiverAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(consumer.peekBatch(numberOfEvents, fromSequenceNumber))
-            .expectNextCount(numberOfEvents)
+            .expectNext(message1, message2)
             .verifyComplete();
     }
 

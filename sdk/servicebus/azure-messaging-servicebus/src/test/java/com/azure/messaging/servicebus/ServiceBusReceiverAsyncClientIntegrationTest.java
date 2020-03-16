@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.UUID;
@@ -110,8 +111,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         int maxMessages = 2;
 
         // Assert & Act
-        StepVerifier.create(sender.send(message)
-            .then(sender.send(message))
+        StepVerifier.create(Mono.when(sender.send(message), sender.send(message))
             .thenMany(receiver.peekBatch(maxMessages)))
             .expectNextCount(maxMessages)
             .verifyComplete();
@@ -129,8 +129,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         int fromSequenceNumber = 1;
 
         // Assert & Act
-        StepVerifier.create(sender.send(message)
-            .then(sender.send(message))
+        StepVerifier.create(Mono.when(sender.send(message), sender.send(message))
             .thenMany(receiver.peekBatch(maxMessages, fromSequenceNumber)))
             .expectNextCount(maxMessages)
             .verifyComplete();
