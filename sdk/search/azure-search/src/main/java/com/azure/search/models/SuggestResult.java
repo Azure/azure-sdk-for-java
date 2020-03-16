@@ -40,18 +40,6 @@ public final class SuggestResult {
     }
 
     /**
-     * Set the additionalProperties property: Unmatched properties from the
-     * message are deserialized this collection.
-     *
-     * @param additionalProperties the additionalProperties value to set.
-     * @return the SuggestResult object itself.
-     */
-    SuggestResult setDocument(SearchDocument additionalProperties) {
-        this.additionalProperties = additionalProperties;
-        return this;
-    }
-
-    /**
      * Get the text property: The text of the suggestion result.
      *
      * @return the text value.

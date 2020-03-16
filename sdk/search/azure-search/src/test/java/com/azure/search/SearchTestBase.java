@@ -16,7 +16,6 @@ import com.azure.search.models.SynonymMap;
 import com.azure.search.models.ValueFacetResult;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
-import org.unitils.reflectionassert.ReflectionComparatorMode;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -30,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.unitils.reflectionassert.ReflectionComparatorMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -46,6 +46,9 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
     static final String HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION = "HotelsDataArrayWithoutFr.json";
     private static final String SEARCH_SCORE_FIELD = "@search.score";
+    private static final String FACET_FROM = "from";
+    private static final String FACET_TO = "to";
+    private static final String FACET_VALUE = "value";
 
     protected List<Map<String, Object>> hotels;
 
@@ -70,17 +73,6 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         return documents;
     }
 
-    /**
-     * Drop fields that shouldn't be in the returned object
-     *
-     * @param map the map to drop items from
-     * @return the new map
-     */
-    static Map<String, Object> dropUnnecessaryFields(Map<String, Object> map) {
-        map.remove(SEARCH_SCORE_FIELD);
-        return map;
-    }
-
     boolean compareResults(List<Map<String, Object>> searchResults, List<Map<String, Object>> hotels) {
         Iterator<Map<String, Object>> searchIterator = searchResults.iterator();
         Iterator<Map<String, Object>> hotelsIterator = hotels.iterator();
@@ -100,7 +92,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         }
     }
 
-    void assertRangeFacets(List<RangeFacetResult> baseRateFacets, List<RangeFacetResult> lastRenovationDateFacets) {
+    <T> void assertRangeFacets(List<RangeFacetResult<T>> baseRateFacets, List<RangeFacetResult<T>> lastRenovationDateFacets) {
         assertNull(baseRateFacets.get(0).getFrom());
         assertEquals(5.0, baseRateFacets.get(0).getTo());
         assertEquals(5.0, baseRateFacets.get(1).getFrom());
@@ -124,17 +116,16 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         assertEquals(2, lastRenovationDateFacets.get(1).getCount().intValue());
     }
 
-    List<RangeFacetResult> getRangeFacetsForField(
+    <T> List<RangeFacetResult<T>> getRangeFacetsForField(
         Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
-        return facetCollection.stream().map(RangeFacetResult::new)
-            .collect(Collectors.toList());
+        return facetCollection.stream().map(RangeFacetResult<T>::new).collect(Collectors.toList());
     }
 
-    List<ValueFacetResult> getValueFacetsForField(
+    <T> List<ValueFacetResult<T>> getValueFacetsForField(
         Map<String, List<FacetResult>> facets, String expectedField, int expectedCount) {
         List<FacetResult> facetCollection = getFacetsForField(facets, expectedField, expectedCount);
-        return facetCollection.stream().map(ValueFacetResult::new)
+        return facetCollection.stream().map(ValueFacetResult<T>::new)
             .collect(Collectors.toList());
     }
 
@@ -155,7 +146,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
         assertEquals(expectedKeys, actualKeys);
     }
 
-    void assertValueFacetsEqual(List<ValueFacetResult> actualFacets, ArrayList<ValueFacetResult> expectedFacets) {
+    <T> void assertValueFacetsEqual(List<ValueFacetResult<T>> actualFacets, ArrayList<ValueFacetResult<T>> expectedFacets) {
         assertEquals(expectedFacets.size(), actualFacets.size());
         for (int i = 0; i < actualFacets.size(); i++) {
             assertEquals(expectedFacets.get(i).getCount(), actualFacets.get(i).getCount());

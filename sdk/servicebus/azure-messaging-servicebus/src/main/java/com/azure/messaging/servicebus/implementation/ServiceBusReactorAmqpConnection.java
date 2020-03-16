@@ -9,7 +9,6 @@ import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
-import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnection;
@@ -19,7 +18,6 @@ import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -27,7 +25,6 @@ import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -53,9 +50,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private final TokenManagerProvider tokenManagerProvider;
     private final AmqpRetryOptions retryOptions;
     private final MessageSerializer messageSerializer;
-    private final TokenCredential tokenCredential;
-    private final Scheduler scheduler;
-    private final String fullyQualifiedNamespace;
+    private final ConnectionOptions connectionOptions;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -66,6 +61,8 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
      * @param messageSerializer Serializes and deserializes proton-j messages.
+     * @param product The name of the product this connection is created for.
+     * @param clientVersion The version of the client library creating the connection.
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
@@ -80,9 +77,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         this.tokenManagerProvider = tokenManagerProvider;
         this.retryOptions = connectionOptions.getRetry();
         this.messageSerializer = messageSerializer;
-        this.tokenCredential = connectionOptions.getTokenCredential();
-        this.scheduler = connectionOptions.getScheduler();
-        this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
+        this.connectionOptions = connectionOptions;
     }
 
     @Override
@@ -101,8 +96,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         return getReactorConnection().then(
             Mono.defer(() -> {
                 final TokenManager tokenManager = new AzureTokenManagerProvider(
-                    CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, fullyQualifiedNamespace, entityPath)
-                    .getTokenManager(getClaimsBasedSecurityNode(), entityPath);
+                    connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
+                    ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE).getTokenManager(getClaimsBasedSecurityNode(),
+                    entityPath);
 
                 return tokenManager.authorize().thenReturn(managementNodes.compute(entityPath, (key, current) -> {
                     if (current != null) {
@@ -121,8 +117,8 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                         entityPath, address, linkName);
 
                     return new ManagementChannel(createRequestResponseChannel(sessionName, linkName, address),
-                        fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer, scheduler,
-                        retryOptions.getTryTimeout());
+                        connectionOptions.getFullyQualifiedNamespace(), entityPath, tokenManager, messageSerializer,
+                        connectionOptions.getScheduler(), retryOptions.getTryTimeout());
                 }));
             }));
     }

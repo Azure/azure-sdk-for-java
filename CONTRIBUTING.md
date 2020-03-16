@@ -77,6 +77,32 @@ mvn -f sdk/{projectForlderDir}/pom.xml -Dgpg.skip clean install
 
 //example: mvn -f sdk/keyvault/azure-security-keyvault-keys/pom.xml clean install
 ```
+### Live testing
+
+Live tests assume a live resource has been created and appropriate environment
+variables have been set for the test process. To automate setting up live
+resources we use created a script called `New-TestResources.ps1` that deploys
+resources for a given service.
+
+To see what resources will be deployed for a live service, check the
+`test-resources.json` ARM template files in the service you wish to deploy for
+testing, for example `sdk\keyvault\test-resources.json`.
+
+To deploy live resources for testing use the steps documented in [`Example 1 of New-TestResources.ps1`](eng/common/TestResources/New-TestResources.ps1.md#example-1)
+to set up a service principal and deploy live testing resources.
+
+The script will provide instructions for setting environment variables before
+running live tests.
+
+To run live tests against a service after deploying live resources:
+
+```
+mvn -f sdk/keyvault/pom.service.xml -Dmaven.wagon.http.pool=false --batch-mode --fail-at-end --settings eng/settings.xml test
+```
+
+Some live tests may have additional steps for setting up live testing resources.
+See the CONTRIBUTING.md file for the service you wish to test for additional
+information or instructions.
 
 ## Versions and versioning
 

@@ -1,7 +1,8 @@
 # Release History
 
-## 4.1.0-beta.1 (Unreleased)
-
+## 4.1.0-beta.1 (2020-03-10)
+- Added `recoverableDays` property to `CertificateProperties`.
+- Added support for `7.1-Preview` service version
 
 ## 4.0.0 (2020-01-07)
 - Update azure-core dependency to version 1.2.0.

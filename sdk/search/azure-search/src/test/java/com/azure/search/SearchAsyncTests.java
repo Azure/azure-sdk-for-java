@@ -147,8 +147,8 @@ public class SearchAsyncTests extends SearchTestBase {
 
         StepVerifier.create(results.byPage()).assertNext(res -> {
             Iterator<SearchResult> iterator = res.getElements().iterator();
-            assertEquals(expectedHotel1, dropUnnecessaryFields(iterator.next().getDocument()));
-            assertEquals(expectedHotel2, dropUnnecessaryFields(iterator.next().getDocument()));
+            assertEquals(expectedHotel1, iterator.next().getDocument());
+            assertEquals(expectedHotel2, iterator.next().getDocument());
             assertFalse(iterator.hasNext());
         }).verifyComplete();
     }
@@ -190,8 +190,8 @@ public class SearchAsyncTests extends SearchTestBase {
         Flux<SearchResult> results = client.search("*", searchOptions, generateRequestOptions()).log();
         assertNotNull(results);
         StepVerifier.create(results)
-            .assertNext(res -> TestHelpers.assertDocumentsEqual(dropUnnecessaryFields(res.getDocument()), expectedDocsList.get(0)))
-            .assertNext(res -> TestHelpers.assertDocumentsEqual(dropUnnecessaryFields(res.getDocument()), expectedDocsList.get(1)))
+            .assertNext(res -> TestHelpers.assertDocumentsEqual(res.getDocument(), expectedDocsList.get(0)))
+            .assertNext(res -> TestHelpers.assertDocumentsEqual(res.getDocument(), expectedDocsList.get(1)))
             .verifyComplete();
     }
 
@@ -272,8 +272,8 @@ public class SearchAsyncTests extends SearchTestBase {
                 assertContainHotelIds(hotels, res.getValue());
                 Map<String, List<FacetResult>> facets = res.getFacets();
                 assertNotNull(facets);
-                List<RangeFacetResult> baseRateFacets = getRangeFacetsForField(facets, "Rooms/BaseRate", 4);
-                List<RangeFacetResult> lastRenovationDateFacets = getRangeFacetsForField(
+                List<RangeFacetResult<Double>> baseRateFacets = getRangeFacetsForField(facets, "Rooms/BaseRate", 4);
+                List<RangeFacetResult<Double>> lastRenovationDateFacets = getRangeFacetsForField(
                     facets, "LastRenovationDate", 2);
                 assertRangeFacets(baseRateFacets, lastRenovationDateFacets);
             }).verifyComplete();
@@ -298,52 +298,52 @@ public class SearchAsyncTests extends SearchTestBase {
                 assertValueFacetsEqual(
                     getValueFacetsForField(facets, "Rating", 2),
                     new ArrayList<>(Arrays.asList(
-                        new ValueFacetResult(1L, 5),
-                        new ValueFacetResult(4L, 4))));
+                        new ValueFacetResult<Integer>(1L, 5),
+                        new ValueFacetResult<Integer>(4L, 4))));
 
                 assertValueFacetsEqual(
                     getValueFacetsForField(facets, "SmokingAllowed", 2),
                     new ArrayList<>(Arrays.asList(
-                        new ValueFacetResult(4L, false),
-                        new ValueFacetResult(2L, true))));
+                        new ValueFacetResult<Boolean>(4L, false),
+                        new ValueFacetResult<Boolean>(2L, true))));
 
                 assertValueFacetsEqual(
                     getValueFacetsForField(facets, "Category", 3),
                     new ArrayList<>(Arrays.asList(
-                        new ValueFacetResult(5L, "Budget"),
-                        new ValueFacetResult(1L, "Boutique"),
-                        new ValueFacetResult(1L, "Luxury"))));
+                        new ValueFacetResult<String>(5L, "Budget"),
+                        new ValueFacetResult<String>(1L, "Boutique"),
+                        new ValueFacetResult<String>(1L, "Luxury"))));
 
                 assertValueFacetsEqual(
                     getValueFacetsForField(facets, "LastRenovationDate", 6),
-                    new ArrayList<>(Arrays.asList(new ValueFacetResult(1L, OffsetDateTime.parse("1970-01-01T00:00:00Z")),
-                        new ValueFacetResult(1L, OffsetDateTime.parse("1982-01-01T00:00:00Z")),
-                        new ValueFacetResult(2L, OffsetDateTime.parse("1995-01-01T00:00:00Z")),
-                        new ValueFacetResult(1L, OffsetDateTime.parse("1999-01-01T00:00:00Z")),
-                        new ValueFacetResult(1L, OffsetDateTime.parse("2010-01-01T00:00:00Z")),
-                        new ValueFacetResult(1L, OffsetDateTime.parse("2012-01-01T00:00:00Z")))));
+                    new ArrayList<>(Arrays.asList(new ValueFacetResult<OffsetDateTime>(1L, OffsetDateTime.parse("1970-01-01T00:00:00Z")),
+                        new ValueFacetResult<OffsetDateTime>(1L, OffsetDateTime.parse("1982-01-01T00:00:00Z")),
+                        new ValueFacetResult<OffsetDateTime>(2L, OffsetDateTime.parse("1995-01-01T00:00:00Z")),
+                        new ValueFacetResult<OffsetDateTime>(1L, OffsetDateTime.parse("1999-01-01T00:00:00Z")),
+                        new ValueFacetResult<OffsetDateTime>(1L, OffsetDateTime.parse("2010-01-01T00:00:00Z")),
+                        new ValueFacetResult<OffsetDateTime>(1L, OffsetDateTime.parse("2012-01-01T00:00:00Z")))));
 
                 assertValueFacetsEqual(
                     getValueFacetsForField(facets, "Rooms/BaseRate", 4),
                     new ArrayList<>(Arrays.asList(
-                        new ValueFacetResult(1L, 2.44),
-                        new ValueFacetResult(1L, 7.69),
-                        new ValueFacetResult(1L, 8.09),
-                        new ValueFacetResult(1L, 9.69))));
+                        new ValueFacetResult<Double>(1L, 2.44),
+                        new ValueFacetResult<Double>(1L, 7.69),
+                        new ValueFacetResult<Double>(1L, 8.09),
+                        new ValueFacetResult<Double>(1L, 9.69))));
 
                 assertValueFacetsEqual(
                     getValueFacetsForField(facets, "Tags", 10),
                     new ArrayList<>(Arrays.asList(
-                        new ValueFacetResult(1L, "24-hour front desk service"),
-                        new ValueFacetResult(1L, "air conditioning"),
-                        new ValueFacetResult(4L, "budget"),
-                        new ValueFacetResult(1L, "coffee in lobby"),
-                        new ValueFacetResult(2L, "concierge"),
-                        new ValueFacetResult(1L, "motel"),
-                        new ValueFacetResult(2L, "pool"),
-                        new ValueFacetResult(1L, "restaurant"),
-                        new ValueFacetResult(1L, "view"),
-                        new ValueFacetResult(4L, "wifi"))));
+                        new ValueFacetResult<String>(1L, "24-hour front desk service"),
+                        new ValueFacetResult<String>(1L, "air conditioning"),
+                        new ValueFacetResult<String>(4L, "budget"),
+                        new ValueFacetResult<String>(1L, "coffee in lobby"),
+                        new ValueFacetResult<String>(2L, "concierge"),
+                        new ValueFacetResult<String>(1L, "motel"),
+                        new ValueFacetResult<String>(2L, "pool"),
+                        new ValueFacetResult<String>(1L, "restaurant"),
+                        new ValueFacetResult<String>(1L, "view"),
+                        new ValueFacetResult<String>(4L, "wifi"))));
 
             }).verifyComplete();
     }
@@ -367,7 +367,7 @@ public class SearchAsyncTests extends SearchTestBase {
         StepVerifier.create(results.byPage())
             .assertNext(res -> {
                 Iterator<SearchResult> iterator = res.getElements().iterator();
-                assertEquals(expectedResult, dropUnnecessaryFields(iterator.next().getDocument()));
+                assertEquals(expectedResult, iterator.next().getDocument());
                 assertFalse(iterator.hasNext());
             }).verifyComplete();
     }
@@ -393,7 +393,7 @@ public class SearchAsyncTests extends SearchTestBase {
                 res.getElements().forEach(item -> {
                     assertEquals(1, item.getScore(), 0);
                     assertNull(item.getHighlights());
-                    actualResults.add(dropUnnecessaryFields(item.getDocument()));
+                    actualResults.add(item.getDocument());
                 });
             }).verifyComplete();
 
@@ -578,7 +578,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         assertNotNull(results);
         StepVerifier.create(results)
-            .assertNext(res -> assertEquals(dropUnnecessaryFields(res.getDocument()), expectedHotel))
+            .assertNext(res -> assertEquals(res.getDocument(), expectedHotel))
             .verifyComplete();
     }
 
