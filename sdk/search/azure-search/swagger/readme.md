@@ -237,18 +237,7 @@ directive:
       transform: >-
           return $.replace(/(public FacetResult setAdditionalProperties)/g, "FacetResult setAdditionalProperties")
 
-    - from:
-          - SearchResult.java
-      where: $
-      transform: >-
-          return $.replace(/(public SearchResult setAdditionalProperties)/g, "SearchResult setAdditionalProperties")
-
-    - from:
-          - SuggestResult.java
-      where: $
-      transform: >-
-          return $.replace(/(public SuggestResult setAdditionalProperties)/g, "SuggestResult setAdditionalProperties")
-
+    # Remove setter for addition properties field
     - from:
           - SearchResult.java
           - SuggestResult.java
@@ -256,7 +245,7 @@ directive:
       transform: >-
           return $
           .replace(/(getAdditionalProperties)/g, "getDocument")
-          .replace(/(setAdditionalProperties)/g, "setDocument")
+          .replace(/(    \/\*\*\n     \* Set the additionalProperties property\: Unmatched properties from the\n     \* message are deserialized this collection\.\n     \*\n     \* \@param additionalProperties the additionalProperties value to set\.\n     \* \@return the .*Result object itself\.\n     \*\/\n    public .*Result setAdditionalProperties\(SearchDocument additionalProperties\) \{\n        this\.additionalProperties \= additionalProperties\;\n        return this\;\n    \}\n\n)/g, "")
       reason: Provides a better description of the getter/setter for addtionalProperties
 
     - from:
