@@ -56,8 +56,6 @@ public class EnvironmentCredential implements TokenCredential {
             throw logger.logExceptionAsError(new ClientAuthenticationException(
                 "EnvironmentCredential authentication unavailable. Environment variables are not fully configured.",
                 null));
-        }).flatMap(cred -> cred.getToken(request).onErrorResume(t -> {
-            throw logger.logExceptionAsError(new RuntimeException("ClientSecretCredential authentication failed.", t));
-    }));
+        }).flatMap(cred -> cred.getToken(request));
     }
 }

@@ -56,7 +56,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return (appServiceMSICredential != null
-        ? appServiceMSICredential.authenticate(request).onErrorResume(t->Mono.error(logger.logExceptionAsError(new RuntimeException("ManagedIdentityCredential authentication failed",t))))
+        ? appServiceMSICredential.authenticate(request)
         : virtualMachineMSICredential.authenticate(request).onErrorResume(t->Mono.error(logger.logExceptionAsError(new RuntimeException("ManagedIdentityCredential authentication unavailable. No managed identity endpoint found.",t)))));
     }
 }

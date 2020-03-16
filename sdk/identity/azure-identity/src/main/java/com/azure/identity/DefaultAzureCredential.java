@@ -13,7 +13,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Creates a credential using environment variables or the shared token cache. It tries to create a valid credential in
@@ -45,28 +44,18 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
             new SharedTokenCacheCredential(null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
                 identityClientOptions))));
     }
-
+    
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        final AtomicReference<Throwable> cause = new AtomicReference<>();
-        StringBuilder errorMsg = new StringBuilder();
+        final StringBuilder errorMsg = new StringBuilder();
         return Flux.fromIterable(credentials).flatMap(p -> p.getToken(request).onErrorResume(t -> {
             if (t.getMessage() != null && !t.getMessage().contains("authentication unavailable")) {
-                if (cause.get() != null) {
-                    t=new Throwable(t.getMessage(),cause.get());
-                }
-                cause.set(t);
+                throw new RuntimeException("DefaultAzureCredential authentication failed. -> "+p.getClass().getSimpleName()+"authentication failed.",t);
             }
             errorMsg.append(" ").append(t.getMessage());
             return Mono.empty();
         }), 1)
             .next()
-            .switchIfEmpty(Mono.defer(() -> { 
-                if(cause.get() == null){
-                   return Mono.error(new RuntimeException("DefaultAzureCredential failed to retrieve a token from the included credentials.("+errorMsg.toString()+" )"));
-                }else{
-                    return Mono.error(new RuntimeException("DefaultAzureCredential authentication failed. -> "+cause.get().getMessage(),cause.get().getCause()));
-                }
-            }));
+            .switchIfEmpty(Mono.defer(() -> Mono.error(new RuntimeException("DefaultAzureCredential failed to retrieve a token from the included credentials.("+errorMsg.toString()+" )"))));
     }
 }
