@@ -211,8 +211,8 @@ class AzureResource {
 
     private AzurePath validatePathInstanceType(Path path) {
         if (!(path instanceof AzurePath)) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException("This provider cannot operate on subtypes of "
-                + "Path other than AzurePath"));
+            throw LoggingUtility.logError(logger, new IllegalArgumentException("This provider cannot operate on " 
+                + "subtypes of Path other than AzurePath"));
         }
         return (AzurePath) path;
     }

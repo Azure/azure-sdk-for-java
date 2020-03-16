@@ -28,8 +28,8 @@ public final class AzureFileStore extends FileStore {
     AzureFileStore(AzureFileSystem parentFileSystem, String containerName) throws IOException {
         // A FileStore should only ever be created by a FileSystem.
         if (Objects.isNull(parentFileSystem)) {
-            throw LoggingUtility.logError(logger, new IllegalStateException("AzureFileStore cannot be instantiated without "
-                + "a parent FileSystem"));
+            throw LoggingUtility.logError(logger, new IllegalStateException("AzureFileStore cannot be instantiated "
+                + "without a parent FileSystem"));
         }
         this.parentFileSystem = parentFileSystem;
         this.containerClient = this.parentFileSystem.getBlobServiceClient().getBlobContainerClient(containerName);

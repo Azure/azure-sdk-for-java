@@ -79,13 +79,13 @@ public final class AzurePath implements Path {
              */
             if (i == 0) {
                 if (element.contains(ROOT_DIR_SUFFIX) && element.indexOf(ROOT_DIR_SUFFIX) < element.length() - 1) {
-                    throw LoggingUtility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX + " may"
-                        + " only be used as the last character in the root component of a path"));
+                    throw LoggingUtility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX
+                        + " may only be used as the last character in the root component of a path"));
                 }
             // No element besides the first may contain the ROOT_DIR_SUFFIX, as only the first element may be the root.
             } else if (element.contains(ROOT_DIR_SUFFIX)) {
-                throw LoggingUtility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX + " is an "
-                    + "invalid character except to identify the root element of this path if there is one."));
+                throw LoggingUtility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX
+                    + " is an invalid character except to identify the root element of this path if there is one."));
             }
         }
     }
@@ -175,7 +175,8 @@ public final class AzurePath implements Path {
     @Override
     public Path getName(int i) {
         if (i < 0 || i >= this.getNameCount()) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException(String.format("Index %d is out of bounds", i)));
+            throw LoggingUtility.logError(logger, new IllegalArgumentException(String.format("Index %d is out of "
+                + "bounds", i)));
         }
         // If the path is empty, the only valid option is also an empty path.
         if (this.pathString.isEmpty()) {
@@ -501,7 +502,8 @@ public final class AzurePath implements Path {
     @Override
     public int compareTo(Path path) {
         if (!(path instanceof AzurePath)) {
-            throw LoggingUtility.logError(logger, new ClassCastException("Other path is not an instance of AzurePath."));
+            throw LoggingUtility.logError(logger, new ClassCastException("Other path is not an instance of "
+                + "AzurePath."));
         }
 
         return this.pathString.compareTo(((AzurePath) path).pathString);

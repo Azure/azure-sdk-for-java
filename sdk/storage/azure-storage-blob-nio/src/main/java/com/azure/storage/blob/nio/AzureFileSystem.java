@@ -150,8 +150,8 @@ public final class AzureFileSystem extends FileSystem {
             // Initialize and ensure access to FileStores.
             this.fileStores = this.initializeFileStores(config);
         } catch (RuntimeException e) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException("There was an error parsing the configurations "
-                + "map. Please ensure all fields are set to a legal value of the correct type."));
+            throw LoggingUtility.logError(logger, new IllegalArgumentException("There was an error parsing the "
+                + "configurations map. Please ensure all fields are set to a legal value of the correct type."));
         } catch (IOException e) {
             throw LoggingUtility.logError(logger,
                 new IOException("Initializing FileStores failed. FileSystem could not be opened.", e));
@@ -331,8 +331,8 @@ public final class AzureFileSystem extends FileSystem {
         } else if (config.containsKey(AZURE_STORAGE_SAS_TOKEN)) {
             builder.sasToken((String) config.get(AZURE_STORAGE_SAS_TOKEN));
         } else {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException(String.format("No credentials were provided. "
-                    + "Please specify one of the following when constructing an AzureFileSystem: %s, %s.",
+            throw LoggingUtility.logError(logger, new IllegalArgumentException(String.format("No credentials were "
+                    + "provided. Please specify one of the following when constructing an AzureFileSystem: %s, %s.",
                 AZURE_STORAGE_ACCOUNT_KEY, AZURE_STORAGE_SAS_TOKEN)));
         }
 
@@ -362,7 +362,8 @@ public final class AzureFileSystem extends FileSystem {
     private Map<String, FileStore> initializeFileStores(Map<String, ?> config) throws IOException {
         String fileStoreNames = (String) config.get(AZURE_STORAGE_FILE_STORES);
         if (CoreUtils.isNullOrEmpty(fileStoreNames)) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException("The list of FileStores cannot be null."));
+            throw LoggingUtility.logError(logger, new IllegalArgumentException("The list of FileStores cannot be "
+                + "null."));
         }
 
         Map<String, FileStore> fileStores = new HashMap<>();
