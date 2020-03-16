@@ -32,9 +32,10 @@ public class BlobChangefeedAsyncClient {
             .buildAsyncClient();
     }
 
-    /* This is a temporary method to pass CI for now because this.client was not used anywhere. Will remove in next PR.
+    /**
+     * This is a temporary method to pass CI for now because this.client was not used anywhere. Will remove in next PR.
      */
-    void tempMethod() {
+    public void tempMethod() {
         this.client.create();
     }
 }
