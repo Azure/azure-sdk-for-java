@@ -31,8 +31,6 @@ public abstract class TestBase implements BeforeEachCallback {
     private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
-    public static final String AZURE_TEST_SERVICE_VERSIONS = "AZURE_TEST_SERVICE_VERSIONS";
-    public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
     private static TestMode testMode;
 

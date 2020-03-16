@@ -44,6 +44,8 @@ public abstract class KeyClientTestBase extends TestBase {
     private static final KeyType EC_KEY_TYPE = KeyType.EC;
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
+    private static final String AZURE_TEST_SERVICE_VERSIONS = "AZURE_KEYVAULT_KEYS_SERVICE_VERSIONS";
+    private static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
     @Override
     protected String getTestName() {
