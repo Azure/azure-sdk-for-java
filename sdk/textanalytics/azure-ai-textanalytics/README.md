@@ -130,20 +130,20 @@ The Text Analytics client library provides a [TextAnalyticsClient][text_analytic
 asynchronous operations to access a specific use of Text Analytics, such as language detection or key phrase extraction.
 
 ### Text input
-A **text input**, sometimes called a **document**, is a single unit of document to be analyzed by the predictive models
+A **text input**, also called a **document**, is a single unit of document to be analyzed by the predictive models
 in the Text Analytics service. Operations on Text Analytics client may take a single document or a collection
-of document to be analyzed as a batch. 
+of documents to be analyzed as a batch. 
 See [service limitations][service_input_limitation] for the input, including document length limits, maximum batch size,
 and supported text encoding.
 
 ### Return value
 An operation result, such as `AnalyzeSentimentResult`, is the result of a Text Analytics operation, containing a 
-prediction or predictions about a single text input. An operation's result type also may optionally include information
+prediction or predictions about a single document. An operation's result type also may optionally include information
 about the input document and how it was processed. An operation result contains a `isError` property that allows to
-identify if an operation executed was successful or unsuccessful for the given text input. When the operation results
+identify if an operation executed was successful or unsuccessful for the given document. When the operation results
 an error, you can simply call `getError()` to get `TextAnalyticsError` which contains the reason why it is unsuccessful. 
-If you are interested in how many characters in your document or number of operation transactions been going through,
-simply call `getStatistics()` to get the `TextDocumentStatistics` which contains both information.
+If you are interested in how many characters are in your document, or the number of operation transactions that have gone
+through, simply call `getStatistics()` to get the `TextDocumentStatistics` which contains both information.
 
 ### Return value collection
 An operation result collection, such as `DocumentResultCollection<AnalyzeSentimentResult>`, which is the collection of 
@@ -151,15 +151,15 @@ the result of a Text Analytics analyzing sentiment operation. `DocumentResultCol
 the operation and statistics of the batch documents. Since `DocumentResultCollection<T>` extends `IterableStream<T>`,
 the list of item can be retrieved by streaming or iterating the list.
 
-### Operation on multiple text inputs
-For each supported operation, the Text Analytics client provides method overloads to take a single text input, a batch 
-of text inputs as strings, or a batch of either `TextDocumentInput` or `DetectLanguageInput` objects. The overload 
+### Operation on multiple documents
+For each supported operation, the Text Analytics client provides method overloads to take a single document, a batch 
+of documents as strings, or a batch of either `TextDocumentInput` or `DetectLanguageInput` objects. The overload 
 taking the `TextDocumentInput` or `DetectLanguageInput` batch allows callers to give each document a unique ID, 
 indicate that the documents in the batch are written in different languages, or provide a country hint about the 
 language of the document.
 
 **Note**: It is recommended to use the batch methods when working on production environments as they allow you to send one 
-request with multiple text inputs. This is more performant than sending a request per each text input.
+request with multiple documents. This is more performance than sending a request per each document.
 
 The following are types of text analysis that the service offers:
 
@@ -274,7 +274,7 @@ System.out.println("Extracted phrases:");
 textAnalyticsClient.extractKeyPhrases(document).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
 ```
 
-Above examples are introduced as the single document examples.
+The above examples cover the scenario of having a single document as input.
 For more examples, such as batch operation, refer to [here][samples_readme].
 
 ## Troubleshooting

@@ -97,7 +97,7 @@ public final class TextAnalyticsClient {
      *
      * @return The {@link DetectedLanguage detected language} of the document.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code document} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectedLanguage detectLanguage(String document) {
@@ -121,7 +121,7 @@ public final class TextAnalyticsClient {
      *
      * @return The {@link DetectedLanguage detected language} of the document.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code document} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectedLanguage detectLanguage(String document, String countryHint) {
@@ -129,7 +129,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Detects Language for a batch of input.
+     * Detects Language for a batch of documents.
      *
      * This method will use the default country hint that sets up in
      * {@link TextAnalyticsClientBuilder#defaultCountryHint(String)}. If none is specified, service will use 'US' as
@@ -213,7 +213,7 @@ public final class TextAnalyticsClient {
      * request options.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguageBatch#Iterable-TextAnalyticsRequestOptions-Context}
      *
-     * @param documents The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
+     * @param documents The list of {@link DetectLanguageInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -253,7 +253,7 @@ public final class TextAnalyticsClient {
      * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link CategorizedEntity recognized categorized entities}.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -279,7 +279,7 @@ public final class TextAnalyticsClient {
      * @return The {@link TextAnalyticsPagedIterable} contains a list of
      * {@link CategorizedEntity recognized categorized entities}.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -372,7 +372,7 @@ public final class TextAnalyticsClient {
      * request options.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context}
      *
-     * @param documents A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
+     * @param documents A list of {@link TextDocumentInput documents} to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -414,7 +414,7 @@ public final class TextAnalyticsClient {
      * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link PiiEntity Personally Identifiable Information entities}.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -443,7 +443,7 @@ public final class TextAnalyticsClient {
      * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link PiiEntity Personally Identifiable Information entities}.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -551,7 +551,7 @@ public final class TextAnalyticsClient {
      * {@link TextDocumentInput}.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context}
      *
-     * @param documents A list of {@link TextDocumentInput inputs/documents} to recognize
+     * @param documents A list of {@link TextDocumentInput documents} to recognize
      * Personally Identifiable Information entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
@@ -592,7 +592,7 @@ public final class TextAnalyticsClient {
      * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link LinkedEntity recognized linked entities}.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -619,7 +619,7 @@ public final class TextAnalyticsClient {
      * @return A {@link TextAnalyticsPagedIterable} contains a list of
      * {@link LinkedEntity recognized linked entities}.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -723,7 +723,7 @@ public final class TextAnalyticsClient {
      * </p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context}
      *
-     * @param documents A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
+     * @param documents A list of {@link TextDocumentInput documents} to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -761,7 +761,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link TextAnalyticsPagedIterable} contains a list of extracted key phrases.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -785,7 +785,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link TextAnalyticsPagedIterable} contains a list of extracted key phrases.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -883,7 +883,7 @@ public final class TextAnalyticsClient {
      * <p>Extracts key phrases with http response in a list of {@link TextDocumentInput} with request options.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#Iterable-TextAnalyticsRequestOptions-Context}
      *
-     * @param documents A list of {@link TextDocumentInput inputs/documents} to be analyzed.
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -921,7 +921,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link DocumentSentiment analyzed document sentiment} of the document.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -945,7 +945,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link DocumentSentiment analyzed document sentiment} of the document.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1040,7 +1040,7 @@ public final class TextAnalyticsClient {
      * options.</p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-TextAnalyticsRequestOptions-Context}
      *
-     * @param documents A list of {@link TextDocumentInput inputs/documents} to be analyzed.
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents

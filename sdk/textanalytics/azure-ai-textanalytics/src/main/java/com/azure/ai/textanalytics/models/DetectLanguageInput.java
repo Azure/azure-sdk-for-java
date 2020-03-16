@@ -28,7 +28,7 @@ public final class DetectLanguageInput {
     private final String countryHint;
 
     /**
-     * Creates an input for detect language that will takes {@code id} and {@code text} as required inputs.
+     * Creates an input for detect language that will takes {@code id} and {@code document} as required inputs.
      *
      * @param id Unique, non-empty document identifier.
      * @param text The text property.
@@ -38,7 +38,7 @@ public final class DetectLanguageInput {
     }
 
     /**
-     * Creates an input for detect language that will takes {@code id}, {@code text} and {@code countryHint}.
+     * Creates an input for detect language that will takes {@code id}, {@code document} and {@code countryHint}.
      *
      * @param id Unique, non-empty document identifier.
      * @param text The text property.

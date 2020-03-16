@@ -76,9 +76,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      */
     public void detectLanguageWithCountryHint() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string-string
-        String input = "This text is in English";
+        String document = "This text is in English";
         String countryHint = "US";
-        textAnalyticsAsyncClient.detectLanguage(input, countryHint).subscribe(detectedLanguage ->
+        textAnalyticsAsyncClient.detectLanguage(document, countryHint).subscribe(detectedLanguage ->
             System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %f.%n",
                 detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore()));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string-string

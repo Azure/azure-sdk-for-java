@@ -32,7 +32,7 @@ final class Transforms {
     }
 
     /**
-     * Given a list of inputs will apply the indexing function to it and return the updated list.
+     * Given a list of documents will apply the indexing function to it and return the updated list.
      *
      * @param documents the inputs to apply the mapping function to.
      * @param mappingFunction the function which applies the index to the incoming input value.
