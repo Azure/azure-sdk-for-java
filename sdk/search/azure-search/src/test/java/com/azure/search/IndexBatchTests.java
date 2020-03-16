@@ -30,7 +30,7 @@ public class IndexBatchTests {
             .actions(Collections.singletonList(indexAction));
 
         IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
-            .addUploadAction(searchDocument);
+            .addUploadActions(searchDocument);
 
         validate(expected, actual);
     }
@@ -55,7 +55,7 @@ public class IndexBatchTests {
             .actions(indexActions);
 
         IndexDocumentsBatch<SearchDocument> actualBatch = new IndexDocumentsBatch<SearchDocument>()
-            .addUploadAction(docs);
+            .addUploadActions(docs);
 
         validate(expectedBatch, actualBatch);
     }
@@ -73,7 +73,7 @@ public class IndexBatchTests {
             .actions(Collections.singletonList(indexAction));
 
         IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
-            .addMergeAction(searchDocument);
+            .addMergeActions(searchDocument);
 
         validate(expected, actual);
     }
@@ -98,7 +98,7 @@ public class IndexBatchTests {
             .actions(indexActions);
 
         IndexDocumentsBatch<SearchDocument> actualBatch = new IndexDocumentsBatch<SearchDocument>()
-            .addMergeAction(docs);
+            .addMergeActions(docs);
 
         validate(expectedBatch, actualBatch);
     }
@@ -116,7 +116,7 @@ public class IndexBatchTests {
             .actions(Collections.singletonList(indexAction));
 
         IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
-            .addMergeOrUploadAction(searchDocument);
+            .addMergeOrUploadActions(searchDocument);
 
         validate(expected, actual);
     }
@@ -141,7 +141,7 @@ public class IndexBatchTests {
             .actions(indexActions);
 
         IndexDocumentsBatch<SearchDocument> actualBatch = new IndexDocumentsBatch<SearchDocument>()
-            .addMergeOrUploadAction(docs);
+            .addMergeOrUploadActions(docs);
 
         validate(expectedBatch, actualBatch);
     }
@@ -159,7 +159,7 @@ public class IndexBatchTests {
             .actions(Collections.singletonList(indexAction));
 
         IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
-            .addDeleteAction(searchDocument);
+            .addDeleteActions(searchDocument);
 
         validate(expected, actual);
     }
@@ -184,7 +184,7 @@ public class IndexBatchTests {
             .actions(indexActions);
 
         IndexDocumentsBatch<SearchDocument> actualBatch = new IndexDocumentsBatch<SearchDocument>()
-            .addDeleteAction(docs);
+            .addDeleteActions(docs);
 
         validate(expectedBatch, actualBatch);
     }
@@ -223,10 +223,10 @@ public class IndexBatchTests {
             .actions(Arrays.asList(mergeAction, mergeOrUploadAction, deleteAction, uploadAction));
 
         IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
-            .addMergeAction(documentToMerge)
-            .addMergeOrUploadAction(documentToMergeOrUpload)
-            .addDeleteAction(documentToDelete)
-            .addUploadAction(documentToUpload);
+            .addMergeActions(documentToMerge)
+            .addMergeOrUploadActions(documentToMergeOrUpload)
+            .addDeleteActions(documentToDelete)
+            .addUploadActions(documentToUpload);
 
         validate(expected, actual);
     }
@@ -320,10 +320,10 @@ public class IndexBatchTests {
             );
 
         IndexDocumentsBatch<SearchDocument> actual = new IndexDocumentsBatch<SearchDocument>()
-            .addMergeAction(documentsToMerge)
-            .addMergeOrUploadAction(documentsToMergeOrUpload)
-            .addDeleteAction(documentsToDelete)
-            .addUploadAction(documentsToUpload);
+            .addMergeActions(documentsToMerge)
+            .addMergeOrUploadActions(documentsToMergeOrUpload)
+            .addDeleteActions(documentsToDelete)
+            .addUploadActions(documentsToUpload);
 
         validate(expected, actual);
     }

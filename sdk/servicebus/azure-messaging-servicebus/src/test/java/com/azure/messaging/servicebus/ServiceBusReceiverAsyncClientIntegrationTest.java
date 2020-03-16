@@ -52,7 +52,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .assertNext(receivedMessage -> {
                 Assertions.assertEquals(contents, new String(receivedMessage.getBody()));
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
     }
@@ -72,7 +71,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .assertNext(receivedMessage -> {
                 Assertions.assertEquals(contents, new String(receivedMessage.getBody()));
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
     }
@@ -81,7 +79,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send and peek a message.
      */
     @Test
-    void peekFromSequencenumberMessage() {
+    void peekFromSequenceNumberMessage() {
         // Arrange
         final long fromSequenceNumber = 1;
         final String messageId = UUID.randomUUID().toString();
@@ -93,7 +91,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .assertNext(receivedMessage -> {
                 Assertions.assertEquals(contents, new String(receivedMessage.getBody()));
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
     }

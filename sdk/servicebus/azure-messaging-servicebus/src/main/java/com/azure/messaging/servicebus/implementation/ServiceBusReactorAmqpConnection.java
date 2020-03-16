@@ -9,12 +9,14 @@ import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
+import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.RetryUtil;
+import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
@@ -24,6 +26,7 @@ import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -49,7 +52,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private final TokenManagerProvider tokenManagerProvider;
     private final AmqpRetryOptions retryOptions;
     private final MessageSerializer messageSerializer;
-    private final ConnectionOptions connectionOptions;
+    private final Scheduler scheduler;
+    private final String fullyQualifiedNamespace;
+    private final CbsAuthorizationType authorizationType;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -62,24 +67,25 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param messageSerializer Serializes and deserializes proton-j messages.
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
-                                           ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
-                                           TokenManagerProvider tokenManagerProvider,
-                                           MessageSerializer messageSerializer, String product, String clientVersion) {
+        ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
+        String clientVersion) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
-            messageSerializer, product, clientVersion,
-            SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
+            messageSerializer, product, clientVersion, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
         this.connectionId = connectionId;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = tokenManagerProvider;
+        this.authorizationType = connectionOptions.getAuthorizationType();
         this.retryOptions = connectionOptions.getRetry();
         this.messageSerializer = messageSerializer;
-        this.connectionOptions = connectionOptions;
+        this.scheduler = connectionOptions.getScheduler();
+        this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
     }
 
     @Override
-    public Mono<ServiceBusManagementNode> getManagementNode(String entityPath) {
+    public Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType) {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
                 "connectionId[%s]: Connection is disposed. Cannot get management instance for '%s'",
@@ -91,10 +97,21 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
             return Mono.just(existing);
         }
 
-
         return getReactorConnection().then(
-            Mono.fromCallable(() -> {
-                final ServiceBusManagementNode node = managementNodes.computeIfAbsent(entityPath, key -> {
+            Mono.defer(() -> {
+                final TokenManager tokenManager = new AzureTokenManagerProvider(authorizationType,
+                    fullyQualifiedNamespace, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE)
+                    .getTokenManager(getClaimsBasedSecurityNode(), entityPath);
+
+                return tokenManager.authorize().thenReturn(managementNodes.compute(entityPath, (key, current) -> {
+                    if (current != null) {
+                        logger.info("A management node exists already, returning it.");
+
+                        // Close the token manager we had created during this because it is unneeded now.
+                        tokenManager.close();
+                        return current;
+                    }
+
                     final String sessionName = entityPath + "-" + MANAGEMENT_SESSION_NAME;
                     final String linkName = entityPath + "-" + MANAGEMENT_LINK_NAME;
                     final String address = entityPath + "/" + MANAGEMENT_ADDRESS;
@@ -102,16 +119,10 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                     logger.info("Creating management node. entityPath: [{}]. address: [{}]. linkName: [{}]",
                         entityPath, address, linkName);
 
-                    final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                        connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-                        ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE);
-
                     return new ManagementChannel(createRequestResponseChannel(sessionName, linkName, address),
-                        messageSerializer, connectionOptions.getScheduler(), tokenManagerProvider.getTokenManager(
-                            getClaimsBasedSecurityNode(), entityPath));
-                });
-
-                return node;
+                        fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer, scheduler,
+                        retryOptions.getTryTimeout());
+                }));
             }));
     }
 
@@ -122,6 +133,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param retryOptions Options to use when creating the link.
+     *
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     @Override
@@ -142,17 +154,19 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param receiveMode Consumer options to use when creating the link.
+     *
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode) {
+    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
+        boolean isSession, String transferEntityPath, MessagingEntityType entityType) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
                 logger.verbose("Get or create consumer for path: '{}'", entityPath);
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-                return session.createConsumer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy,
-                    receiveMode);
+                return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
+                    retryPolicy, receiveMode, isSession);
             });
     }
 

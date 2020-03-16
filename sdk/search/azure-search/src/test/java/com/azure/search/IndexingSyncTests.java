@@ -105,7 +105,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         assertEquals(2, client.getDocumentCount());
 
         IndexDocumentsBatch<Hotel> deleteBatch = new IndexDocumentsBatch<Hotel>()
-            .addDeleteAction("HotelId", "1", "2");
+            .addDeleteActions("HotelId", "1", "2");
 
         IndexDocumentsResult documentIndexResult = client.indexDocuments(deleteBatch);
         waitForIndexing();
@@ -179,11 +179,11 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         Hotel randomHotel = prepareStaticallyTypedHotel("randomId"); // deleting a non existing document
 
         IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
-            .addUploadAction(hotel1)
-            .addDeleteAction(randomHotel)
-            .addMergeAction(nonExistingHotel)
-            .addMergeOrUploadAction(hotel3)
-            .addUploadAction(hotel2);
+            .addUploadActions(hotel1)
+            .addDeleteActions(randomHotel)
+            .addMergeActions(nonExistingHotel)
+            .addMergeOrUploadActions(hotel3)
+            .addUploadActions(hotel2);
 
         try {
             client.indexDocuments(batch);
@@ -223,11 +223,11 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         SearchDocument randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
         IndexDocumentsBatch<SearchDocument> batch = new IndexDocumentsBatch<SearchDocument>()
-            .addUploadAction(hotel1)
-            .addDeleteAction(randomHotel)
-            .addMergeAction(nonExistingHotel)
-            .addMergeOrUploadAction(hotel3)
-            .addUploadAction(hotel2);
+            .addUploadActions(hotel1)
+            .addDeleteActions(randomHotel)
+            .addMergeActions(nonExistingHotel)
+            .addMergeOrUploadActions(hotel3)
+            .addUploadActions(hotel2);
 
         try {
             client.indexDocuments(batch);
@@ -791,8 +791,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
             .hotelId("4"));
 
         IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
-            .addUploadAction(hotelsToUpload)
-            .addMergeOrUploadAction(hotelsToMergeOrUpload);
+            .addUploadActions(hotelsToUpload)
+            .addMergeOrUploadActions(hotelsToMergeOrUpload);
 
         Response<IndexDocumentsResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload, Context.NONE);
         waitForIndexing();
