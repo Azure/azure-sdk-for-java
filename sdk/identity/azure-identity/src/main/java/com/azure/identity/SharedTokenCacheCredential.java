@@ -87,16 +87,16 @@ public class SharedTokenCacheCredential implements TokenCredential {
                     if (username == null) {
                         return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. No accounts were discovered in the cache."));
                     } else {
-                        return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential authentication unavailable. User account '%s' was not found in the "
-                            + "cache.", username)));
+                        return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential authentication unavailable. No account "
+                            + "matching the specified %s was found in the cache.", username)));
                     }
                 } else if (accounts.size() > 1) {
                     if (username == null) {
                         return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. "
                             + "Multiple accounts were found in the cache. Use username and tenant id to disambiguate."));
                     } else {
-                        return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. Multiple entries for the user account " + username
-                            + " were found in the shared token cache."));
+                        return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. Multiple accounts atching the specified " + username
+                            + " were found in the cache."));
                     }
                 } else {
                     requestedAccount = accounts.values().iterator().next();
