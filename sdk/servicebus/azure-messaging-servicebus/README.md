@@ -94,9 +94,9 @@ as the `Azure Service Bus Data Owner` role. For more information about using Azu
 with Service Bus, please refer to [the associated documentation][aad_authorization].
 
 ## Key concepts
-#### Queues
-#### Topics
-#### Subscriber
+### Queues
+### Topics
+### Subscriber
 
 ## Examples
 ### Create a sender or receiver using connection string
