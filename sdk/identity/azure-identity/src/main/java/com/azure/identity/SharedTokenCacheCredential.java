@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 /**
  * A credential provider that provides token credentials from the MSAL shared token cache.
@@ -86,21 +85,18 @@ public class SharedTokenCacheCredential implements TokenCredential {
 
                 if (accounts.size() == 0) {
                     if (username == null) {
-                        return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. No accounts were discovered in the shared token cache."));
+                        return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. No accounts were discovered in the cache."));
                     } else {
                         return Mono.error(new RuntimeException(String.format("SharedTokenCacheCredential authentication unavailable. User account '%s' was not found in the "
-                            + "shared token cache. Discovered Accounts: [ '%s' ]", username, set.stream()
-                            .map(IAccount::username).distinct().collect(Collectors.joining(", ")))));
+                            + "cache.", username)));
                     }
                 } else if (accounts.size() > 1) {
                     if (username == null) {
-                        return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. Multiple accounts were discovered in the shared token "
-                            + "cache. To fix, set the AZURE_USERNAME and AZURE_TENANT_ID environment variable to the "
-                            + "preferred username, or specify it when constructing SharedTokenCacheCredential."));
+                        return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. "
+                            + "Multiple accounts were found in the cache. Use username and tenant id to disambiguate."));
                     } else {
                         return Mono.error(new RuntimeException("SharedTokenCacheCredential authentication unavailable. Multiple entries for the user account " + username
-                            + " were found in the shared token cache. This is not currently supported by the"
-                            + " SharedTokenCacheCredential."));
+                            + " were found in the shared token cache."));
                     }
                 } else {
                     requestedAccount = accounts.values().iterator().next();
