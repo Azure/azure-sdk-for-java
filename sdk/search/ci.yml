@@ -37,10 +37,9 @@ pr:
       - sdk/search/mgmt-
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml  
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: search
-      SDKType: client
       Artifacts:
         - name: azure-search
           groupId: com.azure

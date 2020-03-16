@@ -45,7 +45,6 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 
-
 /**
  * Client to a file system. It may only be instantiated through a {@link DataLakeFileSystemClientBuilder} or via the
  * method {@link DataLakeServiceAsyncClient#getFileSystemAsyncClient(String)}. This class does not hold any state about
@@ -59,7 +58,9 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
  * {@link DataLakeServiceAsyncClient}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>
+ * Please refer to the
+ *
+ * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">
  *     Azure Docs</a> for more information on file systems.
  *
  * <p>
@@ -74,10 +75,6 @@ public class DataLakeFileSystemAsyncClient {
     public static final String ROOT_FILESYSTEM_NAME = "$root";
 
     private static final String ROOT_DIRECTORY_NAME = "";
-
-//    public static final String STATIC_WEBSITE_FILESYSTEM_NAME = "$web";
-
-//    public static final String LOG_FILESYSTEM_NAME = "$logs";
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileSystemAsyncClient.class);
     private final DataLakeStorageClientImpl azureDataLakeStorage;
@@ -172,7 +169,7 @@ public class DataLakeFileSystemAsyncClient {
      * @return A new {@link DataLakeDirectoryAsyncClient} object which references the root directory
      * in this file system.
      */
-    public DataLakeDirectoryAsyncClient getRootDirectoryAsyncClient() {
+    DataLakeDirectoryAsyncClient getRootDirectoryAsyncClient() {
         return getDirectoryAsyncClient(DataLakeFileSystemAsyncClient.ROOT_DIRECTORY_NAME);
     }
 

@@ -38,29 +38,22 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: core
-      SDKType: client
       Artifacts:
         - name: azure-core
           groupId: com.azure
           safeName: azurecore
-          stagingProfileId: 88192f04117501
         - name: azure-core-amqp
           groupId: com.azure
           safeName: azurecoreamqp
-          stagingProfileId: 88192f04117501
         - name: azure-core-http-netty
           groupId: com.azure
           safeName: azurecorehttpnetty
-          stagingProfileId: 88192f04117501
         - name: azure-core-http-okhttp
           groupId: com.azure
           safeName: azurecorehttpokhttp
-          stagingProfileId: 88192f04117501
         - name: azure-core-test
           groupId: com.azure
           safeName: azurecoretest
-          stagingProfileId: 88192f04117501
         - name: azure-core-tracing-opentelemetry
           groupId: com.azure
           safeName: azurecoretracingopentelemetry
-          stagingProfileId: 88192f04117501

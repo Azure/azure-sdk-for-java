@@ -82,41 +82,22 @@ class AccountsImpl extends GroupableResourcesCoreImpl<CognitiveServicesAccount, 
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<CognitiveServicesAccountInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AccountsInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<CognitiveServicesAccountInner>, Observable<Page<CognitiveServicesAccountInner>>>() {
-            @Override
-            public Observable<Page<CognitiveServicesAccountInner>> call(Page<CognitiveServicesAccountInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<CognitiveServicesAccount> listByResourceGroupAsync(String resourceGroupName) {
         AccountsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<CognitiveServicesAccountInner>, Observable<Page<CognitiveServicesAccountInner>>>() {
-            @Override
-            public Observable<Page<CognitiveServicesAccountInner>> call(Page<CognitiveServicesAccountInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<CognitiveServicesAccountInner>, Iterable<CognitiveServicesAccountInner>>() {
             @Override
             public Iterable<CognitiveServicesAccountInner> call(Page<CognitiveServicesAccountInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<CognitiveServicesAccountInner, CognitiveServicesAccount>() {
             @Override
             public CognitiveServicesAccount call(CognitiveServicesAccountInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -125,41 +106,22 @@ class AccountsImpl extends GroupableResourcesCoreImpl<CognitiveServicesAccount, 
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<CognitiveServicesAccountInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AccountsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<CognitiveServicesAccountInner>, Observable<Page<CognitiveServicesAccountInner>>>() {
-            @Override
-            public Observable<Page<CognitiveServicesAccountInner>> call(Page<CognitiveServicesAccountInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<CognitiveServicesAccount> listAsync() {
         AccountsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<CognitiveServicesAccountInner>, Observable<Page<CognitiveServicesAccountInner>>>() {
-            @Override
-            public Observable<Page<CognitiveServicesAccountInner>> call(Page<CognitiveServicesAccountInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<CognitiveServicesAccountInner>, Iterable<CognitiveServicesAccountInner>>() {
             @Override
             public Iterable<CognitiveServicesAccountInner> call(Page<CognitiveServicesAccountInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<CognitiveServicesAccountInner, CognitiveServicesAccount>() {
             @Override
             public CognitiveServicesAccount call(CognitiveServicesAccountInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

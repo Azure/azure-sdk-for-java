@@ -22,6 +22,7 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
+import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.util.Locale;
@@ -71,7 +72,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final MessageSerializer messageSerializer;
     private final String consumerGroup;
     private final int prefetchCount;
+    private final Scheduler scheduler;
     private final boolean isSharedConnection;
+    private final Runnable onClientClosed;
     /**
      * Keeps track of the open partition consumers keyed by linkName. The link name is generated as: {@code
      * "partitionId_GUID"}. For receiving from all partitions, links are prefixed with {@code "all-GUID-partitionId"}.
@@ -81,14 +84,16 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
-        int prefetchCount, boolean isSharedConnection) {
+        int prefetchCount, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClosed) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connectionProcessor = connectionProcessor;
         this.messageSerializer = messageSerializer;
         this.consumerGroup = consumerGroup;
         this.prefetchCount = prefetchCount;
+        this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
+        this.onClientClosed = onClientClosed;
     }
 
     /**
@@ -313,7 +318,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
         openPartitionConsumers.forEach((key, value) -> value.close());
         openPartitionConsumers.clear();
 
-        if (!isSharedConnection) {
+        if (isSharedConnection) {
+            onClientClosed.run();
+        } else {
             connectionProcessor.dispose();
         }
     }
@@ -358,6 +365,6 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
         return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
             getEventHubName(), consumerGroup, partitionId, initialPosition,
-            receiveOptions.getTrackLastEnqueuedEventProperties());
+            receiveOptions.getTrackLastEnqueuedEventProperties(), scheduler);
     }
 }

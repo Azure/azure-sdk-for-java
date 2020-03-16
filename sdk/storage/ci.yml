@@ -40,33 +40,28 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: storage
-      SDKType: client
       Artifacts:
         - name: azure-storage-common
           groupId: com.azure
           safeName: azurestoragecommon
-          stagingProfileId: 88192f04117501
         - name: azure-storage-blob
           groupId: com.azure
           safeName: azurestorageblob
-          stagingProfileId: 88192f04117501
         - name: azure-storage-blob-batch
           groupId: com.azure
           safeName: azurestorageblobbatch
-          stagingProfileId: 88192f04117501
         - name: azure-storage-blob-cryptography
           groupId: com.azure
           safeName: azurestorageblobcryptography
-          stagingProfileId: 88192f04117501
+        - name: azure-storage-blob-nio
+          groupId: com.azure
+          safeName: azurestorageblobnio
         - name: azure-storage-file-share
           groupId: com.azure
           safeName: azurestoragefileshare
-          stagingProfileId: 88192f04117501
         - name: azure-storage-file-datalake
           groupId: com.azure
           safeName: azurestoragefiledatalake
-          stagingProfileId: 88192f04117501
         - name: azure-storage-queue
           groupId: com.azure
           safeName: azurestoragequeue
-          stagingProfileId: 88192f04117501

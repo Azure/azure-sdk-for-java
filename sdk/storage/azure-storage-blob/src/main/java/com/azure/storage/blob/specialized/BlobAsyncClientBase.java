@@ -24,6 +24,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.BlobGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
@@ -47,7 +48,6 @@ import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -90,21 +90,19 @@ import static java.lang.StrictMath.toIntExact;
  */
 public class BlobAsyncClientBase {
 
-    private static final int BLOB_DEFAULT_DOWNLOAD_BLOCK_SIZE = 4 * Constants.MB;
-    private static final int BLOB_MAX_DOWNLOAD_BLOCK_SIZE = 100 * Constants.MB;
-
     private final ClientLogger logger = new ClientLogger(BlobAsyncClientBase.class);
 
     protected final AzureBlobStorageImpl azureBlobStorage;
     private final String snapshot;
     private final CpkInfo customerProvidedKey;
+    protected final EncryptionScope encryptionScope;
     protected final String accountName;
     protected final String containerName;
     protected final String blobName;
     protected final BlobServiceVersion serviceVersion;
 
     /**
-     * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
+     * Protected constructor for use by {@link SpecializedBlobClientBuilder}.
      *
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
@@ -118,6 +116,27 @@ public class BlobAsyncClientBase {
      */
     protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey) {
+        this(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, null);
+    }
+
+    /**
+     * Protected constructor for use by {@link SpecializedBlobClientBuilder}.
+     *
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     */
+    protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
+        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+        EncryptionScope encryptionScope) {
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -130,6 +149,19 @@ public class BlobAsyncClientBase {
         this.blobName = Utility.urlEncode(Utility.urlDecode(blobName));
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
+        this.encryptionScope = encryptionScope;
+    }
+
+    /**
+     * Gets the {@code encryption scope} used to encrypt this blob's content on the server.
+     *
+     * @return the encryption scope used for encryption.
+     */
+    protected String getEncryptionScope() {
+        if (encryptionScope == null) {
+            return null;
+        }
+        return encryptionScope.getEncryptionScope();
     }
 
     /**
@@ -140,7 +172,7 @@ public class BlobAsyncClientBase {
      */
     public BlobAsyncClientBase getSnapshotClient(String snapshot) {
         return new BlobAsyncClientBase(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey());
+            getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(), encryptionScope);
     }
 
     /**
@@ -580,7 +612,7 @@ public class BlobAsyncClientBase {
             sourceModifiedRequestConditions.getIfUnmodifiedSince(), sourceModifiedRequestConditions.getIfMatch(),
             sourceModifiedRequestConditions.getIfNoneMatch(), destRequestConditions.getIfModifiedSince(),
             destRequestConditions.getIfUnmodifiedSince(), destRequestConditions.getIfMatch(),
-            destRequestConditions.getIfNoneMatch(), destRequestConditions.getLeaseId(), null, context)
+            destRequestConditions.getIfNoneMatch(), destRequestConditions.getLeaseId(), null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
     }
 
@@ -723,9 +755,6 @@ public class BlobAsyncClientBase {
      * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
      * will be thrown.</p>
      *
-     * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra
-     * call, provide the {@link BlobRange} parameter.</p>
-     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean}
@@ -757,9 +786,6 @@ public class BlobAsyncClientBase {
      * <p>By default the file will be created and must not exist, if the file already exists a
      * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
      * {@link OpenOption OpenOptions} </p>
-     *
-     * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra
-     * call, provide the {@link BlobRange} parameter.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -968,24 +994,7 @@ public class BlobAsyncClientBase {
         AtomicLong totalProgress) {
 
         // Extract the body.
-        Flux<ByteBuffer> data = response.getValue()
-            .flatMap(buffer -> {
-                /*
-                 * Buffer the data contained in the 'ByteBuffer' as it passes through the stream. This resolves an issue
-                 * where Reactor Netty begins to release the underlying 'ByteBuf' after the on next operations have
-                 * completed, the release buffer may be overwritten before writing to file has completed which leads to
-                 * corrupted files.
-                 */
-                int offset = buffer.position();
-                int size = buffer.remaining();
-                byte[] duplicate = new byte[size];
-
-                for (int i = 0; i < size; i++) {
-                    duplicate[i] = buffer.get(i + offset);
-                }
-
-                return Mono.just(ByteBuffer.wrap(duplicate));
-            });
+        Flux<ByteBuffer> data = response.getValue();
 
         // Report progress as necessary.
         data = ProgressReporter.addParallelProgressReporting(data,
@@ -996,12 +1005,13 @@ public class BlobAsyncClientBase {
     }
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
+        // blobSize determination - contentLength only returns blobSize if the download is not chunked.
+        long blobSize = response.getDeserializedHeaders().getContentRange() == null
+            ? response.getDeserializedHeaders().getContentLength()
+            : extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
         BlobProperties properties = new BlobProperties(null, response.getDeserializedHeaders().getLastModified(),
-            response.getDeserializedHeaders().getETag(),
-            response.getDeserializedHeaders().getContentLength() == null
-                ? 0 : response.getDeserializedHeaders().getContentLength(),
-            response.getDeserializedHeaders().getContentType(), null,
-            response.getDeserializedHeaders().getContentEncoding(),
+            response.getDeserializedHeaders().getETag(), blobSize, response.getDeserializedHeaders().getContentType(),
+            null, response.getDeserializedHeaders().getContentEncoding(),
             response.getDeserializedHeaders().getContentDisposition(),
             response.getDeserializedHeaders().getContentLanguage(), response.getDeserializedHeaders().getCacheControl(),
             response.getDeserializedHeaders().getBlobSequenceNumber(), response.getDeserializedHeaders().getBlobType(),
@@ -1260,11 +1270,11 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions,
         Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-
+        
         return this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
+            requestConditions.getIfNoneMatch(), null, customerProvidedKey, encryptionScope, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1320,7 +1330,8 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getLeaseId(), null, customerProvidedKey, context)
+            requestConditions.getIfNoneMatch(), requestConditions.getLeaseId(), null, customerProvidedKey,
+            encryptionScope, context)
             .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.getDeserializedHeaders().getSnapshot())));
     }
 

@@ -176,6 +176,16 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
+     * Gets whether this InterceptorManager is in live mode.
+     *
+     * @return true if the InterceptorManager is in live mode and false otherwise.
+     */
+    public boolean isLiveMode() {
+        return testMode == TestMode.LIVE;
+    }
+
+
+    /**
      * Gets the recorded data InterceptorManager is keeping track of.
      *
      * @return The recorded data managed by InterceptorManager.

@@ -49,8 +49,7 @@ Merging Pull Requests (for project contributors with write access)
 - Install [Maven](http://maven.apache.org/download.cgi)
   - add `MAVEN_HOME` to environment variables
 
-
->**Note:** If you are on `Windows`, enable paths longer than 260 characters by: <br><br>
+>**Note:** If you ran into "long path" issue on `Windows`, enable paths longer than 260 characters by: <br><br>
 1.- Run this as Administrator on a command prompt:<br> 
 `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1`<br>*(might need to type `yes` to override key if it already exists)*<br><br>
 2.- Set up `git` by running:<br> `git config --system core.longpaths true`
@@ -59,15 +58,17 @@ Merging Pull Requests (for project contributors with write access)
 
 The easiest way to build is by running the following command from the root folder:
 ```
-mvn -f pom.client.xml -Dgpg.skip -DskipTests clean install
+mvn -f pom.client.xml -Dgpg.skip -DskipTests -Dinclude-non-shipping-modules clean install
 ```
 - `-f pom.client.xml`: tells maven to target latest Azure SDK for Java project.
 - `-Dgpg.skip`: disables [gpg](https://mran.microsoft.com/snapshot/2016-12-19/web/packages/gpg/vignettes/intro.html) signing.
 - `-DskipTests:` Building without running unit tests would speed operation up, however, make sure all tests pass before creating a new PR.
+- `-Dinclude-non-shipping-modules:` Installing and Runing sdk build tools.
 - `clean:` will remove any previous generated output.
 - `install:`  compiles project and installs it in the local Maven cache.
 
->**Note**: Refer to [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building) for learning about how to build using Java 11
+>**Note**: Refer to [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building) for learning about how to build using Java 11 
+>and [this wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing) for guidelines on unit testing
 
 ### Compiling one project only
 
@@ -76,6 +77,32 @@ mvn -f sdk/{projectForlderDir}/pom.xml -Dgpg.skip clean install
 
 //example: mvn -f sdk/keyvault/azure-security-keyvault-keys/pom.xml clean install
 ```
+### Live testing
+
+Live tests assume a live resource has been created and appropriate environment
+variables have been set for the test process. To automate setting up live
+resources we use created a script called `New-TestResources.ps1` that deploys
+resources for a given service.
+
+To see what resources will be deployed for a live service, check the
+`test-resources.json` ARM template files in the service you wish to deploy for
+testing, for example `sdk\keyvault\test-resources.json`.
+
+To deploy live resources for testing use the steps documented in [`Example 1 of New-TestResources.ps1`](eng/common/TestResources/New-TestResources.ps1.md#example-1)
+to set up a service principal and deploy live testing resources.
+
+The script will provide instructions for setting environment variables before
+running live tests.
+
+To run live tests against a service after deploying live resources:
+
+```
+mvn -f sdk/keyvault/pom.service.xml -Dmaven.wagon.http.pool=false --batch-mode --fail-at-end --settings eng/settings.xml test
+```
+
+Some live tests may have additional steps for setting up live testing resources.
+See the CONTRIBUTING.md file for the service you wish to test for additional
+information or instructions.
 
 ## Versions and versioning
 
@@ -95,11 +122,12 @@ Libraries refer to things that are built and released as part of the Azure SDK. 
 
 External Dependencies refer to dependencies for things that are not built and released as part of the Azure SDK regardless of the source. External Dependencies will only ever have a dependency version.
 
-### Current version, Dependency version and Unreleased Dependency version
+### Current version, Dependency version, Unreleased Dependency version and Released Beta Dependency version
 
 Current version - This is the version we should be using when defining a component in its POM file and also when dependent components are built within the same pipeline. The current version is the version currently in development.
 Dependency version - This is the version we should be using when a given library is a dependency outside of a particular area. This should be the latest released version of the package whenever possible.
-Unreleased Dependency version – Whenever possible, libraries should be using the latest released version for dependencies but there is the case where active development in one library is going to be needed by another library or libraries that are built in separate pipelines. These types of changes are specifically additive and not breaking. Once a library has GA’d, nothing short of breaking changes should ever force the dependency versions across the repo to an unreleased version. The reason for this is that it would prevent other libraries, that don’t need this change, from releasing.
+Unreleased Dependency version – Whenever possible, libraries should be using the latest released version for dependencies but there is the case where active development in one library is going to be needed by another library or libraries that are built in separate pipelines. These types of changes are specifically additive and not breaking. Once a library has GA’d, nothing short of breaking changes should ever force the dependency versions across the repo to an unreleased version. The reason for this is that it would prevent other libraries, that don’t need this change, from releasing. Unreleased dependcies of scope test will not prevent a library from being released.
+Released Beta Dependency version – This is for when a library, which has already GA'd, is being released as a Beta version and we need to keep the dependency version to the latest GA. This particular tag will be used to allow other libraries to depend on the released Beta version. Libraries with released Beta dependencies can only be released as Beta, themselves, as a library cannot GA with Beta dependencies. An exception to the previous rule would be if the Beta dependency has a scope of test as this will not prevent a library from being released as GA.
 
 An example of Current vs Dependency versions: `com.azure:azure-storage-blob-batch` has dependencies on `com.azure:azure-core`, `com.azure:azure-core-http-netty` and `com.azure:azure-storage-blob`. Because `com.azure:azure-core` and `com.azure:azure-core-http-netty` are both built outside of azure-storage pipeline we should be using the released or *Dependency* versions of these when they're dependencies of another library. Similarly, libraries built as part of the same pipeline, that have interdependencies, should be using the Current version. Since `com.azure:azure-storage-blob-batch` and `com.azure:azure-storage-blob` are both built part of the azure-batch pipeline when `com.azure:azure-storage-blob` is declared as a dependency of `com.azure:azure-storage-blob-batch` it should be the *Current* version.
 
@@ -140,9 +168,7 @@ In README files this ends up being slightly different. Because the version tag i
 Let's say we've GA'd and I need to tick up the version of azure-storage libraries how would I do it? Guidelines for incrementing versions after release can be found [here](https://github.com/Azure/azure-sdk/blob/master/docs/policies/releases.md#incrementing-after-release).
 
 1. I'd open up eng\versioning\version_client.txt and update the current-versions of the libraries that are built and released as part of the azure storage pipeline. This list can be found in pom.service.xml under the sdk/storage directory. It's worth noting that any module entry starting with "../" are external module dependencies and not something that's released as part of the pipeline. Dependencies for library components outside of a given area would be downloading the appropriate dependency from Maven like we do for external dependencies.
-2. Execute the update_versions python script from the root of the enlistment
-`python eng/versioning/update_versions.py --ut libary --bt client`
-This will go through the entire source tree and update all of the references in the POM and README files with the updated versions. Git status will show all of the modified files.
+2. Execute the update_versions python script from the root of the enlistment. The exact syntax and commands will vary based upon what is being changed and some examples can be found in the use cases in the [update_versions.py](./eng/versioning/update_versions.py#L6) file.
 3. Review and submit a PR with the modified files.
 
 ### Next steps: Management plane
@@ -165,7 +191,7 @@ After the unreleased version of `com.azure:azure-core` was released but before `
 
 Each night our engineering system produces a set of packages for each component of the SDK. These can be used by other projects to test updated builds of our libraries prior to their release. The packages are published to an Azure Artifacts public feed hosted at the following URL:
 
->> https://dev.azure.com/azure-sdk/public/_packaging?_a=feed&feed=azure-sdk-for-java
+> https://dev.azure.com/azure-sdk/public/_packaging?_a=feed&feed=azure-sdk-for-java
 
 For developers working within the repo, refer to the instructions above for updating versions numbers correctly. The parent POM for the Azure SDK already contains a repository reference to the daily feed and can download the packages.
 

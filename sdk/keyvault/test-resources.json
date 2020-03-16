@@ -38,13 +38,50 @@
                         "objectId": "[parameters('testApplicationOid')]",
                         "permissions": {
                             "keys": [
-                                "all"
+                                "backup",
+                                "create",
+                                "decrypt",
+                                "delete",
+                                "encrypt",
+                                "get",
+                                "import",
+                                "list",
+                                "purge",
+                                "recover",
+                                "restore",
+                                "sign",
+                                "unwrapKey",
+                                "update",
+                                "verify",
+                                "wrapKey"
                             ],
                             "secrets": [
-                                "all"
+                                "backup",
+                                "delete",
+                                "get",
+                                "list",
+                                "purge",
+                                "recover",
+                                "restore",
+                                "set"
                             ],
                             "certificates": [
-                                "all"
+                                "backup",
+                                "create",
+                                "delete",
+                                "deleteissuers",
+                                "get",
+                                "getissuers",
+                                "import",
+                                "list",
+                                "listissuers",
+                                "managecontacts",
+                                "manageissuers",
+                                "purge",
+                                "recover",
+                                "restore",
+                                "setissuers",
+                                "update"
                             ]
                         }
                     }

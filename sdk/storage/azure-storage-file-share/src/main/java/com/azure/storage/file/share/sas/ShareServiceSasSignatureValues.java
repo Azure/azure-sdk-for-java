@@ -404,7 +404,6 @@ public final class ShareServiceSasSignatureValues {
      * parameters.
      *
      * <p><strong>Notes on SAS generation</strong></p>
-     * <p>
      * <ul>
      * <li>If {@link #setVersion(String) version} is not set, the {@link ShareServiceVersion#getLatest() latest service
      * version} is used.</li>

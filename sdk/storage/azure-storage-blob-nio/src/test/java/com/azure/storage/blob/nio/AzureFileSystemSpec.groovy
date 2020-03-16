@@ -10,12 +10,14 @@ import com.azure.storage.common.sas.AccountSasSignatureValues
 import reactor.core.publisher.Flux
 import spock.lang.Unroll
 
+import java.nio.file.FileStore
 import java.nio.file.FileSystemAlreadyExistsException
 import java.nio.file.FileSystemNotFoundException
+import java.nio.file.InvalidPathException
 import java.time.OffsetDateTime
 
 class AzureFileSystemSpec extends APISpec {
-    def config = [:]
+    def config = new HashMap<String, String>()
 
     def setup() {
         config = initializeConfigMap()
@@ -128,5 +130,103 @@ class AzureFileSystemSpec extends APISpec {
         then:
         notThrown(FileSystemAlreadyExistsException)
         provider.getFileSystem(uri) != null
+    }
+
+    @Unroll
+    def "FileSystem getPath"() {
+        setup:
+        def fs = createFS(config)
+        def arr = pathArr == null ? null : Arrays.copyOf(pathArr.toArray(), pathArr.size(), String[].class)
+
+        expect:
+        fs.getPath(path0, arr).toString() == resultStr
+
+        where:
+        path0               | pathArr                    || resultStr
+        "foo"               | null                       || "foo"
+        "foo/bar"           | null                       || "foo/bar"
+        "/foo/"             | null                       || "foo"
+        "/foo/bar/"         | null                       || "foo/bar"
+        "foo"               | ["bar"]                    || "foo/bar"
+        "foo/bar/fizz/buzz" | null                       || "foo/bar/fizz/buzz"
+        "foo"               | ["bar", "fizz", "buzz"]    || "foo/bar/fizz/buzz"
+        "foo"               | ["bar/fizz", "buzz"]       || "foo/bar/fizz/buzz"
+        "foo"               | ["bar", "fizz/buzz"]       || "foo/bar/fizz/buzz"
+        "root:/foo"         | null                       || "root:/foo"
+        "root:/foo"         | ["bar"]                    || "root:/foo/bar"
+        "///root:////foo"   | ["//bar///fizz//", "buzz"] || "root:/foo/bar/fizz/buzz"
+        "root:/"            | null                       || "root:"
+        ""                  | null                       || ""
+    }
+
+    @Unroll
+    def "FileSystem getPath fail"() {
+        when:
+        createFS(config).getPath(path)
+
+        then:
+        thrown(InvalidPathException)
+
+        where:
+        path                  | _
+        "root1:/dir1:"        | _
+        "root1:/d:ir"         | _
+        ":root1:/dir"         | _
+        "root1::/dir"         | _
+        "root:1/dir"          | _
+        "root1/dir:"          | _
+        "root1:/foo/bar/dir:" | _
+    }
+
+    def "FileSystem isReadOnly getSeparator"() {
+        setup:
+        def fs = createFS(config)
+
+        expect:
+        !fs.isReadOnly()
+        fs.getSeparator() == "/"
+    }
+
+    def "FileSystem getRootDirs getFileStores"() {
+        setup:
+        def fs = createFS(config)
+        def containers = ((String) config[AzureFileSystem.AZURE_STORAGE_FILE_STORES]).split(",")
+        def fileStoreNames = []
+        for (FileStore store : fs.getFileStores()) {
+            fileStoreNames.add(store.name())
+        }
+
+        expect:
+        fs.getRootDirectories().size() == containers.size()
+        fs.getFileStores().size() == containers.size()
+        for (String container : containers) {
+            assert fs.getRootDirectories().contains(fs.getPath(container + ":"))
+            assert fileStoreNames.contains(container)
+        }
+    }
+
+    @Unroll
+    def "FileSystem supportsFileAttributeView"() {
+        setup:
+        def fs = createFS(config)
+
+        expect:
+        fs.supportedFileAttributeViews().contains(view) == supports
+
+        where:
+        view           | supports
+        "basic"        | true
+        "user"         | true
+        "azureStorage" | true
+        "posix"        | false
+    }
+
+    def "FileSystem getDefaultDirectory"() {
+        setup:
+        def fs = createFS(config)
+
+        expect:
+        fs.getDefaultDirectory().toString() ==
+            config[AzureFileSystem.AZURE_STORAGE_FILE_STORES].split(",")[0] + AzurePath.ROOT_DIR_SUFFIX
     }
 }

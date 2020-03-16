@@ -3,8 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.util.logging.ClientLogger;
-
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -130,8 +128,6 @@ public class Configuration implements Cloneable {
     private static final String LOADED_FROM_RUNTIME = "Loaded {} from runtime parameters.";
     private static final String LOADED_FROM_ENVIRONMENT = "Loaded {} from environment variables.";
 
-    private final ClientLogger logger = new ClientLogger(Configuration.class);
-
     private final ConcurrentMap<String, String> configurations;
     private boolean loadedBaseConfigurations = false;
 
@@ -209,9 +205,9 @@ public class Configuration implements Cloneable {
     private String getOrLoad(String name) {
         loadBaseConfigurations();
 
-        // Special handling for tracing disabled and log level as they need to be updated instantly on
+        // Special handling for tracing disabled as it needs to be updated instantly on
         // configuration change.
-        if (PROPERTY_AZURE_TRACING_DISABLED.equalsIgnoreCase(name) || PROPERTY_AZURE_LOG_LEVEL.equalsIgnoreCase(name)) {
+        if (PROPERTY_AZURE_TRACING_DISABLED.equalsIgnoreCase(name)) {
             load(name);
         }
 
@@ -345,9 +341,8 @@ public class Configuration implements Cloneable {
             // Value loaded is the same, no need to log anything.
             return true;
         } else {
-            // Value changed, log it!
+            // Value changed!
             configurations.put(name, value);
-            logger.verbose(logMessage, name);
             return true;
         }
     }

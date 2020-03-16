@@ -37,12 +37,10 @@ pr:
       - sdk/authorization/mgmt-
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: authorization
-      SDKType: data
       Artifacts:
         - name: azure-authentication-msi-token-provider
           groupId: com.microsoft.azure.msi_auth_token_provider
           safeName: azureauthenticationmsitokenprovider
-          stagingProfileId: 534d15ee3800f4

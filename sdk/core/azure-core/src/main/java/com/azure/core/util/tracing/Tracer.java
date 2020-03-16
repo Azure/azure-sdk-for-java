@@ -53,14 +53,19 @@ public interface Tracer {
     String SCOPE_KEY = "scope";
 
     /**
+     * Key for {@link Context} which indicates that the context contains the Azure resource provider namespace.
+     */
+    String AZ_TRACING_NAMESPACE_KEY = "az.namespace";
+
+    /**
      * Key for {@link Context} which indicates the shared span builder that is in the current Context.
      */
     String SPAN_BUILDER_KEY = "builder";
 
     /**
-     * Key for {@link Context} which indicates that the context contains the Azure resource provider namespace.
+     * Key for {@link Context} which indicates the the time of the last enqueued message in the partition's stream.
      */
-    String AZ_TRACING_NAMESPACE_KEY = "az.tracing.namespace";
+    String MESSAGE_ENQUEUED_TIME = "x-opt-enqueued-time";
 
     /**
      * Creates a new tracing span.

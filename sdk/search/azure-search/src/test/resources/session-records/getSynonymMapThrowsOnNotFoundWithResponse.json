@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdk82342f0cf7d.search.windows.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "434ceb9d-8f47-4ff8-99ec-703654a758eb",
+      "StatusCode" : "404",
+      "Date" : "Mon, 24 Feb 2020 20:02:50 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "26",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "134",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'azs-sdk82342f0cf7d'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk82342f0cf7d" ]
+}

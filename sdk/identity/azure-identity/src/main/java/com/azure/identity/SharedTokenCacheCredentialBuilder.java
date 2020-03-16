@@ -8,21 +8,9 @@ package com.azure.identity;
  *
  * @see SharedTokenCacheCredential
  */
-public class SharedTokenCacheCredentialBuilder extends CredentialBuilderBase<ManagedIdentityCredentialBuilder> {
-    private String clientId;
+public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<SharedTokenCacheCredentialBuilder> {
     private String username;
 
-    /**
-     * Sets the client ID for the application.
-     *
-     * @param clientId The client ID for the application.
-     *
-     * @return The updated SharedTokenCacheCredentialBuilder object.
-     * */
-    public SharedTokenCacheCredentialBuilder clientId(String clientId) {
-        this.clientId = clientId;
-        return this;
-    }
 
     /**
      * Sets the username for the account.
@@ -30,7 +18,7 @@ public class SharedTokenCacheCredentialBuilder extends CredentialBuilderBase<Man
      * @param username The username for the account.
      *
      * @return The updated SharedTokenCacheCredentialBuilder object.
-     * */
+     */
     public SharedTokenCacheCredentialBuilder username(String username) {
         this.username = username;
         return this;
@@ -42,6 +30,6 @@ public class SharedTokenCacheCredentialBuilder extends CredentialBuilderBase<Man
      * @return a {@link SharedTokenCacheCredentialBuilder} with the current configurations.
      */
     public SharedTokenCacheCredential build() {
-        return new SharedTokenCacheCredential(username, clientId, identityClientOptions);
+        return new SharedTokenCacheCredential(username, clientId, tenantId, identityClientOptions);
     }
 }

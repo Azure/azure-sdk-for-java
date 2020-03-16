@@ -44,7 +44,9 @@ import java.util.Objects;
  * respectively, and operations on the service are available on {@link DataLakeServiceClient}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>
+ * Please refer to the
+ *
+ * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">
  *     Azure Docs</a> for more information on file systems.
  */
 @ServiceClient(builder = DataLakeFileSystemClientBuilder.class)
@@ -57,11 +59,6 @@ public class DataLakeFileSystemClient {
     public static final String ROOT_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
 
     private static final String ROOT_DIRECTORY_NAME = "";
-
-//    public static final String STATIC_WEBSITE_FILESYSTEM_NAME =
-//    DataLakeFileSystemAsyncClient.STATIC_WEBSITE_FILESYSTEM_NAME;
-
-//    public static final String LOG_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.LOG_FILESYSTEM_NAME;
 
     /**
      * Package-private constructor for use by {@link DataLakeFileSystemClientBuilder}.
@@ -127,7 +124,7 @@ public class DataLakeFileSystemClient {
      *
      * @return A new {@link DataLakeDirectoryClient} object which references the root directory in this file system.
      */
-    public DataLakeDirectoryClient getRootDirectoryClient() {
+    DataLakeDirectoryClient getRootDirectoryClient() {
         return getDirectoryClient(DataLakeFileSystemClient.ROOT_DIRECTORY_NAME);
     }
 

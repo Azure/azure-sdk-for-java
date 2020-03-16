@@ -81,9 +81,9 @@ public class EventHubReactorConnectionTest {
         when(reactor.process()).thenReturn(true);
 
         final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
-        connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-name",
-            tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
-            proxy, scheduler);
+        connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(), proxy,
+            scheduler);
 
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher(reactor);
         when(reactorProvider.getReactor()).thenReturn(reactor);
@@ -96,12 +96,18 @@ public class EventHubReactorConnectionTest {
             .thenReturn(connectionHandler);
     }
 
+    @AfterEach
+    public void reset() {
+        Mockito.reset(reactor, selectable, tokenManagerProvider, reactorConnection, messageSerializer, reactorProvider,
+            handlerProvider, tokenCredential, scheduler);
+    }
+
     @Test
     public void getsManagementChannel() {
         // Arrange
         final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(CONNECTION_ID,
-            connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider, messageSerializer, product,
-            clientVersion);
+            connectionOptions, "event-hub-name", reactorProvider, handlerProvider, tokenManagerProvider,
+            messageSerializer, product, clientVersion);
 
         // Act & Assert
         StepVerifier.create(connection.getManagementNode())

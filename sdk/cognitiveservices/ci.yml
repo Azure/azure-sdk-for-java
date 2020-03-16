@@ -37,80 +37,61 @@ pr:
       - sdk/cognitiveservices/mgmt-
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: cognitiveservices
-      SDKType: data
       Artifacts:
         - name: azure-cognitiveservices-autosuggest
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicesautosuggest
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-computervision
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicescomputervision
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-contentmoderator
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicescontentmoderator
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-customimagesearch
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicescustomimagesearch
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-customsearch
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicescustomsearch
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-customvision-prediction
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicescustomvisionprediction
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-customvision-training
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicescustomvisiontraining
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-entitysearch
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicesentitysearch
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-faceapi
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicesfaceapi
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-imagesearch
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicesimagesearch
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-luis-authoring
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicesluisauthoring
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-luis-runtime
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicesluisruntime
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-newssearch
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicesnewssearch
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-spellcheck
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicesspellcheck
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-textanalytics
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicestextanalytics
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-videosearch
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicesvideosearch
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-visualsearch
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveservicesvisualsearch
-          stagingProfileId: 534d15ee3800f4
         - name: azure-cognitiveservices-websearch
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveserviceswebsearch
-          stagingProfileId: 534d15ee3800f4

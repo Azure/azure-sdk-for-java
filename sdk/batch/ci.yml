@@ -33,12 +33,10 @@ pr:
       - sdk/batch/
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: batch
-      SDKType: data
       Artifacts:
         - name: azure-batch
           groupId: com.microsoft.azure
           safeName: azurebatch
-          stagingProfileId: 534d15ee3800f4

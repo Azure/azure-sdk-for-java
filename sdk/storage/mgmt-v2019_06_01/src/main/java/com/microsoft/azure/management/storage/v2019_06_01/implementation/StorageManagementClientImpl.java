@@ -226,6 +226,19 @@ public class StorageManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The EncryptionScopesInner object to access its operations.
+     */
+    private EncryptionScopesInner encryptionScopes;
+
+    /**
+     * Gets the EncryptionScopesInner object to access its operations.
+     * @return the EncryptionScopesInner object.
+     */
+    public EncryptionScopesInner encryptionScopes() {
+        return this.encryptionScopes;
+    }
+
+    /**
      * The BlobServicesInner object to access its operations.
      */
     private BlobServicesInner blobServices;
@@ -319,6 +332,7 @@ public class StorageManagementClientImpl extends AzureServiceClient {
         this.managementPolicies = new ManagementPoliciesInner(restClient().retrofit(), this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsInner(restClient().retrofit(), this);
         this.privateLinkResources = new PrivateLinkResourcesInner(restClient().retrofit(), this);
+        this.encryptionScopes = new EncryptionScopesInner(restClient().retrofit(), this);
         this.blobServices = new BlobServicesInner(restClient().retrofit(), this);
         this.blobContainers = new BlobContainersInner(restClient().retrofit(), this);
         this.fileServices = new FileServicesInner(restClient().retrofit(), this);

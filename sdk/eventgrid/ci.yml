@@ -37,12 +37,10 @@ pr:
       - sdk/eventgrid/mgmt-
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: eventgrid
-      SDKType: data
       Artifacts:
         - name: azure-eventgrid
           groupId: com.microsoft.azure
           safeName: azureeventgrid
-          stagingProfileId: 534d15ee3800f4

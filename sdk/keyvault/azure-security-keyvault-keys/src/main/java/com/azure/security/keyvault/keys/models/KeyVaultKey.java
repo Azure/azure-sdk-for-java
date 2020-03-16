@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  *  Key is the resource consisting of name, {@link JsonWebKey} and its attributes specified in {@link KeyProperties}.
@@ -29,6 +30,16 @@ public class KeyVaultKey {
 
     KeyVaultKey() {
         properties = new KeyProperties();
+    }
+
+    /*
+     * Creates an instance of KeyVaultKey
+     * @param keyId the vault id name of the key
+     * @param jsonWebKey the json web key to be used for crypto operations
+     */
+    KeyVaultKey(KeyProperties keyProperties, JsonWebKey jsonWebKey) {
+        properties = keyProperties;
+        this.key = jsonWebKey;
     }
 
     /**
@@ -85,6 +96,32 @@ public class KeyVaultKey {
      */
     public List<KeyOperation> getKeyOperations() {
         return key.getKeyOps();
+    }
+
+    /**
+     * Creates an instance of KeyVaultKey
+     * @param keyId the identifier of the key
+     * @param jsonWebKey the json web key to be used for crypto operations
+     * @return The Key Vault Key object.
+     */
+    public static KeyVaultKey fromKeyId(String keyId, JsonWebKey jsonWebKey) {
+        Objects.requireNonNull(jsonWebKey, "The Json web key cannot be null");
+        KeyProperties properties = new KeyProperties();
+        properties.unpackId(keyId);
+        return new KeyVaultKey(properties, jsonWebKey);
+    }
+
+    /**
+     * Creates an instance of KeyVaultKey
+     * @param name the name of the key
+     * @param jsonWebKey the json web key to be used for crypto operations
+     * @return The Key Vault Key object.
+     */
+    public static KeyVaultKey fromName(String name, JsonWebKey jsonWebKey) {
+        Objects.requireNonNull(jsonWebKey, "The Json web key cannot be null");
+        KeyProperties properties = new KeyProperties();
+        properties.name = name;
+        return new KeyVaultKey(properties, jsonWebKey);
     }
 
     /**

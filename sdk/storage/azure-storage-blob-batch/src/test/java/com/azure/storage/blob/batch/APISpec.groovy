@@ -6,8 +6,6 @@ package com.azure.storage.blob.batch
 import com.azure.core.http.HttpClient
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
-import com.azure.core.http.policy.HttpLogDetailLevel
-import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
@@ -15,16 +13,9 @@ import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
-import com.azure.storage.blob.BlobContainerAsyncClient
-import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
-import com.azure.storage.blob.models.BlobContainerItem
-import com.azure.storage.blob.models.LeaseStateType
-import com.azure.storage.blob.models.ListBlobContainersOptions
-import com.azure.storage.blob.specialized.BlobLeaseClient
-import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import spock.lang.Requires
 import spock.lang.Shared
@@ -32,7 +23,6 @@ import spock.lang.Specification
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
-import java.time.Duration
 import java.util.function.Supplier
 
 class APISpec extends Specification {
@@ -40,13 +30,6 @@ class APISpec extends Specification {
     ClientLogger logger = new ClientLogger(APISpec.class)
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
-
-    // both sync and async clients point to same container
-    @Shared
-    BlobContainerClient cc
-
-    @Shared
-    BlobContainerAsyncClient ccAsync
 
     // Fields used for conveniently creating blobs with data.
     static final String defaultText = "default"
@@ -82,7 +65,6 @@ class APISpec extends Specification {
     private boolean recordLiveMode
     private TestResourceNamer resourceNamer
     protected String testName
-    def containerName
 
     def setupSpec() {
         testMode = setupTestMode()
@@ -106,25 +88,9 @@ class APISpec extends Specification {
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
-
-        containerName = generateContainerName()
-        cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
-        ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName)
-        cc.create()
     }
 
     def cleanup() {
-        def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
-        for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
-            BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
-
-            if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
-            }
-
-            containerClient.delete()
-        }
-
         interceptorManager.close()
     }
 
@@ -178,10 +144,9 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         if (testMode != TestMode.PLAYBACK) {
-            if (!recordLiveMode) {
+            if (recordLiveMode) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
 
@@ -193,26 +158,14 @@ class APISpec extends Specification {
         }
     }
 
-    BlobServiceClient getServiceClient(String endpoint) {
-        return getServiceClient(null, endpoint, null)
-    }
-
     BlobServiceClient getServiceClient(StorageSharedKeyCredential credential) {
         return getServiceClient(credential, String.format(defaultEndpointTemplate, credential.getAccountName()),
             null)
     }
 
-    BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint) {
-        return getServiceClient(credential, endpoint, null)
-    }
-
     BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
         return getServiceClientBuilder(credential, endpoint, policies).buildClient()
-    }
-
-    BlobServiceClient getServiceClient(String sasToken, String endpoint) {
-        return getServiceClientBuilder(null, endpoint, null).sasToken(sasToken).buildClient()
     }
 
     BlobServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential) {
@@ -225,7 +178,6 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
@@ -255,12 +207,6 @@ class APISpec extends Specification {
         } else {
             return interceptorManager.getPlaybackClient()
         }
-    }
-
-    static BlobLeaseClient createLeaseClient(BlobContainerClient containerClient) {
-        return new BlobLeaseClientBuilder()
-            .containerClient(containerClient)
-            .buildClient()
     }
 
     def generateContainerName() {

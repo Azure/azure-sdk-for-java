@@ -5,7 +5,6 @@ package com.azure.storage.blob.nio;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.nio.implementation.util.Utility;
 
 import java.io.IOException;
 import java.nio.file.FileStore;
@@ -19,15 +18,18 @@ import java.util.Objects;
  * {@inheritDoc}
  */
 public final class AzureFileStore extends FileStore {
+    private static final String AZURE_FILE_STORE_TYPE = "AzureBlobContainer";
+
     private final ClientLogger logger = new ClientLogger(AzureFileStore.class);
     private final AzureFileSystem parentFileSystem;
     private final BlobContainerClient containerClient;
 
+
     AzureFileStore(AzureFileSystem parentFileSystem, String containerName) throws IOException {
         // A FileStore should only ever be created by a FileSystem.
         if (Objects.isNull(parentFileSystem)) {
-            throw Utility.logError(logger, new IllegalStateException("AzureFileStore cannot be instantiated without " +
-                "a parent FileSystem"));
+            throw Utility.logError(logger, new IllegalStateException("AzureFileStore cannot be instantiated without "
+                + "a parent FileSystem"));
         }
         this.parentFileSystem = parentFileSystem;
         this.containerClient = this.parentFileSystem.getBlobServiceClient().getBlobContainerClient(containerName);
@@ -38,8 +40,8 @@ public final class AzureFileStore extends FileStore {
                 this.containerClient.create();
             }
         } catch (Exception e) {
-            throw Utility.logError(logger, new IOException("There was an error in establishing the existence of " +
-                "container: " + containerName, e));
+            throw Utility.logError(logger, new IOException("There was an error in establishing the existence of "
+                + "container: " + containerName, e));
         }
     }
 
@@ -54,14 +56,22 @@ public final class AzureFileStore extends FileStore {
     }
 
     /**
+     * Returns the {@code String "AzureBlobContainer"} to indicate that the file store is backed by a remote blob
+     * container in Azure Storage.
+     *
      * {@inheritDoc}
      */
     @Override
     public String type() {
-        return null;
+        return AZURE_FILE_STORE_TYPE;
     }
 
     /**
+     * Always returns false. It may be the case that the authentication method provided to this file system only
+     * supports read operations and hence the file store is implicitly read only in this view, but that does not
+     * imply the underlying container/file store is inherently read only. Creating/specifying read only file stores
+     * is not currently supported.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -70,46 +80,68 @@ public final class AzureFileStore extends FileStore {
     }
 
     /**
+     * Containers do not limit the amount of data stored. This method will always return max long.
+     *
      * {@inheritDoc}
      */
     @Override
     public long getTotalSpace() throws IOException {
-        return 0;
+        return Long.MAX_VALUE;
     }
 
     /**
+     * Containers do not limit the amount of data stored. This method will always return max long.
+     *
      * {@inheritDoc}
      */
     @Override
     public long getUsableSpace() throws IOException {
-        return 0;
+        return Long.MAX_VALUE;
     }
 
     /**
+     * Containers do not limit the amount of data stored. This method will always return max long.
+     *
      * {@inheritDoc}
      */
     @Override
     public long getUnallocatedSpace() throws IOException {
-        return 0;
+        return Long.MAX_VALUE;
     }
 
     /**
+     * All file stores in this file system support the following views:
+     * <ul>
+     *     <li>{@link java.nio.file.attribute.BasicFileAttributeView}</li>
+     *     <li>{@link java.nio.file.attribute.UserDefinedFileAttributeView}</li>
+     *     <li>{@link AzureStorageFileAttributeView}</li>
+     * </ul>
+     *
      * {@inheritDoc}
      */
     @Override
     public boolean supportsFileAttributeView(Class<? extends FileAttributeView> aClass) {
-        return false;
+        return AzureFileSystem.SUPPORTED_ATTRIBUTE_VIEWS.containsKey(aClass);
     }
 
     /**
+     * All file stores in this file system support the following views:
+     * <ul>
+     *     <li>{@link java.nio.file.attribute.BasicFileAttributeView}</li>
+     *     <li>{@link java.nio.file.attribute.UserDefinedFileAttributeView}</li>
+     *     <li>{@link AzureStorageFileAttributeView}</li>
+     * </ul>
+     *
      * {@inheritDoc}
      */
     @Override
     public boolean supportsFileAttributeView(String s) {
-        return false;
+        return AzureFileSystem.SUPPORTED_ATTRIBUTE_VIEWS.containsValue(s);
     }
 
     /**
+     * This method always returns null as no {@link FileStoreAttributeView} is currently supported.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -118,10 +150,17 @@ public final class AzureFileStore extends FileStore {
     }
 
     /**
+     * This method always throws an {@code UnsupportedOperationException} as no {@link FileStoreAttributeView} is
+     * currently supported.
+     *
      * {@inheritDoc}
      */
     @Override
     public Object getAttribute(String s) throws IOException {
-        return null;
+        throw new UnsupportedOperationException("FileStoreAttributeViews aren't supported.");
+    }
+
+    BlobContainerClient getContainerClient() {
+        return this.containerClient;
     }
 }

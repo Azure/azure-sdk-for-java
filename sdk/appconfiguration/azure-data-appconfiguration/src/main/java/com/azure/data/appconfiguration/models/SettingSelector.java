@@ -47,15 +47,8 @@ public class SettingSelector {
     /**
      * Gets the expressions to filter {@link ConfigurationSetting#getKey() keys} on for the request.
      *
-     * <p>
-     * Examples:
-     * <ul>
-     * <li>If {@code keyFilter = "*"}, settings with any key are returned.</li>
-     * <li>If {@code keyFilter = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
-     * <li>If {@code keyFilter = "abc*"}, settings with a key starting with "abc" are returned.</li>
-     * <li>If {@code keyFilter = "*abc*"}, settings with a key containing "abc" are returned.</li>
-     * <li>If {@code keyFilter = "abc,def"}, settings with a key equal to "abc" or "def" are returned.</li>
-     * </ul>
+     * <p>See <a href="https://github.com/Azure/AppConfiguration/blob/master/docs/REST/kv.md#filtering">Filtering</a>
+     * for more information about these supported filters.</p>
      *
      * @return The expressions to filter ConfigurationSetting keys on.
      */
@@ -66,15 +59,8 @@ public class SettingSelector {
     /**
      * Sets the expressions to filter {@link ConfigurationSetting#getKey() keys} on for the request.
      *
-     * <p>
-     * Examples:
-     * <ul>
-     * <li>If {@code keyFilter = "*"}, settings with any key are returned.</li>
-     * <li>If {@code keyFilter = "abc1234"}, settings with a key equal to "abc1234" are returned.</li>
-     * <li>If {@code keyFilter = "abc*"}, settings with a key starting with "abc" are returned.</li>
-     * <li>If {@code keyFilter = "*abc*"}, settings with a key containing "abc" are returned.</li>
-     * <li>If {@code keyFilter = "abc,def"}, settings with a key equal to "abc" or "def" are returned.</li>
-     * </ul>
+     * <p>See <a href="https://github.com/Azure/AppConfiguration/blob/master/docs/REST/kv.md#filtering">Filtering</a>
+     * for more information about these supported filters.</p>
      *
      * @param keyFilter The expressions to filter ConfigurationSetting keys on.
      * @return The updated SettingSelector object
@@ -88,21 +74,8 @@ public class SettingSelector {
      * Gets the labels used to filter settings based on their {@link ConfigurationSetting#getLabel() label} in the
      * service.
      *
-     * If the value is {@code null} or an empty string, all ConfigurationSettings with {@link
-     * ConfigurationSetting#NO_LABEL} are returned.
-     *
-     * <p>
-     * Examples:
-     * <ul>
-     * <li>If {@code labelFilter = "*"}, settings with any label are returned.</li>
-     * <li>If {@code labelFilter = "\0"}, settings without any label are returned.</li>
-     * <li>If {@code labelFilter = ""}, settings without any label are returned.</li>
-     * <li>If {@code labelFilter = null}, settings without any label are returned.</li>
-     * <li>If {@code labelFilter = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
-     * <li>If {@code labelFilter = "abc*"}, settings with a label starting with "abc" are returned.</li>
-     * <li>If {@code labelFilter = "*abc*"}, settings with a label containing "abc" are returned.</li>
-     * <li>If {@code labelFilter = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
-     * </ul>
+     * <p>See <a href="https://github.com/Azure/AppConfiguration/blob/master/docs/REST/kv.md#filtering">Filtering</a>
+     * for more information about these supported filters.</p>
      *
      * @return labels The labels used to filter GET requests from the service.
      */
@@ -113,19 +86,11 @@ public class SettingSelector {
     /**
      * Sets the expression to filter {@link ConfigurationSetting#getLabel() labels} on for the request.
      *
-     * <p>
-     * Examples:
-     * <ul>
-     * <li>If {@code labelFilter = "*"}, settings with any label are returned.</li>
-     * <li>If {@code labelFilter = "\0"}, settings without any label are returned. (This is the default label.)</li>
-     * <li>If {@code labelFilter = "abc1234"}, settings with a label equal to "abc1234" are returned.</li>
-     * <li>If {@code labelFilter = "abc*"}, settings with a label starting with "abc" are returned.</li>
-     * <li>If {@code labelFilter = "*abc*"}, settings with a label containing "abc" are returned.</li>
-     * <li>If {@code labelFilter = "abc,def"}, settings with labels "abc" or "def" are returned.</li>
-     * </ul>
+     * <p>See <a href="https://github.com/Azure/AppConfiguration/blob/master/docs/REST/kv.md#filtering">Filtering</a>
+     * for more information about these supported filters.</p>
      *
-     * @param labelFilter The expressions to filter ConfigurationSetting labels on. If the provided value is
-     * {@code null} or {@code ""}, all ConfigurationSettings will be returned regardless of their label.
+     * @param labelFilter The expressions to filter ConfigurationSetting labels on.
+     *
      * @return SettingSelector The updated SettingSelector object.
      */
     public SettingSelector setLabelFilter(String labelFilter) {
@@ -172,6 +137,7 @@ public class SettingSelector {
      *
      * @param fields The fields to select for the query response. If none are set, the service will return the
      * ConfigurationSettings with a default set of properties.
+     *
      * @return The updated SettingSelector object.
      */
     public SettingSelector setFields(SettingFields... fields) {

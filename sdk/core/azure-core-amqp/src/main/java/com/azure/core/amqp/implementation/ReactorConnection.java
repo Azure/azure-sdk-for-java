@@ -12,6 +12,8 @@ import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
+import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Session;
@@ -24,6 +26,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.util.Map;
@@ -57,6 +60,8 @@ public class ReactorConnection implements AmqpConnection {
     private final ReactorProvider reactorProvider;
     private final Disposable.Composite subscriptions;
     private final AmqpRetryPolicy retryPolicy;
+    private final SenderSettleMode senderSettleMode;
+    private final ReceiverSettleMode receiverSettleMode;
 
     private ReactorExecutor executor;
     //TODO (conniey): handle failures and recreating the Reactor. Resubscribing the handlers, etc.
@@ -76,10 +81,13 @@ public class ReactorConnection implements AmqpConnection {
      * @param messageSerializer Serializer to translate objects to and from proton-j {@link Message messages}.
      * @param product The name of the product this connection is created for.
      * @param clientVersion The version of the client library creating the connection.
+     * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
+     * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
         ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
-        MessageSerializer messageSerializer, String product, String clientVersion) {
+        MessageSerializer messageSerializer, String product, String clientVersion,
+        SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
@@ -92,6 +100,8 @@ public class ReactorConnection implements AmqpConnection {
             connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getTransportType(),
             connectionOptions.getProxyOptions(), product, clientVersion);
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
+        this.senderSettleMode = senderSettleMode;
+        this.receiverSettleMode = receiverSettleMode;
 
         this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)
             .doOnSubscribe(c -> hasConnection.set(true));
@@ -302,7 +312,7 @@ public class ReactorConnection implements AmqpConnection {
             .cast(ReactorSession.class)
             .map(reactorSession -> new RequestResponseChannel(getId(), getFullyQualifiedNamespace(), linkName,
                 entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
-                messageSerializer)).repeat();
+                messageSerializer, senderSettleMode, receiverSettleMode)).repeat();
 
         return createChannel.subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
             channel -> channel.getEndpointStates(), retryPolicy,
@@ -330,7 +340,7 @@ public class ReactorConnection implements AmqpConnection {
             connection = reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler);
 
             reactorExceptionHandler = new ReactorExceptionHandler();
-            executor = new ReactorExecutor(reactor, connectionOptions.getScheduler(), connectionId,
+            executor = new ReactorExecutor(reactor, Schedulers.single(), connectionId,
                 reactorExceptionHandler, connectionOptions.getRetry().getTryTimeout(),
                 connectionOptions.getFullyQualifiedNamespace());
 

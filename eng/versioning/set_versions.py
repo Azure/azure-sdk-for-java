@@ -51,12 +51,76 @@ items_we_should_not_update = ['com.azure:azure-sdk-all', 'com.azure:azure-sdk-pa
 version_regex_named = re.compile(version_regex_str_with_names_anchored)
 prerelease_regex_named = re.compile(prerelease_version_regex_with_name)
 
+# Update packages (excluding unreleased dependencies and packages which already
+# have a dev version set) to use a "zero dev version" (e.g. dev.20201225.0).
+# This ensures that packages built in pipelines who have unreleased dependencies
+# that are built in other pipelines can successfully fall back to a source build
+# of the unreleased dependency package in the monorepo if the unreleased
+# dependency has not been published to the dev feed yet. This makes it so
+# nightly pipelines do not have to coordinate to publish packages to the dev
+# feed in dependency order.
+# This function assumes that the version file has already been updated with dev
+# versions for the appropriate target packages.
+def set_dev_zero_version(build_type, build_qualifier):
+    version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
+    print('version_file=' + version_file)
+
+    # Assuming a build qualifier of the form: "dev.20200204.123"
+    # Converts "dev.20200204.123" -> "dev.20200204.0"
+    zero_qualifier = build_qualifier[:build_qualifier.rfind('.') + 1] + '0'
+
+    newlines = []
+    with open(version_file, encoding='utf8') as f:
+        for raw_line in f:
+            stripped_line = raw_line.strip()
+
+            if not stripped_line or stripped_line.startswith('#'):
+                newlines.append(raw_line)
+                continue
+
+            module = CodeModule(stripped_line)
+
+            if module.name in items_we_should_not_update:
+                newlines.append(module.string_for_version_file())
+                continue
+
+            if module.name.startswith('unreleased_') or module.name.startswith('beta_'):
+                newlines.append(module.string_for_version_file())
+                continue
+
+            if hasattr(module, 'current'):
+
+                if 'dev' in module.current:
+                    newlines.append(module.string_for_version_file())
+                    continue
+
+                set_both = module.current == module.dependency
+
+                if '-' in module.current:
+                    module.current += "." + zero_qualifier
+                else:
+                    module.current += '-' + zero_qualifier
+                # The resulting version must be a valid SemVer
+                match = version_regex_named.match(module.current)
+                if not match:
+                    raise ValueError('{}\'s current version + build qualifier {} is not a valid semver version'.format(module.name, module.current + build_qualifier))
+
+                if set_both:
+                    module.dependency = module.current
+
+                print(f'updating {module.name} to use dependency={module.dependency}, current={module.current}')
+                newlines.append(module.string_for_version_file())
+
+    with open(version_file, 'w', encoding='utf-8') as f:
+        for line in newlines:
+            f.write(line)
+
+
 def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifact_id, group_id):
 
     version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
     print('version_file=' + version_file)
     library_to_update = group_id + ':' + artifact_id
-    unreleased_library_to_update = "unreleased_" + library_to_update
     print('adding build_qualifier({}) to {}'.format(build_qualifier, library_to_update))
     version_map = {}
     newlines = []
@@ -73,7 +137,7 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                 if module.name in items_we_should_not_update:
                     newlines.append(module.string_for_version_file())
                     continue
-                if library_to_update == module.name or unreleased_library_to_update == module.name:
+                if library_to_update == module.name:
                     artifact_found = True
                     if hasattr(module, 'current'):
                         set_both = False
@@ -96,16 +160,27 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                         if set_both:
                             module.dependency = module.current
 
-                    # we need to handle the unreleased dependency which should have the same version as the "current" dependency
-                    # of the non-unreleased artifact
+                # If the library is not the update target and is unreleased, use
+                # a version range based on the build qualifier as the dependency
+                # version so that packages from this build that are released to
+                # the dev feed will depend on a version that should be found in
+                # the dev feed.
+                # This script runs once for each artifact so it makes no
+                # changes in the case where a dependency version has already
+                # been modified.
+                elif (module.name.startswith('unreleased_') or module.name.startswith('beta_'))  and not module.dependency.startswith('['):
+                    # Assuming a build qualifier of the form: "dev.20200204.1"
+                    # Converts "dev.20200204.1" -> "dev.20200204."
+                    unreleased_build_qualifier = build_qualifier[:build_qualifier.rfind('.') + 1]
+
+                    if '-' in module.dependency:
+                        module_current_version = f'{module.dependency}.{unreleased_build_qualifier}'
                     else:
-                        if (module.name.startswith('unreleased_')):
-                            # strip off the 'unreleased_' prepend to get the regular module entry
-                            real_name = module.name.replace('unreleased_', '')
-                            real_module = version_map[real_name]
-                            module.dependency = real_module.current
-                        else:
-                            raise ValueError('{}\' does not have a current dependency and its groupId does not have the required unreleased_ prepend'.format(module.name))
+                        module_current_version = f'{module.dependency}-{unreleased_build_qualifier}'
+
+                    module.dependency = f'[{module_current_version},]'
+                    print(f'updating unreleased/beta dependency {module.name} to use dependency version range: "{module.dependency}"')
+
                 version_map[module.name] = module
                 newlines.append(module.string_for_version_file())
 
@@ -145,7 +220,7 @@ def prep_version_file_for_source_testing(build_type):
     
     return file_changed
 
-# given a build type, artifact id and group id, set the dependency version to the 
+# given a build type, artifact id and group id, set the dependency version to the
 # current version and increment the current version
 def increment_library_version(build_type, artifact_id, group_id):
 
@@ -187,7 +262,7 @@ def increment_library_version(build_type, artifact_id, group_id):
                     if (module.dependency != module.current):
                         print('library_to_update {}, previous dependency version={}, new dependency version={}'.format(library_to_update, module.dependency, module.current))
                         module.dependency = module.current
-                    print('library_to_update {}, previous version={}, new current version={}'.format(library_to_update, module.current, new_version))
+                    print('library_to_update {}, previous current version={}, new current version={}'.format(library_to_update, module.current, new_version))
                     module.current = new_version
                 newlines.append(module.string_for_version_file())
 
@@ -262,6 +337,7 @@ def main():
     optional.add_argument('--prep-source-testing', '--pst', action='store_true', help='prep the version file for source testing')
     optional.add_argument('--increment-version', '--iv', action='store_true', help='increment the version for a given group/artifact')
     optional.add_argument('--verify-version', '--vv', action='store_true', help='verify the version for a given group/artifact')
+    optional.add_argument('--set-dev-zero-version', '--sdzv', action='store_true', help='Set a zero dev build version for packages that do not already have dev versions set (should be run after setting dev versions for other packages)')
     optional.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='show this help message and exit')
 
     args = parser.parse_args()
@@ -279,6 +355,10 @@ def main():
         if not args.artifact_id or not args.group_id:
             raise ValueError('verify-version requires both the artifact-id and group-id arguments. artifact-id={}, group-id={}'.format(args.artifact_id, args.group_id))
         verify_current_version_of_artifact(args.build_type, args.artifact_id, args.group_id)
+    elif (args.set_dev_zero_version):
+        if not args.build_qualifier:
+            raise ValueError('set-dev-zero-version requires build-qualifier')
+        set_dev_zero_version(args.build_type, args.build_qualifier)
     else:
         if not args.artifact_id or not args.group_id or not args.build_qualifier:
             raise ValueError('update-version requires the artifact-id, group-id and build-qualifier arguments. artifact-id={}, group-id={}, build-qualifier={}'.format(args.artifact_id, args.group_id, args.build_qualifier))
