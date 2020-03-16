@@ -237,7 +237,7 @@ directive:
       transform: >-
           return $.replace(/(public FacetResult setAdditionalProperties)/g, "FacetResult setAdditionalProperties")
 
-    # Remove setter for addition properties field
+    # Remove setter for addition properties field, and rename getter
     - from:
           - SearchResult.java
           - SuggestResult.java
