@@ -162,6 +162,10 @@ public class RequestResponseChannel implements Disposable {
         return endpointStates.distinct();
     }
 
+    /**
+     * The receive link name.
+     * @return receive link name.
+     */
     public String getReceiveLinkName() {
         return receiveLink.getName();
     }
