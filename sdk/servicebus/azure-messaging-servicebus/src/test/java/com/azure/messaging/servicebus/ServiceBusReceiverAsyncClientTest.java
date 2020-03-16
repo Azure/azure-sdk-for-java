@@ -138,7 +138,7 @@ class ServiceBusReceiverAsyncClientTest {
         connectionProcessor =
             Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
                 .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                ENTITY_PATH, connectionOptions.getRetry()));
+                    ENTITY_PATH, connectionOptions.getRetry()));
 
         receiveOptions = new ReceiveMessageOptions().setPrefetchCount(PREFETCH);
 
@@ -253,11 +253,10 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Act and Assert
         StepVerifier.create(consumer2.receive().take(2))
-            .then(() -> {
-                messageSink.next(message);
-                messageSink.next(message2);
-            })
-            .expectNext(receivedMessage, receivedMessage2)
+            .then(() -> messageSink.next(message))
+            .expectNext(receivedMessage)
+            .then(() -> messageSink.next(message2))
+            .expectNext(receivedMessage2)
             .verifyComplete();
 
         verify(managementNode).updateDisposition(eq(lockToken1), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull());
@@ -291,11 +290,10 @@ class ServiceBusReceiverAsyncClientTest {
         // Act and Assert
         try {
             StepVerifier.create(consumer2.receive().take(2))
-                .then(() -> {
-                    messageSink.next(message);
-                    messageSink.next(message2);
-                })
-                .expectNext(receivedMessage, receivedMessage2)
+                .then(() -> messageSink.next(message))
+                .expectNext(receivedMessage)
+                .then(() -> messageSink.next(message2))
+                .expectNext(receivedMessage2)
                 .expectComplete()
                 .verify();
         } finally {
@@ -427,12 +425,12 @@ class ServiceBusReceiverAsyncClientTest {
         // Pretend we receive these before. This is to simulate that so that the receiver keeps track of them in
         // the lock map.
         StepVerifier.create(consumer.receive().take(2))
-            .then(() -> {
-                messageSink.next(message);
-                messageSink.next(message2);
-            })
-            .expectNext(receivedMessage, receivedMessage2)
-            .verifyComplete();
+            .then(() -> messageSink.next(message))
+            .expectNext(receivedMessage)
+            .then(() -> messageSink.next(message2))
+            .expectNext(receivedMessage2)
+            .expectComplete()
+            .verify();
 
         // Act and Assert
         final Mono<Void> operation;
