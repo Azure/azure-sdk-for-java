@@ -18,4 +18,11 @@ public class BlobChangefeedClient {
     BlobChangefeedClient(BlobChangefeedAsyncClient client) {
         this.client = client;
     }
+
+    /**
+     * This is a temporary method to pass CI for now because this.client was not used anywhere. Will remove in next PR.
+     */
+    public void tempMethod() {
+        this.client.tempMethod();
+    }
 }
