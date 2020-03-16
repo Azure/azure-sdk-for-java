@@ -61,10 +61,14 @@ class WorkflowTriggerHistoriesImpl extends WrapperImpl<WorkflowTriggerHistoriesI
     public Observable<WorkflowTriggerHistory> getAsync(String resourceGroupName, String workflowName, String triggerName, String historyName) {
         WorkflowTriggerHistoriesInner client = this.inner();
         return client.getAsync(resourceGroupName, workflowName, triggerName, historyName)
-        .map(new Func1<WorkflowTriggerHistoryInner, WorkflowTriggerHistory>() {
+        .flatMap(new Func1<WorkflowTriggerHistoryInner, Observable<WorkflowTriggerHistory>>() {
             @Override
-            public WorkflowTriggerHistory call(WorkflowTriggerHistoryInner inner) {
-                return wrapModel(inner);
+            public Observable<WorkflowTriggerHistory> call(WorkflowTriggerHistoryInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((WorkflowTriggerHistory)wrapModel(inner));
+                }
             }
        });
     }

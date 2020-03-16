@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.management.logic.v2018_07_01_preview;
 
-import rx.Observable;
 import rx.Completable;
+import rx.Observable;
 import com.microsoft.azure.management.logic.v2018_07_01_preview.implementation.WorkflowRunsInner;
 import com.microsoft.azure.arm.model.HasInner;
 
@@ -48,5 +48,16 @@ public interface WorkflowRuns extends HasInner<WorkflowRunsInner> {
      * @return the observable for the request
      */
     Observable<WorkflowWorkflowRun> listAsync(final String resourceGroupName, final String workflowName);
+
+    /**
+     * Deletes a workflow run.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String resourceGroupName, String workflowName, String runName);
 
 }
