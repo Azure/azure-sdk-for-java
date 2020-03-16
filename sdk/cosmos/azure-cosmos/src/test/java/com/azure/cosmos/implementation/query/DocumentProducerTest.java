@@ -304,7 +304,7 @@ public class DocumentProducerTest {
                                                                              targetRange, collectionLink,
                                                                              () -> mockDocumentClientIRetryPolicyFactory().getRequestPolicy(), Document.class, null, initialPageSize, initialContinuationToken, top);
 
-        TestSubscriber<DocumentProducer.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
+        TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
         documentProducer.produceAsync().subscribe(subscriber);
         subscriber.awaitTerminalEvent();
@@ -362,7 +362,7 @@ public class DocumentProducerTest {
                                                                              targetRange, collectionLink,
                                                                              () -> mockDocumentClientIRetryPolicyFactory().getRequestPolicy(), Document.class, null, initialPageSize, initialContinuationToken, top);
 
-        TestSubscriber<DocumentProducer.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
+        TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
         documentProducer.produceAsync().subscribe(subscriber);
         subscriber.awaitTerminalEvent();
@@ -427,7 +427,7 @@ public class DocumentProducerTest {
                                                                              targetRange, collectionRid,
                                                                              () -> mockDocumentClientIRetryPolicyFactory().getRequestPolicy(), Document.class, null, initialPageSize, initialContinuationToken, top);
 
-        TestSubscriber<DocumentProducer.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
+        TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
         documentProducer.produceAsync().subscribe(subscriber);
         subscriber.awaitTerminalEvent();
@@ -494,7 +494,7 @@ public class DocumentProducerTest {
                 rfb.withContinuationToken("cp:" + uuid + ":" + i);
             }
 
-            FeedResponse resp = rfb.build();
+            FeedResponse<Document> resp = rfb.build();
             responses.add(resp);
         }
         return responses;
@@ -517,12 +517,13 @@ public class DocumentProducerTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private IDocumentQueryClient mockQueryClient(List<PartitionKeyRange> replacementRanges) {
         IDocumentQueryClient client = Mockito.mock(IDocumentQueryClient.class);
         RxPartitionKeyRangeCache cache = Mockito.mock(RxPartitionKeyRangeCache.class);
         doReturn(cache).when(client).getPartitionKeyRangeCache();
         doReturn(Mono.just(new Utils.ValueHolder<>(replacementRanges))).when(cache).
-                tryGetOverlappingRangesAsync(anyString(), any(Range.class), anyBoolean(), Matchers.anyMap());
+                tryGetOverlappingRangesAsync(anyString(), any(Range.class), anyBoolean(), Matchers.anyMapOf(String.class, Object.class));
         return client;
     }
 
@@ -701,7 +702,7 @@ public class DocumentProducerTest {
         class CapturedInvocation {
             long time = System.nanoTime();
             RxDocumentServiceRequest request;
-            FeedResponse invocationResult;
+            FeedResponse<?> invocationResult;
             Exception failureResult;
 
             public CapturedInvocation(RxDocumentServiceRequest request, Exception ex) {
@@ -764,7 +765,7 @@ public class DocumentProducerTest {
                 FeedResponse<Document> invocationResult;
                 Exception failureResult;
 
-                public Response(FeedResponse invocationResult) {
+                public Response(FeedResponse<Document> invocationResult) {
                     this.invocationResult = invocationResult;
                 }
 

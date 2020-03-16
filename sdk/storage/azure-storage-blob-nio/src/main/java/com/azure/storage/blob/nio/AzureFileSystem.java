@@ -5,6 +5,7 @@ package com.azure.storage.blob.nio;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClient;
@@ -105,7 +106,8 @@ public final class AzureFileSystem extends FileSystem {
      * Expected type: Boolean
      */
     public static final String AZURE_STORAGE_USE_HTTPS = "AzureStorageUseHttps";
-    public static final String AZURE_STORAGE_HTTP_CLIENT = "AzureStorageHttpClient"; // undocumented; for test.
+    static final String AZURE_STORAGE_HTTP_CLIENT = "AzureStorageHttpClient"; // undocumented; for test.
+    static final String AZURE_STORAGE_HTTP_POLICIES = "AzureStorageHttpPolicies"; // undocumented; for test.
 
     public static final String AZURE_STORAGE_FILE_STORES = "AzureStorageFileStores";
 
@@ -348,6 +350,11 @@ public final class AzureFileSystem extends FileSystem {
         builder.retryOptions(retryOptions);
 
         builder.httpClient((HttpClient) config.get(AZURE_STORAGE_HTTP_CLIENT));
+        if (config.containsKey(AZURE_STORAGE_HTTP_POLICIES)) {
+            for (HttpPipelinePolicy policy : (HttpPipelinePolicy[]) config.get(AZURE_STORAGE_HTTP_POLICIES)) {
+                builder.addPolicy(policy);
+            }
+        }
 
         return builder.buildClient();
     }

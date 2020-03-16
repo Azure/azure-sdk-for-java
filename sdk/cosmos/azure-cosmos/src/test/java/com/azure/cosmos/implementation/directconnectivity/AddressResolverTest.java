@@ -310,7 +310,7 @@ public class AddressResolverTest {
         final Map<ServiceIdentity, AddressInformation[]> addressesAfterRefresh = ObjectUtils.defaultIfNull(addressesAfterRefreshInitial, addressesBeforeRefresh);
 
         // Collection cache
-        MutableObject<DocumentCollection> currentCollection = new MutableObject(collectionBeforeRefresh);
+        MutableObject<DocumentCollection> currentCollection = new MutableObject<>(collectionBeforeRefresh);
         this.collectionCacheRefreshedCount = 0;
 
         Mockito.doAnswer(invocationOnMock -> {
@@ -351,7 +351,9 @@ public class AddressResolverTest {
             CollectionRoutingMap previousValue = invocationOnMock.getArgumentAt(1, CollectionRoutingMap.class);
 
             return collectionRoutingMapCache.tryLookupAsync(collectionRid, previousValue, false, null);
-        }).when(this.collectionRoutingMapCache).tryLookupAsync(Mockito.anyString(), Mockito.any(CollectionRoutingMap.class), Mockito.anyMap());
+        }).when(this.collectionRoutingMapCache).tryLookupAsync(Mockito.anyString(),
+            Mockito.any(CollectionRoutingMap.class),
+            Mockito.anyMapOf(String.class, Object.class));
 
         // Refresh case
         Mockito.doAnswer(invocationOnMock -> {
@@ -387,7 +389,10 @@ public class AddressResolverTest {
             }
 
             return Mono.error(new NotImplementedException("not mocked"));
-        }).when(this.collectionRoutingMapCache).tryLookupAsync(Mockito.anyString(), Mockito.any(CollectionRoutingMap.class), Mockito.anyBoolean(), Mockito.anyMap());
+        }).when(this.collectionRoutingMapCache).tryLookupAsync(Mockito.anyString(),
+            Mockito.any(CollectionRoutingMap.class),
+            Mockito.anyBoolean(),
+            Mockito.anyMapOf(String.class, Object.class));
 
 
         // Fabric Address Cache

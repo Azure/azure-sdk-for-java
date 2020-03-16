@@ -7,5 +7,10 @@
             <url>https://repo-maven-apache-org.azurefd.net/maven2</url>
             <mirrorOf>central</mirrorOf>
         </mirror>
+        <mirror>
+            <id>oss-sonatype-org-mirror</id>
+            <url>https://oss-sonatype-org.azurefd.net/content/repositories/snapshots/</url>
+            <mirrorOf>ossrh</mirrorOf>
+        </mirror>
     </mirrors>
 </settings>

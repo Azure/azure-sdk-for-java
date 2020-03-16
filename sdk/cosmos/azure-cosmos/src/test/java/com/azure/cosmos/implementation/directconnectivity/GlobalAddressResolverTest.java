@@ -74,13 +74,13 @@ public class GlobalAddressResolverTest {
         readEndPointList.add(urlforRead1);
         readEndPointList.add(urlforRead2);
         readEndPointList.add(urlforRead3);
-        UnmodifiableList readList = new UnmodifiableList(readEndPointList);
+        UnmodifiableList<URI> readList = new UnmodifiableList<>(readEndPointList);
 
         List<URI> writeEndPointList = new ArrayList<>();
         writeEndPointList.add(urlforWrite1);
         writeEndPointList.add(urlforWrite2);
         writeEndPointList.add(urlforWrite3);
-        UnmodifiableList writeList = new UnmodifiableList(writeEndPointList);
+        UnmodifiableList<URI> writeList = new UnmodifiableList<>(writeEndPointList);
 
         Mockito.when(endpointManager.getReadEndpoints()).thenReturn(readList);
         Mockito.when(endpointManager.getWriteEndpoints()).thenReturn(writeList);
@@ -151,7 +151,7 @@ public class GlobalAddressResolverTest {
         Mockito.when(routingMapProvider.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(collectionRoutingMapSingle);
 
         List<PartitionKeyRangeIdentity> ranges = new ArrayList<>();
-        for (PartitionKeyRange partitionKeyRange : (List<PartitionKeyRange>) collectionRoutingMap.getOrderedPartitionKeyRanges()) {
+        for (PartitionKeyRange partitionKeyRange : collectionRoutingMap.getOrderedPartitionKeyRanges()) {
             PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(documentCollection.getResourceId(), partitionKeyRange.getId());
             ranges.add(partitionKeyRangeIdentity);
         }
