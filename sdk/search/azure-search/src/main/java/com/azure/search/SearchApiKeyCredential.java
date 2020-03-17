@@ -32,7 +32,7 @@ public final class SearchApiKeyCredential {
     }
 
     /**
-     * Rotates the credential on the same Search Client.
+     * Rotates the Search credential.
      *
      * @param apiKey a query or admin API key
      * @return {@link SearchApiKeyCredential}
