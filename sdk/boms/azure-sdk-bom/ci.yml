@@ -33,9 +33,9 @@ pr:
       - sdk/boms/azure-sdk-bom/
 
 stages:
-  - template: ../../eng/pipelines/azure-sdk-bom.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-bom.yml
     parameters:
-      ServiceDirectory: appconfiguration
+      ServiceDirectory: boms/azure-sdk-bom
       Artifacts:
         - name: azure-sdk-bom
           groupId: com.azure
