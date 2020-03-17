@@ -24,26 +24,6 @@ import java.util.Map;
  */
 public interface CassandraKeyspaceGetResults extends HasInner<CassandraKeyspaceGetResultsInner>, Indexable, Refreshable<CassandraKeyspaceGetResults>, Updatable<CassandraKeyspaceGetResults.Update>, HasManager<CosmosDBManager> {
     /**
-     * @return the _etag value.
-     */
-    String _etag();
-
-    /**
-     * @return the _rid value.
-     */
-    String _rid();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
-     * @return the cassandraKeyspaceGetResultsId value.
-     */
-    String cassandraKeyspaceGetResultsId();
-
-    /**
      * @return the id value.
      */
     String id();
@@ -57,6 +37,11 @@ public interface CassandraKeyspaceGetResults extends HasInner<CassandraKeyspaceG
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the resource value.
+     */
+    CassandraKeyspaceGetPropertiesResource resource();
 
     /**
      * @return the tags value.

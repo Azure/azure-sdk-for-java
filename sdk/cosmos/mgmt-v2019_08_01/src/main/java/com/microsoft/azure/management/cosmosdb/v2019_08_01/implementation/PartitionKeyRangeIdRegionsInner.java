@@ -34,7 +34,7 @@ public class PartitionKeyRangeIdRegionsInner {
     /** The Retrofit service to perform REST calls. */
     private PartitionKeyRangeIdRegionsService service;
     /** The service client containing this operation class. */
-    private CosmosDBImpl client;
+    private CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of PartitionKeyRangeIdRegionsInner.
@@ -42,7 +42,7 @@ public class PartitionKeyRangeIdRegionsInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PartitionKeyRangeIdRegionsInner(Retrofit retrofit, CosmosDBImpl client) {
+    public PartitionKeyRangeIdRegionsInner(Retrofit retrofit, CosmosDBManagementClientImpl client) {
         this.service = retrofit.create(PartitionKeyRangeIdRegionsService.class);
         this.client = client;
     }
