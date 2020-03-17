@@ -8,14 +8,16 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.msalextensions.PersistentTokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
+import com.microsoft.aad.msal4jextensions.PersistenceSettings;
+import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
+import java.nio.file.Paths;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -75,7 +77,10 @@ public class SharedTokenCacheCredential implements TokenCredential {
         // Initialize here so that the constructor doesn't throw
         if (pubClient == null) {
             try {
-                PersistentTokenCacheAccessAspect accessAspect = new PersistentTokenCacheAccessAspect();
+                PersistenceSettings persistenceSettings = PersistenceSettings.builder("msal.cache", Paths.get(System.getProperty("user.home"), "AppData", "Local", ".IdentityService"))
+                        .setMacKeychain("Microsoft.Developer.IdentityService", "MSALCache")
+                        .build();
+                PersistenceTokenCacheAccessAspect accessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
                 PublicClientApplication.Builder applicationBuilder =  PublicClientApplication.builder(this.clientId);
                 if (options.getExecutorService() != null) {
                     applicationBuilder.executorService(options.getExecutorService());
