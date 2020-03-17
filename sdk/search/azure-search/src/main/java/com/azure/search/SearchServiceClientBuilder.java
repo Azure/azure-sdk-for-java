@@ -20,6 +20,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
+import com.azure.search.implementation.SearchApiKeyPipelinePolicy;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
