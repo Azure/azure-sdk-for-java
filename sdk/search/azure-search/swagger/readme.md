@@ -294,4 +294,19 @@ directive:
       transform: >-
         return $
         .replace(/(COSMOS_DB)/g, "COSMOS")
+     
+    # Change base class to abstract
+    - from:
+        - Analyzer.java
+        - TokenFilter.java
+        - Tokenizer.java
+        - Skill.java
+        - CharFilter.java
+        - ScoringFunction.java
+        - CognitiveServicesAccount.java
+        - DataChangeDetectionPolicy.java
+        - DataDeletionDetectionPolicy.java
+      where: $
+      transform: >-
+        return $.replace(/public class (.*) \{/, "public abstract class $1 {")
 ```
