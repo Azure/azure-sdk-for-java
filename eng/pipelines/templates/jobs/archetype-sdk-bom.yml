@@ -4,7 +4,7 @@ parameters:
   ValidationSteps: []
 
 jobs:
-  - job: 'Build and Validate'
+  - job: 'BuildAndValidate'
 
     variables:
       - template: ../variables/globals.yml
