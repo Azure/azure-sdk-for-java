@@ -37,7 +37,7 @@ public class SummarizeResultsInner {
     private List<Summary> value;
 
     /**
-     * Get the odatacontext value.
+     * Get oData context string; used by OData clients to resolve type information based on metadata.
      *
      * @return the odatacontext value
      */
@@ -46,7 +46,7 @@ public class SummarizeResultsInner {
     }
 
     /**
-     * Set the odatacontext value.
+     * Set oData context string; used by OData clients to resolve type information based on metadata.
      *
      * @param odatacontext the odatacontext value to set
      * @return the SummarizeResultsInner object itself.
@@ -57,7 +57,7 @@ public class SummarizeResultsInner {
     }
 
     /**
-     * Get the odatacount value.
+     * Get oData entity count; represents the number of summaries returned; always set to 1.
      *
      * @return the odatacount value
      */
@@ -66,7 +66,7 @@ public class SummarizeResultsInner {
     }
 
     /**
-     * Set the odatacount value.
+     * Set oData entity count; represents the number of summaries returned; always set to 1.
      *
      * @param odatacount the odatacount value to set
      * @return the SummarizeResultsInner object itself.
@@ -77,7 +77,7 @@ public class SummarizeResultsInner {
     }
 
     /**
-     * Get the value value.
+     * Get summarize action results.
      *
      * @return the value value
      */
@@ -86,7 +86,7 @@ public class SummarizeResultsInner {
     }
 
     /**
-     * Set the value value.
+     * Set summarize action results.
      *
      * @param value the value value to set
      * @return the SummarizeResultsInner object itself.
