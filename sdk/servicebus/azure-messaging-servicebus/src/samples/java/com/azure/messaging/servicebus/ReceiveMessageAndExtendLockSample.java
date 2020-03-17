@@ -31,7 +31,6 @@ public class ReceiveMessageAndExtendLockSample {
         // 3. Creating a "Shared access policy" for your Queue instance.
         // 4. Copying the connection string from the policy's properties.
         String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
-        connectionString = "Endpoint=sb://sbtrack2-hemanttest-prototype.servicebus.windows.net/;SharedAccessKeyName=manage;SharedAccessKey=T3wSc5Zp91BC1kw2bnLlNJYiBogrKRe+eBO0ST9ejCY=;EntityPath=hemant-test1";
         ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .scheduler(Schedulers.elastic())
