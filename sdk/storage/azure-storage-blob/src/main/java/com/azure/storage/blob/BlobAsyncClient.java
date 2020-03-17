@@ -584,7 +584,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         } else {
                             // Otherwise we know it can be sent in a single request reducing network overhead.
                             Flux<ByteBuffer> data = FluxUtil.readFile(channel);
-                            if (finalParallelTransferOptions.getProgressReceiver() != null ) {
+                            if (finalParallelTransferOptions.getProgressReceiver() != null) {
                                 data = ProgressReporter.addProgressReporting(data,
                                     finalParallelTransferOptions.getProgressReceiver());
                             }
