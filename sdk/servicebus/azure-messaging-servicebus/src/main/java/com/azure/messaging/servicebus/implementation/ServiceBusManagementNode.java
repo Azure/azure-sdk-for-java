@@ -64,18 +64,6 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      */
     Mono<Instant> renewMessageLock(UUID messageLock);
 
-    /**
-     * Asynchronously renews the lock on the message. The lock will be renewed based on
-     * the setting specified on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode,
-     * the message is locked on the server for this receiver instance for a duration as specified during the
-     * Queue/Subscription creation (LockDuration). If processing of the message requires longer than this duration,
-     * the lock needs to be renewed. For each renewal, the lock is reset to the entity's LockDuration value.
-     *
-     * @param messageForLockRenew The {@link ServiceBusReceivedMessage} to be renewed
-     * @return {@link Instant} representing the pending renew.
-     */
-    Mono<Instant> renewMessageLock(ServiceBusReceivedMessage messageForLockRenew);
-
     @Override
     void close();
 }

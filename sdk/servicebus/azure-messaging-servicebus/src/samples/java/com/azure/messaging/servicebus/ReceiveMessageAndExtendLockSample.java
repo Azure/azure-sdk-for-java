@@ -3,95 +3,39 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.AmqpShutdownSignal;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
-import com.azure.core.util.logging.ClientLogger;
-import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
-import reactor.core.publisher.DirectProcessor;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-
-import static org.mockito.Mockito.when;
 
 public class ReceiveMessageAndExtendLockSample {
+    private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(20);
 
-    private static final String PAYLOAD = "hello";
-    private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
-    private static final int PREFETCH = 1;
-
-    private final ClientLogger logger = new ClientLogger(MessageReceiverAsyncClient.class);
-    private final String messageTrackingUUID = UUID.randomUUID().toString();
-    private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
-    private final DirectProcessor<Throwable> errorProcessor = DirectProcessor.create();
-    private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
-    private final DirectProcessor<AmqpShutdownSignal> shutdownProcessor = DirectProcessor.create();
-
-    @Mock
-    private AmqpReceiveLink amqpReceiveLink;
-
-    @Captor
-    private ArgumentCaptor<Supplier<Integer>> creditSupplier;
-
-    private Mono<AmqpReceiveLink> receiveLinkMono;
-    private List<Message> messages = new ArrayList<>();
-
-    private ServiceBusReceiverAsyncClient consumer;
-
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        receiveLinkMono = Mono.fromCallable(() -> amqpReceiveLink);
-
-        when(amqpReceiveLink.receive()).thenReturn(messageProcessor);
-        //when(amqpReceiveLink.getErrors()).thenReturn(errorProcessor);
-        //when(amqpReceiveLink.getConnectionStates()).thenReturn(endpointProcessor);
-        //when(amqpReceiveLink.getShutdownSignals()).thenReturn(shutdownProcessor);
-
-        String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING")
-            + ";EntityPath=hemant-test1";
-
-        // Instantiate a client that will be used to call the service.
-
-        consumer = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .scheduler(Schedulers.elastic())
-            .buildAsyncReceiverClient();
-    }
-
-    @AfterEach
-    public void teardown() {
-        messages.clear();
-        Mockito.framework().clearInlineMocks();
-        consumer.close();
-    }
-
-    @Test
-    public void receiveAndExtendLockMessage() {
+    /**
+     * Main method to invoke this demo on how to send an {@link ServiceBusMessage} to an Azure Service Bus
+     * Queue or Topic.
+     *
+     * @param args Unused arguments to the program.
+     */
+    public static void main1(String[] args) {
 
         // Arrange
         final int numberOfEvents = 1;
+
+        // The connection string value can be obtained by:
+        // 1. Going to your Service Bus namespace in Azure Portal.
+        // 2. Creating an Queue instance.
+        // 3. Creating a "Shared access policy" for your Queue instance.
+        // 4. Copying the connection string from the policy's properties.
+        String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+        connectionString = "Endpoint=sb://sbtrack2-hemanttest-prototype.servicebus.windows.net/;SharedAccessKeyName=manage;SharedAccessKey=T3wSc5Zp91BC1kw2bnLlNJYiBogrKRe+eBO0ST9ejCY=;EntityPath=hemant-test1";
+        ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
+            .connectionString(connectionString)
+            .scheduler(Schedulers.elastic())
+            .buildAsyncReceiverClient();
 
         // Act & Assert
         StepVerifier.create(
@@ -122,9 +66,75 @@ public class ReceiveMessageAndExtendLockSample {
                 log("processing done");
                 renewDisposable.dispose();
             }).verifyComplete();
+
+        //wait for receiver to finish processing.
+        try {
+            Thread.sleep(OPERATION_TIMEOUT.toMillis());
+        } catch (InterruptedException ignored) {
+
+        }
     }
 
-    private void log(String message) {
+
+    public static void main(String[] args) {
+
+        // Arrange
+        final int numberOfEvents = 1;
+
+        // The connection string value can be obtained by:
+        // 1. Going to your Service Bus namespace in Azure Portal.
+        // 2. Creating an Queue instance.
+        // 3. Creating a "Shared access policy" for your Queue instance.
+        // 4. Copying the connection string from the policy's properties.
+        String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+        connectionString = "Endpoint=sb://sbtrack2-hemanttest-prototype.servicebus.windows.net/;SharedAccessKeyName=manage;SharedAccessKey=T3wSc5Zp91BC1kw2bnLlNJYiBogrKRe+eBO0ST9ejCY=;EntityPath=hemant-test1";
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .connectionString(connectionString)
+            .scheduler(Schedulers.elastic())
+            .buildAsyncReceiverClient();
+
+        Disposable disposable = receiver
+            .receive()
+            .doOnNext(message -> {
+                log(" Received Message Id :" + message.getMessageId());
+                log(" Received Message :" + new String(message.getBody()));
+
+                log(" Got message time to refresh in " + message.getLockedUntil());
+                Disposable renewDisposable = receiver.renewMessageLock(message)
+                    .repeat(() -> true)
+                    .delayElements(Duration.ofSeconds(2))
+                    .subscribe(instant -> {
+                        log(" New time instant:" + instant);
+
+                    });
+
+                // processing the messaging
+                int count = 0;
+                while (count < 15) {
+                    ++count;
+                    log(count + ". processing message ");
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception ignored) {
+
+                    }
+                }
+                log("processing done");
+               // renewDisposable.dispose();
+            })
+            .subscribe();
+
+        //wait for receiver to finish processing.
+        try {
+            Thread.sleep(OPERATION_TIMEOUT.toMillis());
+        } catch (InterruptedException ignored) {
+
+        }
+        log("Closing the receiver.");
+        disposable.dispose();
+        log("End!! ");
+    }
+    private static void log(String message) {
         System.out.println(message);
     }
 }

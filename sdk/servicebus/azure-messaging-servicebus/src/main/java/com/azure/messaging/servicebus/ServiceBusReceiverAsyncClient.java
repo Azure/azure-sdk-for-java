@@ -25,6 +25,7 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
+import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.time.Duration;
@@ -56,6 +57,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final int prefetch;
     private final boolean isAutoComplete;
     private final ReceiveMode receiveMode;
+    private final Scheduler scheduler;
 
     /**
      * Map containing linkNames and their associated consumers. Key: linkName Value: consumer associated with that
@@ -66,10 +68,11 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
         boolean isSessionEnabled, ReceiveMessageOptions receiveMessageOptions,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer) {
+        MessageSerializer messageSerializer, Scheduler scheduler) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
+        this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
@@ -224,10 +227,13 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Instant> renewMessageLock(ServiceBusReceivedMessage receivedMessage) {
+        Objects.requireNonNull(receivedMessage,"'receivedMessage' cannot be null.");
+        Objects.requireNonNull(receivedMessage.getLockToken(), "'receivedMessage.lockToken' cannot be null.");
+
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode -> serviceBusManagementNode
-                .renewMessageLock(receivedMessage)
+                .renewMessageLock(receivedMessage.getLockToken())
                 .map(instant -> {
                     receivedMessage.setLockedUntil(instant);
                     return instant;
@@ -452,7 +458,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                 new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
 
             return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, isAutoComplete, this::complete,
-                this::abandon);
+                this::abandon, scheduler);
         });
     }
 

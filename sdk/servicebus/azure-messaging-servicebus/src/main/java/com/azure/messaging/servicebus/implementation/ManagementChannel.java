@@ -40,11 +40,11 @@ import static com.azure.messaging.servicebus.implementation.ManagementConstants.
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.PEEK_OPERATION_VALUE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_MESSAGE_COUNT;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE_COUNT_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.SERVER_TIMEOUT;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.UPDATE_DISPOSITION_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_LOCKTOKENS;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_RENEWLOCK_OPERATION;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.RENEW_LOCK_OPERATION;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_OK_STATUS_CODE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_EXPIRATIONS;
 
@@ -94,17 +94,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "", getErrorContext()));
             }
         }));
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<Instant> renewMessageLock(ServiceBusReceivedMessage messageForLockRenew) {
-        return renewMessageLock(new UUID[]{messageForLockRenew.getLockToken()})
-            .last()
-            .publishOn(scheduler);
     }
 
     /**
@@ -162,7 +151,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             // set mandatory properties on AMQP message body
             HashMap<String, Object> requestBodyMap = new HashMap<>();
             requestBodyMap.put(REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER, fromSequenceNumber);
-            requestBodyMap.put(REQUEST_RESPONSE_MESSAGE_COUNT, maxMessages);
+            requestBodyMap.put(MESSAGE_COUNT_KEY, maxMessages);
 
             if (!Objects.isNull(sessionId)) {
                 requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_SESSION_ID, sessionId);
@@ -235,14 +224,11 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private Flux<Instant> renewMessageLock(UUID[] renewLockList) {
 
         return  isAuthorized(PEEK_OPERATION_VALUE).thenMany(createRequestResponse.flatMap(channel -> {
-            UUID[] lockTokens = Arrays.stream(renewLockList)
-                //.map(ServiceBusReceivedMessage::getLockToken)
-                .toArray(UUID[]::new);
 
-            Message requestMessage = createManagementMessage(REQUEST_RESPONSE_RENEWLOCK_OPERATION,
+            Message requestMessage = createManagementMessage(RENEW_LOCK_OPERATION,
                 channel.getReceiveLinkName());
 
-            requestMessage.setBody(new AmqpValue(Collections.singletonMap(REQUEST_RESPONSE_LOCKTOKENS, lockTokens)));
+            requestMessage.setBody(new AmqpValue(Collections.singletonMap(LOCK_TOKENS, renewLockList)));
             return channel.sendWithAck(requestMessage);
         }).flatMapMany(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);

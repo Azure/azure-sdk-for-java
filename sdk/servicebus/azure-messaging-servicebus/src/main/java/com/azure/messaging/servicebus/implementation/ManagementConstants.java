@@ -19,7 +19,7 @@ class ManagementConstants {
     static final String SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 
     static final String REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER = "from-sequence-number";
-    static final String REQUEST_RESPONSE_MESSAGE_COUNT = "message-count";
+    static final String MESSAGE_COUNT_KEY = "message-count";
     static final String REQUEST_RESPONSE_SESSION_ID = "session-id";
 
     // Used in updating disposition of message.
@@ -40,8 +40,8 @@ class ManagementConstants {
     static final String REQUEST_RESPONSE_VIA_PARTITION_KEY = "via-partition-key";
     static final String REQUEST_RESPONSE_SCHEDULE_MESSAGE_OPERATION = AmqpConstants.VENDOR + ":schedule-message";
     static final String REQUEST_RESPONSE_ASSOCIATED_LINK_NAME = "associated-link-name";
-    static final String REQUEST_RESPONSE_LOCKTOKENS = "lock-tokens";
-    static final String REQUEST_RESPONSE_RENEWLOCK_OPERATION = AmqpConstants.VENDOR + ":renew-lock";
+    static final String LOCK_TOKENS = "lock-tokens";
+    static final String RENEW_LOCK_OPERATION = AmqpConstants.VENDOR + ":renew-lock";
     static final int REQUEST_RESPONSE_OK_STATUS_CODE = 200;
     static final String REQUEST_RESPONSE_EXPIRATIONS = "expirations";
 }
