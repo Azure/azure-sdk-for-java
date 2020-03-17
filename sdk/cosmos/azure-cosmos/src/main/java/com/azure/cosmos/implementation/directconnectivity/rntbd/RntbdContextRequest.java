@@ -4,10 +4,10 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.guava27.Strings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.azure.cosmos.implementation.guava27.Strings;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.CorruptedFrameException;
@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 import static com.azure.cosmos.implementation.HttpConstants.Versions;
-import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.CurrentProtocolVersion;
+import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.CURRENT_PROTOCOL_VERSION;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdContextRequestHeader;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdOperationType;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdResourceType;
@@ -118,7 +118,7 @@ public final class RntbdContextRequest {
             this(Unpooled.EMPTY_BUFFER);
             this.clientVersion.setValue(ClientVersion);
             this.userAgent.setValue(container.getUserAgent());
-            this.protocolVersion.setValue(CurrentProtocolVersion);
+            this.protocolVersion.setValue(CURRENT_PROTOCOL_VERSION);
         }
 
         private Headers(ByteBuf in) {

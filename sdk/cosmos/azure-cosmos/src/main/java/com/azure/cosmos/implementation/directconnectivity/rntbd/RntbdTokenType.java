@@ -11,8 +11,8 @@ import io.netty.handler.codec.CorruptedFrameException;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-import static com.google.common.base.Preconditions.checkState;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
+import static com.google.common.base.Preconditions.checkState;
 
 enum RntbdTokenType {
 
