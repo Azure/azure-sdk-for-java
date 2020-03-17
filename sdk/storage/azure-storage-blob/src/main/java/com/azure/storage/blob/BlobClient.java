@@ -90,6 +90,17 @@ public class BlobClient extends BlobClientBase {
     }
 
     /**
+     * Creates a new {@link BlobClient} linked to the {@code version} of this blob resource.
+     *
+     * @param versionId the identifier for a specific version of this blob
+     * @return A {@link BlobClient} used to interact with the specific version.
+     */
+    @Override
+    public BlobClient getVersionClient(String versionId) {
+        return new BlobClient(client.getVersionClient(versionId));
+    }
+
+    /**
      * Creates a new {@link AppendBlobClient} associated with this blob.
      *
      * @return A {@link AppendBlobClient} associated with this blob.

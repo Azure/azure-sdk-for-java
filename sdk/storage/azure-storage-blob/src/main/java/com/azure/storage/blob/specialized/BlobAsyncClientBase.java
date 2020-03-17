@@ -94,6 +94,7 @@ public class BlobAsyncClientBase {
 
     protected final AzureBlobStorageImpl azureBlobStorage;
     private final String snapshot;
+    private final String versionId;
     private final CpkInfo customerProvidedKey;
     protected final EncryptionScope encryptionScope;
     protected final String accountName;
@@ -137,6 +138,29 @@ public class BlobAsyncClientBase {
     protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
         EncryptionScope encryptionScope) {
+        this(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
+            encryptionScope, null);
+    }
+
+    /**
+     * Protected constructor for use by {@link SpecializedBlobClientBuilder}.
+     *
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     */
+    protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
+                                  String accountName, String containerName, String blobName, String snapshot,
+                                  CpkInfo customerProvidedKey, EncryptionScope encryptionScope, String versionId) {
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -150,6 +174,7 @@ public class BlobAsyncClientBase {
         this.snapshot = snapshot;
         this.customerProvidedKey = customerProvidedKey;
         this.encryptionScope = encryptionScope;
+        this.versionId = versionId;
     }
 
     /**
@@ -172,7 +197,18 @@ public class BlobAsyncClientBase {
      */
     public BlobAsyncClientBase getSnapshotClient(String snapshot) {
         return new BlobAsyncClientBase(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
-            getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(), encryptionScope);
+            getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(), encryptionScope, getVersionId());
+    }
+
+    /**
+     * Creates a new {@link BlobAsyncClientBase} linked to the {@code versionId} of this blob resource.
+     *
+     * @param versionId the identifier for a specific version of this blob
+     * @return a {@link BlobAsyncClientBase} used to interact with the specific version.
+     */
+    public BlobAsyncClientBase getVersionClient(String versionId) {
+        return new BlobAsyncClientBase(getHttpPipeline(), getBlobUrl(), getServiceVersion(), getAccountName(),
+            getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), encryptionScope, versionId);
     }
 
     /**
@@ -270,6 +306,15 @@ public class BlobAsyncClientBase {
      */
     public boolean isSnapshot() {
         return this.snapshot != null;
+    }
+
+    /**
+     * Gets the versionId for a blob resource
+     *
+     * @return A string that represents the versionId of the snapshot blob
+     */
+    public String getVersionId() {
+        return this.versionId;
     }
 
     /**
@@ -682,7 +727,7 @@ public class BlobAsyncClientBase {
             .setCount(range.getCount())
             .setETag(requestConditions.getIfMatch());
 
-        return azureBlobStorage.blobs().downloadWithRestResponseAsync(null, null, snapshot, null /* versionId */, null,
+        return azureBlobStorage.blobs().downloadWithRestResponseAsync(null, null, snapshot, versionId, null,
             range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
@@ -1093,7 +1138,7 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        return this.azureBlobStorage.blobs().deleteWithRestResponseAsync(null, null, snapshot, null /* versionId */,
+        return this.azureBlobStorage.blobs().deleteWithRestResponseAsync(null, null, snapshot, versionId,
             null, requestConditions.getLeaseId(), deleteBlobSnapshotOptions, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), null, context)
@@ -1270,7 +1315,7 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions,
         Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-        
+
         return this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),

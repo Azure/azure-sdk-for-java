@@ -86,6 +86,7 @@ public final class EncryptedBlobClientBuilder {
     private String containerName;
     private String blobName;
     private String snapshot;
+    private String versionId;
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
@@ -151,7 +152,7 @@ public final class EncryptedBlobClientBuilder {
 
         return new EncryptedBlobAsyncClient(getHttpPipeline(),
             String.format("%s/%s/%s", endpoint, containerName, blobName), serviceVersion, accountName, containerName,
-            blobName, snapshot, customerProvidedKey, keyWrapper, keyWrapAlgorithm);
+            blobName, snapshot, customerProvidedKey, keyWrapper, keyWrapAlgorithm, versionId);
     }
 
     private HttpPipeline getHttpPipeline() {
@@ -351,6 +352,7 @@ public final class EncryptedBlobClientBuilder {
             this.containerName = parts.getBlobContainerName();
             this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
+            this.versionId = parts.getVersionId();
 
             String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
@@ -396,6 +398,17 @@ public final class EncryptedBlobClientBuilder {
      */
     public EncryptedBlobClientBuilder snapshot(String snapshot) {
         this.snapshot = snapshot;
+        return this;
+    }
+
+    /**
+     * Sets the version identifier of the blob.
+     *
+     * @param versionId Version identifier for the blob.
+     * @return the updated EncryptedBlobClientBuilder object
+     */
+    public EncryptedBlobClientBuilder versionId(String versionId) {
+        this.versionId = versionId;
         return this;
     }
 

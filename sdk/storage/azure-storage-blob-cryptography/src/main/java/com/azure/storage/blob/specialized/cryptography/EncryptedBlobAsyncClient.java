@@ -98,12 +98,13 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * {@code null} to allow the service to use its own encryption.
      * @param key The key used to encrypt and decrypt data.
      * @param keyWrapAlgorithm The algorithm used to wrap/unwrap the key during encryption.
+     * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
      */
     EncryptedBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
-        AsyncKeyEncryptionKey key, String keyWrapAlgorithm) {
+        AsyncKeyEncryptionKey key, String keyWrapAlgorithm, String versionId) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
-            null);
+            null, versionId);
 
         this.keyWrapper = key;
         this.keyWrapAlgorithm = keyWrapAlgorithm;
