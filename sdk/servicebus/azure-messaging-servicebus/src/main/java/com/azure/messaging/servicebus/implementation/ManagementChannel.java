@@ -24,7 +24,6 @@ import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -34,7 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.ASSOCIATED_LINK_NAME_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
@@ -232,21 +231,26 @@ public class ManagementChannel implements ServiceBusManagementNode {
             return channel.sendWithAck(requestMessage);
         }).flatMapMany(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-            List<Instant> expirationsForLocks = new ArrayList<>();
-            if (statusCode ==  REQUEST_RESPONSE_OK_STATUS_CODE) {
-                @SuppressWarnings("unchecked")
-                Map<String, Object> responseBody = (Map<String, Object>) ((AmqpValue) responseMessage
-                    .getBody()).getValue();
-                Object expirationListObj = responseBody.get(REQUEST_RESPONSE_EXPIRATIONS);
 
-                if (expirationListObj instanceof  Date[]) {
-                    Date[] expirations = (Date[]) expirationListObj;
-                    expirationsForLocks =  Arrays.stream(expirations)
-                        .map(Date::toInstant)
-                        .collect(Collectors.toList());
+            Stream<Instant> instantStream = Stream.empty();
+            if (statusCode ==  REQUEST_RESPONSE_OK_STATUS_CODE) {
+                if (responseMessage.getBody() instanceof AmqpValue) {
+                    AmqpValue amqpValue = ((AmqpValue) responseMessage.getBody());
+                    if (amqpValue.getValue() instanceof  Map) {
+                        @SuppressWarnings("unchecked")
+                        Map<String, Object> responseBody = (Map<String, Object>) amqpValue.getValue();
+                        Object expirationListObj = responseBody.get(REQUEST_RESPONSE_EXPIRATIONS);
+
+                        if (expirationListObj instanceof  Date[]) {
+                            instantStream = Arrays.stream((Date[]) expirationListObj)
+                                .map(Date::toInstant);
+                        }
+                    }
                 }
+            } else {
+                return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "", getErrorContext()));
             }
-            return Flux.fromIterable(expirationsForLocks);
+            return Flux.fromStream(instantStream);
         }));
     }
 
