@@ -20,7 +20,7 @@ import java.util.concurrent.CountDownLatch;
  * 2002, the highest available version for the Storage service is version 2017-11-09. In this case, you will need to use
  * the following code to change the Storage service API version to 2017-11-09. For more information on the Azure Storage
  * service versions supported on Azure Stack Hub, please refer to
- * <a href=docs.microsoft.com/en-us/azure-stack/user/azure-stack-acs-differences>Azure Stack Hub Documentation</a>
+ * <a href=docs.microsoft.com/azure-stack/user/azure-stack-acs-differences>Azure Stack Hub Documentation</a>
  */
 public class EventProcessorWithCustomStorageVersion {
 
