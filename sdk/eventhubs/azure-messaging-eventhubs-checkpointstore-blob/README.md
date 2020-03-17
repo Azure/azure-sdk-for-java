@@ -65,7 +65,6 @@ sequence number and the timestamp of when it was enqueued.
 - [Consume events from all Event Hub partitions][sample_event_processor]
 - [Specify storage version to create checkpoint store][sample_checkpointstore_custom_storage_version]
 
-
 ### Create an instance of Storage container with SAS token
 
 <!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/checkpointstore/blob/ReadmeSamples.java#L25-L29 -->
