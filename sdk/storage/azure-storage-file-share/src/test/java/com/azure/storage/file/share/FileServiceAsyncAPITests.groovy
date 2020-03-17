@@ -13,7 +13,6 @@ import com.azure.storage.file.share.models.ShareProperties
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
 import reactor.test.StepVerifier
-import spock.lang.Ignore
 import spock.lang.Unroll
 
 class FileServiceAsyncAPITests extends APISpec {
