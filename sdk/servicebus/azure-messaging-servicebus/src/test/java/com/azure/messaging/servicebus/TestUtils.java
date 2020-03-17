@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.util.CoreUtils;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -49,6 +50,7 @@ public class TestUtils {
     static {
         APPLICATION_PROPERTIES.put("test-name", ServiceBusMessage.class.getName());
         APPLICATION_PROPERTIES.put("a-number", 10L);
+        APPLICATION_PROPERTIES.put("status-code", AmqpResponseCode.OK.getValue());
     }
 
     static Symbol getSymbol(AmqpMessageConstant messageConstant) {
@@ -99,7 +101,7 @@ public class TestUtils {
     /**
      * Creates a mock message with the contents provided.
      */
-    static Message getMessage(byte[] contents) {
+    public static Message getMessage(byte[] contents) {
         return getMessage(contents, null);
     }
 

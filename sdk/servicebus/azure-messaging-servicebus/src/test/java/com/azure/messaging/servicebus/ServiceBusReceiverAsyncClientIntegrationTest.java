@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.UUID;
@@ -49,9 +50,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(sender.send(message).thenMany(receiver.receive().take(1)))
             .assertNext(receivedMessage -> {
-                Assertions.assertEquals(contents, receivedMessage.getBodyAsString());
+                Assertions.assertEquals(contents, new String(receivedMessage.getBody()));
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
     }
@@ -69,9 +69,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(sender.send(message).then(receiver.peek()))
             .assertNext(receivedMessage -> {
-                Assertions.assertEquals(contents, receivedMessage.getBodyAsString());
+                Assertions.assertEquals(contents, new String(receivedMessage.getBody()));
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
     }
@@ -80,7 +79,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send and peek a message.
      */
     @Test
-    void peekFromSequencenumberMessage() {
+    void peekFromSequenceNumberMessage() {
         // Arrange
         final long fromSequenceNumber = 1;
         final String messageId = UUID.randomUUID().toString();
@@ -90,10 +89,46 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(sender.send(message).then(receiver.peek(fromSequenceNumber)))
             .assertNext(receivedMessage -> {
-                Assertions.assertEquals(contents, receivedMessage.getBodyAsString());
+                Assertions.assertEquals(contents, new String(receivedMessage.getBody()));
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
             })
+            .verifyComplete();
+    }
+
+
+    /**
+     * Verifies that we can send and peek a batch of messages.
+     */
+    @Test
+    void peekBatchMessages() {
+        // Arrange
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+        int maxMessages = 2;
+
+        // Assert & Act
+        StepVerifier.create(Mono.when(sender.send(message), sender.send(message))
+            .thenMany(receiver.peekBatch(maxMessages)))
+            .expectNextCount(maxMessages)
+            .verifyComplete();
+    }
+    /**
+     * Verifies that we can send and peek a batch of messages.
+     */
+    @Test
+    void peekBatchMessagesFromSequence() {
+        // Arrange
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+        int maxMessages = 2;
+        int fromSequenceNumber = 1;
+
+        // Assert & Act
+        StepVerifier.create(Mono.when(sender.send(message), sender.send(message))
+            .thenMany(receiver.peekBatch(maxMessages, fromSequenceNumber)))
+            .expectNextCount(maxMessages)
             .verifyComplete();
     }
 }

@@ -141,7 +141,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
 
             retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
                 if (isDisposed()) {
-                    logger.info("Retry #{}. Not requesting from upstream. Processor is disposed.");
+                    logger.info("Retry #{}. Not requesting from upstream. Processor is disposed.", attempt);
                 } else {
                     logger.info("Retry #{}. Requesting from upstream.", attempt);
 

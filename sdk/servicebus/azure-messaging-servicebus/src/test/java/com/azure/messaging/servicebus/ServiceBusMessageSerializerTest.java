@@ -3,9 +3,17 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.exception.AmqpResponseCode;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.messaging.AmqpValue;
+import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.azure.messaging.servicebus.TestUtils.APPLICATION_PROPERTIES;
 import static com.azure.messaging.servicebus.TestUtils.SEQUENCE_NUMBER;
@@ -15,20 +23,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ServiceBusServiceBusMessageSerializerTest {
+class ServiceBusMessageSerializerTest {
     private final ServiceBusMessageSerializer serializer = new ServiceBusMessageSerializer();
 
     @Test
-    public void deserializeMessageNotNull() {
+    void deserializeMessageNotNull() {
         assertThrows(NullPointerException.class, () -> serializer.deserialize(null, ServiceBusMessage.class));
     }
     @Test
-    public void deserializeClassNotNull() {
+    void deserializeClassNotNull() {
         assertThrows(NullPointerException.class, () -> serializer.deserialize(Proton.message(), null));
     }
 
     @Test
-    public void serializeObjectNotNull() {
+    void serializeObjectNotNull() {
         assertThrows(NullPointerException.class, () -> serializer.serialize(null));
     }
 
@@ -36,7 +44,7 @@ public class ServiceBusServiceBusMessageSerializerTest {
      * Verify that we cannot serialize something that is not of type Message.
      */
     @Test
-    public void cannotSerializeObject() {
+    void cannotSerializeObject() {
         String something = "oops";
         assertThrows(IllegalArgumentException.class, () -> serializer.serialize(something));
     }
@@ -45,16 +53,18 @@ public class ServiceBusServiceBusMessageSerializerTest {
      * Verify we can only deserialize supported classes.
      */
     @Test
-    public void cannotDeserializeObject() {
+    void cannotDeserializeObject() {
         final org.apache.qpid.proton.message.Message message = getMessage("hello-world".getBytes(UTF_8));
         assertThrows(IllegalArgumentException.class, () -> serializer.deserialize(message, ServiceBusReceiverAsyncClient.class));
+
+        assertThrows(IllegalArgumentException.class, () -> serializer.deserializeList(message, ServiceBusReceiverAsyncClient.class));
     }
 
     /**
      * Verify that we can deserialize a proton-j message with all the correct contents to {@link ServiceBusMessage}.
      */
     @Test
-    public void deserializeMessage() {
+    void deserializeMessage() {
         // Arrange
         final String payload = "hello-world";
         final byte[] payloadBytes = payload.getBytes(UTF_8);
@@ -100,5 +110,26 @@ public class ServiceBusServiceBusMessageSerializerTest {
 
         // Verifying the contents of our message is the same.
         assertEquals(payload, new String(serviceBusMessage.getBody(), UTF_8));
+    }
+
+    /**
+     * Verifies that an empty collection is returned if the status code was not {@link AmqpResponseCode#ACCEPTED}.
+     */
+    @Test
+    void deserializeListMessagesNotOK() {
+        // Arrange
+        final Map<String, Object> properties = new HashMap<>();
+        properties.put("status-code", AmqpResponseCode.FORBIDDEN.getValue());
+
+        final Message message = Proton.message();
+        message.setBody(new AmqpValue("test"));
+        message.setApplicationProperties(new ApplicationProperties(properties));
+
+        // Act
+        final List<ServiceBusReceivedMessage> actual = serializer.deserializeList(message, ServiceBusReceivedMessage.class);
+
+        // Assert
+        Assertions.assertNotNull(actual);
+        Assertions.assertTrue(actual.isEmpty());
     }
 }
