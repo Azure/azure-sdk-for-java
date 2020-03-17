@@ -48,7 +48,7 @@ public class PerfStressProgram {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        
+
         String[] commands = classList.stream().map(c -> getCommandName(c.getSimpleName()))
                 .toArray(i -> new String[i]);
 

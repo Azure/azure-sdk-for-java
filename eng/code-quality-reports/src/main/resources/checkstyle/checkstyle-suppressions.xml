@@ -341,7 +341,5 @@
   <suppress checks="RedundantModifier" files="com.azure.perf.test.core.ExceptionTest.java"/>
 
   <!-- The variables are assigned by jcommander annotation injection framework, cannot be made final. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.SizeOptions.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.CountOptions.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.PerfStressOptions.java"/>
 </suppressions>
