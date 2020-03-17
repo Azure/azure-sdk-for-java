@@ -456,6 +456,25 @@ class ServiceBusReceiverAsyncClientTest {
         verify(managementNode, times(0)).updateDisposition(lockToken2, dispositionStatus, null, null, null);
     }
 
+    /**
+     * Verifies that this renew the message lock for the message.
+     */
+    @Test
+    void renewMessageLock() {
+        // Arrange
+        final int numberOfEvents = 1;
+        Instant renewTime = mock(Instant.class);
+
+        when(managementNode.renewMessageLock(receivedMessage))
+            .thenReturn(Mono.just(renewTime));
+
+        // Act & Assert
+        StepVerifier.create(consumer.renewMessageLock(receivedMessage))
+            .expectNext(renewTime)
+            .verifyComplete();
+
+    }
+
     private List<Message> getMessages(int numberOfEvents) {
         final Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");
 

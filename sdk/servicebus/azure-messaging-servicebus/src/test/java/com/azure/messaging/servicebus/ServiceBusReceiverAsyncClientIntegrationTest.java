@@ -7,9 +7,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.UUID;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_TRACKING_ID;
@@ -131,4 +133,35 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .expectNextCount(maxMessages)
             .verifyComplete();
     }
+
+    /**
+     * Verifies that we can renew message lock.
+     */
+    @Test
+    void renewMessageLock() {
+        // Arrange
+        Duration renewAfterSeconds = Duration.ofSeconds(1);
+        long takeTimeToProcessMessageMillis = 3000;
+
+        // Assert & Act
+        StepVerifier.create(receiver.receive().take(1).delayElements(renewAfterSeconds))
+            .assertNext(receivedMessage -> {
+                System.out.println(" Received message locked until:" + receivedMessage.getLockedUntil());
+                Assertions.assertNotNull(receivedMessage.getLockToken());
+                Disposable renewDisposable = receiver.renewMessageLock(receivedMessage)
+                    .repeat(() -> true)
+                    .delayElements(renewAfterSeconds)
+                    .subscribe(Assertions::assertNotNull);
+                // process your message here
+                try {
+                    Thread.sleep(takeTimeToProcessMessageMillis);
+                } catch (InterruptedException ignored) {
+
+                }
+
+                renewDisposable.dispose();
+            })
+            .verifyComplete();
+    }
+
 }

@@ -23,13 +23,18 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.ASSOCIATED_LINK_NAME_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
@@ -38,6 +43,10 @@ import static com.azure.messaging.servicebus.implementation.ManagementConstants.
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_MESSAGE_COUNT;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.SERVER_TIMEOUT;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.UPDATE_DISPOSITION_OPERATION;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_LOCKTOKENS;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_RENEWLOCK_OPERATION;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_OK_STATUS_CODE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_EXPIRATIONS;
 
 /**
  * Channel responsible for Service Bus related metadata, peek  and management plane operations. Management plane
@@ -85,6 +94,27 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "", getErrorContext()));
             }
         }));
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Instant> renewMessageLock(ServiceBusReceivedMessage messageForLockRenew) {
+        return renewMessageLock(new UUID[]{messageForLockRenew.getLockToken()})
+            .last()
+            .publishOn(scheduler);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Instant> renewMessageLock(UUID lockToken) {
+        return renewMessageLock(new UUID[]{lockToken})
+            .last()
+            .publishOn(scheduler);
     }
 
     /**
@@ -201,6 +231,39 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
         return message;
     }
+
+    private Flux<Instant> renewMessageLock(UUID[] renewLockList) {
+
+        return  isAuthorized(PEEK_OPERATION_VALUE).thenMany(createRequestResponse.flatMap(channel -> {
+            UUID[] lockTokens = Arrays.stream(renewLockList)
+                //.map(ServiceBusReceivedMessage::getLockToken)
+                .toArray(UUID[]::new);
+
+            Message requestMessage = createManagementMessage(REQUEST_RESPONSE_RENEWLOCK_OPERATION,
+                channel.getReceiveLinkName());
+
+            requestMessage.setBody(new AmqpValue(Collections.singletonMap(REQUEST_RESPONSE_LOCKTOKENS, lockTokens)));
+            return channel.sendWithAck(requestMessage);
+        }).flatMapMany(responseMessage -> {
+            int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+            List<Instant> expirationsForLocks = new ArrayList<>();
+            if (statusCode ==  REQUEST_RESPONSE_OK_STATUS_CODE) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> responseBody = (Map<String, Object>) ((AmqpValue) responseMessage
+                    .getBody()).getValue();
+                Object expirationListObj = responseBody.get(REQUEST_RESPONSE_EXPIRATIONS);
+
+                if (expirationListObj instanceof  Date[]) {
+                    Date[] expirations = (Date[]) expirationListObj;
+                    expirationsForLocks =  Arrays.stream(expirations)
+                        .map(Date::toInstant)
+                        .collect(Collectors.toList());
+                }
+            }
+            return Flux.fromIterable(expirationsForLocks);
+        }));
+    }
+
 
     /**
      * Creates an AMQP message with the required application properties.

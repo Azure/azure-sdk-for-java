@@ -4,13 +4,14 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
 import java.util.UUID;
-
+import java.time.Instant;
 
 /**
  * The management node for fetching metadata about the Service Bus and peek operation.
@@ -50,6 +51,30 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @return The {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
      */
     Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages);
+
+    /**
+     * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on
+     * the setting specified on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode,
+     * the message is locked on the server for this receiver instance for a duration as specified during the
+     * Queue/Subscription creation (LockDuration). If processing of the message requires longer than this duration,
+     * the lock needs to be renewed. For each renewal, the lock is reset to the entity's LockDuration value.
+     *
+     * @param messageLock The {@link UUID} of the mesage {@link ServiceBusReceivedMessage} to be renewed.
+     * @return {@link Instant} representing the pending renew.
+     */
+    Mono<Instant> renewMessageLock(UUID messageLock);
+
+    /**
+     * Asynchronously renews the lock on the message. The lock will be renewed based on
+     * the setting specified on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode,
+     * the message is locked on the server for this receiver instance for a duration as specified during the
+     * Queue/Subscription creation (LockDuration). If processing of the message requires longer than this duration,
+     * the lock needs to be renewed. For each renewal, the lock is reset to the entity's LockDuration value.
+     *
+     * @param messageForLockRenew The {@link ServiceBusReceivedMessage} to be renewed
+     * @return {@link Instant} representing the pending renew.
+     */
+    Mono<Instant> renewMessageLock(ServiceBusReceivedMessage messageForLockRenew);
 
     @Override
     void close();
