@@ -129,7 +129,7 @@ The Text Analytics client library provides a [TextAnalyticsClient][text_analytic
 [TextAnalyticsAsyncClient][text_analytics_async_client] to do analysis on batches of documents. It provides both synchronous and
 asynchronous operations to access a specific use of Text Analytics, such as language detection or key phrase extraction.
 
-### Text input
+### input
 A **text input**, also called a **document**, is a single unit of document to be analyzed by the predictive models
 in the Text Analytics service. Operations on Text Analytics client may take a single document or a collection
 of documents to be analyzed as a batch. 
