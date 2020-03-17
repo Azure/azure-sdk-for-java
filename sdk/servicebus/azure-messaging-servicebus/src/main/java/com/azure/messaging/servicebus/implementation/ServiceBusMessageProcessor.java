@@ -6,13 +6,19 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Operators;
 
 import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -26,13 +32,17 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageProcessor.class);
     private final boolean isAutoComplete;
     private final Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction;
+    private final Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon;
     private final Deque<ServiceBusReceivedMessage> messageQueue = new ConcurrentLinkedDeque<>();
+    private final Map<UUID, PendingComplete> pendingCompletes = new HashMap<>();
 
     ServiceBusMessageProcessor(boolean isAutoComplete,
-        Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction) {
+        Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction,
+        Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon) {
         super();
         this.isAutoComplete = isAutoComplete;
         this.completeFunction = Objects.requireNonNull(completeFunction, "'completeFunction' cannot be null.");
+        this.onAbandon = onAbandon;
     }
 
     private volatile boolean isDone;
@@ -129,6 +139,8 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     public void cancel() {
         isCancelled = true;
         drain();
+
+        completePendingMessages().block();
     }
 
     @Override
@@ -207,15 +219,123 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         }
     }
 
+    private Mono<Void> completePendingMessages() {
+        final PendingComplete[] pending = pendingCompletes.values().toArray(new PendingComplete[0]);
+        pendingCompletes.clear();
+
+        if (pending.length == 0) {
+            return Mono.empty();
+        }
+
+        return Mono.when(Flux.fromArray(pending)
+            .flatMap(receive -> {
+                if (receive.isRunningGetAndSet()) {
+                    return receive.getOnComplete();
+                } else {
+                    return completeFunction.apply(receive.getMessage());
+                }
+            }));
+    }
+
     private void next(ServiceBusReceivedMessage message) {
+        final UUID lockToken = message.getLockToken();
+        final boolean isCompleteMessage = isAutoComplete && lockToken != null
+            && !MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken);
+
+        logger.info("sequenceNumber[{}]. lock[{}]. Auto-complete message? [{}]",
+            message.getSequenceNumber(), lockToken, isCompleteMessage);
+
+        final PendingComplete pendingComplete = new PendingComplete(message);
+        if (isCompleteMessage) {
+            pendingCompletes.put(lockToken, pendingComplete);
+        }
+
         try {
             downstream.onNext(message);
-            if (isAutoComplete) {
-                completeFunction.apply(message).block();
-            }
         } catch (Exception e) {
             logger.error("Exception occurred while handling downstream onNext operation.", e);
-            Operators.onOperatorError(upstream, e, message, downstream.currentContext());
+
+            final PendingComplete pending = pendingCompletes.get(lockToken);
+            if (isCompleteMessage && pending != null) {
+                logger.info("Abandoning message lock: {}", lockToken);
+                onAbandon.apply(message)
+                    .onErrorStop()
+                    .doOnError(error -> {
+                        logger.warning("Could not abandon message with lock: {}", lockToken, error);
+                        pending.error(error);
+                    })
+                    .doOnSuccess(unused -> pending.complete())
+                    .doFinally(signal -> {
+                        logger.info("lock[{}]. Abandon status: [{}]", lockToken, signal);
+                        pendingCompletes.remove(lockToken);
+                    })
+                    .block();
+            }
+
+            downstream.onError(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
+        }
+
+        try {
+            // check that the pending operation is in the queue and not running yet.
+            final PendingComplete pending = pendingCompletes.get(lockToken);
+            if (isCompleteMessage && pending != null && !pending.isRunningGetAndSet()) {
+                logger.info("sequenceNumber[{}]. lock[{}]. Completing message.");
+                completeFunction.apply(pending.getMessage())
+                    .onErrorStop()
+                    .doOnError(error -> {
+                        logger.warning("Could not complete message with lock: {}", lockToken, error);
+                        pending.error(error);
+                    })
+                    .doOnSuccess(ignored -> pending.complete())
+                    .doFinally(signal -> {
+                        logger.info("lock[{}]. Complete status: [{}]", lockToken, signal);
+                        pendingCompletes.remove(lockToken);
+                    })
+                    .block();
+            }
+        } catch (Exception e) {
+            logger.error("Exception occurred while auto-completing message. Sequence: {}. Lock token: {}",
+                message.getSequenceNumber(), message.getLockToken(), e);
+            downstream.onError(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
+        }
+    }
+
+    private static final class PendingComplete {
+        private final ServiceBusReceivedMessage message;
+        private final AtomicBoolean isRunning = new AtomicBoolean();
+        private final Mono<Void> onComplete;
+        private MonoSink<Void> sink;
+
+        private PendingComplete(ServiceBusReceivedMessage message) {
+            this.message = message;
+            this.onComplete = Mono.create(sink -> {
+                this.sink = sink;
+            });
+            onComplete.subscribe();
+        }
+
+        private Mono<Void> getOnComplete() {
+            return onComplete;
+        }
+
+        private boolean isRunningGetAndSet() {
+            return isRunning.getAndSet(true);
+        }
+
+        private void error(Throwable throwable) {
+            if (sink != null) {
+                sink.error(throwable);
+            }
+        }
+
+        private void complete() {
+            if (sink != null) {
+                sink.success();
+            }
+        }
+
+        private ServiceBusReceivedMessage getMessage() {
+            return message;
         }
     }
 }

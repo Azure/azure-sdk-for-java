@@ -4,12 +4,18 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.DispositionStatus;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
+import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAsyncConsumer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
@@ -21,32 +27,35 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 
 import java.io.Closeable;
-import java.io.Serializable;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue
- * or topic on Azure Service Bus. 
+ * or topic on Azure Service Bus.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
+    private final ConcurrentHashMap<UUID, Instant> lockTokenExpirationMap = new ConcurrentHashMap<>();
     private final String fullyQualifiedNamespace;
     private final String entityPath;
+    private final MessagingEntityType entityType;
+    private final boolean isSessionEnabled;
     private final ServiceBusConnectionProcessor connectionProcessor;
+    private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
-    private final Serializable maxAutoRenewDuration;
+    private final Duration maxAutoRenewDuration;
     private final int prefetch;
     private final boolean isAutoComplete;
     private final ReceiveMode receiveMode;
-
-    // Client will maintain the sequence number of last peeked message.
-    //private long lastPeekedSequenceNumber = 0;
 
     /**
      * Map containing linkNames and their associated consumers. Key: linkName Value: consumer associated with that
@@ -54,17 +63,26 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      */
     private final ConcurrentHashMap<String, ServiceBusAsyncConsumer> openConsumers = new ConcurrentHashMap<>();
 
-    ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath,
+    ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
+        boolean isSessionEnabled, ReceiveMessageOptions receiveMessageOptions,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, ReceiveMessageOptions receiveMessageOptions) {
-        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
-        this.entityPath = entityPath;
-        this.connectionProcessor = connectionProcessor;
-        this.messageSerializer = messageSerializer;
+        MessageSerializer messageSerializer) {
+
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
+        this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
+        this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
+        this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
+
+        Objects.requireNonNull(receiveMessageOptions, "'receiveMessageOptions' cannot be null.");
         this.prefetch = receiveMessageOptions.getPrefetchCount();
         this.maxAutoRenewDuration = receiveMessageOptions.getMaxAutoRenewDuration();
         this.isAutoComplete = receiveMessageOptions.isAutoComplete();
         this.receiveMode = receiveMessageOptions.getReceiveMode();
+
+        this.entityType = entityType;
+        this.isSessionEnabled = isSessionEnabled;
     }
 
     /**
@@ -93,36 +111,52 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      */
     public Flux<ServiceBusReceivedMessage> receive() {
         if (isDisposed.get()) {
-            return Flux.error(new IllegalStateException("Cannot receive from a client that is already closed."));
+            return Flux.error(logger.logExceptionAsError(
+                new IllegalStateException("Cannot receive from a client that is already closed.")));
         }
 
-        //TODO (conniey): This will return the same link because the linkName is not unique. Is this what we want?
+        if (receiveMode != ReceiveMode.PEEK_LOCK && isAutoComplete) {
+            return Flux.error(logger.logExceptionAsError(new UnsupportedOperationException(
+                "Auto-complete is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.")));
+        }
+
+        // TODO (conniey): This returns the same consumer instance because the entityPath is not unique.
+        //  Python and .NET does not have the same behaviour.
         final String linkName = entityPath;
-        return openConsumers.computeIfAbsent(entityPath, name -> {
-            logger.info("{}: Creating consumer for link '{}'", entityPath, linkName);
-            return createServiceBusConsumer(linkName);
-        })
+        return getOrCreateConsumer(entityPath)
             .receive()
+            .map(message -> {
+                if (message.getLockToken() == null || MessageUtils.ZERO_LOCK_TOKEN.equals(message.getLockToken())) {
+                    return message;
+                }
+
+                lockTokenExpirationMap.compute(message.getLockToken(), (key, existing) -> {
+                    if (existing == null) {
+                        return message.getLockedUntil();
+                    } else {
+                        return existing.isBefore(message.getLockedUntil())
+                            ? message.getLockedUntil()
+                            : existing;
+                    }
+                });
+
+                return message;
+            })
             .doOnCancel(() -> removeLink(linkName, SignalType.CANCEL))
             .doOnComplete(() -> removeLink(linkName, SignalType.ON_COMPLETE))
             .doOnError(error -> removeLink(linkName, SignalType.ON_ERROR));
     }
 
     /**
-     * Disposes of the consumer by closing the underlying connection to the service.
+     * Abandon {@link ServiceBusMessage} with lock token. This will make the message available again for processing.
+     * Abandoning a message will increase the delivery count on the message.
+     *
+     * @param message to be used.
+     *
+     * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    @Override
-    public void close() {
-        if (isDisposed.getAndSet(true)) {
-            return;
-        }
-
-        final ArrayList<String> keys = new ArrayList<>(openConsumers.keySet());
-        for (String key : keys) {
-            removeLink(key, SignalType.ON_COMPLETE);
-        }
-
-        connectionProcessor.dispose();
+    public Mono<Void> abandon(ServiceBusReceivedMessage message) {
+        return abandon(message, null);
     }
 
     /**
@@ -135,34 +169,29 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Void> abandon(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify) {
-        //TODO(feature-to-implement)
-        return null;
-    }
-
-    /**
-     * Abandon {@link ServiceBusMessage} with lock token. This will make the message available again for processing.
-     * Abandoning a message will increase the delivery count on the message.
-     *
-     * @param message to be used.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> abandon(ServiceBusReceivedMessage message) {
-        //TODO(feature-to-implement)
-        return null;
+        return updateDisposition(message, DispositionStatus.ABANDONED, null, null, propertiesToModify);
     }
 
     /**
      * Completes a {@link ServiceBusMessage} using its lock token. This will delete the message from the service.
      *
-     * @param message to be used.
+     * @param message Message to be completed.
      *
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message) {
-        logger.info("Completing message: {}", message.getSequenceNumber());
-        //TODO(feature-to-implement)
-        return Mono.empty();
+        return updateDisposition(message, DispositionStatus.COMPLETED, null, null, null);
+    }
+
+    /**
+     * Defers a {@link ServiceBusMessage} using its lock token. This will move message into deferred subqueue.
+     *
+     * @param message to be used.
+     *
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Void> defer(ServiceBusReceivedMessage message) {
+        return defer(message, null);
     }
 
     /**
@@ -175,20 +204,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify) {
-        //TODO(feature-to-implement)
-        return null;
-    }
-
-    /**
-     * Defers a {@link ServiceBusMessage} using its lock token. This will move message into deferred subqueue.
-     *
-     * @param message to be used.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> defer(ServiceBusReceivedMessage message) {
-        //TODO(feature-to-implement)
-        return null;
+        return updateDisposition(message, DispositionStatus.DEFERRED, null, null, propertiesToModify);
     }
 
     /**
@@ -199,8 +215,33 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Void> deadLetter(ServiceBusReceivedMessage message) {
-        //TODO(feature-to-implement)
-        return null;
+        return deadLetter(message, null);
+    }
+
+    /**
+     * Moves a {@link ServiceBusMessage} to the deadletter sub-queue with modified message properties.
+     *
+     * @param message to be used.
+     * @param propertiesToModify Message properties to modify.
+     *
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Void> deadLetter(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify) {
+        return deadLetter(message, null, null, propertiesToModify);
+    }
+
+    /**
+     * Moves a {@link ServiceBusMessage} to the deadletter sub-queue with deadletter reason and error description.
+     *
+     * @param message to be used.
+     * @param deadLetterReason The deadletter reason.
+     * @param deadLetterErrorDescription The deadletter error description.
+     *
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Void> deadLetter(ServiceBusReceivedMessage message, String deadLetterReason,
+        String deadLetterErrorDescription) {
+        return deadLetter(message, deadLetterReason, deadLetterErrorDescription, null);
     }
 
     /**
@@ -216,36 +257,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      */
     public Mono<Void> deadLetter(ServiceBusReceivedMessage message, String deadLetterReason,
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
-        //TODO(feature-to-implement)
-        return null;
-    }
-
-    /**
-     * Moves a {@link ServiceBusMessage} to the deadletter sub-queue with deadletter reason and error description.
-     *
-     * @param message to be used.
-     * @param deadLetterReason The deadletter reason.
-     * @param deadLetterErrorDescription The deadletter error description.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> deadLetter(ServiceBusReceivedMessage message, String deadLetterReason,
-        String deadLetterErrorDescription) {
-        //TODO(feature-to-implement)
-        return null;
-    }
-
-    /**
-     * Moves a {@link ServiceBusMessage} to the deadletter sub-queue with modified message properties.
-     *
-     * @param message to be used.
-     * @param propertiesToModify Message properties to modify.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> deadLetter(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify) {
-        //TODO(feature-to-implement)
-        return null;
+        return updateDisposition(message, DispositionStatus.SUSPENDED, deadLetterReason, deadLetterErrorDescription,
+            propertiesToModify);
     }
 
     /**
@@ -278,14 +291,14 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
 
     /**
      * Reads the next active message without changing the state of the receiver or the message source.
-     * The first call to {@link ServiceBusReceiverAsyncClient#peek()} fetches the first active message for
+     * The first call to {@code peek()} fetches the first active message for
      * this receiver. Each subsequent call fetches the subsequent message in the entity.
      *
      * @return Single {@link ServiceBusReceivedMessage} peeked.
      */
     public Mono<ServiceBusReceivedMessage> peek() {
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath))
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(ServiceBusManagementNode::peek);
     }
 
@@ -298,29 +311,125 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      */
     public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber) {
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath))
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.peek(fromSequenceNumber));
     }
 
     /**
-     * @param maxMessages to peek.
+     * Reads the next batch of active messages without changing the state of the receiver or the message source.
      *
-     * @return Flux of {@link ServiceBusReceivedMessage}.
+     * @param maxMessages The number of messages.
+     * @return The {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
      */
     public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
-        // TODO(hemanttanwar) implement
-        return null;
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMapMany(node -> node.peekBatch(maxMessages));
     }
 
     /**
-     * @param maxMessages to peek.
-     * @param fromSequenceNumber to peek message from.
+     * Reads the next batch of active messages without changing the state of the receiver or the message source.
      *
-     * @return Flux of {@link ServiceBusReceivedMessage}.
+     * @param maxMessages The number of messages.
+     * @param fromSequenceNumber The sequence number from where to read the message.
+     * @return The {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
      */
     public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber) {
-        // TODO(hemanttanwar) implement
-        return null;
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMapMany(node -> node.peekBatch(maxMessages, fromSequenceNumber));
+    }
+
+    /**
+     * Disposes of the consumer by closing the underlying connection to the service.
+     */
+    @Override
+    public void close() {
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
+
+        final ArrayList<String> keys = new ArrayList<>(openConsumers.keySet());
+        for (String key : keys) {
+            removeLink(key, SignalType.ON_COMPLETE);
+        }
+
+        connectionProcessor.dispose();
+    }
+
+    private Mono<Boolean> isLockTokenValid(UUID lockToken) {
+        final Instant lockedUntilUtc = lockTokenExpirationMap.get(lockToken);
+        if (lockedUntilUtc == null) {
+            logger.warning("lockToken[{}] is not owned by this receiver.", lockToken);
+            return Mono.just(false);
+        }
+
+        //TODO (conniey): This check is done locally in Track 1. It's possible there is server skew.
+        // who knows how reliable this is.
+        final Instant now = Instant.now();
+        if (lockedUntilUtc.isBefore(now)) {
+            return Mono.error(logger.logExceptionAsError(new AmqpException(false, String.format(
+                "Lock already expired for the lock token. Expiration: '%s'. Now: '%s'", lockedUntilUtc, now),
+                getErrorContext())));
+        }
+
+        return Mono.just(true);
+    }
+
+    private Mono<Void> updateDisposition(ServiceBusReceivedMessage message, DispositionStatus dispositionStatus,
+        String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
+        if (message == null) {
+            return Mono.error(new NullPointerException("'message' cannot be null."));
+        }
+
+        if (receiveMode != ReceiveMode.PEEK_LOCK) {
+            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                "'%s' is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.", dispositionStatus))));
+        } else if (message.getLockToken() == null) {
+            return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(
+                "'message.getLockToken()' cannot be null.")));
+        }
+
+        logger.info("{}: Completing message. Sequence number: {}. Lock: {}. Expiration: {}", entityPath,
+            message.getSequenceNumber(), message.getLockToken(), lockTokenExpirationMap.get(message.getLockToken()));
+
+        return isLockTokenValid(message.getLockToken()).flatMap(isLocked -> {
+            return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+                .flatMap(node -> {
+                    if (isLocked) {
+                        return node.updateDisposition(message.getLockToken(), dispositionStatus,
+                            deadLetterReason, deadLetterErrorDescription, propertiesToModify);
+                    } else {
+                        //TODO (conniey): in Track 1, I believe there was a way to do this.
+                        return Mono.error(
+                            new UnsupportedOperationException("Cannot complete a message that is not locked."));
+                    }
+                });
+        }).then(Mono.fromRunnable(() -> lockTokenExpirationMap.remove(message.getLockToken())));
+    }
+
+    private ServiceBusAsyncConsumer getOrCreateConsumer(String linkName) {
+        return openConsumers.computeIfAbsent(linkName, name -> {
+            logger.info("{}: Creating consumer for link '{}'", entityPath, linkName);
+
+            final Flux<AmqpReceiveLink> receiveLink =
+                connectionProcessor.flatMap(connection -> connection.createReceiveLink(linkName, entityPath,
+                    receiveMode, isSessionEnabled, null, entityType))
+                    .doOnNext(next -> {
+                        final String format = "Created consumer for Service Bus resource: [{}] mode: [{}]"
+                            + " sessionEnabled? {} transferEntityPath: [{}], entityType: [{}]";
+                        logger.verbose(format, next.getEntityPath(), receiveMode, isSessionEnabled, "N/A",
+                            entityType);
+                    })
+                    .repeat();
+
+            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
+            final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
+                new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
+
+            return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, isAutoComplete, this::complete,
+                this::abandon);
+        });
     }
 
     private void removeLink(String linkName, SignalType signalType) {
@@ -337,17 +446,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         }
     }
 
-    private ServiceBusAsyncConsumer createServiceBusConsumer(String linkName) {
-        final Flux<AmqpReceiveLink> receiveLinkMono =
-            connectionProcessor.flatMap(connection ->
-                connection.createReceiveLink(linkName, entityPath, receiveMode))
-                .doOnNext(next -> logger.verbose("Created consumer for Service Bus resource: {}", next.getEntityPath()))
-                .repeat();
-
-        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
-        final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
-            new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
-
-        return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, isAutoComplete, this::complete);
+    private AmqpErrorContext getErrorContext() {
+        return new SessionErrorContext(getFullyQualifiedNamespace(), getServiceBusResourceName());
     }
 }
