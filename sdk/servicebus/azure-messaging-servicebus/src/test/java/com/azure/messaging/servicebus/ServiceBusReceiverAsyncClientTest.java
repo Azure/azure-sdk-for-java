@@ -27,6 +27,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -192,6 +193,7 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that this receives a number of messages. Verifies that the initial credits we add are equal to the
      * prefetch value.
      */
+    @Disabled("Fix issue: https://github.com/Azure/azure-sdk-for-java/issues/9166")
     @Test
     void receivesNumberOfEvents() {
         // Arrange
@@ -213,6 +215,7 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that we can receive messages from the processor.
      */
+    @Disabled("Fix issue: https://github.com/Azure/azure-sdk-for-java/issues/9166")
     @Test
     void receivesAndAutoCompletes() {
         // Arrange
@@ -393,6 +396,7 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that the user can complete settlement methods on received message.
      */
+    @Disabled("Fix issue: https://github.com/Azure/azure-sdk-for-java/issues/9166")
     @ParameterizedTest
     @EnumSource(DispositionStatus.class)
     void settleMessage(DispositionStatus dispositionStatus) {
