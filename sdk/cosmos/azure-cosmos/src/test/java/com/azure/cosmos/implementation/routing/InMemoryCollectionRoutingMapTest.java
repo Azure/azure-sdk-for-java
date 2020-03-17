@@ -4,9 +4,9 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;

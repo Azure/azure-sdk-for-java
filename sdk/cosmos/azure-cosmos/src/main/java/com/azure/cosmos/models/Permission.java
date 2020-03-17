@@ -6,10 +6,10 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 /**
- * Represents a per-User Permission to access a specific resource e.g. Document or Collection in the Azure Cosmos DB 
+ * Represents a per-User Permission to access a specific resource e.g. Document or Collection in the Azure Cosmos DB
  * database service.
  */
 public final class Permission extends Resource {

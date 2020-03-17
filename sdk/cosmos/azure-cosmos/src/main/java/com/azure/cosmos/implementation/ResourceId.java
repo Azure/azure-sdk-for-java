@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

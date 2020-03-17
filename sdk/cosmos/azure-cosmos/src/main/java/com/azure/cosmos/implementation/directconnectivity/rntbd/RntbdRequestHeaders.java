@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.apachecommons.lang.EnumUtils;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.implementation.ContentSerializationFormat;
 import com.azure.cosmos.implementation.EnumerationDirection;
@@ -18,8 +19,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import org.apache.commons.lang3.EnumUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.util.Base64;
 import java.util.Locale;

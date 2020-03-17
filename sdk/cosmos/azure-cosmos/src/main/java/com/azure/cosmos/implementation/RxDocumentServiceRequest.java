@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -11,7 +12,6 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
 
 import java.net.URI;

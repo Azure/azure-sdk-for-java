@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.sun.management.OperatingSystemMXBean;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -127,8 +127,8 @@ class ClientSideRequestStatistics {
                 this.requestEndTime = responseTime;
             }
 
-            if (rxDocumentServiceRequest != null 
-                    && rxDocumentServiceRequest.requestContext != null 
+            if (rxDocumentServiceRequest != null
+                    && rxDocumentServiceRequest.requestContext != null
                     && rxDocumentServiceRequest.requestContext.retryContext != null) {
                 rxDocumentServiceRequest.requestContext.retryContext.retryEndTime = ZonedDateTime.now(ZoneOffset.UTC);
                 this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);

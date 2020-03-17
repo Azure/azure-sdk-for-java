@@ -12,7 +12,7 @@ import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.ResourceId;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.apache.commons.lang3.tuple.Pair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;

@@ -16,7 +16,7 @@ import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
