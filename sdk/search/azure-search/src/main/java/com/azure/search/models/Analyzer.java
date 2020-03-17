@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StopAnalyzer", value = StopAnalyzer.class)
 })
 @Fluent
-public class Analyzer {
+public abstract class Analyzer {
     /*
      * The name of the analyzer. It must only contain letters, digits, spaces,
      * dashes or underscores, can only start and end with alphanumeric

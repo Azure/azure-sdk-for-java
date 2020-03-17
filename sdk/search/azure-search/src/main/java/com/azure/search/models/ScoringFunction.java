@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "tag", value = TagScoringFunction.class)
 })
 @Fluent
-public class ScoringFunction {
+public abstract class ScoringFunction {
     /*
      * The name of the field used as input to the scoring function.
      */

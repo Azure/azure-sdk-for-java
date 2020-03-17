@@ -294,7 +294,7 @@ directive:
       transform: >-
         return $
         .replace(/(COSMOS_DB)/g, "COSMOS")
-        
+
     # Remove field and its getter and setter for immutable static field in Suggester
     - from:
         - Suggester.java
@@ -312,4 +312,19 @@ directive:
         return $
         .replace(/    \/\*\*\n     \* Get the format property\: The format of the synonym map\. Only the \'solr\'\n     \* format is currently supported\.\n     \*\n     \* \@return the format value\.\n     \*\/\n    public String getFormat\(\) \{\n        return this\.format\;\n    \}\n\n/g, "")
         .replace(/    \/\*\*\n     \* Set the format property\: The format of the synonym map\. Only the \'solr\'\n     \* format is currently supported\.\n     \*\n     \* \@param format the format value to set\.\n     \* \@return the SynonymMap object itself\.\n     \*\/\n    public SynonymMap setFormat\(String format\) \{\n        this\.format \= format\;\n        return this\;\n    \}\n\n/g, "")  
+     
+    # Change base class to abstract
+    - from:
+        - Analyzer.java
+        - TokenFilter.java
+        - Tokenizer.java
+        - Skill.java
+        - CharFilter.java
+        - ScoringFunction.java
+        - CognitiveServicesAccount.java
+        - DataChangeDetectionPolicy.java
+        - DataDeletionDetectionPolicy.java
+      where: $
+      transform: >-
+        return $.replace(/public class (.*) \{/, "public abstract class $1 {")
 ```
