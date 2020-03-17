@@ -34,6 +34,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "AzureBlobFSSink", value = AzureBlobFSSink.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStoreSink", value = AzureDataLakeStoreSink.class),
     @JsonSubTypes.Type(name = "OracleSink", value = OracleSink.class),
+    @JsonSubTypes.Type(name = "SnowflakeSink", value = SnowflakeSink.class),
     @JsonSubTypes.Type(name = "SqlDWSink", value = SqlDWSink.class),
     @JsonSubTypes.Type(name = "SqlMISink", value = SqlMISink.class),
     @JsonSubTypes.Type(name = "AzureSqlSink", value = AzureSqlSink.class),
