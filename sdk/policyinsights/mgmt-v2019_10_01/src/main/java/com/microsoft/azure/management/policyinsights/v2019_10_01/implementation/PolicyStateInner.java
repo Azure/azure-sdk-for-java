@@ -215,6 +215,24 @@ public class PolicyStateInner {
     private List<String> policyDefinitionGroupNames;
 
     /**
+     * Evaluated policy definition version.
+     */
+    @JsonProperty(value = "policyDefinitionVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String policyDefinitionVersion;
+
+    /**
+     * Evaluated policy set definition version.
+     */
+    @JsonProperty(value = "policySetDefinitionVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String policySetDefinitionVersion;
+
+    /**
+     * Evaluated policy assignment version.
+     */
+    @JsonProperty(value = "policyAssignmentVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String policyAssignmentVersion;
+
+    /**
      * Get unmatched properties from the message are deserialized this collection.
      *
      * @return the additionalProperties value
@@ -832,6 +850,33 @@ public class PolicyStateInner {
     public PolicyStateInner withPolicyDefinitionGroupNames(List<String> policyDefinitionGroupNames) {
         this.policyDefinitionGroupNames = policyDefinitionGroupNames;
         return this;
+    }
+
+    /**
+     * Get evaluated policy definition version.
+     *
+     * @return the policyDefinitionVersion value
+     */
+    public String policyDefinitionVersion() {
+        return this.policyDefinitionVersion;
+    }
+
+    /**
+     * Get evaluated policy set definition version.
+     *
+     * @return the policySetDefinitionVersion value
+     */
+    public String policySetDefinitionVersion() {
+        return this.policySetDefinitionVersion;
+    }
+
+    /**
+     * Get evaluated policy assignment version.
+     *
+     * @return the policyAssignmentVersion value
+     */
+    public String policyAssignmentVersion() {
+        return this.policyAssignmentVersion;
     }
 
 }
