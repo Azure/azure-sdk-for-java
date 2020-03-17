@@ -32,6 +32,9 @@ public final class SearchApiKeyPipelinePolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+            return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
+        }
         context.getHttpRequest().setHeader(API_KEY, this.apiKey.getApiKey());
         return next.process();
     }

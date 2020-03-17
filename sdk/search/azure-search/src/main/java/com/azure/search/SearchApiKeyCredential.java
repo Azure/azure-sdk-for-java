@@ -11,7 +11,7 @@ package com.azure.search;
  * @see SearchServiceClientBuilder
  */
 public final class SearchApiKeyCredential {
-    private final String apiKey;
+    private String apiKey;
 
     /**
      * Creates an instance that is able to authorize requests to Azure Cognitive Search.
@@ -29,5 +29,16 @@ public final class SearchApiKeyCredential {
      */
     public String getApiKey() {
         return apiKey;
+    }
+
+    /**
+     * Rotates the credential on the same Search Client.
+     *
+     * @param apiKey a query or admin API key
+     * @return {@link SearchApiKeyCredential}
+     */
+    public SearchApiKeyCredential updateApiKey(String apiKey) {
+        this.apiKey = apiKey;
+        return this;
     }
 }
