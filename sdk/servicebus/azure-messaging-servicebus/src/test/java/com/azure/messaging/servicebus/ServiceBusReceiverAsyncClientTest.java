@@ -112,10 +112,7 @@ class ServiceBusReceiverAsyncClientTest {
 
     @BeforeEach
     void setup(TestInfo testInfo) {
-        String testName = testInfo.getTestMethod().isPresent()
-            ? testInfo.getTestMethod().get().getName()
-            : testInfo.getDisplayName();
-        logger.info("Running '{}'", testName);
+        logger.info("[{}] Setting up.", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
 
@@ -147,9 +144,11 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     @AfterEach
-    void teardown() {
-        Mockito.framework().clearInlineMocks();
+    void teardown(TestInfo testInfo) {
+        logger.info("[{}] Tearing down.", testInfo.getDisplayName());
+
         consumer.close();
+        Mockito.framework().clearInlineMocks();
     }
 
     /**
@@ -253,9 +252,11 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Act and Assert
         StepVerifier.create(consumer2.receive().take(2))
-            .then(() -> messageSink.next(message))
+            .then(() -> {
+                messageSink.next(message);
+                messageSink.next(message2);
+            })
             .expectNext(receivedMessage)
-            .then(() -> messageSink.next(message2))
             .expectNext(receivedMessage2)
             .verifyComplete();
 
@@ -290,12 +291,13 @@ class ServiceBusReceiverAsyncClientTest {
         // Act and Assert
         try {
             StepVerifier.create(consumer2.receive().take(2))
-                .then(() -> messageSink.next(message))
+                .then(() -> {
+                    messageSink.next(message);
+                    messageSink.next(message2);
+                })
                 .expectNext(receivedMessage)
-                .then(() -> messageSink.next(message2))
                 .expectNext(receivedMessage2)
-                .expectComplete()
-                .verify();
+                .verifyComplete();
         } finally {
             consumer2.close();
         }
@@ -425,12 +427,13 @@ class ServiceBusReceiverAsyncClientTest {
         // Pretend we receive these before. This is to simulate that so that the receiver keeps track of them in
         // the lock map.
         StepVerifier.create(consumer.receive().take(2))
-            .then(() -> messageSink.next(message))
+            .then(() -> {
+                messageSink.next(message);
+                messageSink.next(message2);
+            })
             .expectNext(receivedMessage)
-            .then(() -> messageSink.next(message2))
             .expectNext(receivedMessage2)
-            .expectComplete()
-            .verify();
+            .verifyComplete();
 
         // Act and Assert
         final Mono<Void> operation;

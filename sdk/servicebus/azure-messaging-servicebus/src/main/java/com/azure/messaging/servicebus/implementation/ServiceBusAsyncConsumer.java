@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
@@ -22,14 +23,14 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
     private final ServiceBusMessageProcessor processor;
 
     public ServiceBusAsyncConsumer(ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
-        MessageSerializer messageSerializer, boolean isAutoComplete,
+        MessageSerializer messageSerializer, boolean isAutoComplete, AmqpRetryOptions retryOptions,
         Function<ServiceBusReceivedMessage, Mono<Void>> onComplete,
         Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon) {
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
         this.processor = amqpReceiveLinkProcessor
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
-            .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, onComplete, onAbandon));
+            .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, retryOptions, onComplete, onAbandon));
     }
 
     /**

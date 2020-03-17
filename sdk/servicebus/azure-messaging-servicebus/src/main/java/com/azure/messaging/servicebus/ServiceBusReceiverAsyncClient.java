@@ -406,30 +406,36 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             return Mono.error(new NullPointerException("'message' cannot be null."));
         }
 
+        final UUID lockToken = message.getLockToken();
         if (receiveMode != ReceiveMode.PEEK_LOCK) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
                 "'%s' is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.", dispositionStatus))));
-        } else if (message.getLockToken() == null) {
+        } else if (lockToken == null) {
             return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(
                 "'message.getLockToken()' cannot be null.")));
         }
 
         logger.info("{}: Completing message. Sequence number: {}. Lock: {}. Expiration: {}", entityPath,
-            message.getSequenceNumber(), message.getLockToken(), lockTokenExpirationMap.get(message.getLockToken()));
+            message.getSequenceNumber(), lockToken, lockTokenExpirationMap.get(lockToken));
 
         return isLockTokenValid(message.getLockToken()).flatMap(isLocked -> {
             return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType))
                 .flatMap(node -> {
                     if (isLocked) {
-                        return node.updateDisposition(message.getLockToken(), dispositionStatus,
-                            deadLetterReason, deadLetterErrorDescription, propertiesToModify);
+                        return node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
+                            deadLetterErrorDescription, propertiesToModify);
                     } else {
                         //TODO (conniey): in Track 1, I believe there was a way to do this.
                         return Mono.error(
                             new UnsupportedOperationException("Cannot complete a message that is not locked."));
                     }
                 });
-        }).then(Mono.fromRunnable(() -> lockTokenExpirationMap.remove(message.getLockToken())));
+        }).then(Mono.fromRunnable(() -> {
+            logger.info("{}: Removing completed message. Sequence number: {}. Lock: {}. Expiration: {}", entityPath,
+                message.getSequenceNumber(), lockToken, lockTokenExpirationMap.get(lockToken));
+
+            lockTokenExpirationMap.remove(lockToken);
+        }));
     }
 
     private ServiceBusAsyncConsumer getOrCreateConsumer(String linkName) {
@@ -451,8 +457,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
                 new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
 
-            return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, isAutoComplete, this::complete,
-                this::abandon);
+            return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, isAutoComplete,
+                connectionProcessor.getRetryOptions(), this::complete, this::abandon);
         });
     }
 

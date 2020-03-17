@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -43,6 +44,7 @@ class ServiceBusAsyncConsumerTest {
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointProcessorSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
 
     private ServiceBusReceiveLinkProcessor linkProcessor;
 
@@ -63,7 +65,7 @@ class ServiceBusAsyncConsumerTest {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(20));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(90));
     }
 
     @AfterAll
@@ -101,7 +103,8 @@ class ServiceBusAsyncConsumerTest {
     void receiveAutoComplete() {
         // Arrange
         final boolean isAutoComplete = true;
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete, onComplete, onAbandon);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete,
+            retryOptions, onComplete, onAbandon);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -137,7 +140,8 @@ class ServiceBusAsyncConsumerTest {
     void receiveNoAutoComplete() {
         // Arrange
         final boolean isAutoComplete = false;
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete, onComplete, onAbandon);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete,
+            retryOptions, onComplete, onAbandon);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -180,8 +184,8 @@ class ServiceBusAsyncConsumerTest {
             Assertions.fail("Should not complete");
             return Mono.empty();
         };
-        final String transferEntityPath = "some-transfer-path";
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete, onComplete, onAbandon);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete,
+            retryOptions, onComplete, onAbandon);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
