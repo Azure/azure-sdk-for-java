@@ -12,10 +12,17 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * This sample shows how to setup an Event Processor that uses an older version of blob storage service as
- * checkpoint store.
+ * This sample shows how to setup an Event Processor that uses a different version of blob storage service that is
+ * not directly supported by Storage Blob SDK as checkpoint store.
+ *
+ * The following sample can be used if the environment you are targeting supports a different version of Storage Blob
+ * SDK than those typically available on Azure. For example, if you are running Event Hubs on an Azure Stack Hub version
+ * 2002, the highest available version for the Storage service is version 2017-11-09. In this case, you will need to use
+ * the following code to change the Storage service API version to 2017-11-09. For more information on the Azure Storage
+ * service versions supported on Azure Stack Hub, please refer to
+ * <a href=docs.microsoft.com/en-us/azure-stack/user/azure-stack-acs-differences>Azure Stack Hub Documentation</a>
  */
-public class EventProcessorWithOlderStorageVersion {
+public class EventProcessorWithCustomStorageVersion {
 
     private static final String STORAGE_CONNECTION_STRING = "";
     private static final String SAS_TOKEN = "";
@@ -24,6 +31,7 @@ public class EventProcessorWithOlderStorageVersion {
     private static final String EH_CONNECTION_STRING = "";
     private static final String CONSUMER_GROUP = "";
     private static final String EVENT_HUB_NAME = "";
+    public static final String STORAGE_SERVICE_VERSION = "2017-11-09";
 
     /**
      * The main method to run this sample.
@@ -38,7 +46,7 @@ public class EventProcessorWithOlderStorageVersion {
             .connectionString(STORAGE_CONNECTION_STRING)
             .containerName(CONTAINER_NAME)
             .sasToken(SAS_TOKEN)
-            .addPolicy(new AddHeadersPolicy(new HttpHeaders().put("x-ms-version", "2017-11-09")))
+            .addPolicy(new AddHeadersPolicy(new HttpHeaders().put("x-ms-version", STORAGE_SERVICE_VERSION)))
             .buildAsyncClient();
 
         BlobCheckpointStore blobCheckpointStore = new BlobCheckpointStore(blobContainerAsyncClient);
