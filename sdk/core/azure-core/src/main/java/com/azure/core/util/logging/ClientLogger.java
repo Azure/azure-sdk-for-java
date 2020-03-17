@@ -6,11 +6,12 @@ package com.azure.core.util.logging;
 import com.azure.core.implementation.logging.DefaultLogger;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import java.util.Arrays;
-import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.NOPLogger;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
@@ -134,23 +135,45 @@ public class ClientLogger {
 
     /**
      * Logs the {@link RuntimeException} at the warning level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a runtime exception type needs to be thrown and logged. If a {@link Throwable} is
+     * being logged use {@link #logCheckedExceptionAsWarning(Throwable)} instead.
      *
      * @param runtimeException RuntimeException to be logged and returned.
-     * @return The passed {@code RuntimeException}.
+     * @return The passed {@link RuntimeException}.
      * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
     public RuntimeException logExceptionAsWarning(RuntimeException runtimeException) {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
+
+        return logCheckedExceptionAsWarning(runtimeException);
+    }
+
+    /**
+     * Logs the {@link Throwable} at the warning level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
+     * RuntimeException} is being logged use {@link #logExceptionAsWarning(RuntimeException)} instead.
+     *
+     * @param checkedException Throwable to be logged and returned.
+     * @param <T> Type of the Throwable being logged.
+     * @return The passed {@link Throwable}.
+     */
+    public <T extends Throwable> T logCheckedExceptionAsWarning(T checkedException) {
+        Objects.requireNonNull(checkedException, "'checkedException' cannot be null.");
         if (!logger.isWarnEnabled()) {
-            return runtimeException;
+            return checkedException;
         }
 
-        performLogging(LogLevel.WARNING, true, runtimeException.getMessage(), runtimeException);
-        return runtimeException;
+        performLogging(LogLevel.WARNING, true, checkedException.getMessage(), checkedException);
+        return checkedException;
     }
 
     /**
      * Logs the {@link RuntimeException} at the error level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a runtime exception type needs to be thrown and logged. If a {@link Throwable} is
+     * being logged use {@link #logCheckedExceptionAsError(Throwable)} instead.
      *
      * @param runtimeException RuntimeException to be logged and returned.
      * @return The passed {@code RuntimeException}.
@@ -158,13 +181,28 @@ public class ClientLogger {
      */
     public RuntimeException logExceptionAsError(RuntimeException runtimeException) {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
+
+        return logCheckedExceptionAsWarning(runtimeException);
+    }
+
+    /**
+     * Logs the {@link Throwable} at the error level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
+     * RuntimeException} is being logged use {@link #logExceptionAsError(RuntimeException)} instead.
+     *
+     * @param checkedException Throwable to be logged and returned.
+     * @param <T> Type of the Throwable being logged.
+     * @return The passed {@link Throwable}.
+     */
+    public <T extends Throwable> T logCheckedExceptionAsError(T checkedException) {
+        Objects.requireNonNull(checkedException, "'checkedException' cannot be null.");
         if (!logger.isErrorEnabled()) {
-            return runtimeException;
+            return checkedException;
         }
 
-        performLogging(LogLevel.VERBOSE, true, runtimeException.getMessage(), runtimeException);
-
-        return runtimeException;
+        performLogging(LogLevel.ERROR, true, checkedException.getMessage(), checkedException);
+        return checkedException;
     }
 
     /*
