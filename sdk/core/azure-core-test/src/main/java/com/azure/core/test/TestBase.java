@@ -96,7 +96,7 @@ public abstract class TestBase implements BeforeEachCallback {
      *
      * @return The TestMode that has been initialized.
      */
-    public static TestMode getTestMode() {
+    public TestMode getTestMode() {
         return testMode;
     }
 
