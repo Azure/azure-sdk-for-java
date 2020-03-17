@@ -261,6 +261,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     Write-Host "processing pomFile=$($pomFile)"
     if ($xmlPomFile.project.dependencyManagement)
     {
+        $script:FoundError = $true
         Write-Error-With-Color "Error: <dependencyManagement> is not allowed. Every dependency must have its own version and version update tag"
     }
 
