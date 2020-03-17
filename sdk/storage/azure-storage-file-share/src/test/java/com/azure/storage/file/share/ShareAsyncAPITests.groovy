@@ -190,7 +190,6 @@ class ShareAsyncAPITests extends APISpec {
             }
     }
 
-    @Ignore("Null pointer exception.")
     def "Get properties premium"() {
         given:
         def premiumShare = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(), testMetadata, null).block().getValue()

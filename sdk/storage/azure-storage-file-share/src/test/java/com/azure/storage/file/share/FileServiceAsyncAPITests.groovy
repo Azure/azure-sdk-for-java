@@ -193,7 +193,6 @@ class FileServiceAsyncAPITests extends APISpec {
         new ListSharesOptions().setPrefix("fileserviceasyncapitestslistshareswithargs").setIncludeMetadata(true).setIncludeSnapshots(true) | 4      | true            | true
     }
 
-    @Ignore("Null pointer exception.")
     def "List shares with premium share"() {
         setup:
         def premiumShareName = generateShareName()

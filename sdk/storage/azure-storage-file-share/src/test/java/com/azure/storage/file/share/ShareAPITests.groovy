@@ -224,7 +224,6 @@ class ShareAPITests extends APISpec {
         FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
     }
 
-    @Ignore("Null pointer exception.")
     def "Get properties premium"() {
         given:
         def premiumShareClient = premiumFileServiceClient.createShareWithResponse(generateShareName(), testMetadata, null, null, null).getValue()
