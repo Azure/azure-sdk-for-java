@@ -3,14 +3,12 @@
 
 package com.azure.storage.blob.implementation.util;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.regex.Pattern;
 
 /**
  * This class provides helper methods for common model patterns.
@@ -21,14 +19,14 @@ public class ModelHelper {
 
     /**
      * Determines whether or not the passed authority is IP style, that is it is of the format
-     * "&lt;host&gt;:&lt;port&gt;".
+     * {@code <host>:<port>}.
      *
      * @param authority The authority of a URL.
      * @throws MalformedURLException If the authority is malformed.
      * @return Whether the authority is IP style.
      */
     public static boolean determineAuthorityIsIpStyle(String authority) throws MalformedURLException {
-        return new URL("http://" +  authority + "/path").getPort() != -1;
+        return new URL("http://" +  authority).getPort() != -1;
     }
 
     /**
