@@ -45,7 +45,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.WordDelimiterTokenFilter", value = WordDelimiterTokenFilter.class)
 })
 @Fluent
-public class TokenFilter {
+public abstract class TokenFilter {
     /*
      * The name of the token filter. It must only contain letters, digits,
      * spaces, dashes or underscores, can only start and end with alphanumeric
