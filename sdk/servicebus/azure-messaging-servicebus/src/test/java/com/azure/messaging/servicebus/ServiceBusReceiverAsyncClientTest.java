@@ -38,7 +38,6 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -100,9 +99,6 @@ class ServiceBusReceiverAsyncClientTest {
     @Mock
     private ServiceBusReceivedMessage receivedMessage2;
 
-    @Mock
-    private Scheduler scheduler;
-
     @BeforeAll
     static void beforeAll() {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(100));
@@ -146,7 +142,7 @@ class ServiceBusReceiverAsyncClientTest {
         receiveOptions = new ReceiveMessageOptions().setPrefetchCount(PREFETCH);
 
         consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            false, receiveOptions, connectionProcessor, tracerProvider, messageSerializer, scheduler);
+            false, receiveOptions, connectionProcessor, tracerProvider, messageSerializer);
     }
 
     @AfterEach
@@ -224,7 +220,7 @@ class ServiceBusReceiverAsyncClientTest {
             .setAutoComplete(true);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
-            tracerProvider, messageSerializer, scheduler);
+            tracerProvider, messageSerializer);
 
         final UUID lockToken1 = UUID.randomUUID();
         final UUID lockToken2 = UUID.randomUUID();
@@ -275,7 +271,7 @@ class ServiceBusReceiverAsyncClientTest {
             .setAutoComplete(true);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
-            tracerProvider, messageSerializer, scheduler);
+            tracerProvider, messageSerializer);
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
         final MessageWithLockToken message2 = mock(MessageWithLockToken.class);
@@ -344,7 +340,7 @@ class ServiceBusReceiverAsyncClientTest {
             .setReceiveMode(ReceiveMode.RECEIVE_AND_DELETE);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, false, options, connectionProcessor, tracerProvider,
-            messageSerializer, scheduler);
+            messageSerializer);
 
         final UUID lockToken1 = UUID.randomUUID();
 
@@ -458,25 +454,6 @@ class ServiceBusReceiverAsyncClientTest {
 
         verify(managementNode).updateDisposition(lockToken1, dispositionStatus, null, null, null);
         verify(managementNode, times(0)).updateDisposition(lockToken2, dispositionStatus, null, null, null);
-    }
-
-    /**
-     * Verifies that this renew the message lock for the message.
-     */
-    @Test
-    void renewMessageLock() {
-        // Arrange
-        final int numberOfEvents = 1;
-        Instant renewTime = mock(Instant.class);
-
-        when(managementNode.renewMessageLock(receivedMessage.getLockToken()))
-            .thenReturn(Mono.just(renewTime));
-
-        // Act & Assert
-        StepVerifier.create(consumer.renewMessageLock(receivedMessage))
-            .expectNext(renewTime)
-            .verifyComplete();
-
     }
 
     private List<Message> getMessages(int numberOfEvents) {

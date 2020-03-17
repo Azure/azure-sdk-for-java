@@ -25,8 +25,6 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -47,7 +45,6 @@ class ServiceBusAsyncConsumerTest {
     private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
 
     private ServiceBusReceiveLinkProcessor linkProcessor;
-    private Scheduler scheduler;
 
     @Mock
     private ServiceBusAmqpConnection connection;
@@ -59,7 +56,6 @@ class ServiceBusAsyncConsumerTest {
     private Disposable parentConnection;
     @Mock
     private MessageSerializer serializer;
-
     @Mock
     private Function<ServiceBusReceivedMessage, Mono<Void>> onComplete;
     @Mock
@@ -89,8 +85,6 @@ class ServiceBusAsyncConsumerTest {
         when(link.receive()).thenReturn(messageProcessor);
 
         when(onComplete.apply(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
-
-        scheduler = Schedulers.elastic();
     }
 
     @AfterEach
@@ -107,7 +101,7 @@ class ServiceBusAsyncConsumerTest {
     void receiveAutoComplete() {
         // Arrange
         final boolean isAutoComplete = true;
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete, onComplete, onAbandon, scheduler);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete, onComplete, onAbandon);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -143,7 +137,7 @@ class ServiceBusAsyncConsumerTest {
     void receiveNoAutoComplete() {
         // Arrange
         final boolean isAutoComplete = false;
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete, onComplete, onAbandon, scheduler);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete, onComplete, onAbandon);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -187,7 +181,7 @@ class ServiceBusAsyncConsumerTest {
             return Mono.empty();
         };
         final String transferEntityPath = "some-transfer-path";
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete, onComplete, onAbandon, scheduler);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete, onComplete, onAbandon);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);

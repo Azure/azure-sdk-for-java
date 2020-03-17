@@ -8,7 +8,6 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -21,15 +20,13 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
     private final ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor;
     private final MessageSerializer messageSerializer;
     private final ServiceBusMessageProcessor processor;
-    private final Scheduler scheduler;
 
     public ServiceBusAsyncConsumer(ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
-                                   MessageSerializer messageSerializer, boolean isAutoComplete,
-                                   Function<ServiceBusReceivedMessage, Mono<Void>> onComplete,
-                                   Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon, Scheduler scheduler) {
+        MessageSerializer messageSerializer, boolean isAutoComplete,
+        Function<ServiceBusReceivedMessage, Mono<Void>> onComplete,
+        Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon) {
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
-        this.scheduler = scheduler;
         this.processor = amqpReceiveLinkProcessor
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
             .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, onComplete, onAbandon));
@@ -52,7 +49,6 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
      * @return A stream of events received from the partition.
      */
     public Flux<ServiceBusReceivedMessage> receive() {
-        processor.subscribeOn(scheduler);
-        return processor.publishOn(scheduler);
+        return processor;
     }
 }
