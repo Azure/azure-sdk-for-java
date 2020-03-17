@@ -44,6 +44,6 @@ Guidelines](../../CONTRIBUTING.md) for more information.
 [sdk_readme_next_steps]: ../../README.md#next-steps
 [sample_container_client]: ./java/com/azure/messaging/eventhubs/checkpointstore/blob/BlobCheckpointStoreSample.java
 [sample_event_processor]: ./java/com/azure/messaging/eventhubs/checkpointstore/blob/EventProcessorBlobCheckpointStoreSample.java
-[sample_checkpointstore_custom_storage_version]: ./java/com/azure/messaging/eventhubs/checkpointstore/blob/EventProcessorWithOlderStorageVersion.java
+[sample_checkpointstore_custom_storage_version]: ./java/com/azure/messaging/eventhubs/checkpointstore/blob/EventProcessorWithCustomStorageVersion.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs-checkpointstore-blob%2Fsrc%2Fsamples%2FREADME.png)
