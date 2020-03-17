@@ -57,7 +57,7 @@ jobs:
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.xml
+          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
           goals: 'install'
           options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'

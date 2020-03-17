@@ -19,7 +19,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/boms/azure-sdk-bom/
+      - sdk/boms/
 
 pr:
   branches:
@@ -30,12 +30,12 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/boms/azure-sdk-bom/
+      - sdk/boms/
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-bom.yml
     parameters:
-      ServiceDirectory: boms/azure-sdk-bom
+      ServiceDirectory: boms
       Artifacts:
         - name: azure-sdk-bom
           groupId: com.azure
