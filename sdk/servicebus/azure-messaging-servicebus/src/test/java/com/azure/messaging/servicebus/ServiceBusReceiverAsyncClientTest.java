@@ -356,6 +356,41 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
+     * Verifies that this peek batch of messages.
+     */
+    @Test
+    void peekBatchMessages() {
+        // Arrange
+        final int numberOfEvents = 2;
+
+        when(managementNode.peekBatch(numberOfEvents))
+            .thenReturn(Flux.fromArray(new ServiceBusReceivedMessage[]{receivedMessage, receivedMessage2}));
+
+        // Act & Assert
+        StepVerifier.create(consumer.peekBatch(numberOfEvents))
+            .expectNextCount(numberOfEvents)
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that this peek batch of messages from a sequence Number.
+     */
+    @Test
+    void peekBatchWithSequenceNumberMessages() {
+        // Arrange
+        final int numberOfEvents = 2;
+        final int fromSequenceNumber = 10;
+
+        when(managementNode.peekBatch(numberOfEvents, fromSequenceNumber))
+            .thenReturn(Flux.fromArray(new ServiceBusReceivedMessage[]{receivedMessage, receivedMessage2}));
+
+        // Act & Assert
+        StepVerifier.create(consumer.peekBatch(numberOfEvents, fromSequenceNumber))
+            .expectNext(receivedMessage, receivedMessage2)
+            .verifyComplete();
+    }
+
+    /**
      * Verifies that the user can complete settlement methods on received message.
      */
     @ParameterizedTest
