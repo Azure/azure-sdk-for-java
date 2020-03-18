@@ -47,13 +47,6 @@ public final class SearchServiceClientBuilder {
      */
     private static final String ECHO_REQUEST_ID_HEADER = "return-client-request-id";
 
-    /*
-     * This is the name of the request ID header that the Search service expects. If the customer doesn't pass
-     * RequestOptions into a service call this will allow for the client to implicitly add a request ID header,
-     * otherwise the passed request ID will be used.
-     */
-    private static final String CLIENT_REQUEST_ID = "client-request-id";
-
     private static final String SEARCH_PROPERTIES = "azure-search.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
@@ -125,7 +118,7 @@ public final class SearchServiceClientBuilder {
             : configuration;
 
         policies.add(new AddHeadersPolicy(headers));
-        policies.add(new RequestIdPolicy(CLIENT_REQUEST_ID));
+        policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
