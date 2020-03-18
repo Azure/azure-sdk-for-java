@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.unitils.reflectionassert.ReflectionAssert;
 import reactor.test.StepVerifier;
 
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public class SearchServiceAsyncTests extends SearchServiceTestBase {

@@ -26,13 +26,13 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.http.MatchConditions;
+import com.azure.search.documents.implementation.models.AnalyzeResult;
 import com.azure.search.documents.implementation.models.ListIndexesResult;
 import com.azure.search.documents.models.AnalyzeRequest;
 import com.azure.search.documents.models.GetIndexStatisticsResult;
 import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchErrorException;
-import com.azure.search.documents.implementation.models.AnalyzeResult;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 

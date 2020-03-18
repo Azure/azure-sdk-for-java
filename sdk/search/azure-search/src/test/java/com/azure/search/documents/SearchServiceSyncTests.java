@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.util.UUID;
 import org.unitils.reflectionassert.ReflectionAssert;
 
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
 
 public class SearchServiceSyncTests extends SearchServiceTestBase {

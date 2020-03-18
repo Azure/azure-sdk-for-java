@@ -5,6 +5,7 @@
 // regenerated.
 
 package com.azure.search.documents.models;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.azure.search.documents.SearchDocument;
 
 import com.azure.core.annotation.Fluent;
