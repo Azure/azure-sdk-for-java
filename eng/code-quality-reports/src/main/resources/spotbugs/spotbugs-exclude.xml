@@ -1837,4 +1837,22 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.cosmos.implementation.SessionContainer"/>
+    <Method name="setSessionToken"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.SessionContainer"/>
+    <Method name="shouldUpdateSessionToken"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.MurmurHash3_128"/>
+    <Method name="rotateLeft32"/>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
 </FindBugsFilter>

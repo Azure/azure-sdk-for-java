@@ -43,7 +43,7 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
 
     // RuntimeExecutionTimes
     private static final String RUNTIME_EXECUTION_TIMES = "Runtime Execution Times";
-    private static final String TotalExecutionTime = "Query Engine Execution Time";
+    private static final String TOTAL_EXECUTION_TIME = "Query Engine Execution Time";
     private static final String SYSTEM_FUNCTION_EXECUTION_TIME = "System Function Execution Time";
     private static final String USER_DEFINED_FUNCTION_EXECUTION_TIME = "User-defined Function Execution Time";
 

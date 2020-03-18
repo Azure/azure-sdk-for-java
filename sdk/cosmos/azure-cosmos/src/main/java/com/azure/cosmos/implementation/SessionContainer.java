@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -224,7 +223,7 @@ public final class SessionContainer implements ISessionContainer {
         if (!isKnownCollection) {
             this.writeLock.lock();
             try {
-                if (resourceId.getUniqueDocumentCollectionId() != 0) {
+                if (collectionName != null && resourceId.getUniqueDocumentCollectionId() != 0) {
                     this.collectionNameToCollectionResourceId.compute(collectionName, (k, v) -> resourceId.getUniqueDocumentCollectionId());
                     this.collectionResourceIdToCollectionName.compute(resourceId.getUniqueDocumentCollectionId(), (k, v) -> collectionName);
                 }
@@ -294,7 +293,6 @@ public final class SessionContainer implements ISessionContainer {
             Map<String, String> responseHeaders,
             ValueHolder<ResourceId> resourceId,
             ValueHolder<String> collectionName) {
-        Objects.requireNonNull(collectionName, "collectionName is required and cannot be null.");
         resourceId.v = null;
         String ownerFullName = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
         if (Strings.isNullOrEmpty(ownerFullName)) ownerFullName = request.getResourceAddress();
@@ -313,6 +311,7 @@ public final class SessionContainer implements ISessionContainer {
             resourceId.v = ResourceId.parse(resourceIdString);
 
             if (resourceId.v.getDocumentCollection() != 0 &&
+                    collectionName != null &&
                     !ReplicatedResourceClientUtils.isReadingFromMaster(request.getResourceType(), request.getOperationType())) {
                 return true;
             }
