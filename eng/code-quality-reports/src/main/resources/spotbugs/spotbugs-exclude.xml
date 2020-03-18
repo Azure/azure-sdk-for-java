@@ -773,7 +773,7 @@
   <Match>
     <Class name="com.azure.cosmos.implementation.TestConfigurations"/>
     <Method name="loadFromPathIfExists"/>
-    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,REC_CATCH_EXCEPTION"/>
   </Match>
 
   <!-- ClassLoader::getResourceAsStream can return null, ref: https://docs.oracle.com/javase/8/docs/technotes/guides/lang/resources.html -->
@@ -903,7 +903,7 @@
   <!-- Extra null check is for assertion -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.AddressResolver"/>
-    <Method name="~(.*)\$resolveAddressesAndIdentityAsync\$(.*)"/>
+    <Method name="~(.*)\$(resolveAddressesAndIdentityAsync|null)\$(.*)"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
 
@@ -1233,7 +1233,7 @@
   <!-- Code has a TODO to handle Exception case  -->
   <Match>
     <Class name="~com\.azure\.cosmos\.implementation\.directconnectivity\.StoreReader(.*)"/>
-    <Method name="~(.*)\$readFromReplicas\$(.*)"/>
+    <Method name="~(.*)\$(readFromReplicas|null)\$(.*)"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
@@ -1447,14 +1447,14 @@
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.OrderByUtils$PageToItemTransformer"/>
-    <Method name="~(.*)\$apply\$(.*)"/>
+    <Method name="~(.*)\$(apply|null)\$(.*)"/>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.AggregateDocumentQueryExecutionContext"/>
-    <Method name="~(.*)\$drainAsync\$(.*)"/>
+    <Method name="~(.*)\$(drainAsync|null)\$(.*)"/>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
   </Match>
 
@@ -1614,7 +1614,7 @@
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9098 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.AddressResolver"/>
-    <Method name="~(.*)\$resolveAddressesAndIdentityAsync\$(.*)"/>
+    <Method name="~(.*)\$(resolveAddressesAndIdentityAsync|null)\$(.*)"/>
     <Bug pattern="ES_COMPARING_STRINGS_WITH_EQ"/>
   </Match>
 
@@ -1628,7 +1628,7 @@
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9100 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache"/>
-    <Method name="~(.*)\$tryGetRangeByPartitionKeyRangeId\$(.*)"/>
+    <Method name="~(.*)\$(tryGetRangeByPartitionKeyRangeId|null)\$(.*)"/>
     <Bug pattern="NP_NULL_PARAM_DEREF"/>
   </Match>
 
@@ -1691,7 +1691,7 @@
   <!-- https://github.com/Azure/azure-sdk-for-java/issues/9102 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.RxDocumentClientImpl"/>
-    <Method name="~(.*)\$readMany\$(.*)"/>
+    <Method name="~(.*)\$(readMany|null)\$(.*)"/>
     <Bug pattern="UC_USELESS_OBJECT"/>
   </Match>
 
@@ -1856,6 +1856,35 @@
     <Class name="com.azure.cosmos.implementation.routing.MurmurHash3_128"/>
     <Method name="rotateLeft32"/>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <!-- Exclude spotbug from non-shipping modules -->
+  <Match>
+    <Or>
+      <Package name="com.azure.cosmos.benchmark"/>
+      <Package name="com.azure.cosmos.examples"/>
+      <Package name="com.azure.cosmos.examples.ChangeFeed"/>
+      <Package name="com.azure.cosmos.rx.examples.multimaster"/>
+      <Package name="com.azure.cosmos.rx.examples.multimaster.samples"/>
+    </Or>
+    <Bug pattern="JLM_JSR166_UTILCONCURRENT_MONITORENTER,
+    NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
+    NO_NOTIFY_NOT_NOTIFYALL,
+    UC_USELESS_OBJECT,
+    SIC_INNER_SHOULD_BE_STATIC,
+    SIC_INNER_SHOULD_BE_STATIC_ANON,
+    UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
+    NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
+    BX_UNBOXING_IMMEDIATELY_REBOXED,
+    MS_SHOULD_BE_FINAL,
+    REC_CATCH_EXCEPTION,
+    WA_NOT_IN_LOOP,
+    MS_SHOULD_BE_FINAL,
+    BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
+    DLS_DEAD_LOCAL_STORE,
+    IM_BAD_CHECK_FOR_ODD,
+    RC_REF_COMPARISON,
+    REC_CATCH_EXCEPTION"/>
   </Match>
 
 </FindBugsFilter>

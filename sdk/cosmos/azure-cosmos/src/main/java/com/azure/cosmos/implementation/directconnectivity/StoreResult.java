@@ -19,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.Serializable;
 
 public class StoreResult {
     private final static Logger logger = LoggerFactory.getLogger(StoreResult.class);
@@ -160,8 +159,7 @@ public class StoreResult {
                 ", sessionToken: " + (this.sessionToken != null ? this.sessionToken.convertToString() : null) +
                 ", exception: " + BridgeInternal.getInnerErrorMessage(this.exception);
     }
-    public static class StoreResultSerializer extends StdSerializer<StoreResult> implements Serializable {
-
+    public static class StoreResultSerializer extends StdSerializer<StoreResult> {
         private static final long serialVersionUID = 5315472126043077905L;
 
         public StoreResultSerializer(){
