@@ -6,7 +6,6 @@ package com.azure.identity.implementation;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
-import com.microsoft.aad.msal4jextensions.PersistenceSettings;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -28,7 +27,6 @@ public final class IdentityClientOptions {
     private ExecutorService executorService;
     private Duration tokenRefreshOffset = Duration.ofMinutes(2);
     private HttpClient httpClient;
-    private PersistenceSettings cachePersistenceSettings;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -192,13 +190,5 @@ public final class IdentityClientOptions {
     public IdentityClientOptions setHttpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
-    }
-
-    public PersistenceSettings getCachePersistenceSettings() {
-        return cachePersistenceSettings;
-    }
-
-    public void setCachePersistenceSettings(PersistenceSettings cachePersistenceSettings) {
-        this.cachePersistenceSettings = cachePersistenceSettings;
     }
 }
