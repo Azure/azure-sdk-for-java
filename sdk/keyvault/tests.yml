@@ -18,7 +18,7 @@ jobs:
             OSVmImage: 'ubuntu-16.04'
             JavaVersion: '1.8'
             DisplayName: 'Linux - Java 8'
-            AZURE_TEST_HTTP_CLIENTS: 'NettyAsyncHttpClient'
+            AZURE_TEST_HTTP_CLIENTS: NettyAsyncHttpClient
             AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS: '7.0'
             AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS: '7.0'
             AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS: '7.0'
@@ -28,7 +28,7 @@ jobs:
             OSVmImage: 'macOS-10.15'
             JavaVersion: '1.8'
             DisplayName: 'macOS - Java 8'
-            AZURE_TEST_HTTP_CLIENTS: 'OkHttpAsyncHttpClient'
+            AZURE_TEST_HTTP_CLIENTS: OkHttpAsyncHttpClient
             AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS: '7.1-preview'
             AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS: '7.1-preview'
             AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS: '7.1-preview'
@@ -38,13 +38,17 @@ jobs:
             OSVmImage: 'windows-2019'
             JavaVersion: '1.8'
             DisplayName: 'Windows - Java 8'
-            AZURE_TEST_HTTP_CLIENTS: 'NettyAsyncHttpClient'
+            AZURE_TEST_HTTP_CLIENTS: NettyAsyncHttpClient
+            AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS: '7.1-preview'
+            AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS: '7.1-preview'
+            AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS: '7.1-preview'
+            AZURE_KEYVAULT_TEST_SECRETS_SERVICE_VERSIONS: '7.1-preview'
         Linux - Java 11:
             OSName: 'Linux'
             OSVmImage: 'ubuntu-16.04'
             JavaVersion: '1.11'
             DisplayName: 'Linux - Java 11'
-            AZURE_TEST_HTTP_CLIENTS: 'OkHttpAsyncHttpClient'
+            AZURE_TEST_HTTP_CLIENTS: OkHttpAsyncHttpClient
             AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS: '7.0'
             AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS: '7.0'
             AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS: '7.0'
@@ -54,7 +58,7 @@ jobs:
             OSVmImage: 'macOS-10.15'
             JavaVersion: '1.11'
             DisplayName: 'macOS - Java 11'
-            AZURE_TEST_HTTP_CLIENTS: 'NettyAsyncHttpClient'
+            AZURE_TEST_HTTP_CLIENTS: NettyAsyncHttpClient
             AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS: '7.1-preview'
             AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS: '7.1-preview'
             AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS: '7.1-preview'
@@ -64,7 +68,7 @@ jobs:
             OSVmImage: 'windows-2019'
             JavaVersion: '1.11'
             DisplayName: 'Windows - Java 11'
-            AZURE_TEST_HTTP_CLIENTS: 'OkHttpAsyncHttpClient'
+            AZURE_TEST_HTTP_CLIENTS: OkHttpAsyncHttpClient
             AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS: '7.0'
             AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS: '7.0'
             AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS: '7.0'
