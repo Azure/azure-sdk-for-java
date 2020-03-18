@@ -26,14 +26,12 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.ASSOCIATED_LINK_NAME_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
@@ -44,8 +42,6 @@ import static com.azure.messaging.servicebus.implementation.ManagementConstants.
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.UPDATE_DISPOSITION_OPERATION;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.RENEW_LOCK_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_OK_STATUS_CODE;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_EXPIRATIONS;
 
 /**
  * Channel responsible for Service Bus related metadata, peek  and management plane operations. Management plane
@@ -231,29 +227,13 @@ public class ManagementChannel implements ServiceBusManagementNode {
             return channel.sendWithAck(requestMessage);
         }).flatMapMany(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
-
-            Stream<Instant> instantStream = Stream.empty();
-            if (statusCode ==  REQUEST_RESPONSE_OK_STATUS_CODE) {
-                if (responseMessage.getBody() instanceof AmqpValue) {
-                    AmqpValue amqpValue = ((AmqpValue) responseMessage.getBody());
-                    if (amqpValue.getValue() instanceof  Map) {
-                        @SuppressWarnings("unchecked")
-                        Map<String, Object> responseBody = (Map<String, Object>) amqpValue.getValue();
-                        Object expirationListObj = responseBody.get(REQUEST_RESPONSE_EXPIRATIONS);
-
-                        if (expirationListObj instanceof  Date[]) {
-                            instantStream = Arrays.stream((Date[]) expirationListObj)
-                                .map(Date::toInstant);
-                        }
-                    }
-                }
-            } else {
+            if (statusCode !=  AmqpResponseCode.OK.getValue()) {
                 return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "", getErrorContext()));
             }
-            return Flux.fromStream(instantStream);
+
+            return Flux.fromIterable(messageSerializer.deserializeList(responseMessage, Instant.class));
         }));
     }
-
 
     /**
      * Creates an AMQP message with the required application properties.

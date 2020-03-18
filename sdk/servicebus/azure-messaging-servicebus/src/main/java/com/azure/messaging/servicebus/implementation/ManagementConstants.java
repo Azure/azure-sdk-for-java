@@ -42,6 +42,4 @@ class ManagementConstants {
     static final String REQUEST_RESPONSE_ASSOCIATED_LINK_NAME = "associated-link-name";
     static final String LOCK_TOKENS = "lock-tokens";
     static final String RENEW_LOCK_OPERATION = AmqpConstants.VENDOR + ":renew-lock";
-    static final int REQUEST_RESPONSE_OK_STATUS_CODE = 200;
-    static final String REQUEST_RESPONSE_EXPIRATIONS = "expirations";
 }

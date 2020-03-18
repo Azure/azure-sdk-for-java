@@ -13,6 +13,7 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_TRACKING_ID;
 
@@ -23,7 +24,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     ServiceBusReceiverAsyncClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class));
-        receiveMessageOptions = new ReceiveMessageOptions().setAutoComplete(true);
+        receiveMessageOptions = new ReceiveMessageOptions().setAutoComplete(false);
     }
 
     @Override
@@ -141,27 +142,43 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     void renewMessageLock() {
         // Arrange
         Duration renewAfterSeconds = Duration.ofSeconds(1);
-        long takeTimeToProcessMessageMillis = 3000;
+        long takeTimeToProcessMessageMillis = 10000;
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, "id-1", 0);
 
+
+        AtomicReference<Integer> renewMessageLockCounter = new AtomicReference<>(0);
         // Assert & Act
-        StepVerifier.create(receiver.receive().take(1).delayElements(renewAfterSeconds))
-            .assertNext(receivedMessage -> {
-                System.out.println(" Received message locked until:" + receivedMessage.getLockedUntil());
-                Assertions.assertNotNull(receivedMessage.getLockToken());
-                Disposable renewDisposable = receiver.renewMessageLock(receivedMessage)
+        StepVerifier.create(sender.send(message).thenMany(receiver.receive()
+            .take(1)
+            .delayElements(renewAfterSeconds)
+            .map(receivedMessage -> {
+                //  keep renewing the lock whole you process the message.
+                Disposable disposable = receiver.renewMessageLock(receivedMessage.getLockToken())
                     .repeat(() -> true)
                     .delayElements(renewAfterSeconds)
-                    .subscribe(Assertions::assertNotNull);
-                // process your message here
+                    .doOnNext(instant -> {
+                        // This will ensure that we are getting valid refresh time
+                        if (instant != null) {
+                            logger.verbose(" Received new refresh time.");
+                            renewMessageLockCounter.set(renewMessageLockCounter.get() + 1);
+                        }
+                    })
+                    .subscribe();
+
+                // This just shows that user is taking time to process.
+                // Real production code will not have sleep in it will have message processing code instead.
                 try {
                     Thread.sleep(takeTimeToProcessMessageMillis);
                 } catch (InterruptedException ignored) {
 
                 }
-
-                renewDisposable.dispose();
-            })
+                disposable.dispose();
+                return receivedMessage;
+            })))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
+        // ensure that renew lock is called atleast once.
+        Assertions.assertTrue(renewMessageLockCounter.get() > 0);
     }
-
 }
