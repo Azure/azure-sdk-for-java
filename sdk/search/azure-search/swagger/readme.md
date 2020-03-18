@@ -294,4 +294,37 @@ directive:
       transform: >-
         return $
         .replace(/(COSMOS_DB)/g, "COSMOS")
+
+    # Remove field and its getter and setter for immutable static field in Suggester
+    - from:
+        - Suggester.java
+      where: $
+      transform: >-
+        return $
+        .replace(/    \/\*\*\n     \* Get the searchMode property\: A value indicating the capabilities of the\n     \* suggester\.\n     \*\n     \* \@return the searchMode value\.\n     \*\/\n    public String getSearchMode\(\) \{\n        return this\.searchMode\;\n    \}\n\n/g, "")
+        .replace(/    \/\*\*\n     \* Set the searchMode property\: A value indicating the capabilities of the\n     \* suggester\.\n     \*\n     \* \@param searchMode the searchMode value to set\.\n     \* \@return the Suggester object itself\.\n     \*\/\n    public Suggester setSearchMode\(String searchMode\) \{\n        this\.searchMode \= searchMode\;\n        return this\;\n    \}\n\n/g, "")
+        
+    # Remove field and its getter and setter for immutable static field in SynonymMap
+    - from:
+        - SynonymMap.java
+      where: $
+      transform: >-
+        return $
+        .replace(/    \/\*\*\n     \* Get the format property\: The format of the synonym map\. Only the \'solr\'\n     \* format is currently supported\.\n     \*\n     \* \@return the format value\.\n     \*\/\n    public String getFormat\(\) \{\n        return this\.format\;\n    \}\n\n/g, "")
+        .replace(/    \/\*\*\n     \* Set the format property\: The format of the synonym map\. Only the \'solr\'\n     \* format is currently supported\.\n     \*\n     \* \@param format the format value to set\.\n     \* \@return the SynonymMap object itself\.\n     \*\/\n    public SynonymMap setFormat\(String format\) \{\n        this\.format \= format\;\n        return this\;\n    \}\n\n/g, "")  
+     
+    # Change base class to abstract
+    - from:
+        - Analyzer.java
+        - TokenFilter.java
+        - Tokenizer.java
+        - Skill.java
+        - CharFilter.java
+        - ScoringFunction.java
+        - CognitiveServicesAccount.java
+        - DataChangeDetectionPolicy.java
+        - DataDeletionDetectionPolicy.java
+      where: $
+      transform: >-
+        return $.replace(/public class (.*) \{/, "public abstract class $1 {")
 ```

@@ -179,7 +179,6 @@ public class LifecycleSetupExample {
         // Set Suggester
         index.setSuggesters(Collections.singletonList(new Suggester()
             .setName(SUGGESTER_NAME)
-            .setSearchMode("analyzingInfixMatching")
             .setSourceFields(Collections.singletonList("Tags"))));
 
         return client.createOrUpdateIndex(index);

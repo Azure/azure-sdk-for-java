@@ -21,5 +21,5 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.SqlIntegratedChangeTrackingPolicy", value = SqlIntegratedChangeTrackingPolicy.class)
 })
 @Fluent
-public class DataChangeDetectionPolicy {
+public abstract class DataChangeDetectionPolicy {
 }

@@ -4,7 +4,8 @@ parameters:
   ValidationSteps: []
 
 jobs:
-  - job: 'Build and Validate'
+  - job: 'BuildAndValidate'
+    displayName: 'Build and Validate'
 
     variables:
       - template: ../variables/globals.yml
@@ -32,10 +33,10 @@ jobs:
       - template: tools/daily-dev-build-variable/daily-dev-build-variable.yml@azure-sdk-tools
 
       - script: |
-        pip install setuptools wheel
-        pip install doc-warden==$(DocWardenVersion)
-        ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
-      displayName: 'Verify Readmes'
+          pip install setuptools wheel
+          pip install doc-warden==$(DocWardenVersion)
+          ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
+        displayName: 'Verify Readmes'
 
       - script: |
           pip install markdown2 BeautifulSoup4

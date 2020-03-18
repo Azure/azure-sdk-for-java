@@ -83,28 +83,6 @@ public final class SynonymMap {
     }
 
     /**
-     * Get the format property: The format of the synonym map. Only the 'solr'
-     * format is currently supported.
-     *
-     * @return the format value.
-     */
-    public String getFormat() {
-        return this.format;
-    }
-
-    /**
-     * Set the format property: The format of the synonym map. Only the 'solr'
-     * format is currently supported.
-     *
-     * @param format the format value to set.
-     * @return the SynonymMap object itself.
-     */
-    public SynonymMap setFormat(String format) {
-        this.format = format;
-        return this;
-    }
-
-    /**
      * Get the synonyms property: A series of synonym rules in the specified
      * synonym map format. The rules must be separated by newlines.
      *
