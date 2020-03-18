@@ -44,7 +44,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        dispose(receiver, sender);
+        dispose(receiver, receiverManual, sender);
     }
 
     /**
@@ -161,7 +161,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .map(receivedMessage -> {
                 //  keep renewing the lock whole you process the message.
                 Disposable disposable = receiverManual.renewMessageLock(receivedMessage.getLockToken())
-                    .repeat(() -> true)
+                    .repeat()
                     .delayElements(renewAfterSeconds)
                     .doOnNext(instant -> {
                         // This will ensure that we are getting valid refresh time
@@ -182,7 +182,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 disposable.dispose();
                 return receivedMessage;
             })))
-            .assertNext(Assertions::assertNotNull)
+            .assertNext(receivedMessage -> {
+                Assertions.assertNotNull(receivedMessage.getLockedUntil());
+            })
             .verifyComplete();
         // ensure that renew lock is called atleast once.
         Assertions.assertTrue(renewMessageLockCounter.get() > 0);

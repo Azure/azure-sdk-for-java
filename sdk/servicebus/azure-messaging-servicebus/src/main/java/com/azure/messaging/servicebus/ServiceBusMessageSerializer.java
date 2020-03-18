@@ -197,8 +197,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     }
 
     private List<Instant> deserializeListOfInstant(Message amqpMessage) {
-        List<Instant> listInstant = new ArrayList<>();
-
+       
         if (amqpMessage.getBody() instanceof AmqpValue) {
             AmqpValue amqpValue = ((AmqpValue) amqpMessage.getBody());
             if (amqpValue.getValue() instanceof  Map) {
@@ -206,14 +205,14 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                 Map<String, Object> responseBody = (Map<String, Object>) amqpValue.getValue();
                 Object expirationListObj = responseBody.get(REQUEST_RESPONSE_EXPIRATIONS);
 
-                if (expirationListObj instanceof  Date[]) {
-                    listInstant = Arrays.stream((Date[]) expirationListObj)
+                if (expirationListObj instanceof Date[]) {
+                    return Arrays.stream((Date[]) expirationListObj)
                         .map(Date::toInstant)
                         .collect(Collectors.toList());
                 }
             }
         }
-        return listInstant;
+        return Collections.emptyList();
     }
     private List<ServiceBusReceivedMessage> deserializeListOfMessages(Message amqpMessage) {
         final List<ServiceBusReceivedMessage> messageList = new ArrayList<>();

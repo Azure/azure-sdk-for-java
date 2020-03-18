@@ -97,7 +97,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Mono<Instant> renewMessageLock(UUID lockToken) {
         return renewMessageLock(new UUID[]{lockToken})
-            .last()
+            .next()
             .publishOn(scheduler);
     }
 
@@ -228,7 +228,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
         }).flatMapMany(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
             if (statusCode !=  AmqpResponseCode.OK.getValue()) {
-                return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "", getErrorContext()));
+                return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "Could not renew the lock.",
+                    getErrorContext()));
             }
 
             return Flux.fromIterable(messageSerializer.deserializeList(responseMessage, Instant.class));
