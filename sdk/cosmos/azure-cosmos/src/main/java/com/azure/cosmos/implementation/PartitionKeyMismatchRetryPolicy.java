@@ -41,11 +41,11 @@ public class PartitionKeyMismatchRetryPolicy extends DocumentClientRetryPolicy {
 
         // TODO: this should be retrievable from document client exception.
         collectionLink = Utils.getCollectionName(resourceFullName);
-        this.options = options;
+        this.options = requestOptions;
     }
 
 
-    /// <summary> 
+    /// <summary>
     /// Should the caller retry the operation.
     /// </summary>
     /// <param name="exception">Exception that occured when the operation was tried</param>

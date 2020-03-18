@@ -7,7 +7,8 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 
-import java.util.regex.Pattern;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * This class provides helper methods for common model patterns.
@@ -15,8 +16,17 @@ import java.util.regex.Pattern;
  * RESERVED FOR INTERNAL USE.
  */
 public class ModelHelper {
-    public static final Pattern IP_V4_URL_PATTERN = Pattern
-        .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
+
+    /**
+     * Determines whether or not the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
+     *
+     * @param authority The authority of a URL.
+     * @throws MalformedURLException If the authority is malformed.
+     * @return Whether the authority is IP style.
+     */
+    public static boolean determineAuthorityIsIpStyle(String authority) throws MalformedURLException {
+        return new URL("http://" +  authority).getPort() != -1;
+    }
 
     /**
      * Fills in default values for a ParallelTransferOptions where no value has been set. This will construct a new

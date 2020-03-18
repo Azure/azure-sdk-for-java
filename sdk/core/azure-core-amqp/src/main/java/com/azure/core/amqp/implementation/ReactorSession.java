@@ -248,6 +248,8 @@ public class ReactorSession implements AmqpSession {
      * @param receiverProperties Any properties to associate with the receive link when attaching to message
      *     broker.
      * @param receiverDesiredCapabilities Capabilities that the receiver link supports.
+     * @param senderSettleMode Amqp {@link SenderSettleMode} mode for receiver.
+     * @param receiverSettleMode Amqp {@link ReceiverSettleMode} mode for receiver.
      *
      * @return A new instance of an {@link AmqpReceiveLink} with the correct properties set.
      */

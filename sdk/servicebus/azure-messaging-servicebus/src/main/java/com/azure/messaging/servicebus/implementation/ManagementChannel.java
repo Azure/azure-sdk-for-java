@@ -23,7 +23,9 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,9 +37,11 @@ import static com.azure.messaging.servicebus.implementation.ManagementConstants.
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.PEEK_OPERATION_VALUE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_MESSAGE_COUNT;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE_COUNT_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.SERVER_TIMEOUT;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.UPDATE_DISPOSITION_OPERATION;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.RENEW_LOCK_OPERATION;
 
 /**
  * Channel responsible for Service Bus related metadata, peek  and management plane operations. Management plane
@@ -91,6 +95,16 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
+    public Mono<Instant> renewMessageLock(UUID lockToken) {
+        return renewMessageLock(new UUID[]{lockToken})
+            .next()
+            .publishOn(scheduler);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber) {
         return peek(fromSequenceNumber, 1, null)
             .last()
@@ -132,7 +146,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             // set mandatory properties on AMQP message body
             HashMap<String, Object> requestBodyMap = new HashMap<>();
             requestBodyMap.put(REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER, fromSequenceNumber);
-            requestBodyMap.put(REQUEST_RESPONSE_MESSAGE_COUNT, maxMessages);
+            requestBodyMap.put(MESSAGE_COUNT_KEY, maxMessages);
 
             if (!Objects.isNull(sessionId)) {
                 requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_SESSION_ID, sessionId);
@@ -200,6 +214,26 @@ public class ManagementChannel implements ServiceBusManagementNode {
         message.setBody(new AmqpValue(requestBody));
 
         return message;
+    }
+
+    private Flux<Instant> renewMessageLock(UUID[] renewLockList) {
+
+        return  isAuthorized(PEEK_OPERATION_VALUE).thenMany(createRequestResponse.flatMap(channel -> {
+
+            Message requestMessage = createManagementMessage(RENEW_LOCK_OPERATION,
+                channel.getReceiveLinkName());
+
+            requestMessage.setBody(new AmqpValue(Collections.singletonMap(LOCK_TOKENS, renewLockList)));
+            return channel.sendWithAck(requestMessage);
+        }).flatMapMany(responseMessage -> {
+            int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+            if (statusCode !=  AmqpResponseCode.OK.getValue()) {
+                return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "Could not renew the lock.",
+                    getErrorContext()));
+            }
+
+            return Flux.fromIterable(messageSerializer.deserializeList(responseMessage, Instant.class));
+        }));
     }
 
     /**

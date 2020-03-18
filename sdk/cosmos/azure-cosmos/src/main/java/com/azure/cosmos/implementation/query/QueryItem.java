@@ -24,7 +24,7 @@ public final class QueryItem extends JsonSerializable {
     public Object getItem() {
         if (this.item == null) {
             Object rawItem = super.get("item");
-            this.item = super.has("item") ? rawItem : Undefined.Value();
+            this.item = super.has("item") ? rawItem : Undefined.value();
         }
 
         return this.item;

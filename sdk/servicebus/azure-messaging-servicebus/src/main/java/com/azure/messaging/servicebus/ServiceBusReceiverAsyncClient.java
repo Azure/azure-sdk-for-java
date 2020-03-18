@@ -117,7 +117,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
 
         if (receiveMode != ReceiveMode.PEEK_LOCK && isAutoComplete) {
             return Flux.error(logger.logExceptionAsError(new UnsupportedOperationException(
-                "Auto-complete is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.")));
+                "Autocomplete is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.")));
         }
 
         // TODO (conniey): This returns the same consumer instance because the entityPath is not unique.
@@ -195,6 +195,46 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
+     * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on the
+     * setting specified on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is
+     * locked on the server for this receiver instance for a duration as specified during the Queue creation
+     * (LockDuration). If processing of the message requires longer than this duration, the lock needs to be renewed.
+     * For each renewal, the lock is reset to the entity's LockDuration value.
+     *
+     * @param messageLock The {@link UUID} value of the message lock to renew.
+     *
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Instant> renewMessageLock(UUID messageLock) {
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(serviceBusManagementNode -> serviceBusManagementNode
+                .renewMessageLock(messageLock));
+    }
+
+    /**
+     * Asynchronously renews the lock on the specified message. The lock will be renewed based on the
+     * setting specified on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is
+     * locked on the server for this receiver instance for a duration as specified during the Queue creation
+     * (LockDuration). If processing of the message requires longer than this duration, the lock needs to be renewed.
+     * For each renewal, the lock is reset to the entity's LockDuration value.
+     *
+     * @param receivedMessage to be used to renew.
+     *
+     * @return The {@link Mono} the finishes this operation on service bus resource.
+     */
+    public Mono<Instant> renewMessageLock(ServiceBusReceivedMessage receivedMessage) {
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(serviceBusManagementNode -> serviceBusManagementNode
+                .renewMessageLock(receivedMessage.getLockToken())
+                .map(instant -> {
+                    receivedMessage.setLockedUntil(instant);
+                    return instant;
+                }));
+    }
+
+    /**
      * Defers a {@link ServiceBusMessage} using its lock token with modified message property. This will move message
      * into deferred subqueue.
      *
@@ -259,22 +299,6 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
         return updateDisposition(message, DispositionStatus.SUSPENDED, deadLetterReason, deadLetterErrorDescription,
             propertiesToModify);
-    }
-
-    /**
-     * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on the
-     * setting specified on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is
-     * locked on the server for this receiver instance for a duration as specified during the Queue creation
-     * (LockDuration). If processing of the message requires longer than this duration, the lock needs to be renewed.
-     * For each renewal, the lock is reset to the entity's LockDuration value.
-     *
-     * @param message to be used.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Instant renewMessageLock(ServiceBusReceivedMessage message) {
-        //TODO(feature-to-implement)
-        return null;
     }
 
     /**

@@ -334,7 +334,7 @@ public class ConsistencyReader {
     ReadMode deduceReadMode(RxDocumentServiceRequest request,
                             ValueHolder<ConsistencyLevel> targetConsistencyLevel,
                             ValueHolder<Boolean> useSessionToken) throws CosmosClientException {
-        targetConsistencyLevel.v = RequestHelper.GetConsistencyLevelToUse(this.serviceConfigReader, request);
+        targetConsistencyLevel.v = RequestHelper.getConsistencyLevelToUse(this.serviceConfigReader, request);
         useSessionToken.v = (targetConsistencyLevel.v == ConsistencyLevel.SESSION);
 
         if (request.getDefaultReplicaIndex() != null) {

@@ -189,7 +189,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             CompositeContinuationToken compositeContinuationToken,
             List<PartitionKeyRange> partitionKeyRanges) throws CosmosClientException {
         // Find the partition key range we left off on
-        int startIndex = this.FindTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
+        int startIndex = this.findTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
                 compositeContinuationToken.getRange());
 
         List<PartitionKeyRange> rightHandSideRanges = new ArrayList<PartitionKeyRange>();
