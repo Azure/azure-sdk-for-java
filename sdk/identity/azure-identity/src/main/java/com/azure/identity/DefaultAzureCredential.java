@@ -34,7 +34,7 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
     private static final String DEFAULT_KEYCHAIN_SERVICE = "Microsoft.Developer.IdentityService";
     private static final String DEFAULT_KEYCHAIN_ACCOUNT = "MSALCache";
     private static final String DEFAULT_KEYRING_NAME = "default";
-    private static final KeyRingItemSchema DEFAULT_KEYRING_SCHEMA = KeyRingItemSchema.GENERIC_SECRET;
+    private static final KeyringItemSchema DEFAULT_KEYRING_SCHEMA = KeyringItemSchema.GENERIC_SECRET;
     private static final String DEFAULT_KEYRING_ITEM_NAME = DEFAULT_KEYCHAIN_ACCOUNT;
     private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
     private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";

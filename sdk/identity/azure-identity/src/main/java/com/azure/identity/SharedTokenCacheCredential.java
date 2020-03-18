@@ -88,7 +88,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
                     .authority(authorityUrl)
                     .setTokenCacheAccessAspect(accessAspect)
                     .build();
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 return Mono.error(e);
             }
         }

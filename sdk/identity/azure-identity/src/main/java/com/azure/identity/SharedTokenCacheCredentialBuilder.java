@@ -23,7 +23,7 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
     private String keyChainService;
     private String keyChainAccount;
     private String keyRingName;
-    private KeyRingItemSchema keyRingItemSchema;
+    private KeyringItemSchema keyRingItemSchema;
     private String keyRingItemName;
     private LinkedHashMap<String, String> attributes = new LinkedHashMap<>(); // preserve order
     private boolean useUnprotectedFileOnLinux = false;
@@ -95,13 +95,13 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
 
     /**
      * Sets the schema of the Gnome keyring to store the cache on Gnome keyring enabled
-     * Linux systems. The default value is <code>KeyRingItemSchema.GenericSecret</code>.
+     * Linux systems. The default value is <code>KeyringItemSchema.GenericSecret</code>.
      *
      * @param keyRingItemSchema The schema of the Gnome keyring.
      *
      * @return The updated SharedTokenCacheCredentialBuilder object.
      */
-    public SharedTokenCacheCredentialBuilder keyRingItemSchema(KeyRingItemSchema keyRingItemSchema) {
+    public SharedTokenCacheCredentialBuilder keyRingItemSchema(KeyringItemSchema keyRingItemSchema) {
         this.keyRingItemSchema = keyRingItemSchema;
         return this;
     }
