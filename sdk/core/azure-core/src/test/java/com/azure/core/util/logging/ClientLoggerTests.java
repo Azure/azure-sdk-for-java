@@ -26,25 +26,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests for {@link ClientLogger}.
  */
 public class ClientLoggerTests {
-    private static final String PARAMETERIZED_TEST_NAME_TEMPLATE = "[" + ParameterizedTest.INDEX_PLACEHOLDER
-        + "] " + ParameterizedTest.DISPLAY_NAME_PLACEHOLDER;
-
     private PrintStream originalSystemOut;
     private ByteArrayOutputStream logCaptureStream;
-
 
     @BeforeEach
     public void setupLoggingConfiguration() {
         /*
-         * Indicate to SLF4J to enable trace level logging for a logger named
-         * com.azure.core.util.logging.ClientLoggerTests. Trace is the maximum level of logging supported by the
-         * ClientLogger.
-         */
-        System.setProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.ClientLoggerTests", "trace");
-
-        /*
-         * The default configuration for SLF4J's SimpleLogger uses System.err to log. Inject a custom PrintStream to
-         * log into for the duration of the test to capture the log messages.
+         * DefaultLogger uses System.out to log. Inject a custom PrintStream to log into for the duration of the test to
+         * capture the log messages.
          */
         originalSystemOut = System.out;
         logCaptureStream = new ByteArrayOutputStream();
@@ -53,7 +42,6 @@ public class ClientLoggerTests {
 
     @AfterEach
     public void revertLoggingConfiguration() throws Exception {
-        System.clearProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.ClientLoggerTests");
         System.setOut(originalSystemOut);
         logCaptureStream.close();
     }
@@ -180,8 +168,8 @@ public class ClientLoggerTests {
     }
 
     /**
-     * Tests that logging a Throwable as error will log a message and stack trace appropriately based on the
-     * configured log level.
+     * Tests that logging a Throwable as error will log a message and stack trace appropriately based on the configured
+     * log level.
      */
     @ParameterizedTest
     @MethodSource("logExceptionAsErrorSupplier")
@@ -217,7 +205,7 @@ public class ClientLoggerTests {
      * it doesn't support.
      */
     @ParameterizedTest
-    @ValueSource(strings = { "errs", "not_set", "12", "onlyerrorsplease" })
+    @ValueSource(strings = {"errs", "not_set", "12", "onlyerrorsplease"})
     public void invalidLogLevelFromString(String environmentLogLevel) {
         assertThrows(IllegalArgumentException.class, () -> LogLevel.fromString(environmentLogLevel));
     }
@@ -269,8 +257,8 @@ public class ClientLoggerTests {
     }
 
     private static <T extends Throwable> T fillInStackTrace(T throwable) {
-        StackTraceElement[] stackTraceElements = { new StackTraceElement("ClientLoggerTests", "onlyLogExceptionMessage",
-            "ClientLoggerTests", 117) };
+        StackTraceElement[] stackTraceElements = {new StackTraceElement("ClientLoggerTests", "onlyLogExceptionMessage",
+            "ClientLoggerTests", 117)};
         throwable.setStackTrace(stackTraceElements);
 
         return throwable;
