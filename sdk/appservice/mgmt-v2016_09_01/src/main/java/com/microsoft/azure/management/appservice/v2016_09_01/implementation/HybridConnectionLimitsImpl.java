@@ -12,14 +12,14 @@ import com.microsoft.azure.management.appservice.v2016_09_01.HybridConnectionLim
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class HybridConnectionLimitsImpl extends WrapperImpl<HybridConnectionLimitsInner> implements HybridConnectionLimits {
-    private final AppServiceManager manager;
-    HybridConnectionLimitsImpl(HybridConnectionLimitsInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    HybridConnectionLimitsImpl(HybridConnectionLimitsInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
