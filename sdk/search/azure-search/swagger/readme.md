@@ -95,7 +95,7 @@ This swagger is ready for C# and Java.
 
 ``` yaml
 output-folder: ../
-namespace: com.azure.search
+namespace: com.azure.search.documents
 java: true
 sync-methods: none
 add-context-parameter: true
@@ -132,7 +132,7 @@ directive:
       where: $
       transform: >-
           return $
-          .replace(/(package com.azure.search.models;)/g, "$1\nimport com.azure.search.SearchDocument;")
+          .replace(/(package com.azure.search.documents.models;)/g, "$1\nimport com.azure.search.documents.SearchDocument;")
           .replace(/(Map<String, Object>)/g, "SearchDocument")
 
     # Rename IndexBatch to IndexBatchBase when processing the API spec
@@ -161,7 +161,7 @@ directive:
           .replace(/(void setIndexName)/g, "public void setIndexName")
           .replace(/(void setSearchDnsSuffix)/g, "public void setSearchDnsSuffix")
           .replace(/(void setSearchServiceName)/g, "public void setSearchServiceName")
-          .replace(/(package com.azure.search.implementation;)/g, "$1\nimport com.azure.core.util.serializer.JacksonAdapter;\nimport com.azure.core.util.serializer.SerializerAdapter;")
+          .replace(/(package com.azure.search.documents.implementation;)/g, "$1\nimport com.azure.core.util.serializer.JacksonAdapter;\nimport com.azure.core.util.serializer.SerializerAdapter;")
           .replace(/(this\(RestProxy.createDefaultPipeline\(\)\);)/g, "this(RestProxy.createDefaultPipeline(), JacksonAdapter.createDefaultSerializerAdapter());")
           .replace(/(@param httpPipeline The HTTP pipeline to send requests through.)/g, "$1\n     \* @param serializer the serializer to be used for service client requests.")
           .replace(/(this\(new HttpPipelineBuilder\(\)\.policies\(new UserAgentPolicy\(\)\, new RetryPolicy\(\)\, new CookiePolicy\(\)\)\.build\(\)\)\;)/g, "this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(), new JacksonAdapter());")
@@ -191,7 +191,7 @@ directive:
       where: $
       transform: >-
           return $
-          .replace(/(package com.azure.search.implementation;)/g, "$1\nimport com.azure.core.util.serializer.SerializerAdapter;")
+          .replace(/(package com.azure.search.documents.implementation;)/g, "$1\nimport com.azure.core.util.serializer.SerializerAdapter;")
           .replace(/(\* The HTTP pipeline to send requests through)/g, "\* The serializer to use for requests\n     \*\/\n    private SerializerAdapter serializer;\n\n    \/\*\*\n     \* Sets The serializer to use for requests.\n     \*\n     \* @param serializer the serializer value.\n     \* @return the SearchIndexRestClientBuilder.\n     \*\/\n    public SearchIndexRestClientBuilder serializer\(SerializerAdapter serializer\) {\n        this.serializer = serializer;\n        return this;\n    }\n\n    \/\*\n     $1")
           .replace(/(new SearchIndexRestClientImpl\(pipeline)/g, "$1, serializer")
           .replace(/(this.pipeline = RestProxy.createDefaultPipeline\(\);\s+})/g, "$1\n        if \(serializer == null\) {\n            this.serializer = JacksonAdapter.createDefaultSerializerAdapter\(\);\n        }")
@@ -214,7 +214,7 @@ directive:
           .replace(/(Mono<IndexDocumentsResult> indexAsync)/g, "<T> $1")
           .replace(/(Mono<SimpleResponse<IndexDocumentsResult>> index)/g, "<T> $1")
           .replace(/(IndexBatchBase)/g, "IndexBatchBase<T>")
-          .replace(/(com\.azure\.search\.models\.IndexBatchBase\<T\>)/g, "com.azure.search.models.IndexBatchBase")
+          .replace(/(com\.azure\.search\.documents\.models\.IndexBatchBase\<T\>)/g, "com.azure.search.documents.models.IndexBatchBase")
 
     # Change get to is
     - from: DocumentsImpl.java
@@ -253,7 +253,7 @@ directive:
       where: $
       transform: >-
           return $
-          .replace(/(package com.azure.search.models;)/g, "$1\nimport com.fasterxml.jackson.annotation.JsonIgnore;")
+          .replace(/(package com.azure.search.documents.models;)/g, "$1\nimport com.fasterxml.jackson.annotation.JsonIgnore;")
           .replace(/(public Document getDocument())/g, "@JsonIgnore\n$1")
 
     # Add static Collection<DataType> method to DataType
@@ -274,7 +274,7 @@ directive:
       where: $
       transform: >-
         return $
-        .replace(/(import com\.azure\.search\.implementation\.models\.AccessCondition\;)/g, "import com.azure.core.http.MatchConditions;")
+        .replace(/(import com\.azure\.search\.documents\.implementation\.models\.AccessCondition\;)/g, "import com.azure.core.http.MatchConditions;")
         .replace(/(this.getSearchServiceName)/g, "this.client.getSearchServiceName")
         .replace(/(this.getEndpoint)/g, "this.client.getEndpoint")
         .replace(/(this.getSearchDnsSuffix)/g, "this.client.getSearchDnsSuffix")
@@ -285,7 +285,7 @@ directive:
         - SearchServiceRestClientImpl.java
       where: $
       transform: >-
-        return $.replace(/(package com.azure.search.implementation;)/g, "$1\nimport com.azure.core.http.rest.RestProxy;")
+        return $.replace(/(package com.azure.search.documents.implementation;)/g, "$1\nimport com.azure.core.http.rest.RestProxy;")
 
     # Rename COSMOS_DB to COSMOS in DataSourceType.java
     - from:
