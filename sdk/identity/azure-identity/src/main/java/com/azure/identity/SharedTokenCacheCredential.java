@@ -79,7 +79,6 @@ public class SharedTokenCacheCredential implements TokenCredential {
         // Initialize here so that the constructor doesn't throw
         if (pubClient == null) {
             try {
-                PersistenceTokenCacheAccessAspect accessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
                 PublicClientApplication.Builder applicationBuilder =  PublicClientApplication.builder(this.clientId);
                 if (options.getExecutorService() != null) {
                     applicationBuilder.executorService(options.getExecutorService());
@@ -87,7 +86,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
 
                 pubClient = applicationBuilder
                     .authority(authorityUrl)
-                    .setTokenCacheAccessAspect(accessAspect)
+                    .setTokenCacheAccessAspect(new PersistenceTokenCacheAccessAspect(persistenceSettings))
                     .build();
             } catch (Throwable e) {
                 return Mono.error(e);

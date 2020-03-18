@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 import com.microsoft.aad.msal4jextensions.PersistenceSettings;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * @see SharedTokenCacheCredential
  */
 public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<SharedTokenCacheCredentialBuilder> {
+    private final ClientLogger logger = new ClientLogger(SharedTokenCacheCredentialBuilder.class);
     private String username;
     private Path cacheFileLocation;
     private String keyChainService;
@@ -25,7 +27,7 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
     private String keyRingName;
     private KeyringItemSchema keyRingItemSchema;
     private String keyRingItemName;
-    private LinkedHashMap<String, String> attributes = new LinkedHashMap<>(); // preserve order
+    private final LinkedHashMap<String, String> attributes = new LinkedHashMap<>(); // preserve order
     private boolean useUnprotectedFileOnLinux = false;
 
     /**
@@ -127,12 +129,14 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      * @param attributeValue The value of the attribute.
      *
      * @return The updated SharedTokenCacheCredentialBuilder object.
+     * @throws IllegalArgumentException if there are already 2 attributes
      */
     public SharedTokenCacheCredentialBuilder addKeyRingItemAttribute(String attributeName, String attributeValue) {
         if (this.attributes.size() < 2) {
             this.attributes.put(attributeName, attributeValue);
         } else {
-            throw new IllegalArgumentException("Currently does not support more than 2 attributes for linux KeyRing");
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Currently does not support more than 2 attributes for linux KeyRing"));
         }
         return this;
     }
@@ -157,8 +161,8 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      */
     public SharedTokenCacheCredential build() {
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-            put("cacheFileLocation", cacheFileLocation);
-        }});
+                put("cacheFileLocation", cacheFileLocation);
+            }});
         List<String> attributeKeyList = new ArrayList<>(attributes.keySet());
         while (attributeKeyList.size() < 2) {
             attributeKeyList.add(null);

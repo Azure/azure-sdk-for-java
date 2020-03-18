@@ -28,9 +28,9 @@ import java.util.Arrays;
 @Immutable
 public final class DefaultAzureCredential extends ChainedTokenCredential {
     private static final String DEFAULT_CACHE_FILE_NAME = "msal.cache";
-    private static final Path DEFAULT_CACHE_DIRECTORY = Platform.isWindows() ?
-            Paths.get(System.getProperty("user.home"), "AppData", "Local", ".IdentityService", "msal.cache") :
-            Paths.get(System.getProperty("user.home"),".IdentityService", "msal.cache");
+    private static final Path DEFAULT_CACHE_DIRECTORY = Platform.isWindows()
+            ? Paths.get(System.getProperty("user.home"), "AppData", "Local", ".IdentityService", "msal.cache")
+            : Paths.get(System.getProperty("user.home"), ".IdentityService", "msal.cache");
     private static final String DEFAULT_KEYCHAIN_SERVICE = "Microsoft.Developer.IdentityService";
     private static final String DEFAULT_KEYCHAIN_ACCOUNT = "MSALCache";
     private static final String DEFAULT_KEYRING_NAME = "default";
