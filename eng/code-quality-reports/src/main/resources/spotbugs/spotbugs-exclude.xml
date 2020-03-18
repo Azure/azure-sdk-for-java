@@ -679,14 +679,14 @@
       <Not>
         <Or>
           <!-- Hand-written classes should be specified here to be checked  -->
-          <Class name="com.azure.search.implementation.GeoPointDeserializer"/>
-          <Class name="com.azure.search.implementation.Iso8601DateDeserializer"/>
-          <Class name="com.azure.search.implementation.SerializationUtil"/>
-          <Class name="com.azure.search.models.CoordinateSystem"/>
-          <Class name="com.azure.search.models.GeoPoint"/>
+          <Class name="GeoPointDeserializer"/>
+          <Class name="Iso8601DateDeserializer"/>
+          <Class name="SerializationUtil"/>
+          <Class name="CoordinateSystem"/>
+          <Class name="GeoPoint"/>
           <Class name="com.azure.search.models.IndexBatch"/>
-          <Class name="com.azure.search.models.ValueFacetResult"/>
-          <Class name="com.azure.search.models.RangeFacetResult"/>
+          <Class name="ValueFacetResult"/>
+          <Class name="RangeFacetResult"/>
         </Or>
       </Not>
     </And>
