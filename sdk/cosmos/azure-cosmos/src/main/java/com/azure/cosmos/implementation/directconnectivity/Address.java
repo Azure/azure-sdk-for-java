@@ -41,7 +41,7 @@ public class Address extends Resource {
     }
 
     public boolean IsPrimary() {
-        return super.getBoolean(Constants.Properties.IS_PRIMARY);
+        return Boolean.TRUE.equals(super.getBoolean(Constants.Properties.IS_PRIMARY));
     }
 
     void setIsPrimary(boolean isPrimary) {

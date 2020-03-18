@@ -100,7 +100,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     @JsonProperty("isMinInclusive")
     public boolean isMinInclusive() {
-        return super.getBoolean(Range.IS_MIN_INCLUSIVE_PROPERTY);
+        return Boolean.TRUE.equals(super.getBoolean(Range.IS_MIN_INCLUSIVE_PROPERTY));
     }
 
     public void setMinInclusive(boolean isMinInclusive) {
@@ -109,7 +109,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
 
     @JsonProperty("isMaxInclusive")
     public boolean isMaxInclusive() {
-        return super.getBoolean(Range.IS_MAX_INCLUSIVE_PROPERTY);
+        return Boolean.TRUE.equals(super.getBoolean(Range.IS_MAX_INCLUSIVE_PROPERTY));
     }
 
     public void setMaxInclusive(boolean isMaxInclusive) {

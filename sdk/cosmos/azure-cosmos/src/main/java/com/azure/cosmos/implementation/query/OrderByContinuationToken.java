@@ -112,7 +112,7 @@ public final class OrderByContinuationToken extends JsonSerializable {
     }
 
     public boolean getInclusive() {
-        return super.getBoolean(InclusivePropertyName);
+        return Boolean.TRUE.equals(super.getBoolean(InclusivePropertyName));
     }
 
     private void setCompositeContinuationToken(CompositeContinuationToken compositeContinuationToken) {
