@@ -158,6 +158,7 @@ public class ClientLogger {
      * @param checkedException Throwable to be logged and returned.
      * @param <T> Type of the Throwable being logged.
      * @return The passed {@link Throwable}.
+     * @throws NullPointerException If {@code checkedException} is {@code null}.
      */
     public <T extends Throwable> T logCheckedExceptionAsWarning(T checkedException) {
         Objects.requireNonNull(checkedException, "'checkedException' cannot be null.");
@@ -182,7 +183,7 @@ public class ClientLogger {
     public RuntimeException logExceptionAsError(RuntimeException runtimeException) {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
 
-        return logCheckedExceptionAsWarning(runtimeException);
+        return logCheckedExceptionAsError(runtimeException);
     }
 
     /**
@@ -194,6 +195,7 @@ public class ClientLogger {
      * @param checkedException Throwable to be logged and returned.
      * @param <T> Type of the Throwable being logged.
      * @return The passed {@link Throwable}.
+     * @throws NullPointerException If {@code checkedException} is {@code null}.
      */
     public <T extends Throwable> T logCheckedExceptionAsError(T checkedException) {
         Objects.requireNonNull(checkedException, "'checkedException' cannot be null.");
