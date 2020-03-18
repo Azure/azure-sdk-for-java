@@ -76,7 +76,7 @@ final class RntbdToken {
         if (this.value instanceof ByteBuf) {
             final ByteBuf buffer = (ByteBuf) this.value;
             try {
-            this.value = codec.defaultValue();
+                this.value = codec.defaultValue();
                 this.value = codec.read(buffer);
             } catch (final CorruptedFrameException error) {
                 String message = lenientFormat("failed to read %s value: %s", this.getName(), error.getMessage());

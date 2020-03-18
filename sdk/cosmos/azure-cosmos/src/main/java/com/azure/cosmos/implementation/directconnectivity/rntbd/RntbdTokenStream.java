@@ -13,8 +13,8 @@ import io.netty.util.ReferenceCounted;
 import java.util.stream.Collector;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @SuppressWarnings("UnstableApiUsage")
 abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements ReferenceCounted {

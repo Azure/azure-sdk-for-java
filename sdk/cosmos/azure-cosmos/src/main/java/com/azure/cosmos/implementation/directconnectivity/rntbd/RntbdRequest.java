@@ -88,7 +88,7 @@ public final class RntbdRequest {
 
         if (this.payload.length > 0) {
             out.writeIntLE(this.payload.length);
-            out.writeBytes(payload);
+            out.writeBytes(this.payload);
         }
     }
 
