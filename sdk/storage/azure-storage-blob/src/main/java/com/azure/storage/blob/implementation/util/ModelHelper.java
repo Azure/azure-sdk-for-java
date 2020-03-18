@@ -18,8 +18,7 @@ import java.net.URL;
 public class ModelHelper {
 
     /**
-     * Determines whether or not the passed authority is IP style, that is it is of the format
-     * {@code <host>:<port>}.
+     * Determines whether or not the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
      *
      * @param authority The authority of a URL.
      * @throws MalformedURLException If the authority is malformed.

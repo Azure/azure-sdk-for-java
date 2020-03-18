@@ -476,6 +476,4 @@ public final class BlobUrlParts {
 
         return retVals;
     }
-
-
 }
