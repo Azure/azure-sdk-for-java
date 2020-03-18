@@ -261,6 +261,14 @@
           <artifactId>jetty-maven-plugin</artifactId>
           <version>9.3.22.v20171030</version> <!-- {x-version-update;org.eclipse.jetty:jetty-maven-plugin;external_dependency} -->
           <configuration>
+            <connectors>
+              <httpConnector>
+                <port>11080</port>
+              </httpConnector>
+              <httpConnector>
+                <port>11081</port>
+              </httpConnector>
+            </connectors>
             <scanIntervalSeconds>0</scanIntervalSeconds>
             <stopPort>11079</stopPort>
             <stopKey>STOP</stopKey>
