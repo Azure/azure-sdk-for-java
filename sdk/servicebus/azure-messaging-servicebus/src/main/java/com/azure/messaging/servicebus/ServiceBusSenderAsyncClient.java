@@ -41,6 +41,7 @@ import java.util.stream.Collector;
 
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
@@ -50,6 +51,12 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSenderAsyncClient implements Closeable {
+    private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS =  new CreateBatchOptions();
+
+    /**
+     * The default maximum allowable size, in bytes, for a batch to be sent.
+     */
+    private static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
     private final ClientLogger logger = new ClientLogger(ServiceBusSenderAsyncClient.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -59,11 +66,6 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     private final AmqpRetryPolicy retryPolicy;
     private final String entityName;
     private final ServiceBusConnectionProcessor connectionProcessor;
-
-    /**
-     * The default maximum allowable size, in bytes, for a batch to be sent.
-     */
-    public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
     /**
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to
@@ -130,6 +132,47 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
 
         //TODO (hemanttanwar): Implement session id feature.
         return Mono.error(new IllegalStateException("Not implemented."));
+    }
+
+    /**
+     * Creates a {@link ServiceBusMessageBatch} that can fit as many messages as the transport allows.
+     *
+     * @return A {@link ServiceBusMessageBatch} that can fit as many messages as the transport allows.
+     */
+    public Mono<ServiceBusMessageBatch> createBatch() {
+        return createBatch(DEFAULT_BATCH_OPTIONS);
+    }
+
+    /**
+     * Creates an {@link ServiceBusMessageBatch} configured with the options specified.
+     *
+     * @param options A set of options used to configure the {@link ServiceBusMessageBatch}.
+     * @return A new {@link ServiceBusMessageBatch} configured with the given options.
+     * @throws NullPointerException if {@code options} is null.
+     */
+    public Mono<ServiceBusMessageBatch> createBatch(CreateBatchOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+
+        final int maxSize = options.getMaximumSizeInBytes();
+
+        return getSendLink().flatMap(link -> link.getLinkSize().flatMap(size -> {
+            final int maximumLinkSize = size > 0
+                ? size
+                : MAX_MESSAGE_LENGTH_BYTES;
+
+            if (maxSize > maximumLinkSize) {
+                return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
+                        "CreateBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the link size"
+                            + " (%s bytes).", maxSize, maximumLinkSize)));
+            }
+
+            final int batchSize = maxSize > 0
+                ? maxSize
+                : maximumLinkSize;
+
+            return Mono.just(
+                new ServiceBusMessageBatch(batchSize, link::getErrorContext, tracerProvider, messageSerializer));
+        }));
     }
 
     /**
