@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import org.joda.time.DateTime;
 
 class SiteConfigurationSnapshotInfoImpl extends WrapperImpl<SiteConfigurationSnapshotInfoInner> implements SiteConfigurationSnapshotInfo {
-    private final AppServiceManager manager;
-    SiteConfigurationSnapshotInfoImpl(SiteConfigurationSnapshotInfoInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    SiteConfigurationSnapshotInfoImpl(SiteConfigurationSnapshotInfoInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

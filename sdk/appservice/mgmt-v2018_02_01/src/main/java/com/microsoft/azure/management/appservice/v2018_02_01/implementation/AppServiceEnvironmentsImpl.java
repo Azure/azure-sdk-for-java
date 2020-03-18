@@ -38,14 +38,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentS
 import com.microsoft.azure.management.appservice.v2018_02_01.WorkerPools;
 
 class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner> implements AppServiceEnvironments {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    AppServiceEnvironmentsImpl(AppServiceManager manager) {
+    AppServiceEnvironmentsImpl(CertificateRegistrationManager manager) {
         super(manager.inner().appServiceEnvironments());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -130,10 +130,14 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
 
     @Override
     public Observable<AppServiceEnvironmentResource> getByResourceGroupAsync(String resourceGroupName, String name) {
-        return this.getAppServiceEnvironmentResourceInnerUsingAppServiceEnvironmentsInnerAsync(resourceGroupName, name).map(new Func1<AppServiceEnvironmentResourceInner, AppServiceEnvironmentResource> () {
+        return this.getAppServiceEnvironmentResourceInnerUsingAppServiceEnvironmentsInnerAsync(resourceGroupName, name).flatMap(new Func1<AppServiceEnvironmentResourceInner, Observable<AppServiceEnvironmentResource>> () {
             @Override
-            public AppServiceEnvironmentResource call(AppServiceEnvironmentResourceInner inner) {
-                return wrapAppServiceEnvironmentResourceModel(inner);
+            public Observable<AppServiceEnvironmentResource> call(AppServiceEnvironmentResourceInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return  Observable.just((AppServiceEnvironmentResource)wrapAppServiceEnvironmentResourceModel(inner));
+                }
             }
         });
     }
@@ -273,10 +277,14 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
     public Observable<HostingEnvironmentDiagnostics> getDiagnosticsItemAsync(String resourceGroupName, String name, String diagnosticsName) {
         AppServiceEnvironmentsInner client = this.inner();
         return client.getDiagnosticsItemAsync(resourceGroupName, name, diagnosticsName)
-        .map(new Func1<HostingEnvironmentDiagnosticsInner, HostingEnvironmentDiagnostics>() {
+        .flatMap(new Func1<HostingEnvironmentDiagnosticsInner, Observable<HostingEnvironmentDiagnostics>>() {
             @Override
-            public HostingEnvironmentDiagnostics call(HostingEnvironmentDiagnosticsInner inner) {
-                return wrapHostingEnvironmentDiagnosticsModel(inner);
+            public Observable<HostingEnvironmentDiagnostics> call(HostingEnvironmentDiagnosticsInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((HostingEnvironmentDiagnostics)wrapHostingEnvironmentDiagnosticsModel(inner));
+                }
             }
        });
     }
@@ -711,10 +719,14 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
     public Observable<WorkerPools> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName) {
         AppServiceEnvironmentsInner client = this.inner();
         return client.getWorkerPoolAsync(resourceGroupName, name, workerPoolName)
-        .map(new Func1<WorkerPoolResourceInner, WorkerPools>() {
+        .flatMap(new Func1<WorkerPoolResourceInner, Observable<WorkerPools>>() {
             @Override
-            public WorkerPools call(WorkerPoolResourceInner inner) {
-                return wrapWorkerPoolsModel(inner);
+            public Observable<WorkerPools> call(WorkerPoolResourceInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((WorkerPools)wrapWorkerPoolsModel(inner));
+                }
             }
        });
     }

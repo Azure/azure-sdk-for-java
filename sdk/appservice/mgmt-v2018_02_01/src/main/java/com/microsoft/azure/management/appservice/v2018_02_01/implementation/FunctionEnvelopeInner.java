@@ -14,7 +14,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.appservice.v2018_02_01.ProxyOnlyResource;
 
 /**
- * Web Job Information.
+ * Function information.
  */
 @JsonFlatten
 public class FunctionEnvelopeInner extends ProxyOnlyResource {
@@ -41,6 +41,12 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.config_href")
     private String configHref;
+
+    /**
+     * Test data URI.
+     */
+    @JsonProperty(value = "properties.test_data_href")
+    private String testDataHref;
 
     /**
      * Secrets file URI.
@@ -71,6 +77,24 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.test_data")
     private String testData;
+
+    /**
+     * The invocation URL.
+     */
+    @JsonProperty(value = "properties.invoke_url_template")
+    private String invokeUrlTemplate;
+
+    /**
+     * The function language.
+     */
+    @JsonProperty(value = "properties.language")
+    private String language;
+
+    /**
+     * Value indicating whether the function is disabled.
+     */
+    @JsonProperty(value = "properties.isDisabled")
+    private Boolean isDisabled;
 
     /**
      * Get function App ID.
@@ -149,6 +173,26 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      */
     public FunctionEnvelopeInner withConfigHref(String configHref) {
         this.configHref = configHref;
+        return this;
+    }
+
+    /**
+     * Get test data URI.
+     *
+     * @return the testDataHref value
+     */
+    public String testDataHref() {
+        return this.testDataHref;
+    }
+
+    /**
+     * Set test data URI.
+     *
+     * @param testDataHref the testDataHref value to set
+     * @return the FunctionEnvelopeInner object itself.
+     */
+    public FunctionEnvelopeInner withTestDataHref(String testDataHref) {
+        this.testDataHref = testDataHref;
         return this;
     }
 
@@ -249,6 +293,66 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
      */
     public FunctionEnvelopeInner withTestData(String testData) {
         this.testData = testData;
+        return this;
+    }
+
+    /**
+     * Get the invocation URL.
+     *
+     * @return the invokeUrlTemplate value
+     */
+    public String invokeUrlTemplate() {
+        return this.invokeUrlTemplate;
+    }
+
+    /**
+     * Set the invocation URL.
+     *
+     * @param invokeUrlTemplate the invokeUrlTemplate value to set
+     * @return the FunctionEnvelopeInner object itself.
+     */
+    public FunctionEnvelopeInner withInvokeUrlTemplate(String invokeUrlTemplate) {
+        this.invokeUrlTemplate = invokeUrlTemplate;
+        return this;
+    }
+
+    /**
+     * Get the function language.
+     *
+     * @return the language value
+     */
+    public String language() {
+        return this.language;
+    }
+
+    /**
+     * Set the function language.
+     *
+     * @param language the language value to set
+     * @return the FunctionEnvelopeInner object itself.
+     */
+    public FunctionEnvelopeInner withLanguage(String language) {
+        this.language = language;
+        return this;
+    }
+
+    /**
+     * Get value indicating whether the function is disabled.
+     *
+     * @return the isDisabled value
+     */
+    public Boolean isDisabled() {
+        return this.isDisabled;
+    }
+
+    /**
+     * Set value indicating whether the function is disabled.
+     *
+     * @param isDisabled the isDisabled value to set
+     * @return the FunctionEnvelopeInner object itself.
+     */
+    public FunctionEnvelopeInner withIsDisabled(Boolean isDisabled) {
+        this.isDisabled = isDisabled;
         return this;
     }
 
