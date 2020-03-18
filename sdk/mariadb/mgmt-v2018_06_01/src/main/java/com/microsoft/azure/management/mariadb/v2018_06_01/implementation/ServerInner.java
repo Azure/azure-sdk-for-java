@@ -14,6 +14,9 @@ import com.microsoft.azure.management.mariadb.v2018_06_01.SslEnforcementEnum;
 import com.microsoft.azure.management.mariadb.v2018_06_01.ServerState;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.mariadb.v2018_06_01.StorageProfile;
+import com.microsoft.azure.management.mariadb.v2018_06_01.PublicNetworkAccessEnum;
+import java.util.List;
+import com.microsoft.azure.management.mariadb.v2018_06_01.ServerPrivateEndpointConnection;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -91,6 +94,20 @@ public class ServerInner extends Resource {
      */
     @JsonProperty(value = "properties.replicaCapacity")
     private Integer replicaCapacity;
+
+    /**
+     * Whether or not public network access is allowed for this server. Value
+     * is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible
+     * values include: 'Enabled', 'Disabled'.
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccessEnum publicNetworkAccess;
+
+    /**
+     * List of private endpoint connections on a server.
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ServerPrivateEndpointConnection> privateEndpointConnections;
 
     /**
      * Get the SKU (pricing tier) of the server.
@@ -310,6 +327,35 @@ public class ServerInner extends Resource {
     public ServerInner withReplicaCapacity(Integer replicaCapacity) {
         this.replicaCapacity = replicaCapacity;
         return this;
+    }
+
+    /**
+     * Get whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @return the publicNetworkAccess value
+     */
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get list of private endpoint connections on a server.
+     *
+     * @return the privateEndpointConnections value
+     */
+    public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
 }

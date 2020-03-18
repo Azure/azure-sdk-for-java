@@ -6,6 +6,6 @@
 
 /**
  * This package contains the classes for MariaDBManagementClient.
- * MariaDB Client.
+ * The Microsoft Azure management API provides create, read, update, and delete functionality for Azure MariaDB resources including servers, databases, firewall rules, VNET rules, log files and configurations with new business model.
  */
 package com.microsoft.azure.management.mariadb.v2018_06_01;
