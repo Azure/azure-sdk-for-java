@@ -51,12 +51,12 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSenderAsyncClient implements Closeable {
-    private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS =  new CreateBatchOptions();
-
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
      */
-    private static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
+    static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
+
+    private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS =  new CreateBatchOptions();
 
     private final ClientLogger logger = new ClientLogger(ServiceBusSenderAsyncClient.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
