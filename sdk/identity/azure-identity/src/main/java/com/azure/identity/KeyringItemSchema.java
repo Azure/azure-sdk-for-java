@@ -21,7 +21,7 @@ public final class KeyringItemSchema {
     /**
      * Parses a String into a new Keyring schema.
      * @param schema the full name of the schema
-     * @return the KeyRingItemSchema enum representing this schema
+     * @return the KeyringItemSchema enum representing this schema
      */
     public static KeyringItemSchema fromString(String schema) {
         return new KeyringItemSchema(schema);

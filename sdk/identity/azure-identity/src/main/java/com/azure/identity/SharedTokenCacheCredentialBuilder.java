@@ -21,12 +21,13 @@ import java.util.List;
 public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<SharedTokenCacheCredentialBuilder> {
     private final ClientLogger logger = new ClientLogger(SharedTokenCacheCredentialBuilder.class);
     private String username;
-    private Path cacheFileLocation;
-    private String keyChainService;
-    private String keyChainAccount;
-    private String keyRingName;
-    private KeyringItemSchema keyRingItemSchema;
-    private String keyRingItemName;
+    private String cacheFileName;
+    private Path cacheFileDirectory;
+    private String keychainService;
+    private String keychainAccount;
+    private String keyringName;
+    private KeyringItemSchema keyringItemSchema;
+    private String keyringItemName;
     private final LinkedHashMap<String, String> attributes = new LinkedHashMap<>(); // preserve order
     private boolean useUnprotectedFileOnLinux = false;
 
@@ -52,7 +53,8 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      * @return The updated SharedTokenCacheCredentialBuilder object.
      */
     public SharedTokenCacheCredentialBuilder cacheFileLocation(Path cacheFileLocation) {
-        this.cacheFileLocation = cacheFileLocation;
+        this.cacheFileName = cacheFileLocation.getFileName().toString();
+        this.cacheFileDirectory = cacheFileLocation.getParent();
         return this;
     }
 
@@ -64,8 +66,8 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      *
      * @return The updated SharedTokenCacheCredentialBuilder object.
      */
-    public SharedTokenCacheCredentialBuilder keyChainService(String serviceName) {
-        this.keyChainService = serviceName;
+    public SharedTokenCacheCredentialBuilder keychainService(String serviceName) {
+        this.keychainService = serviceName;
         return this;
     }
 
@@ -77,8 +79,8 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      *
      * @return The updated SharedTokenCacheCredentialBuilder object.
      */
-    public SharedTokenCacheCredentialBuilder keyChainAccount(String accountName) {
-        this.keyChainAccount = accountName;
+    public SharedTokenCacheCredentialBuilder keychainAccount(String accountName) {
+        this.keychainAccount = accountName;
         return this;
     }
 
@@ -86,12 +88,12 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      * Sets the name of the Gnome keyring to store the cache on Gnome keyring enabled
      * Linux systems. The default value is "default".
      *
-     * @param keyRingName The name of the Gnome keyring.
+     * @param keyringName The name of the Gnome keyring.
      *
      * @return The updated SharedTokenCacheCredentialBuilder object.
      */
-    public SharedTokenCacheCredentialBuilder keyRingName(String keyRingName) {
-        this.keyRingName = keyRingName;
+    public SharedTokenCacheCredentialBuilder keyringName(String keyringName) {
+        this.keyringName = keyringName;
         return this;
     }
 
@@ -99,12 +101,12 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      * Sets the schema of the Gnome keyring to store the cache on Gnome keyring enabled
      * Linux systems. The default value is <code>KeyringItemSchema.GenericSecret</code>.
      *
-     * @param keyRingItemSchema The schema of the Gnome keyring.
+     * @param keyringItemSchema The schema of the Gnome keyring.
      *
      * @return The updated SharedTokenCacheCredentialBuilder object.
      */
-    public SharedTokenCacheCredentialBuilder keyRingItemSchema(KeyringItemSchema keyRingItemSchema) {
-        this.keyRingItemSchema = keyRingItemSchema;
+    public SharedTokenCacheCredentialBuilder keyringItemSchema(KeyringItemSchema keyringItemSchema) {
+        this.keyringItemSchema = keyringItemSchema;
         return this;
     }
 
@@ -112,12 +114,12 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      * Sets the name of the Gnome keyring item to store the cache on Gnome keyring enabled
      * Linux systems. The default value is "MSALCache".
      *
-     * @param keyRingItemName The name of the Gnome keyring item.
+     * @param keyringItemName The name of the Gnome keyring item.
      *
      * @return The updated SharedTokenCacheCredentialBuilder object.
      */
-    public SharedTokenCacheCredentialBuilder keyRingItemName(String keyRingItemName) {
-        this.keyRingItemName = keyRingItemName;
+    public SharedTokenCacheCredentialBuilder keyringItemName(String keyringItemName) {
+        this.keyringItemName = keyringItemName;
         return this;
     }
 
@@ -131,12 +133,12 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      * @return The updated SharedTokenCacheCredentialBuilder object.
      * @throws IllegalArgumentException if there are already 2 attributes
      */
-    public SharedTokenCacheCredentialBuilder addKeyRingItemAttribute(String attributeName, String attributeValue) {
+    public SharedTokenCacheCredentialBuilder addKeyringItemAttribute(String attributeName, String attributeValue) {
         if (this.attributes.size() < 2) {
             this.attributes.put(attributeName, attributeValue);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "Currently does not support more than 2 attributes for linux KeyRing"));
+                    "Currently does not support more than 2 attributes for linux Keyring"));
         }
         return this;
     }
@@ -161,7 +163,8 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      */
     public SharedTokenCacheCredential build() {
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("cacheFileLocation", cacheFileLocation);
+                put("cacheFileName", cacheFileName);
+                put("cacheFileDirectory", cacheFileDirectory);
             }});
         List<String> attributeKeyList = new ArrayList<>(attributes.keySet());
         while (attributeKeyList.size() < 2) {
@@ -169,17 +172,16 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
         }
         String key1 = attributeKeyList.get(0);
         String key2 = attributeKeyList.get(1);
-        PersistenceSettings.Builder persistenceSettings = PersistenceSettings.builder(
-                    cacheFileLocation.getFileName().toString(), cacheFileLocation.getParent())
+        PersistenceSettings.Builder persistenceBuilder = PersistenceSettings.builder(cacheFileName, cacheFileDirectory)
                 .setLinuxUseUnprotectedFileAsCacheStorage(useUnprotectedFileOnLinux);
-        if (keyChainService != null && keyChainAccount != null) {
-            persistenceSettings.setMacKeychain(keyChainService, keyChainAccount);
+        if (keychainService != null && keychainAccount != null) {
+            persistenceBuilder.setMacKeychain(keychainService, keychainAccount);
         }
-        if (keyRingName != null && keyRingItemName != null && keyRingItemSchema != null) {
-            persistenceSettings.setLinuxKeyring(keyRingName, keyRingItemSchema.toString(), keyRingItemName,
+        if (keyringName != null && keyringItemName != null && keyringItemSchema != null) {
+            persistenceBuilder.setLinuxKeyring(keyringName, keyringItemSchema.toString(), keyringItemName,
                     key1, attributes.getOrDefault(key1, null), key2, attributes.getOrDefault(key2, null));
         }
         return new SharedTokenCacheCredential(
-                username, clientId, tenantId, identityClientOptions, persistenceSettings.build());
+                username, clientId, tenantId, identityClientOptions, persistenceBuilder.build());
     }
 }
