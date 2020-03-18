@@ -129,11 +129,11 @@ The Text Analytics client library provides a [TextAnalyticsClient][text_analytic
 [TextAnalyticsAsyncClient][text_analytics_async_client] to do analysis on batches of documents. It provides both synchronous and
 asynchronous operations to access a specific use of Text Analytics, such as language detection or key phrase extraction.
 
-### input
+### Input
 A **text input**, also called a **document**, is a single unit of document to be analyzed by the predictive models
 in the Text Analytics service. Operations on Text Analytics client may take a single document or a collection
 of documents to be analyzed as a batch. 
-See [service limitations][service_input_limitation] for the input, including document length limits, maximum batch size,
+See [service limitations][service_input_limitation] for the document, including document length limits, maximum batch size,
 and supported text encoding.
 
 ### Return value
@@ -159,7 +159,7 @@ indicate that the documents in the batch are written in different languages, or 
 language of the document.
 
 **Note**: It is recommended to use the batch methods when working on production environments as they allow you to send one 
-request with multiple documents. This is more performance than sending a request per each document.
+request with multiple documents. This is more performant than sending a request per each document.
 
 The following are types of text analysis that the service offers:
 
