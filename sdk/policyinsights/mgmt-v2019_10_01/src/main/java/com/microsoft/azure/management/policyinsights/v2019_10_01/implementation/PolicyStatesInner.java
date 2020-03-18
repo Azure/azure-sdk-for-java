@@ -28,6 +28,8 @@ import retrofit2.http.Query;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -86,6 +88,22 @@ public class PolicyStatesInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyStates summarizeForResource" })
         @POST("{resourceId}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize")
         Observable<Response<ResponseBody>> summarizeForResource(@Path("policyStatesSummaryResource") String policyStatesSummaryResource, @Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$top") Integer top, @Query("$from") DateTime from, @Query("$to") DateTime to, @Query("$filter") String filter, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyStates triggerSubscriptionEvaluation" })
+        @POST("subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/policyStates/latest/triggerEvaluation")
+        Observable<Response<ResponseBody>> triggerSubscriptionEvaluation(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyStates beginTriggerSubscriptionEvaluation" })
+        @POST("subscriptions/{subscriptionId}/providers/Microsoft.PolicyInsights/policyStates/latest/triggerEvaluation")
+        Observable<Response<ResponseBody>> beginTriggerSubscriptionEvaluation(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyStates triggerResourceGroupEvaluation" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/policyStates/latest/triggerEvaluation")
+        Observable<Response<ResponseBody>> triggerResourceGroupEvaluation(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyStates beginTriggerResourceGroupEvaluation" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PolicyInsights/policyStates/latest/triggerEvaluation")
+        Observable<Response<ResponseBody>> beginTriggerResourceGroupEvaluation(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyStates listQueryResultsForPolicySetDefinition" })
         @POST("subscriptions/{subscriptionId}/providers/{authorizationNamespace}/policySetDefinitions/{policySetDefinitionName}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults")
@@ -1614,6 +1632,280 @@ public class PolicyStatesInner {
     private ServiceResponse<SummarizeResultsInner> summarizeForResourceDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SummarizeResultsInner, QueryFailureException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SummarizeResultsInner>() { }.getType())
+                .registerError(QueryFailureException.class)
+                .build(response);
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the subscription.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws QueryFailureException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void triggerSubscriptionEvaluation(String subscriptionId) {
+        triggerSubscriptionEvaluationWithServiceResponseAsync(subscriptionId).toBlocking().last().body();
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the subscription.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> triggerSubscriptionEvaluationAsync(String subscriptionId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(triggerSubscriptionEvaluationWithServiceResponseAsync(subscriptionId), serviceCallback);
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the subscription.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> triggerSubscriptionEvaluationAsync(String subscriptionId) {
+        return triggerSubscriptionEvaluationWithServiceResponseAsync(subscriptionId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the subscription.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> triggerSubscriptionEvaluationWithServiceResponseAsync(String subscriptionId) {
+        if (subscriptionId == null) {
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
+        }
+        final String apiVersion = "2019-10-01";
+        Observable<Response<ResponseBody>> observable = service.triggerSubscriptionEvaluation(subscriptionId, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the subscription.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws QueryFailureException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginTriggerSubscriptionEvaluation(String subscriptionId) {
+        beginTriggerSubscriptionEvaluationWithServiceResponseAsync(subscriptionId).toBlocking().single().body();
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the subscription.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginTriggerSubscriptionEvaluationAsync(String subscriptionId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginTriggerSubscriptionEvaluationWithServiceResponseAsync(subscriptionId), serviceCallback);
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the subscription.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginTriggerSubscriptionEvaluationAsync(String subscriptionId) {
+        return beginTriggerSubscriptionEvaluationWithServiceResponseAsync(subscriptionId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the subscription.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginTriggerSubscriptionEvaluationWithServiceResponseAsync(String subscriptionId) {
+        if (subscriptionId == null) {
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
+        }
+        final String apiVersion = "2019-10-01";
+        return service.beginTriggerSubscriptionEvaluation(subscriptionId, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginTriggerSubscriptionEvaluationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginTriggerSubscriptionEvaluationDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(QueryFailureException.class)
+                .build(response);
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the resource group.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param resourceGroupName Resource group name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws QueryFailureException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void triggerResourceGroupEvaluation(String subscriptionId, String resourceGroupName) {
+        triggerResourceGroupEvaluationWithServiceResponseAsync(subscriptionId, resourceGroupName).toBlocking().last().body();
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the resource group.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param resourceGroupName Resource group name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> triggerResourceGroupEvaluationAsync(String subscriptionId, String resourceGroupName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(triggerResourceGroupEvaluationWithServiceResponseAsync(subscriptionId, resourceGroupName), serviceCallback);
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the resource group.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param resourceGroupName Resource group name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> triggerResourceGroupEvaluationAsync(String subscriptionId, String resourceGroupName) {
+        return triggerResourceGroupEvaluationWithServiceResponseAsync(subscriptionId, resourceGroupName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the resource group.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param resourceGroupName Resource group name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> triggerResourceGroupEvaluationWithServiceResponseAsync(String subscriptionId, String resourceGroupName) {
+        if (subscriptionId == null) {
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        final String apiVersion = "2019-10-01";
+        Observable<Response<ResponseBody>> observable = service.triggerResourceGroupEvaluation(subscriptionId, resourceGroupName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the resource group.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param resourceGroupName Resource group name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws QueryFailureException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginTriggerResourceGroupEvaluation(String subscriptionId, String resourceGroupName) {
+        beginTriggerResourceGroupEvaluationWithServiceResponseAsync(subscriptionId, resourceGroupName).toBlocking().single().body();
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the resource group.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param resourceGroupName Resource group name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginTriggerResourceGroupEvaluationAsync(String subscriptionId, String resourceGroupName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginTriggerResourceGroupEvaluationWithServiceResponseAsync(subscriptionId, resourceGroupName), serviceCallback);
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the resource group.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param resourceGroupName Resource group name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginTriggerResourceGroupEvaluationAsync(String subscriptionId, String resourceGroupName) {
+        return beginTriggerResourceGroupEvaluationWithServiceResponseAsync(subscriptionId, resourceGroupName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Triggers a policy evaluation scan for all the resources under the resource group.
+     *
+     * @param subscriptionId Microsoft Azure subscription ID.
+     * @param resourceGroupName Resource group name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginTriggerResourceGroupEvaluationWithServiceResponseAsync(String subscriptionId, String resourceGroupName) {
+        if (subscriptionId == null) {
+            throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        final String apiVersion = "2019-10-01";
+        return service.beginTriggerResourceGroupEvaluation(subscriptionId, resourceGroupName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginTriggerResourceGroupEvaluationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginTriggerResourceGroupEvaluationDelegate(Response<ResponseBody> response) throws QueryFailureException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, QueryFailureException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(QueryFailureException.class)
                 .build(response);
     }

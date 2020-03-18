@@ -11,6 +11,7 @@ package com.microsoft.azure.management.policyinsights.v2019_10_01.implementation
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyStates;
+import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.management.policyinsights.v2019_10_01.PolicyStatesQueryResults;
@@ -123,6 +124,18 @@ class PolicyStatesImpl extends WrapperImpl<PolicyStatesInner> implements PolicyS
                 return new SummarizeResultsImpl(inner, manager());
             }
         });
+    }
+
+    @Override
+    public Completable triggerSubscriptionEvaluationAsync(String subscriptionId) {
+        PolicyStatesInner client = this.inner();
+        return client.triggerSubscriptionEvaluationAsync(subscriptionId).toCompletable();
+    }
+
+    @Override
+    public Completable triggerResourceGroupEvaluationAsync(String subscriptionId, String resourceGroupName) {
+        PolicyStatesInner client = this.inner();
+        return client.triggerResourceGroupEvaluationAsync(subscriptionId, resourceGroupName).toCompletable();
     }
 
     @Override
