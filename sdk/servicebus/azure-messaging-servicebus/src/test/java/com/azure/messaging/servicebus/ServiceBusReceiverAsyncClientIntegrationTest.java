@@ -19,12 +19,15 @@ import static com.azure.messaging.servicebus.TestUtils.MESSAGE_TRACKING_ID;
 
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusReceiverAsyncClient receiver;
+    private ServiceBusReceiverAsyncClient receiverManual;
     private ServiceBusSenderAsyncClient sender;
     private ReceiveMessageOptions receiveMessageOptions;
+    private ReceiveMessageOptions receiveMessageOptionsManual;
 
     ServiceBusReceiverAsyncClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class));
-        receiveMessageOptions = new ReceiveMessageOptions().setAutoComplete(false);
+        receiveMessageOptions = new ReceiveMessageOptions().setAutoComplete(true);
+        receiveMessageOptionsManual = new ReceiveMessageOptions().setAutoComplete(false);
     }
 
     @Override
@@ -32,6 +35,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sender = createBuilder().buildAsyncSenderClient();
         receiver = createBuilder()
             .receiveMessageOptions(receiveMessageOptions)
+            .buildAsyncReceiverClient();
+
+        receiverManual = createBuilder()
+            .receiveMessageOptions(receiveMessageOptionsManual)
             .buildAsyncReceiverClient();
     }
 
@@ -146,21 +153,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String contents = "Some-contents";
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, "id-1", 0);
 
-
         AtomicReference<Integer> renewMessageLockCounter = new AtomicReference<>(0);
         // Assert & Act
-        StepVerifier.create(sender.send(message).thenMany(receiver.receive()
+        StepVerifier.create(sender.send(message).thenMany(receiverManual.receive()
             .take(1)
             .delayElements(renewAfterSeconds)
             .map(receivedMessage -> {
                 //  keep renewing the lock whole you process the message.
-                Disposable disposable = receiver.renewMessageLock(receivedMessage.getLockToken())
+                Disposable disposable = receiverManual.renewMessageLock(receivedMessage.getLockToken())
                     .repeat(() -> true)
                     .delayElements(renewAfterSeconds)
                     .doOnNext(instant -> {
                         // This will ensure that we are getting valid refresh time
                         if (instant != null) {
-                            logger.verbose(" Received new refresh time.");
+                            logger.info(" Received new refresh time " + instant);
                             renewMessageLockCounter.set(renewMessageLockCounter.get() + 1);
                         }
                     })
