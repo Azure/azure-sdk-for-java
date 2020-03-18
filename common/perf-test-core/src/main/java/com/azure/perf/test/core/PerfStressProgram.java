@@ -121,7 +121,7 @@ public class PerfStressProgram {
         try {
             tests[0].globalSetupAsync().block();
             try {
-                Flux.just(tests).flatMap(t -> t.setupAsync()).blockLast();
+                Flux.just(tests).flatMap(PerfStressTest::setupAsync).blockLast();
                 setupStatus.dispose();
 
                 if (options.getWarmup() > 0) {

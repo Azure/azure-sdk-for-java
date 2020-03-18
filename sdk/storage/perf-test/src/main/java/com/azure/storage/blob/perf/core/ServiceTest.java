@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.perf.core;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressHttpClient;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
@@ -17,10 +18,8 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
     public ServiceTest(TOptions options) {
         super(options);
-
         String connectionString = System.getenv("STORAGE_CONNECTION_STRING");
-
-        if (connectionString == null || connectionString.isEmpty()) {
+        if (CoreUtils.isNullOrEmpty(connectionString)) {
             System.out.println("Environment variable STORAGE_CONNECTION_STRING must be set");
             System.exit(1);
         }
