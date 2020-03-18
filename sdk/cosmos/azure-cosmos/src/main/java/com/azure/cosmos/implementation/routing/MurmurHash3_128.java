@@ -109,7 +109,6 @@ public class MurmurHash3_128 {
         return new UInt128(h1, h2);
     }
 
-
     private static int rotateLeft32(int n, int numBits) {
         assert numBits < 32;
         return Integer.rotateLeft(n, numBits);
@@ -129,9 +128,5 @@ public class MurmurHash3_128 {
                 | ((bytes[offset + 2] & 0xffL) << 16)
                 | ((bytes[offset + 1] & 0xffL) << 8)
                 | ((bytes[offset] & 0xffL));
-    }
-
-    private static int intAsLittleIndian(byte[] bytes, int i) {
-        return (bytes[i] & 0xff) | ((bytes[i + 1] & 0xff) << 8) | ((bytes[i + 2] & 0xff) << 16) | (bytes[i + 3] << 24);
     }
 }

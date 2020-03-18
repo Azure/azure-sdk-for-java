@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import javax.net.ssl.SSLException;
 
 import java.time.Duration;
+import java.util.Locale;
 
 import static com.google.common.base.MoreObjects.firstNonNull;
 import static com.google.common.base.Strings.emptyToNull;
@@ -90,7 +91,7 @@ public class Configs {
             emptyToNull(System.getenv().get(PROTOCOL_ENVIRONMENT_VARIABLE)),
             DEFAULT_PROTOCOL.name()));
         try {
-            return Protocol.valueOf(protocol.toUpperCase());
+            return Protocol.valueOf(protocol.toUpperCase(Locale.ROOT));
         } catch (Exception e) {
             logger.error("Parsing protocol {} failed. Using the default {}.", protocol, DEFAULT_PROTOCOL, e);
             return DEFAULT_PROTOCOL;
@@ -167,11 +168,6 @@ public class Configs {
 
     public int getReactorNettyMaxConnectionPoolSize() {
         return REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE;
-    }
-
-    private static String getJVMConfigAsString(String propName, String defaultValue) {
-        String propValue = System.getProperty(propName);
-        return StringUtils.defaultString(propValue, defaultValue);
     }
 
     private static int getJVMConfigAsInt(String propName, int defaultValue) {

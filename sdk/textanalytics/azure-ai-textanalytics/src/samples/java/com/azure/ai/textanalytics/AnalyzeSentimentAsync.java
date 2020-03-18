@@ -24,10 +24,10 @@ public class AnalyzeSentimentAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that needs be analyzed.
-        String text = "The hotel was dark and unclean. I like Microsoft";
+        // The document that needs be analyzed.
+        String document = "The hotel was dark and unclean. I like Microsoft";
 
-        client.analyzeSentiment(text).subscribe(
+        client.analyzeSentiment(document).subscribe(
             documentSentiment -> {
                 SentimentConfidenceScores scores = documentSentiment.getConfidenceScores();
                 System.out.printf(
