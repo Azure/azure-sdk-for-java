@@ -39,6 +39,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**
@@ -55,8 +56,9 @@ public class HttpLoggingPolicyTests {
     @BeforeEach
     public void prepareForTest() {
         // Set the log level to information for the test.
-        originalLogLevel = System.getProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL);
-        System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.INFORMATIONAL.getLogLevel()));
+        originalLogLevel = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL);
+        Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL,
+            String.valueOf(LogLevel.INFORMATIONAL.getLogLevel()));
 
         /*
          * DefaultLogger uses System.out to log. Inject a custom PrintStream to log into for the duration of the test to
@@ -71,9 +73,9 @@ public class HttpLoggingPolicyTests {
     public void cleanupAfterTest() throws IOException {
         // Reset or clear the log level after the test completes.
         if (CoreUtils.isNullOrEmpty(originalLogLevel)) {
-            System.clearProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+            Configuration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
         } else {
-            System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
+            Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
         }
 
         // Reset System.err to the original PrintStream.

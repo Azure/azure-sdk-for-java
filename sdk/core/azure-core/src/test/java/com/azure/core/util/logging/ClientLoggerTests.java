@@ -18,6 +18,7 @@ import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -211,17 +212,16 @@ public class ClientLoggerTests {
     }
 
     private String setupLogLevel(int logLevelToSet) {
-        String originalLogLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL);
-        Configuration.getGlobalConfiguration()
-            .put(Configuration.PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
+        String originalLogLevel = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL);
+        Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(logLevelToSet));
         return originalLogLevel;
     }
 
     private void setPropertyToOriginalOrClear(String originalValue) {
         if (CoreUtils.isNullOrEmpty(originalValue)) {
-            System.clearProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+            Configuration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
         } else {
-            System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalValue);
+            Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, originalValue);
         }
     }
 
