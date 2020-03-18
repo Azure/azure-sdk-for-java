@@ -103,7 +103,7 @@ class ServiceBusReceiverAsyncClientTest {
 
     @BeforeAll
     static void beforeAll() {
-//        StepVerifier.setDefaultTimeout(Duration.ofSeconds(100));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(100));
     }
 
     @AfterAll
@@ -257,6 +257,7 @@ class ServiceBusReceiverAsyncClientTest {
             })
             .expectNext(receivedMessage)
             .expectNext(receivedMessage2)
+            .thenAwait(Duration.ofSeconds(5))
             .verifyComplete();
 
         verify(managementNode).updateDisposition(eq(lockToken1), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull());
@@ -465,6 +466,7 @@ class ServiceBusReceiverAsyncClientTest {
             })
             .expectNext(receivedMessage)
             .expectNext(receivedMessage2)
+            .thenAwait(Duration.ofSeconds(5))
             .verifyComplete();
 
         // Act and Assert
