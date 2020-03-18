@@ -4,12 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.IdentityClientOptions;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -43,19 +38,5 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
             new ManagedIdentityCredential(null, identityClientOptions),
             new SharedTokenCacheCredential(null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
                 identityClientOptions))));
-    }
-    
-    @Override
-    public Mono<AccessToken> getToken(TokenRequestContext request) {
-        final StringBuilder errorMsg = new StringBuilder();
-        return Flux.fromIterable(credentials).flatMap(p -> p.getToken(request).onErrorResume(t -> {
-            if (t.getMessage() != null && !t.getMessage().contains("authentication unavailable")) {
-                throw new RuntimeException("DefaultAzureCredential authentication failed. -> "+p.getClass().getSimpleName()+"authentication failed.",t);
-            }
-            errorMsg.append(" ").append(t.getMessage());
-            return Mono.empty();
-        }), 1)
-            .next()
-            .switchIfEmpty(Mono.defer(() -> Mono.error(new RuntimeException("DefaultAzureCredential failed to retrieve a token from the included credentials.("+errorMsg.toString()+" )"))));
     }
 }
