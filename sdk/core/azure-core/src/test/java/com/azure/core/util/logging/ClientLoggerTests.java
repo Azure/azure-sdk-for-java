@@ -64,8 +64,9 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("singleLevelCheckSupplier")
     public void canLogAtLevel(LogLevel logLevelToConfigure, LogLevel logLevelToValidate, boolean expected) {
-        setupLogLevel(logLevelToConfigure.getLogLevel());
+        String originalLogLevel = setupLogLevel(logLevelToConfigure.getLogLevel());
         assertEquals(expected, new ClientLogger(ClientLoggerTests.class).canLogAtLevel(logLevelToValidate));
+        setPropertyToOriginalOrClear(originalLogLevel);
     }
 
     /**
@@ -143,7 +144,7 @@ public class ClientLoggerTests {
 
         String originalLogLevel = setupLogLevel(logLevelToConfigure.getLogLevel());
         try {
-            throw new ClientLogger(ClientLoggerTests.class).logCheckedExceptionAsWarning(ioException);
+            throw new ClientLogger(ClientLoggerTests.class).logThowableAsWarning(ioException);
         } catch (Throwable throwable) {
             assertTrue(throwable instanceof IOException);
         }
@@ -191,7 +192,7 @@ public class ClientLoggerTests {
 
         String originalLogLevel = setupLogLevel(logLevelToConfigure.getLogLevel());
         try {
-            throw new ClientLogger(ClientLoggerTests.class).logCheckedExceptionAsError(ioException);
+            throw new ClientLogger(ClientLoggerTests.class).logThrowableAsError(ioException);
         } catch (Throwable throwable) {
             assertTrue(throwable instanceof IOException);
         }

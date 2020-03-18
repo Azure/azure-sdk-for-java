@@ -137,7 +137,7 @@ public class ClientLogger {
      * Logs the {@link RuntimeException} at the warning level and returns it to be thrown.
      * <p>
      * This API covers the cases where a runtime exception type needs to be thrown and logged. If a {@link Throwable} is
-     * being logged use {@link #logCheckedExceptionAsWarning(Throwable)} instead.
+     * being logged use {@link #logThowableAsWarning(Throwable)} instead.
      *
      * @param runtimeException RuntimeException to be logged and returned.
      * @return The passed {@link RuntimeException}.
@@ -146,7 +146,7 @@ public class ClientLogger {
     public RuntimeException logExceptionAsWarning(RuntimeException runtimeException) {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
 
-        return logCheckedExceptionAsWarning(runtimeException);
+        return logThowableAsWarning(runtimeException);
     }
 
     /**
@@ -155,26 +155,26 @@ public class ClientLogger {
      * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
      * RuntimeException} is being logged use {@link #logExceptionAsWarning(RuntimeException)} instead.
      *
-     * @param checkedException Throwable to be logged and returned.
+     * @param throwable Throwable to be logged and returned.
      * @param <T> Type of the Throwable being logged.
      * @return The passed {@link Throwable}.
-     * @throws NullPointerException If {@code checkedException} is {@code null}.
+     * @throws NullPointerException If {@code throwable} is {@code null}.
      */
-    public <T extends Throwable> T logCheckedExceptionAsWarning(T checkedException) {
-        Objects.requireNonNull(checkedException, "'checkedException' cannot be null.");
+    public <T extends Throwable> T logThowableAsWarning(T throwable) {
+        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
         if (!logger.isWarnEnabled()) {
-            return checkedException;
+            return throwable;
         }
 
-        performLogging(LogLevel.WARNING, true, checkedException.getMessage(), checkedException);
-        return checkedException;
+        performLogging(LogLevel.WARNING, true, throwable.getMessage(), throwable);
+        return throwable;
     }
 
     /**
      * Logs the {@link RuntimeException} at the error level and returns it to be thrown.
      * <p>
      * This API covers the cases where a runtime exception type needs to be thrown and logged. If a {@link Throwable} is
-     * being logged use {@link #logCheckedExceptionAsError(Throwable)} instead.
+     * being logged use {@link #logThrowableAsError(Throwable)} instead.
      *
      * @param runtimeException RuntimeException to be logged and returned.
      * @return The passed {@code RuntimeException}.
@@ -183,7 +183,7 @@ public class ClientLogger {
     public RuntimeException logExceptionAsError(RuntimeException runtimeException) {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
 
-        return logCheckedExceptionAsError(runtimeException);
+        return logThrowableAsError(runtimeException);
     }
 
     /**
@@ -192,19 +192,19 @@ public class ClientLogger {
      * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
      * RuntimeException} is being logged use {@link #logExceptionAsError(RuntimeException)} instead.
      *
-     * @param checkedException Throwable to be logged and returned.
+     * @param throwable Throwable to be logged and returned.
      * @param <T> Type of the Throwable being logged.
      * @return The passed {@link Throwable}.
-     * @throws NullPointerException If {@code checkedException} is {@code null}.
+     * @throws NullPointerException If {@code throwable} is {@code null}.
      */
-    public <T extends Throwable> T logCheckedExceptionAsError(T checkedException) {
-        Objects.requireNonNull(checkedException, "'checkedException' cannot be null.");
+    public <T extends Throwable> T logThrowableAsError(T throwable) {
+        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
         if (!logger.isErrorEnabled()) {
-            return checkedException;
+            return throwable;
         }
 
-        performLogging(LogLevel.ERROR, true, checkedException.getMessage(), checkedException);
-        return checkedException;
+        performLogging(LogLevel.ERROR, true, throwable.getMessage(), throwable);
+        return throwable;
     }
 
     /*
