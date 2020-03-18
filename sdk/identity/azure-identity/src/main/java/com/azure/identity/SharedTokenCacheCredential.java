@@ -17,7 +17,6 @@ import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
-import java.nio.file.Paths;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,6 +34,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
     private final String clientId;
     private final String tenantId;
     private final IdentityClientOptions options;
+    private final PersistenceSettings persistenceSettings;
 
     private PublicClientApplication pubClient = null;
 
@@ -46,7 +46,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     SharedTokenCacheCredential(String username, String clientId, String tenantId,
-                               IdentityClientOptions identityClientOptions) {
+                               IdentityClientOptions identityClientOptions, PersistenceSettings persistenceSettings) {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
         if (username == null) {
@@ -66,6 +66,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
             this.tenantId = tenantId;
         }
         this.options = identityClientOptions;
+        this.persistenceSettings = persistenceSettings;
     }
 
     /**
@@ -77,9 +78,6 @@ public class SharedTokenCacheCredential implements TokenCredential {
         // Initialize here so that the constructor doesn't throw
         if (pubClient == null) {
             try {
-                PersistenceSettings persistenceSettings = PersistenceSettings.builder("msal.cache", Paths.get(System.getProperty("user.home"), "AppData", "Local", ".IdentityService"))
-                        .setMacKeychain("Microsoft.Developer.IdentityService", "MSALCache")
-                        .build();
                 PersistenceTokenCacheAccessAspect accessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
                 PublicClientApplication.Builder applicationBuilder =  PublicClientApplication.builder(this.clientId);
                 if (options.getExecutorService() != null) {

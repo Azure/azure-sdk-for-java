@@ -5,7 +5,11 @@ package com.azure.identity;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.microsoft.aad.msal4jextensions.PersistenceSettings;
+import com.sun.jna.Platform;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 
@@ -23,6 +27,18 @@ import java.util.Arrays;
  */
 @Immutable
 public final class DefaultAzureCredential extends ChainedTokenCredential {
+    private static final String DEFAULT_CACHE_FILE_NAME = "msal.cache";
+    private static final Path DEFAULT_CACHE_DIRECTORY = Platform.isWindows() ?
+            Paths.get(System.getProperty("user.home"), "AppData", "Local", ".IdentityService", "msal.cache") :
+            Paths.get(System.getProperty("user.home"),".IdentityService", "msal.cache");
+    private static final String DEFAULT_KEYCHAIN_SERVICE = "Microsoft.Developer.IdentityService";
+    private static final String DEFAULT_KEYCHAIN_ACCOUNT = "MSALCache";
+    private static final String DEFAULT_KEYRING_NAME = "default";
+    private static final KeyRingItemSchema DEFAULT_KEYRING_SCHEMA = KeyRingItemSchema.GENERIC_SECRET;
+    private static final String DEFAULT_KEYRING_ITEM_NAME = DEFAULT_KEYCHAIN_ACCOUNT;
+    private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
+    private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
+
 
     /**
      * Creates default DefaultAzureCredential instance to use. This will use AZURE_CLIENT_ID,
@@ -37,8 +53,13 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
     DefaultAzureCredential(IdentityClientOptions identityClientOptions) {
         super(new ArrayDeque<>(Arrays.asList(new EnvironmentCredential(identityClientOptions),
             new ManagedIdentityCredential(null, identityClientOptions),
-            new SharedTokenCacheCredential(null, null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
-                identityClientOptions),
+            new SharedTokenCacheCredential(null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46", null,
+                identityClientOptions, PersistenceSettings.builder(DEFAULT_CACHE_FILE_NAME, DEFAULT_CACHE_DIRECTORY)
+                    .setMacKeychain(DEFAULT_KEYCHAIN_SERVICE, DEFAULT_KEYCHAIN_ACCOUNT)
+                    .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA.toString(), DEFAULT_KEYRING_ITEM_NAME,
+                            DEFAULT_KEYRING_ATTR_NAME, DEFAULT_KEYRING_ATTR_VALUE, null, null)
+                    // TODO: Check if libsecret is installed for Linux and use unprotected file cache if not
+                    .build()),
             new AzureCliCredential(identityClientOptions))));
     }
 }

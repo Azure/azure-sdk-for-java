@@ -30,6 +30,7 @@ import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -111,8 +112,11 @@ public class IdentityClient {
             String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
             try {
-                publicClientApplicationBuilder = publicClientApplicationBuilder.authority(authorityUrl);
-            } catch (MalformedURLException e) {
+                publicClientApplicationBuilder = publicClientApplicationBuilder
+                        .authority(authorityUrl)
+                        .setTokenCacheAccessAspect(
+                                new PersistenceTokenCacheAccessAspect(options.getCachePersistenceSettings()));
+            } catch (IOException e) {
                 throw logger.logExceptionAsWarning(new IllegalStateException(e));
             }
 
