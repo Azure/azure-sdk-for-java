@@ -55,6 +55,7 @@ import java.util.stream.Stream;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
@@ -317,7 +318,7 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
         try {
-            return withContext(context -> createWithResponse(metadata, accessType, context));
+            return withContext(context -> createWithResponse(metadata, accessType, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -365,7 +366,7 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<Void>> deleteWithResponse(BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> deleteWithResponse(requestConditions, context));
+            return withContext(context -> deleteWithResponse(requestConditions, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -419,7 +420,7 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<BlobContainerProperties>> getPropertiesWithResponse(String leaseId) {
         try {
-            return withContext(context -> getPropertiesWithResponse(leaseId, context));
+            return withContext(context -> getPropertiesWithResponse(leaseId, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -475,7 +476,8 @@ public final class BlobContainerAsyncClient {
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> setMetadataWithResponse(metadata, requestConditions, context));
+            return withContext(context -> setMetadataWithResponse(metadata, requestConditions,
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -529,7 +531,7 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<BlobContainerAccessPolicies>> getAccessPolicyWithResponse(String leaseId) {
         try {
-            return withContext(context -> getAccessPolicyWithResponse(leaseId, context));
+            return withContext(context -> getAccessPolicyWithResponse(leaseId, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -594,7 +596,8 @@ public final class BlobContainerAsyncClient {
         List<BlobSignedIdentifier> identifiers, BlobRequestConditions requestConditions) {
         try {
             return withContext(
-                context -> setAccessPolicyWithResponse(accessType, identifiers, requestConditions, context));
+                context -> setAccessPolicyWithResponse(accessType, identifiers, requestConditions,
+                    withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -956,7 +959,7 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
         try {
-            return withContext(this::getAccountInfoWithResponse);
+            return withContext(context -> getAccountInfoWithResponse(withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

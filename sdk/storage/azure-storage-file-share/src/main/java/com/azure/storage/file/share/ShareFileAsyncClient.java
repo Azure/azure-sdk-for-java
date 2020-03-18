@@ -89,7 +89,7 @@ import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
+import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
 
 /**
  * This class provides a client that contains all the operations for interacting with file in Azure Storage File
@@ -187,7 +187,7 @@ public class ShareFileAsyncClient {
      */
     public Mono<Response<Boolean>> existsWithResponse() {
         try {
-            return withContext(this::existsWithResponse);
+            return withContext(context -> existsWithResponse(withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -307,7 +307,7 @@ public class ShareFileAsyncClient {
         try {
             return withContext(context ->
                 createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata,
-                    requestConditions, context), STORAGE_TRACING_PROPERTIES);
+                    requestConditions, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -431,9 +431,7 @@ public class ShareFileAsyncClient {
                     return withContext(context -> azureFileStorageClient.files()
                             .startCopyWithRestResponseAsync(shareName, filePath, sourceUrl, null,
                                 metadata, filePermission, tempSmbProperties.getFilePermissionKey(),
-                                finalRequestConditions.getLeaseId(), copyFileSmbInfo, context),
-                        STORAGE_TRACING_PROPERTIES)
-
+                                finalRequestConditions.getLeaseId(), copyFileSmbInfo, withTracingContext(context)))
                             .map(response -> {
                                 final FileStartCopyHeaders headers = response.getDeserializedHeaders();
                                 copyId.set(headers.getCopyId());
@@ -573,8 +571,8 @@ public class ShareFileAsyncClient {
      */
     public Mono<Response<Void>> abortCopyWithResponse(String copyId, ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> abortCopyWithResponse(copyId, requestConditions, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> abortCopyWithResponse(copyId, requestConditions,
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -661,7 +659,7 @@ public class ShareFileAsyncClient {
         ShareFileRange range, ShareRequestConditions requestConditions) {
         try {
             return withContext(context -> downloadToFileWithResponse(downloadFilePath, range, requestConditions,
-                context), STORAGE_TRACING_PROPERTIES);
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -783,8 +781,8 @@ public class ShareFileAsyncClient {
     public Mono<ShareFileDownloadAsyncResponse> downloadWithResponse(ShareFileRange range, Boolean rangeGetContentMD5,
         ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> downloadWithResponse(range, rangeGetContentMD5, requestConditions, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> downloadWithResponse(range, rangeGetContentMD5, requestConditions,
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -862,8 +860,7 @@ public class ShareFileAsyncClient {
      */
     public Mono<Response<Void>> deleteWithResponse(ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> this.deleteWithResponse(requestConditions, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> this.deleteWithResponse(requestConditions, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -935,8 +932,8 @@ public class ShareFileAsyncClient {
      */
     public Mono<Response<ShareFileProperties>> getPropertiesWithResponse(ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> this.getPropertiesWithResponse(requestConditions, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> this.getPropertiesWithResponse(requestConditions,
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1054,7 +1051,7 @@ public class ShareFileAsyncClient {
         try {
             return withContext(context ->
                 setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, requestConditions,
-                    context), STORAGE_TRACING_PROPERTIES);
+                    withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1166,8 +1163,8 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata,
         ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> setMetadataWithResponse(metadata, requestConditions, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> setMetadataWithResponse(metadata, requestConditions,
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1265,8 +1262,8 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileUploadInfo>> uploadWithResponse(Flux<ByteBuffer> data, long length, Long offset,
         ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> uploadWithResponse(data, length, offset, requestConditions, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> uploadWithResponse(data, length, offset, requestConditions,
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1364,7 +1361,7 @@ public class ShareFileAsyncClient {
         try {
             return withContext(context ->
                 uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset, sourceUrl,
-                    destinationRequestConditions, context), STORAGE_TRACING_PROPERTIES);
+                    destinationRequestConditions, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1453,8 +1450,8 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileUploadInfo>> clearRangeWithResponse(long length, long offset,
         ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> clearRangeWithResponse(length, offset, requestConditions, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> clearRangeWithResponse(length, offset, requestConditions,
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1702,8 +1699,8 @@ public class ShareFileAsyncClient {
      */
     public Mono<CloseHandlesInfo> forceCloseHandle(String handleId) {
         try {
-            return withContext(context -> forceCloseHandleWithResponse(handleId, context),
-                STORAGE_TRACING_PROPERTIES).flatMap(FluxUtil::toMono);
+            return withContext(context -> forceCloseHandleWithResponse(handleId,
+                withTracingContext(context))).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1727,7 +1724,7 @@ public class ShareFileAsyncClient {
      */
     public Mono<Response<CloseHandlesInfo>> forceCloseHandleWithResponse(String handleId) {
         try {
-            return withContext(context -> forceCloseHandleWithResponse(handleId, context), STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> forceCloseHandleWithResponse(handleId, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1758,10 +1755,10 @@ public class ShareFileAsyncClient {
      */
     public Mono<CloseHandlesInfo> forceCloseAllHandles() {
         try {
-            return withContext(context -> forceCloseAllHandlesWithOptionalTimeout(null, context)
-                .reduce(new CloseHandlesInfo(0, 0),
+            return withContext(context -> forceCloseAllHandlesWithOptionalTimeout(null,
+                withTracingContext(context)).reduce(new CloseHandlesInfo(0, 0),
                     (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
-                        accu.getFailedHandles() + next.getFailedHandles())), STORAGE_TRACING_PROPERTIES);
+                        accu.getFailedHandles() + next.getFailedHandles())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

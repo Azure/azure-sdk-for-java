@@ -38,7 +38,7 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
+import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a file account in
@@ -261,7 +261,7 @@ public final class ShareServiceAsyncClient {
      */
     public Mono<Response<ShareServiceProperties>> getPropertiesWithResponse() {
         try {
-            return withContext(context -> getPropertiesWithResponse(context), STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> getPropertiesWithResponse(withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -352,7 +352,7 @@ public final class ShareServiceAsyncClient {
      */
     public Mono<Response<Void>> setPropertiesWithResponse(ShareServiceProperties properties) {
         try {
-            return withContext(context -> setPropertiesWithResponse(properties, context), STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> setPropertiesWithResponse(properties, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -416,8 +416,8 @@ public final class ShareServiceAsyncClient {
     public Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
         Integer quotaInGB) {
         try {
-            return withContext(context -> createShareWithResponse(shareName, metadata, quotaInGB, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> createShareWithResponse(shareName, metadata, quotaInGB,
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -476,8 +476,7 @@ public final class ShareServiceAsyncClient {
      */
     public Mono<Response<Void>> deleteShareWithResponse(String shareName, String snapshot) {
         try {
-            return withContext(context -> deleteShareWithResponse(shareName, snapshot, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> deleteShareWithResponse(shareName, snapshot, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

@@ -55,7 +55,7 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
+import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
 
 /**
  * This class provides a client that contains file operations for Azure Storage Data Lake. Operations provided by
@@ -172,7 +172,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
         try {
             return withContext(context -> deleteWithResponse(null /* recursive */, requestConditions,
-                context), STORAGE_TRACING_PROPERTIES);
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -559,7 +559,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         byte[] contentMd5, String leaseId) {
         try {
             return withContext(context -> appendWithResponse(data, fileOffset, length, contentMd5,
-                leaseId, context), STORAGE_TRACING_PROPERTIES);
+                leaseId, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -655,7 +655,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions) {
         try {
             return withContext(context -> flushWithResponse(position, retainUncommittedData, close, httpHeaders,
-                requestConditions, context), STORAGE_TRACING_PROPERTIES);
+                requestConditions, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -865,7 +865,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         DataLakeRequestConditions destinationRequestConditions) {
         try {
             return withContext(context -> renameWithResponse(destinationFileSystem, destinationPath,
-                sourceRequestConditions, destinationRequestConditions, context), STORAGE_TRACING_PROPERTIES)
+                sourceRequestConditions, destinationRequestConditions, withTracingContext(context)))
                 .map(response -> new SimpleResponse<>(response,
                     new DataLakeFileAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {

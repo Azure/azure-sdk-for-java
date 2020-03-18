@@ -48,7 +48,7 @@ import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
+import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
 
 /**
  * This class provides a client that contains all operations that apply to any path object.
@@ -265,7 +265,7 @@ public class DataLakePathAsyncClient {
         Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
         try {
             return withContext(context -> createWithResponse(permissions, umask, pathResourceType, headers, metadata,
-                requestConditions, context), STORAGE_TRACING_PROPERTIES);
+                requestConditions, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -536,7 +536,7 @@ public class DataLakePathAsyncClient {
         String group, String owner, DataLakeRequestConditions requestConditions) {
         try {
             return withContext(context -> setAccessControlWithResponse(accessControlList, null, group, owner,
-                requestConditions, context), STORAGE_TRACING_PROPERTIES);
+                requestConditions, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -585,7 +585,7 @@ public class DataLakePathAsyncClient {
         DataLakeRequestConditions requestConditions) {
         try {
             return withContext(context -> setAccessControlWithResponse(null, permissions, group, owner,
-                requestConditions, context), STORAGE_TRACING_PROPERTIES);
+                requestConditions, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -655,7 +655,7 @@ public class DataLakePathAsyncClient {
         DataLakeRequestConditions requestConditions) {
         try {
             return withContext(context -> getAccessControlWithResponse(userPrincipalNameReturned, requestConditions,
-                context), STORAGE_TRACING_PROPERTIES);
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

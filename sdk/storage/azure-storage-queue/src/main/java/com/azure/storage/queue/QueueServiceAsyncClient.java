@@ -37,7 +37,7 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
+import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
@@ -141,8 +141,7 @@ public final class QueueServiceAsyncClient {
     public Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata) {
         try {
             Objects.requireNonNull(queueName, "'queueName' cannot be null.");
-            return withContext(context -> createQueueWithResponse(queueName, metadata, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> createQueueWithResponse(queueName, metadata,  withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -192,7 +191,7 @@ public final class QueueServiceAsyncClient {
      */
     public Mono<Response<Void>> deleteQueueWithResponse(String queueName) {
         try {
-            return withContext(context -> deleteQueueWithResponse(queueName, context), STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> deleteQueueWithResponse(queueName, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -331,7 +330,7 @@ public final class QueueServiceAsyncClient {
      */
     public Mono<Response<QueueServiceProperties>> getPropertiesWithResponse() {
         try {
-            return withContext(context -> getPropertiesWithResponse(context), STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> getPropertiesWithResponse(withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -426,7 +425,7 @@ public final class QueueServiceAsyncClient {
      */
     public Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties) {
         try {
-            return withContext(context -> setPropertiesWithResponse(properties, context), STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> setPropertiesWithResponse(properties, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -475,7 +474,7 @@ public final class QueueServiceAsyncClient {
      */
     public Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse() {
         try {
-            return withContext(context -> getStatisticsWithResponse(context), STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> getStatisticsWithResponse(withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

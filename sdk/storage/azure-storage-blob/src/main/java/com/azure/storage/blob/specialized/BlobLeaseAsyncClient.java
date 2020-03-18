@@ -23,7 +23,7 @@ import java.net.URL;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
+import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
 
 /**
  * This class provides a client that contains all the leasing operations for {@link BlobContainerAsyncClient containers}
@@ -122,8 +122,8 @@ public final class BlobLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> acquireLeaseWithResponse(int duration, RequestConditions modifiedRequestConditions) {
         try {
-            return withContext(context -> acquireLeaseWithResponse(duration, modifiedRequestConditions, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> acquireLeaseWithResponse(duration, modifiedRequestConditions,
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -179,8 +179,8 @@ public final class BlobLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedRequestConditions) {
         try {
-            return withContext(context -> renewLeaseWithResponse(modifiedRequestConditions, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> renewLeaseWithResponse(modifiedRequestConditions,
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -235,8 +235,8 @@ public final class BlobLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> releaseLeaseWithResponse(RequestConditions modifiedRequestConditions) {
         try {
-            return withContext(context -> releaseLeaseWithResponse(modifiedRequestConditions, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> releaseLeaseWithResponse(modifiedRequestConditions,
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -300,8 +300,8 @@ public final class BlobLeaseAsyncClient {
         RequestConditions modifiedRequestConditions) {
         try {
             return withContext(
-                context -> breakLeaseWithResponse(breakPeriodInSeconds, modifiedRequestConditions, context),
-                STORAGE_TRACING_PROPERTIES);
+                context -> breakLeaseWithResponse(breakPeriodInSeconds, modifiedRequestConditions,
+                    withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -360,8 +360,8 @@ public final class BlobLeaseAsyncClient {
     public Mono<Response<String>> changeLeaseWithResponse(String proposedId,
         RequestConditions modifiedRequestConditions) {
         try {
-            return withContext(context -> changeLeaseWithResponse(proposedId, modifiedRequestConditions, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> changeLeaseWithResponse(proposedId, modifiedRequestConditions,
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

@@ -24,7 +24,7 @@ import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
+import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
 
 
 /**
@@ -138,8 +138,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public Mono<Response<Void>> deleteWithResponse(boolean recursive, DataLakeRequestConditions requestConditions) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
         try {
-            return withContext(context -> deleteWithResponse(recursive, requestConditions, context),
-                STORAGE_TRACING_PROPERTIES);
+            return withContext(context -> deleteWithResponse(recursive, requestConditions,
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -437,7 +437,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         DataLakeRequestConditions destinationRequestConditions) {
         try {
             return withContext(context -> renameWithResponse(destinationFileSystem, destinationPath,
-                sourceRequestConditions, destinationRequestConditions, context), STORAGE_TRACING_PROPERTIES).map(
+                sourceRequestConditions, destinationRequestConditions, withTracingContext(context))).map(
                     response -> new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

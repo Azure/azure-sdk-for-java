@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,6 +30,7 @@ import reactor.core.publisher.Mono;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
 import static com.azure.storage.common.Utility.urlDecode;
 
 /**
@@ -67,7 +69,7 @@ public class StorageImplUtils {
     }
 
     private static <T> Map<String, T> parseQueryStringHelper(final String queryString,
-                                                             Function<String, T> valueParser) {
+        Function<String, T> valueParser) {
         TreeMap<String, T> pieces = new TreeMap<>();
 
         if (CoreUtils.isNullOrEmpty(queryString)) {
@@ -285,5 +287,18 @@ public class StorageImplUtils {
             nextCopy = (int) Math.min(retrievedBuff.length, writeLength);
             count = source.read(retrievedBuff, 0, nextCopy);
         }
+    }
+
+    /**
+     * This method adds the {@code STORAGE_TRACING_PROPERTIES} to the incoming {@link Context}.
+     *
+     * @param context The incoming {@link Context} from the method.
+     * @return The updated context with the storage tracing attribute information appended.
+     */
+    public static Context withTracingContext(Context context) {
+        for (Map.Entry<String, String> entry : STORAGE_TRACING_PROPERTIES.entrySet()) {
+            context = context.addData(entry.getKey(), entry.getValue());
+        }
+        return context;
     }
 }

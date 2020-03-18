@@ -50,6 +50,7 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
@@ -196,7 +197,8 @@ public final class BlobServiceAsyncClient {
         Map<String, String> metadata, PublicAccessType accessType) {
         try {
             return withContext(
-                context -> createBlobContainerWithResponse(containerName, metadata, accessType, context));
+                context -> createBlobContainerWithResponse(containerName, metadata, accessType,
+                    withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -244,7 +246,8 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName) {
         try {
-            return withContext(context -> deleteBlobContainerWithResponse(containerName, context));
+            return withContext(context -> deleteBlobContainerWithResponse(containerName,
+                withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -358,7 +361,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<BlobServiceProperties>> getPropertiesWithResponse() {
         try {
-            return withContext(this::getPropertiesWithResponse);
+            return withContext(context -> getPropertiesWithResponse(withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -409,7 +412,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<Void>> setPropertiesWithResponse(BlobServiceProperties properties) {
         try {
-            return withContext(context -> setPropertiesWithResponse(properties, context));
+            return withContext(context -> setPropertiesWithResponse(properties, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -526,7 +529,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         try {
-            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context))
+            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, withTracingContext(context)))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -551,7 +554,7 @@ public final class BlobServiceAsyncClient {
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
         try {
-            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
+            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -608,7 +611,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse() {
         try {
-            return withContext(this::getStatisticsWithResponse);
+            return withContext(context -> getStatisticsWithResponse(withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -650,7 +653,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
         try {
-            return withContext(this::getAccountInfoWithResponse);
+            return withContext(context -> getAccountInfoWithResponse(withTracingContext(context)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

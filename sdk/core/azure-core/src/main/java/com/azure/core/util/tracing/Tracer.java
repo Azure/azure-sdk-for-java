@@ -53,6 +53,11 @@ public interface Tracer {
     String SCOPE_KEY = "scope";
 
     /**
+     * Key for {@link Context} which indicates that the context contains the Azure resource provider namespace.
+     */
+    String AZ_TRACING_NAMESPACE_KEY = "az.namespace";
+
+    /**
      * Key for {@link Context} which indicates the shared span builder that is in the current Context.
      */
     String SPAN_BUILDER_KEY = "builder";
