@@ -44,7 +44,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         this.isAutoComplete = isAutoComplete;
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.completeFunction = Objects.requireNonNull(completeFunction, "'completeFunction' cannot be null.");
-        this.onAbandon = Objects.requireNonNull(onAbandon, "'onAbandon' cannot be null.");;
+        this.onAbandon = Objects.requireNonNull(onAbandon, "'onAbandon' cannot be null.");
     }
 
     private volatile boolean isDone;
