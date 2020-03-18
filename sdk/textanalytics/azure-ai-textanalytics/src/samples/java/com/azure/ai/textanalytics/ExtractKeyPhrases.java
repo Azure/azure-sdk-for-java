@@ -21,10 +21,10 @@ public class ExtractKeyPhrases {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that needs be analyzed.
-        String text = "My cat might need to see a veterinarian.";
+        // The document that needs be analyzed.
+        String document = "My cat might need to see a veterinarian.";
 
         System.out.println("Extracted phrases:");
-        client.extractKeyPhrases(text).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
+        client.extractKeyPhrases(document).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
     }
 }
