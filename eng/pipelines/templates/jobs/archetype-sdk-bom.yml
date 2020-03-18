@@ -5,6 +5,7 @@ parameters:
 
 jobs:
   - job: 'BuildAndValidate'
+    displayName: 'Build and Validate'
 
     variables:
       - template: ../variables/globals.yml
