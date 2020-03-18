@@ -56,10 +56,10 @@ abstract class AsyncBenchmark<T> {
 
     AsyncBenchmark(Configuration cfg) {
         cosmosClient = new CosmosClientBuilder()
-            .setEndpoint(cfg.getServiceEndpoint())
-            .setKey(cfg.getMasterKey())
-            .setConnectionPolicy(cfg.getConnectionPolicy())
-            .setConsistencyLevel(cfg.getConsistencyLevel())
+            .endpoint(cfg.getServiceEndpoint())
+            .key(cfg.getMasterKey())
+            .connectionPolicy(cfg.getConnectionPolicy())
+            .consistencyLevel(cfg.getConsistencyLevel())
             .buildAsyncClient();
 
         cosmosAsyncContainer = cosmosClient.getDatabase(cfg.getDatabaseId()).getContainer(cfg.getCollectionId()).read().block().getContainer();

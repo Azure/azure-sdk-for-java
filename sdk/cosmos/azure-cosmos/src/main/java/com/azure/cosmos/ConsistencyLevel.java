@@ -66,7 +66,7 @@ public enum ConsistencyLevel {
      * @param consistencyLevel String value of consistency level
      * @return ConsistencyLevel Enum consistency level
      */
-    public static ConsistencyLevel fromServiceSerializedFormat(String consistencyLevel) {
+    static ConsistencyLevel fromServiceSerializedFormat(String consistencyLevel) {
         // this is 100x faster than org.apache.commons.lang3.EnumUtils.getEnum(String)
         // for more detail refer to https://github.com/moderakh/azure-cosmosdb-benchmark
         return consistencyLevelHashMap.get(consistencyLevel);

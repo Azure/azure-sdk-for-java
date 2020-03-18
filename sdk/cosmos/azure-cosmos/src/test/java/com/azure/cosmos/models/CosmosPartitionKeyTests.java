@@ -63,7 +63,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosPartitionKeyTests() throws URISyntaxException, IOException {
         assertThat(this.client).isNull();
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
     }
 

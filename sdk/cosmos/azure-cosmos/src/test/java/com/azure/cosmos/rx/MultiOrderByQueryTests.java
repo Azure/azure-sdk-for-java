@@ -119,7 +119,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_MultiOrderByQueryTests() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         documentCollection = getSharedMultiPartitionCosmosContainerWithCompositeAndSpatialIndexes(client);
         truncateCollection(documentCollection);
 
@@ -163,7 +163,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
         voidBulkInsertBlocking(documentCollection, documents);
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     private CosmosItemProperties generateMultiOrderByDocument() {

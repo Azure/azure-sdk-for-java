@@ -379,7 +379,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     //  see https://github.com/Azure/azure-sdk-for-java/issues/6398
     @BeforeClass(groups = { "simple", "non-emulator" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_ParallelDocumentQueryTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
 
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
@@ -413,7 +413,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         }
 
         List<CosmosItemProperties> items = bulkInsertBlocking(cosmosContainer, docDefList);
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         return items;
     }
 
@@ -553,7 +553,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     //TODO: Fix the test for GW mode
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readMany() throws Exception {
-        if (this.clientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
+        if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
             throw new SkipException("Skipping gateway mode. This needs to be fixed");
         }
 
@@ -572,7 +572,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     //TODO: Fix the test for GW mode
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyIdSameAsPartitionKey() throws Exception {
-        if (this.clientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
+        if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
             throw new SkipException("Skipping gateway mode. This needs to be fixed");
         }
 

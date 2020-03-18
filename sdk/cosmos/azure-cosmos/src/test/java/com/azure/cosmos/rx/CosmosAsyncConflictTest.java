@@ -61,7 +61,7 @@ public class CosmosAsyncConflictTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosAsyncConflictTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 
@@ -73,6 +73,6 @@ public class CosmosAsyncConflictTest extends TestSuiteBase {
     @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeMethod() {
         safeClose(client);
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
     }
 }

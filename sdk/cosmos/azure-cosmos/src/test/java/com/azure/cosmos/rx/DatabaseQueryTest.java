@@ -109,7 +109,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_DatabaseQueryTest() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdDatabases.add(createDatabase(client, databaseId1));
         createdDatabases.add(createDatabase(client, databaseId2));
     }

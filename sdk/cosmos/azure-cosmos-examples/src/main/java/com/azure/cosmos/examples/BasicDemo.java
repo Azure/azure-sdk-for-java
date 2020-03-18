@@ -32,8 +32,8 @@ public class BasicDemo {
     private void start() {
         // Get client
         client = new CosmosClientBuilder()
-                     .setEndpoint(AccountSettings.HOST)
-                     .setKey(AccountSettings.MASTER_KEY)
+                     .endpoint(AccountSettings.HOST)
+                     .key(AccountSettings.MASTER_KEY)
                      .buildAsyncClient();
 
         //CREATE a database and a container

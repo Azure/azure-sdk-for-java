@@ -33,7 +33,7 @@ public class CosmosUserTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosUserTest() {
-        client = clientBuilder().buildClient();
+        client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 

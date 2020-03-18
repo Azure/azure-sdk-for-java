@@ -299,8 +299,8 @@ public class CollectionCrudTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
     public void sessionTokenConsistencyCollectionDeleteCreateSameName() {
-        CosmosAsyncClient client1 = clientBuilder().buildAsyncClient();
-        CosmosAsyncClient client2 = clientBuilder().buildAsyncClient();
+        CosmosAsyncClient client1 = getClientBuilder().buildAsyncClient();
+        CosmosAsyncClient client2 = getClientBuilder().buildAsyncClient();
 
         String dbId = CosmosDatabaseForTest.generateId();
         String collectionId = "coll";
@@ -367,7 +367,7 @@ public class CollectionCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CollectionCrudTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         database = createDatabase(client, databaseId);
     }
 

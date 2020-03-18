@@ -50,12 +50,12 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
-        this.client = clientBuilder().buildClient();
+        this.client = getClientBuilder().buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container1 = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
 
-        client1 = copyCosmosClientBuilder(clientBuilder()).setConnectionReuseAcrossClientsEnabled(true).buildClient();
-        client2 = copyCosmosClientBuilder(clientBuilder()).setConnectionReuseAcrossClientsEnabled(true).buildClient();
+        client1 = copyCosmosClientBuilder(getClientBuilder()).connectionReuseAcrossClientsEnabled(true).buildClient();
+        client2 = copyCosmosClientBuilder(getClientBuilder()).connectionReuseAcrossClientsEnabled(true).buildClient();
 
         container1 = client1.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
         container2 = client1.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
@@ -273,6 +273,6 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
     }
 
     private boolean ifDirectMode() {
-        return (clientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT);
+        return (getClientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT);
     }
 }

@@ -243,7 +243,7 @@ public class BackPressureTest extends TestSuiteBase {
     public void before_BackPressureTest() throws Exception {
 
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        client = new ClientUnderTestBuilder(clientBuilder()).buildAsyncClient();
+        client = new ClientUnderTestBuilder(getClientBuilder()).buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
 
         createdCollection = createCollection(createdDatabase, getSinglePartitionCollectionDefinition(), options, 1000);
@@ -267,7 +267,7 @@ public class BackPressureTest extends TestSuiteBase {
 
         createdDocuments = bulkInsertBlocking(createdCollection, docDefList);
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         warmUp();
     }
 

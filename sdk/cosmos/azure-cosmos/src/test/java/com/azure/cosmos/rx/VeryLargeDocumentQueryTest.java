@@ -87,7 +87,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
     //  see see https://github.com/Azure/azure-sdk-for-java/issues/6377
     @BeforeClass(groups = { "simple" }, timeOut = 2 * SETUP_TIMEOUT)
     public void before_VeryLargeDocumentQueryTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
     }

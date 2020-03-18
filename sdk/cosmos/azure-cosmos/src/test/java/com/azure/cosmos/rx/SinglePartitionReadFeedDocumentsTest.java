@@ -54,7 +54,7 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
     //  see https://github.com/Azure/azure-sdk-for-java/issues/6380
     @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_SinglePartitionReadFeedDocumentsTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedSinglePartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
@@ -65,7 +65,7 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
         }
 
         createdDocuments = bulkInsertBlocking(createdCollection, docDefList);
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

@@ -112,7 +112,7 @@ public class UserQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_UserQueryTest() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
 
         createdDatabase = createDatabase(client, databaseId);
 
@@ -122,7 +122,7 @@ public class UserQueryTest extends TestSuiteBase {
             createdUsers.add(createUser(client, databaseId, user).read().block().getProperties());
         }
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

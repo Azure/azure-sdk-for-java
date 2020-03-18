@@ -206,13 +206,13 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
 
     @BeforeClass(groups = {"simple"}, timeOut = 3 * SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = this.clientBuilder().buildAsyncClient();
+        client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
         bulkInsert();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 }
 

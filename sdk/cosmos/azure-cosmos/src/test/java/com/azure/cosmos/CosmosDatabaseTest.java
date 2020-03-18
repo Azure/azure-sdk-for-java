@@ -36,7 +36,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosDatabaseTest() {
-        client = clientBuilder().buildClient();
+        client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 

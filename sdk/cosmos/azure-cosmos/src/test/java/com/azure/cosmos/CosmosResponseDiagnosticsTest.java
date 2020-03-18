@@ -39,14 +39,14 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     public void beforeClass() throws Exception {
         assertThat(this.gatewayClient).isNull();
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
-            .setEndpoint(TestConfigurations.HOST)
-            .setKey(TestConfigurations.MASTER_KEY);
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY);
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-        gatewayClient = cosmosClientBuilder.setConnectionPolicy(connectionPolicy).buildClient();
+        gatewayClient = cosmosClientBuilder.connectionPolicy(connectionPolicy).buildClient();
         connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
-        directClient = cosmosClientBuilder.setConnectionPolicy(connectionPolicy).buildClient();
+        directClient = cosmosClientBuilder.connectionPolicy(connectionPolicy).buildClient();
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(this.gatewayClient.asyncClient());
         container = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
     }

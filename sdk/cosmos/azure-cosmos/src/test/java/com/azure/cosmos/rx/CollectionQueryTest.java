@@ -111,7 +111,7 @@ public class CollectionQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_CollectionQueryTest() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
 
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();

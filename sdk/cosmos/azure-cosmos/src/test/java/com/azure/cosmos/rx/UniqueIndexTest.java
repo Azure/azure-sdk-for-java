@@ -219,10 +219,10 @@ public class UniqueIndexTest extends TestSuiteBase {
     public void before_UniqueIndexTest() {
         // set up the client
         client = new CosmosClientBuilder()
-                .setEndpoint(TestConfigurations.HOST)
-                .setKey(TestConfigurations.MASTER_KEY)
-                .setConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
-                .setConsistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .connectionPolicy(ConnectionPolicy.getDefaultPolicy())
+            .consistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
 
         database = createDatabase(client, databaseId);
     }

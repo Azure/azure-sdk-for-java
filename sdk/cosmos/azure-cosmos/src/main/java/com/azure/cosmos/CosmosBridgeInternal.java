@@ -57,4 +57,27 @@ public final class CosmosBridgeInternal {
     public static CosmosAsyncContainer getCosmosAsyncContainer(CosmosContainer container) {
         return container.asyncContainer;
     }
+
+    public static ConsistencyLevel getConsistencyLevel(CosmosClientBuilder cosmosClientBuilder) {
+        return cosmosClientBuilder.getConsistencyLevel();
+    }
+
+    public static ConnectionPolicy getConnectionPolicy(CosmosClientBuilder cosmosClientBuilder) {
+        return cosmosClientBuilder.getConnectionPolicy();
+    }
+
+    public static CosmosClientBuilder cloneCosmosClientBuilder(CosmosClientBuilder builder) {
+        CosmosClientBuilder copy = new CosmosClientBuilder();
+
+        copy.endpoint(builder.getEndpoint())
+            .key(builder.getKey())
+            .connectionPolicy(builder.getConnectionPolicy())
+            .consistencyLevel(builder.getConsistencyLevel())
+            .keyCredential(builder.getKeyCredential())
+            .permissions(builder.getPermissions())
+            .authorizationTokenResolver(builder.getAuthorizationTokenResolver())
+            .resourceToken(builder.getResourceToken());
+
+        return copy;
+    }
 }

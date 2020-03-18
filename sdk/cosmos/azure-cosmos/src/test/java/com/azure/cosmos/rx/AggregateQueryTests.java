@@ -192,7 +192,7 @@ public class AggregateQueryTests extends TestSuiteBase {
     //  see https://github.com/Azure/azure-sdk-for-java/issues/6346
     @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_AggregateQueryTests() throws Throwable {
-        client = this.clientBuilder().buildAsyncClient();
+        client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         try {
             truncateCollection(createdCollection);
@@ -207,6 +207,6 @@ public class AggregateQueryTests extends TestSuiteBase {
         }
         bulkInsert();
         generateTestConfigs();
-        waitIfNeededForReplicasToCatchUp(this.clientBuilder());
+        waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
     }
 }

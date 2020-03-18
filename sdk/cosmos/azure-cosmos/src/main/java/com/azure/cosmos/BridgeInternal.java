@@ -513,4 +513,8 @@ public final class BridgeInternal {
     public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
         return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction);
     }
+
+    public static ConsistencyLevel fromServiceSerializedFormat(String consistencyLevel) {
+        return ConsistencyLevel.fromServiceSerializedFormat(consistencyLevel);
+    }
 }

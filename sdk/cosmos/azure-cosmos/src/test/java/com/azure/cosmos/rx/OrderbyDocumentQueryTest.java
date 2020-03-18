@@ -399,7 +399,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     //  see https://github.com/Azure/azure-sdk-for-java/issues/6386
     @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_OrderbyDocumentQueryTest() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
@@ -433,7 +433,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .readPartitionKeyRanges("dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId(), null)
                 .flatMap(p -> Flux.fromIterable(p.getResults())).collectList().single().block().size();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

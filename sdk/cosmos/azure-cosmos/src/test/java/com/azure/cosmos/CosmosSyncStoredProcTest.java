@@ -37,7 +37,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosSyncStoredProcTest() {
         assertThat(this.client).isNull();
-        this.client = clientBuilder().buildClient();
+        this.client = getClientBuilder().buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
