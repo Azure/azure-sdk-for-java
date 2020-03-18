@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.microsoft.aad.msal4j.IAccount;
@@ -95,6 +96,8 @@ public class SharedTokenCacheCredential implements TokenCredential {
 
         // find if the Public Client app with the requested username exists
         return Mono.fromFuture(pubClient.getAccounts())
+            .onErrorResume(t -> Mono.error(new ClientAuthenticationException(
+                    "Cannot get accounts from token cache. Error: " + t.getMessage(), null)))
             .flatMap(set -> {
                 IAccount requestedAccount;
                 Map<String, IAccount> accounts = new HashMap<>(); // home account id -> account

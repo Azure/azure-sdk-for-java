@@ -5,8 +5,7 @@ module com.azure.identity {
     requires transitive com.azure.core;
 
     requires msal4j;
-    requires com.microsoft.aad.msal4j;
-    requires com.microsoft.aad.msal4jextensions;
+    requires msal4j.persistence.extension;
     requires com.sun.jna;
     requires com.sun.jna.platform;
     requires nanohttpd;
