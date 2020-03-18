@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.perf.test.core;
 
 import java.io.ByteArrayInputStream;
@@ -7,9 +10,11 @@ import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 import reactor.core.publisher.Flux;
 
+/**
+ * Utility class to help with data creation for perf testing.
+ */
 public class TestDataCreationHelper {
     private static final byte[] RANDOM_BYTES;
     private static final ByteBuffer RANDOM_BYTE_BUFFER;

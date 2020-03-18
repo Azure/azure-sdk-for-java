@@ -48,7 +48,9 @@ public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
     public Mono<Void> runAsync() {
         return blobAsyncClient.download()
             .map(b -> {
-                b.get(new byte[b.remaining()]);
+                for (int i = 0; i < b.remaining(); i++) {
+                    b.get();
+                }
                 return 1;
             }).then();
     }
