@@ -33,8 +33,7 @@ import java.util.function.BiFunction;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
-import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
+import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
 
 /**
  * This class provides a client that contains all operations that apply to Azure Storage Blob batching.
@@ -85,8 +84,8 @@ public final class BlobBatchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> submitBatch(BlobBatch batch) {
         try {
-            return withContext(context -> submitBatchWithResponse(batch, true,
-                withTracingContext(context))).flatMap(FluxUtil::toMono);
+            return withStorageTelemetryContext(context -> submitBatchWithResponse(batch, true,
+                context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -113,8 +112,8 @@ public final class BlobBatchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure) {
         try {
-            return withContext(context -> submitBatchWithResponse(batch, throwOnAnyFailure,
-                withTracingContext(context)));
+            return withStorageTelemetryContext(context -> submitBatchWithResponse(batch, throwOnAnyFailure,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -146,8 +145,8 @@ public final class BlobBatchAsyncClient {
     public PagedFlux<Response<Void>> deleteBlobs(List<String> blobUrls, DeleteSnapshotsOptionType deleteOptions) {
         try {
             return new PagedFlux<>(
-                () -> withContext(context -> submitDeleteBlobsBatch(blobUrls, deleteOptions,
-                    withTracingContext(context))));
+                () -> withStorageTelemetryContext(context -> submitDeleteBlobsBatch(blobUrls, deleteOptions,
+                    context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -180,8 +179,8 @@ public final class BlobBatchAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Response<Void>> setBlobsAccessTier(List<String> blobUrls, AccessTier accessTier) {
         try {
-            return new PagedFlux<>(() -> withContext(context -> submitSetTierBatch(blobUrls, accessTier,
-                withTracingContext(context))));
+            return new PagedFlux<>(() -> withStorageTelemetryContext(context -> submitSetTierBatch(blobUrls, accessTier,
+                context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }

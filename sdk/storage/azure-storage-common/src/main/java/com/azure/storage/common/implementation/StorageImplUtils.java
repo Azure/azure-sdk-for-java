@@ -30,6 +30,7 @@ import reactor.core.publisher.Mono;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
 import static com.azure.storage.common.Utility.urlDecode;
 
@@ -290,15 +291,18 @@ public class StorageImplUtils {
     }
 
     /**
-     * This method adds the {@code STORAGE_TRACING_PROPERTIES} to the incoming {@link Context}.
+     * This method converts the incoming {@code subscriberContext} from
+     * {@link reactor.util.context.Context Reactor Context} to {@link Context Azure Context},
+     * adds the specified tracing attributes and calls the given lambda function with this context
+     * and returns a single entity of type {@code T}
      *
-     * @param context The incoming {@link Context} from the method.
-     * @return The updated context with the storage tracing attribute information appended.
+     * @param serviceCall serviceCall serviceCall The lambda function that makes the service call into which azure context
+     * will be passed.
+     * @param <T> The type of response returned from the service call.
+     *
+     * @return The response from service call.
      */
-    public static Context withTracingContext(Context context) {
-        for (Map.Entry<String, String> entry : STORAGE_TRACING_PROPERTIES.entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+    public static <T> Mono<T> withStorageTelemetryContext(Function<Context, Mono<T>> serviceCall) {
+        return withContext(serviceCall, STORAGE_TRACING_PROPERTIES);
     }
 }

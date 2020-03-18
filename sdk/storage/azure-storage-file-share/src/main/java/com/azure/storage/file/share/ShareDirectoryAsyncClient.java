@@ -8,14 +8,14 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
@@ -26,15 +26,15 @@ import com.azure.storage.file.share.implementation.models.DirectorysSetMetadataR
 import com.azure.storage.file.share.implementation.models.DirectorysSetPropertiesResponse;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
+import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
-import com.azure.storage.file.share.models.HandleItem;
-import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -53,8 +53,7 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
-import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
+import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
 
 /**
  * This class provides a client that contains all the operations for interacting with directory in Azure Storage File
@@ -185,7 +184,7 @@ public class ShareDirectoryAsyncClient {
      */
     public Mono<Response<Boolean>> existsWithResponse() {
         try {
-            return withContext(context -> existsWithResponse(withTracingContext(context)));
+            return withStorageTelemetryContext(context -> existsWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -256,8 +255,8 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
                                                                  Map<String, String> metadata) {
         try {
-            return withContext(context -> createWithResponse(smbProperties, filePermission, metadata,
-                withTracingContext(context)));
+            return withStorageTelemetryContext(context -> createWithResponse(smbProperties, filePermission, metadata,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -324,7 +323,7 @@ public class ShareDirectoryAsyncClient {
      */
     public Mono<Response<Void>> deleteWithResponse() {
         try {
-            return withContext(context -> deleteWithResponse(withTracingContext(context)));
+            return withStorageTelemetryContext(context -> deleteWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -375,7 +374,7 @@ public class ShareDirectoryAsyncClient {
      */
     public Mono<Response<ShareDirectoryProperties>> getPropertiesWithResponse() {
         try {
-            return withContext(context -> getPropertiesWithResponse(withTracingContext(context)));
+            return withStorageTelemetryContext(context -> getPropertiesWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -430,8 +429,8 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties,
                                                                         String filePermission) {
         try {
-            return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission,
-                withTracingContext(context)));
+            return withStorageTelemetryContext(context -> setPropertiesWithResponse(smbProperties, filePermission,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -515,7 +514,7 @@ public class ShareDirectoryAsyncClient {
      */
     public Mono<Response<ShareDirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata) {
         try {
-            return withContext(context -> setMetadataWithResponse(metadata, withTracingContext(context)));
+            return withStorageTelemetryContext(context -> setMetadataWithResponse(metadata, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -653,8 +652,8 @@ public class ShareDirectoryAsyncClient {
      */
     public Mono<CloseHandlesInfo> forceCloseHandle(String handleId) {
         try {
-            return withContext(context -> forceCloseHandleWithResponse(handleId,
-                withTracingContext(context))).flatMap(FluxUtil::toMono);
+            return withStorageTelemetryContext(context -> forceCloseHandleWithResponse(handleId,
+                context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -678,7 +677,7 @@ public class ShareDirectoryAsyncClient {
      */
     public Mono<Response<CloseHandlesInfo>> forceCloseHandleWithResponse(String handleId) {
         try {
-            return withContext(context -> forceCloseHandleWithResponse(handleId, withTracingContext(context)));
+            return withStorageTelemetryContext(context -> forceCloseHandleWithResponse(handleId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -710,8 +709,8 @@ public class ShareDirectoryAsyncClient {
      */
     public Mono<CloseHandlesInfo> forceCloseAllHandles(boolean recursive) {
         try {
-            return withContext(context -> forceCloseAllHandlesWithTimeout(recursive, null,
-                withTracingContext(context)).reduce(new CloseHandlesInfo(0, 0),
+            return withStorageTelemetryContext(context -> forceCloseAllHandlesWithTimeout(recursive, null,
+                context).reduce(new CloseHandlesInfo(0, 0),
                     (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
                         accu.getFailedHandles() + next.getFailedHandles())));
         } catch (RuntimeException ex) {
@@ -787,9 +786,9 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
         try {
-            return withContext(
+            return withStorageTelemetryContext(
                 context -> createSubdirectoryWithResponse(subdirectoryName, smbProperties, filePermission,
-                    metadata, withTracingContext(context)));
+                    metadata, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -846,8 +845,8 @@ public class ShareDirectoryAsyncClient {
      */
     public Mono<Response<Void>> deleteSubdirectoryWithResponse(String subdirectoryName) {
         try {
-            return withContext(context -> deleteSubdirectoryWithResponse(subdirectoryName,
-                withTracingContext(context)));
+            return withStorageTelemetryContext(context -> deleteSubdirectoryWithResponse(subdirectoryName,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -944,9 +943,9 @@ public class ShareDirectoryAsyncClient {
         ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata, ShareRequestConditions requestConditions) {
         try {
-            return withContext(context ->
+            return withStorageTelemetryContext(context ->
                 createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
-                    requestConditions, withTracingContext(context)));
+                    requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1027,8 +1026,8 @@ public class ShareDirectoryAsyncClient {
      */
     public Mono<Response<Void>> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> deleteFileWithResponse(fileName, requestConditions,
-                withTracingContext(context)));
+            return withStorageTelemetryContext(context -> deleteFileWithResponse(fileName, requestConditions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

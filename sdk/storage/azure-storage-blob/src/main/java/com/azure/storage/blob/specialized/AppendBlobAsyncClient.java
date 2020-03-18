@@ -35,8 +35,7 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
+import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
 
 /**
  * Client to an append blob. It may only be instantiated through a
@@ -153,8 +152,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> createWithResponse(headers, metadata, requestConditions,
-                withTracingContext(context)));
+            return withStorageTelemetryContext(context -> createWithResponse(headers, metadata, requestConditions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -225,8 +224,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions) {
         try {
-            return withContext(context -> appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions,
-                withTracingContext(context)));
+            return withStorageTelemetryContext(context ->
+                appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -297,8 +296,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         byte[] sourceContentMD5, AppendBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions) {
         try {
-            return withContext(context -> appendBlockFromUrlWithResponse(sourceUrl, sourceRange, sourceContentMD5,
-                destRequestConditions, sourceRequestConditions, withTracingContext(context)));
+            return withStorageTelemetryContext(context ->
+                appendBlockFromUrlWithResponse(sourceUrl, sourceRange, sourceContentMD5,
+                    destRequestConditions, sourceRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

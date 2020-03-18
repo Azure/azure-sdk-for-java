@@ -8,12 +8,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -49,8 +49,7 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
-import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
+import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
@@ -196,9 +195,9 @@ public final class BlobServiceAsyncClient {
     public Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
         Map<String, String> metadata, PublicAccessType accessType) {
         try {
-            return withContext(
+            return withStorageTelemetryContext(
                 context -> createBlobContainerWithResponse(containerName, metadata, accessType,
-                    withTracingContext(context)));
+                    context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -246,8 +245,8 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName) {
         try {
-            return withContext(context -> deleteBlobContainerWithResponse(containerName,
-                withTracingContext(context)));
+            return withStorageTelemetryContext(context -> deleteBlobContainerWithResponse(containerName,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -361,7 +360,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<BlobServiceProperties>> getPropertiesWithResponse() {
         try {
-            return withContext(context -> getPropertiesWithResponse(withTracingContext(context)));
+            return withStorageTelemetryContext(context -> getPropertiesWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -412,7 +411,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<Void>> setPropertiesWithResponse(BlobServiceProperties properties) {
         try {
-            return withContext(context -> setPropertiesWithResponse(properties, withTracingContext(context)));
+            return withStorageTelemetryContext(context -> setPropertiesWithResponse(properties, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -529,7 +528,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         try {
-            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, withTracingContext(context)))
+            return withStorageTelemetryContext(context -> getUserDelegationKeyWithResponse(start, expiry, context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -554,7 +553,7 @@ public final class BlobServiceAsyncClient {
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
         try {
-            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, withTracingContext(context)));
+            return withStorageTelemetryContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -611,7 +610,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse() {
         try {
-            return withContext(context -> getStatisticsWithResponse(withTracingContext(context)));
+            return withStorageTelemetryContext(context -> getStatisticsWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -653,7 +652,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
         try {
-            return withContext(context -> getAccountInfoWithResponse(withTracingContext(context)));
+            return withStorageTelemetryContext(context -> getAccountInfoWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

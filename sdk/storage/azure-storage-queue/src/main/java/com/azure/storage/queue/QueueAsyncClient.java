@@ -6,11 +6,11 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
@@ -44,8 +44,7 @@ import java.util.stream.StreamSupport;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
-import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
+import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue in Azure Storage Queue.
@@ -154,7 +153,7 @@ public final class QueueAsyncClient {
      */
     public Mono<Response<Void>> createWithResponse(Map<String, String> metadata) {
         try {
-            return withContext(context -> createWithResponse(metadata, withTracingContext(context)));
+            return withStorageTelemetryContext(context -> createWithResponse(metadata, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -205,7 +204,7 @@ public final class QueueAsyncClient {
      */
     public Mono<Response<Void>> deleteWithResponse() {
         try {
-            return withContext(context -> deleteWithResponse(withTracingContext(context)));
+            return withStorageTelemetryContext(context -> deleteWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -258,7 +257,7 @@ public final class QueueAsyncClient {
      */
     public Mono<Response<QueueProperties>> getPropertiesWithResponse() {
         try {
-            return withContext(context -> getPropertiesWithResponse(withTracingContext(context)));
+            return withStorageTelemetryContext(context -> getPropertiesWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -323,7 +322,7 @@ public final class QueueAsyncClient {
      */
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata) {
         try {
-            return withContext(context -> setMetadataWithResponse(metadata, withTracingContext(context)));
+            return withStorageTelemetryContext(context -> setMetadataWithResponse(metadata, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -412,7 +411,7 @@ public final class QueueAsyncClient {
      */
     public Mono<Response<Void>> setAccessPolicyWithResponse(Iterable<QueueSignedIdentifier> permissions) {
         try {
-            return withContext(context -> setAccessPolicyWithResponse(permissions, withTracingContext(context)));
+            return withStorageTelemetryContext(context -> setAccessPolicyWithResponse(permissions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -486,7 +485,7 @@ public final class QueueAsyncClient {
      */
     public Mono<Response<Void>> clearMessagesWithResponse() {
         try {
-            return withContext(context -> clearMessagesWithResponse(withTracingContext(context)));
+            return withStorageTelemetryContext(context -> clearMessagesWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -554,9 +553,9 @@ public final class QueueAsyncClient {
     public Mono<Response<SendMessageResult>> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
                                                                    Duration timeToLive) {
         try {
-            return withContext(
+            return withStorageTelemetryContext(
                 context -> sendMessageWithResponse(messageText, visibilityTimeout, timeToLive,
-                    withTracingContext(context)));
+                    context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -809,9 +808,9 @@ public final class QueueAsyncClient {
     public Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt,
             String messageText, Duration visibilityTimeout) {
         try {
-            return withContext(context ->
+            return withStorageTelemetryContext(context ->
                 updateMessageWithResponse(messageId, popReceipt, messageText, visibilityTimeout,
-                    withTracingContext(context)));
+                    context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -871,8 +870,8 @@ public final class QueueAsyncClient {
      */
     public Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt) {
         try {
-            return withContext(context -> deleteMessageWithResponse(messageId, popReceipt,
-                withTracingContext(context)));
+            return withStorageTelemetryContext(context -> deleteMessageWithResponse(messageId, popReceipt,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

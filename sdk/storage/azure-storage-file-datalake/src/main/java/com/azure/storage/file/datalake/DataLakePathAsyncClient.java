@@ -47,8 +47,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
+import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
 
 /**
  * This class provides a client that contains all operations that apply to any path object.
@@ -264,8 +263,8 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
         Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> createWithResponse(permissions, umask, pathResourceType, headers, metadata,
-                requestConditions, withTracingContext(context)));
+            return withStorageTelemetryContext(context -> createWithResponse(permissions, umask, pathResourceType,
+                headers, metadata, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -535,8 +534,8 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> setAccessControlListWithResponse(List<PathAccessControlEntry> accessControlList,
         String group, String owner, DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> setAccessControlWithResponse(accessControlList, null, group, owner,
-                requestConditions, withTracingContext(context)));
+            return withStorageTelemetryContext(context -> setAccessControlWithResponse(accessControlList,
+                null, group, owner, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -584,8 +583,8 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> setPermissionsWithResponse(PathPermissions permissions, String group, String owner,
         DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> setAccessControlWithResponse(null, permissions, group, owner,
-                requestConditions, withTracingContext(context)));
+            return withStorageTelemetryContext(context -> setAccessControlWithResponse(null, permissions, group, owner,
+                requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -654,8 +653,8 @@ public class DataLakePathAsyncClient {
     public Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean userPrincipalNameReturned,
         DataLakeRequestConditions requestConditions) {
         try {
-            return withContext(context -> getAccessControlWithResponse(userPrincipalNameReturned, requestConditions,
-                withTracingContext(context)));
+            return withStorageTelemetryContext(context -> getAccessControlWithResponse(userPrincipalNameReturned,
+                requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

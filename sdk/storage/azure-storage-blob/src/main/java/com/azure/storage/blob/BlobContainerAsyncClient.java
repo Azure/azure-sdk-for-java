@@ -8,11 +8,11 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -54,8 +54,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
-import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.implementation.StorageImplUtils.withTracingContext;
+import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
@@ -261,7 +260,7 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<Boolean>> existsWithResponse() {
         try {
-            return withContext(this::existsWithResponse);
+            return withStorageTelemetryContext(this::existsWithResponse);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -318,7 +317,7 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType) {
         try {
-            return withContext(context -> createWithResponse(metadata, accessType, withTracingContext(context)));
+            return withStorageTelemetryContext(context -> createWithResponse(metadata, accessType, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -366,7 +365,7 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<Void>> deleteWithResponse(BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> deleteWithResponse(requestConditions, withTracingContext(context)));
+            return withStorageTelemetryContext(context -> deleteWithResponse(requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -420,7 +419,7 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<BlobContainerProperties>> getPropertiesWithResponse(String leaseId) {
         try {
-            return withContext(context -> getPropertiesWithResponse(leaseId, withTracingContext(context)));
+            return withStorageTelemetryContext(context -> getPropertiesWithResponse(leaseId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -476,8 +475,8 @@ public final class BlobContainerAsyncClient {
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> setMetadataWithResponse(metadata, requestConditions,
-                withTracingContext(context)));
+            return withStorageTelemetryContext(context -> setMetadataWithResponse(metadata, requestConditions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -531,7 +530,7 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<BlobContainerAccessPolicies>> getAccessPolicyWithResponse(String leaseId) {
         try {
-            return withContext(context -> getAccessPolicyWithResponse(leaseId, withTracingContext(context)));
+            return withStorageTelemetryContext(context -> getAccessPolicyWithResponse(leaseId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -595,9 +594,9 @@ public final class BlobContainerAsyncClient {
     public Mono<Response<Void>> setAccessPolicyWithResponse(PublicAccessType accessType,
         List<BlobSignedIdentifier> identifiers, BlobRequestConditions requestConditions) {
         try {
-            return withContext(
+            return withStorageTelemetryContext(
                 context -> setAccessPolicyWithResponse(accessType, identifiers, requestConditions,
-                    withTracingContext(context)));
+                    context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -959,7 +958,7 @@ public final class BlobContainerAsyncClient {
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
         try {
-            return withContext(context -> getAccountInfoWithResponse(withTracingContext(context)));
+            return withStorageTelemetryContext(context -> getAccountInfoWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
