@@ -139,6 +139,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
     @Override
     public void cancel() {
+        logger.info("Cancelling subscription.");
         isCancelled = true;
         drain();
     }

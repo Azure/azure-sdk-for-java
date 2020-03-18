@@ -415,10 +415,11 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                 "'message.getLockToken()' cannot be null.")));
         }
 
-        logger.info("{}: Completing message. Sequence number: {}. Lock: {}. Expiration: {}", entityPath,
-            message.getSequenceNumber(), lockToken, lockTokenExpirationMap.get(lockToken));
+        final Instant instant = lockTokenExpirationMap.get(lockToken);
+        logger.info("{}: Update started. Disposition: {}. Sequence number: {}. Lock: {}. Expiration: {}",
+            entityPath, dispositionStatus, message.getSequenceNumber(), lockToken, instant);
 
-        return isLockTokenValid(message.getLockToken()).flatMap(isLocked -> {
+        return isLockTokenValid(lockToken).flatMap(isLocked -> {
             return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType))
                 .flatMap(node -> {
                     if (isLocked) {
@@ -431,8 +432,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                     }
                 });
         }).then(Mono.fromRunnable(() -> {
-            logger.info("{}: Removing completed message. Sequence number: {}. Lock: {}. Expiration: {}", entityPath,
-                message.getSequenceNumber(), lockToken, lockTokenExpirationMap.get(lockToken));
+            logger.info("{}: Update completed. Disposition: {}. Sequence number: {}. Lock: {}.",
+                entityPath, dispositionStatus, message.getSequenceNumber(), lockToken);
 
             lockTokenExpirationMap.remove(lockToken);
         }));

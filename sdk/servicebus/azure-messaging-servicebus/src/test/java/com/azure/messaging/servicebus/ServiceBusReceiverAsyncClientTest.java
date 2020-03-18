@@ -45,6 +45,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -102,7 +103,7 @@ class ServiceBusReceiverAsyncClientTest {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(100));
+//        StepVerifier.setDefaultTimeout(Duration.ofSeconds(100));
     }
 
     @AfterAll
@@ -391,6 +392,40 @@ class ServiceBusReceiverAsyncClientTest {
         StepVerifier.create(consumer.peekBatch(numberOfEvents, fromSequenceNumber))
             .expectNext(receivedMessage, receivedMessage2)
             .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can deadletter a message with an error and description.
+     */
+    @Test
+    void deadLetterWithDescription() {
+        final UUID lockToken1 = UUID.randomUUID();
+        final String description = "some-dead-letter-description";
+        final String reason = "dead-letter-reason";
+        final Map<String, Object> propertiesToModify = new HashMap<>();
+        propertiesToModify.put("something", true);
+        final Instant expiration = Instant.now().plus(Duration.ofMinutes(5));
+
+        final MessageWithLockToken message = mock(MessageWithLockToken.class);
+
+        when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
+
+        when(receivedMessage.getLockToken()).thenReturn(lockToken1);
+        when(receivedMessage.getLockedUntil()).thenReturn(expiration);
+
+        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
+        when(managementNode.updateDisposition(lockToken1, DispositionStatus.SUSPENDED, reason, description, propertiesToModify))
+            .thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(consumer.receive()
+            .take(1)
+            .flatMap(m -> consumer.deadLetter(m, reason, description, propertiesToModify)))
+            .then(() -> messageSink.next(message))
+            .expectNext()
+            .verifyComplete();
+
+        verify(managementNode).updateDisposition(lockToken1, DispositionStatus.SUSPENDED, reason, description, propertiesToModify);
     }
 
     /**
