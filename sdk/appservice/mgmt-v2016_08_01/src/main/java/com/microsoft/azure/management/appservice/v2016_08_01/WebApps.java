@@ -53,8 +53,6 @@ import com.microsoft.azure.management.appservice.v2016_08_01.implementation.Vnet
 import com.microsoft.azure.management.appservice.v2016_08_01.implementation.VnetGatewayInner;
 import com.microsoft.azure.management.appservice.v2016_08_01.WebJob;
 
-import java.io.InputStream;
-
 /**
  * Type representing WebApps.
  */
