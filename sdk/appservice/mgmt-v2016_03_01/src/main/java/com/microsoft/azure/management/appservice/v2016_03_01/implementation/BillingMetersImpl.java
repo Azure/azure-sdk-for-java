@@ -20,9 +20,9 @@ import com.microsoft.azure.management.appservice.v2016_03_01.BillingMeter;
 
 class BillingMetersImpl extends WrapperImpl<BillingMetersInner> implements BillingMeters {
     private PagedListConverter<BillingMeterInner, BillingMeter> converter;
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    BillingMetersImpl(AppServiceManager manager) {
+    BillingMetersImpl(WebManager manager) {
         super(manager.inner().billingMeters());
         this.manager = manager;
         this.converter = new PagedListConverter<BillingMeterInner, BillingMeter>() {
@@ -33,7 +33,7 @@ class BillingMetersImpl extends WrapperImpl<BillingMetersInner> implements Billi
         };
     }
 
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
