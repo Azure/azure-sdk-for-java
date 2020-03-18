@@ -231,8 +231,7 @@ public class ResourceId {
         }
 
         if (buffer == null || buffer.length > ResourceId.Length) {
-            buffer = null;
-            return Pair.of(false, buffer);
+            return Pair.of(false, null);
         }
 
         return Pair.of(true, buffer);
@@ -506,6 +505,29 @@ public class ResourceId {
         }
 
         return Arrays.equals(this.getValue(), other.getValue());
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // When a class define covariant version of equals(Object) method, in this case
+        // equals(ResourceId), it is necessary to define equals(Object) method explicitly.
+        // EQ_SELF_USE_OBJECT
+        //
+        if (object == null) {
+            return false;
+        }
+        if(this == object) {
+            return true;
+        }
+        if(object instanceof ResourceId) {
+            return this.equals((ResourceId) object);
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        // TODO: https://github.com/Azure/azure-sdk-for-java/issues/9046
+        return super.hashCode();
     }
 
     // Using a byte however, we only need nibble here.

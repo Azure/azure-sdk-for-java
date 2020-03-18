@@ -73,7 +73,7 @@ public interface AddressValidator {
 
                 @Override
                 public void validate(Address address) {
-                    assertThat(address.IsPrimary()).isTrue();
+                    assertThat(address.isPrimary()).isTrue();
                 }
             });
             return this;

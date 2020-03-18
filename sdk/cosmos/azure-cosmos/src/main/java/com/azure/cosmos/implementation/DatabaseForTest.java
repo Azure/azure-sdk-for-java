@@ -89,12 +89,17 @@ public class DatabaseForTest {
                                  new SqlParameterList(new SqlParameter("@PREFIX", DatabaseForTest.SHARED_DB_ID_PREFIX))))
                 .flatMap(page -> Flux.fromIterable(page.getResults())).collectList().block();
 
+        // block() can return null if Flux is empty()
+        if (dbs == null) {
+            return;
+        }
+
         for (Database db : dbs) {
             assert(db.getId().startsWith(DatabaseForTest.SHARED_DB_ID_PREFIX));
 
             DatabaseForTest dbForTest = DatabaseForTest.from(db);
 
-            if (db != null && dbForTest.isStale()) {
+            if (dbForTest.isStale()) {
                 logger.info("Deleting database {}", db.getId());
                 client.deleteDatabase(db.getId()).block();
             }

@@ -63,11 +63,11 @@ public class ServiceItemLease implements Lease {
     }
 
     @JsonIgnore
-    public String getEtag() {
+    public String getETag() {
         return this._etag;
     }
 
-    public ServiceItemLease withEtag(String etag) {
+    public ServiceItemLease withETag(String etag) {
         this._etag = etag;
         return this;
     }
@@ -139,11 +139,11 @@ public class ServiceItemLease implements Lease {
 
     @Override
     public void setConcurrencyToken(String concurrencyToken) {
-        this.withEtag(concurrencyToken);
+        this.withETag(concurrencyToken);
     }
 
     public ServiceItemLease withConcurrencyToken(String concurrencyToken) {
-        return this.withEtag(concurrencyToken);
+        return this.withETag(concurrencyToken);
     }
 
     @Override
@@ -188,13 +188,13 @@ public class ServiceItemLease implements Lease {
     @JsonIgnore
     @Override
     public String getConcurrencyToken() {
-        return this.getEtag();
+        return this.getETag();
     }
 
     public static ServiceItemLease fromDocument(Document document) {
         ServiceItemLease lease = new ServiceItemLease()
             .withId(document.getId())
-            .withEtag(document.getETag())
+            .withETag(document.getETag())
             .withTs(document.getString(Constants.Properties.LAST_MODIFIED))
             .withOwner(document.getString("Owner"))
             .withLeaseToken(document.getString("LeaseToken"))
@@ -211,7 +211,7 @@ public class ServiceItemLease implements Lease {
     public static ServiceItemLease fromDocument(CosmosItemProperties document) {
         ServiceItemLease lease = new ServiceItemLease()
             .withId(document.getId())
-            .withEtag(document.getETag())
+            .withETag(document.getETag())
             .withTs(document.getString(Constants.Properties.LAST_MODIFIED))
             .withOwner(document.getString("Owner"))
             .withLeaseToken(document.getString("LeaseToken"))

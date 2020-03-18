@@ -191,7 +191,7 @@ public class TestSuiteBase extends DocumentClientTest {
                             List<String> pkPath = PathParser.getPathParts(paths.get(0));
                             Object propertyValue = doc.getObjectByPath(pkPath);
                             if (propertyValue == null) {
-                                propertyValue = Undefined.Value();
+                                propertyValue = Undefined.value();
                             }
 
                             requestOptions.setPartitionKey(new PartitionKey(propertyValue));
