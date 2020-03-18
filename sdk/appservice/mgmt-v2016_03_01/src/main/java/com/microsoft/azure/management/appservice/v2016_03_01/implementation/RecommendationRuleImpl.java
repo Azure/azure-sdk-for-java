@@ -16,14 +16,14 @@ import java.util.UUID;
 import java.util.List;
 
 class RecommendationRuleImpl extends WrapperImpl<RecommendationRuleInner> implements RecommendationRule {
-    private final AppServiceManager manager;
-    RecommendationRuleImpl(RecommendationRuleInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    RecommendationRuleImpl(RecommendationRuleInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
