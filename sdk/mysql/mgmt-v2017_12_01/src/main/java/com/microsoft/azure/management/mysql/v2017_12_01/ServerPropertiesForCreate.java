@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The properties used to create a new server.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "createMode")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "createMode", defaultImpl = ServerPropertiesForCreate.class)
 @JsonTypeName("ServerPropertiesForCreate")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Default", value = ServerPropertiesForDefaultCreate.class),
@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 })
 public class ServerPropertiesForCreate {
     /**
-     * Server version. Possible values include: '5.6', '5.7'.
+     * Server version. Possible values include: '5.6', '5.7', '8.0'.
      */
     @JsonProperty(value = "version")
     private ServerVersion version;
@@ -39,13 +39,35 @@ public class ServerPropertiesForCreate {
     private SslEnforcementEnum sslEnforcement;
 
     /**
+     * Enforce a minimal Tls version for the server. Possible values include:
+     * 'TLS1_0', 'TLS1_1', 'TLS1_2', 'TLSEnforcementDisabled'.
+     */
+    @JsonProperty(value = "minimalTlsVersion")
+    private MinimalTlsVersionEnum minimalTlsVersion;
+
+    /**
+     * Status showing whether the server enabled infrastructure encryption.
+     * Possible values include: 'Enabled', 'Disabled'.
+     */
+    @JsonProperty(value = "infrastructureEncryption")
+    private InfrastructureEncryption infrastructureEncryption;
+
+    /**
+     * Whether or not public network access is allowed for this server. Value
+     * is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible
+     * values include: 'Enabled', 'Disabled'.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccessEnum publicNetworkAccess;
+
+    /**
      * Storage profile of a server.
      */
     @JsonProperty(value = "storageProfile")
     private StorageProfile storageProfile;
 
     /**
-     * Get server version. Possible values include: '5.6', '5.7'.
+     * Get server version. Possible values include: '5.6', '5.7', '8.0'.
      *
      * @return the version value
      */
@@ -54,7 +76,7 @@ public class ServerPropertiesForCreate {
     }
 
     /**
-     * Set server version. Possible values include: '5.6', '5.7'.
+     * Set server version. Possible values include: '5.6', '5.7', '8.0'.
      *
      * @param version the version value to set
      * @return the ServerPropertiesForCreate object itself.
@@ -81,6 +103,66 @@ public class ServerPropertiesForCreate {
      */
     public ServerPropertiesForCreate withSslEnforcement(SslEnforcementEnum sslEnforcement) {
         this.sslEnforcement = sslEnforcement;
+        return this;
+    }
+
+    /**
+     * Get enforce a minimal Tls version for the server. Possible values include: 'TLS1_0', 'TLS1_1', 'TLS1_2', 'TLSEnforcementDisabled'.
+     *
+     * @return the minimalTlsVersion value
+     */
+    public MinimalTlsVersionEnum minimalTlsVersion() {
+        return this.minimalTlsVersion;
+    }
+
+    /**
+     * Set enforce a minimal Tls version for the server. Possible values include: 'TLS1_0', 'TLS1_1', 'TLS1_2', 'TLSEnforcementDisabled'.
+     *
+     * @param minimalTlsVersion the minimalTlsVersion value to set
+     * @return the ServerPropertiesForCreate object itself.
+     */
+    public ServerPropertiesForCreate withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
+        this.minimalTlsVersion = minimalTlsVersion;
+        return this;
+    }
+
+    /**
+     * Get status showing whether the server enabled infrastructure encryption. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @return the infrastructureEncryption value
+     */
+    public InfrastructureEncryption infrastructureEncryption() {
+        return this.infrastructureEncryption;
+    }
+
+    /**
+     * Set status showing whether the server enabled infrastructure encryption. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @param infrastructureEncryption the infrastructureEncryption value to set
+     * @return the ServerPropertiesForCreate object itself.
+     */
+    public ServerPropertiesForCreate withInfrastructureEncryption(InfrastructureEncryption infrastructureEncryption) {
+        this.infrastructureEncryption = infrastructureEncryption;
+        return this;
+    }
+
+    /**
+     * Get whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @return the publicNetworkAccess value
+     */
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set
+     * @return the ServerPropertiesForCreate object itself.
+     */
+    public ServerPropertiesForCreate withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 
