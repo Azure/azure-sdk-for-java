@@ -160,15 +160,6 @@ public class ServiceBusMessage {
     }
 
     /**
-     * Returns message body as UTF-8 decoded string.
-     *
-     * @return UTF-8 decoded string representation of the message.
-     */
-    public String getBodyAsString() {
-        return new String(body, UTF_8);
-    }
-
-    /**
      * Gets the content type of the message.
      *
      * @return the contentType of the {@link ServiceBusMessage}.

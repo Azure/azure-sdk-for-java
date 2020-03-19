@@ -20,7 +20,6 @@ import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient
 import com.azure.storage.file.share.specialized.ShareLeaseClient
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder
 import reactor.core.publisher.Flux
-import org.junit.jupiter.api.Test
 import spock.lang.Specification
 
 import java.nio.ByteBuffer
@@ -45,7 +44,7 @@ class APISpec extends Specification {
 
     public static final String defaultEndpointTemplate = "https://%s.file.core.windows.net/"
 
-    static def PREMIUM_STORAGE = "PREMIUM_FILE_STORAGE_"
+    static def PREMIUM_STORAGE = "PREMIUM_STORAGE_FILE_"
     static StorageSharedKeyCredential premiumCredential
 
     static def PRIMARY_STORAGE = "AZURE_STORAGE_FILE_"

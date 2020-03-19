@@ -93,7 +93,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-      <version>3.3.2.RELEASE</version> <!-- {x-version-update;cosmos_io.projectreactor:reactor-core;external_dependency} -->
+      <version>3.3.3.RELEASE</version> <!-- {x-version-update;cosmos_io.projectreactor:reactor-core;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>io.netty</groupId>
@@ -247,7 +247,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
-      <version>0.9.4.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+      <version>0.9.5.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -261,17 +261,6 @@ Licensed under the MIT License.
 
   <build>
     <plugins>
-
-      <!-- CosmosSkip - Needed temporary false values to not fail. -->
-      <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>3.1.12.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-        <configuration>
-          <failOnError>false</failOnError>
-        </configuration>
-      </plugin>
-
       <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
       <!-- This can only be enabled once we release GA, as it needs a stable version to check for breaking changes. -->
       <plugin>

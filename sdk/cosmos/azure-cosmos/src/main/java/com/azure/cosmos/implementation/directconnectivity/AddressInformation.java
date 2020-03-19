@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -66,7 +67,7 @@ public class AddressInformation {
 
         Objects.requireNonNull(scheme, "scheme");
 
-        switch (scheme.toLowerCase()) {
+        switch (scheme.toLowerCase(Locale.ROOT)) {
             case "https":
                 return Protocol.HTTPS;
             case "rntbd":

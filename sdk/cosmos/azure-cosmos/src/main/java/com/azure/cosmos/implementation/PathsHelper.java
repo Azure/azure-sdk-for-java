@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Used internally to provide utility methods to work with the resource's path in the Azure Cosmos DB database service.
@@ -465,7 +466,7 @@ public class PathsHelper {
             return false;
         }
 
-        switch (resourcePathSegment.toLowerCase()) {
+        switch (resourcePathSegment.toLowerCase(Locale.ROOT)) {
             case Paths.ATTACHMENTS_PATH_SEGMENT:
             case Paths.COLLECTIONS_PATH_SEGMENT:
             case Paths.DATABASES_PATH_SEGMENT:

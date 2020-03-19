@@ -27,7 +27,7 @@ public interface CollectionRoutingMap {
 
     IServerIdentity tryGetInfoByPartitionKeyRangeId(String partitionKeyRangeId);
 
-    boolean IsGone(String partitionKeyRangeId);
+    boolean isGone(String partitionKeyRangeId);
 
     String getCollectionUniqueId();
 

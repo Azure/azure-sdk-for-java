@@ -21,7 +21,7 @@
 /sdk/identity/                                      @schaabs @g2vinay @jianghaolu
 /sdk/keyvault/                                      @g2vinay @samvaity
 /sdk/search/                                        @alzimmermsft @sima-zhu
-/sdk/servicebus/                                    @yvgopal @nemakam
+/sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey
 /sdk/storage/                                       @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
 /sdk/textanalytics/                                 @samvaity @mssfang
 

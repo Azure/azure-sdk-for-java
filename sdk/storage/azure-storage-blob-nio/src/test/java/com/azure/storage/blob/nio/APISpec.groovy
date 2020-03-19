@@ -25,6 +25,7 @@ import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.ListBlobContainersOptions
+import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import reactor.core.publisher.Flux
@@ -37,6 +38,8 @@ import spock.lang.Timeout
 import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.StandardCharsets
+import java.nio.file.FileSystem
+import java.nio.file.Path
 import java.nio.file.attribute.FileAttribute
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -168,7 +171,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
             return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
-            accountKey = "astorageaccountkey"
+            return "astorageaccountkey"
         }
     }
 
@@ -176,7 +179,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
             return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
         } else {
-            accountName = "azstoragesdkaccount"
+            return "azstoragesdkaccount"
         }
     }
 
@@ -357,6 +360,10 @@ class APISpec extends Specification {
     Map<String, Object> initializeConfigMap() {
         def config = [:]
         config[AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT] = getHttpClient()
+        if (testMode == TestMode.RECORD) {
+            config[AzureFileSystem.AZURE_STORAGE_HTTP_POLICIES] =
+                [interceptorManager.getRecordPolicy()] as HttpPipelinePolicy[]
+        }
         config[AzureFileSystem.AZURE_STORAGE_USE_HTTPS] = defaultEndpointTemplate.startsWith("https")
         return config as Map<String, Object>
     }
@@ -481,8 +488,44 @@ class APISpec extends Specification {
         }
     }
 
-    def rootToContainer(String root) {
+    def rootNameToContainerName(String root) {
         return root.substring(0, root.length() - 1)
+    }
+
+    def rootNameToContainerClient(String root) {
+        return primaryBlobServiceClient.getBlobContainerClient(rootNameToContainerName(root))
+    }
+
+    def getNonDefaultRootDir(FileSystem fs) {
+        for (Path dir : fs.getRootDirectories()) {
+            if (!dir.equals(((AzureFileSystem) fs).getDefaultDirectory())) {
+                return dir.toString()
+            }
+        }
+        throw new Exception("File system only contains the default directory");
+    }
+
+    def getDefaultDir(FileSystem fs) {
+        return ((AzureFileSystem) fs).getDefaultDirectory().toString()
+    }
+
+    def getPathWithDepth(int depth) {
+        def pathStr = ""
+        for (int i = 0; i < depth; i++) {
+            pathStr += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
+        }
+        return pathStr
+    }
+
+    def putDirectoryBlob(BlockBlobClient blobClient) {
+        blobClient.commitBlockListWithResponse(Collections.emptyList(), null,
+            [(AzureFileSystemProvider.DIR_METADATA_MARKER): "true"], null, null, null, null)
+    }
+
+    def checkBlobIsDir(BlobClient blobClient) {
+         String isDir = blobClient.getPropertiesWithResponse(null, null, null)
+             .getValue().getMetadata().get(AzureFileSystemProvider.DIR_METADATA_MARKER)
+        return isDir != null && isDir == "true"
     }
 
     static class TestFileAttribute<T> implements  FileAttribute<T> {

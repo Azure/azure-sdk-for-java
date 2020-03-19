@@ -22,7 +22,7 @@ public class PartitionKeyTest {
     @DataProvider(name = "paramProvider")
     public Object[][] paramProvider() {
         return new Object[][] {
-                { Undefined.Value(), "[{}]" },
+                { Undefined.value(), "[{}]" },
                 { null, "[null]"},
                 { false, "[false]"},
                 { true, "[true]"},

@@ -8,6 +8,8 @@ import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.util.Locale;
+
 /**
  * Represents a per-User Permission to access a specific resource e.g. Document or Collection in the Azure Cosmos DB
  * database service.
@@ -75,7 +77,7 @@ public final class Permission extends Resource {
      */
     public void setPermissionMode(PermissionMode permissionMode) {
         BridgeInternal.setProperty(this, Constants.Properties.PERMISSION_MODE,
-                                   permissionMode.toString().toLowerCase());
+                                   permissionMode.toString().toLowerCase(Locale.ROOT));
     }
 
     /**

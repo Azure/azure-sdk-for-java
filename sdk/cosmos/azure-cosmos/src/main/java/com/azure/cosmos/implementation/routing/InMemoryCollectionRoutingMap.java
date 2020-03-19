@@ -196,7 +196,7 @@ public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
     }
 
     @Override
-    public boolean IsGone(String partitionKeyRangeId) {
+    public boolean isGone(String partitionKeyRangeId) {
         return this.goneRanges.contains(partitionKeyRangeId);
     }
 

@@ -33,7 +33,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private final boolean useEtagAsContinuation;
     final boolean nochanges;
     private final ConcurrentMap<String, QueryMetrics> queryMetricsMap;
-    private final String defaultPartition = "0";
+    private final static String defaultPartition = "0";
     private final FeedResponseDiagnostics feedResponseDiagnostics;
 
     FeedResponse(List<T> results, Map<String, String> headers) {

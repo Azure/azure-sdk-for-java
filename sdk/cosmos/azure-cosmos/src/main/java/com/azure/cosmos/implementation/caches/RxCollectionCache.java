@@ -187,7 +187,7 @@ public abstract class RxCollectionCache {
         return mono.doOnSuccess(aVoid -> request.requestContext.resolvedCollectionRid = null);
     }
 
-    private class CollectionRidComparer implements IEqualityComparer<DocumentCollection> {
+    private static class CollectionRidComparer implements IEqualityComparer<DocumentCollection> {
         public boolean areEqual(DocumentCollection left, DocumentCollection right) {
             if (left == null && right == null) {
                 return true;

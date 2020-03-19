@@ -49,7 +49,7 @@ public class PartitionKeyInternalHelper {
     static String toHexEncodedBinaryString(IPartitionKeyComponent... components) {
         ByteBufferOutputStream stream = new ByteBufferOutputStream(MaxPartitionKeyBinarySize);
         for (IPartitionKeyComponent component: components) {
-            component.WriteForBinaryEncoding(stream);
+            component.writeForBinaryEncoding(stream);
         }
 
         return HexConvert.bytesToHex(stream.asByteBuffer());
@@ -58,7 +58,7 @@ public class PartitionKeyInternalHelper {
     static String toHexEncodedBinaryString(List<IPartitionKeyComponent> components) {
         ByteBufferOutputStream stream = new ByteBufferOutputStream(MaxPartitionKeyBinarySize);
         for (IPartitionKeyComponent component: components) {
-            component.WriteForBinaryEncoding(stream);
+            component.writeForBinaryEncoding(stream);
         }
 
         return HexConvert.bytesToHex(stream.asByteBuffer());
@@ -67,7 +67,7 @@ public class PartitionKeyInternalHelper {
     static public String getEffectivePartitionKeyForHashPartitioningV2(PartitionKeyInternal partitionKeyInternal) {
         try(ByteBufferOutputStream byteArrayBuffer = new ByteBufferOutputStream())  {
             for (int i = 0; i < partitionKeyInternal.components.size(); i++) {
-                partitionKeyInternal.components.get(i).WriteForHashingV2(byteArrayBuffer);
+                partitionKeyInternal.components.get(i).writeForHashingV2(byteArrayBuffer);
             }
 
             ByteBuffer byteBuffer = byteArrayBuffer.asByteBuffer();
@@ -90,13 +90,13 @@ public class PartitionKeyInternalHelper {
         IPartitionKeyComponent[] truncatedComponents = new IPartitionKeyComponent[partitionKeyInternal.components.size()];
 
         for (int i = 0; i < truncatedComponents.length; i++) {
-            truncatedComponents[i] = partitionKeyInternal.components.get(i).Truncate();
+            truncatedComponents[i] = partitionKeyInternal.components.get(i).truncate();
         }
 
         double hash;
         try(ByteBufferOutputStream byteArrayBuffer = new ByteBufferOutputStream())  {
             for (int i = 0; i < truncatedComponents.length; i++) {
-                truncatedComponents[i].WriteForHashing(byteArrayBuffer);
+                truncatedComponents[i].writeForHashing(byteArrayBuffer);
             }
 
             ByteBuffer byteBuffer = byteArrayBuffer.asByteBuffer();

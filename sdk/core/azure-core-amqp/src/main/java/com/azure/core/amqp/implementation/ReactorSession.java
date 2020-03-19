@@ -206,7 +206,8 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
-        return createConsumer(linkName, entityPath, timeout, retry, null, null, null)
+        return createConsumer(linkName, entityPath, timeout, retry, null, null, null,
+            SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND)
             .cast(AmqpLink.class);
     }
 
@@ -247,12 +248,15 @@ public class ReactorSession implements AmqpSession {
      * @param receiverProperties Any properties to associate with the receive link when attaching to message
      *     broker.
      * @param receiverDesiredCapabilities Capabilities that the receiver link supports.
+     * @param senderSettleMode Amqp {@link SenderSettleMode} mode for receiver.
+     * @param receiverSettleMode Amqp {@link ReceiverSettleMode} mode for receiver.
      *
      * @return A new instance of an {@link AmqpReceiveLink} with the correct properties set.
      */
     protected Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout,
         AmqpRetryPolicy retry, Map<Symbol, UnknownDescribedType> sourceFilters,
-        Map<Symbol, Object> receiverProperties, Symbol[] receiverDesiredCapabilities) {
+        Map<Symbol, Object> receiverProperties, Symbol[] receiverDesiredCapabilities, SenderSettleMode senderSettleMode,
+        ReceiverSettleMode receiverSettleMode) {
 
         final LinkSubscription<AmqpReceiveLink> existingLink = openReceiveLinks.get(linkName);
         if (existingLink != null) {
@@ -279,7 +283,7 @@ public class ReactorSession implements AmqpSession {
                                 }
 
                                 return getSubscription(linkNameKey, entityPath, sourceFilters, receiverProperties,
-                                    receiverDesiredCapabilities, tokenManager);
+                                    receiverDesiredCapabilities, senderSettleMode, receiverSettleMode, tokenManager);
                             });
 
                         sink.success(computed.getLink());
@@ -288,6 +292,15 @@ public class ReactorSession implements AmqpSession {
                     sink.error(e);
                 }
             })));
+    }
+
+    /**
+     * Given the entity path, associated receiver and link handler, creates the receive link instance.
+     */
+    protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
+        ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
+        return new ReactorReceiver(entityPath, receiver, receiveLinkHandler, tokenManager,
+            reactorProvider.getReactorDispatcher());
     }
 
     /**
@@ -332,7 +345,8 @@ public class ReactorSession implements AmqpSession {
      */
     private LinkSubscription<AmqpReceiveLink> getSubscription(String linkName, String entityPath,
         Map<Symbol, UnknownDescribedType> sourceFilters, Map<Symbol, Object> receiverProperties,
-        Symbol[] receiverDesiredCapabilities, TokenManager tokenManager) {
+        Symbol[] receiverDesiredCapabilities, SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode,
+        TokenManager tokenManager) {
 
         final Receiver receiver = session.receiver(linkName);
         final Source source = new Source();
@@ -348,8 +362,8 @@ public class ReactorSession implements AmqpSession {
         receiver.setTarget(target);
 
         // Use explicit settlement via dispositions (not pre-settled)
-        receiver.setSenderSettleMode(SenderSettleMode.UNSETTLED);
-        receiver.setReceiverSettleMode(ReceiverSettleMode.SECOND);
+        receiver.setSenderSettleMode(senderSettleMode);
+        receiver.setReceiverSettleMode(receiverSettleMode);
 
         if (receiverProperties != null && !receiverProperties.isEmpty()) {
             receiver.setProperties(receiverProperties);
@@ -365,8 +379,8 @@ public class ReactorSession implements AmqpSession {
 
         receiver.open();
 
-        final ReactorReceiver reactorReceiver = new ReactorReceiver(entityPath, receiver, receiveLinkHandler,
-            tokenManager, provider.getReactorDispatcher());
+        final ReactorReceiver reactorReceiver = createConsumer(entityPath, receiver, receiveLinkHandler,
+            tokenManager, provider);
 
         final Disposable subscription = reactorReceiver.getEndpointStates().subscribe(state -> {
         }, error -> {

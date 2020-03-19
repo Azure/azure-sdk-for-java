@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
+import java.util.Locale;
+
 /**
  * Resource types in the Azure Cosmos DB database service.
  */
@@ -65,7 +67,7 @@ public enum ResourceType {
     ResourceType(String stringValue, int value) {
         this.stringValue = stringValue;
         this.value = value;
-        this.toLowerStringValue = stringValue.toLowerCase();
+        this.toLowerStringValue = stringValue.toLowerCase(Locale.ROOT);
     }
 
     @Override
