@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation.caches;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.InvalidPartitionException;
-import com.azure.cosmos.NotFoundException;
+import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceId;
@@ -187,7 +187,7 @@ public abstract class RxCollectionCache {
         return mono.doOnSuccess(aVoid -> request.requestContext.resolvedCollectionRid = null);
     }
 
-    private class CollectionRidComparer implements IEqualityComparer<DocumentCollection> {
+    private static class CollectionRidComparer implements IEqualityComparer<DocumentCollection> {
         public boolean areEqual(DocumentCollection left, DocumentCollection right) {
             if (left == null && right == null) {
                 return true;

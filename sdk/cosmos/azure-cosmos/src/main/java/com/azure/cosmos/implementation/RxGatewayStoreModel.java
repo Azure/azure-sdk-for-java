@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosError;
+import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -29,6 +30,7 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 /**
@@ -146,11 +148,9 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
-            Flux<ByteBuf> byteBufObservable = Flux.empty();
-
-            if (request.getContentAsByteBufFlux() != null){
-                byteBufObservable = request.getContentAsByteBufFlux();
-            }
+            // The RxDocumentServiceRequest::getContentAsByteBufFlux guaranteed to return
+            // a valid flux (including Flux.empty) hence null check is not required here.
+            Flux<ByteBuf> byteBufObservable = request.getContentAsByteBufFlux();
 
             HttpRequest httpRequest = new HttpRequest(method,
                     uri,
@@ -328,7 +328,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             String body = bodyAsBytes != null ? new String(bodyAsBytes) : null;
             CosmosError cosmosError;
-            cosmosError = (StringUtils.isNotEmpty(body)) ? BridgeInternal.createCosmosError(body) : new CosmosError();
+            cosmosError = (StringUtils.isNotEmpty(body)) ? ModelBridgeInternal.createCosmosError(body) : new CosmosError();
             cosmosError = new CosmosError(statusCodeString,
                     String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                     cosmosError.getPartitionedQueryExecutionInfo());
@@ -420,9 +420,9 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     private void applySessionToken(RxDocumentServiceRequest request) {
         Map<String, String> headers = request.getHeaders();
+        Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
 
-        if (headers != null &&
-                !Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
             if (ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
                 request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
             }

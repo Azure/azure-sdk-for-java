@@ -22,7 +22,7 @@ definition, such as text or binary data.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>12.4.0</version>
+    <version>12.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

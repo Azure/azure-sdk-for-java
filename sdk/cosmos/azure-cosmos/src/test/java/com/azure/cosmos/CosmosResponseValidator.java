@@ -2,6 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
+import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosAsyncUserResponse;
+import com.azure.cosmos.models.CosmosResponse;
+import com.azure.cosmos.models.IndexingMode;
+import com.azure.cosmos.models.PermissionMode;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SpatialSpec;
+import com.azure.cosmos.models.SpatialType;
+import com.azure.cosmos.models.TriggerOperation;
+import com.azure.cosmos.models.TriggerType;
 import org.assertj.core.api.Assertions;
 
 import java.util.ArrayList;
@@ -13,6 +29,7 @@ import java.util.Map.Entry;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("rawtypes")
 public interface CosmosResponseValidator<T extends CosmosResponse> {
     void validate(T cosmosResponse);
 
@@ -75,7 +92,7 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
 
         public Builder<T> indexingMode(IndexingMode mode) {
             validators.add(new CosmosResponseValidator<CosmosAsyncContainerResponse>() {
-                
+
                 @Override
                 public void validate(CosmosAsyncContainerResponse resourceResponse) {
                     assertThat(resourceResponse.getProperties()).isNotNull();
@@ -118,29 +135,29 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                     Iterator<List<CompositePath>> compositeIndexesReadIterator = resourceResponse.getProperties()
                             .getIndexingPolicy().getCompositeIndexes().iterator();
                     Iterator<List<CompositePath>> compositeIndexesWrittenIterator = compositeIndexesWritten.iterator();
-                    
+
                     ArrayList<String> readIndexesStrings = new ArrayList<String>();
                     ArrayList<String> writtenIndexesStrings = new ArrayList<String>();
-                    
+
                     while (compositeIndexesReadIterator.hasNext() && compositeIndexesWrittenIterator.hasNext()) {
                         Iterator<CompositePath> compositeIndexReadIterator = compositeIndexesReadIterator.next().iterator();
                         Iterator<CompositePath> compositeIndexWrittenIterator = compositeIndexesWrittenIterator.next().iterator();
 
                         StringBuilder readIndexesString = new StringBuilder();
                         StringBuilder writtenIndexesString = new StringBuilder();
-                        
+
                         while (compositeIndexReadIterator.hasNext() && compositeIndexWrittenIterator.hasNext()) {
                             CompositePath compositePathRead = compositeIndexReadIterator.next();
                             CompositePath compositePathWritten = compositeIndexWrittenIterator.next();
-                            
+
                             readIndexesString.append(compositePathRead.getPath() + ":" + compositePathRead.getOrder() + ";");
                             writtenIndexesString.append(compositePathWritten.getPath() + ":" + compositePathRead.getOrder() + ";");
                         }
-                        
+
                         readIndexesStrings.add(readIndexesString.toString());
                         writtenIndexesStrings.add(writtenIndexesString.toString());
                     }
-                    
+
                     assertThat(readIndexesStrings).containsExactlyInAnyOrderElementsOf(writtenIndexesStrings);
                 }
 
@@ -169,7 +186,7 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
 
                         ArrayList<SpatialType> readSpatialTypes = new ArrayList<SpatialType>();
                         ArrayList<SpatialType> writtenSpatialTypes = new ArrayList<SpatialType>();
-                        
+
                         Iterator<SpatialType> spatialTypesReadIterator = spatialSpecRead.getSpatialTypes().iterator();
                         Iterator<SpatialType> spatialTypesWrittenIterator = spatialSpecWritten.getSpatialTypes().iterator();
 
@@ -177,11 +194,11 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                             readSpatialTypes.add(spatialTypesReadIterator.next());
                             writtenSpatialTypes.add(spatialTypesWrittenIterator.next());
                         }
-                        
+
                         readIndexMap.put(readPath, readSpatialTypes);
                         writtenIndexMap.put(writtenPath, writtenSpatialTypes);
                     }
-                    
+
                     for (Entry<String, ArrayList<SpatialType>> entry : readIndexMap.entrySet()) {
                         Assertions.assertThat(entry.getValue())
                         .containsExactlyInAnyOrderElementsOf(writtenIndexMap.get(entry.getKey()));
@@ -201,7 +218,7 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
             });
             return this;
         }
-        
+
         public Builder<T> notNullEtag() {
             validators.add(new CosmosResponseValidator<T>() {
 

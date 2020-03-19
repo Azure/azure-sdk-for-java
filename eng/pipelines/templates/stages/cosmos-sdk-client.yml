@@ -1,15 +1,15 @@
 parameters:
   Artifacts: []
   ServiceDirectory: not-specified
-  
+
 stages:
   - stage: Build
     jobs:
     - template: ../jobs/archetype-sdk-client.yml
       parameters:
         ServiceDirectory: ${{parameters.ServiceDirectory}}
+        Artifacts: ${{ parameters.Artifacts }}
         SDKType: ${{parameters.SDKType}}
-        Artifacts: ${{parameters.Artifacts}}
         TestMatrix:
           Linux - Java 8:
             OSName: 'Linux'
@@ -19,7 +19,7 @@ stages:
             ProfileFlag: '-Punit'
           macOS - Java 8:
             OSName: 'macOS'
-            OSVmImage: 'macOS-10.13'
+            OSVmImage: 'macOS-10.15'
             JavaVersion: '1.8'
             RunTitle: 'macOS on Java 1.8'
             ProfileFlag: '-Punit'
@@ -37,7 +37,7 @@ stages:
             ProfileFlag: '-Punit'
           macOS - Java 11:
             OSName: 'macOS'
-            OSVmImage: 'macOS-10.13'
+            OSVmImage: 'macOS-10.15'
             JavaVersion: '1.11'
             RunTitle: 'macOS on Java 1.11'
             ProfileFlag: '-Punit'
@@ -62,6 +62,7 @@ stages:
         TestName: Emulator
         DisableAzureResourceCreation: true
         ServiceDirectory: cosmos
+        Artifacts: ${{ parameters.Artifacts }}
         Matrix:
           Tcp_Integration_Tests_Java8:
             OSVmImage: 'windows-2019'
@@ -84,7 +85,7 @@ stages:
             DisplayName: 'Examples Integration Tests'
             PROTOCOLS: '["Https", "Tcp"]'
             DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-
+        MavenTestPomFile: sdk/cosmos/pom.xml
         TestStepMavenInputs:
           goals: 'verify'
           options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
@@ -153,4 +154,3 @@ stages:
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
 
-        

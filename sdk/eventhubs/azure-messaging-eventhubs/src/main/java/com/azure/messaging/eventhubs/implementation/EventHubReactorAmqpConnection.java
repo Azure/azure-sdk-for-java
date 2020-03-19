@@ -16,12 +16,16 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
+import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
+import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -39,13 +43,15 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      * load balance messages is the eventHubName.
      */
     private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
-    private final Mono<EventHubManagementNode> managementChannelMono;
     private final String connectionId;
+    private final String eventHubName;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
     private final TokenManagerProvider tokenManagerProvider;
     private final AmqpRetryOptions retryOptions;
     private final MessageSerializer messageSerializer;
+    private final TokenCredential tokenCredential;
+    private final Scheduler scheduler;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -57,27 +63,21 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
      * @param messageSerializer Serializes and deserializes proton-j messages.
      */
-    public EventHubReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
+    public EventHubReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions, String eventHubName,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
         String clientVersion) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
-            messageSerializer, product, clientVersion);
+            messageSerializer, product, clientVersion, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
         this.connectionId = connectionId;
+        this.eventHubName = eventHubName;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = tokenManagerProvider;
         this.retryOptions = connectionOptions.getRetry();
         this.messageSerializer = messageSerializer;
-
-        this.managementChannelMono = getReactorConnection().then(
-            Mono.fromCallable(() -> {
-                return (EventHubManagementNode) new ManagementChannel(
-                    createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
-                    connectionOptions.getEntityPath(), connectionOptions.getTokenCredential(),
-                    this.tokenManagerProvider, this.messageSerializer, connectionOptions.getScheduler());
-            }))
-            .cache();
+        this.tokenCredential = connectionOptions.getTokenCredential();
+        this.scheduler = connectionOptions.getScheduler();
     }
 
     @Override
@@ -87,7 +87,9 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
                 "connectionId[%s]: Connection is disposed. Cannot get management instance", connectionId))));
         }
 
-        return managementChannelMono;
+        return Mono.defer(() -> getReactorConnection().thenReturn(new ManagementChannel(
+                createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
+                eventHubName, tokenCredential, tokenManagerProvider, this.messageSerializer, scheduler)));
     }
 
     /**

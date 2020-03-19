@@ -14,6 +14,13 @@ import com.azure.cosmos.implementation.directconnectivity.SharedTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -120,13 +127,13 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         String newPropValue = UUID.randomUUID().toString();
         BridgeInternal.setProperty(properties, "newProp", newPropValue);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setPartitionKey(new PartitionKey(properties.get("mypk")));
+        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(properties.get("mypk")));
         // replace document
         CosmosItemResponse<CosmosItemProperties> replace = container1.replaceItem(properties,
                                                               properties.getId(),
                                                               new PartitionKey(properties.get("mypk")),
                                                               options);
-        assertThat(replace.getProperties().get("newProp")).isEqualTo(newPropValue);
+        assertThat(BridgeInternal.getProperties(replace).get("newProp")).isEqualTo(newPropValue);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -135,7 +142,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         CosmosItemResponse<CosmosItemProperties> itemResponse = container1.createItem(properties);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
-        CosmosItemResponse<CosmosItemProperties> deleteResponse = container1.deleteItem(properties.getId(),
+        CosmosItemResponse<?> deleteResponse = container1.deleteItem(properties.getId(),
                                                                     new PartitionKey(properties.get("mypk")),
                                                                     options);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
@@ -230,8 +237,8 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
     private void validateItemResponse(CosmosItemProperties containerProperties,
                                       CosmosItemResponse<CosmosItemProperties> createResponse) {
         // Basic validation
-        assertThat(createResponse.getProperties().getId()).isNotNull();
-        assertThat(createResponse.getProperties().getId())
+        assertThat(BridgeInternal.getProperties(createResponse).getId()).isNotNull();
+        assertThat(BridgeInternal.getProperties(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(containerProperties.getId());
     }

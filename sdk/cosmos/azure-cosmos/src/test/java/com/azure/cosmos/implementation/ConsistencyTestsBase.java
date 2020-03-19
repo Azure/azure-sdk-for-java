@@ -4,16 +4,16 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.AccessCondition;
-import com.azure.cosmos.AccessConditionType;
+import com.azure.cosmos.models.AccessCondition;
+import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.PartitionKind;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKind;
+import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
@@ -77,10 +77,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(documentDefinition.get("mypk")));
         Document document = createDocument(this.writeClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
-        ResourceResponse response = this.writeClient.deleteDocument(document.getSelfLink(), options).single().block();
+        ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options).single().block();
         assertThat(response.getStatusCode()).isEqualTo(204);
 
-        long quorumAckedLSN = Long.parseLong((String) response.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
+        long quorumAckedLSN = Long.parseLong(response.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
         assertThat(quorumAckedLSN > 0).isTrue();
         FailureValidator validator = new FailureValidator.Builder().statusCode(404).lsnGreaterThan(quorumAckedLSN).build();
         Mono<ResourceResponse<Document>> readObservable = this.readClient.readDocument(document.getSelfLink(), options);
@@ -92,10 +92,10 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(documentDefinition.get("mypk")));
         Document document = createDocument(this.writeClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
-        ResourceResponse response = this.writeClient.deleteDocument(document.getSelfLink(), options).single().block();
+        ResourceResponse<Document> response = this.writeClient.deleteDocument(document.getSelfLink(), options).single().block();
         assertThat(response.getStatusCode()).isEqualTo(204);
 
-        long quorumAckedLSN = Long.parseLong((String) response.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
+        long quorumAckedLSN = Long.parseLong(response.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
         assertThat(quorumAckedLSN > 0).isTrue();
 
         FailureValidator validator = new FailureValidator.Builder().statusCode(404).lsnGreaterThanEqualsTo(quorumAckedLSN).exceptionQuorumAckedLSNInNotNull().build();
@@ -765,6 +765,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         return String.format("%s:%s", tokenParts[0], differentSessionToken.convertToString());
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static ISessionToken createSessionToken(ISessionToken from, long globalLSN) throws Exception {
         // Creates session token with specified GlobalLSN
         if (from instanceof VectorSessionToken) {
@@ -797,6 +798,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         return doc;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private boolean isSessionEqual(SessionContainer sessionContainer1, SessionContainer sessionContainer2) throws Exception {
         if (sessionContainer1 == null) {
             return false;

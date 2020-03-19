@@ -141,6 +141,7 @@ public class QuorumReaderTest {
     }
 
     @Test(groups = "unit", dataProvider = "readStrong_RequestBarrierArgProvider")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void readStrong_OnlySecondary_RequestBarrier_Success(int numberOfBarrierRequestTillCatchUp) {
         // scenario: we get lsn l1, l2 where l1 > l2
         // we do barrier request and send it to all replicas till we have two replicas with at least l1 lsn
@@ -285,6 +286,7 @@ public class QuorumReaderTest {
     }
 
     @Test(groups = "unit", dataProvider = "readStrong_SecondaryReadBarrierExhausted_ReadBarrierOnPrimary_SuccessArgProvider")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void readStrong_SecondaryReadBarrierExhausted_ReadBarrierOnPrimary_Success(int numberOfHeadBarriersWithPrimaryIncludedTillQuorumMet) {
         // scenario: we exhaust all barrier request retries on secondaries
         // after that we start barrier requests including the primary
@@ -445,6 +447,7 @@ public class QuorumReaderTest {
     }
 
     @Test(groups = "unit")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void readStrong_QuorumNotSelected_ReadPrimary() {
         // scenario: attempts to read from secondaries,
         // only one secondary is available so ends in QuorumNotSelected State

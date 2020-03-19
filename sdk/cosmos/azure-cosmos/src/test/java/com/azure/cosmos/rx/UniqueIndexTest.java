@@ -10,20 +10,20 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.CosmosItemRequestOptions;
-import com.azure.cosmos.DataType;
-import com.azure.cosmos.ExcludedPath;
-import com.azure.cosmos.HashIndex;
-import com.azure.cosmos.IncludedPath;
-import com.azure.cosmos.IndexingMode;
-import com.azure.cosmos.IndexingPolicy;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.UniqueKey;
-import com.azure.cosmos.UniqueKeyPolicy;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.DataType;
+import com.azure.cosmos.models.ExcludedPath;
+import com.azure.cosmos.models.HashIndex;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.IndexingMode;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.UniqueKey;
+import com.azure.cosmos.models.UniqueKeyPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -66,7 +66,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
-        uniqueKeyPolicy.uniqueKeys(Lists.newArrayList(uniqueKey));
+        uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
@@ -125,7 +125,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
-        uniqueKeyPolicy.uniqueKeys(Lists.newArrayList(uniqueKey));
+        uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
         collection = database.createContainer(collectionDefinition).block().getContainer();
@@ -149,7 +149,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         doc2Replacement.setId( doc2Inserted.getId());
 
         try {
-            collection.replaceItem(doc2Replacement, doc2Inserted.getId(), PartitionKey.NONE, 
+            collection.replaceItem(doc2Replacement, doc2Inserted.getId(), PartitionKey.NONE,
                                new CosmosItemRequestOptions()).block(); // REPLACE doc2 with values from doc1 -- Conflict.
             fail("Did not throw due to unique constraint");
         }
@@ -175,7 +175,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
         UniqueKey uniqueKey = new UniqueKey();
         uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
-        uniqueKeyPolicy.uniqueKeys(Lists.newArrayList(uniqueKey));
+        uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
@@ -200,10 +200,10 @@ public class UniqueIndexTest extends TestSuiteBase {
         CosmosContainerProperties collection = createdCollection.read().block().getProperties();
 
         assertThat(collection.getUniqueKeyPolicy()).isNotNull();
-        assertThat(collection.getUniqueKeyPolicy().uniqueKeys()).isNotNull();
-        assertThat(collection.getUniqueKeyPolicy().uniqueKeys())
-                .hasSameSizeAs(collectionDefinition.getUniqueKeyPolicy().uniqueKeys());
-        assertThat(collection.getUniqueKeyPolicy().uniqueKeys()
+        assertThat(collection.getUniqueKeyPolicy().getUniqueKeys()).isNotNull();
+        assertThat(collection.getUniqueKeyPolicy().getUniqueKeys())
+                .hasSameSizeAs(collectionDefinition.getUniqueKeyPolicy().getUniqueKeys());
+        assertThat(collection.getUniqueKeyPolicy().getUniqueKeys()
                 .stream().map(ui -> ui.getPaths()).collect(Collectors.toList()))
                 .containsExactlyElementsOf(
                         ImmutableList.of(ImmutableList.of("/name", "/description")));

@@ -5,12 +5,10 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.DatabaseAccount;
-import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.models.DatabaseAccount;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import org.apache.commons.collections4.list.UnmodifiableList;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -24,7 +22,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -59,7 +56,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                             Collections.emptyList()
                     ),
                     owner.getServiceEndpoint(),
-                    connectionPolicy.getEnableEndpointDiscovery(),
+                    connectionPolicy.isEndpointDiscoveryEnabled(),
                     BridgeInternal.getUseMultipleWriteLocations(connectionPolicy),
                     configs);
 
@@ -125,7 +122,7 @@ public class GlobalEndpointManager implements AutoCloseable {
         this.locationCache.markEndpointUnavailableForWrite(endpoint);
     }
 
-    public boolean CanUseMultipleWriteLocations(RxDocumentServiceRequest request) {
+    public boolean canUseMultipleWriteLocations(RxDocumentServiceRequest request) {
         return this.locationCache.canUseMultipleWriteLocations(request);
     }
 

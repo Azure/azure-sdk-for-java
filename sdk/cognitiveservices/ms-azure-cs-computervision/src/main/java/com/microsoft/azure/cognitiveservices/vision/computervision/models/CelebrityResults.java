@@ -12,11 +12,11 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * List of celebrities recognized in the image.
+ * Result of domain-specific classifications for the domain of celebrities.
  */
 public class CelebrityResults {
     /**
-     * The celebrities property.
+     * List of celebrities recognized in the image.
      */
     @JsonProperty(value = "celebrities")
     private List<CelebritiesModel> celebrities;

@@ -2,12 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.models.FeedOptions;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.fasterxml.uuid.EthernetAddress;
 import com.fasterxml.uuid.Generators;
@@ -15,13 +16,14 @@ import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import io.netty.buffer.ByteBuf;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -65,12 +67,17 @@ public class Utils {
         Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
     }
 
-    public static byte[] getUTF8Bytes(String str) {
-        try {
-            return str.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+    public static byte[] getUTF8BytesOrNull(String str) {
+        if (str == null) {
+            return null;
         }
+
+        return str.getBytes(StandardCharsets.UTF_8);
+    }
+
+    public static byte[] getUTF8Bytes(String str) {
+        return str.getBytes(StandardCharsets.UTF_8);
+
     }
 
     public static String encodeBase64String(byte[] binaryData) {
@@ -567,12 +574,12 @@ public class Utils {
         return bytes == null || bytes.length == 0;
     }
 
-    public static String utf8StringFrom(byte[] bytes) {
+    public static String utf8StringFromOrNull(byte[] bytes) {
         if (bytes == null) {
             return null;
         }
 
-        return new String(bytes);
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 
     public static void setContinuationTokenAndMaxItemCount(CosmosPagedFluxOptions pagedFluxOptions, FeedOptions feedOptions) {
@@ -595,7 +602,7 @@ public class Utils {
             if (val > 127) {
                 if (sb == null) {
                     sb = new StringBuilder(partitionKeyJson.length());
-                    sb.append(partitionKeyJson.substring(0, i));
+                    sb.append(partitionKeyJson, 0, i);
                 }
                 sb.append("\\u").append(String.format("%04X", val));
             } else {
@@ -617,5 +624,13 @@ public class Utils {
         byte[] bytes = new byte[buf.readableBytes()];
         buf.readBytes(bytes);
         return bytes;
+    }
+
+    public static String toJson(ObjectMapper mapper, ObjectNode object) {
+        try {
+            return mapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Unable to convert JSON to STRING", e);
+        }
     }
 }

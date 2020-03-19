@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.ChangeFeedProcessor;
-import com.azure.cosmos.ChangeFeedProcessorOptions;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -352,7 +352,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
 
                     String leasePrefix = this.getLeasePrefix();
 
-                    return LeaseStoreManager.Builder()
+                    return LeaseStoreManager.builder()
                         .leasePrefix(leasePrefix)
                         .leaseCollectionLink(this.leaseContextClient.getContainerClient())
                         .leaseContextClient(this.leaseContextClient)

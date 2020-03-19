@@ -3,8 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.JsonSerializable;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -109,8 +108,8 @@ public class CosmosItemProperties extends Resource {
      * @return the object
      * @throws IOException the io exception
      */
-    public <T> T getObject(Class<?> klass) throws IOException {
-        return (T) MAPPER.readValue(this.toJson(), klass);
+    public <T> T getObject(Class<T> klass) throws IOException {
+        return MAPPER.readValue(this.toJson(), klass);
     }
 
 }

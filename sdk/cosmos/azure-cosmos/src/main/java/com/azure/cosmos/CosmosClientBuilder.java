@@ -4,7 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.models.Permission;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -34,11 +34,14 @@ public class CosmosClientBuilder {
     private ConnectionPolicy connectionPolicy;
     private ConsistencyLevel desiredConsistencyLevel;
     private List<Permission> permissions;
-    private TokenResolver tokenResolver;
+    private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private CosmosKeyCredential cosmosKeyCredential;
     private boolean sessionCapturingOverrideEnabled;
     private boolean connectionReuseAcrossClientsEnabled;
 
+    /**
+     * Instantiates a new Cosmos client builder.
+     */
     public CosmosClientBuilder() {
     }
 
@@ -97,8 +100,8 @@ public class CosmosClientBuilder {
      * When you have multiple instances of Cosmos Client in the same JVM interacting to multiple Cosmos accounts,
      * enabling this allows connection sharing in Direct mode if possible between instances of Cosmos Client.
      *
-     * Please note, when setting this option, the connection configuration (e.g., socket timeout config, idle timeout config)
-     * of the first instantiated client will be used for all other client instances.
+     * Please note, when setting this option, the connection configuration (e.g., socket timeout config, idle timeout
+     * config) of the first instantiated client will be used for all other client instances.
      *
      * @param connectionReuseAcrossClientsEnabled connection sharing
      * @return current cosmosClientBuilder
@@ -125,18 +128,19 @@ public class CosmosClientBuilder {
      *
      * @return the token resolver
      */
-    public TokenResolver getTokenResolver() {
-        return tokenResolver;
+    public CosmosAuthorizationTokenResolver getCosmosAuthorizationTokenResolver() {
+        return cosmosAuthorizationTokenResolver;
     }
 
     /**
      * Sets the token resolver
      *
-     * @param tokenResolver the token resolver
+     * @param cosmosAuthorizationTokenResolver the token resolver
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder setTokenResolver(TokenResolver tokenResolver) {
-        this.tokenResolver = tokenResolver;
+    public CosmosClientBuilder setCosmosAuthorizationTokenResolver(
+        CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
+        this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         return this;
     }
 
@@ -302,7 +306,7 @@ public class CosmosClientBuilder {
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
             this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty())
-                && this.tokenResolver == null && this.cosmosKeyCredential == null,
+                && this.cosmosAuthorizationTokenResolver == null && this.cosmosKeyCredential == null,
             "cannot buildAsyncClient client without any one of key, resource token, permissions, token resolver, and "
                 + "cosmos key credential");
         ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),

@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.InternalServerErrorException;
+import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
@@ -19,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URI;
 
 public class StoreResult {
     private final static Logger logger = LoggerFactory.getLogger(StoreResult.class);
@@ -103,7 +102,7 @@ public class StoreResult {
             throw this.exception;
         }
 
-        if (requestChargeTracker != null && this.isValid) {
+        if (requestChargeTracker != null) {
             StoreResult.setRequestCharge(this.storeResponse, this.exception, requestChargeTracker.getTotalRequestCharge());
         }
 
@@ -161,6 +160,7 @@ public class StoreResult {
                 ", exception: " + BridgeInternal.getInnerErrorMessage(this.exception);
     }
     public static class StoreResultSerializer extends StdSerializer<StoreResult> {
+        private static final long serialVersionUID = 5315472126043077905L;
 
         public StoreResultSerializer(){
             super(StoreResult.class);

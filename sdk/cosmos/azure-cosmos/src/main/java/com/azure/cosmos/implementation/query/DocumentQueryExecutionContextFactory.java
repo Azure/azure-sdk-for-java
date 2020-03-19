@@ -2,13 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.BadRequestException;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CommonsBridgeInternal;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -18,6 +17,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -96,13 +96,12 @@ public class DocumentQueryExecutionContextFactory {
                           // FeedOptions, but have the below condition
                           // for handling ParallelDocumentQueryTest#partitionKeyRangeId
                           if (feedOptions != null && !StringUtils
-                                                          .isEmpty(CommonsBridgeInternal
+                                                          .isEmpty(ModelBridgeInternal
                                                                        .partitionKeyRangeIdInternal(feedOptions))) {
                               partitionKeyRanges = queryExecutionContext
                                                        .getTargetPartitionKeyRangesById(collectionValueHolder.v
                                                                                             .getResourceId(),
-                                                                                        CommonsBridgeInternal
-                                                                                            .partitionKeyRangeIdInternal(feedOptions));
+                                                           ModelBridgeInternal.partitionKeyRangeIdInternal(feedOptions));
                           } else {
                               List<Range<String>> queryRanges =
                                   partitionedQueryExecutionInfo.getQueryRanges();

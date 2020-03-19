@@ -200,6 +200,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      *
      * @param spanName The name of the returned Span.
      * @param context The {@link Context} containing the {@link SpanContext}.
+     *
      * @return The returned {@link Span} and the scope in a {@link Context} object.
      */
     private Context startScopedSpan(String spanName, Context context) {
@@ -215,6 +216,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (span.isRecording()) {
             // If span is sampled in, add additional request attributes
             addSpanRequestAttributes(span, context, spanName);
+
         }
         return context.addData(PARENT_SPAN_KEY, span).addData("scope", TRACER.withSpan(span));
     }
@@ -225,6 +227,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      *
      * @param spanName The name of the returned Span.
      * @param spanContext The remote parent context of the returned Span.
+     *
      * @return A {@link Span} with parent being the remote {@link Span} designated by the {@link SpanContext}.
      */
     private static Span startSpanWithRemoteParent(String spanName, SpanContext spanContext) {
@@ -238,8 +241,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * text and returns in a {@link Context} object.
      *
      * @param span The current tracing span.
-     * @return The {@link Context} containing the {@link SpanContext} and trace-parent of the
-     * current span.
+     *
+     * @return The {@link Context} containing the {@link SpanContext} and trace-parent of the current span.
      */
     private static Context setContextData(Span span) {
         SpanContext spanContext = span.getContext();
@@ -256,28 +259,32 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     private void addSpanRequestAttributes(Span span, Context context, String spanName) {
         Objects.requireNonNull(span, "'span' cannot be null.");
-        span.setAttribute(
-            MESSAGE_BUS_DESTINATION,
-            AttributeValue.stringAttributeValue(getOrDefault(context, ENTITY_PATH_KEY, "", String.class)));
-        span.setAttribute(
-            PEER_ENDPOINT,
-            AttributeValue.stringAttributeValue(getOrDefault(context, HOST_NAME_KEY, "", String.class)));
-        span.setAttribute(
-            AZ_NAMESPACE_KEY,
-            AttributeValue.stringAttributeValue(getOrDefault(context, AZ_TRACING_NAMESPACE_KEY, "", String.class)));
+        String entityPath = getOrDefault(context, ENTITY_PATH_KEY, null, String.class);
+        if (entityPath != null) {
+            span.setAttribute(MESSAGE_BUS_DESTINATION, AttributeValue.stringAttributeValue(entityPath));
+        }
+        String hostName = getOrDefault(context, HOST_NAME_KEY, null, String.class);
+        if (hostName != null) {
+            span.setAttribute(PEER_ENDPOINT, AttributeValue.stringAttributeValue(hostName));
+        }
+        Long messageEnqueuedTime = getOrDefault(context, MESSAGE_ENQUEUED_TIME, null, Long.class);
+        if (messageEnqueuedTime != null) {
+            span.setAttribute(MESSAGE_ENQUEUED_TIME, messageEnqueuedTime);
+        }
     }
 
     /**
-     * Returns a {@link Builder} to create and start a new child {@link Span} with parent being
-     * the designated {@code Span}.
+     * Returns a {@link Builder} to create and start a new child {@link Span} with parent
+     * being the designated {@code Span}.
      *
      * @param spanName The name of the returned Span.
      * @param context The context containing the span and the span name.
+     *
      * @return A {@code Span.Builder} to create and start a new {@code Span}.
      */
     private Builder getSpanBuilder(String spanName, Context context) {
-        Span parentSpan =  getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
-        String spanNameKey =  getOrDefault(context, USER_SPAN_NAME_KEY, null, String.class);
+        Span parentSpan = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
+        String spanNameKey = getOrDefault(context, USER_SPAN_NAME_KEY, null, String.class);
 
         if (spanNameKey == null) {
             spanNameKey = spanName;

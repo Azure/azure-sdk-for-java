@@ -3,21 +3,21 @@
 
 package com.azure.storage.blob.perf;
 
+import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
+
+import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.perf.core.ContainerTest;
 import java.io.IOException;
 import java.io.OutputStream;
-
-import com.azure.perf.test.core.RandomFlux;
-import com.azure.perf.test.core.SizeOptions;
-import com.azure.storage.blob.*;
-import com.azure.storage.blob.perf.core.ContainerTest;
-
 import reactor.core.publisher.Mono;
 
-public class DownloadBlobTest extends ContainerTest<SizeOptions> {
+public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
     private final BlobClient blobClient;
     private final BlobAsyncClient blobAsyncClient;
 
-    public DownloadBlobTest(SizeOptions options) {
+    public DownloadBlobTest(PerfStressOptions options) {
         super(options);
         String blobName = "downloadTest";
         blobClient = blobContainerClient.getBlobClient(blobName);
@@ -27,8 +27,8 @@ public class DownloadBlobTest extends ContainerTest<SizeOptions> {
     // Required resource setup goes here, upload the file to be downloaded during tests.
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
-            .then(blobAsyncClient.upload(RandomFlux.create(options.getSize()), null))
-            .then();
+                   .then(blobAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null))
+                   .then();
     }
 
     // Perform the API call to be tested here
@@ -37,7 +37,7 @@ public class DownloadBlobTest extends ContainerTest<SizeOptions> {
         blobClient.download(new NullOutputStream());
     }
 
-    class NullOutputStream extends OutputStream {
+    static class NullOutputStream extends OutputStream {
         @Override
         public void write(int b) throws IOException {
 
@@ -48,7 +48,9 @@ public class DownloadBlobTest extends ContainerTest<SizeOptions> {
     public Mono<Void> runAsync() {
         return blobAsyncClient.download()
             .map(b -> {
-                b.get(new byte[b.remaining()]);
+                for (int i = 0; i < b.remaining(); i++) {
+                    b.get();
+                }
                 return 1;
             }).then();
     }

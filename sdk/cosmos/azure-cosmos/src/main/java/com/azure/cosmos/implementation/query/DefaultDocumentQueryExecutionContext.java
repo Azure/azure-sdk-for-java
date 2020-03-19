@@ -3,10 +3,10 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -18,7 +18,6 @@ import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -43,7 +42,7 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static com.azure.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
+import static com.azure.cosmos.models.ModelBridgeInternal.partitionKeyRangeIdInternal;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -174,41 +173,6 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                         return tFeedResponse;
                     });
         };
-    }
-
-    private Mono<FeedResponse<T>> executeOnceAsync(DocumentClientRetryPolicy retryPolicyInstance, String continuationToken) {
-        // Don't reuse request, as the rest of client SDK doesn't reuse requests between retries.
-        // The code leaves some temporary garbage in request (in RequestContext etc.),
-        // which shold be erased during retries.
-
-        RxDocumentServiceRequest request = this.createRequestAsync(continuationToken, this.feedOptions.getMaxItemCount());
-        if (retryPolicyInstance != null) {
-            retryPolicyInstance.onBeforeSendRequest(request);
-        }
-
-        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY))
-                || !request.getResourceType().isPartitioned()) {
-            return this.executeRequestAsync(request);
-        }
-
-
-        // TODO: remove this as partition key range id is not relevant
-        // TODO; has to be rx async
-        //CollectionCache collectionCache =  this.client.getCollectionCache();
-
-        // TODO: has to be rx async
-        //DocumentCollection collection =
-        //        collectionCache.resolveCollection(request);
-
-        // TODO: this code is not relevant because partition key range id should not be exposed
-        //            if (!Strings.isNullOrEmpty(super.getPartitionKeyId()))
-        //            {
-        //                request.RouteTo(new PartitionKeyRangeIdentity(collection.ResourceId, base.PartitionKeyRangeId));
-        //                return await this.ExecuteRequestAsync(request);
-        //            }
-
-        request.UseGatewayMode = true;
-        return this.executeRequestAsync(request);
     }
 
     public RxDocumentServiceRequest createRequestAsync(String continuationToken, Integer maxPageSize) {

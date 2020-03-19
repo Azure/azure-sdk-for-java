@@ -3,10 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ChangeFeedOptions;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -25,7 +24,7 @@ import java.util.UUID;
 /**
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
  */
-public class RxDocumentServiceRequest {
+public class RxDocumentServiceRequest implements Cloneable {
     private static final char PREFER_HEADER_SEPERATOR = ';';
     private static final String PREFER_HEADER_VALUE_FORMAT = "%s=%s";
 
@@ -433,29 +432,25 @@ public class RxDocumentServiceRequest {
             QueryCompatibilityMode queryCompatibilityMode,
             Map<String, String> headers) {
         OperationType operation;
-        String queryText;
         switch (queryCompatibilityMode) {
         case SqlQuery:
-            if (querySpec.getParameters() != null && querySpec.getParameters().size() > 0) {
+            // The querySpec.getParameters() method always ensure the returned value is non-null
+            // hence null check is not required here.
+            if (querySpec.getParameters().size() > 0) {
                 throw new IllegalArgumentException(
                         String.format("Unsupported argument in query compatibility mode '{%s}'",
                                 queryCompatibilityMode.toString()));
             }
 
             operation = OperationType.SqlQuery;
-            queryText = querySpec.getQueryText();
-            break;
+            return new RxDocumentServiceRequest(operation, resourceType, relativePath, Utils.getUTF8Bytes(querySpec.getQueryText()), headers, AuthorizationTokenType.PrimaryMasterKey);
 
         case Default:
         case Query:
         default:
             operation = OperationType.Query;
-            queryText = querySpec.toJson();
-            break;
+            return new RxDocumentServiceRequest(operation, resourceType, relativePath, querySpec.serializeJsonToByteBuffer(), headers, AuthorizationTokenType.PrimaryMasterKey);
         }
-
-        byte[] bytes = Utils.getUTF8Bytes(queryText);
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath, bytes, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
     /**
@@ -959,7 +954,7 @@ public class RxDocumentServiceRequest {
         this.headers.put(HttpConstants.HttpHeaders.PREFER, preferHeader);
     }
 
-    public static RxDocumentServiceRequest CreateFromResource(RxDocumentServiceRequest request, Resource modifiedResource) {
+    public static RxDocumentServiceRequest createFromResource(RxDocumentServiceRequest request, Resource modifiedResource) {
         RxDocumentServiceRequest modifiedRequest;
         if (!request.getIsNameBased()) {
             modifiedRequest = RxDocumentServiceRequest.create(request.getOperationType(),
@@ -993,6 +988,7 @@ public class RxDocumentServiceRequest {
         return contentAsByteArray;
     }
 
+    @Override
     public RxDocumentServiceRequest clone() {
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
@@ -1011,7 +1007,7 @@ public class RxDocumentServiceRequest {
         return rxDocumentServiceRequest;
     }
 
-    public void Dispose() {
+    public void dispose() {
         if (this.isDisposed) {
             return;
         }

@@ -10,6 +10,10 @@ jobs:
     parameters:
       TestName: Single_Region_Session
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
@@ -21,14 +25,14 @@ jobs:
         # 59m 59s, timed out
         Http_E2E:
           DisplayName: ReadMyWrites Integration Tests
-          OSVmImage: 'windows-2019'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Session'
         # 59m 59s, timed out
         Session_Tcp_E2E:
           DisplayName: ReadMyWrites Integration Tests
-          OSVmImage: 'windows-2019'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
           DESIRED_CONSISTENCY: 'Session'
@@ -54,6 +58,8 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Session"]'
 
+      MavenTestPomFile: sdk/cosmos/pom.xml
+
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
@@ -70,6 +76,10 @@ jobs:
     parameters:
       TestName: Single_Region_Session_2
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
@@ -116,6 +126,8 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Session"]'
 
+      MavenTestPomFile: sdk/cosmos/pom.xml
+
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
@@ -129,6 +141,10 @@ jobs:
     parameters:
       TestName: Single_Region_Strong_Tcp
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
@@ -183,6 +199,8 @@ jobs:
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
+      MavenTestPomFile: sdk/cosmos/pom.xml
+
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
@@ -197,6 +215,10 @@ jobs:
     parameters:
       TestName: Single_Region_Strong_Https
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
@@ -207,17 +229,29 @@ jobs:
         # 59m 58s, timed out
         Https_E2E:
           DisplayName: Single Region ReadMyWrites
-          OSVmImage: 'windows-2019'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Strong'
+        Bounded_Staleness_Https_E2E:
+          DisplayName: Bounded Staleness Single Region ReadMyWrites
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pe2e'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
+          DESIRED_CONSISTENCY: 'BoundedStaleness'
         # 59m 58s, timed out
         Strong_Tcp_E2E:
           DisplayName: Single Region ReadMyWrites
-          OSVmImage: 'windows-2019'
+          OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
           DESIRED_CONSISTENCY: 'Strong'
+        Bounded_Staleness_Tcp_E2E:
+          DisplayName: Bounded Staleness Single Region ReadMyWrites
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pe2e'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
+          DESIRED_CONSISTENCY: 'BoundedStaleness'
         # 08m 50s, expect passed
         Strong_Https_Fast:
           DisplayName: Strong HTTP Fast
@@ -265,6 +299,8 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
+      MavenTestPomFile: sdk/cosmos/pom.xml
+
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
@@ -279,6 +315,10 @@ jobs:
     parameters:
       TestName: MultiMaster_Multi_Region
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
@@ -294,7 +334,7 @@ jobs:
           DisplayName: Multimaster Multi Region Long
           OSVmImage: 'windows-2019'
           ProfileFlag: '-e -Plong'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
         # 06m 34s, previously failing
         MultiMaster:
           DisplayName: Multimaster Multi Region Multi-Master
@@ -321,6 +361,8 @@ jobs:
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
 
+      MavenTestPomFile: sdk/cosmos/pom.xml
+
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
@@ -335,6 +377,10 @@ jobs:
     parameters:
       TestName: MultiMaster_Single_Region
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
@@ -370,6 +416,8 @@ jobs:
           DisplayName: Multimaster Single Region NonEmulator
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
+
+      MavenTestPomFile: sdk/cosmos/pom.xml
 
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml

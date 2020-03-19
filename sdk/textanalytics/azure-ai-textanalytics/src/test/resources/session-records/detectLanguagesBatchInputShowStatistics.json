@@ -17,7 +17,7 @@
       "x-aml-ta-request-id" : "25923640-7e6f-4e17-93db-625c1851e727",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"statistics\":{\"documentsCount\":3,\"validDocumentsCount\":3,\"erroneousDocumentsCount\":0,\"transactionsCount\":3},\"documents\":[{\"id\":\"0\",\"detectedLanguages\":[{\"name\":\"English\",\"iso6391Name\":\"en\",\"score\":1.0}],\"statistics\":{\"charactersCount\":26,\"transactionsCount\":1}},{\"id\":\"1\",\"detectedLanguages\":[{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"score\":1.0}],\"statistics\":{\"charactersCount\":39,\"transactionsCount\":1}},{\"id\":\"2\",\"detectedLanguages\":[{\"name\":\"(Unknown)\",\"iso6391Name\":\"(Unknown)\",\"score\":0.0}],\"statistics\":{\"charactersCount\":6,\"transactionsCount\":1}}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
+      "Body" : "{\"statistics\":{\"documentsCount\":3,\"validDocumentsCount\":3,\"erroneousDocumentsCount\":0,\"transactionsCount\":3},\"documents\":[{\"id\":\"0\",\"detectedLanguages\":[{\"name\":\"English\",\"iso6391Name\":\"en\",\"score\":1.0}],\"statistics\":{\"charactersCount\":26,\"transactionsCount\":1}},{\"id\":\"1\",\"detectedLanguages\":[{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"score\":1.0}],\"statistics\":{\"charactersCount\":40,\"transactionsCount\":1}},{\"id\":\"2\",\"detectedLanguages\":[{\"name\":\"(Unknown)\",\"iso6391Name\":\"(Unknown)\",\"score\":0.0}],\"statistics\":{\"charactersCount\":6,\"transactionsCount\":1}}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
       "Date" : "Sun, 15 Dec 2019 18:40:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
