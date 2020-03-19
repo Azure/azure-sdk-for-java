@@ -601,8 +601,6 @@
       </build>
     </profile>
   </profiles>
-
-  <!--
   <modules>
     <module>./sdk/batch/microsoft-azure-batch</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs/pom.xml</module>
@@ -618,5 +616,4 @@
     <module>./sdk/servicebus/microsoft-azure-servicebus</module>
     <module>./sdk/storage/microsoft-azure-storage-blob</module>
   </modules>
-  -->
 </project>
