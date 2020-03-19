@@ -10,7 +10,6 @@ stages:
         ServiceDirectory: ${{parameters.ServiceDirectory}}
         Artifacts: ${{ parameters.Artifacts }}
         SDKType: ${{parameters.SDKType}}
-        Artifacts: ${{parameters.Artifacts}}
         TestMatrix:
           Linux - Java 8:
             OSName: 'Linux'
