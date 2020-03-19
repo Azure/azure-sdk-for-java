@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.FeedOptions;

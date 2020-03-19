@@ -16,6 +16,8 @@ import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -332,7 +334,7 @@ public final class CosmosAsyncClient implements Closeable {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
     public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
-        return new CosmosPagedFlux<>(pagedFluxOptions -> {
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
                                         .map(response ->
@@ -383,7 +385,7 @@ public final class CosmosAsyncClient implements Closeable {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
     public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
-        return new CosmosPagedFlux<>(pagedFluxOptions -> {
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                                         .map(response -> BridgeInternal.createFeedResponse(

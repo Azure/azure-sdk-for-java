@@ -22,6 +22,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;

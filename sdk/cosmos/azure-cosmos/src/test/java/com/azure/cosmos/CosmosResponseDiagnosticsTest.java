@@ -86,13 +86,13 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
                     CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosClientException exception) {
-            String diagnostics = exception.getCosmosResponseDiagnostics().toString();
+            String diagnostics = exception.getResponseDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
             assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
             assertThat(diagnostics).contains("\"statusCode\":404");
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
-            assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+            assertThat(exception.getResponseDiagnostics().getRequestLatency()).isNotNull();
             validateTransportRequestTimelineGateway(diagnostics);
         }
     }
@@ -139,10 +139,10 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
                     CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosClientException exception) {
-            String diagnostics = exception.getCosmosResponseDiagnostics().toString();
+            String diagnostics = exception.getResponseDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
-            assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+            assertThat(exception.getResponseDiagnostics().getRequestLatency()).isNotNull();
             // TODO https://github.com/Azure/azure-sdk-for-java/issues/8035
             // uncomment below if above issue is fixed
             //validateTransportRequestTimelineDirect(diagnostics);

@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -49,6 +48,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
 /**
+ * DO NOT USE.
  * This is meant to be used only internally as a bridge access to classes in
  * com.azure.cosmos.model package
  **/

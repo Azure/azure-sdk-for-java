@@ -10,6 +10,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
