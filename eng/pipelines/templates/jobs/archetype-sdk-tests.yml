@@ -96,13 +96,15 @@ jobs:
       - task: Maven@3
         displayName: 'Build and Install'
         inputs:
-          options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -pl $(ProjectList) -am'
+          mavenPomFile: pom.xml
+          goals: 'install'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '$(JavaVersion)'
+          jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'install'
+  
 
       - task: Maven@3
         displayName: $(DisplayName)
