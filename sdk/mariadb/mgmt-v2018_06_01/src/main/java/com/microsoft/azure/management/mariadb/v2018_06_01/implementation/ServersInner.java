@@ -114,7 +114,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Creates a new server or updates an existing server. The update action will overwrite the existing server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -129,7 +129,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Creates a new server or updates an existing server. The update action will overwrite the existing server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -143,7 +143,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Creates a new server or updates an existing server. The update action will overwrite the existing server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -161,7 +161,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Creates a new server or updates an existing server. The update action will overwrite the existing server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -191,7 +191,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Creates a new server or updates an existing server. The update action will overwrite the existing server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -206,7 +206,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Creates a new server or updates an existing server. The update action will overwrite the existing server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -220,7 +220,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Creates a new server or updates an existing server. The update action will overwrite the existing server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -238,7 +238,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Creates a new server or updates an existing server. The update action will overwrite the existing server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -287,7 +287,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Updates an existing server. The request body can contain one to many of the properties present in the normal server definition.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -302,7 +302,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Updates an existing server. The request body can contain one to many of the properties present in the normal server definition.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for updating a server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -316,7 +316,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Updates an existing server. The request body can contain one to many of the properties present in the normal server definition.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -334,7 +334,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Updates an existing server. The request body can contain one to many of the properties present in the normal server definition.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -364,7 +364,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Updates an existing server. The request body can contain one to many of the properties present in the normal server definition.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -379,7 +379,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Updates an existing server. The request body can contain one to many of the properties present in the normal server definition.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for updating a server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -393,7 +393,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Updates an existing server. The request body can contain one to many of the properties present in the normal server definition.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -411,7 +411,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Updates an existing server. The request body can contain one to many of the properties present in the normal server definition.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -459,7 +459,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Deletes a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -472,7 +472,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Deletes a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -485,7 +485,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Deletes a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -502,7 +502,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Deletes a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -527,7 +527,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Deletes a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -540,7 +540,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Deletes a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -553,7 +553,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Deletes a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -570,7 +570,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Deletes a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -614,7 +614,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Gets information about a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -628,7 +628,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Gets information about a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -641,7 +641,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Gets information about a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServerInner object
@@ -658,7 +658,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Gets information about a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ServerInner object
@@ -700,7 +700,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * List all the servers in a given resource group.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @return the PagedList<ServerInner> object if successful.
      */
     public PagedList<ServerInner> listByResourceGroup(String resourceGroupName) {
@@ -718,7 +718,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * List all the servers in a given resource group.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
@@ -729,7 +729,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * List all the servers in a given resource group.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @return the observable to the List&lt;ServerInner&gt; object
      */
     public Observable<Page<ServerInner>> listByResourceGroupAsync(String resourceGroupName) {
@@ -746,7 +746,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * List all the servers in a given resource group.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @return the observable to the List&lt;ServerInner&gt; object
      */
     public Observable<ServiceResponse<List<ServerInner>>> listByResourceGroupWithServiceResponseAsync(String resourceGroupName) {
@@ -869,7 +869,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Restarts a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -882,7 +882,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Restarts a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -895,7 +895,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Restarts a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -912,7 +912,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Restarts a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -937,7 +937,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Restarts a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -950,7 +950,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Restarts a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -963,7 +963,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Restarts a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -980,7 +980,7 @@ public class ServersInner implements InnerSupportsGet<ServerInner>, InnerSupport
     /**
      * Restarts a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
