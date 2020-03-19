@@ -1,7 +1,8 @@
 # Release History
 
 ## 1.0.0-beta.4 (Unreleased)
-
+**Breaking changes**
+- Rename all input parameters `text` to `document`, and `inputTexts` to `documents`.
 
 ## 1.0.0-beta.3 (2020-03-10)
 **New features**

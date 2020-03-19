@@ -129,21 +129,21 @@ The Text Analytics client library provides a [TextAnalyticsClient][text_analytic
 [TextAnalyticsAsyncClient][text_analytics_async_client] to do analysis on batches of documents. It provides both synchronous and
 asynchronous operations to access a specific use of Text Analytics, such as language detection or key phrase extraction.
 
-### Text input
-A **text input**, sometimes called a **document**, is a single unit of input to be analyzed by the predictive models
-in the Text Analytics service. Operations on Text Analytics client may take a single text input or a collection
-of inputs to be analyzed as a batch. 
-See [service limitations][service_input_limitation] for the input, including document length limits, maximum batch size,
+### Input
+A **text input**, also called a **document**, is a single unit of document to be analyzed by the predictive models
+in the Text Analytics service. Operations on Text Analytics client may take a single document or a collection
+of documents to be analyzed as a batch. 
+See [service limitations][service_input_limitation] for the document, including document length limits, maximum batch size,
 and supported text encoding.
 
 ### Return value
 An operation result, such as `AnalyzeSentimentResult`, is the result of a Text Analytics operation, containing a 
-prediction or predictions about a single text input. An operation's result type also may optionally include information
+prediction or predictions about a single document. An operation's result type also may optionally include information
 about the input document and how it was processed. An operation result contains a `isError` property that allows to
-identify if an operation executed was successful or unsuccessful for the given text input. When the operation results
+identify if an operation executed was successful or unsuccessful for the given document. When the operation results
 an error, you can simply call `getError()` to get `TextAnalyticsError` which contains the reason why it is unsuccessful. 
-If you are interested in how many characters in your input text or number of operation transactions been going through,
-simply call `getStatistics()` to get the `TextDocumentStatistics` which contains both information.
+If you are interested in how many characters are in your document, or the number of operation transactions that have gone
+through, simply call `getStatistics()` to get the `TextDocumentStatistics` which contains both information.
 
 ### Return value collection
 An operation result collection, such as `DocumentResultCollection<AnalyzeSentimentResult>`, which is the collection of 
@@ -151,15 +151,15 @@ the result of a Text Analytics analyzing sentiment operation. `DocumentResultCol
 the operation and statistics of the batch documents. Since `DocumentResultCollection<T>` extends `IterableStream<T>`,
 the list of item can be retrieved by streaming or iterating the list.
 
-### Operation on multiple text inputs
-For each supported operation, the Text Analytics client provides method overloads to take a single text input, a batch 
-of text inputs as strings, or a batch of either `TextDocumentInput` or `DetectLanguageInput` objects. The overload 
+### Operation on multiple documents
+For each supported operation, the Text Analytics client provides method overloads to take a single document, a batch 
+of documents as strings, or a batch of either `TextDocumentInput` or `DetectLanguageInput` objects. The overload 
 taking the `TextDocumentInput` or `DetectLanguageInput` batch allows callers to give each document a unique ID, 
 indicate that the documents in the batch are written in different languages, or provide a country hint about the 
 language of the document.
 
 **Note**: It is recommended to use the batch methods when working on production environments as they allow you to send one 
-request with multiple text inputs. This is more performant than sending a request per each text input.
+request with multiple documents. This is more performant than sending a request per each document.
 
 The following are types of text analysis that the service offers:
 
@@ -182,7 +182,7 @@ The following are types of text analysis that the service offers:
 
 3. [Language Detection][language_detection]
     
-    Detect the language of the input text and report a single language code for every document submitted on the request. 
+    Detect the language of the document and report a single language code for every document submitted on the request. 
     The language code is paired with a score indicating the strength of the score.
     A wide range of languages, variants, dialects, and some regional/cultural languages are supported -
     see [supported languages][supported_languages] for full details.
@@ -190,7 +190,7 @@ The following are types of text analysis that the service offers:
 4. [Key Phrase Extraction][key_phrase_extraction]
     
     Extract key phrases to quickly identify the main points in text. 
-    For example, for the input text "The food was delicious and there were wonderful staff", the main talking points returned: "food" and "wonderful staff".
+    For example, for the document "The food was delicious and there were wonderful staff", the main talking points returned: "food" and "wonderful staff".
 
 See [Language and regional support][language_regional_support] for what is currently available for each operation.
 
@@ -219,8 +219,8 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ### Analyze sentiment
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L102-L106 -->
 ```java
-String text = "The hotel was dark and unclean. I like microsoft.";
-DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(text);
+String document = "The hotel was dark and unclean. I like microsoft.";
+DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(document);
 System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentiment());
 documentSentiment.getSentences().forEach(sentenceSentiment ->
     System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment()));
@@ -229,8 +229,8 @@ documentSentiment.getSentences().forEach(sentenceSentiment ->
 ### Detect language
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L113-L116 -->
 ```java
-String inputText = "Bonjour tout le monde";
-DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(inputText);
+String document = "Bonjour tout le monde";
+DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(document);
 System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %f.%n",
     detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
 ```
@@ -238,8 +238,8 @@ System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %f.%n",
 ### Recognize entity
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L123-L126 -->
 ```java
-String text = "Satya Nadella is the CEO of Microsoft";
-textAnalyticsClient.recognizeEntities(text).forEach(entity ->
+String document = "Satya Nadella is the CEO of Microsoft";
+textAnalyticsClient.recognizeEntities(document).forEach(entity ->
     System.out.printf("Recognized entity: %s, category: %s, subCategory: %s, score: %f.%n",
         entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
 ```
@@ -247,8 +247,8 @@ textAnalyticsClient.recognizeEntities(text).forEach(entity ->
 ### Recognize PII (Personally Identifiable Information) entity
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L133-L136 -->
 ```java
-String text = "My SSN is 555-55-5555";
-textAnalyticsClient.recognizePiiEntities(text).forEach(piiEntity ->
+String document = "My SSN is 555-55-5555";
+textAnalyticsClient.recognizePiiEntities(document).forEach(piiEntity ->
     System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %f.%n",
         piiEntity.getText(), piiEntity.getCategory(), piiEntity.getSubCategory(), piiEntity.getConfidenceScore()));
 ```
@@ -257,8 +257,8 @@ textAnalyticsClient.recognizePiiEntities(text).forEach(piiEntity ->
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L143-L150 -->
 
 ```java
-String text = "Old Faithful is a geyser at Yellowstone Park.";
-textAnalyticsClient.recognizeLinkedEntities(text).forEach(linkedEntity -> {
+String document = "Old Faithful is a geyser at Yellowstone Park.";
+textAnalyticsClient.recognizeLinkedEntities(document).forEach(linkedEntity -> {
     System.out.println("Linked Entities:");
     System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
         linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
@@ -269,12 +269,12 @@ textAnalyticsClient.recognizeLinkedEntities(text).forEach(linkedEntity -> {
 ### Extract key phrases
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L157-L159 -->
 ```java
-String text = "My cat might need to see a veterinarian.";
+String document = "My cat might need to see a veterinarian.";
 System.out.println("Extracted phrases:");
-textAnalyticsClient.extractKeyPhrases(text).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
+textAnalyticsClient.extractKeyPhrases(document).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
 ```
 
-Above examples are introduced as the single input examples.
+The above examples cover the scenario of having a single document as input.
 For more examples, such as batch operation, refer to [here][samples_readme].
 
 ## Troubleshooting
@@ -285,13 +285,13 @@ gracefully by catching the exception and display the additional information abou
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L86-L95 -->
 ```java
-List<DetectLanguageInput> inputs = Arrays.asList(
+List<DetectLanguageInput> documents = Arrays.asList(
     new DetectLanguageInput("1", "This is written in English.", "us"),
     new DetectLanguageInput("1", "Este es un documento  escrito en Español.", "es")
 );
 
 try {
-    textAnalyticsClient.detectLanguageBatch(inputs, null, Context.NONE);
+    textAnalyticsClient.detectLanguageBatch(documents, null, Context.NONE);
 } catch (HttpResponseException e) {
     System.out.println(e.getMessage());
 }

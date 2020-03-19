@@ -90,12 +90,16 @@ jobs:
           BuildSHA: $(Build.SourceVersion)
           RepoId: 'Azure/azure-sdk-for-java'
 
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+  
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          mavenPomFile: pom.xml
           goals: 'package'
-          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview -pl $(ProjectList) -am -amd' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -150,11 +154,15 @@ jobs:
           Options: --batch-mode
           MavenOptions: $(MemoryOptions) $(LoggingOptions)
 
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+    
       - task: Maven@3
         displayName: 'Install Module and Run SpotBugs, Checkstyle, RevApi, and Javadoc'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme'
+          mavenPomFile: pom.xml
+          options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
@@ -186,6 +194,10 @@ jobs:
           Options: --batch-mode
           MavenOptions: $(MemoryOptions) $(LoggingOptions)
 
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+
       - task: Maven@3
         displayName: 'Start Jetty'
         condition: succeeded()
@@ -204,8 +216,8 @@ jobs:
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
-          options: ${{ parameters.TestOptions }}
+          mavenPomFile: pom.xml
+          options: ${{ parameters.TestOptions }} -pl $(ProjectList) -am
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)

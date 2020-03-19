@@ -23,10 +23,10 @@ public class DetectLanguageAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that needs be analyzed.
-        String text = "hello world";
+        // The document that needs be analyzed.
+        String document = "hello world";
 
-        client.detectLanguage(text).subscribe(
+        client.detectLanguage(document).subscribe(
             result -> System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %f.%n",
                 result.getName(), result.getIso6391Name(), result.getScore()),
             error -> System.err.println("There was an error detecting language of the text." + error),

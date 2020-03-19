@@ -144,9 +144,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
         Assertions.assertEquals(addedSetting.getValue(), value);
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void defaultPipeline(ConfigurationServiceVersion serviceVersion) {
+    @Test
+    public void defaultPipeline() {
         final String key = "newKey";
         final String value = "newValue";
 
@@ -161,8 +160,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
             .retryPolicy(new RetryPolicy())
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .pipeline(new HttpPipelineBuilder().build())
-            .serviceVersion(serviceVersion);
+            .pipeline(new HttpPipelineBuilder().build());
 
         if (!interceptorManager.isPlaybackMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
@@ -170,10 +168,10 @@ public class ConfigurationClientBuilderTest extends TestBase {
             assertThrows(HttpResponseException.class,
                 () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
         }
-        HttpClient httpClient = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
+        HttpClient defaultHttpClient = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
             : new NettyAsyncHttpClientBuilder().wiretap(true).build();
 
-        clientBuilder.pipeline(null).httpClient(httpClient);
+        clientBuilder.pipeline(null).httpClient(defaultHttpClient);
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
         Assertions.assertEquals(addedSetting.getKey(), key);

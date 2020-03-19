@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 /**
  * This class provides helper methods for common builder patterns.
@@ -47,8 +46,17 @@ public final class BuilderHelper {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private static final Pattern IP_URL_PATTERN = Pattern
-        .compile("(?:\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(?:localhost)");
+    /**
+     * Determines whether or not the passed authority is IP style, that is it is of the format
+     * {@code <host>:<port>}.
+     *
+     * @param authority The authority of a URL.
+     * @throws MalformedURLException If the authority is malformed.
+     * @return Whether the authority is IP style.
+     */
+    public static boolean determineAuthorityIsIpStyle(String authority) throws MalformedURLException {
+        return new URL("http://" +  authority).getPort() != -1;
+    }
 
     /**
      * Parse the endpoint for the account name, queue name, and SAS token query parameters.
@@ -63,7 +71,7 @@ public final class BuilderHelper {
             URL url = new URL(endpoint);
             QueueUrlParts parts = new QueueUrlParts().setScheme(url.getProtocol());
 
-            if (IP_URL_PATTERN.matcher(url.getHost()).find()) {
+            if (determineAuthorityIsIpStyle(url.getAuthority())) {
                 // URL is using an IP pattern of http://127.0.0.1:10000/accountName/queueName
                 // or http://localhost:10000/accountName/queueName
                 String path = url.getPath();

@@ -32,19 +32,19 @@ final class Transforms {
     }
 
     /**
-     * Given a list of inputs will apply the indexing function to it and return the updated list.
+     * Given a list of documents will apply the indexing function to it and return the updated list.
      *
-     * @param textInputs the inputs to apply the mapping function to.
+     * @param documents the inputs to apply the mapping function to.
      * @param mappingFunction the function which applies the index to the incoming input value.
      * @param <T> the type of items being returned in the list.
      * @return The list holding all the generic items combined.
      */
-    static <T> List<T> mapByIndex(Iterable<String> textInputs, BiFunction<String, String, T> mappingFunction) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+    static <T> List<T> mapByIndex(Iterable<String> documents, BiFunction<String, String, T> mappingFunction) {
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
         AtomicInteger i = new AtomicInteger(0);
         List<T> result = new ArrayList<>();
-        textInputs.forEach(textInput ->
-            result.add(mappingFunction.apply(String.valueOf(i.getAndIncrement()), textInput))
+        documents.forEach(document ->
+            result.add(mappingFunction.apply(String.valueOf(i.getAndIncrement()), document))
         );
         return result;
     }
@@ -95,12 +95,12 @@ final class Transforms {
     /**
      * Convert the incoming input {@link TextDocumentInput} to the service expected {@link MultiLanguageInput}.
      *
-     * @param textInputs the user provided input in {@link TextDocumentInput}
+     * @param documents the user provided input in {@link TextDocumentInput}
      * @return the service required input {@link MultiLanguageInput}
      */
-    static List<MultiLanguageInput> toMultiLanguageInput(Iterable<TextDocumentInput> textInputs) {
+    static List<MultiLanguageInput> toMultiLanguageInput(Iterable<TextDocumentInput> documents) {
         List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
-        for (TextDocumentInput textDocumentInput : textInputs) {
+        for (TextDocumentInput textDocumentInput : documents) {
             multiLanguageInputs.add(new MultiLanguageInput().setId(textDocumentInput.getId())
                 .setText(textDocumentInput.getText()).setLanguage(textDocumentInput.getLanguage()));
         }
@@ -122,13 +122,13 @@ final class Transforms {
     /**
      * Convert to a list of {@link LanguageInput} from {@link DetectLanguageInput}.
      *
-     * @param textInputs The list of documents to detect languages for.
+     * @param documents The list of documents to detect languages for.
      *
      * @return a list of {@link LanguageInput}.
      */
-    static List<LanguageInput> toLanguageInput(Iterable<DetectLanguageInput> textInputs) {
+    static List<LanguageInput> toLanguageInput(Iterable<DetectLanguageInput> documents) {
         final List<LanguageInput> multiLanguageInputs = new ArrayList<>();
-        textInputs.forEach(textDocumentInput -> multiLanguageInputs.add(new LanguageInput()
+        documents.forEach(textDocumentInput -> multiLanguageInputs.add(new LanguageInput()
             .setId(textDocumentInput.getId())
             .setText(textDocumentInput.getText())
             .setCountryHint(textDocumentInput.getCountryHint())));

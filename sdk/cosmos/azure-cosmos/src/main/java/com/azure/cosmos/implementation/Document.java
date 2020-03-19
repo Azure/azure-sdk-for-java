@@ -56,7 +56,7 @@ public class Document extends Resource {
         super(jsonString);
     }
 
-    public static Document FromObject(Object document, ObjectMapper objectMapper) {
+    public static Document fromObject(Object document, ObjectMapper objectMapper) {
         Document typedDocument;
         if (document instanceof Document) {
             typedDocument = (Document) document;
