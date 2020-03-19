@@ -347,6 +347,8 @@ public final class RntbdResponse implements ReferenceCounted {
 
     private static class PayloadSerializer extends StdSerializer<ByteBuf> {
 
+        private static final long serialVersionUID = 1717212953958644366L;
+
         PayloadSerializer() {
             super(ByteBuf.class, true);
         }

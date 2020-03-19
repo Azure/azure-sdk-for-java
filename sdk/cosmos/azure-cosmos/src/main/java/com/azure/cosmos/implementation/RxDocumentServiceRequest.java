@@ -24,7 +24,7 @@ import java.util.UUID;
 /**
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
  */
-public class RxDocumentServiceRequest {
+public class RxDocumentServiceRequest implements Cloneable {
     private static final char PREFER_HEADER_SEPERATOR = ';';
     private static final String PREFER_HEADER_VALUE_FORMAT = "%s=%s";
 
@@ -434,7 +434,9 @@ public class RxDocumentServiceRequest {
         OperationType operation;
         switch (queryCompatibilityMode) {
         case SqlQuery:
-            if (querySpec.getParameters() != null && querySpec.getParameters().size() > 0) {
+            // The querySpec.getParameters() method always ensure the returned value is non-null
+            // hence null check is not required here.
+            if (querySpec.getParameters().size() > 0) {
                 throw new IllegalArgumentException(
                         String.format("Unsupported argument in query compatibility mode '{%s}'",
                                 queryCompatibilityMode.toString()));
@@ -952,7 +954,7 @@ public class RxDocumentServiceRequest {
         this.headers.put(HttpConstants.HttpHeaders.PREFER, preferHeader);
     }
 
-    public static RxDocumentServiceRequest CreateFromResource(RxDocumentServiceRequest request, Resource modifiedResource) {
+    public static RxDocumentServiceRequest createFromResource(RxDocumentServiceRequest request, Resource modifiedResource) {
         RxDocumentServiceRequest modifiedRequest;
         if (!request.getIsNameBased()) {
             modifiedRequest = RxDocumentServiceRequest.create(request.getOperationType(),
@@ -986,6 +988,7 @@ public class RxDocumentServiceRequest {
         return contentAsByteArray;
     }
 
+    @Override
     public RxDocumentServiceRequest clone() {
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
@@ -1004,7 +1007,7 @@ public class RxDocumentServiceRequest {
         return rxDocumentServiceRequest;
     }
 
-    public void Dispose() {
+    public void dispose() {
         if (this.isDisposed) {
             return;
         }

@@ -15,9 +15,11 @@ import reactor.test.StepVerifier;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Function;
 
 import static com.azure.messaging.servicebus.TestUtils.createMessageSink;
+import static org.mockito.Mockito.when;
 
 class ServiceBusMessageProcessorTest {
     @Mock
@@ -28,6 +30,11 @@ class ServiceBusMessageProcessorTest {
     private ServiceBusReceivedMessage message3;
     @Mock
     private ServiceBusReceivedMessage message4;
+
+    @Mock
+    private Function<ServiceBusReceivedMessage, Mono<Void>> onComplete;
+    @Mock
+    private Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon;
 
     @BeforeEach
     void setup() {
@@ -51,6 +58,15 @@ class ServiceBusMessageProcessorTest {
         expected.add(message3);
         expected.add(message4);
 
+        final UUID lock1 = UUID.randomUUID();
+        final UUID lock2 = UUID.randomUUID();
+        final UUID lock3 = UUID.randomUUID();
+        final UUID lock4 = UUID.randomUUID();
+        when(message1.getLockToken()).thenReturn(lock1);
+        when(message2.getLockToken()).thenReturn(lock2);
+        when(message3.getLockToken()).thenReturn(lock3);
+        when(message4.getLockToken()).thenReturn(lock4);
+
         final Function<ServiceBusReceivedMessage, Mono<Void>> onCompleteMethod = (item) -> {
             final boolean removed = expected.remove(item);
             Assertions.assertTrue(removed, "Should have been able to remove item from set.");
@@ -58,7 +74,7 @@ class ServiceBusMessageProcessorTest {
         };
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
-            .subscribeWith(new ServiceBusMessageProcessor(true, onCompleteMethod));
+            .subscribeWith(new ServiceBusMessageProcessor(true, onCompleteMethod, onAbandon));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -80,7 +96,7 @@ class ServiceBusMessageProcessorTest {
         };
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
-            .subscribeWith(new ServiceBusMessageProcessor(false, onCompleteMethod));
+            .subscribeWith(new ServiceBusMessageProcessor(false, onCompleteMethod, onAbandon));
 
         // Act & Assert
         StepVerifier.create(processor)

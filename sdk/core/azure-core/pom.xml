@@ -83,7 +83,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-      <version>3.3.0.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+      <version>3.3.3.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
@@ -94,7 +94,7 @@
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-tcnative-boringssl-static</artifactId>
-      <version>2.0.26.Final</version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
+      <version>2.0.27.Final</version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>

@@ -54,15 +54,15 @@ class RecognizePiiEntityAsyncClient {
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
      * which is a paged flux that contains {@link PiiEntity}.
      *
-     * @param text A single document.
+     * @param document A single document.
      * @param language The language code.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link PiiEntity}.
      */
-    TextAnalyticsPagedFlux<PiiEntity> recognizePiiEntities(String text, String language) {
+    TextAnalyticsPagedFlux<PiiEntity> recognizePiiEntities(String document, String language) {
         return new TextAnalyticsPagedFlux<>(() ->
             (continuationToken, pageSize) -> recognizePiiEntitiesBatch(
-                Collections.singletonList(new TextDocumentInput("0", text, language)), null)
+                Collections.singletonList(new TextDocumentInput("0", document, language)), null)
                 .byPage()
                 .map(resOfResult -> {
                     final Iterator<RecognizePiiEntitiesResult> iterator = resOfResult.getValue().iterator();
@@ -88,17 +88,17 @@ class RecognizePiiEntityAsyncClient {
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
      * which is a paged flux that contains {@link RecognizePiiEntitiesResult}.
      *
-     * @param textInputs A list of documents to recognize PII entities for.
+     * @param documents A list of documents to recognize PII entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link RecognizePiiEntitiesResult}.
      */
     TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
-        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-                getRecognizedPiiEntitiesResponseInPage(textInputs, options, context)).flux());
+                getRecognizedPiiEntitiesResponseInPage(documents, options, context)).flux());
         } catch (RuntimeException ex) {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
@@ -108,17 +108,17 @@ class RecognizePiiEntityAsyncClient {
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
      * which is a paged flux that contains {@link RecognizePiiEntitiesResult}.
      *
-     * @param textInputs A list of documents to recognize PII entities for.
+     * @param documents A list of documents to recognize PII entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return the {@link TextAnalyticsPagedFlux} of {@link RecognizePiiEntitiesResult} to be returned by the SDK.
      */
     TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatchWithContext(
-        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            getRecognizedPiiEntitiesResponseInPage(textInputs, options, context).flux());
+            getRecognizedPiiEntitiesResponseInPage(documents, options, context).flux());
     }
 
     /**
@@ -159,16 +159,16 @@ class RecognizePiiEntityAsyncClient {
      * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
      * {@link RecognizePiiEntitiesResult} from a {@link SimpleResponse} of {@link EntitiesResult}.
      *
-     * @param textInputs A list of documents to recognize PII entities for.
+     * @param documents A list of documents to recognize PII entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link RecognizePiiEntitiesResult}.
      */
     private Mono<TextAnalyticsPagedResponse<RecognizePiiEntitiesResult>> getRecognizedPiiEntitiesResponseInPage(
-        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.entitiesRecognitionPiiWithRestResponseAsync(
-            new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
+            new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics(), context)
             .doOnSubscribe(ignoredValue ->

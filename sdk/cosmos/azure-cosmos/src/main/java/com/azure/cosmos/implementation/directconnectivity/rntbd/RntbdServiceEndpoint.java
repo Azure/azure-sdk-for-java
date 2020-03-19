@@ -276,6 +276,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
     static final class JsonSerializer extends StdSerializer<RntbdServiceEndpoint> {
 
+        private static final long serialVersionUID = -5764954918168771152L;
+
         public JsonSerializer() {
             super(RntbdServiceEndpoint.class);
         }

@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.6.0-beta.1 (Unreleased)
-
+- Fixed a bug that would prevent client initialization against Azurite in some containerized environments.
+- Fixed a bug that would prevent progress from being reported when uploading small files.
 
 ## 12.5.0 (2020-03-11)
 - Fixed a bug that was adding an invalid 'include' query-parameter for list blob item requests if no dataset-include options were specified.

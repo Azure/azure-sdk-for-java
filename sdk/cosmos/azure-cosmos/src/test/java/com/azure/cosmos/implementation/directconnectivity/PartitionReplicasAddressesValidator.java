@@ -77,7 +77,7 @@ public interface PartitionReplicasAddressesValidator {
 
                     // if running against prod due to upgrade etc, we may have occasionally 3 or 4 replicas.
                     Assertions.assertThat(addresses).size().isGreaterThanOrEqualTo(MAX_REPLICA_SIZE - 1).isLessThanOrEqualTo(MAX_REPLICA_SIZE);
-                    assertThat(addresses.stream().filter(a -> a.IsPrimary()).count()).isEqualTo(1);
+                    assertThat(addresses.stream().filter(a -> a.isPrimary()).count()).isEqualTo(1);
 
                     Address a = addresses.iterator().next();
 
@@ -101,7 +101,7 @@ public interface PartitionReplicasAddressesValidator {
 
                     // if running against prod due to upgrade etc, we may have occasionally 3 or 4 replicas.
                     Assertions.assertThat(addresses).size().isGreaterThanOrEqualTo(MAX_REPLICA_SIZE - 1).isLessThanOrEqualTo(MAX_REPLICA_SIZE);
-                    assertThat(addresses.stream().filter(a -> a.IsPrimary()).count()).isEqualTo(1);
+                    assertThat(addresses.stream().filter(a -> a.isPrimary()).count()).isEqualTo(1);
 
                     Address a = addresses.iterator().next();
 

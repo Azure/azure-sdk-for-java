@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.util.annotation.Nullable;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -186,12 +187,8 @@ public class JsonSerializable {
         } else if (value instanceof JsonSerializable) {
             // JsonSerializable
             JsonSerializable castedValue = (JsonSerializable) value;
-            if (castedValue != null) {
-                castedValue.populatePropertyBag();
-            }
-            this.propertyBag.set(propertyName, castedValue != null
-                                                   ? castedValue.propertyBag
-                                                   : null);
+            castedValue.populatePropertyBag();
+            this.propertyBag.set(propertyName, castedValue.propertyBag);
         } else {
             // POJO, ObjectNode, number (includes int, float, double etc), boolean,
             // and string.
@@ -259,6 +256,10 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the boolean value.
      */
+    // The method returning Boolean can be invoked as though it returned a value of type boolean,
+    // and the compiler will insert automatic unboxing of the Boolean value. If a null value is
+    // returned, this will result in a NPE. @Nullable is used indicate that returning null is permitted.
+    @Nullable
     public Boolean getBoolean(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             return this.propertyBag.get(propertyName).asBoolean();
@@ -303,7 +304,7 @@ public class JsonSerializable {
      */
     public Double getDouble(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            return new Double(this.propertyBag.get(propertyName).asDouble());
+            return this.propertyBag.get(propertyName).asDouble();
         } else {
             return null;
         }

@@ -30,6 +30,7 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 /**
@@ -147,11 +148,9 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
-            Flux<ByteBuf> byteBufObservable = Flux.empty();
-
-            if (request.getContentAsByteBufFlux() != null){
-                byteBufObservable = request.getContentAsByteBufFlux();
-            }
+            // The RxDocumentServiceRequest::getContentAsByteBufFlux guaranteed to return
+            // a valid flux (including Flux.empty) hence null check is not required here.
+            Flux<ByteBuf> byteBufObservable = request.getContentAsByteBufFlux();
 
             HttpRequest httpRequest = new HttpRequest(method,
                     uri,
@@ -421,9 +420,9 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     private void applySessionToken(RxDocumentServiceRequest request) {
         Map<String, String> headers = request.getHeaders();
+        Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
 
-        if (headers != null &&
-                !Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
             if (ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
                 request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
             }

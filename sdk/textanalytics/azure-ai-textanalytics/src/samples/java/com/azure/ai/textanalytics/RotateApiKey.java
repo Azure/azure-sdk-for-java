@@ -23,11 +23,11 @@ public class RotateApiKey {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that needs be analyzed.
-        String text = "My cat might need to see a veterinarian.";
+        // The document that needs be analyzed.
+        String document = "My cat might need to see a veterinarian.";
 
         try {
-            client.extractKeyPhrases(text);
+            client.extractKeyPhrases(document);
         } catch (HttpResponseException ex) {
             System.out.println(ex.getMessage());
         }
@@ -36,7 +36,7 @@ public class RotateApiKey {
         credential.updateCredential("{valid_api_key}");
 
         System.out.println("Extracted phrases:");
-        for (String keyPhrase : client.extractKeyPhrases(text)) {
+        for (String keyPhrase : client.extractKeyPhrases(document)) {
             System.out.printf("%s.%n", keyPhrase);
         }
     }

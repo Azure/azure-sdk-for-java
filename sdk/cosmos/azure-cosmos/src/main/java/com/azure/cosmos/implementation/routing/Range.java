@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 @JsonIgnoreProperties({ "empty", "singleValue", "hashMap" })
@@ -158,7 +159,9 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
         return hash;
     }
 
-    public static class MinComparator<T extends Comparable<T>> implements Comparator<Range<T>> {
+    public static class MinComparator<T extends Comparable<T>> implements Comparator<Range<T>>, Serializable {
+        private static final long serialVersionUID = 8934048827394132143L;
+
         @Override
         public int compare(Range<T> range1, Range<T> range2) {
             int result = range1.getMin().compareTo(range2.getMin());
@@ -170,7 +173,9 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
         }
     }
 
-    public static class MaxComparator<T extends Comparable<T>> implements Comparator<Range<T>> {
+    public static class MaxComparator<T extends Comparable<T>> implements Comparator<Range<T>>, Serializable {
+        private static final long serialVersionUID = -3399886607526260054L;
+
         @Override
         public int compare(Range<T> range1, Range<T> range2) {
             int result = range1.getMax().compareTo(range2.getMax());
