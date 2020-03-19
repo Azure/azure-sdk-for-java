@@ -554,7 +554,9 @@ public class EventHubClientBuilder {
                 if (request == 0) {
                     return;
                 } else if (request > 1) {
-                    logger.warning("Requested more than one connection. Only emitting one. Request: {}", request);
+                    sink.error(logger.logExceptionAsWarning(new IllegalArgumentException(
+                        "Requested more than one connection. Only emitting one. Request: " + request)));
+                    return;
                 }
 
                 final String connectionId = StringUtil.getRandomString("MF");
