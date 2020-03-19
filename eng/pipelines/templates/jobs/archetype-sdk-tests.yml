@@ -38,7 +38,7 @@ parameters:
   TestName: LiveTest
   TimeoutInMinutes: 60
   TestStepMavenInputs:
-    options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -am'
+    options: '-Dmaven.wagon.http.pool=false $(DefaultOptions)'
     mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '$(JavaVersion)'
@@ -89,10 +89,25 @@ jobs:
 
       - ${{ parameters.PreRunSteps }}
 
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+
+      - task: Maven@3
+        displayName: 'Build and Install'
+        inputs:
+          options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -pl $(ProjectList) -am'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '$(JavaVersion)'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'install'
+
       - task: Maven@3
         displayName: $(DisplayName)
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.xml
+          mavenPomFile: pom.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
 
