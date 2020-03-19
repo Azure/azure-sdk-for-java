@@ -2,9 +2,14 @@
 
 > see https://aka.ms/autorest
 
+### Setup
+
+Increase max memory if you're using Autorest older than 3. Set the environment variable `NODE_OPTIONS` to `--max-old-space-size=8192`.
+
 ### Generation
 ```ps
 cd <swagger-folder>
+# You may need to repeat this command few times if you're getting "TypeError: Cannot read property 'filename' of undefined" error
 autorest --use=@microsoft.azure/autorest.java@3.0.1 --use=@microsoft.azure/autorest.modeler@2.3.51  --version=2.0.4280
 ```
 
