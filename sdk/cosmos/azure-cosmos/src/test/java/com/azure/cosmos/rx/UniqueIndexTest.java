@@ -18,6 +18,7 @@ import com.azure.cosmos.models.DataType;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.HashIndex;
 import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKey;
@@ -77,12 +78,12 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         IncludedPath includedPath1 = new IncludedPath();
         includedPath1.setPath("/name/?");
-        includedPath1.setIndexes(Collections.singletonList(new HashIndex(DataType.STRING, 7)));
-        includedPath1.setIndexes(Collections.singletonList(new HashIndex(DataType.STRING, 7)));
+        includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
+        includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
 
         IncludedPath includedPath2 = new IncludedPath();
         includedPath2.setPath("/description/?");
-        includedPath2.setIndexes(Collections.singletonList(new HashIndex(DataType.STRING, 7)));
+        includedPath2.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
@@ -186,11 +187,11 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         IncludedPath includedPath1 = new IncludedPath();
         includedPath1.setPath("/name/?");
-        includedPath1.setIndexes(Collections.singletonList(new HashIndex(DataType.STRING, 7)));
+        includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
 
         IncludedPath includedPath2 = new IncludedPath();
         includedPath2.setPath("/description/?");
-        includedPath2.setIndexes(Collections.singletonList(new HashIndex(DataType.STRING, 7)));
+        includedPath2.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
 
         collectionDefinition.setIndexingPolicy(indexingPolicy);
