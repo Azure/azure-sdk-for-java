@@ -2,24 +2,10 @@
 
 > see https://aka.ms/autorest
 
-### Setup
-```ps
-cd C:\work
-git clone --recursive https://github.com/Azure/autorest.java/
-cd autorest.java
-git checkout v3
-npm install
-cd ..
-git clone --recursive https://github.com/jianghaolu/autorest.modeler/
-cd autorest.modeler
-git checkout headerprefixfix
-npm install
-```
-
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.0.4280
+autorest --use=@microsoft.azure/autorest.java@3.0.1 --use=@microsoft.azure/autorest.modeler@2.3.51  --version=2.0.4280
 ```
 
 ### Code generation settings
