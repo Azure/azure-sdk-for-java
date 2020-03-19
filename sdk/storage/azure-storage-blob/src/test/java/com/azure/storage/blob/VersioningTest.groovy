@@ -3,6 +3,9 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.util.Context
+import com.azure.storage.blob.models.BlobListDetails
+import com.azure.storage.blob.models.ListBlobsOptions
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.specialized.PageBlobClient
 import org.apache.commons.lang3.StringUtils
@@ -171,5 +174,104 @@ class VersioningTest extends APISpec {
         then:
         !blobClient.getVersionClient(blobItemV1.getVersionId()).exists()
         blobClient.getVersionClient(blobItemV2.getVersionId()).exists()
+    }
+
+    def "Retrieve Block Blob Properties by Version"() {
+        given:
+        def key = "key"
+        def valV2 = "val2"
+        def valV3 = "val3"
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        def responseV2 = blobClient.getBlockBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV2), null, null, Context.NONE);
+        def responseV3 = blobClient.getBlockBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV3), null, null, Context.NONE);
+        def versionId1 = blobItemV1.getVersionId()
+        def versionId2 = responseV2.getHeaders().getValue("x-ms-version-id")
+        def versionId3 = responseV3.getHeaders().getValue("x-ms-version-id")
+
+        when:
+        def receivedValV1 = blobClient.getVersionClient(versionId1).getBlockBlobClient().getProperties().getMetadata().get(key)
+        def receivedValV2 = blobClient.getVersionClient(versionId2).getBlockBlobClient().getProperties().getMetadata().get(key)
+        def receivedValV3 = blobClient.getVersionClient(versionId3).getBlockBlobClient().getProperties().getMetadata().get(key)
+
+        then:
+        receivedValV1 == null
+        valV2 == receivedValV2
+        valV3 == receivedValV3
+    }
+
+    def "Retrieve Page Blob Properties by Version"() {
+        given:
+        def key = "key"
+        def valV2 = "val2"
+        def valV3 = "val3"
+        def blobItemV1 = blobClient.getPageBlobClient().create(512)
+        def responseV2 = blobClient.getPageBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV2), null, null, Context.NONE);
+        def responseV3 = blobClient.getPageBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV3), null, null, Context.NONE);
+        def versionId1 = blobItemV1.getVersionId()
+        def versionId2 = responseV2.getHeaders().getValue("x-ms-version-id")
+        def versionId3 = responseV3.getHeaders().getValue("x-ms-version-id")
+
+        when:
+        def receivedValV1 = blobClient.getVersionClient(versionId1).getPageBlobClient().getProperties().getMetadata().get(key)
+        def receivedValV2 = blobClient.getVersionClient(versionId2).getPageBlobClient().getProperties().getMetadata().get(key)
+        def receivedValV3 = blobClient.getVersionClient(versionId3).getPageBlobClient().getProperties().getMetadata().get(key)
+
+        then:
+        receivedValV1 == null
+        valV2 == receivedValV2
+        valV3 == receivedValV3
+    }
+
+    def "Retrieve Append Blob Properties by Version"() {
+        given:
+        def key = "key"
+        def valV2 = "val2"
+        def valV3 = "val3"
+        def blobItemV1 = blobClient.getAppendBlobClient().create()
+        def responseV2 = blobClient.getAppendBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV2), null, null, Context.NONE);
+        def responseV3 = blobClient.getAppendBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV3), null, null, Context.NONE);
+        def versionId1 = blobItemV1.getVersionId()
+        def versionId2 = responseV2.getHeaders().getValue("x-ms-version-id")
+        def versionId3 = responseV3.getHeaders().getValue("x-ms-version-id")
+
+        when:
+        def receivedValV1 = blobClient.getVersionClient(versionId1).getAppendBlobClient().getProperties().getMetadata().get(key)
+        def receivedValV2 = blobClient.getVersionClient(versionId2).getAppendBlobClient().getProperties().getMetadata().get(key)
+        def receivedValV3 = blobClient.getVersionClient(versionId3).getAppendBlobClient().getProperties().getMetadata().get(key)
+
+        then:
+        receivedValV1 == null
+        valV2 == receivedValV2
+        valV3 == receivedValV3
+    }
+
+    def "List Blobs with Version"() {
+        given:
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        def blobItemV2 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
+        def blobItemV3 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
+
+        when:
+        def blobs = blobContainerClient.listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)), null)
+
+        then:
+        blobs.size() == 3
+        blobs[0].getVersionId() == blobItemV1.getVersionId()
+        blobs[1].getVersionId() == blobItemV2.getVersionId()
+        blobs[2].getVersionId() == blobItemV3.getVersionId()
+    }
+
+    def "List Blobs without Version"() {
+        given:
+        blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
+        def blobItemV3 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
+
+        when:
+        def blobs = blobContainerClient.listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(false)), null)
+
+        then:
+        blobs.size() == 1
+        blobs[0].getVersionId() == blobItemV3.getVersionId()
     }
 }

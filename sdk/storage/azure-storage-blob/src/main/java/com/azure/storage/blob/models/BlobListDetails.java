@@ -21,6 +21,7 @@ public final class BlobListDetails {
     private boolean retrieveSnapshots;
     private boolean retrieveUncommittedBlobs;
     private boolean retrieveDeletedBlobs;
+    private boolean retrieveVersions;
 
     /**
      * Constructs an unpopulated {@link BlobListDetails}.
@@ -89,6 +90,26 @@ public final class BlobListDetails {
     }
 
     /**
+     * Whether versions should be returned. Versions are listed from oldest to newest.
+     *
+     * @return a flag indicating if versions will be returned in the listing
+     */
+    public boolean getRetrieveVersions() {
+        return retrieveVersions;
+    }
+
+    /**
+     * Whether versions should be returned. Versions are listed from oldest to newest.
+     *
+     * @param retrieveVersions Flag indicating whether versions should be returned
+     * @return the updated BlobListDetails object
+     */
+    public BlobListDetails setRetrieveVersions(boolean retrieveVersions) {
+        this.retrieveVersions = retrieveVersions;
+        return this;
+    }
+
+    /**
      * Whether blobs for which blocks have been uploaded, but which have not been committed using Put Block List, should
      * be included in the response.
      *
@@ -149,6 +170,9 @@ public final class BlobListDetails {
         }
         if (this.retrieveUncommittedBlobs) {
             details.add(ListBlobsIncludeItem.UNCOMMITTEDBLOBS);
+        }
+        if (this.retrieveVersions) {
+            details.add(ListBlobsIncludeItem.VERSIONS);
         }
         return details;
     }
