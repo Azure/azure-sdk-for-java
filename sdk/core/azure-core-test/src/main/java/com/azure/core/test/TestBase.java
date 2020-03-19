@@ -154,7 +154,7 @@ public abstract class TestBase implements BeforeEachCallback {
      * <li>Otherwise, the name of the HttpClient class should match env variable.</li>
      * </ul>
      *
-     * Environment values currently supported are: "ALL", "NettyAsyncHttpClient", "OkHttpAsyncHttpClient".
+     * Environment values currently supported are: "ALL", "netty", "okhttp" which is case insensitive.
      * Use comma to separate http clients want to test.
      * e.g. {@code set AZURE_TEST_HTTP_CLIENTS = NettyAsyncHttpClient, OkHttpAsyncHttpClient}
      *
@@ -166,12 +166,13 @@ public abstract class TestBase implements BeforeEachCallback {
         if (CoreUtils.isNullOrEmpty(configuredHttpClientToTest)) {
             return client.getClass().getSimpleName().equals(AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY);
         }
-        if (configuredHttpClientToTest.equals(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL)) {
+        if (configuredHttpClientToTest.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL)) {
             return true;
         }
         String[] configuredHttpClientList = configuredHttpClientToTest.split(",");
         return Arrays.stream(configuredHttpClientList).anyMatch(configuredHttpClient ->
-            client.getClass().getSimpleName().equals(configuredHttpClient.trim()));
+            client.getClass().getSimpleName().toLowerCase(Locale.ROOT)
+                .contains(configuredHttpClient.trim().toLowerCase(Locale.ROOT)));
     }
 
     private static TestMode initializeTestMode() {
