@@ -439,8 +439,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         try {
             downstream.onNext(message);
         } catch (Exception e) {
-            logger.error("Exception occurred while handling downstream onNext operation.", e);
-            throw Exceptions.propagate(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
+            throw logger.logExceptionAsError(Exceptions.propagate(
+                Operators.onOperatorError(upstream, e, message, downstream.currentContext())));
         }
     }
 }
