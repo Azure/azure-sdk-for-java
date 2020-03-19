@@ -40,7 +40,7 @@ public class Address extends Resource {
         super(jsonString);
     }
 
-    public boolean IsPrimary() {
+    public boolean isPrimary() {
         return Boolean.TRUE.equals(super.getBoolean(Constants.Properties.IS_PRIMARY));
     }
 
