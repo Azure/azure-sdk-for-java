@@ -1038,9 +1038,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private CosmosResourceType resolveCosmosResourceType(ResourceType resourceType) {
         try {
-            return CosmosResourceType.valueOf(resourceType.toString());
+            return CosmosResourceType.valueOf(StringUtils.upperCase(resourceType.toString()));
         } catch (IllegalArgumentException e) {
-            return CosmosResourceType.System;
+            return CosmosResourceType.SYSTEM;
         }
     }
 

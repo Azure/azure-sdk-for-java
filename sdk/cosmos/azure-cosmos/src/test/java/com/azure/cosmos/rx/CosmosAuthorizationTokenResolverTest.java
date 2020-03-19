@@ -506,7 +506,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
 
     private CosmosAuthorizationTokenResolver getTokenResolver(PermissionMode permissionMode) {
         return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
-            if(resourceType.equals(CosmosResourceType.System)) {
+            if(resourceType.equals(CosmosResourceType.SYSTEM)) {
                 return readPermission.getToken();
             } if (permissionMode == null) {
                 return "invalid";
@@ -520,7 +520,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
 
     private CosmosAuthorizationTokenResolver getBadTokenResolver() {
         return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object>  properties) -> {
-            if (resourceType == CosmosResourceType.System) {
+            if (resourceType == CosmosResourceType.SYSTEM) {
                 return readPermission.getToken();
             }
             if (properties != null) {
@@ -537,7 +537,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
                 currentUser = (UserClass) properties.get(field);
             }
 
-            if (resourceType == CosmosResourceType.System) {
+            if (resourceType == CosmosResourceType.SYSTEM) {
                 return readPermission.getToken();
             } else if (currentUser != null &&
                     !currentUser.userName.equals(blockListedUser.userName) &&

@@ -8,23 +8,30 @@ package com.azure.cosmos.models;
  */
 public enum CosmosResourceType {
 
-    System(-100),
-    Attachment(3),
-    DocumentCollection(1),
-    Conflict(107),
-    Database(0),
-    Document(2),
-    Index(104),
-    Offer(113),
-    Permission(5),
-    StoredProcedure(109),
-    Trigger(110),
-    User(4),
-    UserDefinedFunction(111);
+    SYSTEM(-100, "System"),
+    ATTACHMENT(3, "Attachment"),
+    DOCUMENT_COLLECTION(1, "DocumentCollection"),
+    CONFLICT(107, "Conflict"),
+    DATABASE(0, "Database"),
+    DOCUMENT(2, "Document"),
+    INDEX(104, "Index"),
+    OFFER(113, "Offer"),
+    PERMISSION(5, "Permission"),
+    STORED_PROCEDURE(109, "StoredProcedure"),
+    TRIGGER(110, "Trigger"),
+    USER(4, "User"),
+    USER_DEFINED_FUNCTION(111, "UserDefinedFunction");
 
     private final int value;
+    private final String overWireValue;
 
-    CosmosResourceType(int value) {
+    CosmosResourceType(int value, String overWireValue) {
         this.value = value;
+        this.overWireValue = overWireValue;
+    }
+
+    @Override
+    public String toString() {
+        return this.overWireValue;
     }
 }
