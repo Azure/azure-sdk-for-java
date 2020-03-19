@@ -8,6 +8,7 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
+    <module>eng/code-quality-reports</module>
     <module>sdk/appconfiguration</module>
     <module>sdk/authorization</module>
     <module>sdk/batch</module>
@@ -24,5 +25,6 @@
     <module>sdk/search</module>
     <module>sdk/servicebus</module>
     <module>sdk/storage</module>
+    <module>sdk/textanalytics</module>
   </modules>
 </project>

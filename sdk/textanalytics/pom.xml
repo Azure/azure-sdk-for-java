@@ -7,22 +7,7 @@
   <artifactId>azure-textanalytics-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
-  <profiles>
-    <profile>
-      <id>client</id>
-      <activation>
-        <property>
-          <name>env.SDKTYPE</name>
-          <value>!data</value>
-        </property>
-      </activation>
-      <modules>
-        <module>../core/azure-core</module>
-        <module>../core/azure-core-test</module>
-        <module>../core/azure-core-http-netty</module>
-        <module>../identity/azure-identity</module>
-        <module>azure-ai-textanalytics</module>
-      </modules>
-    </profile>
-  </profiles>
+  <modules>
+    <module>azure-ai-textanalytics</module>
+  </modules>
 </project>
