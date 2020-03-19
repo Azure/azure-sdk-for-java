@@ -16,14 +16,14 @@ import rx.Observable;
 import com.microsoft.azure.management.postgresql.v2017_12_01.OperationListResult;
 
 class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations {
-    private final PostgreSQLManager manager;
+    private final DBforPostgreSQLManager manager;
 
-    OperationsImpl(PostgreSQLManager manager) {
+    OperationsImpl(DBforPostgreSQLManager manager) {
         super(manager.inner().operations());
         this.manager = manager;
     }
 
-    public PostgreSQLManager manager() {
+    public DBforPostgreSQLManager manager() {
         return this.manager;
     }
 
