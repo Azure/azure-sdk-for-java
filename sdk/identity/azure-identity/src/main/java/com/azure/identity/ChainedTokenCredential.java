@@ -22,7 +22,7 @@ import java.util.Deque;
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
     private final Deque<TokenCredential> credentials;
-    private final String UnavailableError=this.getClass().getSimpleName()+" authentication failed. -> ";
+    private final String UnavailableError=this.getClass().getSimpleName()+" authentication failed. ---> ";
     private final String FailedError=this.getClass().getSimpleName()+" failed to retrieve a token from the included credentials.(";
 
     /**
@@ -36,12 +36,13 @@ public class ChainedTokenCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         final StringBuilder errorMsg = new StringBuilder();
-        return Flux.fromIterable(credentials).flatMap(p -> p.getToken(request).onErrorResume(t -> {
-            if (t.getMessage() != null && !t.getMessage().contains("authentication unavailable")) {
-                throw new RuntimeException(UnavailableError+p.getClass().getSimpleName()+"authentication failed.",t);
-            }
-            errorMsg.append(" ").append(t.getMessage());
-            return Mono.empty();
+        return Flux.fromIterable(credentials)
+            .flatMap(p -> p.getToken(request).onErrorResume(t -> {
+                if (t.getMessage() != null && !t.getMessage().contains("authentication unavailable")) {
+                    throw new RuntimeException(UnavailableError+p.getClass().getSimpleName()+" authentication failed.",t);
+                }
+                errorMsg.append(" ").append(t.getMessage());
+                return Mono.empty();
         }), 1)
             .next()
             .switchIfEmpty(Mono.defer(() -> Mono.error(new RuntimeException(FailedError+errorMsg.toString()+" )"))));
