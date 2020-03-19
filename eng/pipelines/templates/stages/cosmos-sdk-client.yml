@@ -1,7 +1,7 @@
 parameters:
   Artifacts: []
   ServiceDirectory: not-specified
-
+  
 stages:
   - stage: Build
     jobs:
@@ -85,7 +85,7 @@ stages:
             DisplayName: 'Examples Integration Tests'
             PROTOCOLS: '["Https", "Tcp"]'
             DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        MavenTestPomFile: sdk/cosmos/pom.xml
+
         TestStepMavenInputs:
           goals: 'verify'
           options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
@@ -154,3 +154,4 @@ stages:
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
 
+        

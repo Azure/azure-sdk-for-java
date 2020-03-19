@@ -33,7 +33,6 @@ parameters:
       OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
       DisplayName: 'Windows - Java 11'
-  MavenTestPomFile: pom.xml
   PreRunSteps: []
   PostRunSteps: []
   TestName: LiveTest
@@ -105,12 +104,12 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-
+  
 
       - task: Maven@3
         displayName: $(DisplayName)
         inputs:
-          mavenPomFile: ${{ parameters.MavenTestPomFile }}
+          mavenPomFile: pom.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
 
