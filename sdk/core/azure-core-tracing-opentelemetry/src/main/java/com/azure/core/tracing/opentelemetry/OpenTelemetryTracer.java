@@ -270,6 +270,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (messageEnqueuedTime != null) {
             span.setAttribute(MESSAGE_ENQUEUED_TIME, messageEnqueuedTime);
         }
+        String tracingNamespace = getOrDefault(context, AZ_TRACING_NAMESPACE_KEY, null, String.class);
+        if (tracingNamespace != null) {
+            span.setAttribute(AZ_NAMESPACE_KEY, tracingNamespace);
+        }
     }
 
     /**

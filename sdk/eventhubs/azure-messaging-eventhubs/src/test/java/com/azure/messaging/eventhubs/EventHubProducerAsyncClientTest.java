@@ -57,6 +57,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
@@ -79,7 +80,7 @@ import static org.mockito.Mockito.when;
 class EventHubProducerAsyncClientTest {
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
-
+    private static final String ENTITY_PATH = HOSTNAME + ".servicebus.windows.net";
     @Mock
     private AmqpSendLink sendLink;
     @Mock
@@ -518,6 +519,8 @@ class EventHubProducerAsyncClientTest {
         final AmqpSendLink link = mock(AmqpSendLink.class);
 
         when(link.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
+        when(link.getHostname()).thenReturn(HOSTNAME);
+        when(link.getEntityPath()).thenReturn(ENTITY_PATH);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
         when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
@@ -526,6 +529,10 @@ class EventHubProducerAsyncClientTest {
         when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
+                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
+                assertEquals(passed.getData(ENTITY_PATH_KEY).get(), ENTITY_PATH);
+                assertEquals(passed.getData(HOST_NAME_KEY).get(), HOSTNAME);
+
                 return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
             }
         );

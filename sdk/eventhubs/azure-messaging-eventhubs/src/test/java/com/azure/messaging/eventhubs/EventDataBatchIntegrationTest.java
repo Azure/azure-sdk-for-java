@@ -63,7 +63,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     public void sendSmallEventsFullBatch() {
         // Arrange
         final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, null, contextProvider,
-            new TracerProvider(Collections.emptyList()));
+            new TracerProvider(Collections.emptyList()), null, null);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -86,7 +86,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     public void sendSmallEventsFullBatchPartitionKey() {
         // Arrange
         final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, contextProvider,
-            new TracerProvider(Collections.emptyList()));
+            new TracerProvider(Collections.emptyList()), null, null);
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -112,7 +112,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
         final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, contextProvider,
-            new TracerProvider(Collections.emptyList()));
+            new TracerProvider(Collections.emptyList()), null, null);
         int count = 0;
         while (count < 10) {
             final EventData data = createData();
@@ -178,7 +178,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int maxMessageSize = 1024;
         final EventDataBatch batch = new EventDataBatch(maxMessageSize, null, PARTITION_KEY, contextProvider,
-            new TracerProvider(Collections.emptyList()));
+            new TracerProvider(Collections.emptyList()), null, null);
         final Random random = new Random();
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
         int count = 0;
