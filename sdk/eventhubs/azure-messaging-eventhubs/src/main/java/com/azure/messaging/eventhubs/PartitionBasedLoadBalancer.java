@@ -116,7 +116,7 @@ final class PartitionBasedLoadBalancer {
             .timeout(Duration.ofMinutes(1))
             .onErrorResume(TimeoutException.class, error -> {
                 // In the subsequent step where it tries to balance the load, it'll propagate an error to the user.
-                // So it is okay that there is we return an empty Flux.
+                // So it is okay to return an empty Flux.
                 logger.warning("Unable to get partitionIds from eventHubAsyncClient.");
                 return Flux.empty();
             })
