@@ -7,10 +7,12 @@ import com.azure.core.util.Context
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.ListBlobsOptions
 import com.azure.storage.blob.models.PageRange
+import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.PageBlobClient
 import org.apache.commons.lang3.StringUtils
 
 import java.nio.charset.StandardCharsets
+import java.time.Duration
 
 class VersioningTest extends APISpec {
 
@@ -273,5 +275,52 @@ class VersioningTest extends APISpec {
         then:
         blobs.size() == 1
         blobs[0].getVersionId() == blobItemV3.getVersionId()
+    }
+
+    def "Begin Copy Blobs with Version"() {
+        given:
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        def sourceBlob = blobContainerClient.getBlobClient(generateBlobName())
+        sourceBlob.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        def pooler = blobClient.beginCopy(sourceBlob.getBlobUrl(), Duration.ofSeconds(1))
+        def copyInfo = pooler.waitForCompletion().getValue()
+
+        then:
+        copyInfo.getVersionId() != null
+        copyInfo.getVersionId() != blobItemV1.getVersionId()
+    }
+
+    def "Copy From Url Blobs with Version"() {
+        given:
+        blobContainerClient.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        def sourceBlob = blobContainerClient.getBlobClient(generateBlobName())
+        sourceBlob.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        def response = blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl(), null, null, null, null, null, Context.NONE)
+        def versionIdAfterCopy = response.getHeaders().getValue("x-ms-version-id")
+
+        then:
+        versionIdAfterCopy != null
+        versionIdAfterCopy != blobItemV1.getVersionId()
+    }
+
+    def "Blob Properties should contain Version information"() {
+        given:
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        def blobItemV2 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize, true)
+
+        when:
+        def propertiesV1 = blobClient.getVersionClient(blobItemV1.getVersionId()).getProperties()
+        def propertiesV2 = blobClient.getVersionClient(blobItemV2.getVersionId()).getProperties()
+
+        then:
+        propertiesV1.getVersionId() == blobItemV1.getVersionId()
+        propertiesV2.getVersionId() == blobItemV2.getVersionId()
+        !propertiesV1.isCurrentVersion()
+        propertiesV2.isCurrentVersion()
     }
 }

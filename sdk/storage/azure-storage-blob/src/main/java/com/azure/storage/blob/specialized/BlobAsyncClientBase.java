@@ -485,7 +485,7 @@ public class BlobAsyncClientBase {
                 final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
 
                 return new BlobCopyInfo(sourceUrl, headers.getCopyId(), headers.getCopyStatus(),
-                    headers.getETag(), headers.getLastModified(), headers.getErrorCode());
+                    headers.getETag(), headers.getLastModified(), headers.getErrorCode(), headers.getVersionId());
             });
     }
 
@@ -505,7 +505,8 @@ public class BlobAsyncClientBase {
         return getProperties().map(response -> {
             final CopyStatusType status = response.getCopyStatus();
             final BlobCopyInfo result = new BlobCopyInfo(response.getCopySource(), response.getCopyId(), status,
-                response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription());
+                response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription(),
+                response.getVersionId());
 
             LongRunningOperationStatus operationStatus;
             switch (status) {
@@ -1204,7 +1205,7 @@ public class BlobAsyncClientBase {
                     hd.isIncrementalCopy(), hd.getDestinationSnapshot(), AccessTier.fromString(hd.getAccessTier()),
                     hd.isAccessTierInferred(), ArchiveStatus.fromString(hd.getArchiveStatus()),
                     hd.getEncryptionKeySha256(), hd.getAccessTierChangeTime(), hd.getMetadata(),
-                    hd.getBlobCommittedBlockCount());
+                    hd.getBlobCommittedBlockCount(), hd.getVersionId(), hd.isCurrentVersion());
                 return new SimpleResponse<>(rb, properties);
             });
     }
