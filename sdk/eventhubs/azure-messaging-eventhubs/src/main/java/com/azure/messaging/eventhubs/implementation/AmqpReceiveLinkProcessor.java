@@ -98,7 +98,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      */
     @Override
     public boolean isTerminated() {
-        return isTerminated.get();
+        return isTerminated.get() || isCancelled;
     }
 
     /**
@@ -259,9 +259,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             logger.warning("Transient error occurred. Attempt: {}. Retrying after {} ms.",
                 attempt, retryInterval.toMillis(), throwable);
 
-            retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
-                requestUpstream();
-            });
+            retrySubscription = Mono.delay(retryInterval).subscribe(i -> requestUpstream());
 
             return;
         }
@@ -289,6 +287,16 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      */
     @Override
     public void onComplete() {
+        if (isTerminated.getAndSet(true)) {
+            return;
+        }
+
+        drain();
+        onDispose();
+    }
+
+    @Override
+    public void dispose() {
         if (isTerminated.getAndSet(true)) {
             return;
         }
@@ -400,7 +408,12 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         if (lastMessage == null) {
             if (isTerminated() || isCancelled) {
                 downstream.onComplete();
+
+                if (currentLink != null) {
+                    currentLink.dispose();
+                }
             }
+
             return;
         }
 
@@ -432,6 +445,10 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             } else if (messageQueue.peekLast() == null) {
                 downstream.onComplete();
             }
+
+            if (currentLink != null) {
+                currentLink.dispose();
+            }
         }
     }
 
@@ -439,7 +456,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         try {
             downstream.onNext(message);
         } catch (Exception e) {
-            logger.error("Exception occurred while handling downstream onNext operation.");
+            logger.error("Exception occurred while handling downstream onNext operation.", e);
             throw logger.logExceptionAsError(Exceptions.propagate(
                 Operators.onOperatorError(upstream, e, message, downstream.currentContext())));
         }
