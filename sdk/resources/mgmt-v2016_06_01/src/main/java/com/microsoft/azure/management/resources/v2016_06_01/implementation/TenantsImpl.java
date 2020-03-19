@@ -17,14 +17,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.resources.v2016_06_01.TenantIdDescription;
 
 class TenantsImpl extends WrapperImpl<TenantsInner> implements Tenants {
-    private final Manager manager;
+    private final ResourcesManager manager;
 
-    TenantsImpl(Manager manager) {
+    TenantsImpl(ResourcesManager manager) {
         super(manager.inner().tenants());
         this.manager = manager;
     }
 
-    public Manager manager() {
+    public ResourcesManager manager() {
         return this.manager;
     }
 
