@@ -133,15 +133,13 @@ public class Resource extends JsonSerializable {
         return super.getString(Constants.Properties.R_ID);
     }
 
-    // TODO: make private
-
     /**
      * Set the ID associated with the resource.
      *
      * @param resourceId the ID associated with the resource.
      * @return the resource.
      */
-    public Resource setResourceId(String resourceId) {
+    Resource setResourceId(String resourceId) {
         super.set(Constants.Properties.R_ID, resourceId);
         return this;
     }

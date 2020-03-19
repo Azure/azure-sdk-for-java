@@ -6,8 +6,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.DatabaseAccount;
-import reactor.core.publisher.Mono;
 
 /**
  * DO NOT USE. For internal use only by the SDK. These methods might break at any time. No support will be provided.
@@ -40,10 +38,6 @@ public final class CosmosBridgeInternal {
                                                                        CosmosAsyncClient client) {
         return new CosmosAsyncContainer(cosmosContainer.getId(),
             CosmosBridgeInternal.getCosmosDatabaseWithNewClient(cosmosDatabase, client));
-    }
-
-    public static Mono<DatabaseAccount> getDatabaseAccount(CosmosAsyncClient client) {
-        return client.readDatabaseAccount();
     }
 
     public static AsyncDocumentClient getContextClient(CosmosAsyncDatabase database) {

@@ -64,11 +64,11 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     public void gatewayDiagnostics() throws CosmosClientException {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = container.createItem(cosmosItemProperties);
-        String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
+        String diagnostics = createResponse.getResponseDiagnostics().toString();
         assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
         assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
         assertThat(diagnostics).contains("\"operationType\":\"Create\"");
-        assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+        assertThat(createResponse.getResponseDiagnostics().getRequestLatency()).isNotNull();
         validateTransportRequestTimelineGateway(diagnostics);
     }
 
@@ -101,13 +101,13 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     public void systemDiagnosticsForSystemStateInformation() throws CosmosClientException {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = this.container.createItem(cosmosItemProperties);
-        String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
+        String diagnostics = createResponse.getResponseDiagnostics().toString();
         assertThat(diagnostics).contains("systemInformation");
         assertThat(diagnostics).contains("usedMemory");
         assertThat(diagnostics).contains("availableMemory");
         assertThat(diagnostics).contains("processCpuLoad");
         assertThat(diagnostics).contains("systemCpuLoad");
-        assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+        assertThat(createResponse.getResponseDiagnostics().getRequestLatency()).isNotNull();
     }
 
     @Test(groups = {"simple"})
@@ -115,12 +115,12 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = cosmosContainer.createItem(cosmosItemProperties);
-        String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
+        String diagnostics = createResponse.getResponseDiagnostics().toString();
         assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
         assertThat(diagnostics).contains("\"gatewayStatistics\":null");
         assertThat(diagnostics).contains("addressResolutionStatistics");
-        assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+        assertThat(createResponse.getResponseDiagnostics().getRequestLatency()).isNotNull();
         validateTransportRequestTimelineDirect(diagnostics);
     }
 

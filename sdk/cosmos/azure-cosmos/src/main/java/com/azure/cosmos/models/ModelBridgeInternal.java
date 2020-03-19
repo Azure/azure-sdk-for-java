@@ -15,6 +15,7 @@ import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -238,10 +239,6 @@ public final class ModelBridgeInternal {
         return cosmosStoredProcedureRequestOptions.toRequestOptions();
     }
 
-    public static String getAddressesLink(DatabaseAccount databaseAccount) {
-        return databaseAccount.getAddressesLink();
-    }
-
     public static DatabaseAccount toDatabaseAccount(RxDocumentServiceResponse response) {
         DatabaseAccount account = response.getResource(DatabaseAccount.class);
 
@@ -249,27 +246,11 @@ public final class ModelBridgeInternal {
         Map<String, String> responseHeader = response.getResponseHeaders();
 
         account.setMaxMediaStorageUsageInMB(
-            Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.MAX_MEDIA_STORAGE_USAGE_IN_MB)));
+            Long.parseLong(responseHeader.get(HttpConstants.HttpHeaders.MAX_MEDIA_STORAGE_USAGE_IN_MB)));
         account.setMediaStorageUsageInMB(
-            Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.CURRENT_MEDIA_STORAGE_USAGE_IN_MB)));
+            Long.parseLong(responseHeader.get(HttpConstants.HttpHeaders.CURRENT_MEDIA_STORAGE_USAGE_IN_MB)));
 
         return account;
-    }
-
-    public static Map<String, Object> getQueryEngineConfiuration(DatabaseAccount databaseAccount) {
-        return databaseAccount.getQueryEngineConfiguration();
-    }
-
-    public static ReplicationPolicy getReplicationPolicy(DatabaseAccount databaseAccount) {
-        return databaseAccount.getReplicationPolicy();
-    }
-
-    public static ReplicationPolicy getSystemReplicationPolicy(DatabaseAccount databaseAccount) {
-        return databaseAccount.getSystemReplicationPolicy();
-    }
-
-    public static ConsistencyPolicy getConsistencyPolicy(DatabaseAccount databaseAccount) {
-        return databaseAccount.getConsistencyPolicy();
     }
 
     /**
@@ -364,6 +345,10 @@ public final class ModelBridgeInternal {
 
     public static void setAltLink(Resource resource, String altLink) {
         resource.setAltLink(altLink);
+    }
+
+    public static void setResourceId(Resource resource, String resourceId) {
+        resource.setResourceId(resourceId);
     }
 
     public static void setResourceSelfLink(Resource resource, String selfLink) {

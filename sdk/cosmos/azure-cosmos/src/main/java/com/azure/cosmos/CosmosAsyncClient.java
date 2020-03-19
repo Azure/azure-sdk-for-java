@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
-import com.azure.cosmos.models.DatabaseAccount;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Permission;
@@ -392,19 +391,6 @@ public final class CosmosAsyncClient implements Closeable {
                                             ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
                                             response.getResponseHeaders()));
         });
-    }
-
-    /**
-     * Gets database account information.
-     * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the database account.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @return {@link Mono} containing the single resource response with the database account or an error
-     */
-    public Mono<DatabaseAccount> readDatabaseAccount() {
-        return asyncDocumentClient.getDatabaseAccount();
     }
 
     /**

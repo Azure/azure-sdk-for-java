@@ -94,7 +94,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .setMaxItemCount(10)
                 .setStartFromBeginning(true)
                 .setMaxScaleCount(0) // unlimited
-                .setDiscardExistingLeases(true)
+                .setExistingLeasesDiscarded(true)
             )
             .build();
 
@@ -151,7 +151,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .setStartTime(OffsetDateTime.now().minusDays(1))
                 .setMinScaleCount(1)
                 .setMaxScaleCount(3)
-                .setDiscardExistingLeases(true)
+                .setExistingLeasesDiscarded(true)
             )
             .build();
 

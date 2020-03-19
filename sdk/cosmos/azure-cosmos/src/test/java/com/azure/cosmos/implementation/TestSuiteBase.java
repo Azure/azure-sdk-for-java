@@ -439,10 +439,6 @@ public class TestSuiteBase extends DocumentClientTest {
         return bulkInsert(client, collectionLink, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL);
     }
 
-    public static ConsistencyLevel getAccountDefaultConsistencyLevel(AsyncDocumentClient client) {
-        return ModelBridgeInternal.getConsistencyPolicy(client.getDatabaseAccount().single().block()).getDefaultConsistencyLevel();
-    }
-
     public static User createUser(AsyncDocumentClient client, String databaseId, User user) {
         return client.createUser("dbs/" + databaseId, user, null).single().block().getResource();
     }

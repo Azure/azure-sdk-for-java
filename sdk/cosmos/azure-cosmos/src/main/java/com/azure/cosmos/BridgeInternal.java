@@ -26,7 +26,7 @@ import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
-import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.JsonSerializable;
