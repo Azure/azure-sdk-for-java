@@ -414,4 +414,8 @@ public final class ModelBridgeInternal {
     public static Map<String, Object> getJsonSerializableMap(JsonSerializable jsonSerializable) {
         return jsonSerializable.getMap();
     }
+
+    public static CosmosResourceType fromServiceSerializedFormat(String cosmosResourceType) {
+        return CosmosResourceType.fromServiceSerializedFormat(cosmosResourceType);
+    }
 }

@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.models;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Resource types in the Azure Cosmos DB database service.
  */
@@ -24,6 +27,26 @@ public enum CosmosResourceType {
 
     private final int value;
     private final String overWireValue;
+
+    private static Map<String, CosmosResourceType> cosmosResourceTypeMap = new HashMap<>();
+
+    static {
+        for (CosmosResourceType crt : CosmosResourceType.values()) {
+            cosmosResourceTypeMap.put(crt.toString(), crt);
+        }
+    }
+
+    /**
+     * Given the over wire version of CosmosResourceType gives the corresponding enum or return null
+     *
+     * @param cosmosResourceType String value of cosmos resource type
+     * @return CosmosResourceType Enum Cosmos Resource Type
+     */
+    static CosmosResourceType fromServiceSerializedFormat(String cosmosResourceType) {
+        // this is 100x faster than org.apache.commons.lang3.EnumUtils.getEnum(String)
+        // for more detail refer to https://github.com/moderakh/azure-cosmosdb-benchmark
+        return cosmosResourceTypeMap.get(cosmosResourceType);
+    }
 
     CosmosResourceType(int value, String overWireValue) {
         this.value = value;

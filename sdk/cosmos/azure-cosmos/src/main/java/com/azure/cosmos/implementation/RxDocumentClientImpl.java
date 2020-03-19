@@ -1037,11 +1037,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private CosmosResourceType resolveCosmosResourceType(ResourceType resourceType) {
-        try {
-            return CosmosResourceType.valueOf(StringUtils.upperCase(resourceType.toString()));
-        } catch (IllegalArgumentException e) {
+        CosmosResourceType cosmosResourceType =
+            ModelBridgeInternal.fromServiceSerializedFormat(resourceType.toString());
+        if (cosmosResourceType == null) {
             return CosmosResourceType.SYSTEM;
         }
+        return cosmosResourceType;
     }
 
     void captureSessionToken(RxDocumentServiceRequest request, RxDocumentServiceResponse response) {
