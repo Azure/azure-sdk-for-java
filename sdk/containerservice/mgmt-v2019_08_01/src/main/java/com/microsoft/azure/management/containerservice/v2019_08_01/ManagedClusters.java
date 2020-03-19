@@ -70,6 +70,17 @@ public interface ManagedClusters extends SupportsCreating<ManagedCluster.Definit
     Completable resetAADProfileAsync(String resourceGroupName, String resourceName, ManagedClusterAADProfile parameters);
 
     /**
+     * Rotate certificates of a managed cluster.
+     * Rotate certificates of a managed cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable rotateClusterCertificatesAsync(String resourceGroupName, String resourceName);
+
+    /**
      * Gets upgrade profile for a managed cluster.
      * Gets the details of the upgrade profile for a managed cluster with a specified resource group and name.
      *

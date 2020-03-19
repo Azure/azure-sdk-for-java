@@ -97,9 +97,9 @@ class AgentPoolsImpl extends WrapperImpl<AgentPoolsInner> implements AgentPools 
     }
 
     @Override
-    public Observable<AgentPoolAvailableVersions> getAvailableAgentPoolVersionsAsync(String resourceGroupName, String resourceName, String agentPoolName) {
+    public Observable<AgentPoolAvailableVersions> getAvailableAgentPoolVersionsAsync(String resourceGroupName, String resourceName) {
         AgentPoolsInner client = this.inner();
-        return client.getAvailableAgentPoolVersionsAsync(resourceGroupName, resourceName, agentPoolName)
+        return client.getAvailableAgentPoolVersionsAsync(resourceGroupName, resourceName)
         .map(new Func1<AgentPoolAvailableVersionsInner, AgentPoolAvailableVersions>() {
             @Override
             public AgentPoolAvailableVersions call(AgentPoolAvailableVersionsInner inner) {
