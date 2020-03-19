@@ -357,7 +357,7 @@ class AmqpReceiveLinkProcessorTest {
         linkProcessor.onSubscribe(subscription);
 
         // Assert
-        verify(subscription).request(eq(0L));
+        verify(subscription).request(eq(1L));
     }
 
     /**

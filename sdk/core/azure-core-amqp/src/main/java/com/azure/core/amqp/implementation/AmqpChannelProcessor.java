@@ -60,8 +60,9 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     @Override
     public void onSubscribe(Subscription subscription) {
         if (Operators.setOnce(UPSTREAM, this, subscription)) {
-            // Don't request an item until there is a subscriber.
-            subscription.request(0);
+            // Request the first connection on a subscription.
+            isRequested.set(true);
+            subscription.request(1);
         } else {
             logger.warning("Processors can only be subscribed to once.");
         }
