@@ -8,8 +8,8 @@ stages:
     - template: ../jobs/archetype-sdk-client.yml
       parameters:
         ServiceDirectory: ${{parameters.ServiceDirectory}}
+        Artifacts: ${{ parameters.Artifacts }}
         SDKType: ${{parameters.SDKType}}
-        Artifacts: ${{parameters.Artifacts}}
         TestMatrix:
           Linux - Java 8:
             OSName: 'Linux'
@@ -62,6 +62,7 @@ stages:
         TestName: Emulator
         DisableAzureResourceCreation: true
         ServiceDirectory: cosmos
+        Artifacts: ${{ parameters.Artifacts }}
         Matrix:
           Tcp_Integration_Tests_Java8:
             OSVmImage: 'windows-2019'
