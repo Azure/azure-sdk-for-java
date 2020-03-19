@@ -306,7 +306,7 @@ public class CosmosAuthorizationTokenResolverTest extends DocumentClientTest {
      */
     private CosmosAuthorizationTokenResolver getTokenResolverWithBlockList(String blockListedUserId, String errorMessage) {
         return (RequestVerb requestVerb, String resourceIdOrFullName, CosmosResourceType resourceType, Map<String, Object> properties) -> {
-            if (resourceType == CosmosResourceType.SYSTEM) {
+            if (resourceType.equals(CosmosResourceType.SYSTEM)) {
                 return userToReadWriteResourceTokenMap.values().iterator().next();
             } else if (!properties.get(USER_ID).toString().equals(blockListedUserId)) {
                 return userToReadWriteResourceTokenMap.get(properties.get(USER_ID));
