@@ -17,15 +17,18 @@ import reactor.core.publisher.Mono;
 
 public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
-    private final Path tempFile;
+    private static final Path TEMP_FILE;
 
-    public UploadFromFileTest(PerfStressOptions options) {
-        super(options);
+    static {
         try {
-            tempFile = Files.createTempFile(null, null);
+            TEMP_FILE = Files.createTempFile(null, null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public UploadFromFileTest(PerfStressOptions options) {
+        super(options);
     }
 
     @Override
@@ -40,7 +43,7 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
     private Mono<Void> createTempFile() {
         try (InputStream inputStream = createRandomInputStream(options.getSize());
-             OutputStream outputStream = new FileOutputStream(tempFile.toString())) {
+             OutputStream outputStream = new FileOutputStream(TEMP_FILE.toString())) {
             copyStream(inputStream, outputStream);
             return Mono.empty();
         } catch (IOException e) {
@@ -50,7 +53,7 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
     private Mono<Void> deleteTempFile() {
         try {
-            Files.delete(tempFile);
+            Files.delete(TEMP_FILE);
             return Mono.empty();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -59,11 +62,11 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
     @Override
     public void run() {
-        blobClient.uploadFromFile(tempFile.toString(), true);
+        blobClient.uploadFromFile(TEMP_FILE.toString(), true);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return blobAsyncClient.uploadFromFile(tempFile.toString(), true);
+        return blobAsyncClient.uploadFromFile(TEMP_FILE.toString(), true);
     }
 }
