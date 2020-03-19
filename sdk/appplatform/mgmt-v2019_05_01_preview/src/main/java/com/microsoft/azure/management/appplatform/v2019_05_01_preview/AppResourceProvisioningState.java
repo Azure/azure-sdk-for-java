@@ -22,6 +22,12 @@ public final class AppResourceProvisioningState extends ExpandableStringEnum<App
     /** Static value Failed for AppResourceProvisioningState. */
     public static final AppResourceProvisioningState FAILED = fromString("Failed");
 
+    /** Static value Creating for AppResourceProvisioningState. */
+    public static final AppResourceProvisioningState CREATING = fromString("Creating");
+
+    /** Static value Updating for AppResourceProvisioningState. */
+    public static final AppResourceProvisioningState UPDATING = fromString("Updating");
+
     /**
      * Creates or finds a AppResourceProvisioningState from its string representation.
      * @param name a name to look for
