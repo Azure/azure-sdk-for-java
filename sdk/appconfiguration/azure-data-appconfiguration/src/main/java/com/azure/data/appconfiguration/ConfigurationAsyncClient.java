@@ -56,7 +56,7 @@ public final class ConfigurationAsyncClient {
     private static final String ETAG_ANY = "*";
     private final String serviceEndpoint;
     private final ConfigurationService service;
-    private final String apiVersion = ConfigurationServiceVersion.getLatest().getVersion();
+    private final String apiVersion;
 
     /**
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
@@ -68,6 +68,7 @@ public final class ConfigurationAsyncClient {
     ConfigurationAsyncClient(String serviceEndpoint, HttpPipeline pipeline, ConfigurationServiceVersion version) {
         this.service = RestProxy.create(ConfigurationService.class, pipeline);
         this.serviceEndpoint = serviceEndpoint;
+        this.apiVersion = version.getVersion();
     }
 
     /**
