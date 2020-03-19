@@ -30,7 +30,6 @@ import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -210,7 +209,7 @@ public class EventHubClientBuilder {
 
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
         final TokenCredential tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
-                properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+            properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
 
         if (!CoreUtils.isNullOrEmpty(properties.getEntityPath())
             && !eventHubName.equals(properties.getEntityPath())) {
@@ -268,7 +267,7 @@ public class EventHubClientBuilder {
      *     null.
      */
     public EventHubClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
-                                            TokenCredential credential) {
+        TokenCredential credential) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -363,11 +362,8 @@ public class EventHubClientBuilder {
     /**
      * Package-private method that sets the scheduler for the created Event Hub client.
      *
-     * TODO (conniey): Currently, the default is to use an elastic scheduler if none is specified to facilitate the
-     * possibility of legacy blocking code. However, we should consider if we should give consumers an option to use a
-     * parallel Scheduler. https://github.com/Azure/azure-sdk-for-java/issues/5466
-     *
      * @param scheduler Scheduler to set.
+     *
      * @return The updated {@link EventHubClientBuilder} object.
      */
     EventHubClientBuilder scheduler(Scheduler scheduler) {
@@ -552,13 +548,24 @@ public class EventHubClientBuilder {
         final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
-        final Flux<EventHubAmqpConnection> connectionFlux = Mono.fromCallable(() -> {
-            final String connectionId = StringUtil.getRandomString("MF");
+        final Flux<EventHubAmqpConnection> connectionFlux = Flux.create(sink -> {
+            sink.onRequest(request -> {
 
-            return (EventHubAmqpConnection) new EventHubReactorAmqpConnection(connectionId, connectionOptions,
-                eventHubName, provider, handlerProvider, tokenManagerProvider, messageSerializer, product,
-                clientVersion);
-        }).repeat();
+                if (request == 0) {
+                    return;
+                } else if (request > 1) {
+                    logger.warning("Requested more than one connection. Only emitting one. Request: {}", request);
+                }
+
+                final String connectionId = StringUtil.getRandomString("MF");
+                logger.info("Emitting a single connection. connectionId [{}].", connectionId);
+
+                final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
+                    connectionOptions, eventHubName, provider, handlerProvider, tokenManagerProvider, messageSerializer,
+                    product, clientVersion);
+                sink.next(connection);
+            });
+        });
 
         return connectionFlux.subscribeWith(new EventHubConnectionProcessor(
             connectionOptions.getFullyQualifiedNamespace(), eventHubName, connectionOptions.getRetry()));
