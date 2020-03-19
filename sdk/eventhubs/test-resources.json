@@ -8,10 +8,6 @@
                 "description": "Base name to append to Azure resources."
             }
         },
-        "storageEndpointSuffix": {
-            "type": "string",
-            "defaultValue": "core.windows.net"
-        },
         "eventHubName": {
             "type": "string",
             "defaultValue": "javaeventhub"
@@ -49,17 +45,11 @@
     "variables": {
         "authorizationApiVersion": "2018-09-01-preview",
         "authorizationRulesName": "[concat('authr', parameters('baseName'))]",
-        "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
-        "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
         "eventHubsApiVersion": "2017-04-01",
         "eventHubsDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/f526a384-b230-433a-b45c-95f59c4a2dec')]",
         "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
         "eventHubsNamespaceName": "[concat('eventhub', parameters('baseName'))]",
-        "location": "[resourceGroup().location]",
-        "premiumAccountName": "[concat('prem', parameters('baseName'))]",
-        "primaryAccountName": "[concat('prim', parameters('baseName'))]",
-        "secondaryAccountName": "[concat('sec', parameters('baseName'))]",
-        "storageApiVersion": "2019-04-01"
+        "location": "[resourceGroup().location]"
     },
     "resources": [
         {
@@ -120,102 +110,6 @@
                 "roleDefinitionId": "[variables('eventHubsDataOwnerRoleId')]",
                 "principalId": "[parameters('testApplicationOid')]"
             }
-        },
-        {
-            "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "[variables('storageApiVersion')]",
-            "name": "[variables('primaryAccountName')]",
-            "location": "[variables('location')]",
-            "sku": {
-                "name": "Standard_RAGRS",
-                "tier": "Standard"
-            },
-            "kind": "StorageV2",
-            "properties": {
-                "networkAcls": {
-                    "bypass": "AzureServices",
-                    "virtualNetworkRules": [],
-                    "ipRules": [],
-                    "defaultAction": "Allow"
-                },
-                "supportsHttpsTrafficOnly": true,
-                "encryption": {
-                    "services": {
-                        "file": {
-                            "enabled": true
-                        },
-                        "blob": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                },
-                "accessTier": "Hot"
-            }
-        },
-        {
-            "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "[variables('storageApiVersion')]",
-            "name": "[variables('secondaryAccountName')]",
-            "location": "[variables('location')]",
-            "sku": {
-                "name": "Standard_RAGRS",
-                "tier": "Standard"
-            },
-            "kind": "StorageV2",
-            "properties": {
-                "networkAcls": {
-                    "bypass": "AzureServices",
-                    "virtualNetworkRules": [],
-                    "ipRules": [],
-                    "defaultAction": "Allow"
-                },
-                "supportsHttpsTrafficOnly": true,
-                "encryption": {
-                    "services": {
-                        "file": {
-                            "enabled": true
-                        },
-                        "blob": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                },
-                "accessTier": "Hot"
-            }
-        },
-        {
-            "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "[variables('storageApiVersion')]",
-            "name": "[variables('premiumAccountName')]",
-            "location": "[variables('location')]",
-            "sku": {
-                "name": "Premium_LRS",
-                "tier": "Premium"
-            },
-            "kind": "StorageV2",
-            "properties": {
-                "networkAcls": {
-                    "bypass": "AzureServices",
-                    "virtualNetworkRules": [],
-                    "ipRules": [],
-                    "defaultAction": "Allow"
-                },
-                "supportsHttpsTrafficOnly": true,
-                "encryption": {
-                    "services": {
-                        "file": {
-                            "enabled": true
-                        },
-                        "blob": {
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                },
-                "accessTier": "Hot"
-            }
         }
     ],
     "outputs": {
@@ -242,38 +136,6 @@
         "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME": {
             "type": "string",
             "value": "[concat(variables('eventHubsNamespaceName'), '.', parameters('eventHubNamespaceHostNameSuffix'))]"
-        },
-        "BLOB_STORAGE_ACCOUNT_NAME": {
-            "type": "string",
-            "value": "[variables('secondaryAccountName')]"
-        },
-        "BLOB_STORAGE_ACCOUNT_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('storageApiVersion')).keys[0].value]"
-        },
-        "PREMIUM_STORAGE_ACCOUNT_NAME": {
-            "type": "string",
-            "value": "[variables('premiumAccountName')]"
-        },
-        "PREMIUM_STORAGE_ACCOUNT_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('premiumAccountName')), variables('storageApiVersion')).keys[0].value]"
-        },
-        "PRIMARY_STORAGE_ACCOUNT_NAME": {
-            "type": "string",
-            "value": "[variables('primaryAccountName')]"
-        },
-        "PRIMARY_STORAGE_ACCOUNT_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value]"
-        },
-        "SECONDARY_STORAGE_ACCOUNT_NAME": {
-            "type": "string",
-            "value": "[variables('secondaryAccountName')]"
-        },
-        "SECONDARY_STORAGE_ACCOUNT_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('secondaryAccountName')), variables('storageApiVersion')).keys[0].value]"
         }
     }
 }
