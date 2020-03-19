@@ -2,6 +2,9 @@ parameters:
   Artifacts: []
   SDKType: bom
   ServiceDirectory: not-specified
+  Skip:
+    UpdatePackageVersion: true
+    VersionVerification: true
 
 stages:
   - stage: Build
