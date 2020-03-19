@@ -142,7 +142,7 @@ public class JsonSerializable {
      * @return the HashMap.
      */
     @SuppressWarnings("unchecked")
-    public Map<String, Object> getMap() {
+    protected Map<String, Object> getMap() {
         return getMapper().convertValue(this.propertyBag, HashMap.class);
     }
 

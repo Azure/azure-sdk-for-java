@@ -410,4 +410,8 @@ public final class ModelBridgeInternal {
             throw new IllegalArgumentException(e);
         }
     }
+
+    public static Map<String, Object> getJsonSerializableMap(JsonSerializable jsonSerializable) {
+        return jsonSerializable.getMap();
+    }
 }
