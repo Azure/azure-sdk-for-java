@@ -58,6 +58,8 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Session"]'
 
+      MavenTestPomFile: sdk/cosmos/pom.xml
+
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
@@ -123,6 +125,8 @@ jobs:
           ProfileFlag: '-Pnon-emulator'
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Session"]'
+
+      MavenTestPomFile: sdk/cosmos/pom.xml
 
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
@@ -194,6 +198,8 @@ jobs:
           AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+
+      MavenTestPomFile: sdk/cosmos/pom.xml
 
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
@@ -293,6 +299,8 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
+      MavenTestPomFile: sdk/cosmos/pom.xml
+
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
@@ -353,6 +361,8 @@ jobs:
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
 
+      MavenTestPomFile: sdk/cosmos/pom.xml
+
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
@@ -406,6 +416,8 @@ jobs:
           DisplayName: Multimaster Single Region NonEmulator
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
+
+      MavenTestPomFile: sdk/cosmos/pom.xml
 
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
