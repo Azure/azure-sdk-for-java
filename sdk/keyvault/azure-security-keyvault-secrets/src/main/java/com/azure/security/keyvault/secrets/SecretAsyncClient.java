@@ -64,7 +64,7 @@ public final class SecretAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
-    public static final Map<String, String> KEYVAULT_TRACING_PROPERTIES =
+    static final Map<String, String> KEYVAULT_TRACING_PROPERTIES =
         Collections.singletonMap(AZ_TRACING_NAMESPACE_KEY, "Microsoft.KeyVault");
 
     private final String vaultUrl;
