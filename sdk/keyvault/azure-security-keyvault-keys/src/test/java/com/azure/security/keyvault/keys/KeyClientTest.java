@@ -173,7 +173,7 @@ public class KeyClientTest extends KeyClientTestBase {
 
             // Key is being deleted on server.
             while (!pollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(2000);
+                sleepInRecordMode(10000);
                 pollResponse = deletedKeyPoller.poll();
             }
 
