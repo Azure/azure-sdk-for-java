@@ -80,7 +80,7 @@ public final class IndexingPolicy extends JsonSerializable {
      *
      * @return the automatic
      */
-    public Boolean getAutomatic() {
+    public Boolean isAutomatic() {
         return super.getBoolean(Constants.Properties.AUTOMATIC);
     }
 

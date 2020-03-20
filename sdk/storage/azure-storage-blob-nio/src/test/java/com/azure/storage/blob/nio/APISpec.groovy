@@ -25,6 +25,7 @@ import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.ListBlobContainersOptions
+import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
@@ -100,6 +101,17 @@ class APISpec extends Specification {
     protected TestResourceNamer resourceNamer
     protected String testName
     String containerName
+
+
+    // The values below are used to create data-driven tests for access conditions.
+    static final OffsetDateTime oldDate = OffsetDateTime.now().minusDays(1)
+    static final OffsetDateTime newDate = OffsetDateTime.now().plusDays(1)
+    static final String garbageEtag = "garbage"
+    /*
+     Note that this value is only used to check if we are depending on the received etag. This value will not actually
+     be used.
+     */
+    static final String receivedEtag = "received"
 
     def setupSpec() {
         testMode = setupTestMode()
@@ -519,7 +531,27 @@ class APISpec extends Specification {
 
     def putDirectoryBlob(BlockBlobClient blobClient) {
         blobClient.commitBlockListWithResponse(Collections.emptyList(), null,
-            [(AzureFileSystemProvider.DIR_METADATA_MARKER): "true"], null, null, null, null)
+            [(AzureResource.DIR_METADATA_MARKER): "true"], null, null, null, null)
+    }
+
+    /**
+     * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
+     * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
+     *
+     * @param bc
+     *      The URL to the blob to get the etag on.
+     * @param match
+     *      The ETag value for this test. If {@code receivedEtag} is passed, that will signal that the test is expecting
+     *      the blob's actual etag for this test, so it is retrieved.
+     * @return
+     * The appropriate etag value to run the current test.
+     */
+    def setupBlobMatchCondition(BlobClientBase bc, String match) {
+        if (match == receivedEtag) {
+            return bc.getProperties().getETag()
+        } else {
+            return match
+        }
     }
 
     def checkBlobIsDir(BlobClient blobClient) {

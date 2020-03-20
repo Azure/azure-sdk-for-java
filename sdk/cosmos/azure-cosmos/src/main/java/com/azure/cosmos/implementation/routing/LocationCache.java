@@ -7,7 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.collections.map.CaseInsensitiveMap;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
-import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.models.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ResourceType;

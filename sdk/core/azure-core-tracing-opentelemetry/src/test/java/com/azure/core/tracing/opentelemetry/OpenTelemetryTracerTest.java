@@ -96,9 +96,8 @@ public class OpenTelemetryTracerTest {
         final SpanId parentSpanId = parentSpan.getContext().getSpanId();
 
         // Act
-        // TODO (savaity): replace with the AZ_TRACING_NAMESPACE_KEY
         final Context updatedContext = openTelemetryTracer.start(METHOD_NAME,
-            tracingContext.addData("az.tracing.namespace", AZ_NAMESPACE_VALUE));
+            tracingContext.addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE));
 
         // Assert
         assertSpanWithExplicitParent(updatedContext, parentSpanId);
@@ -106,7 +105,8 @@ public class OpenTelemetryTracerTest {
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
         assertEquals(Span.Kind.INTERNAL, recordEventsSpan.toSpanData().getKind());
         final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
-        assertEquals(attributeMap.get(AZ_NAMESPACE_KEY), AttributeValue.stringAttributeValue(AZ_NAMESPACE_VALUE));
+        assertEquals(attributeMap.get(AZ_NAMESPACE_KEY),
+            AttributeValue.stringAttributeValue(AZ_NAMESPACE_VALUE));
     }
 
     @Test

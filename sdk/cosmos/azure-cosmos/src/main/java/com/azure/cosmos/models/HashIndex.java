@@ -20,7 +20,7 @@ public final class HashIndex extends Index {
      *
      * @param dataType the data type.
      */
-    public HashIndex(DataType dataType) {
+    HashIndex(DataType dataType) {
         super(IndexKind.HASH);
         this.setDataType(dataType);
     }
@@ -34,7 +34,7 @@ public final class HashIndex extends Index {
      * @param dataType the data type.
      * @param precision the precision.
      */
-    public HashIndex(DataType dataType, int precision) {
+    HashIndex(DataType dataType, int precision) {
         super(IndexKind.HASH);
         this.setDataType(dataType);
         this.setPrecision(precision);

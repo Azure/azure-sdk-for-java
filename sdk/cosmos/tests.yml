@@ -10,6 +10,10 @@ jobs:
     parameters:
       TestName: Single_Region_Session
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
@@ -54,6 +58,8 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Session"]'
 
+      MavenTestPomFile: sdk/cosmos/pom.xml
+
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
@@ -70,6 +76,10 @@ jobs:
     parameters:
       TestName: Single_Region_Session_2
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
@@ -116,6 +126,8 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Session"]'
 
+      MavenTestPomFile: sdk/cosmos/pom.xml
+
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
@@ -129,6 +141,10 @@ jobs:
     parameters:
       TestName: Single_Region_Strong_Tcp
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
@@ -183,6 +199,8 @@ jobs:
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
+      MavenTestPomFile: sdk/cosmos/pom.xml
+
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
@@ -197,6 +215,10 @@ jobs:
     parameters:
       TestName: Single_Region_Strong_Https
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
@@ -277,6 +299,8 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
+      MavenTestPomFile: sdk/cosmos/pom.xml
+
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
@@ -291,6 +315,10 @@ jobs:
     parameters:
       TestName: MultiMaster_Multi_Region
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
@@ -333,6 +361,8 @@ jobs:
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
 
+      MavenTestPomFile: sdk/cosmos/pom.xml
+
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
@@ -347,6 +377,10 @@ jobs:
     parameters:
       TestName: MultiMaster_Single_Region
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
@@ -382,6 +416,8 @@ jobs:
           DisplayName: Multimaster Single Region NonEmulator
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
+
+      MavenTestPomFile: sdk/cosmos/pom.xml
 
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml

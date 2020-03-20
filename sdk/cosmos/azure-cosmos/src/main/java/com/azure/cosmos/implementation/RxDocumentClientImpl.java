@@ -10,7 +10,6 @@ import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.models.CosmosResourceType;
-import com.azure.cosmos.models.DatabaseAccount;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.JsonSerializable;
@@ -1038,11 +1037,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private CosmosResourceType resolveCosmosResourceType(ResourceType resourceType) {
-        try {
-            return CosmosResourceType.valueOf(resourceType.toString());
-        } catch (IllegalArgumentException e) {
-            return CosmosResourceType.System;
+        CosmosResourceType cosmosResourceType =
+            ModelBridgeInternal.fromServiceSerializedFormat(resourceType.toString());
+        if (cosmosResourceType == null) {
+            return CosmosResourceType.SYSTEM;
         }
+        return cosmosResourceType;
     }
 
     void captureSessionToken(RxDocumentServiceRequest request, RxDocumentServiceResponse response) {

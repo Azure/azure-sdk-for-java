@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.EnumUtils;
 import com.azure.cosmos.models.IndexingDirective;
@@ -614,7 +615,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
         if (StringUtils.isNotEmpty(value)) {
 
-            final ConsistencyLevel level = ConsistencyLevel.fromServiceSerializedFormat(value);
+            final ConsistencyLevel level = BridgeInternal.fromServiceSerializedFormat(value);
 
             if (level == null) {
                 final String reason = String.format(Locale.ROOT, RMResources.InvalidRequestHeaderValue,

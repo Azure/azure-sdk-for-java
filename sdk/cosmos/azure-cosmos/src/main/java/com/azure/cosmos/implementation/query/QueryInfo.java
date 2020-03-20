@@ -84,7 +84,7 @@ public final class QueryInfo extends JsonSerializable {
     }
 
     public boolean hasSelectValue(){
-        return super.has(HAS_SELECT_VALUE) && super.getBoolean(HAS_SELECT_VALUE);
+        return super.has(HAS_SELECT_VALUE) && Boolean.TRUE.equals(super.getBoolean(HAS_SELECT_VALUE));
     }
 
     public boolean hasOffset() {

@@ -62,7 +62,7 @@ public class TriggerCrudTest extends TestSuiteBase {
         CosmosAsyncTrigger readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().getTrigger();
 
         // read trigger
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         Mono<CosmosAsyncTriggerResponse> readObservable = readBackTrigger.read();
 
         // validate read trigger
@@ -97,7 +97,7 @@ public class TriggerCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_TriggerCrudTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 

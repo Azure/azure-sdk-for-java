@@ -9,7 +9,8 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.FeedOptions;
@@ -233,7 +234,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     private <T> List<String> sortDocumentsAndCollectResourceIds(String propName, Function<CosmosItemProperties, T> extractProp, Comparator<T> comparer) {
         return createdDocuments.stream()
-                               .filter(d -> d.getMap().containsKey(propName)) // removes undefined
+                               .filter(d -> ModelBridgeInternal.getJsonSerializableMap(d).containsKey(propName)) // removes undefined
                                .sorted((d1, d2) -> comparer.compare(extractProp.apply(d1), extractProp.apply(d2)))
                                .map(Resource::getResourceId).collect(Collectors.toList());
     }
@@ -399,7 +400,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     //  see https://github.com/Azure/azure-sdk-for-java/issues/6386
     @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_OrderbyDocumentQueryTest() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
@@ -433,7 +434,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .readPartitionKeyRanges("dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId(), null)
                 .flatMap(p -> Flux.fromIterable(p.getResults())).collectList().single().block().size();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

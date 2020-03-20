@@ -8,6 +8,7 @@ import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlParameterList;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

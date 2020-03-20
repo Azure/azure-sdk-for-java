@@ -215,7 +215,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         ModelBridgeInternal.setPartitionKey(options, new PartitionKey(docDefinition.get("mypk")));
@@ -259,7 +259,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         validateItemSuccess(deleteObservable, validator);
 
         // attempt to read document which was deleted
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readObservable = container.readItem(documentId,
                                                                           new PartitionKey(docDefinition.get("mypk")),
@@ -359,7 +359,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosKeyCredentialTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         database = createDatabase(client, databaseId);
         container = getSharedMultiPartitionCosmosContainer(client);
     }

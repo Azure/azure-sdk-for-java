@@ -117,7 +117,7 @@ public class DocumentCrudTest extends TestSuiteBase {
 
         createDocument(container, docDefinition);
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readObservable = container.readItem(docDefinition.getId(),
@@ -155,7 +155,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readObservable = container.readItem(docDefinition.getId(),
@@ -177,7 +177,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         Thread.sleep(1000);
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         CosmosItemProperties readDocument = BridgeInternal.getProperties(container.readItem(docDefinition.getId(),
@@ -201,7 +201,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         container.deleteItem(docDefinition.getId(), new PartitionKey(docDefinition.get("mypk"))).block();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readObservable = container.readItem(docDefinition.getId(),
                                                                           new PartitionKey(docDefinition.get("mypk")),
@@ -232,7 +232,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.validateItemSuccess(deleteObservable, validator);
 
         // attempt to read document which was deleted
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readObservable = container.readItem(documentId,
                                                                           new PartitionKey(docDefinition.get("mypk")),
@@ -259,7 +259,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.validateItemSuccess(deleteObservable, validator);
 
         // attempt to read document which was deleted
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readObservable = container.readItem(documentId,
                                                                           PartitionKey.NONE,
@@ -465,7 +465,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_DocumentCrudTest() {
         assertThat(this.client).isNull();
-        this.client = this.clientBuilder().buildAsyncClient();
+        this.client = this.getClientBuilder().buildAsyncClient();
         this.container = getSharedMultiPartitionCosmosContainer(this.client);
     }
 

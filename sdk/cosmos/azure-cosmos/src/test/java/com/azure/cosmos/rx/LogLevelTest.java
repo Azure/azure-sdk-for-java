@@ -54,7 +54,7 @@ public class LogLevelTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_LogLevelTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 
@@ -83,7 +83,7 @@ public class LogLevelTest extends TestSuiteBase {
         final Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
         assertThat(logger.isDebugEnabled()).isTrue();
 
-        CosmosAsyncClient client = clientBuilder().buildAsyncClient();
+        CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
         try {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
@@ -113,7 +113,7 @@ public class LogLevelTest extends TestSuiteBase {
         final StringWriter consoleWriter = new StringWriter();
         addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.WARN, APPENDER_NAME, consoleWriter);
 
-        CosmosAsyncClient client = clientBuilder().buildAsyncClient();
+        CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
         try {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
@@ -145,7 +145,7 @@ public class LogLevelTest extends TestSuiteBase {
         Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
         assertThat(logger.isTraceEnabled()).isTrue();
 
-        CosmosAsyncClient client = clientBuilder().buildAsyncClient();
+        CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
         try {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
@@ -175,7 +175,7 @@ public class LogLevelTest extends TestSuiteBase {
         Logger logger = LoggerFactory.getLogger(COSMOS_DB_LOGGING_CATEGORY);
         assertThat(logger.isTraceEnabled()).isTrue();
 
-        CosmosAsyncClient client = clientBuilder().buildAsyncClient();
+        CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
         try {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
@@ -222,7 +222,7 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(LoggerFactory.getLogger(COSMOS_DB_LOGGING_CATEGORY).isDebugEnabled()).isTrue();
         assertThat(LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY).isInfoEnabled()).isTrue();
 
-        CosmosAsyncClient client = clientBuilder().buildAsyncClient();
+        CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
         try {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
@@ -253,7 +253,7 @@ public class LogLevelTest extends TestSuiteBase {
         Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
         assertThat(logger.isErrorEnabled()).isTrue();
 
-        CosmosAsyncClient client = clientBuilder().buildAsyncClient();
+        CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
         try {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
@@ -284,7 +284,7 @@ public class LogLevelTest extends TestSuiteBase {
         Logger logger = LoggerFactory.getLogger(NETWORK_LOGGING_CATEGORY);
         assertThat(logger.isInfoEnabled()).isTrue();
 
-        CosmosAsyncClient client = clientBuilder().buildAsyncClient();
+        CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
         try {
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,

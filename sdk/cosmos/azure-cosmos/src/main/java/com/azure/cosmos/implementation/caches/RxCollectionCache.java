@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceId;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -167,7 +168,7 @@ public abstract class RxCollectionCache {
         if (request.requestContext.resolvedCollectionRid != null) {
             // Here we will issue backend call only if cache wasn't already refreshed (if whatever is there corresponds to previously resolved collection rid).
             DocumentCollection obsoleteValue = new DocumentCollection();
-            obsoleteValue.setResourceId(request.requestContext.resolvedCollectionRid);
+            ModelBridgeInternal.setResourceId(obsoleteValue, request.requestContext.resolvedCollectionRid);
 
             mono = this.collectionInfoByNameCache.getAsync(
                     resourceFullName,
