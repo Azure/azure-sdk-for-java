@@ -18,7 +18,8 @@ import java.time.Instant;
  */
 public interface ServiceBusManagementNode extends AutoCloseable {
     /**
-     * Completes a message given its lock token.
+     * Updates the disposition status of a message given its lock token.
+     *
      * @return Mono that completes successfully when the message is completed. Otherwise, returns an error.
      */
     Mono<Void> updateDisposition(UUID lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
@@ -26,12 +27,14 @@ public interface ServiceBusManagementNode extends AutoCloseable {
 
     /**
      * This will return next available message to peek.
+     *
      * @return {@link Mono} of {@link ServiceBusReceivedMessage}.
      */
     Mono<ServiceBusReceivedMessage> peek();
 
     /**
      * @param fromSequenceNumber to peek message from.
+     *
      * @return {@link Mono} of {@link ServiceBusReceivedMessage}.
      */
     Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber);

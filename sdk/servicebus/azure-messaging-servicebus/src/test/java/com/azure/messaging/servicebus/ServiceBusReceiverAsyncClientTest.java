@@ -27,7 +27,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -45,6 +44,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -112,10 +112,7 @@ class ServiceBusReceiverAsyncClientTest {
 
     @BeforeEach
     void setup(TestInfo testInfo) {
-        String testName = testInfo.getTestMethod().isPresent()
-            ? testInfo.getTestMethod().get().getName()
-            : testInfo.getDisplayName();
-        logger.info("Running '{}'", testName);
+        logger.info("[{}] Setting up.", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
 
@@ -126,7 +123,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, new AmqpRetryOptions(),
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.boundedElastic());
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -138,7 +135,7 @@ class ServiceBusReceiverAsyncClientTest {
         connectionProcessor =
             Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
                 .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                ENTITY_PATH, connectionOptions.getRetry()));
+                    ENTITY_PATH, connectionOptions.getRetry()));
 
         receiveOptions = new ReceiveMessageOptions().setPrefetchCount(PREFETCH);
 
@@ -147,9 +144,11 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     @AfterEach
-    void teardown() {
-        Mockito.framework().clearInlineMocks();
+    void teardown(TestInfo testInfo) {
+        logger.info("[{}] Tearing down.", testInfo.getDisplayName());
+
         consumer.close();
+        Mockito.framework().clearInlineMocks();
     }
 
     /**
@@ -193,7 +192,6 @@ class ServiceBusReceiverAsyncClientTest {
      * Verifies that this receives a number of messages. Verifies that the initial credits we add are equal to the
      * prefetch value.
      */
-    @Disabled("Fix issue: https://github.com/Azure/azure-sdk-for-java/issues/9166")
     @Test
     void receivesNumberOfEvents() {
         // Arrange
@@ -215,7 +213,6 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that we can receive messages from the processor.
      */
-    @Disabled("Fix issue: https://github.com/Azure/azure-sdk-for-java/issues/9166")
     @Test
     void receivesAndAutoCompletes() {
         // Arrange
@@ -247,9 +244,9 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Mono.just(managementNode));
 
         when(managementNode.updateDisposition(eq(lockToken1), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull()))
-            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
+            .thenReturn(Mono.empty());
         when(managementNode.updateDisposition(eq(lockToken2), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull()))
-            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
+            .thenReturn(Mono.empty());
 
         // Act and Assert
         StepVerifier.create(consumer2.receive().take(2))
@@ -257,9 +254,12 @@ class ServiceBusReceiverAsyncClientTest {
                 messageSink.next(message);
                 messageSink.next(message2);
             })
-            .expectNext(receivedMessage, receivedMessage2)
+            .expectNext(receivedMessage)
+            .expectNext(receivedMessage2)
+            .thenAwait(Duration.ofSeconds(5))
             .verifyComplete();
 
+        logger.info("Verifying assertions.");
         verify(managementNode).updateDisposition(eq(lockToken1), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull());
         verify(managementNode).updateDisposition(eq(lockToken2), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull());
     }
@@ -295,9 +295,9 @@ class ServiceBusReceiverAsyncClientTest {
                     messageSink.next(message);
                     messageSink.next(message2);
                 })
-                .expectNext(receivedMessage, receivedMessage2)
-                .expectComplete()
-                .verify();
+                .expectNext(receivedMessage)
+                .expectNext(receivedMessage2)
+                .verifyComplete();
         } finally {
             consumer2.close();
         }
@@ -394,9 +394,42 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
+     * Verifies that we can deadletter a message with an error and description.
+     */
+    @Test
+    void deadLetterWithDescription() {
+        final UUID lockToken1 = UUID.randomUUID();
+        final String description = "some-dead-letter-description";
+        final String reason = "dead-letter-reason";
+        final Map<String, Object> propertiesToModify = new HashMap<>();
+        propertiesToModify.put("something", true);
+        final Instant expiration = Instant.now().plus(Duration.ofMinutes(5));
+
+        final MessageWithLockToken message = mock(MessageWithLockToken.class);
+
+        when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
+
+        when(receivedMessage.getLockToken()).thenReturn(lockToken1);
+        when(receivedMessage.getLockedUntil()).thenReturn(expiration);
+
+        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
+        when(managementNode.updateDisposition(lockToken1, DispositionStatus.SUSPENDED, reason, description, propertiesToModify))
+            .thenReturn(Mono.empty());
+
+        // Act & Assert
+        StepVerifier.create(consumer.receive()
+            .take(1)
+            .flatMap(m -> consumer.deadLetter(m, reason, description, propertiesToModify)))
+            .then(() -> messageSink.next(message))
+            .expectNext()
+            .verifyComplete();
+
+        verify(managementNode).updateDisposition(lockToken1, DispositionStatus.SUSPENDED, reason, description, propertiesToModify);
+    }
+
+    /**
      * Verifies that the user can complete settlement methods on received message.
      */
-    @Disabled("Fix issue: https://github.com/Azure/azure-sdk-for-java/issues/9166")
     @ParameterizedTest
     @EnumSource(DispositionStatus.class)
     void settleMessage(DispositionStatus dispositionStatus) {
@@ -420,9 +453,9 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Mono.just(managementNode));
 
         when(managementNode.updateDisposition(lockToken1, dispositionStatus, null, null, null))
-            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
+            .thenReturn(Mono.empty());
         when(managementNode.updateDisposition(lockToken2, dispositionStatus, null, null, null))
-            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
+            .thenReturn(Mono.empty());
 
         // Pretend we receive these before. This is to simulate that so that the receiver keeps track of them in
         // the lock map.
@@ -431,7 +464,9 @@ class ServiceBusReceiverAsyncClientTest {
                 messageSink.next(message);
                 messageSink.next(message2);
             })
-            .expectNext(receivedMessage, receivedMessage2)
+            .expectNext(receivedMessage)
+            .expectNext(receivedMessage2)
+            .thenAwait(Duration.ofSeconds(5))
             .verifyComplete();
 
         // Act and Assert

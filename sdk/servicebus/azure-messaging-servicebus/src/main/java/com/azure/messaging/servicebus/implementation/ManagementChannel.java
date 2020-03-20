@@ -36,14 +36,14 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.ASSOCIATED_LINK_NAME_KEY;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.PEEK_OPERATION_VALUE;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE_COUNT_KEY;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.PEEK_OPERATION;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.RENEW_LOCK_OPERATION;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.FROM_SEQUENCE_NUMBER;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.SERVER_TIMEOUT;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.UPDATE_DISPOSITION_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.RENEW_LOCK_OPERATION;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.SEQUENCE_NUMBERS;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.RECEIVER_SETTLE_MODE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.RECEIVE_BY_SEQUENCE_NUMBER_OPERATION;
@@ -165,12 +165,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     private Flux<ServiceBusReceivedMessage> peek(long fromSequenceNumber, int maxMessages, UUID sessionId) {
-        return isAuthorized(PEEK_OPERATION_VALUE).thenMany(createRequestResponse.flatMap(channel -> {
-            final Message message = createManagementMessage(PEEK_OPERATION_VALUE, channel.getReceiveLinkName());
+        return isAuthorized(PEEK_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
+            final Message message = createManagementMessage(PEEK_OPERATION, channel.getReceiveLinkName());
 
             // set mandatory properties on AMQP message body
             HashMap<String, Object> requestBodyMap = new HashMap<>();
-            requestBodyMap.put(REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER, fromSequenceNumber);
+            requestBodyMap.put(FROM_SEQUENCE_NUMBER, fromSequenceNumber);
             requestBodyMap.put(MESSAGE_COUNT_KEY, maxMessages);
 
             if (!Objects.isNull(sessionId)) {
@@ -262,7 +262,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         final Message message = createManagementMessage(UPDATE_DISPOSITION_OPERATION, linkName);
 
         final Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, lockTokens);
+        requestBody.put(LOCK_TOKENS_KEY, lockTokens);
         requestBody.put(ManagementConstants.DISPOSITION_STATUS_KEY, dispositionStatus.getValue());
 
         if (deadLetterReason != null) {
@@ -284,12 +284,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
     private Flux<Instant> renewMessageLock(UUID[] renewLockList) {
 
-        return  isAuthorized(PEEK_OPERATION_VALUE).thenMany(createRequestResponse.flatMap(channel -> {
+        return  isAuthorized(PEEK_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
 
             Message requestMessage = createManagementMessage(RENEW_LOCK_OPERATION,
                 channel.getReceiveLinkName());
 
-            requestMessage.setBody(new AmqpValue(Collections.singletonMap(LOCK_TOKENS, renewLockList)));
+            requestMessage.setBody(new AmqpValue(Collections.singletonMap(LOCK_TOKENS_KEY, renewLockList)));
             return channel.sendWithAck(requestMessage);
         }).flatMapMany(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
