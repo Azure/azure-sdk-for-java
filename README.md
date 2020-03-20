@@ -6,7 +6,7 @@ This repository is for active development of the Azure SDK for Java. For consume
 
 ## Important
 
-The Azure SDK team is pleased to make available the February 2020 client library General Availability (GA) release. We strongly recommend using the GA libraries in all production environments as these libraries are well tested and officially supported by Microsoft. More details, including installation instructions can be found [here](https://azure.github.io/azure-sdk/releases/2020-02/java.html).
+The Azure SDK team is pleased to make available the March 2020 client library General Availability (GA) release. We strongly recommend using the GA libraries in all production environments as these libraries are well tested and officially supported by Microsoft. More details, including installation instructions can be found [here](https://azure.github.io/azure-sdk/releases/2020-02/java.html).
 
 ## Getting started
 
@@ -22,22 +22,23 @@ Java 8 or later is required to use libraries under the `com.azure` package, for 
 
 Each service might have a number of libraries available from each of the following categories:
 
-- [Client: GA February 2020 Releases](#Client-GA-February-2020-Releases)
+- [Client: GA March 2020 Releases](#Client-GA-March-2020-Releases)
 - [Client - Previous Versions](#Client-Previous-Versions)
 - [Management](#Management)
 
-### Client: GA February 2020 Releases
+### Client: GA March 2020 Releases
 
-New wave of packages that were released in February 2020 client library as General Availability (GA) and several others that were released in **beta**. These libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc, so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](https://github.com/Azure/azure-sdk-for-java/blob/azure-core_1.2.0/sdk/core/azure-core/README.md).
+New wave of packages that were released in March 2020 client library as General Availability (GA) and several others that were released in **beta**. These libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc, so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](https://github.com/Azure/azure-sdk-for-java/blob/azure-core_1.3.0/sdk/core/azure-core/README.md).
 
 These libraries can be easily identified by sdk/ folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
-The libraries released in the GA February 2020 release is listed below.
+The libraries released in the GA March 2020 release is listed below.
 
-- [February 2020](https://azure.github.io/azure-sdk/releases/2020-02/java.html)
+- [March 2020](https://azure.github.io/azure-sdk/releases/2020-03/java.html)
 
 #### Client: Earlier GA Releases
 
+- [February 2020](https://azure.github.io/azure-sdk/releases/2020-02/java.html)
 - [January 2020](https://azure.github.io/azure-sdk/releases/2020-01/java.html)
 - [December 2019](https://azure.github.io/azure-sdk/releases/2019-12/java.html)
 - [November 2019](https://azure.github.io/azure-sdk/releases/2019-11/java.html)
@@ -68,7 +69,7 @@ Libraries which enable you to provision specific resources. They are responsible
 
 ### Master branch
 
-The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [above](#Client-GA-February-2020-Releases) for latest **GA** release.
+The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [above](#Client-GA-March-2020-Releases) for latest **GA** release.
 
 ### Release branches (Release tagging)
 
