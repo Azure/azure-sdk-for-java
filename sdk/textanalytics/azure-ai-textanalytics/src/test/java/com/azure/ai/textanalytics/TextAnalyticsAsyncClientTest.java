@@ -600,8 +600,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         clientBuilderWithNullServiceVersionRunner(clientBuilder -> (input, output) ->
             StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
                 .assertNext(response -> validatePrimaryLanguage(output, response))
-                .verifyComplete()
-            );
+                .verifyComplete());
     }
 
     /**
