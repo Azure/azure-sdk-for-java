@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -11,11 +13,6 @@ import java.util.function.Function;
  * Contains configuration information that is used during construction of client libraries.
  */
 public class Configuration implements Cloneable {
-    /**
-     * No-op {@link Configuration} object used to opt out of using global configurations when constructing client
-     * libraries.
-     */
-    public static final Configuration NONE = new NoopConfiguration();
 
     // Default properties - these are what we read from the environment
     /**
@@ -99,6 +96,18 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
 
     /*
+     * System property loader.
+     */
+    private static final Function<String, String> PROPERTY_LOADER = System::getProperty;
+
+    /*
+     * Environment variable loader.
+     */
+    private static final Function<String, String> ENV_VAR_LOADER = System::getenv;
+
+    private static final List<Function<String, String>> LOADERS = Arrays.asList(PROPERTY_LOADER, ENV_VAR_LOADER);
+
+    /*
      * Configurations that are loaded into the global configuration store when the application starts.
      */
     private static final String[] DEFAULT_CONFIGURATIONS = {
@@ -120,19 +129,22 @@ public class Configuration implements Cloneable {
         PROPERTY_AZURE_TRACING_DISABLED,
     };
 
-    private static final Configuration BASE_CONFIGURATIONS;
+    /*
+     * The base set of configurations that is loaded at the start of the application. This will be used to pre-populate
+     * all further Configurations created.
+     */
+    private static final Configuration BASE_CONFIGURATIONS = loadBaseConfiguration();
 
-    static {
-        BASE_CONFIGURATIONS = new Configuration();
-        for (String config : DEFAULT_CONFIGURATIONS) {
-            BASE_CONFIGURATIONS.load(config);
-        }
-    }
-
-    /**
+    /*
      * Gets the global configuration shared by all client libraries.
      */
     private static final Configuration GLOBAL_CONFIGURATION = BASE_CONFIGURATIONS.clone();
+
+    /**
+     * No-op {@link Configuration} object used to opt out of using global configurations when constructing client
+     * libraries.
+     */
+    public static final Configuration NONE = new NoopConfiguration();
 
     private final ConcurrentMap<String, String> configurations;
 
@@ -208,23 +220,34 @@ public class Configuration implements Cloneable {
      * variable, in that order, if found, otherwise null.
      */
     private String getOrLoad(String name) {
-        return configurations.containsKey(name) ? configurations.get(name) : load(name);
+        String value = configurations.get(name);
+        if (value != null) {
+            return value;
+        }
+
+        value = load(name);
+        if (value != null) {
+            configurations.put(name, value);
+            return value;
+        }
+
+        return null;
     }
 
     /*
      * Attempts to load the configuration from the environment.
      *
-     * The runtime parameters are checked first followed by the environment variables. If the configuration is found
-     * the value is loaded into the configuration store and if a configuration with the same name already exists this
-     * will update it to the loaded value.
+     * The runtime parameters are checked first followed by the environment variables.
      *
      * @param name Name of the configuration.
      * @return If found the loaded configuration, otherwise null.
      */
-    private String load(String name) {
-        if (loadFrom(name, System::getProperty)
-            || loadFrom(name, System::getenv)) {
-            return configurations.get(name);
+    private static String load(String name) {
+        for (Function<String, String> loader : LOADERS) {
+            String value = loader.apply(name);
+            if (value != null) {
+                return value;
+            }
         }
 
         return null;
@@ -283,7 +306,7 @@ public class Configuration implements Cloneable {
      * @return The converted configuration, if null or empty the default value.
      */
     @SuppressWarnings("unchecked")
-    private <T> T convertOrDefault(String value, T defaultValue) {
+    private static <T> T convertOrDefault(String value, T defaultValue) {
         // Value is null or empty, return the default.
         if (CoreUtils.isNullOrEmpty(value)) {
             return defaultValue;
@@ -312,24 +335,15 @@ public class Configuration implements Cloneable {
         return (T) convertedValue;
     }
 
-    /*
-     * Attempts to load the configuration using the passed loader. If the configuration is found it will be added to
-     * the configuration store.
-     *
-     * @param name Name of the configuration.
-     * @param loader Loading function to apply.
-     * @return True if the configuration was loaded, false otherwise.
-     */
-    private boolean loadFrom(String name, Function<String, String> loader) {
-        String value = loader.apply(name);
-
-        if (value == null) {
-            // Nothing was loaded
-            return false;
-        } else {
-            // Value changed!
-            configurations.put(name, value);
-            return true;
+    private static Configuration loadBaseConfiguration() {
+        ConcurrentHashMap<String, String> baseConfigurations = new ConcurrentHashMap<>();
+        for (String config : DEFAULT_CONFIGURATIONS) {
+            String value = load(config);
+            if (value != null) {
+                baseConfigurations.put(config, value);
+            }
         }
+
+        return new Configuration(baseConfigurations);
     }
 }
