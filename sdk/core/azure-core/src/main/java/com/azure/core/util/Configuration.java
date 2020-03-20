@@ -130,15 +130,9 @@ public class Configuration implements Cloneable {
     };
 
     /*
-     * The base set of configurations that is loaded at the start of the application. This will be used to pre-populate
-     * all further Configurations created.
-     */
-    private static final Configuration BASE_CONFIGURATIONS = loadBaseConfiguration();
-
-    /*
      * Gets the global configuration shared by all client libraries.
      */
-    private static final Configuration GLOBAL_CONFIGURATION = BASE_CONFIGURATIONS.clone();
+    private static final Configuration GLOBAL_CONFIGURATION = new Configuration();
 
     /**
      * No-op {@link Configuration} object used to opt out of using global configurations when constructing client
@@ -149,10 +143,11 @@ public class Configuration implements Cloneable {
     private final ConcurrentMap<String, String> configurations;
 
     /**
-     * Constructs an empty configuration.
+     * Constructs a configuration containing the known Azure properties constants.
      */
     public Configuration() {
-        this.configurations = new ConcurrentHashMap<>(BASE_CONFIGURATIONS.configurations);
+        this.configurations = new ConcurrentHashMap<>();
+        loadBaseConfiguration(this);
     }
 
     private Configuration(ConcurrentMap<String, String> configurations) {
@@ -335,15 +330,12 @@ public class Configuration implements Cloneable {
         return (T) convertedValue;
     }
 
-    private static Configuration loadBaseConfiguration() {
-        ConcurrentHashMap<String, String> baseConfigurations = new ConcurrentHashMap<>();
+    private static void loadBaseConfiguration(Configuration configuration) {
         for (String config : DEFAULT_CONFIGURATIONS) {
             String value = load(config);
             if (value != null) {
-                baseConfigurations.put(config, value);
+                configuration.put(config, value);
             }
         }
-
-        return new Configuration(baseConfigurations);
     }
 }
