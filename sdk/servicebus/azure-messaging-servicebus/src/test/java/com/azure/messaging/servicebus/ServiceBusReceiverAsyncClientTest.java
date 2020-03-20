@@ -452,9 +452,9 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Mono.just(managementNode));
 
         when(managementNode.updateDisposition(lockToken1, dispositionStatus, null, null, null))
-            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
+            .thenReturn(Mono.empty());
         when(managementNode.updateDisposition(lockToken2, dispositionStatus, null, null, null))
-            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
+            .thenReturn(Mono.empty());
 
         // Pretend we receive these before. This is to simulate that so that the receiver keeps track of them in
         // the lock map.

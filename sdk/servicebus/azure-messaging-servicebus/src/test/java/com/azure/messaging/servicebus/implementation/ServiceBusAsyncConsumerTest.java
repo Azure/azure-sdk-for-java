@@ -39,6 +39,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 class ServiceBusAsyncConsumerTest {
+    private static final String LINK_NAME = "foo-bar";
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
     private final FluxSink<Message> messageProcessorSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
@@ -103,7 +104,7 @@ class ServiceBusAsyncConsumerTest {
     void receiveAutoComplete() {
         // Arrange
         final boolean isAutoComplete = true;
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete,
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer, isAutoComplete,
             retryOptions, onComplete, onAbandon);
 
         final Message message1 = mock(Message.class);
@@ -140,8 +141,8 @@ class ServiceBusAsyncConsumerTest {
     void receiveNoAutoComplete() {
         // Arrange
         final boolean isAutoComplete = false;
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete,
-            retryOptions, onComplete, onAbandon);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
+            isAutoComplete, retryOptions, onComplete, onAbandon);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -184,8 +185,8 @@ class ServiceBusAsyncConsumerTest {
             Assertions.fail("Should not complete");
             return Mono.empty();
         };
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete,
-            retryOptions, onComplete, onAbandon);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
+            isAutoComplete, retryOptions, onComplete, onAbandon);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);

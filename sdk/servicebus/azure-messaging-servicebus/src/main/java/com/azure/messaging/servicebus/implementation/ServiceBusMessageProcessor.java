@@ -11,9 +11,11 @@ import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Operators;
+import reactor.util.context.Context;
 
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -23,6 +25,8 @@ import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Processor that listens to upstream messages, pushes them downstream then completes it if necessary.
@@ -87,7 +91,19 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     }
 
     @Override
+    public boolean isTerminated() {
+        return isDone || isCancelled;
+    }
+
+    @Override
     public void onNext(ServiceBusReceivedMessage message) {
+        if (isTerminated()) {
+            final Context context = downstream == null ? currentContext() : downstream.currentContext();
+            Operators.onNextDropped(message, context);
+
+            return;
+        }
+
         messageQueue.add(message);
         drain();
     }
@@ -139,9 +155,43 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
     @Override
     public void cancel() {
+        if (isCancelled) {
+            return;
+        }
+
         logger.info("Cancelling subscription.");
         isCancelled = true;
         drain();
+    }
+
+    @Override
+    public void dispose() {
+        if (isDone) {
+            return;
+        }
+
+        logger.info("Disposing subscription.");
+        isDone = true;
+        drain();
+    }
+
+    public Mono<Void> disposeAsync() {
+        dispose();
+
+        if (pendingCompletes.isEmpty()) {
+            return Mono.empty();
+        }
+
+        final List<Mono<Void>> pending = pendingCompletes.keySet()
+            .stream()
+            .map(key -> {
+                final PendingComplete entry = pendingCompletes.get(key);
+                return entry != null ? entry.getOnComplete() : null;
+            })
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+
+        return Mono.when(pending).then(Mono.fromRunnable(() -> pendingCompletes.clear()));
     }
 
     @Override
@@ -313,15 +363,11 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         }
 
         private void error(Throwable throwable) {
-            if (sink != null) {
-                sink.error(throwable);
-            }
+            sink.error(throwable);
         }
 
         private void complete() {
-            if (sink != null) {
-                sink.success();
-            }
+            sink.success();
         }
 
         private ServiceBusReceivedMessage getMessage() {

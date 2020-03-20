@@ -30,15 +30,17 @@ import java.io.Closeable;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 /**
- * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue
- * or topic on Azure Service Bus.
+ * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
+ * topic on Azure Service Bus.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements Closeable {
@@ -122,29 +124,39 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
 
         // TODO (conniey): This returns the same consumer instance because the entityPath is not unique.
         //  Python and .NET does not have the same behaviour.
-        final String linkName = entityPath;
-        return getOrCreateConsumer(entityPath)
-            .receive()
-            .map(message -> {
-                if (message.getLockToken() == null || MessageUtils.ZERO_LOCK_TOKEN.equals(message.getLockToken())) {
-                    return message;
-                }
-
-                lockTokenExpirationMap.compute(message.getLockToken(), (key, existing) -> {
-                    if (existing == null) {
-                        return message.getLockedUntil();
-                    } else {
-                        return existing.isBefore(message.getLockedUntil())
-                            ? message.getLockedUntil()
-                            : existing;
+        return Flux.usingWhen(
+            Mono.fromCallable(() -> getOrCreateConsumer(entityPath)),
+            consumer -> {
+                return consumer.receive().map(message -> {
+                    if (message.getLockToken() == null || MessageUtils.ZERO_LOCK_TOKEN.equals(message.getLockToken())) {
+                        return message;
                     }
-                });
 
-                return message;
-            })
-            .doOnCancel(() -> removeLink(linkName, SignalType.CANCEL))
-            .doOnComplete(() -> removeLink(linkName, SignalType.ON_COMPLETE))
-            .doOnError(error -> removeLink(linkName, SignalType.ON_ERROR));
+                    lockTokenExpirationMap.compute(message.getLockToken(), (key, existing) -> {
+                        if (existing == null) {
+                            return message.getLockedUntil();
+                        } else {
+                            return existing.isBefore(message.getLockedUntil())
+                                ? message.getLockedUntil()
+                                : existing;
+                        }
+                    });
+
+                    return message;
+                });
+            },
+            consumer -> {
+                final String linkName = consumer.getLinkName();
+                logger.info("{}: Receiving completed. Disposing", linkName);
+
+                final ServiceBusAsyncConsumer removed = openConsumers.remove(linkName);
+                if (removed == null) {
+                    logger.warning("Could not find consumer to remove for: {}", linkName);
+                    return Mono.empty();
+                } else {
+                    return removed.disposeAsync();
+                }
+            });
     }
 
     /**
@@ -213,11 +225,11 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Asynchronously renews the lock on the specified message. The lock will be renewed based on the
-     * setting specified on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is
-     * locked on the server for this receiver instance for a duration as specified during the Queue creation
-     * (LockDuration). If processing of the message requires longer than this duration, the lock needs to be renewed.
-     * For each renewal, the lock is reset to the entity's LockDuration value.
+     * Asynchronously renews the lock on the specified message. The lock will be renewed based on the setting specified
+     * on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is locked on the
+     * server for this receiver instance for a duration as specified during the Queue creation (LockDuration). If
+     * processing of the message requires longer than this duration, the lock needs to be renewed. For each renewal, the
+     * lock is reset to the entity's LockDuration value.
      *
      * @param receivedMessage to be used to renew.
      *
@@ -314,9 +326,9 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Reads the next active message without changing the state of the receiver or the message source.
-     * The first call to {@code peek()} fetches the first active message for
-     * this receiver. Each subsequent call fetches the subsequent message in the entity.
+     * Reads the next active message without changing the state of the receiver or the message source. The first call to
+     * {@code peek()} fetches the first active message for this receiver. Each subsequent call fetches the subsequent
+     * message in the entity.
      *
      * @return Single {@link ServiceBusReceivedMessage} peeked.
      */
@@ -343,6 +355,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * Reads the next batch of active messages without changing the state of the receiver or the message source.
      *
      * @param maxMessages The number of messages.
+     *
      * @return The {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
      */
     public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
@@ -356,6 +369,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      *
      * @param maxMessages The number of messages.
      * @param fromSequenceNumber The sequence number from where to read the message.
+     *
      * @return The {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
      */
     public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber) {
@@ -369,16 +383,29 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      */
     @Override
     public void close() {
-        if (isDisposed.getAndSet(true)) {
+        if (isDisposed.get()) {
             return;
         }
 
-        final ArrayList<String> keys = new ArrayList<>(openConsumers.keySet());
-        for (String key : keys) {
-            removeLink(key, SignalType.ON_COMPLETE);
+        logger.info("Removing receiver client.");
+        connectionProcessor.dispose();
+        cleanup().block(connectionProcessor.getRetryOptions().getTryTimeout());
+    }
+
+    Mono<Void> cleanup() {
+        if (isDisposed.getAndSet(true)) {
+            return Mono.empty();
         }
 
-        connectionProcessor.dispose();
+        List<Mono<Void>> collect = openConsumers.keySet().stream()
+            .map(e -> {
+                final ServiceBusAsyncConsumer consumer = openConsumers.get(e);
+                return consumer != null ? consumer.disposeAsync() : null;
+            })
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+
+        return Mono.when(collect).then(Mono.fromRunnable(() -> openConsumers.clear()));
     }
 
     private Mono<Boolean> isLockTokenValid(UUID lockToken) {
@@ -427,8 +454,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                             deadLetterErrorDescription, propertiesToModify);
                     } else {
                         //TODO (conniey): in Track 1, I believe there was a way to do this.
-                        return Mono.error(
-                            new UnsupportedOperationException("Cannot complete a message that is not locked."));
+                        return Mono.error(new UnsupportedOperationException(
+                            "Cannot complete a message that is not locked. lockToken: " + lockToken));
                     }
                 });
         }).then(Mono.fromRunnable(() -> {
@@ -458,23 +485,9 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
                 new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
 
-            return new ServiceBusAsyncConsumer(linkMessageProcessor, messageSerializer, isAutoComplete,
+            return new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer, isAutoComplete,
                 connectionProcessor.getRetryOptions(), this::complete, this::abandon);
         });
-    }
-
-    private void removeLink(String linkName, SignalType signalType) {
-        logger.info("{}: Receiving completed. Signal[{}]", linkName, signalType);
-
-        final ServiceBusAsyncConsumer removed = openConsumers.remove(linkName);
-        if (removed != null) {
-            try {
-                removed.close();
-            } catch (Throwable e) {
-                logger.warning("[{}][{}]: Error occurred while closing consumer '{}'",
-                    fullyQualifiedNamespace, entityPath, linkName, e);
-            }
-        }
     }
 
     private AmqpErrorContext getErrorContext() {
