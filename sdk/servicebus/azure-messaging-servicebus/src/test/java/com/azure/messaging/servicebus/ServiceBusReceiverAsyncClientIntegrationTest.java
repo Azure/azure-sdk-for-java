@@ -122,6 +122,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .expectNextCount(maxMessages)
             .verifyComplete();
     }
+
     /**
      * Verifies that we can send and peek a batch of messages.
      */
@@ -138,6 +139,27 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(Mono.when(sender.send(message), sender.send(message))
             .thenMany(receiver.peekBatch(maxMessages, fromSequenceNumber)))
             .expectNextCount(maxMessages)
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can deadletter a message.
+     */
+    @Test
+    void deadLetterMessage() {
+        // Arrange
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+
+        final ServiceBusReceivedMessage receivedMessage = sender.send(message)
+            .then(receiverManual.receive().next())
+            .block(Duration.ofSeconds(30));
+
+        Assertions.assertNotNull(receivedMessage);
+
+        // Assert & Act
+        StepVerifier.create(receiverManual.deadLetter(receivedMessage))
             .verifyComplete();
     }
 
