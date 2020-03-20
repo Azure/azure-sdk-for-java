@@ -2,7 +2,10 @@ package com.azure.search.documents.models.analyzerName;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.search.documents.models.AnalyzerName;
+import com.azure.search.documents.models.DataType;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class LanguageAnalyzerName extends ExpandableStringEnum<LanguageAnalyzerName> {
     public static final LanguageAnalyzerName EN_LUCENE = fromString(AnalyzerName.EN_LUCENE.toString());
@@ -20,6 +23,11 @@ public class LanguageAnalyzerName extends ExpandableStringEnum<LanguageAnalyzerN
     @JsonCreator
     private static LanguageAnalyzerName fromString(String name) {
         return fromString(name, LanguageAnalyzerName.class);
+    }
+
+    public static Collection<AnalyzerName> values() {
+        return values(LanguageAnalyzerName.class).stream().map(LanguageAnalyzerName::toAnalyzerName)
+            .collect(Collectors.toList());
     }
 
     public AnalyzerName toAnalyzerName() {

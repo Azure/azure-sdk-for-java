@@ -3,6 +3,7 @@ package com.azure.search.documents.models.analyzerName;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.search.documents.models.AnalyzerName;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Collection;
 
 public class StrictAnalyzerName extends ExpandableStringEnum<StrictAnalyzerName> {
     public static StrictAnalyzerName languageAnalyzerName (LanguageAnalyzerName languageAnalyzerName) {
@@ -22,6 +23,11 @@ public class StrictAnalyzerName extends ExpandableStringEnum<StrictAnalyzerName>
     @JsonCreator
     private static StrictAnalyzerName fromString(String name) {
         return fromString(name, StrictAnalyzerName.class);
+    }
+
+    public static Collection<AnalyzerName> values() {
+        LanguageAnalyzerName.values().addAll(NonLanguageAnalyzerName.values());
+        return LanguageAnalyzerName.values();
     }
 
     public AnalyzerName toAnalyzerName() {

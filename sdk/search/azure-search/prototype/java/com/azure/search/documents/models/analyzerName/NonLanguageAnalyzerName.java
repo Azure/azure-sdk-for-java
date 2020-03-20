@@ -3,6 +3,8 @@ package com.azure.search.documents.models.analyzerName;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.search.documents.models.AnalyzerName;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class NonLanguageAnalyzerName extends ExpandableStringEnum<NonLanguageAnalyzerName> {
     public static final NonLanguageAnalyzerName KEYWORD = fromString(AnalyzerName.KEYWORD.toString());
@@ -19,6 +21,11 @@ public class NonLanguageAnalyzerName extends ExpandableStringEnum<NonLanguageAna
     @JsonCreator
     private static NonLanguageAnalyzerName fromString(String name) {
         return fromString(name, NonLanguageAnalyzerName.class);
+    }
+
+    public static Collection<AnalyzerName> values() {
+        return values(NonLanguageAnalyzerName.class).stream().map(NonLanguageAnalyzerName::toAnalyzerName)
+            .collect(Collectors.toList());
     }
 
     public AnalyzerName toAnalyzerName() {
