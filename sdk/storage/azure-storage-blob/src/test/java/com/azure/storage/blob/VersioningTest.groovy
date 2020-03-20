@@ -261,6 +261,9 @@ class VersioningTest extends APISpec {
         blobs[0].getVersionId() == blobItemV1.getVersionId()
         blobs[1].getVersionId() == blobItemV2.getVersionId()
         blobs[2].getVersionId() == blobItemV3.getVersionId()
+        blobs[0].isCurrentVersion() == null
+        blobs[1].isCurrentVersion() == null
+        blobs[2].isCurrentVersion()
     }
 
     def "List Blobs without Version"() {
@@ -322,5 +325,40 @@ class VersioningTest extends APISpec {
         propertiesV2.getVersionId() == blobItemV2.getVersionId()
         !propertiesV1.isCurrentVersion()
         propertiesV2.isCurrentVersion()
+    }
+
+    def "Do not look for snapshot of version"() {
+        given:
+        blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        blobClient.getVersionClient("a").getSnapshotClient("b")
+
+        then:
+        thrown IllegalArgumentException
+    }
+
+    def "Do not look for version of snapshot"() {
+        given:
+        blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        blobClient.getSnapshotClient("a").getVersionClient("b")
+
+        then:
+        thrown IllegalArgumentException
+    }
+
+    def "Snapshot creates new Version"() {
+        given:
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        def versionIdAfterSnapshot = blobClient.createSnapshotWithResponse(null, null, null, Context.NONE)
+            .getHeaders().getValue("x-ms-version-id")
+
+        then:
+        versionIdAfterSnapshot != null
+        versionIdAfterSnapshot != blobItemV1.getVersionId()
     }
 }

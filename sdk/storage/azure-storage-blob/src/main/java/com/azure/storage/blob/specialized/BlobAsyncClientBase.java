@@ -161,6 +161,10 @@ public class BlobAsyncClientBase {
     protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
                                   String accountName, String containerName, String blobName, String snapshot,
                                   CpkInfo customerProvidedKey, EncryptionScope encryptionScope, String versionId) {
+        if (snapshot != null && versionId != null) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
+        }
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
