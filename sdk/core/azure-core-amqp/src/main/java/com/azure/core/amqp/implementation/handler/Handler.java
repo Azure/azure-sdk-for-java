@@ -44,10 +44,6 @@ public abstract class Handler extends BaseHandler implements Closeable {
 
     void onNext(EndpointState state) {
         endpointSink.next(state);
-
-        if (state == EndpointState.CLOSED) {
-            endpointSink.complete();
-        }
     }
 
     void onNext(Throwable context) {

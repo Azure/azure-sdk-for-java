@@ -3,31 +3,26 @@
 
 package com.azure.core.http.rest;
 
-import com.azure.core.util.IterableStream;
-import com.azure.core.util.paging.ContinuablePage;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Represents a paginated REST response from the service.
  *
- * @param <T> Type of items in the page response.
+ * @param <T> Type of the listed objects in that response.
  */
-public interface Page<T> extends ContinuablePage<String, T> {
+public interface Page<T> {
+
     /**
-     * Get list of elements in the page.
+     * Gets a list of items returned from the service.
      *
-     * @return the page elements
-     *
-     * @deprecated use {@link this#getElements()}.
+     * @return A list of items from the service.
      */
-    @Deprecated
-    default List<T> getItems() {
-        IterableStream<T> iterableStream = this.getElements();
-        return iterableStream == null
-            ? new ArrayList<>()
-            : this.getElements().stream().collect(Collectors.toList());
-    }
+    List<T> getItems();
+
+    /**
+     * Gets a link to the next page, or {@code null} if there are no more results.
+     *
+     * @return A link to the next page, or {@code null} if there are no more results.
+     */
+    String getContinuationToken();
 }

@@ -32,7 +32,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private static final Tracer TRACER = OpenTelemetry.getTracerFactory().get("Azure-OpenTelemetry");
 
     // standard attributes with AMQP request
-    static final String AZ_NAMESPACE_KEY = "az.namespace";
     static final String COMPONENT = "component";
     static final String MESSAGE_BUS_DESTINATION = "message_bus.destination";
     static final String PEER_ENDPOINT = "peer.address";
@@ -49,12 +48,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
         Builder spanBuilder = getSpanBuilder(spanName, context);
         Span span = spanBuilder.startSpan();
-        if (span.isRecording()) {
-            String tracingNamespace = getOrDefault(context, AZ_TRACING_NAMESPACE_KEY, null, String.class);
-            if (tracingNamespace != null) {
-                span.setAttribute(AZ_NAMESPACE_KEY, AttributeValue.stringAttributeValue(tracingNamespace));
-            }
-        }
+
         return context.addData(PARENT_SPAN_KEY, span);
     }
 

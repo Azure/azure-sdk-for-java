@@ -27,5 +27,5 @@ public interface TokenManagerProvider {
      *
      * @return The qualified resource scope to request access from the service.
      */
-    String getScopesFromResource(String resource);
+    String getResourceString(String resource);
 }

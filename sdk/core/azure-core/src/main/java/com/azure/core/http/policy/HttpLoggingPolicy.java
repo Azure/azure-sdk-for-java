@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.LoggingUtil;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -100,8 +101,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @return A Mono which will emit the string to log.
      */
     private Mono<Void> logRequest(final ClientLogger logger, final HttpRequest request) {
+        int numericLogLevel = LoggingUtil.getEnvironmentLoggingLevel().getLogLevel();
 
-        if (!logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
+        if (shouldLoggingBeSkipped(numericLogLevel)) {
             return Mono.empty();
         }
 
@@ -114,7 +116,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .append(System.lineSeparator());
         }
 
-        addHeadersToLogMessage(logger, request.getHeaders(), requestLogMessage);
+        addHeadersToLogMessage(request.getHeaders(), requestLogMessage, numericLogLevel);
 
         if (!httpLogDetailLevel.shouldLogBody()) {
             return logAndReturn(logger, requestLogMessage, null);
@@ -180,7 +182,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @return A Mono containing the HTTP response.
      */
     private Mono<HttpResponse> logResponse(final ClientLogger logger, final HttpResponse response, long startNs) {
-        if (!logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
+        int numericLogLevel = LoggingUtil.getEnvironmentLoggingLevel().getLogLevel();
+        if (shouldLoggingBeSkipped(numericLogLevel)) {
             return Mono.just(response);
         }
 
@@ -205,7 +208,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 .append(System.lineSeparator());
         }
 
-        addHeadersToLogMessage(logger, response.getHeaders(), responseLogMessage);
+        addHeadersToLogMessage(response.getHeaders(), responseLogMessage, numericLogLevel);
 
         if (!httpLogDetailLevel.shouldLogBody()) {
             responseLogMessage.append("<-- END HTTP");
@@ -246,6 +249,19 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private <T> Mono<T> logAndReturn(ClientLogger logger, StringBuilder logMessageBuilder, T data) {
         logger.info(logMessageBuilder.toString());
         return Mono.justOrEmpty(data);
+    }
+
+    /*
+     * Determines if logging should be skipped.
+     *
+     * <p>Logging is skipped if the environment log level doesn't support logging at the informational or verbose level.
+     * All logging in this policy occurs at the information level.</p>
+     *
+     * @param environmentLogLevel Log level configured in the environment at the time logging begins.
+     * @return A flag indicating if logging should be skipped.
+     */
+    private boolean shouldLoggingBeSkipped(int environmentLogLevel) {
+        return environmentLogLevel > LogLevel.INFORMATIONAL.getLogLevel();
     }
 
     /*
@@ -301,9 +317,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param sb StringBuilder that is generating the log message.
      * @param logLevel Log level the environment is configured to use.
      */
-    private void addHeadersToLogMessage(ClientLogger logger, HttpHeaders headers, StringBuilder sb) {
+    private void addHeadersToLogMessage(HttpHeaders headers, StringBuilder sb, int logLevel) {
         // Either headers shouldn't be logged or the logging level isn't set to VERBOSE, don't add headers.
-        if (!httpLogDetailLevel.shouldLogHeaders() || logger.canLogAtLevel(LogLevel.VERBOSE)) {
+        if (!httpLogDetailLevel.shouldLogHeaders() || logLevel > LogLevel.VERBOSE.getLogLevel()) {
             return;
         }
 

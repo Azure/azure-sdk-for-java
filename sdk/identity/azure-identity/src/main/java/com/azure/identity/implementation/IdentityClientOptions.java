@@ -3,7 +3,6 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 
 import java.time.Duration;
@@ -20,13 +19,14 @@ public final class IdentityClientOptions {
     private int maxRetry;
     private Function<Duration, Duration> retryTimeout;
     private ProxyOptions proxyOptions;
-    private HttpPipeline httpPipeline;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
     public IdentityClientOptions() {
-        authorityHost = DEFAULT_AUTHORITY_HOST;
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        authorityHost = configuration.contains(configuration.PROPERTY_AZURE_AUTHORITY_HOST)
+        ? configuration.get(configuration.PROPERTY_AZURE_AUTHORITY_HOST) : DEFAULT_AUTHORITY_HOST;
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
     }
@@ -90,29 +90,12 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * Specifies the options for proxy configuration.
+     * Specifies he options for proxy configuration.
      * @param proxyOptions the options for proxy configuration
      * @return IdentityClientOptions
      */
     public IdentityClientOptions setProxyOptions(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
-        return this;
-    }
-
-    /**
-     * @return the HttpPipeline to send all requests
-     */
-    public HttpPipeline getHttpPipeline() {
-        return httpPipeline;
-    }
-
-    /**
-     * Specifies the HttpPipeline to send all requests. This setting overrides the others.
-     * @param httpPipeline the HttpPipeline to send all requests
-     * @return IdentityClientOptions
-     */
-    public IdentityClientOptions setHttpPipeline(HttpPipeline httpPipeline) {
-        this.httpPipeline = httpPipeline;
         return this;
     }
 }

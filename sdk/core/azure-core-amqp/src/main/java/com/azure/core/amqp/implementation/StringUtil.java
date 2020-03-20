@@ -44,7 +44,7 @@ public final class StringUtil {
         return builder.toString();
     }
 
-    public static String getTrackingIdAndTimeToLog() {
+    public static String getTrackingIDAndTimeToLog() {
         return String.format(Locale.US, "TrackingId: %s, at: %s", UUID.randomUUID().toString(), ZonedDateTime.now());
     }
 }

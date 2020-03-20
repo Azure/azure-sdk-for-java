@@ -81,7 +81,7 @@ public class ActiveClientTokenManager implements TokenManager {
 
                 // If this is the first time authorize is called, the task will not have been scheduled yet.
                 if (!hasScheduled.getAndSet(true)) {
-                    logger.info("Scheduling refresh token task. scopes[{}]", scopes);
+                    logger.info("Scheduling refresh token task");
 
                     final Duration firstInterval = Duration.ofMillis(refreshIntervalMS);
                     lastRefreshInterval.set(firstInterval);
@@ -113,7 +113,7 @@ public class ActiveClientTokenManager implements TokenManager {
 
         return Flux.switchOnNext(durationSource.map(Flux::interval))
             .flatMap(delay -> {
-                logger.info("Refreshing token. scopes[{}] ", scopes);
+                logger.info("Refreshing token.");
                 return authorize();
             })
             .onErrorContinue(
@@ -121,12 +121,12 @@ public class ActiveClientTokenManager implements TokenManager {
                 (amqpException, interval) -> {
                     final Duration lastRefresh = lastRefreshInterval.get();
 
-                    logger.error("Error is transient. Rescheduling authorization task at interval {} ms. scopes[{}]",
-                        lastRefresh.toMillis(), scopes, amqpException);
+                    logger.error("Error is transient. Rescheduling authorization task at interval {} ms.",
+                        lastRefresh.toMillis(), amqpException);
                     durationSourceSink.next(lastRefreshInterval.get());
                 })
             .subscribe(interval -> {
-                logger.info("Authorization successful. Refreshing token in {} ms. scopes[{}]", interval, scopes);
+                logger.info("Authorization successful. Refreshing token in {} ms.", interval);
                 authorizationResultsSink.next(AmqpResponseCode.ACCEPTED);
 
                 final Duration nextRefresh = Duration.ofMillis(interval);
@@ -134,13 +134,12 @@ public class ActiveClientTokenManager implements TokenManager {
                 durationSourceSink.next(Duration.ofMillis(interval));
             }, error -> {
                     logger.error("Error occurred while refreshing token that is not retriable. Not scheduling"
-                        + " refresh task. Use ActiveClientTokenManager.authorize() to schedule task again. audience[{}]"
-                        + " scopes[{}]", tokenAudience, scopes, error);
+                        + " refresh task. Use ActiveClientTokenManager.authorize() to schedule task again.", error);
                     hasScheduled.set(false);
                     durationSourceSink.complete();
                     authorizationResultsSink.error(error);
                 }, () -> {
-                    logger.verbose("Completed refresh token task.");
+                    logger.info("Completed refresh token task.");
                 });
     }
 }
