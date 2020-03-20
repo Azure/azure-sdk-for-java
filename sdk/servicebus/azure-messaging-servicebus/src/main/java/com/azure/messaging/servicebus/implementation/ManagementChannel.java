@@ -102,8 +102,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Mono<Instant> renewMessageLock(UUID lockToken) {
         return renewMessageLock(new UUID[]{lockToken})
-            .next()
-            .publishOn(scheduler);
+            .next();
     }
 
     /**
@@ -112,8 +111,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber) {
         return peek(fromSequenceNumber, 1, null)
-            .last()
-            .publishOn(scheduler);
+            .last();
     }
 
     /**
@@ -122,8 +120,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
 
-        return peek(this.lastPeekedSequenceNumber.get() + 1, maxMessages, null)
-            .publishOn(scheduler);
+        return peek(this.lastPeekedSequenceNumber.get() + 1, maxMessages, null);
     }
 
     /**
@@ -132,8 +129,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber) {
 
-        return peek(fromSequenceNumber, maxMessages, null)
-            .publishOn(scheduler);
+        return peek(fromSequenceNumber, maxMessages, null);
     }
 
     /**
@@ -142,8 +138,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(ReceiveMode receiveMode, long sequenceNumber) {
         return receiveDeferredMessageBatch(receiveMode, null, sequenceNumber)
-            .next()
-            .publishOn(scheduler);
+            .next();
     }
 
     /**
@@ -152,8 +147,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(ReceiveMode receiveMode,
            long... sequenceNumbers) {
-        return receiveDeferredMessageBatch(receiveMode, null, sequenceNumbers)
-            .publishOn(scheduler);
+        return receiveDeferredMessageBatch(receiveMode, null, sequenceNumbers);
     }
 
     /**
