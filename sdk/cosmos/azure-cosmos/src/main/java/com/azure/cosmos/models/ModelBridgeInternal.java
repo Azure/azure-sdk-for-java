@@ -369,11 +369,11 @@ public final class ModelBridgeInternal {
         jsonSerializable.set(propertyName, value);
     }
 
-    public static ObjectNode getObject(JsonSerializable jsonSerializable, String propertyName) {
+    public static ObjectNode getObjectNodeFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
         return jsonSerializable.getObject(propertyName);
     }
 
-    public static void remove(JsonSerializable jsonSerializable, String propertyName) {
+    public static void removeFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
         jsonSerializable.remove(propertyName);
     }
 
@@ -413,7 +413,7 @@ public final class ModelBridgeInternal {
         }
     }
 
-    public static Map<String, Object> getJsonSerializableMap(JsonSerializable jsonSerializable) {
+    public static Map<String, Object> getMapFromJsonSerializable(JsonSerializable jsonSerializable) {
         return jsonSerializable.getMap();
     }
 
@@ -439,5 +439,21 @@ public final class ModelBridgeInternal {
 
     public static <T> T toObjectFromJsonSerializable(JsonSerializable jsonSerializable, Class<T> c) {
         return jsonSerializable.toObject(c);
+    }
+
+    public static Object getObjectFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.get(propertyName);
+    }
+
+    public static String getStringFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.getString(propertyName);
+    }
+
+    public static Integer getIntFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.getInt(propertyName);
+    }
+
+    public static String toJsonFromJsonSerializable(JsonSerializable jsonSerializable) {
+        return jsonSerializable.toJson();
     }
 }

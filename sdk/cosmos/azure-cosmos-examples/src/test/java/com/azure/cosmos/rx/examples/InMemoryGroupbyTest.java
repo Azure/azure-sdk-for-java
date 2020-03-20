@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlParameterList;

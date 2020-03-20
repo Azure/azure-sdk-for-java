@@ -228,7 +228,7 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the value of the property.
      */
-    public Object get(String propertyName) {
+    protected Object get(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             return getValue(this.propertyBag.get(propertyName));
         } else {
@@ -242,7 +242,7 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the string value.
      */
-    public String getString(String propertyName) {
+    protected String getString(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             return this.propertyBag.get(propertyName).asText();
         } else {
@@ -274,7 +274,7 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the boolean value
      */
-    public Integer getInt(String propertyName) {
+    protected Integer getInt(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             return this.propertyBag.get(propertyName).asInt();
         } else {
@@ -617,7 +617,7 @@ public class JsonSerializable {
      *
      * @return the JSON string.
      */
-    public String toJson() {
+    protected String toJson() {
         return this.toJson(SerializationFormattingPolicy.NONE);
     }
 

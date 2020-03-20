@@ -21,6 +21,7 @@ import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.UniqueKey;
@@ -146,7 +147,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         CosmosItemProperties doc2Inserted = BridgeInternal.getProperties(collection
                                                                              .createItem(doc2, new CosmosItemRequestOptions())
                                                                              .block());
-        CosmosItemProperties doc2Replacement = new CosmosItemProperties(doc1Inserted.toJson());
+        CosmosItemProperties doc2Replacement = new CosmosItemProperties(ModelBridgeInternal.toJsonFromJsonSerializable(doc1Inserted));
         doc2Replacement.setId( doc2Inserted.getId());
 
         try {

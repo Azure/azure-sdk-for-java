@@ -781,7 +781,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         for (int i = 0; i < objectArray.length; ++i) {
             Object object = objectArray[i];
             if (object instanceof JsonSerializable) {
-                stringArray[i] = ((JsonSerializable) object).toJson();
+                stringArray[i] = ModelBridgeInternal.toJsonFromJsonSerializable((JsonSerializable) object);
             } else {
 
                 // POJO, ObjectNode, number, STRING or Boolean

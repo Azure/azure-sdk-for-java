@@ -12,10 +12,6 @@ import com.azure.cosmos.models.CosmosContainerProperties;
  */
 public final class CosmosBridgeInternal {
 
-    public static DocumentCollection toDocumentCollection(CosmosContainerProperties cosmosContainerProperties) {
-        return new DocumentCollection(cosmosContainerProperties.toJson());
-    }
-
     public static AsyncDocumentClient getAsyncDocumentClient(CosmosClient client) {
         return client.asyncClient().getDocClientWrapper();
     }
