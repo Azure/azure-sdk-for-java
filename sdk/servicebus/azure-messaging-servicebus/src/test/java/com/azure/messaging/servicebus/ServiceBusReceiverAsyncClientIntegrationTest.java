@@ -105,7 +105,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
     }
 
-
     /**
      * Verifies that we can send and peek a batch of messages.
      */

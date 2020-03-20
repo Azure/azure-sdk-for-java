@@ -188,7 +188,7 @@ public class ServiceBusSenderAsyncClientTest {
      * Verifies that the producer can create a batch with a given {@link CreateBatchOptions#getMaximumSizeInBytes()}.
      */
     @Test
-    void createsEventDataBatchWithSize() {
+    void createsMessageBatchWithSize() {
         // Arrange
         int maxLinkSize = 10000;
         int batchSize = 1024;
