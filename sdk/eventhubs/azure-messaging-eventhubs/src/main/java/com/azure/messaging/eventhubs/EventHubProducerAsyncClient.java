@@ -11,6 +11,7 @@ import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -27,7 +28,6 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Signal;
 
 import java.io.Closeable;
 import java.util.ArrayList;
@@ -434,11 +434,6 @@ public class EventHubProducerAsyncClient implements Closeable {
                 if (isTracingEnabled) {
                     tracerProvider.endSpan(parentContext.get(), signal);
                 }
-            })
-            .doOnError(error -> {
-                if (isTracingEnabled) {
-                    tracerProvider.endSpan(parentContext.get(), Signal.error(error));
-                }
             }), retryOptions.getTryTimeout(), retryPolicy);
     }
 
@@ -483,12 +478,19 @@ public class EventHubProducerAsyncClient implements Closeable {
             : String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubName, partitionId);
     }
 
+    private String getLinkName(String partitionId) {
+        return CoreUtils.isNullOrEmpty(partitionId)
+            ? StringUtil.getRandomString("EC")
+            : StringUtil.getRandomString("PS");
+    }
+
     private Mono<AmqpSendLink> getSendLink(String partitionId) {
         final String entityPath = getEntityPath(partitionId);
-        final String linkName = getEntityPath(partitionId);
 
         return connectionProcessor
-            .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
+            .flatMap(connection -> {
+                return connection.createSendLink(getLinkName(partitionId), entityPath, retryOptions);
+            });
     }
 
     /**

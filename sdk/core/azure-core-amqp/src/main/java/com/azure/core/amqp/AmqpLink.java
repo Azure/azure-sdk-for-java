@@ -4,13 +4,12 @@
 package com.azure.core.amqp;
 
 import com.azure.core.amqp.exception.AmqpException;
-import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
 /**
  * Represents a unidirectional AMQP link.
  */
-public interface AmqpLink extends Disposable {
+public interface AmqpLink extends AutoCloseable {
     /**
      * Gets the name of the link.
      *
@@ -39,4 +38,10 @@ public interface AmqpLink extends Disposable {
      * @return A stream of endpoint states for the AMQP link.
      */
     Flux<AmqpEndpointState> getEndpointStates();
+
+    /**
+     * Closes the AMQP link.
+     */
+    @Override
+    void close();
 }

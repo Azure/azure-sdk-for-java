@@ -8,7 +8,6 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -175,10 +174,10 @@ class ResponseConstructorsCacheBenchMarkTestData {
     private static final byte[] STREAM_BYTE_ARRAY = new byte[1];
     private static final Page<Foo> PAGE_FOO = new Page<Foo>() {
         @Override
-        public IterableStream<Foo> getElements() {
+        public List<Foo> getItems() {
             List<Foo> items = new ArrayList<>();
             items.add(FOO);
-            return new IterableStream<Foo>(items);
+            return items;
         }
 
         @Override

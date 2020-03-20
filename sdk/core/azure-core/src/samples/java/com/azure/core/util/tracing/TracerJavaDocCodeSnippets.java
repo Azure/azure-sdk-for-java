@@ -67,7 +67,7 @@ public class TracerJavaDocCodeSnippets {
     public void endTracingSpan() {
         // BEGIN: com.azure.core.util.tracing.end#int-throwable-context
         // context containing the current tracing span to end
-        String openTelemetrySpanKey = "openTelemetry-span";
+        String openCensusSpanKey = "opencensus-span";
         Context traceContext = new Context(PARENT_SPAN_KEY, "<user-current-span>");
 
         // completes the tracing span with the passed response status code
@@ -86,8 +86,8 @@ public class TracerJavaDocCodeSnippets {
      */
     public void setSpanName() {
         // BEGIN: com.azure.core.util.tracing.setSpanName#string-context
-        // Sets the span name of the returned span on the context object, with key PARENT_SPAN_KEY
-        String openTelemetrySpanKey = "openTelemetry-span";
+        // Sets the span name of the returned span on the context object, with key OPENCENSUS_SPAN_NAME_KEY
+        String openCensusSpanKey = "opencensus-span-name";
         Context context = tracer.setSpanName("test-span-method", Context.NONE);
         System.out.printf("Span name: %s%n", context.getData(PARENT_SPAN_KEY).get().toString());
         // END: com.azure.core.util.tracing.setSpanName#string-context

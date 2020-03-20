@@ -5,7 +5,6 @@ package com.azure.core.http.rest;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.util.IterableStream;
 
 import java.util.List;
 
@@ -63,8 +62,8 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      * {@inheritDoc}
      */
     @Override
-    public IterableStream<T> getElements() {
-        return IterableStream.of(items);
+    public List<T> getItems() {
+        return items;
     }
 
     /**

@@ -36,11 +36,6 @@ import reactor.core.publisher.Mono;
  *     <li>{@link Configuration#PROPERTY_AZURE_USERNAME AZURE_USERNAME}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_PASSWORD AZURE_PASSWORD}</li>
  * </ul>
- * or:
- * <p>
- * <ul>
- *     <li>{@link Configuration#PROPERTY_AZURE_AUTH_LOCATION AZURE_AUTH_LOCATION}</li>
- * </ul>
  */
 @Immutable
 public class EnvironmentCredential implements TokenCredential {
@@ -66,7 +61,6 @@ public class EnvironmentCredential implements TokenCredential {
         String certPath = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
         String username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
         String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
-        String sdkAuthLocation = configuration.get(Configuration.PROPERTY_AZURE_AUTH_LOCATION);
         return Mono.fromSupplier(() -> {
             if (verifyNotNull(clientId)) {
                 if (verifyNotNull(tenantId, clientSecret)) {
@@ -78,9 +72,7 @@ public class EnvironmentCredential implements TokenCredential {
                     return new UsernamePasswordCredential(clientId, tenantId, username, password, identityClientOptions);
                 }
             }
-            if(verifyNotNull(sdkAuthLocation)){
-                return new AuthFileCredential(sdkAuthLocation, identityClientOptions);
-            }
+
             // Other environment variables
             throw logger.logExceptionAsError(new ClientAuthenticationException(
                 "Cannot create any credentials with the current environment variables",

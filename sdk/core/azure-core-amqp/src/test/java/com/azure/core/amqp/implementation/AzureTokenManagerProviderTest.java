@@ -69,7 +69,7 @@ class AzureTokenManagerProviderTest {
         final String entityPath = "event-hub-test-2/partition/2";
 
         // Act
-        final String actual = provider.getScopesFromResource(entityPath);
+        final String actual = provider.getResourceString(entityPath);
 
         // Assert
         switch (authorizationType) {

@@ -4,7 +4,6 @@
 package com.azure.core.implementation.serializer;
 
 import com.azure.core.http.rest.Page;
-import com.azure.core.util.IterableStream;
 import com.fasterxml.jackson.annotation.JsonAlias;
 
 import java.util.List;
@@ -31,8 +30,8 @@ class ItemPage<T> implements Page<T> {
     private String continuationToken;
 
     @Override
-    public IterableStream<T> getElements() {
-        return IterableStream.of(items);
+    public List<T> getItems() {
+        return items;
     }
 
     @Override

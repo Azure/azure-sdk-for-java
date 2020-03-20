@@ -80,11 +80,6 @@ public class Configuration implements Cloneable {
      */
     public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH = "AZURE_CLIENT_CERTIFICATE_PATH";
 
-     /**
-     * Path of a authentication file to use when performing service principal authentication with Azure.
-     */
-    public static final String PROPERTY_AZURE_AUTH_LOCATION = "AZURE_AUTH_LOCATION";
-
     /**
      * Name of the Azure resource group.
      */
@@ -93,7 +88,7 @@ public class Configuration implements Cloneable {
     /**
      * Name of the Azure cloud to connect to.
      */
-    public static final String PROPERTY_AZURE_CLOUD = "AZURE_CLOUD";
+    public static final String PROPERTY_AZURE_AUTHORITY_HOST = "AZURE_AUTHORITY_HOST";
 
     /**
      * Disables telemetry collection.
@@ -126,9 +121,8 @@ public class Configuration implements Cloneable {
         PROPERTY_AZURE_CLIENT_SECRET,
         PROPERTY_AZURE_TENANT_ID,
         PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH,
-        PROPERTY_AZURE_AUTH_LOCATION,
         PROPERTY_AZURE_RESOURCE_GROUP,
-        PROPERTY_AZURE_CLOUD,
+        PROPERTY_AZURE_AUTHORITY_HOST,
         PROPERTY_AZURE_TELEMETRY_DISABLED,
         PROPERTY_AZURE_LOG_LEVEL,
         PROPERTY_AZURE_TRACING_DISABLED,
