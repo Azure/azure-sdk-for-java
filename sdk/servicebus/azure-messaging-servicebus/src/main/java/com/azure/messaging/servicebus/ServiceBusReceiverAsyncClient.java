@@ -312,7 +312,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Receives a deferred {@link ServiceBusMessage}. Deferred message can only be received by using sequence number.
+     * Receives a deferred {@link ServiceBusMessage}. Deferred messages can only be received by using sequence number.
      *
      * @param sequenceNumber The {@link ServiceBusReceivedMessage#getSequenceNumber()}.
      *

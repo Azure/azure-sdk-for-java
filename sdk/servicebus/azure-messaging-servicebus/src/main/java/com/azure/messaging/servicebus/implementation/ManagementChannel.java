@@ -169,7 +169,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             final Message message = createManagementMessage(PEEK_OPERATION, channel.getReceiveLinkName());
 
             // set mandatory properties on AMQP message body
-            HashMap<String, Object> requestBodyMap = new HashMap<>();
+            final HashMap<String, Object> requestBodyMap = new HashMap<>();
             requestBodyMap.put(FROM_SEQUENCE_NUMBER, fromSequenceNumber);
             requestBodyMap.put(MESSAGE_COUNT_KEY, maxMessages);
 

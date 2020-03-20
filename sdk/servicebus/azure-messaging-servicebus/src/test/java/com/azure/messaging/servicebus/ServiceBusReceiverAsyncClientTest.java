@@ -512,6 +512,24 @@ class ServiceBusReceiverAsyncClientTest {
             .verifyComplete();
     }
 
+
+    /**
+     * Verifies that this receive deferred one messages from a sequence Number.
+     */
+    @Test
+    void receiveDeferredBatchFromSequenceNumber() {
+        // Arrange
+        final int fromSequenceNumber1 = 10;
+        final int fromSequenceNumber2 = 11;
+        when(managementNode.receiveDeferredMessageBatch(receiveOptions.getReceiveMode(), fromSequenceNumber1, fromSequenceNumber2))
+            .thenReturn(Flux.fromArray(new ServiceBusReceivedMessage[]{receivedMessage, receivedMessage2}));
+
+        // Act & Assert
+        StepVerifier.create(consumer.receiveDeferredMessageBatch(fromSequenceNumber1, fromSequenceNumber2))
+            .expectNext(receivedMessage)
+            .expectNext(receivedMessage2)
+            .verifyComplete();
+    }
     private List<Message> getMessages(int numberOfEvents) {
         final Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");
 
