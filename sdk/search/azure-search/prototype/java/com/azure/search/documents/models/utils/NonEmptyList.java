@@ -1,4 +1,4 @@
-package com.azure.search.documents.models;
+package com.azure.search.documents.models.utils;
 
 import java.util.List;
 

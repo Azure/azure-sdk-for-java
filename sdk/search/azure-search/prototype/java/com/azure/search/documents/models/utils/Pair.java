@@ -1,4 +1,4 @@
-package com.azure.search.documents.models;
+package com.azure.search.documents.models.utils;
 
 public class Pair<L, R> {
     private final L lhs;

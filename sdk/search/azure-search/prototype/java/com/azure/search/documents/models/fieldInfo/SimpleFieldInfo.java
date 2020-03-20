@@ -1,10 +1,8 @@
 package com.azure.search.documents.models.fieldInfo;
 
 import com.azure.search.documents.models.Field;
-import com.azure.search.documents.models.FieldUnion;
-import com.azure.search.documents.models.Pair;
-import com.azure.search.documents.models.fieldInfo.CommonFieldInfo;
-import com.azure.search.documents.models.fieldInfo.NonKeyFieldInfo;
+import com.azure.search.documents.models.utils.FieldUnion;
+import com.azure.search.documents.models.utils.Pair;
 import com.azure.search.documents.models.dataType.PrimitiveType;
 
 public class SimpleFieldInfo {

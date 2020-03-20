@@ -1,7 +1,7 @@
 package com.azure.search.documents.models.field;
 
 import com.azure.search.documents.models.Field;
-import com.azure.search.documents.models.NonEmptyList;
+import com.azure.search.documents.models.utils.NonEmptyList;
 import com.azure.search.documents.models.dataType.ComplexDataType;
 import java.util.stream.Collectors;
 

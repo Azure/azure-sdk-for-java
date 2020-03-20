@@ -1,4 +1,6 @@
-package com.azure.search.documents.models;
+package com.azure.search.documents.models.utils;
+
+import com.azure.search.documents.models.Field;
 
 public class FieldUnion {
     public static Field union(Field f1, Field f2) {

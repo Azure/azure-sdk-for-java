@@ -1,7 +1,7 @@
 package com.azure.search.documents.models.fieldInfo;
 
 import com.azure.search.documents.models.Field;
-import com.azure.search.documents.models.FieldUnion;
+import com.azure.search.documents.models.utils.FieldUnion;
 import java.util.List;
 
 public class SearchableFieldInfo {
