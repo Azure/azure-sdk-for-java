@@ -14,7 +14,9 @@ import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
@@ -42,6 +44,9 @@ import static com.azure.messaging.servicebus.implementation.ManagementConstants.
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.UPDATE_DISPOSITION_OPERATION;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.RENEW_LOCK_OPERATION;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.SEQUENCE_NUMBERS;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.RECEIVER_SETTLE_MODE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.RECEIVE_BY_SEQUENCE_NUMBER_OPERATION;
 
 /**
  * Channel responsible for Service Bus related metadata, peek  and management plane operations. Management plane
@@ -135,6 +140,26 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
+    public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(ReceiveMode receiveMode, long sequenceNumber) {
+        return receiveDeferredMessageBatch(receiveMode, null, sequenceNumber)
+            .next()
+            .publishOn(scheduler);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(ReceiveMode receiveMode,
+           long... sequenceNumbers) {
+        return receiveDeferredMessageBatch(receiveMode, null, sequenceNumbers)
+            .publishOn(scheduler);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Mono<ServiceBusReceivedMessage> peek() {
         return peek(lastPeekedSequenceNumber.get() + 1);
     }
@@ -147,6 +172,47 @@ public class ManagementChannel implements ServiceBusManagementNode {
             HashMap<String, Object> requestBodyMap = new HashMap<>();
             requestBodyMap.put(REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER, fromSequenceNumber);
             requestBodyMap.put(MESSAGE_COUNT_KEY, maxMessages);
+
+            if (!Objects.isNull(sessionId)) {
+                requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_SESSION_ID, sessionId);
+            }
+
+            message.setBody(new AmqpValue(requestBodyMap));
+
+            return channel.sendWithAck(message);
+        }).flatMapMany(amqpMessage -> {
+            final List<ServiceBusReceivedMessage> messageList =
+                messageSerializer.deserializeList(amqpMessage, ServiceBusReceivedMessage.class);
+
+            // Assign the last sequence number so that we can peek from next time
+            if (messageList.size() > 0) {
+                final ServiceBusReceivedMessage receivedMessage = messageList.get(messageList.size() - 1);
+
+                logger.info("Setting last peeked sequence number: {}", receivedMessage.getSequenceNumber());
+
+                if (receivedMessage.getSequenceNumber() > 0) {
+                    this.lastPeekedSequenceNumber.set(receivedMessage.getSequenceNumber());
+                }
+            }
+
+            return Flux.fromIterable(messageList);
+        }));
+    }
+
+    private Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(ReceiveMode receiveMode, UUID sessionId,
+            long... fromSequenceNumbers) {
+        return isAuthorized(RECEIVE_BY_SEQUENCE_NUMBER_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
+            final Message message = createManagementMessage(RECEIVE_BY_SEQUENCE_NUMBER_OPERATION,
+                channel.getReceiveLinkName());
+
+            // set mandatory properties on AMQP message body
+            HashMap<String, Object> requestBodyMap = new HashMap<>();
+
+            requestBodyMap.put(SEQUENCE_NUMBERS, Arrays.stream(fromSequenceNumbers)
+                .boxed().toArray(Long[]::new));
+
+            requestBodyMap.put(RECEIVER_SETTLE_MODE,
+                UnsignedInteger.valueOf(receiveMode == ReceiveMode.RECEIVE_AND_DELETE ? 0 : 1));
 
             if (!Objects.isNull(sessionId)) {
                 requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_SESSION_ID, sessionId);

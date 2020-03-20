@@ -42,4 +42,8 @@ class ManagementConstants {
     static final String REQUEST_RESPONSE_ASSOCIATED_LINK_NAME = "associated-link-name";
     static final String LOCK_TOKENS = "lock-tokens";
     static final String RENEW_LOCK_OPERATION = AmqpConstants.VENDOR + ":renew-lock";
+    public static final String RECEIVE_BY_SEQUENCE_NUMBER_OPERATION = AmqpConstants.VENDOR
+        + ":receive-by-sequence-number";
+    static final String SEQUENCE_NUMBERS = "sequence-numbers";
+    public static final String RECEIVER_SETTLE_MODE = "receiver-settle-mode";
 }

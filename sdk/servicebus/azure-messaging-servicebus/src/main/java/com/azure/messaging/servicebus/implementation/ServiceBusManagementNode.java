@@ -64,6 +64,24 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      */
     Mono<Instant> renewMessageLock(UUID messageLock);
 
+    /**
+     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred message can only be received by using
+     * sequence number.
+     *
+     * @param sequenceNumber The {@link ServiceBusReceivedMessage#getSequenceNumber()}.
+     * @return The received {@link ServiceBusReceivedMessage} message for given sequence number.
+     */
+    Mono<ServiceBusReceivedMessage> receiveDeferredMessage(ReceiveMode receiveMode, long sequenceNumber);
+
+    /**
+     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred messages can only be received by using
+     * sequence number.
+     *
+     * @param sequenceNumbers The sequence numbers from the {@link ServiceBusReceivedMessage#getSequenceNumber()}.
+     * @return The received {@link ServiceBusReceivedMessage} message for given sequence number.
+     */
+    Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(ReceiveMode receiveMode, long... sequenceNumbers);
+
     @Override
     void close();
 }
