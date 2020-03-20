@@ -3,6 +3,9 @@ package com.azure.search.documents.models.dataType;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.search.documents.models.DataType;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class SimpleDataType extends ExpandableStringEnum<SimpleDataType> {
 
@@ -29,6 +32,11 @@ public class SimpleDataType extends ExpandableStringEnum<SimpleDataType> {
     @JsonCreator
     private static SimpleDataType fromString(String name) {
         return fromString(name, SimpleDataType.class);
+    }
+
+    public static Collection<DataType> values() {
+        return values(PrimitiveType.class).stream().map(PrimitiveType::toDataType)
+            .collect(Collectors.toList());
     }
 
     public DataType toDataType() {
