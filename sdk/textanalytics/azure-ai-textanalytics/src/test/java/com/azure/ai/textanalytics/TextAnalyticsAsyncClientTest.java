@@ -11,15 +11,9 @@ import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,6 +23,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
@@ -559,120 +554,113 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      * Test client builder with valid API key
      */
     @Test
-    public void validKey() {
-        // Arrange
-        final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(),
-            new TextAnalyticsApiKeyCredential(getApiKey())).buildAsyncClient();
-
-        // Action and Assert
-        StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .assertNext(response ->
-                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
-            .verifyComplete();
+    public void clientBuilderWithValidApiKeyCredential() {
+        clientBuilderWithValidApiKeyCredentialRunner(clientBuilder -> (input, output) ->
+            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
+                .assertNext(response -> validatePrimaryLanguage(output, response))
+                .verifyComplete());
     }
 
     /**
      * Test client builder with invalid API key
      */
     @Test
-    public void invalidKey() {
-        // Arrange
-        final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(),
-            new TextAnalyticsApiKeyCredential(INVALID_KEY)).buildAsyncClient();
-
-        // Action and Assert
-        StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .verifyError(HttpResponseException.class);
+    public void clientBuilderWithInvalidApiKeyCredential() {
+        clientBuilderWithInvalidApiKeyCredentialRunner(clientBuilder -> (input, output) ->
+            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
+                .verifyError(output.getClass()));
     }
 
     /**
      * Test client with valid API key but update to invalid key and make call to server.
      */
     @Test
-    public void updateToInvalidKey() {
-        // Arrange
-        final TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential(getApiKey());
-        final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(), credential).buildAsyncClient();
-
-        // Update to invalid key
-        credential.updateCredential(INVALID_KEY);
-
-        // Action and Assert
-        StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .verifyError(HttpResponseException.class);
+    public void clientBuilderWithRotateToInvalidKey() {
+        clientBuilderWithRotateToInvalidKeyRunner(clientBuilder -> (input, output) ->
+            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
+                .verifyError(output.getClass()));
     }
 
     /**
      * Test client with invalid API key but update to valid key and make call to server.
      */
     @Test
-    public void updateToValidKey() {
-        // Arrange
-        final TextAnalyticsApiKeyCredential credential =
-            new TextAnalyticsApiKeyCredential(INVALID_KEY);
-
-        final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(), credential).buildAsyncClient();
-
-        // Update to valid key
-        credential.updateCredential(getApiKey());
-
-        // Action and Assert
-        StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .assertNext(response ->
-                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
-            .verifyComplete();
+    public void clientBuilderWithRotateToValidKey() {
+        clientBuilderWithRotateToValidKeyRunner(clientBuilder -> (input, output) ->
+            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
+                .assertNext(response -> validatePrimaryLanguage(output, response))
+                .verifyComplete());
     }
 
     /**
      * Test for null service version, which would take the default service version by default
      */
     @Test
-    public void nullServiceVersion() {
-        // Arrange
-        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .endpoint(getEndpoint())
-            .apiKey(new TextAnalyticsApiKeyCredential(getApiKey()))
-            .retryPolicy(new RetryPolicy())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(null);
-
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        // Action and Assert
-        StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage("This is a test English Text"))
-            .assertNext(response ->
-                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
-            .verifyComplete();
+    public void clientBuilderWithNullServiceVersion() {
+        clientBuilderWithNullServiceVersionRunner(clientBuilder -> (input, output) ->
+            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
+                .assertNext(response -> validatePrimaryLanguage(output, response))
+                .verifyComplete()
+            );
     }
 
     /**
      * Test for default pipeline in client builder
      */
     @Test
-    public void defaultPipeline() {
-        // Arrange
-        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .endpoint(getEndpoint())
-            .apiKey(new TextAnalyticsApiKeyCredential(getApiKey()))
-            .configuration(Configuration.getGlobalConfiguration())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+    public void clientBuilderWithDefaultPipeline() {
+        clientBuilderWithDefaultPipelineRunner(clientBuilder -> (input, output) ->
+            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
+                .assertNext(response -> validatePrimaryLanguage(output, response))
+                .verifyComplete());
+    }
 
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
-        }
+    /**
+     * Test for default country hint in client builder for a single document
+     */
+    @Test
+    public void clientBuilderWithDefaultCountryHint() {
+        clientBuilderWithDefaultCountryHintRunner(clientBuilder -> (input, output) ->
+            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
+                .assertNext(response -> validatePrimaryLanguage(output, response))
+                .verifyComplete());
+    }
 
-        // Action and Assert
-        StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage("This is a test English Text"))
-            .assertNext(response ->
-                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
-            .verifyComplete();
+    /**
+     * Test for default country hint in client builder for a batch of documents
+     */
+    @Test
+    public void clientBuilderWithDefaultCountryHintForBatchOperation() {
+        clientBuilderWithDefaultCountryHintForBatchOperationRunner(clientBuilder -> (input, output) ->
+            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguageBatch(input))
+                .assertNext(response -> validatePrimaryLanguage(output.get(0), response.getPrimaryLanguage()))
+                .assertNext(response -> validatePrimaryLanguage(output.get(1), response.getPrimaryLanguage()))
+                .verifyComplete());
+    }
+
+    /**
+     * Test for default language in client builder for a single document
+     */
+    @Test
+    public void clientBuilderWithDefaultLanguage() {
+        clientBuilderWithDefaultLanguageRunner(clientBuilder -> (input, output) ->
+            StepVerifier.create(clientBuilder.buildAsyncClient().extractKeyPhrases(input))
+                .assertNext(response -> assertEquals(output, response))
+                .verifyComplete());
+    }
+
+    /**
+     * Test for default language in client builder for a batch of documents
+     */
+    @Test
+    public void clientBuilderWithDefaultLanguageForBatchOperation() {
+        clientBuilderWithDefaultLanguageForBatchOperationRunner(clientBuilder -> (input, output) ->
+            StepVerifier.create(clientBuilder.buildAsyncClient().extractKeyPhrasesBatch(input))
+                .assertNext(response -> validateKeyPhrases(output.get(0),
+                    response.getKeyPhrases().stream().collect(Collectors.toList())))
+                .assertNext(response -> validateKeyPhrases(output.get(1),
+                    response.getKeyPhrases().stream().collect(Collectors.toList())))
+                .verifyComplete()
+        );
     }
 }

@@ -6,7 +6,9 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import org.junit.jupiter.api.Test;
 
+import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.VALID_HTTPS_LOCALHOST;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -65,7 +67,7 @@ public class TextAnalyticsClientBuilderUnitTest {
     public void emptyApiKey() {
         assertThrows(IllegalArgumentException.class, () -> new TextAnalyticsApiKeyCredential(""));
     }
-    
+
     /**
      * Test for null AAD credential
      */
@@ -75,5 +77,25 @@ public class TextAnalyticsClientBuilderUnitTest {
             final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
             builder.endpoint(VALID_HTTPS_LOCALHOST).credential(null);
         });
+    }
+
+    /**
+     * Test for default country hint in client builder
+     */
+    @Test
+    public void defaultCountryHintAndLanguage() {
+        // Arrange
+        final String countryHint = "FR";
+        final String language = "es";
+        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
+            .endpoint(VALID_HTTPS_LOCALHOST)
+            .apiKey(new TextAnalyticsApiKeyCredential(FAKE_API_KEY))
+            .defaultCountryHint(countryHint)
+            .defaultLanguage(language);
+
+        // Action and Assert
+        TextAnalyticsAsyncClient asyncClient = clientBuilder.buildAsyncClient();
+        assertEquals(countryHint, asyncClient.getDefaultCountryHint());
+        assertEquals(language, asyncClient.getDefaultLanguage());
     }
 }
