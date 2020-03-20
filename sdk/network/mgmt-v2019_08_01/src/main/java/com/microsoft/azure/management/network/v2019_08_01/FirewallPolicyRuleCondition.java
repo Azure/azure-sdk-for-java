@@ -8,8 +8,6 @@
 
 package com.microsoft.azure.management.network.v2019_08_01;
 
-import com.microsoft.azure.management.network.v2019_08_01.ApplicationRuleCondition;
-import com.microsoft.azure.management.network.v2019_08_01.NetworkRuleCondition;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
