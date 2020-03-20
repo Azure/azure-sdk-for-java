@@ -7,6 +7,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -77,14 +78,14 @@ public class AddressResolverTest {
 
         this.collection1 = new DocumentCollection();
         this.collection1.setId("coll");
-        this.collection1.setResourceId("rid1");
+        ModelBridgeInternal.setResourceId(this.collection1, "rid1");
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         partitionKeyDef.setPaths(ImmutableList.of("/field1"));
         this.collection1.setPartitionKey(partitionKeyDef);
 
         this.collection2 = new DocumentCollection();
         this.collection2.setId("coll");
-        this.collection2.setResourceId("rid2");
+        ModelBridgeInternal.setResourceId(this.collection2, "rid2");
         new PartitionKeyDefinition();
         partitionKeyDef.setPaths(ImmutableList.of("/field1"));
         this.collection2.setPartitionKey(partitionKeyDef);

@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -16,7 +17,6 @@ public final class ServiceBusReceivedMessage extends ServiceBusMessage {
     private long sequenceNumber;
     private long deliveryCount;
     private Instant enqueuedTime;
-    private Instant expiresAt;
     private Instant lockedUntil;
     private String deadLetterSource;
 
@@ -165,21 +165,15 @@ public final class ServiceBusReceivedMessage extends ServiceBusMessage {
      * property. This property is computed from {@link #getEnqueuedTime() EnqueuedTime} plus {@link #getTimeToLive()
      * TimeToLive}.
      *
-     * @return instant at which this message expires
+     * @return {@link Instant} at which this message expires
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-expiration">Message Expiration</a>
      */
     public Instant getExpiresAt() {
-        return expiresAt;
-    }
-
-    /**
-     * Sets the instant at which this message will expire.
-     *
-     * @param expiresAt the instant at which this message will expire.
-     */
-    void setExpiresAt(Instant expiresAt) {
-        this.expiresAt = expiresAt;
+        final Duration timeToLive = getTimeToLive();
+        return enqueuedTime != null && timeToLive != null
+            ? enqueuedTime.plus(timeToLive)
+            : null;
     }
 
     /**

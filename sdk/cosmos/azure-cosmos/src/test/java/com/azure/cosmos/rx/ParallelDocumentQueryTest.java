@@ -10,7 +10,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.ItemOperations;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.FeedOptions;
@@ -379,7 +379,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     //  see https://github.com/Azure/azure-sdk-for-java/issues/6398
     @BeforeClass(groups = { "simple", "non-emulator" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_ParallelDocumentQueryTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
 
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
@@ -413,7 +413,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         }
 
         List<CosmosItemProperties> items = bulkInsertBlocking(cosmosContainer, docDefList);
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         return items;
     }
 
@@ -553,7 +553,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     //TODO: Fix the test for GW mode
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readMany() throws Exception {
-        if (this.clientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
+        if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
             throw new SkipException("Skipping gateway mode. This needs to be fixed");
         }
 
@@ -572,7 +572,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
     //TODO: Fix the test for GW mode
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyIdSameAsPartitionKey() throws Exception {
-        if (this.clientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
+        if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
             throw new SkipException("Skipping gateway mode. This needs to be fixed");
         }
 

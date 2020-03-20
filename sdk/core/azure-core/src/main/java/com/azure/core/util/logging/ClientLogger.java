@@ -58,13 +58,30 @@ public class ClientLogger {
     }
 
     /**
-     * Logs a formattable message that uses {@code {}} as the placeholder at {@code verbose} log level.
+     * Logs a message at {@code verbose} log level.
      *
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging a message at verbose log level.</p>
      *
      * {@codesnippet com.azure.core.util.logging.clientlogger.verbose}
+     *
+     * @param message The message to log.
+     */
+    public void verbose(String message) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(message);
+        }
+    }
+
+    /**
+     * Logs a formattable message that uses {@code {}} as the placeholder at {@code verbose} log level.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging a message at verbose log level.</p>
+     *
+     * {@codesnippet com.azure.core.util.logging.clientlogger.verbose#string-object}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
@@ -77,13 +94,30 @@ public class ClientLogger {
     }
 
     /**
+     * Logs a message at {@code info} log level.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging a message at verbose log level.</p>
+     *
+     * {@codesnippet com.azure.core.util.logging.clientlogger.info}
+     *
+     * @param message The message to log.
+     */
+    public void info(String message) {
+        if (logger.isInfoEnabled()) {
+            logger.info(message);
+        }
+    }
+
+    /**
      * Logs a formattable message that uses {@code {}} as the placeholder at {@code informational} log level.
      *
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging a message at informational log level.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.info}
+     * {@codesnippet com.azure.core.util.logging.clientlogger.info#string-object}
      *
      * @param format The formattable message to log
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
@@ -96,13 +130,30 @@ public class ClientLogger {
     }
 
     /**
+     * Logs a message at {@code warning} log level.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging a message at verbose log level.</p>
+     *
+     * {@codesnippet com.azure.core.util.logging.clientlogger.warning}
+     *
+     * @param message The message to log.
+     */
+    public void warning(String message) {
+        if (logger.isWarnEnabled()) {
+            logger.warn(message);
+        }
+    }
+
+    /**
      * Logs a formattable message that uses {@code {}} as the placeholder at {@code warning} log level.
      *
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging a message at warning log level.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.warning}
+     * {@codesnippet com.azure.core.util.logging.clientlogger.warning#string-object}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
@@ -115,13 +166,30 @@ public class ClientLogger {
     }
 
     /**
+     * Logs a message at {@code error} log level.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging a message at verbose log level.</p>
+     *
+     * {@codesnippet com.azure.core.util.logging.clientlogger.error}
+     *
+     * @param message The message to log.
+     */
+    public void error(String message) {
+        if (logger.isErrorEnabled()) {
+            logger.error(message);
+        }
+    }
+
+    /**
      * Logs a formattable message that uses {@code {}} as the placeholder at {@code error} log level.
      *
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging an error with stack trace.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.error}
+     * {@codesnippet com.azure.core.util.logging.clientlogger.error#string-object}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the

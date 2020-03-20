@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -27,7 +26,7 @@ import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
-import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.JsonSerializable;
@@ -38,7 +37,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
-import reactor.core.publisher.Flux;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -49,9 +47,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
-import java.util.function.Function;
 
 /**
+ * DO NOT USE.
  * This is meant to be used only internally as a bridge access to classes in
  * com.azure.cosmos
  **/
@@ -311,7 +309,7 @@ public final class BridgeInternal {
     public static CosmosClientException setCosmosResponseDiagnostics(
                                             CosmosClientException cosmosClientException,
                                             CosmosResponseDiagnostics cosmosResponseDiagnostics) {
-        return cosmosClientException.setCosmosResponseDiagnostics(cosmosResponseDiagnostics);
+        return cosmosClientException.setResponseDiagnostics(cosmosResponseDiagnostics);
     }
 
     public static CosmosClientException createCosmosClientException(int statusCode) {
@@ -510,7 +508,7 @@ public final class BridgeInternal {
         return new CosmosUser(asyncUser, database, id);
     }
 
-    public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
-        return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction);
+    public static ConsistencyLevel fromServiceSerializedFormat(String consistencyLevel) {
+        return ConsistencyLevel.fromServiceSerializedFormat(consistencyLevel);
     }
 }

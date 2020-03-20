@@ -127,10 +127,10 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     @Test(groups = {"simple"})
     public void retryContextMockTestOnCRUDOperation() throws NoSuchFieldException, IllegalAccessException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
-            .setEndpoint(TestConfigurations.HOST)
-            .setKey(TestConfigurations.MASTER_KEY);
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY);
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        CosmosClient cosmosClient = cosmosClientBuilder.setConnectionPolicy(connectionPolicy).buildClient();
+        CosmosClient cosmosClient = cosmosClientBuilder.connectionPolicy(connectionPolicy).buildClient();
         CosmosAsyncContainer cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(cosmosClient.asyncClient());
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl)cosmosClient.asyncClient().getContextClient();
         RxStoreModel mockStoreModel = Mockito.mock(RxStoreModel.class);
