@@ -14,7 +14,7 @@ import com.microsoft.azure.management.network.v2019_04_01.AvailablePrivateEndpoi
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.network.v2019_04_01.LocationAvailablePrivateEndpointType;
+import com.microsoft.azure.management.network.v2019_04_01.AvailablePrivateEndpointType;
 
 class AvailablePrivateEndpointTypesImpl extends WrapperImpl<AvailablePrivateEndpointTypesInner> implements AvailablePrivateEndpointTypes {
     private final NetworkManager manager;
@@ -28,12 +28,30 @@ class AvailablePrivateEndpointTypesImpl extends WrapperImpl<AvailablePrivateEndp
         return this.manager;
     }
 
-    private LocationAvailablePrivateEndpointTypeImpl wrapModel(AvailablePrivateEndpointTypeInner inner) {
-        return  new LocationAvailablePrivateEndpointTypeImpl(inner, manager());
+    private AvailablePrivateEndpointTypeImpl wrapModel(AvailablePrivateEndpointTypeInner inner) {
+        return  new AvailablePrivateEndpointTypeImpl(inner, manager());
     }
 
     @Override
-    public Observable<LocationAvailablePrivateEndpointType> listAsync(final String location) {
+    public Observable<AvailablePrivateEndpointType> listByResourceGroupAsync(final String location, final String resourceGroupName) {
+        AvailablePrivateEndpointTypesInner client = this.inner();
+        return client.listByResourceGroupAsync(location, resourceGroupName)
+        .flatMapIterable(new Func1<Page<AvailablePrivateEndpointTypeInner>, Iterable<AvailablePrivateEndpointTypeInner>>() {
+            @Override
+            public Iterable<AvailablePrivateEndpointTypeInner> call(Page<AvailablePrivateEndpointTypeInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<AvailablePrivateEndpointTypeInner, AvailablePrivateEndpointType>() {
+            @Override
+            public AvailablePrivateEndpointType call(AvailablePrivateEndpointTypeInner inner) {
+                return new AvailablePrivateEndpointTypeImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AvailablePrivateEndpointType> listAsync(final String location) {
         AvailablePrivateEndpointTypesInner client = this.inner();
         return client.listAsync(location)
         .flatMapIterable(new Func1<Page<AvailablePrivateEndpointTypeInner>, Iterable<AvailablePrivateEndpointTypeInner>>() {
@@ -42,9 +60,9 @@ class AvailablePrivateEndpointTypesImpl extends WrapperImpl<AvailablePrivateEndp
                 return page.items();
             }
         })
-        .map(new Func1<AvailablePrivateEndpointTypeInner, LocationAvailablePrivateEndpointType>() {
+        .map(new Func1<AvailablePrivateEndpointTypeInner, AvailablePrivateEndpointType>() {
             @Override
-            public LocationAvailablePrivateEndpointType call(AvailablePrivateEndpointTypeInner inner) {
+            public AvailablePrivateEndpointType call(AvailablePrivateEndpointTypeInner inner) {
                 return wrapModel(inner);
             }
         });

@@ -80,9 +80,19 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
     NetworkSecurityGroup networkSecurityGroup();
 
     /**
+     * @return the privateEndpointNetworkPolicies value.
+     */
+    String privateEndpointNetworkPolicies();
+
+    /**
      * @return the privateEndpoints value.
      */
     List<PrivateEndpoint> privateEndpoints();
+
+    /**
+     * @return the privateLinkServiceNetworkPolicies value.
+     */
+    String privateLinkServiceNetworkPolicies();
 
     /**
      * @return the provisioningState value.
@@ -245,6 +255,30 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
         }
 
         /**
+         * The stage of the subnet definition allowing to specify PrivateEndpointNetworkPolicies.
+         */
+        interface WithPrivateEndpointNetworkPolicies {
+            /**
+             * Specifies privateEndpointNetworkPolicies.
+             * @param privateEndpointNetworkPolicies Enable or Disable private end point on the subnet
+             * @return the next definition stage
+             */
+            WithCreate withPrivateEndpointNetworkPolicies(String privateEndpointNetworkPolicies);
+        }
+
+        /**
+         * The stage of the subnet definition allowing to specify PrivateLinkServiceNetworkPolicies.
+         */
+        interface WithPrivateLinkServiceNetworkPolicies {
+            /**
+             * Specifies privateLinkServiceNetworkPolicies.
+             * @param privateLinkServiceNetworkPolicies Enable or Disable private link service on the subnet
+             * @return the next definition stage
+             */
+            WithCreate withPrivateLinkServiceNetworkPolicies(String privateLinkServiceNetworkPolicies);
+        }
+
+        /**
          * The stage of the subnet definition allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
@@ -321,13 +355,13 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Subnet>, DefinitionStages.WithAddressPrefix, DefinitionStages.WithAddressPrefixes, DefinitionStages.WithDelegations, DefinitionStages.WithEtag, DefinitionStages.WithId, DefinitionStages.WithName, DefinitionStages.WithNatGateway, DefinitionStages.WithNetworkSecurityGroup, DefinitionStages.WithProvisioningState, DefinitionStages.WithResourceNavigationLinks, DefinitionStages.WithRouteTable, DefinitionStages.WithServiceAssociationLinks, DefinitionStages.WithServiceEndpointPolicies, DefinitionStages.WithServiceEndpoints {
+        interface WithCreate extends Creatable<Subnet>, DefinitionStages.WithAddressPrefix, DefinitionStages.WithAddressPrefixes, DefinitionStages.WithDelegations, DefinitionStages.WithEtag, DefinitionStages.WithId, DefinitionStages.WithName, DefinitionStages.WithNatGateway, DefinitionStages.WithNetworkSecurityGroup, DefinitionStages.WithPrivateEndpointNetworkPolicies, DefinitionStages.WithPrivateLinkServiceNetworkPolicies, DefinitionStages.WithProvisioningState, DefinitionStages.WithResourceNavigationLinks, DefinitionStages.WithRouteTable, DefinitionStages.WithServiceAssociationLinks, DefinitionStages.WithServiceEndpointPolicies, DefinitionStages.WithServiceEndpoints {
         }
     }
     /**
      * The template for a Subnet update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Subnet>, UpdateStages.WithAddressPrefix, UpdateStages.WithAddressPrefixes, UpdateStages.WithDelegations, UpdateStages.WithEtag, UpdateStages.WithId, UpdateStages.WithName, UpdateStages.WithNatGateway, UpdateStages.WithNetworkSecurityGroup, UpdateStages.WithProvisioningState, UpdateStages.WithResourceNavigationLinks, UpdateStages.WithRouteTable, UpdateStages.WithServiceAssociationLinks, UpdateStages.WithServiceEndpointPolicies, UpdateStages.WithServiceEndpoints {
+    interface Update extends Appliable<Subnet>, UpdateStages.WithAddressPrefix, UpdateStages.WithAddressPrefixes, UpdateStages.WithDelegations, UpdateStages.WithEtag, UpdateStages.WithId, UpdateStages.WithName, UpdateStages.WithNatGateway, UpdateStages.WithNetworkSecurityGroup, UpdateStages.WithPrivateEndpointNetworkPolicies, UpdateStages.WithPrivateLinkServiceNetworkPolicies, UpdateStages.WithProvisioningState, UpdateStages.WithResourceNavigationLinks, UpdateStages.WithRouteTable, UpdateStages.WithServiceAssociationLinks, UpdateStages.WithServiceEndpointPolicies, UpdateStages.WithServiceEndpoints {
     }
 
     /**
@@ -428,6 +462,30 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
              * @return the next update stage
              */
             Update withNetworkSecurityGroup(NetworkSecurityGroupInner networkSecurityGroup);
+        }
+
+        /**
+         * The stage of the subnet update allowing to specify PrivateEndpointNetworkPolicies.
+         */
+        interface WithPrivateEndpointNetworkPolicies {
+            /**
+             * Specifies privateEndpointNetworkPolicies.
+             * @param privateEndpointNetworkPolicies Enable or Disable private end point on the subnet
+             * @return the next update stage
+             */
+            Update withPrivateEndpointNetworkPolicies(String privateEndpointNetworkPolicies);
+        }
+
+        /**
+         * The stage of the subnet update allowing to specify PrivateLinkServiceNetworkPolicies.
+         */
+        interface WithPrivateLinkServiceNetworkPolicies {
+            /**
+             * Specifies privateLinkServiceNetworkPolicies.
+             * @param privateLinkServiceNetworkPolicies Enable or Disable private link service on the subnet
+             * @return the next update stage
+             */
+            Update withPrivateLinkServiceNetworkPolicies(String privateLinkServiceNetworkPolicies);
         }
 
         /**
