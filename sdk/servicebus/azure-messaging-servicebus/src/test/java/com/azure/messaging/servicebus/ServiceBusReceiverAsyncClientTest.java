@@ -514,7 +514,7 @@ class ServiceBusReceiverAsyncClientTest {
 
 
     /**
-     * Verifies that this receive deferred one messages from a sequence Number.
+     * Verifies that this receive deferred messages from a sequence Number.
      */
     @Test
     void receiveDeferredBatchFromSequenceNumber() {
