@@ -20,8 +20,8 @@ class VersioningTest extends APISpec {
     BlobClient blobClient
     String blobName
     String containerName
-    String contentV1 = UUID.randomUUID().toString()
-    String contentV2 = UUID.randomUUID().toString()
+    String contentV1 = "contentV1"
+    String contentV2 = "contentV2"
 
     def setup() {
         blobName = generateBlobName()
