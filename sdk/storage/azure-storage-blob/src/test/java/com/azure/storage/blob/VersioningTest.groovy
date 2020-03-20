@@ -81,8 +81,8 @@ class VersioningTest extends APISpec {
         blobClient.getVersionClient(blobItemV2.getVersionId()).getBlockBlobClient().download(outputV2)
 
         then:
-        outputV1.toString(StandardCharsets.UTF_8).equals(contentV1)
-        outputV2.toString(StandardCharsets.UTF_8).equals(contentV2)
+        outputV1.toByteArray() == contentV1.getBytes(StandardCharsets.UTF_8)
+        outputV2.toByteArray() == contentV2.getBytes(StandardCharsets.UTF_8)
     }
 
     def "Retrieve Page Blob by Version"() {
@@ -123,8 +123,8 @@ class VersioningTest extends APISpec {
         blobClient.getVersionClient(blobItemV2.getVersionId()).getAppendBlobClient().download(outputV2)
 
         then:
-        outputV1.toString(StandardCharsets.UTF_8).equals(contentV1)
-        outputV2.toString(StandardCharsets.UTF_8).equals(contentV2)
+        outputV1.toByteArray() == contentV1.getBytes(StandardCharsets.UTF_8)
+        outputV2.toByteArray() == contentV2.getBytes(StandardCharsets.UTF_8)
     }
 
     def "Delete Block Blob by Version"() {
