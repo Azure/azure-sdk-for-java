@@ -30,7 +30,8 @@ public final class FeedResponseDiagnostics {
 
     /**
      * Returns the textual representation of feed response metrics
-     *
+     * End users are not advised to parse return value and take dependency on parsed object.
+     * Since feed response metrics contain some internal metrics, they may change across different versions.
      * @return Textual representation of feed response metrics
      */
     @Override

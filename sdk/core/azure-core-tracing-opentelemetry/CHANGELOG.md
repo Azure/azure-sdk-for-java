@@ -1,6 +1,7 @@
 # Release History
 
 ## 1.0.0-beta.4 (Unreleased)
+- Keyvault: add az namespace info attribute to all outgoing spans.
 
 
 ## 1.0.0-beta.3 (2020-03-06)

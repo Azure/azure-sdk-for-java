@@ -25,7 +25,7 @@ public final class CompositePath extends JsonSerializable {
      *
      * @param jsonString the json string that represents the included path.
      */
-    public CompositePath(String jsonString) {
+    CompositePath(String jsonString) {
         super(jsonString);
     }
 
