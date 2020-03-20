@@ -120,22 +120,27 @@ public class Configuration implements Cloneable {
         PROPERTY_AZURE_TRACING_DISABLED,
     };
 
+    private static final Configuration BASE_CONFIGURATIONS;
+
+    static {
+        BASE_CONFIGURATIONS = new Configuration();
+        for (String config : DEFAULT_CONFIGURATIONS) {
+            BASE_CONFIGURATIONS.load(config);
+        }
+    }
+
     /**
      * Gets the global configuration shared by all client libraries.
      */
-    private static final Configuration GLOBAL_CONFIGURATION = new Configuration();
-
-    private static final String LOADED_FROM_RUNTIME = "Loaded {} from runtime parameters.";
-    private static final String LOADED_FROM_ENVIRONMENT = "Loaded {} from environment variables.";
+    private static final Configuration GLOBAL_CONFIGURATION = BASE_CONFIGURATIONS.clone();
 
     private final ConcurrentMap<String, String> configurations;
-    private boolean loadedBaseConfigurations = false;
 
     /**
      * Constructs an empty configuration.
      */
     public Configuration() {
-        this.configurations = new ConcurrentHashMap<>();
+        this.configurations = new ConcurrentHashMap<>(BASE_CONFIGURATIONS.configurations);
     }
 
     private Configuration(ConcurrentMap<String, String> configurations) {
@@ -203,19 +208,7 @@ public class Configuration implements Cloneable {
      * variable, in that order, if found, otherwise null.
      */
     private String getOrLoad(String name) {
-        loadBaseConfigurations();
-
-        // Special handling for tracing disabled as it needs to be updated instantly on
-        // configuration change.
-        if (PROPERTY_AZURE_TRACING_DISABLED.equalsIgnoreCase(name)) {
-            load(name);
-        }
-
-        if (configurations.containsKey(name)) {
-            return configurations.get(name);
-        }
-
-        return load(name);
+        return configurations.containsKey(name) ? configurations.get(name) : load(name);
     }
 
     /*
@@ -229,8 +222,8 @@ public class Configuration implements Cloneable {
      * @return If found the loaded configuration, otherwise null.
      */
     private String load(String name) {
-        if (loadFrom(name, System::getProperty, LOADED_FROM_RUNTIME)
-            || loadFrom(name, System::getenv, LOADED_FROM_ENVIRONMENT)) {
+        if (loadFrom(name, System::getProperty)
+            || loadFrom(name, System::getenv)) {
             return configurations.get(name);
         }
 
@@ -276,11 +269,7 @@ public class Configuration implements Cloneable {
      */
     @SuppressWarnings("CloneDoesntCallSuperClone")
     public Configuration clone() {
-        loadBaseConfigurations();
-        Configuration clone = new Configuration(configurations);
-        clone.loadedBaseConfigurations = true;
-
-        return clone;
+        return new Configuration(configurations);
     }
 
     /*
@@ -325,42 +314,22 @@ public class Configuration implements Cloneable {
 
     /*
      * Attempts to load the configuration using the passed loader. If the configuration is found it will be added to
-     * the configuration store and a message will be logged.
+     * the configuration store.
      *
      * @param name Name of the configuration.
      * @param loader Loading function to apply.
      * @return True if the configuration was loaded, false otherwise.
      */
-    private boolean loadFrom(String name, Function<String, String> loader, String logMessage) {
+    private boolean loadFrom(String name, Function<String, String> loader) {
         String value = loader.apply(name);
 
         if (value == null) {
             // Nothing was loaded
             return false;
-        } else if (value.equals(configurations.get(name))) {
-            // Value loaded is the same, no need to log anything.
-            return true;
         } else {
             // Value changed!
             configurations.put(name, value);
             return true;
         }
-    }
-
-    /*
-     * Loads all configurations in BaseConfigurations if they haven't been loaded already.
-     */
-    private void loadBaseConfigurations() {
-        if (loadedBaseConfigurations) {
-            return;
-        }
-
-        for (String config : DEFAULT_CONFIGURATIONS) {
-            if (!configurations.containsKey(config)) {
-                load(config);
-            }
-        }
-
-        loadedBaseConfigurations = true;
     }
 }
