@@ -145,16 +145,19 @@ public final class BlobProperties {
      * @param isCurrentVersion Flag indication if version identifier points to current version of the blob.
      */
     public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
-                          final long blobSize, final String contentType, final byte[] contentMd5, final String contentEncoding,
-                          final String contentDisposition, final String contentLanguage, final String cacheControl,
-                          final Long blobSequenceNumber, final BlobType blobType, final LeaseStatusType leaseStatus,
-                          final LeaseStateType leaseState, final LeaseDurationType leaseDuration, final String copyId,
+                          final long blobSize, final String contentType, final byte[] contentMd5,
+                          final String contentEncoding, final String contentDisposition, final String contentLanguage,
+                          final String cacheControl, final Long blobSequenceNumber, final BlobType blobType,
+                          final LeaseStatusType leaseStatus, final LeaseStateType leaseState,
+                          final LeaseDurationType leaseDuration, final String copyId,
                           final CopyStatusType copyStatus, final String copySource, final String copyProgress,
-                          final OffsetDateTime copyCompletionTime, final String copyStatusDescription, final Boolean isServerEncrypted,
-                          final Boolean isIncrementalCopy, final String copyDestinationSnapshot, final AccessTier accessTier,
-                          final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
-                          final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
-                          final Integer committedBlockCount, final String versionId, final Boolean isCurrentVersion) {
+                          final OffsetDateTime copyCompletionTime, final String copyStatusDescription,
+                          final Boolean isServerEncrypted, final Boolean isIncrementalCopy,
+                          final String copyDestinationSnapshot, final AccessTier accessTier,
+                          final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus,
+                          final String encryptionKeySha256, final OffsetDateTime accessTierChangeTime,
+                          final Map<String, String> metadata, final Integer committedBlockCount,
+                          final String versionId, final Boolean isCurrentVersion) {
         this.creationTime = creationTime;
         this.lastModified = lastModified;
         this.eTag = eTag;
