@@ -79,9 +79,9 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         public int compare(CosmosItemProperties doc1, CosmosItemProperties doc2) {
             boolean isAsc = order == CompositePathSortOrder.ASCENDING;
             if (isNumericPath) {
-                if (ModelBridgeInternal.getIntFromJsonSerializable(doc1, path) < ModelBridgeInternal.getIntFromJsonSerializable(doc1, path))
+                if (ModelBridgeInternal.getIntFromJsonSerializable(doc1, path) < ModelBridgeInternal.getIntFromJsonSerializable(doc2, path))
                     return isAsc ? -1 : 1;
-                else if (ModelBridgeInternal.getIntFromJsonSerializable(doc1, path) > ModelBridgeInternal.getIntFromJsonSerializable(doc1, path))
+                else if (ModelBridgeInternal.getIntFromJsonSerializable(doc1, path) > ModelBridgeInternal.getIntFromJsonSerializable(doc2, path))
                     return isAsc ? 1 : -1;
                 else
                     return 0;
