@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.implementation.NotFoundException;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlParameterList;
@@ -208,7 +207,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      */
     private Flux<Document> readDocument(Document d) {
         RequestOptions options = new RequestOptions();
-        options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getStringFromJsonSerializable(d, partitionKey)));
+        options.setPartitionKey(new PartitionKey(d.getString(partitionKey)));
 
         return client.readDocument(getDocumentLink(d), options)
                 .map(ResourceResponse::getResource).flux();
