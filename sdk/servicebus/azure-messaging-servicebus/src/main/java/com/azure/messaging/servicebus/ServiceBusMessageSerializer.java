@@ -60,7 +60,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     private static final String REQUEST_RESPONSE_MESSAGES = "messages";
     private static final String REQUEST_RESPONSE_MESSAGE = "message";
     private static final String REQUEST_RESPONSE_EXPIRATIONS = "expirations";
-    static final String LOCK_TOKEN_KEY = "lock-token";
+    private static final String LOCK_TOKEN_KEY = "lock-token";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
 
