@@ -152,7 +152,7 @@ public class JsonSerializable {
      * @param propertyName the property to look up.
      * @return true if the property exists.
      */
-    public boolean has(String propertyName) {
+    protected boolean has(String propertyName) {
         return this.propertyBag.has(propertyName);
     }
 
@@ -288,9 +288,9 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the long value
      */
-    public Long getLong(String propertyName) {
+    protected Long getLong(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            return Long.valueOf(this.propertyBag.get(propertyName).asLong());
+            return this.propertyBag.get(propertyName).asLong();
         } else {
             return null;
         }
