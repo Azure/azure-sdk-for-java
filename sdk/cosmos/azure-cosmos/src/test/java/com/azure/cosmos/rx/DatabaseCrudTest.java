@@ -110,7 +110,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_DatabaseCrudTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, preExistingDatabaseId);
     }
 

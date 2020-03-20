@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.models;
+package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.ReplicationPolicy;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.ConsistencyPolicy;
+import com.azure.cosmos.models.DatabaseAccountLocation;
+import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.ObjectUtils;
@@ -117,7 +119,7 @@ public final class DatabaseAccount extends Resource {
         return this.maxMediaStorageUsageInMB;
     }
 
-    void setMaxMediaStorageUsageInMB(long value) {
+    public void setMaxMediaStorageUsageInMB(long value) {
         this.maxMediaStorageUsageInMB = value;
     }
 
@@ -133,7 +135,7 @@ public final class DatabaseAccount extends Resource {
         return this.mediaStorageUsageInMB;
     }
 
-    void setMediaStorageUsageInMB(long value) {
+    public void setMediaStorageUsageInMB(long value) {
         this.mediaStorageUsageInMB = value;
     }
 
@@ -142,7 +144,7 @@ public final class DatabaseAccount extends Resource {
      *
      * @return the consistency policy.
      */
-    ConsistencyPolicy getConsistencyPolicy() {
+    public ConsistencyPolicy getConsistencyPolicy() {
         if (this.consistencyPolicy == null) {
             this.consistencyPolicy = super.getObject(Constants.Properties.USER_CONSISTENCY_POLICY,
                 ConsistencyPolicy.class);
@@ -159,7 +161,7 @@ public final class DatabaseAccount extends Resource {
      *
      * @return the replication policy.
      */
-    ReplicationPolicy getReplicationPolicy() {
+    public ReplicationPolicy getReplicationPolicy() {
         if (this.replicationPolicy == null) {
             this.replicationPolicy = super.getObject(Constants.Properties.USER_REPLICATION_POLICY,
                 ReplicationPolicy.class);
@@ -177,7 +179,7 @@ public final class DatabaseAccount extends Resource {
      *
      * @return the system replication policy.
      */
-    ReplicationPolicy getSystemReplicationPolicy() {
+    public ReplicationPolicy getSystemReplicationPolicy() {
         if (this.systemReplicationPolicy == null) {
             this.systemReplicationPolicy = super.getObject(Constants.Properties.SYSTEM_REPLICATION_POLICY,
                 ReplicationPolicy.class);
@@ -191,11 +193,11 @@ public final class DatabaseAccount extends Resource {
     }
 
     /**
-     * Gets the QueryEngineConfiuration properties.
+     * Gets the QueryEngineConfiguration properties.
      *
      * @return the query engine configuration.
      */
-    Map<String, Object> getQueryEngineConfiguration() {
+    public Map<String, Object> getQueryEngineConfiguration() {
         if (this.queryEngineConfiguration == null) {
             String queryEngineConfigurationJsonString = super.getObject(Constants.Properties.QUERY_ENGINE_CONFIGURATION,
                 String.class);
@@ -233,7 +235,7 @@ public final class DatabaseAccount extends Resource {
      *
      * @param locations the list of writable locations.
      */
-    void setWritableLocations(Iterable<DatabaseAccountLocation> locations) {
+    public void setWritableLocations(Iterable<DatabaseAccountLocation> locations) {
         BridgeInternal.setProperty(this, Constants.Properties.WRITABLE_LOCATIONS, locations);
     }
 
@@ -253,7 +255,7 @@ public final class DatabaseAccount extends Resource {
      *
      * @param locations the list of readable locations.
      */
-    void setReadableLocations(Iterable<DatabaseAccountLocation> locations) {
+    public void setReadableLocations(Iterable<DatabaseAccountLocation> locations) {
         BridgeInternal.setProperty(this, Constants.Properties.READABLE_LOCATIONS, locations);
     }
 
@@ -266,7 +268,7 @@ public final class DatabaseAccount extends Resource {
         return ObjectUtils.defaultIfNull(super.getBoolean(Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS), false);
     }
 
-    void setEnableMultipleWriteLocations(boolean value) {
+    public void setEnableMultipleWriteLocations(boolean value) {
         BridgeInternal.setProperty(this, Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS, value);
     }
 

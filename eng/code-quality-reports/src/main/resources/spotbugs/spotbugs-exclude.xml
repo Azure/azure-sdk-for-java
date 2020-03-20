@@ -801,7 +801,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.cosmos.models.DatabaseAccount"/>
+    <Class name="com.azure.cosmos.implementation.DatabaseAccount"/>
     <Method name="getQueryEngineConfiguration"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
