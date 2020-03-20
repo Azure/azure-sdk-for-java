@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -92,9 +93,11 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                 }
                 return doc1.getString(path).compareTo(doc2.getString(path));
             } else if (isBooleanPath) {
-                if (doc1.getBoolean(path) == false && doc2.getBoolean(path) == true)
+                if (!ModelBridgeInternal.getBooleanFromJsonSerializable(doc1, path) &&
+                    ModelBridgeInternal.getBooleanFromJsonSerializable(doc2, path))
                     return isAsc ? -1 : 1;
-                else if (doc1.getBoolean(path) == true && doc2.getBoolean(path) == false)
+                else if (ModelBridgeInternal.getBooleanFromJsonSerializable(doc1, path) &&
+                    !ModelBridgeInternal.getBooleanFromJsonSerializable(doc2, path))
                     return isAsc ? 1 : -1;
                 else
                     return 0;

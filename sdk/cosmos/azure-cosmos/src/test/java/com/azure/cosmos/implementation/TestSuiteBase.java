@@ -16,6 +16,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.Resource;
@@ -188,7 +189,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
                         if (paths != null && !paths.isEmpty()) {
                             List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                            Object propertyValue = doc.getObjectByPath(pkPath);
+                            Object propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
                             if (propertyValue == null) {
                                 propertyValue = Undefined.value();
                             }

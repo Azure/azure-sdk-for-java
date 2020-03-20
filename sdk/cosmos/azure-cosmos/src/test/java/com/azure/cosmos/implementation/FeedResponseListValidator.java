@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
@@ -189,7 +190,7 @@ public interface FeedResponseListValidator<T extends Resource> {
                     if (result != null) {
                         if (value instanceof Double) {
 
-                            Double d = result.getDouble(Constants.Properties.VALUE);
+                            Double d = ModelBridgeInternal.getDoubleFromJsonSerializable(result, Constants.Properties.VALUE);
                             assertThat(d).isEqualTo(value);
                         } else if (value instanceof Integer) {
 
@@ -242,7 +243,7 @@ public interface FeedResponseListValidator<T extends Resource> {
                             } else if (paths.get(j).toLowerCase().contains("string")) {
                                 assertThat(expectedOrderedList.get(i).getString(paths.get(j))).isEqualTo(resultValues.get(j).asText());
                             } else if (paths.get(j).contains("bool")) {
-                                assertThat(expectedOrderedList.get(i).getBoolean(paths.get(j))).isEqualTo(resultValues.get(j).asBoolean());
+                                assertThat(ModelBridgeInternal.getBooleanFromJsonSerializable(expectedOrderedList.get(i), paths.get(j))).isEqualTo(resultValues.get(j).asBoolean());
                             } else {
                                 assertThat(resultValues.get(j).isNull()).isTrue();
                                 assertThat(expectedOrderedList.get(i).get("nullField")).isNull();

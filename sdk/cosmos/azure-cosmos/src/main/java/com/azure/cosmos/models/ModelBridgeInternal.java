@@ -39,9 +39,11 @@ import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.lang.reflect.InvocationTargetException;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -417,5 +419,25 @@ public final class ModelBridgeInternal {
 
     public static CosmosResourceType fromServiceSerializedFormat(String cosmosResourceType) {
         return CosmosResourceType.fromServiceSerializedFormat(cosmosResourceType);
+    }
+
+    public static Boolean getBooleanFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.getBoolean(propertyName);
+    }
+
+    public static Double getDoubleFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.getDouble(propertyName);
+    }
+
+    public static Object getObjectByPathFromJsonSerializable(JsonSerializable jsonSerializable, List<String> propertyNames) {
+        return jsonSerializable.getObjectByPath(propertyNames);
+    }
+
+    public static ByteBuffer serializeJsonToByteBuffer(JsonSerializable jsonSerializable) {
+        return jsonSerializable.serializeJsonToByteBuffer();
+    }
+
+    public static <T> T toObjectFromJsonSerializable(JsonSerializable jsonSerializable, Class<T> c) {
+        return jsonSerializable.toObject(c);
     }
 }
