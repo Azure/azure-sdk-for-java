@@ -56,9 +56,6 @@ param (
     [hashtable] $AdditionalParameters,
 
     [Parameter()]
-    [switch] $CI = ($null -ne $env:SYSTEM_TEAMPROJECTID),
-
-    [Parameter()]
     [switch] $Force
 )
 
@@ -69,27 +66,6 @@ if (!$PSBoundParameters.ContainsKey('ErrorAction')) {
 
 function Log($Message) {
     Write-Host ('{0} - {1}' -f [DateTime]::Now.ToLongTimeString(), $Message)
-}
-
-function Retry([scriptblock] $Action, [int] $Attempts = 5) {
-    $attempt = 0
-    $sleep = 5
-
-    while ($attempt -lt $Attempts) {
-        try {
-            $attempt++
-            return $Action.Invoke()
-        } catch {
-            if ($attempt -lt $Attempts) {
-                $sleep *= 2
-
-                Write-Warning "Attempt $attempt failed: $_. Trying again in $sleep seconds..."
-                Start-Sleep -Seconds $sleep
-            } else {
-                Write-Error -ErrorRecord $_
-            }
-        }
-    }
 }
 
 # Support actions to invoke on exit.
@@ -105,7 +81,7 @@ trap {
 }
 
 # Enumerate test resources to deploy. Fail if none found.
-$root = [System.IO.Path]::Combine("$PSScriptRoot/../sdk", $ServiceDirectory) | Resolve-Path
+$root = Resolve-Path -Path "$PSScriptRoot/../sdk/$ServiceDirectory"
 $templateFileName = 'test-resources.json'
 $templateFiles = @()
 
@@ -129,10 +105,7 @@ if ($ProvisionerApplicationId) {
     Log "Logging into service principal '$ProvisionerApplicationId'"
     $provisionerSecret = ConvertTo-SecureString -String $ProvisionerApplicationSecret -AsPlainText -Force
     $provisionerCredential = [System.Management.Automation.PSCredential]::new($ProvisionerApplicationId, $provisionerSecret)
-
-    $provisionerAccount = Retry {
-        Connect-AzAccount -Tenant $TenantId -Credential $provisionerCredential -ServicePrincipal
-    }
+    $provisionerAccount = Connect-AzAccount -Tenant $TenantId -Credential $provisionerCredential -ServicePrincipal
 
     $exitActions += {
         Write-Verbose "Logging out of service principal '$($provisionerAccount.Context.Account)'"
@@ -142,24 +115,14 @@ if ($ProvisionerApplicationId) {
 
 # Get test application OID from ID if not already provided.
 if ($TestApplicationId -and !$TestApplicationOid) {
-    $testServicePrincipal = Retry {
-        Get-AzADServicePrincipal -ApplicationId $TestApplicationId
-    }
-
+    $testServicePrincipal = Get-AzADServicePrincipal -ApplicationId $TestApplicationId
     if ($testServicePrincipal -and $testServicePrincipal.Id) {
         $script:TestApplicationOid = $testServicePrincipal.Id
     }
 }
 
 # Format the resource group name based on resource group naming recommendations and limitations.
-$resourceGroupName = if ($CI) {
-    $BaseName = 't' + (New-Guid).ToString('n').Substring(0, 16)
-    Write-Verbose "Generated base name '$BaseName' for CI build"
-
-    "rg-{0}-$BaseName" -f ($ServiceDirectory -replace '[\\\/]', '-').Substring(0, [Math]::Min($ServiceDirectory.Length, 90 - $BaseName.Length - 4)).Trim('-')
-} else {
-    "rg-$BaseName"
-}
+$resourceGroupName = "rg-{0}-$baseName" -f ($ServiceDirectory -replace '[\\\/]', '-').Substring(0, [Math]::Min($ServiceDirectory.Length, 90 - $BaseName.Length - 4)).Trim('-')
 
 # Tag the resource group to be deleted after a certain number of hours if specified.
 $tags = @{
@@ -172,7 +135,7 @@ if ($PSBoundParameters.ContainsKey('DeleteAfterHours')) {
     $tags.Add('DeleteAfter', $deleteAfter.ToString('o'))
 }
 
-if ($CI) {
+if ($env:SYSTEM_TEAMPROJECTID) {
     # Add tags for the current CI job.
     $tags += @{
         BuildId = "${env:BUILD_BUILDID}"
@@ -182,15 +145,11 @@ if ($CI) {
     }
 
     # Set the resource group name variable.
-    Write-Host "Setting variable 'AZURE_RESOURCEGROUP_NAME': $resourceGroupName"
     Write-Host "##vso[task.setvariable variable=AZURE_RESOURCEGROUP_NAME;]$resourceGroupName"
 }
 
-Log "Creating resource group '$resourceGroupName' in location '$Location'"
-$resourceGroup = Retry {
-    New-AzResourceGroup -Name "$resourceGroupName" -Location $Location -Tag $tags -Force:$Force
-}
-
+Log "Creating resource group '${resourceGroupName}' in location '$Location'"
+$resourceGroup = New-AzResourceGroup -Name "${resourceGroupName}" -Location $Location -Tag $tags -Force:$Force
 if ($resourceGroup.ProvisioningState -eq 'Succeeded') {
     # New-AzResourceGroup would've written an error and stopped the pipeline by default anyway.
     Write-Verbose "Successfully created resource group '$($resourceGroup.ResourceGroupName)'"
@@ -243,16 +202,13 @@ foreach ($templateFile in $templateFiles) {
     }
 
     Log "Deploying template '$templateFile' to resource group '$($resourceGroup.ResourceGroupName)'"
-    $deployment = Retry {
-        New-AzResourceGroupDeployment -Name $BaseName -ResourceGroupName $resourceGroup.ResourceGroupName -TemplateFile $templateFile -TemplateParameterObject $templateFileParameters
-    }
-
+    $deployment = New-AzResourceGroupDeployment -Name $BaseName -ResourceGroupName $resourceGroup.ResourceGroupName -TemplateFile $templateFile -TemplateParameterObject $templateFileParameters
     if ($deployment.ProvisioningState -eq 'Succeeded') {
         # New-AzResourceGroupDeployment would've written an error and stopped the pipeline by default anyway.
         Write-Verbose "Successfully deployed template '$templateFile' to resource group '$($resourceGroup.ResourceGroupName)'"
     }
 
-    if ($deployment.Outputs.Count -and !$CI) {
+    if ($deployment.Outputs.Count -and !$env:SYSTEM_TEAMPROJECTID) {
         # Write an extra new line to isolate the environment variables for easy reading.
         Log "Persist the following environment variables based on your detected shell ($shell):`n"
     }
@@ -267,12 +223,10 @@ foreach ($templateFile in $templateFiles) {
         if ($variable.Type -eq 'String' -or $variable.Type -eq 'SecureString') {
             $deploymentOutputs[$key] = $variable.Value
 
-            if ($CI) {
-                # Treat all ARM template output variables as secrets since "SecureString" variables do not set values.
-                # In order to mask secrets but set environment variables for any given ARM template, we set variables twice as shown below.
-                Write-Host "Setting variable '$key': ***"
-                Write-Host "##vso[task.setvariable variable=_$key;issecret=true;]$($variable.Value)"
-                Write-Host "##vso[task.setvariable variable=$key;]$($variable.Value)"
+            if ($env:SYSTEM_TEAMPROJECTID) {
+                # Running in Azure Pipelines. Unfortunately, there's no good way to know which outputs are truly secrets
+                # because we have to set all output variables to "String" instead of "SecureString" or we will never get back a value.
+                Write-Host "##vso[task.setvariable variable=$key;issecret=true;]$($variable.Value)"
             } else {
                 Write-Host ($shellExportFormat -f $key, $variable.Value)
             }
@@ -309,7 +263,7 @@ If you are not currently logged into an account in the Az PowerShell module, you
 A name to use in the resource group and passed to the ARM template as 'baseName'.
 
 .PARAMETER ServiceDirectory
-A directory under 'sdk' in the repository root - optionally with subdirectories specified - in which to discover ARM templates named 'test-resources.json'. This can also be an absolute path or specify parent directories.
+A directory under 'sdk' in the repository root - optionally with subdirectories specified - in which to discover ARM templates named 'test-resources.json'.
 
 .PARAMETER TestApplicationId
 A service principal ID to authenticate the test runner against deployed resources.
@@ -337,9 +291,6 @@ Optional location where resources should be created. By default this is 'westus2
 
 .PARAMETER AdditionalParameters
 Optional key-value pairs of parameters to pass to the ARM template(s).
-
-.PARAMETER CI
-Indicates the script is run as part of a Continuous Integration / Continuous Deployment (CI/CD) build (only Azure Pipelines is currently supported).
 
 .PARAMETER Force
 Force creation of resources instead of being prompted.

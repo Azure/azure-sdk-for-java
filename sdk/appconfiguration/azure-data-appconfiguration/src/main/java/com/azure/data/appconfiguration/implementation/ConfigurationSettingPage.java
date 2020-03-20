@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration.implementation;
 
-import com.azure.core.util.IterableStream;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.core.http.rest.Page;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,12 +30,12 @@ public final class ConfigurationSettingPage implements Page<ConfigurationSetting
     }
 
     /**
-     * Gets the iterable stream of {@link ConfigurationSetting ConfigurationSettings} on this page.
+     * Gets the list of {@link ConfigurationSetting ConfigurationSettings} on this page.
      *
-     * @return The iterable stream of {@link ConfigurationSetting ConfigurationSettings}.
+     * @return The list of {@link ConfigurationSetting ConfigurationSettings}.
      */
     @Override
-    public IterableStream<ConfigurationSetting> getElements() {
-        return IterableStream.of(items);
+    public List<ConfigurationSetting> getItems() {
+        return items;
     }
 }

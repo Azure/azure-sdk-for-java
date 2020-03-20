@@ -137,8 +137,8 @@
   <!-- Don't apply custom Checkstyle rules to files under checkstyle package. -->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\..+" files=".*[/\\]tools[/\\]checkstyle[/\\].*"/>
 
-  <!-- Identity and opentelemetry tracing are plugin packages and shouldn't be referenced -->
-  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]tracing[/\\]opentelemetry[/\\]*"/>
+  <!-- Identity and OpenCensus tracing are plugin packages and shouldn't be referenced -->
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]tracing[/\\]opencensus[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved: https://github.com/Azure/azure-sdk/issues/321 -->
@@ -184,9 +184,8 @@
   <!-- CodeSnippet Suppression for now, which need code owner's attention -->
   <suppress checks="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck" files="com.azure.data.appconfiguration.ConfigurationAsyncClient.java"/>
 
-  <!-- Logger class suppression -->
+  <!-- ClientLogger class suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ClientLogger.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="DefaultLogger.java"/>
 
   <!-- Use the logger in Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.common.Utility.java"/>

@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.certificates.implementation;
 
 import com.azure.core.http.rest.Page;
-import com.azure.core.util.IterableStream;
 import com.azure.security.keyvault.certificates.models.DeletedCertificate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -39,12 +38,12 @@ public final class DeletedCertificatePage implements Page<DeletedCertificate> {
     }
 
     /**
-     * Gets the iterable stream of {@link DeletedCertificate deletedSecrets} on this page.
+     * Gets the list of {@link DeletedCertificate deletedSecrets} on this page.
      *
-     * @return The iterable stream of items in {@link List}.
+     * @return The list of items in {@link List}.
      */
     @Override
-    public IterableStream<DeletedCertificate> getElements() {
-        return IterableStream.of(items);
+    public List<DeletedCertificate> getItems() {
+        return items;
     }
 }
