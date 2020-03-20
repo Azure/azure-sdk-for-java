@@ -76,8 +76,15 @@ class Configuration {
     @Parameter(names = "-enableJvmStats", description = "Enables JVM Stats")
     private boolean enableJvmStats;
 
+    @Parameter(names = "-throughPutForMultiClientTest", description = "throughput on each container for multi client test")
+    private int throughPutForMultiClient = 100000;
+
+    @Parameter(names = "-deleteCollections", description = "Delete collections on all client with collectionId mentioned in the tool")
+    private boolean deleteCollections = false;
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
             + "\tReadThroughput- run a READ workload that prints only throughput *\n"
+			+ "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
             + "\tWriteThroughput - run a Write workload that prints only throughput\n"
             + "\tReadLatency - run a READ workload that prints both throughput and latency *\n"
             + "\tWriteLatency - run a Write workload that prints both throughput and latency\n"
@@ -143,7 +150,8 @@ class Configuration {
         QueryAggregateTopOrderby,
         QueryTopOrderby,
         Mixed,
-        ReadMyWrites;
+        ReadMyWrites,
+        ReadThroughputWithMultipleClients;
 
         static Operation fromString(String code) {
 
@@ -223,6 +231,10 @@ class Configuration {
         return numberOfOperations;
     }
 
+    int getthroughPutForMultiClient() {
+        return throughPutForMultiClient;
+    }
+
     String getServiceEndpoint() {
         return serviceEndpoint;
     }
@@ -284,6 +296,10 @@ class Configuration {
 
     public boolean isEnableJvmStats() {
         return enableJvmStats;
+    }
+
+    boolean isDeleteCollections() {
+        return deleteCollections;
     }
 
     public MeterRegistry getAzureMonitorMeterRegistry() {
@@ -359,6 +375,10 @@ class Configuration {
         String numberOfOperationsValue = StringUtils.defaultString(
                 Strings.emptyToNull(System.getenv().get("NUMBER_OF_OPERATIONS")), Integer.toString(numberOfOperations));
         numberOfOperations = Integer.parseInt(numberOfOperationsValue);
+
+        String  throughPutForMultiClientValue = StringUtils.defaultString(
+            Strings.emptyToNull(System.getenv().get("THROUGHPUT_MULTICLIENT")), Integer.toString(throughPutForMultiClient));
+        throughPutForMultiClient = Integer.parseInt(throughPutForMultiClientValue);
     }
 
     private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {
