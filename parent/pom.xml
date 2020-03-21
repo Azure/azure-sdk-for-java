@@ -265,7 +265,7 @@
             <stopPort>11079</stopPort>
             <stopKey>STOP</stopKey>
             <waitForChild>false</waitForChild>
-            <jettyXml>./jetty.xml</jettyXml>
+            <jettyXml>../../eng/jetty.xml</jettyXml>
           </configuration>
         </plugin>
 
