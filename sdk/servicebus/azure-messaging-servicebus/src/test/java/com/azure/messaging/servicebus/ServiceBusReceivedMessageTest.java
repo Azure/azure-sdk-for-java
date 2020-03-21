@@ -91,8 +91,7 @@ public class ServiceBusReceivedMessageTest {
         Assertions.assertEquals(originalMessage.getCorrelationId(), messageToSend.getCorrelationId());
         Assertions.assertEquals(originalMessage.getReplyTo(), messageToSend.getReplyTo());
         Assertions.assertEquals(originalMessage.getViaPartitionKey(), messageToSend.getViaPartitionKey());
-        Assertions.assertTrue(
-            originalMessage.getTimeToLive().toMillis() == messageToSend.getTimeToLive().toMillis());
+        Assertions.assertEquals(originalMessage.getTimeToLive().toMillis(), messageToSend.getTimeToLive().toMillis());
         Assertions.assertEquals(originalMessage.getLabel(), messageToSend.getLabel());
         Assertions.assertEquals(originalMessage.getReplyToSessionId(), messageToSend.getReplyToSessionId());
         Assertions.assertEquals(originalMessage.getTo(), messageToSend.getTo());

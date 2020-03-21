@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements Closeable {
     private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS =  new DeadLetterOptions();
-    
+
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
     private final ConcurrentHashMap<UUID, Instant> lockTokenExpirationMap = new ConcurrentHashMap<>();
