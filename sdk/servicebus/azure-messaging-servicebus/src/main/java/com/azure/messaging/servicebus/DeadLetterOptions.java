@@ -16,7 +16,9 @@ public class DeadLetterOptions {
 
     /**
      * Sets the reason while putting message in dead letter sub-queue.
+     *
      * @param deadLetterReason while putting message in dead letter sub-queue.
+     *
      * @return {@link DeadLetterOptions} object.
      */
     public DeadLetterOptions setDeadLetterReason(String deadLetterReason) {
@@ -26,7 +28,9 @@ public class DeadLetterOptions {
 
     /**
      * Sets the error description while putting message in dead letter sub-queue.
+     *
      * @param deadLetterErrorDescription while putting message in dead letter sub-queue.
+     *
      * @return {@link DeadLetterOptions} object.
      */
     public DeadLetterOptions setDeadLetterErrorDescription(String deadLetterErrorDescription) {
@@ -36,7 +40,9 @@ public class DeadLetterOptions {
 
     /**
      * Sets the message properties to modify while putting message in dead letter sub-queue.
+     *
      * @param propertiesToModify Message properties to modify.
+     *
      * @return {@link DeadLetterOptions} object.
      */
     public DeadLetterOptions setPropertiesToModify(Map<String, Object> propertiesToModify) {
@@ -46,6 +52,7 @@ public class DeadLetterOptions {
 
     /**
      * Gets the reason for putting put message in dead letter sub-queue.
+     *
      * @return The reason for putting put message in dead letter sub-queue.
      */
     public String getDeadLetterReason() {
@@ -54,6 +61,7 @@ public class DeadLetterOptions {
 
     /**
      * Gets the error description for putting put message in dead letter sub-queue.
+     *
      * @return The error description to for putting message in dead letter sub-queue.
      */
     public String getDeadLetterErrorDescription() {
@@ -62,6 +70,7 @@ public class DeadLetterOptions {
 
     /**
      * Gets the message properties to modify while putting put message in dead letter sub-queue.
+     *
      * @return The message properties to modify while putting message in dead letter sub-queue.
      */
     public Map<String, Object> getPropertiesToModify() {

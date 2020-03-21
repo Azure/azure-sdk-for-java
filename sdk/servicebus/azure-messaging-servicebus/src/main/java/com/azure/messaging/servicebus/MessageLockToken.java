@@ -12,13 +12,16 @@ public interface MessageLockToken {
 
     /**
      * Gets the lock token.
+     *
      * @return {@link UUID} representing the lock-token.
      */
     UUID getLockToken();
 
     /**
      * Created the {@link MessageLockToken} given a {@link UUID}.
+     *
      * @param uuid to use for creating {@link MessageLockToken} instance;
+     *
      * @return The created {@link MessageLockToken} object.
      */
     static MessageLockToken fromUuid(UUID uuid) {
