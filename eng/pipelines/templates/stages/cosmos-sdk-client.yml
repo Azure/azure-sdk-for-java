@@ -1,7 +1,7 @@
 parameters:
   Artifacts: []
   ServiceDirectory: not-specified
-  
+
 stages:
   - stage: Build
     jobs:
@@ -88,7 +88,7 @@ stages:
 
         TestStepMavenInputs:
           goals: 'verify'
-          options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/" -pl $(ProjectList)'
+          options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/" -pl $(ProjectList),com.azure:azure-cosmos-benchmarks,com.azure:azure-cosmos-examples'
           mavenAuthenticateFeed: true
           jdkVersionOption: $(JavaVersion)
 
@@ -154,4 +154,3 @@ stages:
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
 
-        
