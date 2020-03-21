@@ -3,16 +3,21 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * This class represents a received message from Service Bus.
  */
-public final class ServiceBusReceivedMessage extends ServiceBusMessage {
+public final class ServiceBusReceivedMessage implements MessageLockToken {
     private UUID lockToken;
     private long sequenceNumber;
     private long deliveryCount;
@@ -20,8 +25,52 @@ public final class ServiceBusReceivedMessage extends ServiceBusMessage {
     private Instant lockedUntil;
     private String deadLetterSource;
 
+    private final Map<String, Object> properties;
+    private final byte[] body;
+    private Context context;
+    private String contentType;
+    private String correlationId;
+    private String label;
+    private String messageId;
+    private String partitionKey;
+    private String replyTo;
+    private String replyToSessionId;
+    private Instant scheduledEnqueueTime;
+    private String sessionId;
+    private Duration timeToLive;
+    private String to;
+    private String viaPartitionKey;
+
     ServiceBusReceivedMessage(byte[] body) {
-        super(body);
+        this.body = Objects.requireNonNull(body, "'body' cannot be null.");
+        this.context = Context.NONE;
+        this.properties = new HashMap<>();
+    }
+    /**
+     * Gets the set of free-form {@link ServiceBusReceivedMessage} properties which may be used for passing metadata associated
+     * with the {@link ServiceBusReceivedMessage} during Service Bus operations. A common use-case for {@code properties()} is
+     * to associate serialization hints for the {@link #getBody()} as an aid to consumers who wish to deserialize the
+     * binary data.
+     *
+     * @return Application properties associated with this {@link ServiceBusReceivedMessage}.
+     */
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    /**
+     * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
+     *
+     * <p>
+     * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
+     * {@link #getProperties()} when creating the event, to associate serialization hints as an aid to consumers who
+     * wish to deserialize the binary data.
+     * </p>
+     *
+     * @return A byte array representing the data.
+     */
+    public byte[] getBody() {
+        return Arrays.copyOf(body, body.length);
     }
 
     /**
@@ -66,6 +115,15 @@ public final class ServiceBusReceivedMessage extends ServiceBusMessage {
     }
 
     /**
+     * Gets the content type of the message.
+     *
+     * @return the contentType of the {@link ServiceBusReceivedMessage}.
+     */
+    public String getContentType() {
+        return contentType;
+    }
+
+    /**
      * Sets the name of the queue or subscription that this message was enqueued on, before it was
      * deadlettered.
      *
@@ -93,6 +151,7 @@ public final class ServiceBusReceivedMessage extends ServiceBusMessage {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
      * transfers, locks, and settlement</a>
      */
+    @Override
     public UUID getLockToken() {
         return lockToken;
     }
@@ -120,6 +179,69 @@ public final class ServiceBusReceivedMessage extends ServiceBusMessage {
      */
     public Instant getEnqueuedTime() {
         return enqueuedTime;
+    }
+
+
+    /**
+     * Gets the scheduled enqueue time of this message.
+     * <p>
+     * This value is used for delayed message availability. The message is safely added to the queue, but is not
+     * considered active and therefore not retrievable until the scheduled enqueue time. Mind that the message may not
+     * be activated (enqueued) at the exact given instant; the actual activation time depends on the queue's workload
+     * and its state.
+     * </p>
+     *
+     * @return the instant at which the message will be enqueued in Azure Service Bus
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and
+     *     Timestamps</a>
+     */
+    public Instant getScheduledEnqueueTime() {
+        return scheduledEnqueueTime;
+    }
+
+    /**
+     * Gets the session id of the message.
+     *
+     * @return Session Id of the {@link ServiceBusReceivedMessage}.
+     */
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    /**
+     * Gets the duration before this message expires.
+     * <p>
+     * This value is the relative duration after which the message expires, starting from the instant the message has
+     * been accepted and stored by the broker, as captured in {@link #getScheduledEnqueueTime()}. When not set
+     * explicitly, the assumed value is the DefaultTimeToLive set for the respective queue or topic. A message-level
+     * TimeToLive value cannot be longer than the entity's DefaultTimeToLive setting and it is silently adjusted if it
+     * does.
+     *
+     * @return Time to live duration of this message
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-expiration">Message Expiration</a>
+     */
+    public Duration getTimeToLive() {
+        return timeToLive;
+    }
+
+    /**
+     * Gets the partition key for sending a message to a partitioned entity.
+     * <p>
+     * For <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-partitioning">partitioned
+     * entities</a>, setting this value enables assigning related messages to the same internal partition, so that
+     * submission sequence order is correctly recorded. The partition is chosen by a hash function over this value and
+     * cannot be chosen directly. For session-aware entities, the {@link #getSessionId() sessionId} property overrides
+     * this value.
+     *
+     * @return The partition key of this message
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-partitioning">Partitioned
+     *     entities</a>
+     */
+    public String getPartitionKey() {
+        return partitionKey;
     }
 
     /**
@@ -201,5 +323,252 @@ public final class ServiceBusReceivedMessage extends ServiceBusMessage {
      */
     void setLockedUntil(Instant lockedUntil) {
         this.lockedUntil = lockedUntil;
+    }
+
+    /**
+     * Sets a partition key for sending a message to a partitioned entity
+     *
+     * @param partitionKey partition key of this message
+     *
+     * @return The updated {@link ServiceBusReceivedMessage}.
+     *
+     * @see #getPartitionKey()
+     */
+    ServiceBusReceivedMessage setPartitionKey(String partitionKey) {
+        this.partitionKey = partitionKey;
+        return this;
+    }
+
+    /**
+     * Sets the session id.
+     *
+     * @param sessionId to be set.
+     *
+     * @return The updated {@link ServiceBusReceivedMessage}.
+     */
+    ServiceBusReceivedMessage setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+        return this;
+    }
+
+    /**
+     * Sets the duration of time before this message expires.
+     *
+     * @param timeToLive Time to Live duration of this message
+     *
+     * @return The updated {@link ServiceBusReceivedMessage}.
+     *
+     * @see #getTimeToLive()
+     */
+    ServiceBusReceivedMessage setTimeToLive(Duration timeToLive) {
+        this.timeToLive = timeToLive;
+        return this;
+    }
+
+
+    /**
+     * Sets the scheduled enqueue time of this message.
+     *
+     * @param scheduledEnqueueTime the instant at which this message should be enqueued in Azure Service Bus.
+     *
+     * @return The updated {@link ServiceBusReceivedMessage}.
+     *
+     * @see #getScheduledEnqueueTime()
+     */
+    ServiceBusReceivedMessage setScheduledEnqueueTime(Instant scheduledEnqueueTime) {
+        this.scheduledEnqueueTime = scheduledEnqueueTime;
+        return this;
+    }
+
+    /**
+     * Sets the content type of the {@link ServiceBusReceivedMessage}.
+     *
+     * @param contentType of the message.
+     *
+     * @return The updated {@link ServiceBusReceivedMessage}.
+     */
+    ServiceBusReceivedMessage setContentType(String contentType) {
+        this.contentType = contentType;
+        return this;
+    }
+
+
+    /**
+     * Gets a correlation identifier.
+     * <p>
+     * Allows an application to specify a context for the message for the purposes of correlation, for example
+     * reflecting the MessageId of a message that is being replied to.
+     * </p>
+     *
+     * @return correlation id of this message
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
+     *     Routing and Correlation</a>
+     */
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    /**
+     * Sets a correlation identifier.
+     *
+     * @param correlationId correlation id of this message
+     *
+     * @return The updated {@link ServiceBusReceivedMessage}.
+     *
+     * @see #getCorrelationId()
+     */
+    ServiceBusReceivedMessage setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
+        return this;
+    }
+
+    /**
+     * Gets the label for the message.
+     *
+     * @return The label for the message.
+     */
+    public String getLabel() {
+        return label;
+    }
+
+    /**
+     * Sets the label for the message.
+     *
+     * @param label The label to set.
+     *
+     * @return The updated {@link ServiceBusReceivedMessage} object.
+     */
+    ServiceBusReceivedMessage setLabel(String label) {
+        this.label = label;
+        return this;
+    }
+
+    /**
+     * @return Id of the {@link ServiceBusReceivedMessage}.
+     */
+    public String getMessageId() {
+        return messageId;
+    }
+
+    /**
+     * Sets the message id.
+     *
+     * @param messageId to be set.
+     *
+     * @return The updated {@link ServiceBusReceivedMessage}.
+     */
+    ServiceBusReceivedMessage setMessageId(String messageId) {
+        this.messageId = messageId;
+        return this;
+    }
+
+
+    /**
+     * Gets the address of an entity to send replies to.
+     * <p>
+     * This optional and application-defined value is a standard way to express a reply path to the receiver of the
+     * message. When a sender expects a reply, it sets the value to the absolute or relative path of the queue or topic
+     * it expects the reply to be sent to.
+     *
+     * @return ReplyTo property value of this message
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
+     *     Routing and Correlation</a>
+     */
+    public String getReplyTo() {
+        return replyTo;
+    }
+
+    /**
+     * Sets the address of an entity to send replies to.
+     *
+     * @param replyTo ReplyTo property value of this message
+     *
+     * @return The updated {@link ServiceBusReceivedMessage}.
+     *
+     * @see #getReplyTo()
+     */
+    ServiceBusReceivedMessage setReplyTo(String replyTo) {
+        this.replyTo = replyTo;
+        return this;
+    }
+
+    /**
+     * Gets the "to" address.
+     *
+     * @return "To" property value of this message
+     */
+    public String getTo() {
+        return to;
+    }
+
+    /**
+     * Sets the "to" address.
+     * <p>
+     * This property is reserved for future use in routing scenarios and presently ignored by the broker itself.
+     * Applications can use this value in rule-driven
+     * <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-auto-forwarding">auto-forward
+     * chaining</a> scenarios to indicate the intended logical destination of the message.
+     *
+     * @param to To property value of this message
+     *
+     * @return The updated {@link ServiceBusReceivedMessage}.
+     */
+    ServiceBusReceivedMessage setTo(String to) {
+        this.to = to;
+        return this;
+    }
+    /**
+     * Gets or sets a session identifier augmenting the {@link #getReplyTo() ReplyTo} address.
+     * <p>
+     * This value augments the ReplyTo information and specifies which SessionId should be set for the reply when sent
+     * to the reply entity.
+     *
+     * @return ReplyToSessionId property value of this message
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
+     *     Routing and Correlation</a>
+     */
+    public String getReplyToSessionId() {
+        return replyToSessionId;
+    }
+
+    /**
+     * Gets or sets a session identifier augmenting the {@link #getReplyTo() ReplyTo} address.
+     *
+     * @param replyToSessionId ReplyToSessionId property value of this message
+     *
+     * @return The updated {@link ServiceBusReceivedMessage}.
+     */
+    ServiceBusReceivedMessage setReplyToSessionId(String replyToSessionId) {
+        this.replyToSessionId = replyToSessionId;
+        return this;
+    }
+
+    /**
+     * Gets the partition key for sending a message to a entity via another partitioned transfer entity.
+     *
+     * If a message is sent via a transfer queue in the scope of a transaction, this value selects the
+     * transfer queue partition: This is functionally equivalent to {@link #getPartitionKey()} and ensures that
+     * messages are kept together and in order as they are transferred.
+     *
+     * @return partition key on the via queue.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Transfers and Send Via</a>
+     */
+    public String getViaPartitionKey() {
+        return viaPartitionKey;
+    }
+
+    /**
+     * Sets a via-partition key for sending a message to a destination entity via another partitioned entity
+     *
+     * @param viaPartitionKey via-partition key of this message
+     * @return The updated {@link ServiceBusReceivedMessage}.
+     * @see #getViaPartitionKey()
+     */
+    ServiceBusReceivedMessage setViaPartitionKey(String viaPartitionKey) {
+        this.viaPartitionKey = viaPartitionKey;
+        return this;
     }
 }
