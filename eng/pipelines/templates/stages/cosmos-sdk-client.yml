@@ -88,7 +88,7 @@ stages:
 
         TestStepMavenInputs:
           goals: 'verify'
-          options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/" -pl $(ProjectList),com.azure:azure-cosmos-benchmarks,com.azure:azure-cosmos-examples'
+          options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/" -pl $(ProjectList),com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-examples'
           mavenAuthenticateFeed: true
           jdkVersionOption: $(JavaVersion)
 

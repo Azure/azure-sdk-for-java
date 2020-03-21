@@ -63,7 +63,7 @@ jobs:
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList),com.azure:azure-cosmos-benchmarks,com.azure:azure-cosmos-examples'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList),com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-examples'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -129,7 +129,7 @@ jobs:
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList),com.azure:azure-cosmos-benchmarks,com.azure:azure-cosmos-examples'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList),com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-examples'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -200,7 +200,7 @@ jobs:
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList),com.azure:azure-cosmos-benchmarks,com.azure:azure-cosmos-examples'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList),com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-examples'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -298,7 +298,7 @@ jobs:
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList),com.azure:azure-cosmos-benchmarks,com.azure:azure-cosmos-examples'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList),com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-examples'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -358,7 +358,7 @@ jobs:
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList),com.azure:azure-cosmos-benchmarks,com.azure:azure-cosmos-examples'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList),com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-examples'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -412,6 +412,6 @@ jobs:
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList),com.azure:azure-cosmos-benchmarks,com.azure:azure-cosmos-examples'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList),com.azure:azure-cosmos-benchmark,com.azure:azure-cosmos-examples'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
