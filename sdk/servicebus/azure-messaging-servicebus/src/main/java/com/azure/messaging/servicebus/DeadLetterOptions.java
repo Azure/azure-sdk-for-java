@@ -45,23 +45,23 @@ public class DeadLetterOptions {
     }
 
     /**
-     *
-     * @return The reason while putting put message in dead letter sub-queue.
+     * Gets the reason for putting put message in dead letter sub-queue.
+     * @return The reason for putting put message in dead letter sub-queue.
      */
     public String getDeadLetterReason() {
         return deadLetterReason;
     }
 
     /**
-     *
-     * @return The error description to while putting message in dead letter sub-queue.
+     * Gets the error description for putting put message in dead letter sub-queue.
+     * @return The error description to for putting message in dead letter sub-queue.
      */
     public String getDeadLetterErrorDescription() {
         return deadLetterErrorDescription;
     }
 
     /**
-     *
+     * Gets the message properties to modify while putting put message in dead letter sub-queue.
      * @return The message properties to modify while putting message in dead letter sub-queue.
      */
     public Map<String, Object> getPropertiesToModify() {
