@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import java.time.Duration;
@@ -27,7 +26,6 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
 
     private final Map<String, Object> properties;
     private final byte[] body;
-    private Context context;
     private String contentType;
     private String correlationId;
     private String label;
@@ -43,14 +41,13 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
 
     ServiceBusReceivedMessage(byte[] body) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
-        this.context = Context.NONE;
         this.properties = new HashMap<>();
     }
     /**
-     * Gets the set of free-form {@link ServiceBusReceivedMessage} properties which may be used for passing metadata associated
-     * with the {@link ServiceBusReceivedMessage} during Service Bus operations. A common use-case for {@code properties()} is
-     * to associate serialization hints for the {@link #getBody()} as an aid to consumers who wish to deserialize the
-     * binary data.
+     * Gets the set of free-form {@link ServiceBusReceivedMessage} properties which may be used for passing metadata
+     * associated with the {@link ServiceBusReceivedMessage} during Service Bus operations. A common use-case for
+     * {@code properties()} is to associate serialization hints for the {@link #getBody()} as an aid to consumers
+     * who wish to deserialize the binary data.
      *
      * @return Application properties associated with this {@link ServiceBusReceivedMessage}.
      */
