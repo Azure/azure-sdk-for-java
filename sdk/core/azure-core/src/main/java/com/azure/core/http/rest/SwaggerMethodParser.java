@@ -39,6 +39,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -104,17 +105,8 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             this.httpMethod = HttpMethod.PATCH;
             this.relativePath = swaggerMethod.getAnnotation(Patch.class).value();
         } else {
-            this.httpMethod = null;
-            this.relativePath = null;
-
-            final ArrayList<Class<? extends Annotation>> requiredAnnotationOptions = new ArrayList<>();
-            requiredAnnotationOptions.add(Get.class);
-            requiredAnnotationOptions.add(Put.class);
-            requiredAnnotationOptions.add(Head.class);
-            requiredAnnotationOptions.add(Delete.class);
-            requiredAnnotationOptions.add(Post.class);
-            requiredAnnotationOptions.add(Patch.class);
-            throw new MissingRequiredAnnotationException(requiredAnnotationOptions, swaggerMethod);
+            throw new MissingRequiredAnnotationException(Arrays.asList(Get.class, Put.class, Head.class,
+                Delete.class, Post.class, Patch.class), swaggerMethod);
         }
 
         returnType = swaggerMethod.getGenericReturnType();
@@ -358,37 +350,13 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      * method.
      *
      * @param responseStatusCode the status code that was returned in the HTTP response
-     * @param additionalAllowedStatusCodes an additional set of allowed status codes that will be merged with the
-     * existing set of allowed status codes for this query
      * @return whether or not the provided response status code is one of the expected status codes for this Swagger
      * method
      */
-    public boolean isExpectedResponseStatusCode(int responseStatusCode, int[] additionalAllowedStatusCodes) {
-        boolean result;
-
-        if (expectedStatusCodes == null) {
-            result = (responseStatusCode < 400);
-        } else {
-            result = contains(expectedStatusCodes, responseStatusCode)
-                || contains(additionalAllowedStatusCodes, responseStatusCode);
-        }
-
-        return result;
-    }
-
-    private static boolean contains(int[] values, int searchValue) {
-        boolean result = false;
-
-        if (values != null && values.length > 0) {
-            for (int value : values) {
-                if (searchValue == value) {
-                    result = true;
-                    break;
-                }
-            }
-        }
-
-        return result;
+    public boolean isExpectedResponseStatusCode(int responseStatusCode) {
+        return (expectedStatusCodes == null)
+            ? (responseStatusCode < 400)
+            : Arrays.stream(expectedStatusCodes).anyMatch(x -> x == responseStatusCode);
     }
 
     /**

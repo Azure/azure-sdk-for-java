@@ -3,208 +3,249 @@
 
 package com.azure.core.http.rest;
 
-import com.azure.core.MyOtherRestException;
-import com.azure.core.MyRestException;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Head;
+import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.implementation.entities.HttpBinJSON;
-import com.azure.core.exception.HttpResponseException;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
+import com.azure.core.annotation.ReturnValueWireType;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.implementation.UnixTime;
+import com.azure.core.util.Base64Url;
+import com.azure.core.util.Context;
+import com.azure.core.util.DateTimeRfc1123;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.IOException;
+import javax.security.auth.login.Configuration;
 import java.lang.reflect.Method;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SwaggerMethodParserTests {
+    interface OperationMethods {
+        void noMethod();
 
-    interface TestInterface1 {
-        void testMethod1();
+        @Get("test")
+        void getMethod();
+
+        @Put("test")
+        void putMethod();
+
+        @Head("test")
+        void headMethod();
+
+        @Delete("test")
+        void deleteMethod();
+
+        @Post("test")
+        void postMethod();
+
+        @Patch("test")
+        void patchMethod();
     }
 
     @Test
-    public void withNoAnnotations() {
-        assertThrows(MissingRequiredAnnotationException.class, () -> {
-            final Method testMethod1 = TestInterface1.class.getDeclaredMethods()[0];
-            assertEquals("testMethod1", testMethod1.getName());
-            new SwaggerMethodParser(testMethod1, "https://raw.host.com");
-        });
+    public void noHttpMethodAnnotation() throws NoSuchMethodException {
+        Method noHttpMethodAnnotation = OperationMethods.class.getDeclaredMethod("noMethod");
+        assertThrows(MissingRequiredAnnotationException.class, () ->
+            new SwaggerMethodParser(noHttpMethodAnnotation, "s://raw.host.com"));
     }
 
-    interface TestInterface2 {
-        @Patch("my/rest/api/path")
-        @ExpectedResponses({200})
-        void testMethod2();
+    @ParameterizedTest
+    @MethodSource("httpMethodSupplier")
+    public void httpMethod(Method method, HttpMethod expectedMethod, String expectedRelativePath) {
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        assertEquals(expectedMethod, swaggerMethodParser.getHttpMethod());
+        assertEquals(expectedRelativePath, swaggerMethodParser.setPath(null));
     }
 
-    @Test
-    public void withOnlyExpectedResponse() throws IOException {
-        final Method testMethod2 = TestInterface2.class.getDeclaredMethods()[0];
-        assertEquals("testMethod2", testMethod2.getName());
+    private static Stream<Arguments> httpMethodSupplier() throws NoSuchMethodException {
+        Class<OperationMethods> clazz = OperationMethods.class;
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod2, "https://raw.host.com");
-        assertEquals("com.azure.core.http.rest.SwaggerMethodParserTests$TestInterface2.testMethod2", methodParser.getFullyQualifiedMethodName());
-        assertEquals(HttpMethod.PATCH, methodParser.getHttpMethod());
-        assertArrayEquals(new int[] { 200 }, methodParser.getExpectedStatusCodes());
-        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(-1).getExceptionType());
-        assertEquals(Object.class, methodParser.getUnexpectedException(-1).getExceptionBodyType());
-        assertEquals(false, methodParser.setHeaders(null).iterator().hasNext());
-        assertEquals("https", methodParser.setScheme(null));
-        assertEquals("raw.host.com", methodParser.setHost(null));
+        return Stream.of(
+            Arguments.of(clazz.getDeclaredMethod("getMethod"), HttpMethod.GET, "test"),
+            Arguments.of(clazz.getDeclaredMethod("putMethod"), HttpMethod.PUT, "test"),
+            Arguments.of(clazz.getDeclaredMethod("headMethod"), HttpMethod.HEAD, "test"),
+            Arguments.of(clazz.getDeclaredMethod("deleteMethod"), HttpMethod.DELETE, "test"),
+            Arguments.of(clazz.getDeclaredMethod("postMethod"), HttpMethod.POST, "test"),
+            Arguments.of(clazz.getDeclaredMethod("patchMethod"), HttpMethod.PATCH, "test")
+        );
     }
 
-    interface TestInterface3 {
-        @Patch("my/rest/api/path")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MyRestException.class)
-        void testMethod3();
+    interface WireTypesMethods {
+        @Get("test")
+        void noWireType();
+
+        @Get("test")
+        @ReturnValueWireType(Base64Url.class)
+        void base64Url();
+
+        @Get("test")
+        @ReturnValueWireType(UnixTime.class)
+        void unixTime();
+
+        @Get("test")
+        @ReturnValueWireType(DateTimeRfc1123.class)
+        void dateTimeRfc1123();
+
+        @Get("test")
+        @ReturnValueWireType(Page.class)
+        void page();
+
+        @Get("test")
+        @ReturnValueWireType(Boolean.class)
+        void unknownType();
     }
 
-    @Test
-    public void withExpectedResponseAndUnexpectedResponseExceptionType() throws IOException {
-        final Method testMethod3 = TestInterface3.class.getDeclaredMethods()[0];
-        assertEquals("testMethod3", testMethod3.getName());
-
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod3, "https://raw.host.com");
-        assertEquals("com.azure.core.http.rest.SwaggerMethodParserTests$TestInterface3.testMethod3", methodParser.getFullyQualifiedMethodName());
-        assertEquals(HttpMethod.PATCH, methodParser.getHttpMethod());
-        assertArrayEquals(new int[] { 200 }, methodParser.getExpectedStatusCodes());
-        assertEquals(MyRestException.class, methodParser.getUnexpectedException(-1).getExceptionType());
-        assertEquals(HttpBinJSON.class, methodParser.getUnexpectedException(-1).getExceptionBodyType());
-        assertEquals(false, methodParser.setHeaders(null).iterator().hasNext());
-        assertEquals("https", methodParser.setScheme(null));
-        assertEquals("raw.host.com", methodParser.setHost(null));
+    @ParameterizedTest
+    @MethodSource("wireTypesSupplier")
+    public void wireTypes(Method method, Class<?> expectedWireType) {
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        assertEquals(expectedWireType, swaggerMethodParser.getReturnValueWireType());
     }
 
-    interface TestInterface4 {
-        @Patch("my/rest/api/path")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {400}, value = HttpResponseException.class)
-        @UnexpectedResponseExceptionType(MyRestException.class)
-        void testMethod4();
+    private static Stream<Arguments> wireTypesSupplier() throws NoSuchMethodException {
+        Class<WireTypesMethods> clazz = WireTypesMethods.class;
+
+        return Stream.of(
+            Arguments.of(clazz.getDeclaredMethod("noWireType"), null),
+            Arguments.of(clazz.getDeclaredMethod("base64Url"), Base64Url.class),
+            Arguments.of(clazz.getDeclaredMethod("unixTime"), UnixTime.class),
+            Arguments.of(clazz.getDeclaredMethod("dateTimeRfc1123"), DateTimeRfc1123.class),
+            Arguments.of(clazz.getDeclaredMethod("page"), Page.class),
+            Arguments.of(clazz.getDeclaredMethod("unknownType"), null)
+        );
     }
 
-    @Test
-    public void withExpectedResponseAndMappedUnexpectedResponseExceptionTypeWithFallthrough() {
-        final Method testMethod4 = TestInterface4.class.getDeclaredMethods()[0];
-        assertEquals("testMethod4", testMethod4.getName());
+    interface HeaderMethods {
+        @Get("test")
+        void noHeaders();
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod4, "https://raw.host.com");
-        assertEquals("com.azure.core.http.rest.SwaggerMethodParserTests$TestInterface4.testMethod4", methodParser.getFullyQualifiedMethodName());
-        assertEquals(HttpMethod.PATCH, methodParser.getHttpMethod());
-        assertArrayEquals(new int[] { 200 }, methodParser.getExpectedStatusCodes());
-        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(400).getExceptionType());
-        assertEquals(Object.class, methodParser.getUnexpectedException(400).getExceptionBodyType());
-        assertEquals(MyRestException.class, methodParser.getUnexpectedException(-1).getExceptionType());
-        assertEquals(HttpBinJSON.class, methodParser.getUnexpectedException(-1).getExceptionBodyType());
-        assertEquals(false, methodParser.setHeaders(null).iterator().hasNext());
-        assertEquals("https", methodParser.setScheme(null));
-        assertEquals("raw.host.com", methodParser.setHost(null));
+        @Get("test")
+        @Headers({"", ":", "nameOnly:", ":valueOnly"})
+        void malformedHeaders();
+
+        @Get("test")
+        @Headers({"name1:value1", " name2: value2", "name3 :value3 "})
+        void headers();
+
+        @Get("test")
+        @Headers({"name:value1", "name:value2"})
+        void sameKeyTwiceLastWins();
     }
 
-    interface TestInterface5 {
-        @Patch("my/rest/api/path")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {400}, value = MyRestException.class)
-        void testMethod5();
+    @ParameterizedTest
+    @MethodSource("headersSupplier")
+    public void headers(Method method, HttpHeaders expectedHeaders) {
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+
+        for (HttpHeader header : swaggerMethodParser.setHeaders(null)) {
+            assertEquals(expectedHeaders.getValue(header.getName()), header.getValue());
+        }
     }
 
-    @Test
-    public void withExpectedResponseAndMappedUnexpectedResponseExceptionTypeWithoutFallthrough() {
-        final Method testMethod5 = TestInterface5.class.getDeclaredMethods()[0];
-        assertEquals("testMethod5", testMethod5.getName());
-
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod5, "https://raw.host.com");
-        assertEquals("com.azure.core.http.rest.SwaggerMethodParserTests$TestInterface5.testMethod5", methodParser.getFullyQualifiedMethodName());
-        assertEquals(HttpMethod.PATCH, methodParser.getHttpMethod());
-        assertArrayEquals(new int[] { 200 }, methodParser.getExpectedStatusCodes());
-        assertEquals(MyRestException.class, methodParser.getUnexpectedException(400).getExceptionType());
-        assertEquals(HttpBinJSON.class, methodParser.getUnexpectedException(400).getExceptionBodyType());
-        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(-1).getExceptionType());
-        assertEquals(Object.class, methodParser.getUnexpectedException(-1).getExceptionBodyType());
-        assertEquals(false, methodParser.setHeaders(null).iterator().hasNext());
-        assertEquals("https", methodParser.setScheme(null));
-        assertEquals("raw.host.com", methodParser.setHost(null));
+    private static Stream<Arguments> headersSupplier() throws NoSuchMethodException {
+        Class<HeaderMethods> clazz = HeaderMethods.class;
+        return Stream.of(
+            Arguments.of(clazz.getDeclaredMethod("noHeaders"), new HttpHeaders()),
+            Arguments.of(clazz.getDeclaredMethod("malformedHeaders"), new HttpHeaders()),
+            Arguments.of(clazz.getDeclaredMethod("headers"), new HttpHeaders()
+                .put("name1", "value1").put("name2", "value2").put("name3", "value3")),
+            Arguments.of(clazz.getDeclaredMethod("sameKeyTwiceLastWins"), new HttpHeaders().put("name", "value2"))
+        );
     }
 
-    interface TestInterface6 {
-        @Patch("my/rest/api/path")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(code = {400, 401}, value = MyRestException.class)
-        @UnexpectedResponseExceptionType(code = {404, 409}, value = HttpResponseException.class)
-        @UnexpectedResponseExceptionType(MyOtherRestException.class)
-        void testMethod6();
+    interface HostSubstitutionMethods {
     }
 
-    @Test
-    public void withExpectedResponseAndMultipleMappedUnexpectedResponseExceptionTypes() {
-        final Method testMethod6 = TestInterface6.class.getDeclaredMethods()[0];
-        assertEquals("testMethod6", testMethod6.getName());
+    interface PathSubstitutionMethods {
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod6, "https://raw.host.com");
-        assertEquals("com.azure.core.http.rest.SwaggerMethodParserTests$TestInterface6.testMethod6", methodParser.getFullyQualifiedMethodName());
-        assertEquals(HttpMethod.PATCH, methodParser.getHttpMethod());
-        assertArrayEquals(new int[] { 200 }, methodParser.getExpectedStatusCodes());
-        assertEquals(MyRestException.class, methodParser.getUnexpectedException(400).getExceptionType());
-        assertEquals(HttpBinJSON.class, methodParser.getUnexpectedException(400).getExceptionBodyType());
-        assertEquals(MyRestException.class, methodParser.getUnexpectedException(401).getExceptionType());
-        assertEquals(HttpBinJSON.class, methodParser.getUnexpectedException(401).getExceptionBodyType());
-        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(404).getExceptionType());
-        assertEquals(Object.class, methodParser.getUnexpectedException(404).getExceptionBodyType());
-        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(409).getExceptionType());
-        assertEquals(Object.class, methodParser.getUnexpectedException(409).getExceptionBodyType());
-        assertEquals(MyOtherRestException.class, methodParser.getUnexpectedException(-1).getExceptionType());
-        assertEquals(HttpBinJSON.class, methodParser.getUnexpectedException(-1).getExceptionBodyType());
-        assertEquals(false, methodParser.setHeaders(null).iterator().hasNext());
-        assertEquals("https", methodParser.setScheme(null));
-        assertEquals("raw.host.com", methodParser.setHost(null));
     }
 
-    interface TestInterface7 {
-        @Patch("my/rest/api/path")
-        @UnexpectedResponseExceptionType(MyRestException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        void testMethod7();
+    interface QuerySubstitutionMethods {
+
     }
 
-    @Test
-    public void withInvalidUnexpectedResponseAnnotationsExceptionByDefaultAnnotation() {
-        final Method testMethod7 = TestInterface7.class.getDeclaredMethods()[0];
-        assertEquals("testMethod7", testMethod7.getName());
+    interface HeaderSubstitutionMethods {
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod7, "https://raw.host.com");
-        assertEquals("com.azure.core.http.rest.SwaggerMethodParserTests$TestInterface7.testMethod7", methodParser.getFullyQualifiedMethodName());
-        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(-1).getExceptionType());
-        assertEquals(Object.class, methodParser.getUnexpectedException(-1).getExceptionBodyType());
-        assertEquals(false, methodParser.setHeaders(null).iterator().hasNext());
-        assertEquals("https", methodParser.setScheme(null));
-        assertEquals("raw.host.com", methodParser.setHost(null));
     }
 
-    interface TestInterface8 {
-        @Patch("my/rest/api/path")
-        @UnexpectedResponseExceptionType(code = {404}, value = MyRestException.class)
-        @UnexpectedResponseExceptionType(code = {404}, value = HttpResponseException.class)
-        void testMethod8();
+    interface BodySubstitutionMethods {
+
     }
 
-    @Test
-    public void withInvalidUnexpectedResponseAnnotationsExceptionByRepeatCodes() {
-        final Method testMethod8 = TestInterface8.class.getDeclaredMethods()[0];
-        assertEquals("testMethod8", testMethod8.getName());
+    interface FormSubstitutionMethods {
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod8, "https://raw.host.com");
-        assertEquals("com.azure.core.http.rest.SwaggerMethodParserTests$TestInterface8.testMethod8", methodParser.getFullyQualifiedMethodName());
-        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(404).getExceptionType());
-        assertEquals(Object.class, methodParser.getUnexpectedException(404).getExceptionBodyType());
-        assertEquals(HttpResponseException.class, methodParser.getUnexpectedException(-1).getExceptionType());
-        assertEquals(Object.class, methodParser.getUnexpectedException(-1).getExceptionBodyType());
-        assertEquals(false, methodParser.setHeaders(null).iterator().hasNext());
-        assertEquals("https", methodParser.setScheme(null));
-        assertEquals("raw.host.com", methodParser.setHost(null));
+    }
+
+    @ParameterizedTest
+    @MethodSource("setContextSupplier")
+    public void setContext(SwaggerMethodParser swaggerMethodParser, Object[] arguments, Context expectedContext) {
+        assertEquals(expectedContext, swaggerMethodParser.setContext(arguments));
+    }
+
+    private static Stream<Arguments> setContextSupplier() throws NoSuchMethodException {
+        Method method = OperationMethods.class.getDeclaredMethod("getMethod");
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+
+        return Stream.of(
+            Arguments.of(swaggerMethodParser, null, Context.NONE),
+            Arguments.of(swaggerMethodParser, new Object[]{}, Context.NONE),
+            Arguments.of(swaggerMethodParser, new Object[]{"string"}, Context.NONE),
+            Arguments.of(swaggerMethodParser, new Object[]{Configuration.getConfiguration()},
+                Configuration.getConfiguration())
+        );
+    }
+
+    interface ExpectedStatusCodeMethods {
+        @Get("test")
+        void noExpectedStatusCodes();
+
+        @Get("test")
+        @ExpectedResponses({ 200 })
+        void only200IsExpected();
+
+        @Get("test")
+        @ExpectedResponses({ 429, 503 })
+        void retryAfterExpected();
+    }
+
+    @ParameterizedTest
+    @MethodSource("expectedStatusCodeSupplier")
+    public void expectedStatusCodeSupplier(Method method, int statusCode, int[] expectedStatusCodes,
+        boolean matchesExpected) {
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+
+        assertArrayEquals(expectedStatusCodes, swaggerMethodParser.getExpectedStatusCodes());
+        assertEquals(matchesExpected, swaggerMethodParser.isExpectedResponseStatusCode(statusCode));
+    }
+
+    private static Stream<Arguments> expectedStatusCodeSupplier() throws NoSuchMethodException {
+        Class<ExpectedStatusCodeMethods> clazz = ExpectedStatusCodeMethods.class;
+
+        return Stream.of(
+            Arguments.of(clazz.getDeclaredMethod("noExpectedStatusCodes"), 200, null, true),
+            Arguments.of(clazz.getDeclaredMethod("noExpectedStatusCodes"), 201, null, true),
+            Arguments.of(clazz.getDeclaredMethod("noExpectedStatusCodes"), 400, null, false),
+            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 200, new int[] {200}, true),
+            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 201, new int[] {200}, false),
+            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 400, new int[] {200}, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 200, new int[] {429, 503}, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 201, new int[] {429, 503}, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 400, new int[] {429, 503}, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 429, new int[] {429, 503}, true),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 503, new int[] {429, 503}, true)
+        );
     }
 }
