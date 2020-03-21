@@ -495,6 +495,41 @@ class ServiceBusReceiverAsyncClientTest {
         verify(managementNode, times(0)).updateDisposition(lockToken2, dispositionStatus, null, null, null);
     }
 
+    /**
+     * Verifies that this receive deferred one messages from a sequence Number.
+     */
+    @Test
+    void receiveDeferredWithSequenceOneMessage() {
+        // Arrange
+        final int fromSequenceNumber = 10;
+        final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+
+        when(managementNode.receiveDeferredMessage(receiveOptions.getReceiveMode(), fromSequenceNumber)).thenReturn(Mono.just(receivedMessage));
+
+        // Act & Assert
+        StepVerifier.create(consumer.receiveDeferredMessage(fromSequenceNumber))
+            .expectNext(receivedMessage)
+            .verifyComplete();
+    }
+
+
+    /**
+     * Verifies that this receive deferred messages from a sequence Number.
+     */
+    @Test
+    void receiveDeferredBatchFromSequenceNumber() {
+        // Arrange
+        final int fromSequenceNumber1 = 10;
+        final int fromSequenceNumber2 = 11;
+        when(managementNode.receiveDeferredMessageBatch(receiveOptions.getReceiveMode(), fromSequenceNumber1, fromSequenceNumber2))
+            .thenReturn(Flux.fromArray(new ServiceBusReceivedMessage[]{receivedMessage, receivedMessage2}));
+
+        // Act & Assert
+        StepVerifier.create(consumer.receiveDeferredMessageBatch(fromSequenceNumber1, fromSequenceNumber2))
+            .expectNext(receivedMessage)
+            .expectNext(receivedMessage2)
+            .verifyComplete();
+    }
     private List<Message> getMessages(int numberOfEvents) {
         final Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");
 

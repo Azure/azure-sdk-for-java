@@ -319,8 +319,9 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
-        //TODO(feature-to-implement)
-        return null;
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(node -> node.receiveDeferredMessage(receiveMode, sequenceNumber));
     }
 
     /**
@@ -334,6 +335,19 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(ServiceBusManagementNode::peek);
+    }
+
+    /**
+     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred messages can only be received by using
+     * sequence number.
+     *
+     * @param sequenceNumbers of the messages to be received.
+     * @return The {@link Flux} of deferred {@link ServiceBusReceivedMessage}.
+     */
+    public Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(long... sequenceNumbers) {
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMapMany(node -> node.receiveDeferredMessageBatch(receiveMode, sequenceNumbers));
     }
 
     /**
