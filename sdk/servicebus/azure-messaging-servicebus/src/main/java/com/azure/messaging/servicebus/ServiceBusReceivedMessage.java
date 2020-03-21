@@ -551,6 +551,7 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
      * messages are kept together and in order as they are transferred.
      *
      * @return partition key on the via queue.
+     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Transfers and Send Via</a>
      */
     public String getViaPartitionKey() {
@@ -561,7 +562,9 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
      * Sets a via-partition key for sending a message to a destination entity via another partitioned entity
      *
      * @param viaPartitionKey via-partition key of this message
+     *
      * @return The updated {@link ServiceBusReceivedMessage}.
+     *
      * @see #getViaPartitionKey()
      */
     ServiceBusReceivedMessage setViaPartitionKey(String viaPartitionKey) {
@@ -570,6 +573,8 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
     }
 
     /**
+     * Takes the {@link ServiceBusReceivedMessage} and create an instance of {@link ServiceBusMessage}.
+     * This is normally used when a {@link ServiceBusReceivedMessage} needs to be sent to another entity.
      *
      * @return Created {@link ServiceBusMessage} instance.
      */
