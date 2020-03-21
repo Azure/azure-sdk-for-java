@@ -164,6 +164,7 @@ public class KeyClientTest extends KeyClientTestBase {
     public void deleteKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         getKeyClient(httpClient, serviceVersion);
         deleteKeyRunner((keyToDelete) -> {
+            sleepInRecordMode(30000);
             assertKeyEquals(keyToDelete,  client.createKey(keyToDelete));
 
             SyncPoller<DeletedKey, Void> deletedKeyPoller = client.beginDeleteKey(keyToDelete.getName());
@@ -407,6 +408,7 @@ public class KeyClientTest extends KeyClientTestBase {
             String keyName = null;
             for (CreateKeyOptions key : keyVersions) {
                 keyName = key.getName();
+                sleepInRecordMode(4000);
                 assertKeyEquals(key, client.createKey(key));
             }
 
