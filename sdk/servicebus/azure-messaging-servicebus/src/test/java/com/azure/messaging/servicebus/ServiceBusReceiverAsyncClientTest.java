@@ -403,6 +403,11 @@ class ServiceBusReceiverAsyncClientTest {
         final String reason = "dead-letter-reason";
         final Map<String, Object> propertiesToModify = new HashMap<>();
         propertiesToModify.put("something", true);
+
+        final DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(reason)
+            .setDeadLetterErrorDescription(description)
+            .setPropertiesToModify(propertiesToModify);
+
         final Instant expiration = Instant.now().plus(Duration.ofMinutes(5));
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
@@ -419,7 +424,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Act & Assert
         StepVerifier.create(consumer.receive()
             .take(1)
-            .flatMap(m -> consumer.deadLetter(m, reason, description, propertiesToModify)))
+            .flatMap(m -> consumer.deadLetter(m, deadLetterOptions)))
             .then(() -> messageSink.next(message))
             .expectNext()
             .verifyComplete();

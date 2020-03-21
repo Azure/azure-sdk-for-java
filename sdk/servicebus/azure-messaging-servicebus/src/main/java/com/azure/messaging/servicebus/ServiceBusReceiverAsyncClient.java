@@ -42,6 +42,8 @@ import java.util.stream.Collectors;
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements Closeable {
+    private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS =  new DeadLetterOptions();
+
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
     private final ConcurrentHashMap<UUID, Instant> lockTokenExpirationMap = new ConcurrentHashMap<>();
@@ -265,50 +267,25 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Void> deadLetter(ServiceBusReceivedMessage message) {
-        return deadLetter(message, null);
+        return deadLetter(message, DEFAULT_DEAD_LETTER_OPTIONS);
     }
 
-    /**
-     * Moves a {@link ServiceBusMessage} to the deadletter sub-queue with modified message properties.
-     *
-     * @param message to be used.
-     * @param propertiesToModify Message properties to modify.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> deadLetter(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify) {
-        return deadLetter(message, null, null, propertiesToModify);
-    }
-
-    /**
-     * Moves a {@link ServiceBusMessage} to the deadletter sub-queue with deadletter reason and error description.
-     *
-     * @param message to be used.
-     * @param deadLetterReason The deadletter reason.
-     * @param deadLetterErrorDescription The deadletter error description.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> deadLetter(ServiceBusReceivedMessage message, String deadLetterReason,
-        String deadLetterErrorDescription) {
-        return deadLetter(message, deadLetterReason, deadLetterErrorDescription, null);
-    }
 
     /**
      * Moves a {@link ServiceBusMessage} to the deadletter sub-queue with deadletter reason, error description and
      * modifided properties.
      *
      * @param message to be used.
-     * @param deadLetterReason The deadletter reason.
-     * @param deadLetterErrorDescription The deadletter error description.
-     * @param propertiesToModify Message properties to modify.
+     * @param deadLetterOptions The options to specify while moving message to the deadletter sub-queue.
      *
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
-    public Mono<Void> deadLetter(ServiceBusReceivedMessage message, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
-        return updateDisposition(message, DispositionStatus.SUSPENDED, deadLetterReason, deadLetterErrorDescription,
-            propertiesToModify);
+    public Mono<Void> deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions deadLetterOptions) {
+        Objects.requireNonNull(deadLetterOptions, "'deadLetterOptions' cannot be null.");
+
+        return updateDisposition(message, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
+                deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify());
+
     }
 
     /**
