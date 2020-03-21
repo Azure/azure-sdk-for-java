@@ -568,4 +568,25 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
         this.viaPartitionKey = viaPartitionKey;
         return this;
     }
+
+    /**
+     *
+     * @return Created {@link ServiceBusMessage} instance.
+     */
+    public ServiceBusMessage toServiceBusMessage() {
+        ServiceBusMessage message =  new ServiceBusMessage(body);
+        message.setMessageId(getMessageId());
+        message.setScheduledEnqueueTime(getScheduledEnqueueTime());
+        message.setContentType(getContentType());
+        message.setCorrelationId(getCorrelationId());
+        message.setLabel(getLabel());
+        message.setPartitionKey(getPartitionKey());
+        message.setReplyTo(getReplyTo());
+        message.setReplyToSessionId(getReplyToSessionId());
+        message.setTimeToLive(getTimeToLive());
+        message.setTo(getTo());
+        message.setSessionId(getSessionId());
+        message.setViaPartitionKey(getViaPartitionKey());
+        return message;
+    }
 }
