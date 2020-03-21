@@ -57,6 +57,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final boolean isAutoComplete;
     private final ReceiveMode receiveMode;
 
+    private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS =  new DeadLetterOptions();
+
     /**
      * Map containing linkNames and their associated consumers. Key: linkName Value: consumer associated with that
      * linkName.
@@ -265,7 +267,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Void> deadLetter(ServiceBusReceivedMessage message) {
-        return deadLetter(message, null);
+        return deadLetter(message, DEFAULT_DEAD_LETTER_OPTIONS);
     }
 
 
@@ -279,12 +281,11 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Void> deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions deadLetterOptions) {
-        if (deadLetterOptions != null) {
-            return updateDisposition(message, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
+        Objects.requireNonNull(deadLetterOptions, "'deadLetterOptions' cannot be null.");
+
+        return updateDisposition(message, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
                 deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify());
-        } else {
-            return updateDisposition(message, DispositionStatus.SUSPENDED, null, null, null);
-        }
+
     }
 
     /**
