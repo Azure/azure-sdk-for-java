@@ -206,6 +206,8 @@ public class IdentityClient {
             }
             String processOutput = output.toString();
 
+            process.waitFor();
+
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
                     String redactedOutput = redactInfo("\"accessToken\": \"(.*?)(\"|$)", processOutput);
@@ -226,6 +228,8 @@ public class IdentityClient {
                                            .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
             token = new IdentityToken(accessToken, expiresOn, options);
         } catch (IOException e) {
+            throw logger.logExceptionAsError(new IllegalStateException(e));
+        } catch (InterruptedException e) {
             throw logger.logExceptionAsError(new IllegalStateException(e));
         } catch (RuntimeException e) {
             return Mono.error(logger.logExceptionAsError(e));
