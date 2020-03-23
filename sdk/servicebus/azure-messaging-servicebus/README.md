@@ -109,22 +109,26 @@ Both the asynchronous and synchronous Service Bus sender and receiver clients ca
 
 The snippet below creates an asynchronous Service Bus Sender.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L18-L21 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L18-L23 -->
 ```java
-String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
     .connectionString(connectionString)
-    .buildAsyncSenderClient();
+    .senderClientBuilder()
+    .entityName("<< queue-or-topic-name >>")
+    .buildAsyncClient();
 ```
 
 The snippet below creates an asynchronous Service Bus Receiver.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L28-L31 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L30-35 -->
 ```java
-String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .connectionString(connectionString)
-    .buildAsyncReceiverClient();
+    .receiverClientBuilder()
+    .queueName("<< queue-name >>")
+    .buildAsyncClient();
 ```
 
 ### Send message to Queue or Topic
