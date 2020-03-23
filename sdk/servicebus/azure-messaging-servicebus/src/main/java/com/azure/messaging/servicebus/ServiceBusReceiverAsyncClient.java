@@ -28,13 +28,11 @@ import reactor.core.publisher.Mono;
 import java.io.Closeable;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 /**
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
@@ -152,10 +150,11 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                 final ServiceBusAsyncConsumer removed = openConsumers.remove(linkName);
                 if (removed == null) {
                     logger.warning("Could not find consumer to remove for: {}", linkName);
-                    return Mono.empty();
                 } else {
-                    return removed.disposeAsync();
+                    removed.close();
                 }
+
+                return Mono.empty();
             });
     }
 
@@ -270,7 +269,6 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         return deadLetter(message, DEFAULT_DEAD_LETTER_OPTIONS);
     }
 
-
     /**
      * Moves a {@link ServiceBusMessage} to the deadletter sub-queue with deadletter reason, error description and
      * modifided properties.
@@ -372,29 +370,21 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      */
     @Override
     public void close() {
-        if (isDisposed.get()) {
+        if (isDisposed.getAndSet(true)) {
             return;
         }
 
-        logger.info("Removing receiver client.");
+        logger.info("Removing receiver clients.");
         connectionProcessor.dispose();
-        cleanup().block(connectionProcessor.getRetryOptions().getTryTimeout());
-    }
 
-    Mono<Void> cleanup() {
-        if (isDisposed.getAndSet(true)) {
-            return Mono.empty();
-        }
+        openConsumers.keySet().forEach(key -> {
+            final ServiceBusAsyncConsumer consumer = openConsumers.get(key);
+            if (consumer != null) {
+                consumer.close();
+            }
+        });
 
-        List<Mono<Void>> collect = openConsumers.keySet().stream()
-            .map(e -> {
-                final ServiceBusAsyncConsumer consumer = openConsumers.get(e);
-                return consumer != null ? consumer.disposeAsync() : null;
-            })
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
-
-        return Mono.when(collect).then(Mono.fromRunnable(() -> openConsumers.clear()));
+        openConsumers.clear();
     }
 
     private Mono<Boolean> isLockTokenValid(UUID lockToken) {
