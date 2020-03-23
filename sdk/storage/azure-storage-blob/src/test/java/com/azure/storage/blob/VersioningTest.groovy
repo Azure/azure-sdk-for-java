@@ -116,10 +116,7 @@ class VersioningTest extends APISpec {
         def sasToken = blobClient.getVersionClient(blobItemV1.getVersionId())
             .generateSas(new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission));
 
-        def sasClient = new BlobClientBuilder()
-            .endpoint(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl())
-            .sasToken(sasToken)
-            .buildClient()
+        def sasClient = getBlobClient(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl(), sasToken)
 
         when:
         sasClient.delete()
@@ -141,10 +138,7 @@ class VersioningTest extends APISpec {
         def sasToken = blobContainerClient
             .generateSas(new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission))
 
-        def sasClient = new BlobClientBuilder()
-            .endpoint(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl())
-            .sasToken(sasToken)
-            .buildClient()
+        def sasClient = getBlobClient(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl(), sasToken)
 
         when:
         sasClient.delete()
@@ -168,10 +162,7 @@ class VersioningTest extends APISpec {
             new AccountSasResourceType().setObject(true)
         ))
 
-        def sasClient = new BlobClientBuilder()
-            .endpoint(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl())
-            .sasToken(sasToken)
-            .buildClient()
+        def sasClient = getBlobClient(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl(), sasToken)
 
         when:
         sasClient.delete()
