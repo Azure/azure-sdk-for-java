@@ -78,6 +78,7 @@ Latency
 * QueryTopOrderby, 
 * Mixed
 * ReadMyWrites
+* ReadThroughputWithMultipleClients
 
 
 You can provide ``--help`` to the tool to see the list of other work loads (read, etc) and other options. 
