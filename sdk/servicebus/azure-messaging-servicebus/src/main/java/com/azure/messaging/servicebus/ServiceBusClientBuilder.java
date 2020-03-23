@@ -540,9 +540,19 @@ public final class ServiceBusClientBuilder {
                 entityType = MessagingEntityType.TOPIC;
             }
 
+            if (prefetchCount < 1) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                    "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
+            } else if (maxAutoLockRenewalDuration != null
+                && (maxAutoLockRenewalDuration.isZero() || maxAutoLockRenewalDuration.isNegative())) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                    "maxAutoLockRenewalDuration (%s) cannot be less than or equal to a duration of zero.",
+                    maxAutoLockRenewalDuration)));
+            }
+
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiveMessageOptions receiveMessageOptions = new ReceiveMessageOptions(autoComplete,
-                maxAutoLockRenewalDuration, prefetchCount, receiveMode);
+            final ReceiveMessageOptions receiveMessageOptions = new ReceiveMessageOptions(autoComplete, receiveMode,
+                prefetchCount, maxAutoLockRenewalDuration);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, false, receiveMessageOptions, connectionProcessor,
