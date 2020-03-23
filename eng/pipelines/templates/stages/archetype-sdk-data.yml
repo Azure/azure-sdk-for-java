@@ -1,5 +1,6 @@
 parameters:
   Artifacts: []
+  AdditionalModules: []
   SDKType: data
   ServiceDirectory: not-specified
   
@@ -11,6 +12,7 @@ stages:
         ServiceDirectory: ${{parameters.ServiceDirectory}}
         SDKType: ${{parameters.SDKType}}
         Artifacts: ${{parameters.Artifacts}}
+        AdditionalModules: ${{ parameters.AdditionalModules }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
