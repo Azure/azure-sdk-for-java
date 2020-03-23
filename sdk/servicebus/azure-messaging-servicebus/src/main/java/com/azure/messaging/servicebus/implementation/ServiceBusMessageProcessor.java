@@ -7,12 +7,17 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Operators;
+import reactor.core.scheduler.Schedulers;
 import reactor.util.context.Context;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +28,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -37,17 +43,30 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private final AmqpRetryOptions retryOptions;
     private final Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction;
     private final Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon;
+    private final Function<ServiceBusReceivedMessage, Mono<Instant>> renewLockFunction;
     private final Deque<ServiceBusReceivedMessage> messageQueue = new ConcurrentLinkedDeque<>();
     private final Map<UUID, PendingComplete> pendingCompletes = new HashMap<>();
+    private final boolean autoLockRenewal;
+    private final Duration maxAutoLockRenewalDuration;
+    private final Mono<ServiceBusManagementNode> managementNodeMono;
+
+    //private final Map<UUID, Disposable> autoLockRenewMap = new HashMap<>();
 
     ServiceBusMessageProcessor(boolean isAutoComplete, AmqpRetryOptions retryOptions,
         Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction,
-        Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon) {
+        Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon,
+        boolean autoLockRenewal, Duration maxAutoLockRenewalDuration,
+        Mono<ServiceBusManagementNode> managementNodeMono,
+        Function<ServiceBusReceivedMessage, Mono<Instant>> renewLockFunction) {
         super();
         this.isAutoComplete = isAutoComplete;
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.completeFunction = Objects.requireNonNull(completeFunction, "'completeFunction' cannot be null.");
         this.onAbandon = Objects.requireNonNull(onAbandon, "'onAbandon' cannot be null.");
+        this.autoLockRenewal = autoLockRenewal;
+        this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
+        this.managementNodeMono = managementNodeMono;
+        this.renewLockFunction = renewLockFunction;
     }
 
     private volatile boolean isDone;
@@ -104,6 +123,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         }
 
         messageQueue.add(message);
+        print(this.getClass(), "onNext", "Going to drain the queue .. ");
         drain();
     }
 
@@ -136,11 +156,13 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         }
 
         isDone = true;
+        print(this.getClass(), "onComplete", "Going to drain the queue .. ");
         drain();
     }
 
     @Override
     public void request(long request) {
+        print(this.getClass(), "request", "Entry .. ");
         logger.info("Back-pressure request: {}", request);
         if (Operators.validate(request)) {
             Operators.addCap(REQUESTED, this, request);
@@ -148,6 +170,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             if (upstream != null) {
                 upstream.request(request);
             }
+            print(this.getClass(), "request", "Going to drain the queue .. ");
             drain();
         }
     }
@@ -160,6 +183,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
         logger.info("Cancelling subscription.");
         isCancelled = true;
+        print(this.getClass(), "cancel", "Going to drain the queue .. ");
         drain();
     }
 
@@ -171,6 +195,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
         logger.info("Disposing subscription.");
         isDone = true;
+        print(this.getClass(), "dispose", "Going to drain the queue .. ");
         drain();
     }
 
@@ -202,6 +227,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             if (isCancelled) {
                 this.downstream = null;
             } else {
+                print(this.getClass(), "subscribe", "Going to drain the queue .. ");
                 drain();
             }
         } else {
@@ -217,6 +243,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         }
 
         try {
+            print(this.getClass(), "drain", "Going to call drainQueue() .. ");
             drainQueue();
         } finally {
             if (WIP.decrementAndGet(this) != 0) {
@@ -252,24 +279,34 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
                 return;
             }
 
+            print(this.getClass(), "drainQueue" , message.getLockToken() + "( "+new String(message.getBody())+") calling next() with this message" );
             next(message);
 
             message = messageQueue.poll();
         }
 
         // Emit the message which is equal to lastMessage.
+        print(this.getClass(), "drainQueue" , message.getLockToken() + " ( "+new String(message.getBody())+") calling next() with this last message" );
+
         next(message);
+        print(this.getClass(), "drainQueue" , message.getLockToken() + " ( "+new String(message.getBody())+") After calling next() isDone = "+ isDone );
 
         if (isDone) {
             if (error != null) {
                 downstream.onError(error);
             } else if (messageQueue.peekLast() == null) {
+                print(this.getClass(), "drainQueue", "Going to call downstream.onComplete .. ");
                 downstream.onComplete();
             }
         }
     }
 
+    // TODO : Here  look for Disposable.. to renewLock autometically
     private void next(ServiceBusReceivedMessage message) {
+        AtomicReference<Disposable> disposeRenewLockTimer = new  AtomicReference<Disposable>();
+        final int renewLockAfterSeconds = 5;
+
+        print(this.getClass(), "next" , "Entry " + message.getLockToken() + ", " + new String(message.getBody()));
         final UUID lockToken = message.getLockToken();
         final boolean isCompleteMessage = isAutoComplete && lockToken != null
             && !MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken);
@@ -281,8 +318,54 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         if (isCompleteMessage) {
             pendingCompletes.put(lockToken, pendingComplete);
         }
+        if (autoLockRenewal) {
+            Disposable renewLockDisposable = Flux.defer(
+                () -> {
+                    print(this.getClass(), "next" , "!!!!! Going to call renew lock function = " + message.getLockToken());
+                    renewLockFunction.apply(message)
+                        .onErrorStop()
+                        .doOnError(error -> {
+                            logger.warning("!!!!! Could not renew lock for message with lock: {}", message.getLockToken(), error);
+                            error.printStackTrace();
+                        })
+                        .doOnSuccess(instant -> {
+                            // update the messageLockContainer
+                            print(this.getClass(), "next" , "!!!!! After calling renewLockFunction new instant " +instant);
+                        })
+                        .doFinally(signal -> {
+                            logger.info("!!!!! lock[{}]. Did renew lock signal : [{}]", message.getLockToken(), signal);
+                            print(this.getClass(), "next" , "!!!!! Did renew lock = " + message.getLockToken());
+                        })
+                        .subscribe();
+                        //.block(retryOptions.getTryTimeout());
+                    return Flux.empty();
+                })
+                .delayElements(Duration.ofSeconds(renewLockAfterSeconds))
+                .repeat()
+                .subscribe();
+
+            disposeRenewLockTimer.set(renewLockDisposable);
+/*
+            managementNodeMono.flatMap(serviceBusManagementNode -> {
+                Disposable renewLockDisposable = serviceBusManagementNode.renewMessageLock(message.getLockToken())
+                    .repeat()
+                    .delayElements(Duration.ofSeconds(renewLockAfterSeconds))
+                    .doOnNext(instant -> {
+                        // This will ensure that we are getting valid refresh time
+                        if (instant != null) {
+                            print(getClass(), "next", " Received new refresh time " + instant);
+                        }
+                    })
+                    .subscribe();
+                disposeRenewLockTimer.set(renewLockDisposable);
+                return null;
+            });
+            */
+            // autoLockRenewMap.put(message.getLockToken(), disposeRenewLockTimer);
+        }
 
         try {
+            print(this.getClass(), "next" , "calling downstream.onNext  " + message.getLockToken() + ", Calling downstream onNext");
             downstream.onNext(message);
         } catch (Exception e) {
             logger.error("Exception occurred while handling downstream onNext operation.", e);
@@ -329,14 +412,36 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
                         logger.info("lock[{}]. Complete status: [{}]", completedMessage.getLockToken(), signal);
 
                         pendingCompletes.remove(lockToken);
+                        print(this.getClass(), "next" , " pendingCompletes.remove" + message.getLockToken() + ", After removing from pendingCompletes");
+
                     })
                     .block(retryOptions.getTryTimeout());
+            } else {
+                print(this.getClass(), "next" , " Token :" + message.getLockToken() + ", isCompleteMessage = "+ isCompleteMessage  + ", pending isrunning: "+ pending);
+
+            }
+
+            //TODO(hemanttanwar) : dispose AutoLockRenew subscriber
+            if (autoLockRenewal
+                && disposeRenewLockTimer.get() != null
+                && !disposeRenewLockTimer.get().isDisposed()){
+                // dispose the renewLockTimer : if it was started in first place
+                print(this.getClass(), "next" , " Token :" + message.getLockToken() + ", Stopping auto lock Renew subscriber.");
+                disposeRenewLockTimer.get().dispose();
             }
         } catch (Exception e) {
             logger.error("Exception occurred while auto-completing message. Sequence: {}. Lock token: {}",
                 message.getSequenceNumber(), message.getLockToken(), e);
+            e.printStackTrace();
             downstream.onError(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
         }
+        print(this.getClass(), "next" , "  " + message.getLockToken() + ", Exit ..");
+
+    }
+
+    private Instant renewLock(ServiceBusReceivedMessage message){
+        print(getClass(), "renewLock", "  Renew Lock here  by making call to ManagementChannel ... lock token =" + message.getLockToken());
+        return Instant.now().plusSeconds(30);
     }
 
     private static final class PendingComplete {
@@ -372,5 +477,8 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         private ServiceBusReceivedMessage getMessage() {
             return message;
         }
+    }
+    private void print(Class clazz, String method, String message) {
+        System.out.println(clazz.getName() + "." +  method + " " + message);
     }
 }

@@ -76,9 +76,9 @@ class ServiceBusMessageProcessorTest {
             return Mono.empty();
         };
 
-        final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
-            .subscribeWith(new ServiceBusMessageProcessor(true, retryOptions, onCompleteMethod, onAbandon));
-
+        //final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
+        //    .subscribeWith(new ServiceBusMessageProcessor(true, retryOptions, onCompleteMethod, onAbandon));
+        final ServiceBusMessageProcessor processor = null;
         // Act & Assert
         StepVerifier.create(processor)
             .expectNext(message1, message2, message3, message4)
@@ -98,9 +98,9 @@ class ServiceBusMessageProcessorTest {
             return Mono.empty();
         };
 
-        final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
-            .subscribeWith(new ServiceBusMessageProcessor(false, retryOptions, onCompleteMethod, onAbandon));
-
+        //final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
+        //    .subscribeWith(new ServiceBusMessageProcessor(false, retryOptions, onCompleteMethod, onAbandon));
+        final ServiceBusMessageProcessor processor = null;
         // Act & Assert
         StepVerifier.create(processor)
             .expectNext(message1, message2, message3, message4)

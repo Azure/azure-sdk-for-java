@@ -7,11 +7,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.util.Supplier;
 import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -20,6 +23,7 @@ import static com.azure.messaging.servicebus.TestUtils.MESSAGE_TRACKING_ID;
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient receiverManual;
+    private ServiceBusReceiverAsyncClient receiverAutoRenewLock;
     private ServiceBusSenderAsyncClient sender;
     private ReceiveMessageOptions receiveMessageOptions;
     private ReceiveMessageOptions receiveMessageOptionsManual;
@@ -40,6 +44,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         receiverManual = createBuilder()
             .receiveMessageOptions(receiveMessageOptionsManual)
             .buildAsyncReceiverClient();
+
+        receiverAutoRenewLock = createBuilder()
+            .receiveMessageOptions(receiveMessageOptionsManual)
+            .autoLockRenewal(true)
+            .buildAsyncReceiverClient();
     }
 
     @Override
@@ -54,16 +63,23 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     void receiveMessageAutoComplete() {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
-        final String contents = "Some-contents";
+        final String contents = "hello-3";
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
 
         // Assert & Act
-        StepVerifier.create(sender.send(message).thenMany(receiver.receive().take(1)))
+        StepVerifier.create(sender.send(message).then(sender.send(message))
+            .thenMany(receiverManual.receive().take(2)))
+            .assertNext(receivedMessage -> {
+                Assertions.assertEquals(contents, new String(receivedMessage.getBody()));
+                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+            })
             .assertNext(receivedMessage -> {
                 Assertions.assertEquals(contents, new String(receivedMessage.getBody()));
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
+        try{ Thread.sleep(10000); } catch (Exception e) { }
+
     }
 
     /**
@@ -181,7 +197,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .delayElements(renewAfterSeconds)
             .map(receivedMessage -> {
                 //  keep renewing the lock whole you process the message.
-                Disposable disposable = receiverManual.renewMessageLock(receivedMessage.getLockToken())
+                Disposable disposable = receiverManual.renewMessageLock(receivedMessage)
                     .repeat()
                     .delayElements(renewAfterSeconds)
                     .doOnNext(instant -> {
@@ -192,6 +208,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                         }
                     })
                     .subscribe();
+
 
                 // This just shows that user is taking time to process.
                 // Real production code will not have sleep in it will have message processing code instead.
@@ -209,5 +226,58 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
         // ensure that renew lock is called atleast once.
         Assertions.assertTrue(renewMessageLockCounter.get() > 0);
+    }
+
+    @Test
+
+    public void autoRenewLockOnReceiveMessageDeleteme()throws InterruptedException{
+    //Arrange
+        final int numberOfEvents = 1;
+
+        receiverAutoRenewLock.receive()
+            .take(numberOfEvents)
+            .map(message->{
+                log(getClass().getName() + ". Got Message Locked Until:"+message.getLockToken() + " " + new String(message.getBody()));
+                int count=1;
+                while(count<=3){
+                    log(getClass().getName() + "." + count+" process the message  ("+message.getLockToken()+ ", "+ new String(message.getBody())+") .. Do long process ");
+                    longProcess();
+                    /*receiver.renewMessageLock(message)
+                        .doOnNext(instant->{
+                            log(getClass().getName() +  " " + instant.toString());
+                        })
+                        .then(
+                            Mono.fromCallable(()->{
+                                return Mono.just(true);
+                            })
+                        )
+                        .subscribe();
+                    */
+                    ++count;
+                }
+                log(getClass().getName() + "." + count+" process the message DONE!! ");
+                return true;
+            })
+            .subscribe();
+
+        Thread.sleep(30000);
+    }
+
+    private void log(String message) {
+        System.out.println(message);
+    }
+    private void longProcess(){
+        long count = -10;
+        long maxCounter = 10000;//Long.MAX_VALUE/20;
+        for (long i = 0; i< maxCounter; ++i) {
+            ++count;
+            if (count == maxCounter/4) {
+                log(getClass() +  " longProcess 1/4 is done" );
+            }else if (count == maxCounter/2) {
+                log(getClass() +  " longProcess 1/2 is done" );
+            } else if (count == 3*maxCounter/4) {
+                log(getClass() +  " longProcess 3/4 is done" );
+            }
+        }
     }
 }

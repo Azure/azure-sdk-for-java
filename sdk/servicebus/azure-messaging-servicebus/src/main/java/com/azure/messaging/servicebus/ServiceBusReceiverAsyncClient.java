@@ -58,6 +58,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final int prefetch;
     private final boolean isAutoComplete;
     private final ReceiveMode receiveMode;
+    private final Duration maxAutoLockRenewalDuration;
+    private final boolean autoLockRenewal;
 
     /**
      * Map containing linkNames and their associated consumers. Key: linkName Value: consumer associated with that
@@ -68,7 +70,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
         boolean isSessionEnabled, ReceiveMessageOptions receiveMessageOptions,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer) {
+        MessageSerializer messageSerializer, boolean autoLockRenewal, Duration maxAutoLockRenewalDuration) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
@@ -85,6 +87,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
 
         this.entityType = entityType;
         this.isSessionEnabled = isSessionEnabled;
+        this.autoLockRenewal = autoLockRenewal;
+        this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
     }
 
     /**
@@ -207,24 +211,6 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on the
-     * setting specified on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is
-     * locked on the server for this receiver instance for a duration as specified during the Queue creation
-     * (LockDuration). If processing of the message requires longer than this duration, the lock needs to be renewed.
-     * For each renewal, the lock is reset to the entity's LockDuration value.
-     *
-     * @param messageLock The {@link UUID} value of the message lock to renew.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Instant> renewMessageLock(UUID messageLock) {
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(serviceBusManagementNode -> serviceBusManagementNode
-                .renewMessageLock(messageLock));
-    }
-
-    /**
      * Asynchronously renews the lock on the specified message. The lock will be renewed based on the setting specified
      * on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is locked on the
      * server for this receiver instance for a duration as specified during the Queue creation (LockDuration). If
@@ -236,6 +222,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Instant> renewMessageLock(ServiceBusReceivedMessage receivedMessage) {
+        System.out.println(getClass().getName() + " renewMessageLock Entry .. ");
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode -> serviceBusManagementNode
@@ -474,8 +461,12 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
                 new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
 
+            Mono<ServiceBusManagementNode> managementNode = connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityPath, entityType));
+
             return new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer, isAutoComplete,
-                connectionProcessor.getRetryOptions(), this::complete, this::abandon);
+                connectionProcessor.getRetryOptions(), this::complete, this::abandon, autoLockRenewal,
+                maxAutoLockRenewalDuration, managementNode, this::renewMessageLock);
         });
     }
 

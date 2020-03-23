@@ -25,6 +25,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -32,6 +33,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
+import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -39,6 +41,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
@@ -69,6 +72,9 @@ public final class ServiceBusClientBuilder {
     private AmqpTransportType transport = AmqpTransportType.AMQP;
     private String fullyQualifiedNamespace;
     private String serviceBusResourceName;
+    private Duration maxAutoLockRenewalDuration;
+
+    private boolean autoLockRenewal;
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
@@ -173,6 +179,18 @@ public final class ServiceBusClientBuilder {
         return this;
     }
 
+
+    public ServiceBusClientBuilder maxAutoLockRenewalDuration(Duration maxAutoLockRenewalDuration) {
+        this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
+        return this;
+    }
+
+    public ServiceBusClientBuilder autoLockRenewal(boolean autoLockRenewal) {
+        this.autoLockRenewal = autoLockRenewal;
+        return this;
+    }
+
+
     /**
      * @param transportType to use.
      *
@@ -235,10 +253,10 @@ public final class ServiceBusClientBuilder {
         final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
         final ServiceBusConnectionProcessor connectionProcessor = createConnectionProcessor(messageSerializer);
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-
+        final MessageLockContainer messageLockContainer = new MessageLockContainer();
         return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
             serviceBusResourceName, MessagingEntityType.QUEUE, false, receiveMessageOptions,
-            connectionProcessor, tracerProvider, messageSerializer);
+            connectionProcessor, tracerProvider, messageSerializer, autoLockRenewal, maxAutoLockRenewalDuration);
     }
 
     /**
