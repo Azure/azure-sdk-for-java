@@ -34,10 +34,10 @@ class WorkbookImpl extends CreatableUpdatableImpl<Workbook, WorkbookInner, Workb
         this.manager = manager;
         // Set resource name
         this.resourceName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroup");
         this.resourceName = IdParsingUtils.getValueFromIdByName(inner.id(), "workbooks");
-        //
+        // set other parameters for create and update
     }
 
     @Override
