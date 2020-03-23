@@ -25,6 +25,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
@@ -52,7 +53,7 @@ public final class ServiceBusClientBuilder {
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
 
-    private static final String SERVICEBUS_PROPERTIES_FILE = "azure-messaging-servicebus.properties";
+    private static final String SERVICE_BUS_PROPERTIES_FILE = "azure-messaging-servicebus.properties";
     private static final String NAME_KEY = "name";
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
@@ -236,7 +237,8 @@ public final class ServiceBusClientBuilder {
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
-            serviceBusResourceName, connectionProcessor, tracerProvider, messageSerializer, receiveMessageOptions);
+            serviceBusResourceName, MessagingEntityType.QUEUE, false, receiveMessageOptions,
+            connectionProcessor, tracerProvider, messageSerializer);
     }
 
     /**
@@ -260,7 +262,7 @@ public final class ServiceBusClientBuilder {
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
-        final Map<String, String> properties = CoreUtils.getProperties(SERVICEBUS_PROPERTIES_FILE);
+        final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
         final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 
@@ -272,8 +274,7 @@ public final class ServiceBusClientBuilder {
         }).repeat();
 
         return connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
-            connectionOptions.getFullyQualifiedNamespace(), serviceBusResourceName,
-            connectionOptions.getRetry()));
+            connectionOptions.getFullyQualifiedNamespace(), serviceBusResourceName, connectionOptions.getRetry()));
     }
 
     private ConnectionOptions getConnectionOptions() {

@@ -147,7 +147,7 @@ public class ConsistencyWriter {
                 try {
                     primaryURI.set(primaryUri);
                     if (this.useMultipleWriteLocations &&
-                        RequestHelper.GetConsistencyLevelToUse(this.serviceConfigReader, request) == ConsistencyLevel.SESSION) {
+                        RequestHelper.getConsistencyLevelToUse(this.serviceConfigReader, request) == ConsistencyLevel.SESSION) {
                         // Set session token to ensure session consistency for write requests
                         // when writes can be issued to multiple locations
                         SessionTokenHelper.setPartitionLocalSessionToken(request, this.sessionContainer);
@@ -310,7 +310,7 @@ public class ConsistencyWriter {
 
                     //get max global committed lsn from current batch of responses, then update if greater than max of all batches.
                     long maxGlobalCommittedLsn = (responses != null) ?
-                        (Long) responses.stream().map(s -> s.globalCommittedLSN).max(ComparatorUtils.NATURAL_COMPARATOR).orElse(0L) :
+                        responses.stream().map(s -> s.globalCommittedLSN).max(ComparatorUtils.naturalComparator()).orElse(0L) :
                         0L;
                     maxGlobalCommittedLsnReceived.set(maxGlobalCommittedLsnReceived.get() > maxGlobalCommittedLsn ?
                         maxGlobalCommittedLsnReceived.get() : maxGlobalCommittedLsn);

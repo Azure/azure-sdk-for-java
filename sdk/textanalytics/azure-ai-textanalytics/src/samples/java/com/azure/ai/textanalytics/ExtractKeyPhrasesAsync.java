@@ -23,11 +23,11 @@ public class ExtractKeyPhrasesAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that needs be analyzed.
-        String text = "My cat might need to see a veterinarian.";
+        // The document that needs be analyzed.
+        String document = "My cat might need to see a veterinarian.";
 
         System.out.println("Extracted phrases:");
-        client.extractKeyPhrases(text).subscribe(
+        client.extractKeyPhrases(document).subscribe(
             keyPhrase -> System.out.printf("%s.%n", keyPhrase),
             error -> System.err.println("There was an error extracting key phrases of the text." + error),
             () -> System.out.println("Key phrases extracted."));

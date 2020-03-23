@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.models.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
@@ -330,7 +330,7 @@ public class LocationCacheTest {
         IntStream.range(0, 10)
                 .mapToObj(index -> this.endpointManager.refreshLocationAsync(null, false))
                 .collect(Collectors.toList());
-        for (Mono completable : list) {
+        for (Mono<Void> completable : list) {
             completable.block();
         }
 
@@ -411,7 +411,7 @@ public class LocationCacheTest {
 
     private URI resolveEndpointForWriteRequest(ResourceType resourceType, boolean useAlternateWriteEndpoint) {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create, resourceType);
-        request.requestContext.RouteToLocation(useAlternateWriteEndpoint ? 1 : 0, resourceType.isCollectionChild());
+        request.requestContext.routeToLocation(useAlternateWriteEndpoint ? 1 : 0, resourceType.isCollectionChild());
         return this.cache.resolveServiceEndpoint(request);
     }
 

@@ -263,7 +263,7 @@ public final class SessionContainer implements ISessionContainer {
                 if (existingTokens == null) {
                     logger.info("Registering a new collection resourceId [{}] in SessionTokens", resourceId);
                     ConcurrentHashMap<String, ISessionToken> tokens =
-                        new ConcurrentHashMap(200, 0.75f, 2000);
+                        new ConcurrentHashMap<String, ISessionToken>(200, 0.75f, 2000);
                     tokens.put(partitionKeyRangeId, parsedSessionToken);
                     return tokens;
                 }

@@ -6,7 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -49,7 +49,7 @@ public class TopQueryTests extends TestSuiteBase {
     public void queryDocumentsWithTop(boolean qmEnabled) throws Exception {
 
         FeedOptions options = new FeedOptions();
-        
+
         options.setMaxItemCount(9);
         options.setMaxDegreeOfParallelism(2);
         options.setPopulateQueryMetrics(qmEnabled);
@@ -145,10 +145,10 @@ public class TopQueryTests extends TestSuiteBase {
         do {
             FeedOptions options = new FeedOptions();
             options.setMaxItemCount(pageSize);
-            
+
             options.setMaxDegreeOfParallelism(2);
             options.setRequestContinuation(requestContinuation);
-            CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+            CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.<CosmosItemProperties>queryItems(query, options, CosmosItemProperties.class);
 
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();
@@ -157,6 +157,7 @@ public class TopQueryTests extends TestSuiteBase {
             testSubscriber.assertNoErrors();
             testSubscriber.assertComplete();
 
+            @SuppressWarnings("unchecked")
             FeedResponse<CosmosItemProperties> firstPage = (FeedResponse<CosmosItemProperties>) testSubscriber.getEvents().get(0).get(0);
             requestContinuation = firstPage.getContinuationToken();
             receivedDocuments.addAll(firstPage.getResults());
@@ -200,12 +201,12 @@ public class TopQueryTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_TopQueryTests() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedSinglePartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
         bulkInsert(client);
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 }

@@ -18,7 +18,7 @@ class BoolPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public int CompareTo(IPartitionKeyComponent other) {
+    public int compareTo(IPartitionKeyComponent other) {
         BoolPartitionKeyComponent otherBool = Utils.as(other, BoolPartitionKeyComponent.class);
         if (otherBool == null) {
             throw new IllegalArgumentException("other");
@@ -28,12 +28,12 @@ class BoolPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public int GetTypeOrdinal() {
+    public int getTypeOrdinal() {
         return this.value ? PartitionKeyComponentType.TRUE.type : PartitionKeyComponentType.FALSE.type;
     }
 
     @Override
-    public void JsonEncode(JsonGenerator writer) {
+    public void jsonEncode(JsonGenerator writer) {
         try {
             writer.writeBoolean(this.value);
         } catch (IOException e) {
@@ -42,7 +42,7 @@ class BoolPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public void WriteForHashing(OutputStream outputStream) {
+    public void writeForHashing(OutputStream outputStream) {
         try {
             outputStream.write((byte) (this.value ? PartitionKeyComponentType.TRUE.type
                     : PartitionKeyComponentType.FALSE.type));
@@ -52,7 +52,7 @@ class BoolPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public void WriteForHashingV2(OutputStream outputStream) {
+    public void writeForHashingV2(OutputStream outputStream) {
         try {
             outputStream.write((byte) (this.value ? PartitionKeyComponentType.TRUE.type
                     : PartitionKeyComponentType.FALSE.type));
@@ -62,7 +62,7 @@ class BoolPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public void WriteForBinaryEncoding(OutputStream outputStream) {
+    public void writeForBinaryEncoding(OutputStream outputStream) {
         try {
             outputStream.write((byte) (this.value ? PartitionKeyComponentType.TRUE.type
                     : PartitionKeyComponentType.FALSE.type));
@@ -72,7 +72,7 @@ class BoolPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public IPartitionKeyComponent Truncate() {
+    public IPartitionKeyComponent truncate() {
         return this;
     }
 }

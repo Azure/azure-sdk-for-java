@@ -38,6 +38,28 @@ public class PerfStressOptions {
     @Parameter(names = { "--sync" }, description = "Runs sync version of test")
     private boolean sync = false;
 
+    @Parameter(names = { "-s", "--size" }, description = "Size of payload (in bytes)")
+    private long size = 10 * 1024;
+
+    @Parameter(names = { "-c", "--count" }, description = "Number of items")
+    private int count = 10;
+
+    /**
+     * Get the configured count for performance test.
+     * @return The count.
+     */
+    public int getCount() {
+        return count;
+    }
+
+    /**
+     * Get the configured size option for performance test.
+     * @return The size.
+     */
+    public long getSize() {
+        return size;
+    }
+
     /**
      * Get the configured duration for performance test.
      * @return The duration.

@@ -275,12 +275,12 @@
   <suppress checks="EmptyBlock" files="com.azure.storage.blob.batch.BlobBatch.java"/>
 
   <!-- Azure Search test models -->
-  <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.azure.search.test.environment.models.*.java"/>
+  <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.azure.search.documents.test.environment.models.*.java"/>
 
   <!-- Suppress checks for AutoRest generated Search code -->
   <!-- Hand-written classes should be specified here to be checked -->
-  <suppress checks="." files=".*[/\\]search[/\\]implementation[/\\]((?!(GeoPointDeserializer|Iso8601DateDeserializer|SerializationUtil)).*)"/>
-  <suppress checks="." files=".*[/\\]search[/\\]models[/\\]((?!(CoordinateSystem|GeoPoint|IndexBatch|ValueFacetResult|RangeFacetResult)).*)"/>
+  <suppress checks="." files=".*[/\\]search[/\\]documents[/\\]implementation[/\\]((?!(GeoPointDeserializer|Iso8601DateDeserializer|SerializationUtil)).*)"/>
+  <suppress checks="." files=".*[/\\]search[/\\]documents[/\\]models[/\\]((?!(CoordinateSystem|GeoPoint|IndexBatch|ValueFacetResult|RangeFacetResult)).*)"/>
 
   <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer.java"/>
@@ -341,7 +341,5 @@
   <suppress checks="RedundantModifier" files="com.azure.perf.test.core.ExceptionTest.java"/>
 
   <!-- The variables are assigned by jcommander annotation injection framework, cannot be made final. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.SizeOptions.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.CountOptions.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.perf.test.core.PerfStressOptions.java"/>
 </suppressions>

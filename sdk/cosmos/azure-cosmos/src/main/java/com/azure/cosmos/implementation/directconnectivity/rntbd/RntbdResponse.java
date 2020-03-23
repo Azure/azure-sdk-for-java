@@ -34,7 +34,7 @@ public final class RntbdResponse implements ReferenceCounted {
 
     // region Fields
 
-    private static final AtomicIntegerFieldUpdater REFERENCE_COUNT =
+    private static final AtomicIntegerFieldUpdater<RntbdResponse> REFERENCE_COUNT =
         AtomicIntegerFieldUpdater.newUpdater(RntbdResponse.class, "referenceCount");
 
     @JsonSerialize(using = PayloadSerializer.class)
@@ -324,6 +324,8 @@ public final class RntbdResponse implements ReferenceCounted {
     // region Types
 
     private static class PayloadSerializer extends StdSerializer<ByteBuf> {
+
+        private static final long serialVersionUID = 1717212953958644366L;
 
         PayloadSerializer() {
             super(ByteBuf.class, true);

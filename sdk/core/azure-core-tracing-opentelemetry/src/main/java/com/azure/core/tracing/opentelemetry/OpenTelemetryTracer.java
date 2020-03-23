@@ -49,8 +49,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         Builder spanBuilder = getSpanBuilder(spanName, context);
         Span span = spanBuilder.startSpan();
         if (span.isRecording()) {
-            // TODO (savaity): replace with the AZ_TRACING_NAMESPACE_KEY
-            String tracingNamespace = getOrDefault(context, "az.tracing.namespace", null, String.class);
+            String tracingNamespace = getOrDefault(context, AZ_TRACING_NAMESPACE_KEY, null, String.class);
             if (tracingNamespace != null) {
                 span.setAttribute(AZ_NAMESPACE_KEY, AttributeValue.stringAttributeValue(tracingNamespace));
             }

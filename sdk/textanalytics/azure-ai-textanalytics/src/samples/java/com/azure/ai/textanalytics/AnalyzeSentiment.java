@@ -24,9 +24,9 @@ public class AnalyzeSentiment {
             .buildClient();
 
         // The text that needs be analyzed.
-        String text = "The hotel was dark and unclean. I like Microsoft.";
+        String document = "The hotel was dark and unclean. I like Microsoft.";
 
-        final DocumentSentiment documentSentiment = client.analyzeSentiment(text);
+        final DocumentSentiment documentSentiment = client.analyzeSentiment(document);
         SentimentConfidenceScores scores = documentSentiment.getConfidenceScores();
         System.out.printf(
             "Recognized document sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",

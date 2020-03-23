@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.IndexKind;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -107,7 +108,7 @@ public abstract class Index extends JsonSerializable {
      *
      * @return the index kind.
      */
-    public IndexKind getKind() {
+    IndexKind getKind() {
         IndexKind result = null;
         try {
             result = IndexKind.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.INDEX_KIND)));

@@ -34,6 +34,7 @@ public class CosmosAsyncItemResponse<T> {
      *
      * @return the resource
      */
+    @SuppressWarnings("unchecked") // Casting getProperties() to T is safe given T is of CosmosItemProperties.
     public T getItem() {
         if (item != null) {
             return item;
@@ -145,8 +146,8 @@ public class CosmosAsyncItemResponse<T> {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
-        return resourceResponse.getCosmosResponseDiagnostics();
+    public CosmosResponseDiagnostics getResponseDiagnostics() {
+        return resourceResponse.getResponseDiagnostics();
     }
 
     /**

@@ -10,6 +10,15 @@ jobs:
     parameters:
       TestName: Single_Region_Session
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
@@ -59,7 +68,7 @@ jobs:
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -70,6 +79,15 @@ jobs:
     parameters:
       TestName: Single_Region_Session_2
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
@@ -121,7 +139,7 @@ jobs:
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -129,6 +147,15 @@ jobs:
     parameters:
       TestName: Single_Region_Strong_Tcp
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
@@ -188,7 +215,7 @@ jobs:
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -197,6 +224,15 @@ jobs:
     parameters:
       TestName: Single_Region_Strong_Https
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
@@ -282,7 +318,7 @@ jobs:
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -291,6 +327,15 @@ jobs:
     parameters:
       TestName: MultiMaster_Multi_Region
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
@@ -338,7 +383,7 @@ jobs:
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -347,6 +392,15 @@ jobs:
     parameters:
       TestName: MultiMaster_Single_Region
       ServiceDirectory: cosmos
+      Artifacts:
+        - name: azure-cosmos
+          groupId: com.azure
+          safeName: azurecosmos
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
@@ -388,6 +442,6 @@ jobs:
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'

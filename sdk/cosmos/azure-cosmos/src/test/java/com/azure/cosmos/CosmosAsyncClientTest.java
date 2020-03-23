@@ -23,8 +23,12 @@ public abstract class CosmosAsyncClientTest implements ITest {
         this.clientBuilder = clientBuilder;
     }
 
-    public final CosmosClientBuilder clientBuilder() {
+    public final CosmosClientBuilder getClientBuilder() {
         return this.clientBuilder;
+    }
+
+    public final ConnectionPolicy getConnectionPolicy() {
+        return this.clientBuilder.getConnectionPolicy();
     }
 
     @Override

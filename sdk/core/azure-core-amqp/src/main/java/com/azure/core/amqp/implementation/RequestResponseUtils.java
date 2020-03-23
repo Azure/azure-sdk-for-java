@@ -9,10 +9,10 @@ import org.apache.qpid.proton.message.Message;
  * This consists of various utilities needed to manage Request/Response  channel.
  */
 public class RequestResponseUtils {
-    private static final int REQUEST_RESPONSE_UNDEFINED_STATUS_CODE = -1;
+    static final int REQUEST_RESPONSE_UNDEFINED_STATUS_CODE = -1;
+
     private static final String REQUEST_RESPONSE_STATUS_CODE = "statusCode";
     private static final String REQUEST_RESPONSE_LEGACY_STATUS_CODE = "status-code";
-
 
     /**
      * There are different status code string returned by Service bus in response.

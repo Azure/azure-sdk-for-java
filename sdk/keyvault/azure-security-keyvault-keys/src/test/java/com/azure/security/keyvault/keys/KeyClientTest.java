@@ -5,6 +5,8 @@ package com.azure.security.keyvault.keys;
 
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
@@ -17,8 +19,10 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,41 +34,44 @@ public class KeyClientTest extends KeyClientTestBase {
     @Override
     protected void beforeTest() {
         beforeTestSetup();
+    }
 
-        if (interceptorManager.isPlaybackMode()) {
-            client = clientSetup(pipeline -> new KeyClientBuilder()
-                .vaultUrl(getEndpoint())
-                .pipeline(pipeline)
-                .buildClient());
-        } else {
-            client = clientSetup(pipeline -> new KeyClientBuilder()
-                .vaultUrl(getEndpoint())
-                .pipeline(pipeline)
-                .buildClient());
-        }
+    private void getKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        HttpPipeline httpPipeline = getHttpPipeline(httpClient, serviceVersion);
+        client = new KeyClientBuilder()
+            .vaultUrl(getEndpoint())
+            .pipeline(httpPipeline)
+            .serviceVersion(serviceVersion)
+            .buildClient();
     }
 
     /**
      * Tests that a key can be created in the key vault.
      */
-    @Test
-    public void setKey() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
     }
 
     /**
      * Tests that an attempt to create a key with empty string name throws an error.
      */
-    @Test
-    public void setKeyEmptyName() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setKeyEmptyName(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         assertRestException(() -> client.createKey("", KeyType.RSA), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
     }
 
     /**
      * Tests that we cannot create keys when key type is null.
      */
-    @Test
-    public void setKeyNullType() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setKeyNullType(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         setKeyEmptyValueRunner((key) -> {
             assertRestException(() -> client.createKey(key.getName(), key.getKeyType()), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
         });
@@ -73,8 +80,10 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Verifies that an exception is thrown when null key object is passed for creation.
      */
-    @Test
-    public void setKeyNull() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setKeyNull(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         assertRunnableThrowsException(() -> client.createKey(null), NullPointerException.class);
         assertRunnableThrowsException(() -> client.createKey(null), NullPointerException.class);
     }
@@ -82,8 +91,10 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that a key is able to be updated when it exists.
      */
-    @Test
-    public void updateKey() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void updateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         updateKeyRunner((original, updated) -> {
             assertKeyEquals(original, client.createKey(original));
             KeyVaultKey keyToUpdate = client.getKey(original.getName());
@@ -95,8 +106,10 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that a key is able to be updated when it is disabled.
      */
-    @Test
-    public void updateDisabledKey() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void updateDisabledKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         updateDisabledKeyRunner((original, updated) -> {
             assertKeyEquals(original, client.createKey(original));
             KeyVaultKey keyToUpdate = client.getKey(original.getName());
@@ -108,8 +121,10 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that an existing key can be retrieved.
      */
-    @Test
-    public void getKey() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         getKeyRunner((original) -> {
             client.createKey(original);
             assertKeyEquals(original, client.getKey(original.getName()));
@@ -119,8 +134,10 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that a specific version of the key can be retrieved.
      */
-    @Test
-    public void getKeySpecificVersion() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getKeySpecificVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         getKeySpecificVersionRunner((key, keyWithNewVal) -> {
             KeyVaultKey keyVersionOne = client.createKey(key);
             KeyVaultKey keyVersionTwo = client.createKey(keyWithNewVal);
@@ -132,16 +149,20 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to get a non-existing key throws an error.
      */
-    @Test
-    public void getKeyNotFound() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         assertRestException(() -> client.getKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
      * Tests that an existing key can be deleted.
      */
-    @Test
-    public void deleteKey() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void deleteKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         deleteKeyRunner((keyToDelete) -> {
             assertKeyEquals(keyToDelete,  client.createKey(keyToDelete));
 
@@ -165,16 +186,20 @@ public class KeyClientTest extends KeyClientTestBase {
         });
     }
 
-    @Test
-    public void deleteKeyNotFound() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void deleteKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         assertRestException(() -> client.beginDeleteKey("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
      * Tests that an attempt to retrieve a non existing deleted key throws an error on a soft-delete enabled vault.
      */
-    @Test
-    public void getDeletedKeyNotFound() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         assertRestException(() -> client.getDeletedKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
@@ -182,8 +207,10 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that a deleted key can be recovered on a soft-delete enabled vault.
      */
-    @Test
-    public void recoverDeletedKey() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void recoverDeletedKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
             assertKeyEquals(keyToDeleteAndRecover, client.createKey(keyToDeleteAndRecover));
             SyncPoller<DeletedKey, Void> poller = client.beginDeleteKey(keyToDeleteAndRecover.getName());
@@ -214,16 +241,20 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to recover a non existing deleted key throws an error on a soft-delete enabled vault.
      */
-    @Test
-    public void recoverDeletedKeyNotFound() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void recoverDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         assertRestException(() -> client.beginRecoverDeletedKey("non-existing"), ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
      * Tests that a key can be backed up in the key vault.
      */
-    @Test
-    public void backupKey() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void backupKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         backupKeyRunner((keyToBackup) -> {
             assertKeyEquals(keyToBackup, client.createKey(keyToBackup));
             byte[] backupBytes = (client.backupKey(keyToBackup.getName()));
@@ -235,16 +266,20 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to backup a non existing key throws an error.
      */
-    @Test
-    public void backupKeyNotFound() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void backupKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         assertRestException(() -> client.backupKey("non-existing"),  ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     /**
      * Tests that a key can be backed up in the key vault.
      */
-    @Test
-    public void restoreKey() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void restoreKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         restoreKeyRunner((keyToBackupAndRestore) -> {
             assertKeyEquals(keyToBackupAndRestore, client.createKey(keyToBackupAndRestore));
             byte[] backupBytes = (client.backupKey(keyToBackupAndRestore.getName()));
@@ -271,8 +306,10 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that an attempt to restore a key from malformed backup bytes throws an error.
      */
-    @Test
-    public void restoreKeyFromMalformedBackup() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void restoreKeyFromMalformedBackup(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         byte[] keyBackupBytes = "non-existing".getBytes();
         assertRestException(() -> client.restoreKeyBackup(keyBackupBytes), ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
     }
@@ -280,8 +317,10 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that keys can be listed in the key vault.
      */
-    @Test
-    public void listKeys() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         listKeysRunner((keys) -> {
             HashMap<String, CreateKeyOptions> keysToList = keys;
             for (CreateKeyOptions key :  keysToList.values()) {
@@ -304,8 +343,10 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that a deleted key can be retrieved on a soft-delete enabled vault.
      */
-    @Test
-    public void getDeletedKey() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getDeletedKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         getDeletedKeyRunner((keyToDeleteAndGet) -> {
             assertKeyEquals(keyToDeleteAndGet, client.createKey(keyToDeleteAndGet));
             SyncPoller<DeletedKey, Void> poller = client.beginDeleteKey(keyToDeleteAndGet.getName());
@@ -330,8 +371,10 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that deleted keys can be listed in the key vault.
      */
-    @Test
-    public void listDeletedKeys() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listDeletedKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         listDeletedKeysRunner((keys) -> {
             HashMap<String, CreateKeyOptions> keysToDelete = keys;
             for (CreateKeyOptions key : keysToDelete.values()) {
@@ -360,8 +403,10 @@ public class KeyClientTest extends KeyClientTestBase {
     /**
      * Tests that key versions can be listed in the key vault.
      */
-    @Test
-    public void listKeyVersions() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void listKeyVersions(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
         listKeyVersionsRunner((keys) -> {
             List<CreateKeyOptions> keyVersions = keys;
             String keyName = null;
@@ -425,5 +470,4 @@ public class KeyClientTest extends KeyClientTestBase {
         System.err.printf("Deleted Key %s was not purged \n", keyName);
         return null;
     }
-
 }

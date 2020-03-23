@@ -8,6 +8,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlParameterList;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -215,7 +216,9 @@ implements IDocumentQueryExecutionContext<T> {
         switch (this.client.getQueryCompatibilityMode()) {
         case SqlQuery:
             SqlParameterList params = querySpec.getParameters();
-            Utils.checkStateOrThrow(params != null && params.size() > 0, "query.parameters",
+            // SqlQuerySpec::getParameters is guaranteed to return non-null SqlParameterList list
+            // hence no null check for params is necessary.
+            Utils.checkStateOrThrow(params.size() > 0, "query.parameters",
                     "Unsupported argument in query compatibility mode '%s'",
                     this.client.getQueryCompatibilityMode().toString());
 
@@ -237,7 +240,7 @@ implements IDocumentQueryExecutionContext<T> {
                     requestHeaders);
 
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
-            executeQueryRequest.setByteBuffer(querySpec.serializeJsonToByteBuffer());
+            executeQueryRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpec));
             break;
         }
 

@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.IndexingMode;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.models.Resource;
@@ -26,8 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public interface ResourceResponseValidator<T extends Resource> {
 
-    static <T extends Resource> Builder builder() {
-        return new Builder();
+    static <T extends Resource> Builder<T> builder() {
+        return new Builder<>();
     }
 
     void validate(ResourceResponse<T> resourceResponse);
@@ -77,7 +78,7 @@ public interface ResourceResponseValidator<T extends Resource> {
                 @Override
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
-                    assertThat(resourceResponse.getResource().get(propertyName)).is(validatingCondition);
+                    assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), propertyName)).is(validatingCondition);
 
                 }
             });
@@ -90,7 +91,7 @@ public interface ResourceResponseValidator<T extends Resource> {
                 @Override
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
-                    assertThat(resourceResponse.getResource().get(propertyName)).isEqualTo(value);
+                    assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), propertyName)).isEqualTo(value);
 
                 }
             });
@@ -250,7 +251,7 @@ public interface ResourceResponseValidator<T extends Resource> {
                 @Override
                 public void validate(ResourceResponse<T> resourceResponse) {
                     assertThat(resourceResponse.getResource()).isNotNull();
-                    assertThat(resourceResponse.getResource().get(key)).is(condition);
+                    assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), key)).is(condition);
 
                 }
             });
