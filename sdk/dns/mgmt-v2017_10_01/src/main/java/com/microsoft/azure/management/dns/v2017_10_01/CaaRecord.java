@@ -33,7 +33,7 @@ public class CaaRecord {
     private String value;
 
     /**
-     * Get the flags value.
+     * Get the flags for this CAA record as an integer between 0 and 255.
      *
      * @return the flags value
      */
@@ -42,7 +42,7 @@ public class CaaRecord {
     }
 
     /**
-     * Set the flags value.
+     * Set the flags for this CAA record as an integer between 0 and 255.
      *
      * @param flags the flags value to set
      * @return the CaaRecord object itself.
@@ -53,7 +53,7 @@ public class CaaRecord {
     }
 
     /**
-     * Get the tag value.
+     * Get the tag for this CAA record.
      *
      * @return the tag value
      */
@@ -62,7 +62,7 @@ public class CaaRecord {
     }
 
     /**
-     * Set the tag value.
+     * Set the tag for this CAA record.
      *
      * @param tag the tag value to set
      * @return the CaaRecord object itself.
@@ -73,7 +73,7 @@ public class CaaRecord {
     }
 
     /**
-     * Get the value value.
+     * Get the value for this CAA record.
      *
      * @return the value value
      */
@@ -82,7 +82,7 @@ public class CaaRecord {
     }
 
     /**
-     * Set the value value.
+     * Set the value for this CAA record.
      *
      * @param value the value value to set
      * @return the CaaRecord object itself.

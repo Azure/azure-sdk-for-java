@@ -47,7 +47,7 @@ public class ZoneInner extends Resource {
     private List<String> nameServers;
 
     /**
-     * Get the etag value.
+     * Get the etag of the zone.
      *
      * @return the etag value
      */
@@ -56,7 +56,7 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Set the etag value.
+     * Set the etag of the zone.
      *
      * @param etag the etag value to set
      * @return the ZoneInner object itself.
@@ -67,7 +67,7 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Get the maxNumberOfRecordSets value.
+     * Get the maximum number of record sets that can be created in this DNS zone.  This is a read-only property and any attempt to set this value will be ignored.
      *
      * @return the maxNumberOfRecordSets value
      */
@@ -76,7 +76,7 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Get the numberOfRecordSets value.
+     * Get the current number of record sets in this DNS zone.  This is a read-only property and any attempt to set this value will be ignored.
      *
      * @return the numberOfRecordSets value
      */
@@ -85,7 +85,7 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Get the nameServers value.
+     * Get the name servers for this DNS zone. This is a read-only property and any attempt to set this value will be ignored.
      *
      * @return the nameServers value
      */
