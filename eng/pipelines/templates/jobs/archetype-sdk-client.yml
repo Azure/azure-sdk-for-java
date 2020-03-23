@@ -101,11 +101,6 @@ jobs:
           RootFolder: $(Build.SourcesDirectory)
           BuildSHA: $(Build.SourceVersion)
           RepoId: 'Azure/azure-sdk-for-java'
-
-      - script: |
-          python ./eng/scripts/inject_codesnippets.py
-        displayName: 'Replace @codesnippet with embedded pre element'
-        workingDirectory: $(Build.SourcesDirectory)
         
       - template: ../steps/generate-project-list.yml
         parameters:
@@ -116,7 +111,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'package'
-          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview -pl $(ProjectList) -am' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview -Dinject-codesnippets -pl $(ProjectList) -am' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
