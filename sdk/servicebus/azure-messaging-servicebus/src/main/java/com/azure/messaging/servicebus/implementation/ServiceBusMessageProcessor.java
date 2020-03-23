@@ -319,48 +319,21 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             pendingCompletes.put(lockToken, pendingComplete);
         }
         if (autoLockRenewal) {
-            Disposable renewLockDisposable = Flux.defer(
-                () -> {
-                    print(this.getClass(), "next" , "!!!!! Going to call renew lock function = " + message.getLockToken());
-                    renewLockFunction.apply(message)
-                        .onErrorStop()
-                        .doOnError(error -> {
-                            logger.warning("!!!!! Could not renew lock for message with lock: {}", message.getLockToken(), error);
-                            error.printStackTrace();
-                        })
-                        .doOnSuccess(instant -> {
-                            // update the messageLockContainer
-                            print(this.getClass(), "next" , "!!!!! After calling renewLockFunction new instant " +instant);
-                        })
-                        .doFinally(signal -> {
-                            logger.info("!!!!! lock[{}]. Did renew lock signal : [{}]", message.getLockToken(), signal);
-                            print(this.getClass(), "next" , "!!!!! Did renew lock = " + message.getLockToken());
-                        })
-                        .subscribe();
-                        //.block(retryOptions.getTryTimeout());
-                    return Flux.empty();
-                })
-                .delayElements(Duration.ofSeconds(renewLockAfterSeconds))
+            Disposable renewLockDisposable = renewLockFunction.apply(message)
                 .repeat()
+                .delayElements(Duration.ofSeconds(renewLockAfterSeconds))
+                .doOnNext(instant -> {
+                    // This will ensure that we are getting valid refresh time
+                    if (instant != null) {
+                        logger.info(" Received new refresh time " + instant);
+                        print(this.getClass(), "next" , "!!!!! Received new refresh time " + instant);
+
+                    }
+                })
                 .subscribe();
 
             disposeRenewLockTimer.set(renewLockDisposable);
-/*
-            managementNodeMono.flatMap(serviceBusManagementNode -> {
-                Disposable renewLockDisposable = serviceBusManagementNode.renewMessageLock(message.getLockToken())
-                    .repeat()
-                    .delayElements(Duration.ofSeconds(renewLockAfterSeconds))
-                    .doOnNext(instant -> {
-                        // This will ensure that we are getting valid refresh time
-                        if (instant != null) {
-                            print(getClass(), "next", " Received new refresh time " + instant);
-                        }
-                    })
-                    .subscribe();
-                disposeRenewLockTimer.set(renewLockDisposable);
-                return null;
-            });
-            */
+
             // autoLockRenewMap.put(message.getLockToken(), disposeRenewLockTimer);
         }
 

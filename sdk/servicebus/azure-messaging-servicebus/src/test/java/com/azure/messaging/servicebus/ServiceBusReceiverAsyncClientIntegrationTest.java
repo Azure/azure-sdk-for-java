@@ -12,9 +12,15 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import wiremock.org.eclipse.jetty.util.resource.FileResource;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.RandomAccessFile;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.RandomAccess;
+import java.util.Scanner;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -268,7 +274,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
     private void longProcess(){
         long count = -10;
-        long maxCounter = 10000;//Long.MAX_VALUE/20;
+        long maxCounter = 50000;//Long.MAX_VALUE/20;
+
         for (long i = 0; i< maxCounter; ++i) {
             ++count;
             if (count == maxCounter/4) {

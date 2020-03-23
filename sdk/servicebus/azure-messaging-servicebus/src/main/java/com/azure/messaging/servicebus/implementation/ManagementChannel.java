@@ -284,9 +284,11 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 channel.getReceiveLinkName());
 
             requestMessage.setBody(new AmqpValue(Collections.singletonMap(LOCK_TOKENS_KEY, renewLockList)));
+            System.out.println(getClass().getName() + "calling channel.sendWithAck ");
             return channel.sendWithAck(requestMessage);
         }).flatMapMany(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
+            System.out.println(getClass().getName() + " after calling channel.sendWithAck statusCode = "+statusCode);
             if (statusCode !=  AmqpResponseCode.OK.getValue()) {
                 return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "Could not renew the lock.",
                     getErrorContext()));

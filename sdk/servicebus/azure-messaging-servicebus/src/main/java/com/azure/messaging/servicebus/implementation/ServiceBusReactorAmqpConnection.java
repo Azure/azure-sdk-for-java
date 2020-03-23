@@ -118,10 +118,12 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
 
                     logger.info("Creating management node. entityPath: [{}]. address: [{}]. linkName: [{}]",
                         entityPath, address, linkName);
-
-                    return new ManagementChannel(createRequestResponseChannel(sessionName, linkName, address),
+                    ManagementChannel managementChannel = new ManagementChannel(createRequestResponseChannel(sessionName, linkName, address),
                         fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer, scheduler,
                         retryOptions.getTryTimeout());
+                    logger.info("Created management node. entityPath: [{}]. address: [{}]. linkName: [{}]  Exit ..",
+                        entityPath, address, linkName);
+                    return managementChannel ;
                 }));
             }));
     }

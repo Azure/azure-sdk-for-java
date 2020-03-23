@@ -222,15 +222,19 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Instant> renewMessageLock(ServiceBusReceivedMessage receivedMessage) {
-        System.out.println(getClass().getName() + " renewMessageLock Entry .. ");
+        System.out.println(getClass().getName() + "!!!! renewMessageLock Entry .. ");
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(serviceBusManagementNode -> serviceBusManagementNode
-                .renewMessageLock(receivedMessage.getLockToken())
-                .map(instant -> {
+            .flatMap(serviceBusManagementNode -> {
+                System.out.println(getClass().getName() + "!!!! renewMessageLock got serviceBusManagementNode  .. ");
+                return serviceBusManagementNode
+                .renewMessageLock(receivedMessage.getLockToken());
+            })
+            .map(instant -> {
+                System.out.println(getClass().getName() + "!!!! renewMessageLock got instant  .. " +  instant);
                     receivedMessage.setLockedUntil(instant);
                     return instant;
-                }));
+                });
     }
 
     /**
