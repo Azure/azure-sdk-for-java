@@ -167,6 +167,12 @@ class ManagedClustersImpl extends GroupableResourcesCoreImpl<ManagedCluster, Man
     }
 
     @Override
+    public Completable rotateClusterCertificatesAsync(String resourceGroupName, String resourceName) {
+        ManagedClustersInner client = this.inner();
+        return client.rotateClusterCertificatesAsync(resourceGroupName, resourceName).toCompletable();
+    }
+
+    @Override
     protected ManagedClusterImpl wrapModel(ManagedClusterInner inner) {
         return  new ManagedClusterImpl(inner.name(), inner, manager());
     }
