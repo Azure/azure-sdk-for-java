@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Abstract base class for data deletion detection policies.
+ * Base type for data deletion detection policies.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = DataDeletionDetectionPolicy.class)
 @JsonTypeName("DataDeletionDetectionPolicy")

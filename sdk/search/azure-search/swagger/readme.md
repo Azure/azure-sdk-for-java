@@ -327,4 +327,26 @@ directive:
       where: $
       transform: >-
         return $.replace(/public class (.*) \{/, "public abstract class $1 {")
+
+    # Changed RegexFlags to List of RegexFlags in PatternAnalyzer and PatterTokenizer
+    - from: swagger-document
+      where: $.definitions.PatternAnalyzer.properties.flags
+      transform: >
+        if ($['$ref']) {
+            delete $['$ref'];
+            $.type = 'array'
+            $.items = {
+                "$ref" : "#/definitions/RegexFlags"
+            }
+        }
+    - from: swagger-document
+      where: $.definitions.PatternTokenizer.properties.flags
+      transform: >
+        if ($['$ref']) {
+            delete $['$ref'];
+            $.type = 'array'
+            $.items = {
+                "$ref" : "#/definitions/RegexFlags"
+            }
+        }
 ```
