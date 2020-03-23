@@ -180,12 +180,12 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-security-keyvault-secrets</artifactId>
-            <version>4.1.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+            <version>4.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-identity</artifactId>
-            <version>1.0.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+            <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
             <exclusions>
               <exclusion>
                 <groupId>org.projectlombok</groupId>
@@ -201,7 +201,7 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-authentication</artifactId>
-            <version>1.6.15</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
+            <version>1.7.2</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
             <optional>true</optional>
         </dependency>
         <dependency>
