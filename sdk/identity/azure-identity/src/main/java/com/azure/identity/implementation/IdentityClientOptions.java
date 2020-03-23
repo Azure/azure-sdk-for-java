@@ -5,6 +5,7 @@ package com.azure.identity.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.Configuration;
 
 import java.time.Duration;
 import java.util.function.Function;
