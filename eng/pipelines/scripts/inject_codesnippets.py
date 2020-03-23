@@ -8,8 +8,8 @@ import argparse
 # run this from the root of the repository
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
-SNIPPET_BEGIN = r"\s*\/\/\s*BEGIN\:\s*(?P<id>[a-zA-Z0-9\.\#\-\_]*)\s*"
-SNIPPET_END = r"\s*\/\/\s*END\:\s*(?P<id>[a-zA-Z0-9\.\#\-\_]*)\s*"
+SNIPPET_BEGIN = r"\s*\/\/\s*BEGIN\:\s+(?P<id>[a-zA-Z0-9\.\#\-\_]*)\s*"
+SNIPPET_END = r"\s*\/\/\s*END\:\s+(?P<id>[a-zA-Z0-9\.\#\-\_]*)\s*"
 SNIPPET_CALL = r"(?P<leadingspace>.*)\{\@codesnippet(?P<snippetid>.*)\}"
 
 EXCLUSION_ARRAY = ["JavadocCodeSnippetCheck.java"]
