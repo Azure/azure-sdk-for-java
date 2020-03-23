@@ -1117,8 +1117,6 @@
       </build>
     </profile>
 
-
-
     <profile>
       <id>changelog</id>
       <activation>
