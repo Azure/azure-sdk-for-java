@@ -124,7 +124,7 @@ class CapacityPoolImpl extends CreatableUpdatableImpl<CapacityPool, CapacityPool
     }
 
     @Override
-    public Long size() {
+    public long size() {
         return this.inner().size();
     }
 
@@ -152,21 +152,23 @@ class CapacityPoolImpl extends CreatableUpdatableImpl<CapacityPool, CapacityPool
     }
 
     @Override
-    public CapacityPoolImpl withServiceLevel(ServiceLevel serviceLevel) {
-        if (isInCreateMode()) {
-            this.inner().withServiceLevel(serviceLevel);
-        } else {
-            this.updateParameter.withServiceLevel(serviceLevel);
-        }
+    public CapacityPoolImpl withSize(long size) {
+        this.inner().withSize(size);
         return this;
     }
 
     @Override
     public CapacityPoolImpl withSize(Long size) {
+        this.updateParameter.withSize(size);
+        return this;
+    }
+
+    @Override
+    public CapacityPoolImpl withServiceLevel(ServiceLevel serviceLevel) {
         if (isInCreateMode()) {
-            this.inner().withSize(size);
+            this.inner().withServiceLevel(serviceLevel);
         } else {
-            this.updateParameter.withSize(size);
+            this.updateParameter.withServiceLevel(serviceLevel);
         }
         return this;
     }

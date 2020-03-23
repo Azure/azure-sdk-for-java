@@ -16,6 +16,8 @@ class ManagementConstants {
     static final String PEEK_OPERATION = AmqpConstants.VENDOR + ":peek-message";
     static final String UPDATE_DISPOSITION_OPERATION = AmqpConstants.VENDOR + ":update-disposition";
     static final String RENEW_LOCK_OPERATION = AmqpConstants.VENDOR + ":renew-lock";
+    static final String RECEIVE_BY_SEQUENCE_NUMBER_OPERATION = AmqpConstants.VENDOR
+        + ":receive-by-sequence-number";
 
     static final String SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 
@@ -30,4 +32,6 @@ class ManagementConstants {
     static final String DEADLETTER_DESCRIPTION_KEY = "deadletter-description";
     static final String PROPERTIES_TO_MODIFY_KEY = "properties-to-modify";
     static final String ASSOCIATED_LINK_NAME_KEY = "associated-link-name";
+    static final String SEQUENCE_NUMBERS = "sequence-numbers";
+    static final String RECEIVER_SETTLE_MODE = "receiver-settle-mode";
 }

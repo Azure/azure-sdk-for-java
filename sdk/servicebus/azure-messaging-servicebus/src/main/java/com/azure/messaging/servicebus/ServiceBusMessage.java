@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 /**
  * The data structure encapsulating the message being sent-to Service Bus.
  *
@@ -74,62 +72,6 @@ public class ServiceBusMessage {
      */
     public ServiceBusMessage(ByteBuffer body) {
         this(body.array());
-    }
-
-    /**
-     * Creates a {@link ServiceBusMessage} by encoding the {@code body} using UTF-8 charset.
-     *
-     * @param body The string that will be UTF-8 encoded to create a {@link ServiceBusMessage}.
-     *
-     * @throws NullPointerException if {@code body} is {@code null}.
-     */
-    public ServiceBusMessage(String body) {
-        this(Objects.requireNonNull(body, "'body' cannot be null.").getBytes(UTF_8));
-    }
-
-    /**
-     * Creates a message from a string. For backward compatibility reasons, the string is converted to a byte array and
-     * message body type is set to binary.
-     *
-     * @param body body of the message
-     * @param contentType body type of the message
-     */
-    public ServiceBusMessage(String body, String contentType) {
-        this(body.getBytes(UTF_8), contentType);
-    }
-
-    /**
-     * Creates a message from a byte array. Message body type is set to binary.
-     *
-     * @param body body of the message
-     * @param contentType content type of the message
-     */
-    public ServiceBusMessage(byte[] body, String contentType) {
-        this(body);
-        this.contentType = contentType;
-    }
-
-    /**
-     * Creates a message from a string. For backward compatibility reasons, the string is converted to a byte array.
-     *
-     * @param messageId id of the {@link ServiceBusMessage}.
-     * @param body body of the {@link ServiceBusMessage}.
-     * @param contentType content type of the {@link ServiceBusMessage}.
-     */
-    public ServiceBusMessage(String messageId, String body, String contentType) {
-        this(messageId, body.getBytes(UTF_8), contentType);
-    }
-
-    /**
-     * Creates a {@link ServiceBusMessage} from a byte array.
-     *
-     * @param messageId id of the {@link ServiceBusMessage}.
-     * @param body body of the {@link ServiceBusMessage}.
-     * @param contentType content type of the {@link ServiceBusMessage}.
-     */
-    public ServiceBusMessage(String messageId, byte[] body, String contentType) {
-        this(body, contentType);
-        this.messageId = messageId;
     }
 
     /**
