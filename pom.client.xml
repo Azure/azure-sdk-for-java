@@ -1107,7 +1107,7 @@
               <executable>python</executable>
               <workingDirectory>${project.basedir}</workingDirectory>
               <arguments>
-                <argument>../../../eng/pipelines/scripts/inject_codesnippets.pyy</argument>
+                <argument>../../../eng/pipelines/scripts/inject_codesnippets.py</argument>
                 <argument>--project-dir</argument>
                 <argument>${project.basedir}</argument>
               </arguments>
