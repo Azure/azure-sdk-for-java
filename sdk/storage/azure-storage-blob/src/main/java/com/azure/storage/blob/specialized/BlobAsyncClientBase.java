@@ -1565,7 +1565,8 @@ public class BlobAsyncClientBase {
      */
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
-        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(), getSnapshotId())
+        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
+            getSnapshotId(), getVersionId())
             .generateUserDelegationSas(userDelegationKey, getAccountName());
     }
 
@@ -1583,7 +1584,8 @@ public class BlobAsyncClientBase {
      * @return A {@code String} representing all SAS query parameters.
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
-        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(), getSnapshotId())
+        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
+            getSnapshotId(), getVersionId())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
     }
 }

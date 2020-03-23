@@ -25,6 +25,8 @@ public final class BlobContainerSasPermission {
 
     private boolean deletePermission;
 
+    private boolean deleteVersionPermission;
+
     private boolean listPermission;
 
     /**
@@ -39,7 +41,7 @@ public final class BlobContainerSasPermission {
      *
      * @param permString A {@code String} which represents the {@code BlobContainerSasPermission}.
      * @return A {@code BlobContainerSasPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, or l.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, x or l.
      */
     public static BlobContainerSasPermission parse(String permString) {
         BlobContainerSasPermission permissions = new BlobContainerSasPermission();
@@ -61,6 +63,9 @@ public final class BlobContainerSasPermission {
                     break;
                 case 'd':
                     permissions.deletePermission = true;
+                    break;
+                case 'x':
+                    permissions.deleteVersionPermission = true;
                     break;
                 case 'l':
                     permissions.listPermission = true;
@@ -165,6 +170,24 @@ public final class BlobContainerSasPermission {
     }
 
     /**
+     * @return the delete version permission status
+     */
+    public boolean hasDeleteVersionPermission() {
+        return deleteVersionPermission;
+    }
+
+    /**
+     * Sets the delete version permission status.
+     *
+     * @param hasDeleteVersionPermission Permission status to set
+     * @return the updated BlobContainerSasPermission object
+     */
+    public BlobContainerSasPermission setDeleteVersionPermission(boolean hasDeleteVersionPermission) {
+        this.deleteVersionPermission = hasDeleteVersionPermission;
+        return this;
+    }
+
+    /**
      * @return the list permission status
      */
     public boolean hasListPermission() {
@@ -212,6 +235,10 @@ public final class BlobContainerSasPermission {
 
         if (this.deletePermission) {
             builder.append('d');
+        }
+
+        if (this.deleteVersionPermission) {
+            builder.append('x');
         }
 
         if (this.listPermission) {

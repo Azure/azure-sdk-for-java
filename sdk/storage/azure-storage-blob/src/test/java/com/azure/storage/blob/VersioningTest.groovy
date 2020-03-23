@@ -6,9 +6,13 @@ package com.azure.storage.blob
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.ListBlobsOptions
-import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.models.PublicAccessType
-import com.azure.storage.blob.specialized.PageBlobClient
+import com.azure.storage.blob.sas.BlobSasPermission
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasService
+import com.azure.storage.common.sas.AccountSasSignatureValues
 import org.apache.commons.lang3.StringUtils
 
 import java.nio.charset.StandardCharsets
@@ -94,6 +98,83 @@ class VersioningTest extends APISpec {
 
         when:
         blobClient.getVersionClient(blobItemV1.getVersionId()).delete()
+
+        then:
+        !blobClient.getVersionClient(blobItemV1.getVersionId()).exists()
+        blobClient.getVersionClient(blobItemV2.getVersionId()).exists()
+    }
+
+    def "Delete Blob by Version using SAS token"() {
+        given:
+        def inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8))
+        def inputV2 = new ByteArrayInputStream(contentV2.getBytes(StandardCharsets.UTF_8))
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(inputV1, inputV1.available())
+        def blobItemV2 = blobClient.getBlockBlobClient().upload(inputV2, inputV2.available(), true)
+
+        def permission = new BlobSasPermission()
+            .setDeleteVersionPermission(true)
+        def sasToken = blobClient.getVersionClient(blobItemV1.getVersionId())
+            .generateSas(new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission));
+
+        def sasClient = new BlobClientBuilder()
+            .endpoint(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl())
+            .sasToken(sasToken)
+            .buildClient()
+
+        when:
+        sasClient.delete()
+
+        then:
+        !blobClient.getVersionClient(blobItemV1.getVersionId()).exists()
+        blobClient.getVersionClient(blobItemV2.getVersionId()).exists()
+    }
+
+    def "Delete Blob by Version using container SAS token"() {
+        given:
+        def inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8))
+        def inputV2 = new ByteArrayInputStream(contentV2.getBytes(StandardCharsets.UTF_8))
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(inputV1, inputV1.available())
+        def blobItemV2 = blobClient.getBlockBlobClient().upload(inputV2, inputV2.available(), true)
+
+        def permission = new BlobSasPermission()
+            .setDeleteVersionPermission(true)
+        def sasToken = blobContainerClient
+            .generateSas(new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission))
+
+        def sasClient = new BlobClientBuilder()
+            .endpoint(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl())
+            .sasToken(sasToken)
+            .buildClient()
+
+        when:
+        sasClient.delete()
+
+        then:
+        !blobClient.getVersionClient(blobItemV1.getVersionId()).exists()
+        blobClient.getVersionClient(blobItemV2.getVersionId()).exists()
+    }
+
+    def "Delete Blob by Version using account SAS token"() {
+        given:
+        def inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8))
+        def inputV2 = new ByteArrayInputStream(contentV2.getBytes(StandardCharsets.UTF_8))
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(inputV1, inputV1.available())
+        def blobItemV2 = blobClient.getBlockBlobClient().upload(inputV2, inputV2.available(), true)
+
+        def permission = new AccountSasPermission()
+           .setDeleteVersionPermission(true)
+        def sasToken = versionedBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(
+            getUTCNow().plusDays(1), permission, new AccountSasService().setBlobAccess(true),
+            new AccountSasResourceType().setObject(true)
+        ))
+
+        def sasClient = new BlobClientBuilder()
+            .endpoint(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl())
+            .sasToken(sasToken)
+            .buildClient()
+
+        when:
+        sasClient.delete()
 
         then:
         !blobClient.getVersionClient(blobItemV1.getVersionId()).exists()

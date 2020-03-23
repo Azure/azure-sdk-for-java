@@ -406,16 +406,17 @@ class SasClientTests extends APISpec {
         def expiryTime = OffsetDateTime.now().plusDays(1)
 
         expect:
-        BlobSasImplUtil implUtil = new BlobSasImplUtil(new BlobServiceSasSignatureValues(expiryTime, permission), container, blob, snapshot)
+        BlobSasImplUtil implUtil = new BlobSasImplUtil(new BlobServiceSasSignatureValues(expiryTime, permission), container, blob, snapshot, versionId)
         implUtil.ensureState()
         implUtil.resource == resource
         implUtil.permissions ==  permissionString
 
         where:
-        container    | blob    | snapshot    | permission                                                                       || resource | permissionString
-        "container"  |  null   | null        | new BlobContainerSasPermission().setReadPermission(true).setListPermission(true) || "c"      | "rl"
-        "container"  | "blob"  | null        | new BlobSasPermission().setReadPermission(true)                                  || "b"      | "r"
-        "container"  | "blob"  | "snapshot"  | new BlobSasPermission().setReadPermission(true)                                  || "bs"     | "r"
+        container    | blob    | snapshot    | versionId | permission                                                                       || resource | permissionString
+        "container"  |  null   | null        | null      | new BlobContainerSasPermission().setReadPermission(true).setListPermission(true) || "c"      | "rl"
+        "container"  | "blob"  | null        | null      | new BlobSasPermission().setReadPermission(true)                                  || "b"      | "r"
+        "container"  | "blob"  | "snapshot"  | null      | new BlobSasPermission().setReadPermission(true)                                  || "bs"     | "r"
+        "container"  | "blob"  | null        | "version" | new BlobSasPermission().setReadPermission(true)                                  || "bv"     | "r"
     }
 
     /*

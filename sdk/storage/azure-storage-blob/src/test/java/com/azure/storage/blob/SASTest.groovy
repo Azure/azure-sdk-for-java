@@ -834,18 +834,20 @@ class SASTest extends APISpec {
             .setDeletePermission(delete)
             .setCreatePermission(create)
             .setAddPermission(add)
+            .setDeleteVersionPermission(deleteVersion)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | create | add   || expectedString
-        true  | false | false  | false  | false || "r"
-        false | true  | false  | false  | false || "w"
-        false | false | true   | false  | false || "d"
-        false | false | false  | true   | false || "c"
-        false | false | false  | false  | true  || "a"
-        true  | true  | true   | true   | true  || "racwd"
+        read  | write | delete | create | add   | deleteVersion || expectedString
+        true  | false | false  | false  | false | false         || "r"
+        false | true  | false  | false  | false | false         || "w"
+        false | false | true   | false  | false | false         || "d"
+        false | false | false  | true   | false | false         || "c"
+        false | false | false  | false  | true  | false         || "a"
+        false | false | false  | false  | false | true          || "x"
+        true  | true  | true   | true   | true  | true          || "racwdx"
     }
 
     @Unroll
@@ -859,16 +861,18 @@ class SASTest extends APISpec {
         perms.hasDeletePermission() == delete
         perms.hasCreatePermission() == create
         perms.hasAddPermission() == add
+        perms.hasDeleteVersionPermission() == deleteVersion
 
         where:
-        permString || read  | write | delete | create | add
-        "r"        || true  | false | false  | false  | false
-        "w"        || false | true  | false  | false  | false
-        "d"        || false | false | true   | false  | false
-        "c"        || false | false | false  | true   | false
-        "a"        || false | false | false  | false  | true
-        "racwd"    || true  | true  | true   | true   | true
-        "dcwra"    || true  | true  | true   | true   | true
+        permString || read  | write | delete | create | add   | deleteVersion
+        "r"        || true  | false | false  | false  | false | false
+        "w"        || false | true  | false  | false  | false | false
+        "d"        || false | false | true   | false  | false | false
+        "c"        || false | false | false  | true   | false | false
+        "a"        || false | false | false  | false  | true  | false
+        "x"        || false | false | false  | false  | false | true
+        "racwdx"    || true  | true  | true   | true   | true  | true
+        "dcxwra"    || true  | true  | true   | true   | true  | true
     }
 
     def "BlobSASPermissions parse IA"() {
@@ -889,19 +893,21 @@ class SASTest extends APISpec {
             .setCreatePermission(create)
             .setAddPermission(add)
             .setListPermission(list)
+            .setDeleteVersionPermission(deleteVersion)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | create | add   | list  || expectedString
-        true  | false | false  | false  | false | false || "r"
-        false | true  | false  | false  | false | false || "w"
-        false | false | true   | false  | false | false || "d"
-        false | false | false  | true   | false | false || "c"
-        false | false | false  | false  | true  | false || "a"
-        false | false | false  | false  | false | true  || "l"
-        true  | true  | true   | true   | true  | true  || "racwdl"
+        read  | write | delete | create | add   | list  | deleteVersion || expectedString
+        true  | false | false  | false  | false | false | false         || "r"
+        false | true  | false  | false  | false | false | false         || "w"
+        false | false | true   | false  | false | false | false         || "d"
+        false | false | false  | true   | false | false | false         || "c"
+        false | false | false  | false  | true  | false | false         || "a"
+        false | false | false  | false  | false | true  | false         || "l"
+        false | false | false  | false  | false | false | true          || "x"
+        true  | true  | true   | true   | true  | true  | true          || "racwdxl"
     }
 
     @Unroll
@@ -916,17 +922,19 @@ class SASTest extends APISpec {
         perms.hasCreatePermission() == create
         perms.hasAddPermission() == add
         perms.hasListPermission() == list
+        perms.hasDeleteVersionPermission() == deleteVersion
 
         where:
-        permString || read  | write | delete | create | add   | list
-        "r"        || true  | false | false  | false  | false | false
-        "w"        || false | true  | false  | false  | false | false
-        "d"        || false | false | true   | false  | false | false
-        "c"        || false | false | false  | true   | false | false
-        "a"        || false | false | false  | false  | true  | false
-        "l"        || false | false | false  | false  | false | true
-        "racwdl"   || true  | true  | true   | true   | true  | true
-        "dcwrla"   || true  | true  | true   | true   | true  | true
+        permString || read  | write | delete | create | add   | list  | deleteVersion
+        "r"        || true  | false | false  | false  | false | false | false
+        "w"        || false | true  | false  | false  | false | false | false
+        "d"        || false | false | true   | false  | false | false | false
+        "c"        || false | false | false  | true   | false | false | false
+        "a"        || false | false | false  | false  | true  | false | false
+        "l"        || false | false | false  | false  | false | true  | false
+        "x"        || false | false | false  | false  | false | false | true
+        "racwdxl"  || true  | true  | true   | true   | true  | true  | true
+        "dcwxrla"  || true  | true  | true   | true   | true  | true  | true
     }
 
     def "ContainerSASPermissions parse IA"() {
@@ -1098,21 +1106,23 @@ class SASTest extends APISpec {
             .setCreatePermission(create)
             .setUpdatePermission(update)
             .setProcessMessages(process)
+            .setDeleteVersionPermission(deleteVersion)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | list  | add   | create | update | process || expectedString
-        true  | false | false  | false | false | false  | false  | false   || "r"
-        false | true  | false  | false | false | false  | false  | false   || "w"
-        false | false | true   | false | false | false  | false  | false   || "d"
-        false | false | false  | true  | false | false  | false  | false   || "l"
-        false | false | false  | false | true  | false  | false  | false   || "a"
-        false | false | false  | false | false | true   | false  | false   || "c"
-        false | false | false  | false | false | false  | true   | false   || "u"
-        false | false | false  | false | false | false  | false  | true    || "p"
-        true  | true  | true   | true  | true  | true   | true   | true    || "rwdlacup"
+        read  | write | delete | list  | add   | create | update | process | deleteVersion || expectedString
+        true  | false | false  | false | false | false  | false  | false   | false         || "r"
+        false | true  | false  | false | false | false  | false  | false   | false         || "w"
+        false | false | true   | false | false | false  | false  | false   | false         || "d"
+        false | false | false  | true  | false | false  | false  | false   | false         || "l"
+        false | false | false  | false | true  | false  | false  | false   | false         || "a"
+        false | false | false  | false | false | true   | false  | false   | false         || "c"
+        false | false | false  | false | false | false  | true   | false   | false         || "u"
+        false | false | false  | false | false | false  | false  | true    | false         || "p"
+        false | false | false  | false | false | false  | false  | false   | true          || "x"
+        true  | true  | true   | true  | true  | true   | true   | true    | true          || "rwdxlacup"
     }
 
     @Unroll
@@ -1129,19 +1139,21 @@ class SASTest extends APISpec {
         perms.hasCreatePermission() == create
         perms.hasUpdatePermission() == update
         perms.hasProcessMessages() == process
+        perms.hasDeleteVersionPermission() == deleteVersion
 
         where:
-        permString || read  | write | delete | list  | add   | create | update | process
-        "r"        || true  | false | false  | false | false | false  | false  | false
-        "w"        || false | true  | false  | false | false | false  | false  | false
-        "d"        || false | false | true   | false | false | false  | false  | false
-        "l"        || false | false | false  | true  | false | false  | false  | false
-        "a"        || false | false | false  | false | true  | false  | false  | false
-        "c"        || false | false | false  | false | false | true   | false  | false
-        "u"        || false | false | false  | false | false | false  | true   | false
-        "p"        || false | false | false  | false | false | false  | false  | true
-        "rwdlacup" || true  | true  | true   | true  | true  | true   | true   | true
-        "lwrupcad" || true  | true  | true   | true  | true  | true   | true   | true
+        permString  || read  | write | delete | list  | add   | create | update | process | deleteVersion
+        "r"         || true  | false | false  | false | false | false  | false  | false   | false
+        "w"         || false | true  | false  | false | false | false  | false  | false   | false
+        "d"         || false | false | true   | false | false | false  | false  | false   | false
+        "l"         || false | false | false  | true  | false | false  | false  | false   | false
+        "a"         || false | false | false  | false | true  | false  | false  | false   | false
+        "c"         || false | false | false  | false | false | true   | false  | false   | false
+        "u"         || false | false | false  | false | false | false  | true   | false   | false
+        "p"         || false | false | false  | false | false | false  | false  | true    | false
+        "x"         || false | false | false  | false | false | false  | false  | false   | true
+        "rwdxlacup" || true  | true  | true   | true  | true  | true   | true   | true    | true
+        "lwrupcaxd" || true  | true  | true   | true  | true  | true   | true   | true    | true
     }
 
     def "AccountSASPermissions parse IA"() {

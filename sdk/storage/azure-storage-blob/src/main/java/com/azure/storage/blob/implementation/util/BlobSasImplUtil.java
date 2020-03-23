@@ -39,6 +39,11 @@ public class BlobSasImplUtil {
     private static final String SAS_BLOB_SNAPSHOT_CONSTANT = "bs";
 
     /**
+     * The SAS blob version constant.
+     */
+    private static final String SAS_BLOB_VERSION_CONSTANT = "bv";
+
+    /**
      * The SAS blob container constant.
      */
     private static final String SAS_CONTAINER_CONSTANT = "c";
@@ -64,6 +69,8 @@ public class BlobSasImplUtil {
     private String resource;
 
     private String snapshotId;
+
+    private String versionId;
 
     private String identifier;
 
@@ -97,7 +104,25 @@ public class BlobSasImplUtil {
      */
     public BlobSasImplUtil(BlobServiceSasSignatureValues sasValues, String containerName, String blobName,
         String snapshotId) {
+        this(sasValues, containerName, blobName, snapshotId, null);
+    }
+
+    /**
+     * Creates a new {@link BlobSasImplUtil} with the specified parameters
+     *
+     * @param sasValues {@link BlobServiceSasSignatureValues}
+     * @param containerName The container name
+     * @param blobName The blob name
+     * @param snapshotId The snapshot id
+     * @param versionId The version id
+     */
+    public BlobSasImplUtil(BlobServiceSasSignatureValues sasValues, String containerName, String blobName,
+        String snapshotId, String versionId) {
         Objects.requireNonNull(sasValues);
+        if (snapshotId != null && versionId != null) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
+        }
         this.version = sasValues.getVersion();
         this.protocol = sasValues.getProtocol();
         this.startTime = sasValues.getStartTime();
@@ -107,6 +132,7 @@ public class BlobSasImplUtil {
         this.containerName = containerName;
         this.blobName = blobName;
         this.snapshotId = snapshotId;
+        this.versionId = versionId;
         this.identifier = sasValues.getIdentifier();
         this.cacheControl = sasValues.getCacheControl();
         this.contentDisposition = sasValues.getContentDisposition();
@@ -208,7 +234,8 @@ public class BlobSasImplUtil {
      * 3. Resource name is chosen by:
      *    a. If "BlobName" is _not_ set, it is a container resource.
      *    b. Otherwise, if "SnapshotId" is set, it is a blob snapshot resource.
-     *    c. Otherwise, it is a blob resource.
+     *    c. Otherwise, if "VersionId" is set, it is a blob version resource.
+     *    d. Otherwise, it is a blob resource.
      * 4. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
      *
      * Taken from:
@@ -231,6 +258,8 @@ public class BlobSasImplUtil {
             resource = SAS_CONTAINER_CONSTANT;
         } else if (snapshotId != null) {
             resource = SAS_BLOB_SNAPSHOT_CONSTANT;
+        } else if (versionId != null) {
+            resource = SAS_BLOB_VERSION_CONSTANT;
         } else {
             resource = SAS_BLOB_CONSTANT;
         }
@@ -239,6 +268,7 @@ public class BlobSasImplUtil {
             switch (resource) {
                 case SAS_BLOB_CONSTANT:
                 case SAS_BLOB_SNAPSHOT_CONSTANT:
+                case SAS_BLOB_VERSION_CONSTANT:
                     permissions = BlobSasPermission.parse(permissions).toString();
                     break;
                 case SAS_CONTAINER_CONSTANT:
@@ -264,6 +294,7 @@ public class BlobSasImplUtil {
     }
 
     private String stringToSign(String canonicalName) {
+        String versionSegment = this.snapshotId == null ? this.versionId : this.snapshotId;
         return String.join("\n",
             this.permissions == null ? "" : permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
@@ -274,7 +305,7 @@ public class BlobSasImplUtil {
             this.protocol == null ? "" : this.protocol.toString(),
             version,
             resource,
-            this.snapshotId == null ? "" : this.snapshotId,
+            versionSegment== null ? "" : versionSegment,
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,
@@ -284,6 +315,7 @@ public class BlobSasImplUtil {
     }
 
     private String stringToSign(final UserDelegationKey key, String canonicalName) {
+        String versionSegment = this.snapshotId == null ? this.versionId : this.snapshotId;
         return String.join("\n",
             this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
@@ -299,7 +331,7 @@ public class BlobSasImplUtil {
             this.protocol == null ? "" : this.protocol.toString(),
             version,
             resource,
-            this.snapshotId == null ? "" : this.snapshotId,
+            versionSegment== null ? "" : versionSegment,
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,

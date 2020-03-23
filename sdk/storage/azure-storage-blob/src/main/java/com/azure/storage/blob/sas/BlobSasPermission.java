@@ -25,6 +25,8 @@ public final class BlobSasPermission {
 
     private boolean deletePermission;
 
+    private boolean deleteVersionPermission;
+
     /**
      * Initializes a {@code BlobSasPermission} object with all fields set to false.
      */
@@ -37,7 +39,7 @@ public final class BlobSasPermission {
      *
      * @param permString A {@code String} which represents the {@code BlobSasPermission}.
      * @return A {@code BlobSasPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, or d.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d or x.
      */
     public static BlobSasPermission parse(String permString) {
         BlobSasPermission permissions = new BlobSasPermission();
@@ -59,6 +61,9 @@ public final class BlobSasPermission {
                     break;
                 case 'd':
                     permissions.deletePermission = true;
+                    break;
+                case 'x':
+                    permissions.deleteVersionPermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -160,6 +165,24 @@ public final class BlobSasPermission {
     }
 
     /**
+     * @return the delete version permission status.
+     */
+    public boolean hasDeleteVersionPermission() {
+        return deleteVersionPermission;
+    }
+
+    /**
+     * Sets the delete version permission status.
+     *
+     * @param hasDeleteVersionPermission Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobSasPermission setDeleteVersionPermission(boolean hasDeleteVersionPermission) {
+        this.deleteVersionPermission = hasDeleteVersionPermission;
+        return this;
+    }
+
+    /**
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
@@ -190,6 +213,10 @@ public final class BlobSasPermission {
 
         if (this.deletePermission) {
             builder.append('d');
+        }
+
+        if (this.deleteVersionPermission) {
+            builder.append('x');
         }
 
         return builder.toString();
