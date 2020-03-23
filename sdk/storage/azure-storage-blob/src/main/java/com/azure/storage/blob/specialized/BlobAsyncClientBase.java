@@ -221,15 +221,23 @@ public class BlobAsyncClientBase {
      * @return the URL.
      */
     public String getBlobUrl() {
-        if (!this.isSnapshot()) {
-            return azureBlobStorage.getUrl();
-        } else {
-            if (azureBlobStorage.getUrl().contains("?")) {
-                return String.format("%s&snapshot=%s", azureBlobStorage.getUrl(), snapshot);
-            } else {
-                return String.format("%s?snapshot=%s", azureBlobStorage.getUrl(), snapshot);
-            }
+        String blobUrl = azureBlobStorage.getUrl();
+        if (this.isSnapshot()) {
+            blobUrl = appendQueryParameter(blobUrl, "snapshot", getSnapshotId());
         }
+        if (this.getVersionId() != null) {
+            blobUrl = appendQueryParameter(blobUrl, "versionid", getVersionId());
+        }
+        return blobUrl;
+    }
+
+    private String appendQueryParameter(String url, String key, String value) {
+        if (url.contains("?")) {
+            url = String.format("%s&%s=%s", url, key, value);
+        } else {
+            url = String.format("%s?%s=%s", url, key, value);
+        }
+        return url;
     }
 
     /**

@@ -67,7 +67,7 @@ class VersioningTest extends APISpec {
         !StringUtils.equals(blobItemV1.getVersionId(), blobItemV2.getVersionId())
     }
 
-    def "Retrieve Block Blob by Version"() {
+    def "Download Blob by Version"() {
         given:
         def inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8))
         def inputV2 = new ByteArrayInputStream(contentV2.getBytes(StandardCharsets.UTF_8))
@@ -77,57 +77,15 @@ class VersioningTest extends APISpec {
         when:
         def outputV1 = new ByteArrayOutputStream()
         def outputV2 = new ByteArrayOutputStream()
-        blobClient.getVersionClient(blobItemV1.getVersionId()).getBlockBlobClient().download(outputV1)
-        blobClient.getVersionClient(blobItemV2.getVersionId()).getBlockBlobClient().download(outputV2)
+        blobClient.getVersionClient(blobItemV1.getVersionId()).download(outputV1)
+        blobClient.getVersionClient(blobItemV2.getVersionId()).download(outputV2)
 
         then:
         outputV1.toByteArray() == contentV1.getBytes(StandardCharsets.UTF_8)
         outputV2.toByteArray() == contentV2.getBytes(StandardCharsets.UTF_8)
     }
 
-    def "Retrieve Page Blob by Version"() {
-        given:
-        def contentV1 = getRandomByteArray(PageBlobClient.PAGE_BYTES)
-        def contentV2 = getRandomByteArray(PageBlobClient.PAGE_BYTES)
-        def inputV1 = new ByteArrayInputStream(contentV1)
-        def inputV2 = new ByteArrayInputStream(contentV2)
-        def blobItemV1 = blobClient.getPageBlobClient().create(PageBlobClient.PAGE_BYTES)
-        blobClient.getPageBlobClient().uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES-1), inputV1)
-        def blobItemV2 = blobClient.getPageBlobClient().create(PageBlobClient.PAGE_BYTES, true)
-        blobClient.getPageBlobClient().uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES-1), inputV2)
-
-        when:
-        def outputV1 = new ByteArrayOutputStream()
-        def outputV2 = new ByteArrayOutputStream()
-        blobClient.getVersionClient(blobItemV1.getVersionId()).getPageBlobClient().download(outputV1)
-        blobClient.getVersionClient(blobItemV2.getVersionId()).getPageBlobClient().download(outputV2)
-
-        then:
-        Arrays.equals(contentV1, outputV1.toByteArray())
-        Arrays.equals(contentV2, outputV2.toByteArray())
-    }
-
-    def "Retrieve Append Blob by Version"() {
-        given:
-        def inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8))
-        def inputV2 = new ByteArrayInputStream(contentV2.getBytes(StandardCharsets.UTF_8))
-        def blobItemV1 = blobClient.getAppendBlobClient().create()
-        blobClient.getAppendBlobClient().appendBlock(inputV1, inputV1.available())
-        def blobItemV2 = blobClient.getAppendBlobClient().create(true)
-        blobClient.getAppendBlobClient().appendBlock(inputV2, inputV2.available())
-
-        when:
-        def outputV1 = new ByteArrayOutputStream()
-        def outputV2 = new ByteArrayOutputStream()
-        blobClient.getVersionClient(blobItemV1.getVersionId()).getAppendBlobClient().download(outputV1)
-        blobClient.getVersionClient(blobItemV2.getVersionId()).getAppendBlobClient().download(outputV2)
-
-        then:
-        outputV1.toByteArray() == contentV1.getBytes(StandardCharsets.UTF_8)
-        outputV2.toByteArray() == contentV2.getBytes(StandardCharsets.UTF_8)
-    }
-
-    def "Delete Block Blob by Version"() {
+    def "Delete Blob by Version"() {
         given:
         def inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8))
         def inputV2 = new ByteArrayInputStream(contentV2.getBytes(StandardCharsets.UTF_8))
@@ -135,50 +93,14 @@ class VersioningTest extends APISpec {
         def blobItemV2 = blobClient.getBlockBlobClient().upload(inputV2, inputV2.available(), true)
 
         when:
-        blobClient.getVersionClient(blobItemV1.getVersionId()).getBlockBlobClient().delete()
+        blobClient.getVersionClient(blobItemV1.getVersionId()).delete()
 
         then:
         !blobClient.getVersionClient(blobItemV1.getVersionId()).exists()
         blobClient.getVersionClient(blobItemV2.getVersionId()).exists()
     }
 
-    def "Delete Page Blob by Version"() {
-        given:
-        def contentV1 = getRandomByteArray(PageBlobClient.PAGE_BYTES)
-        def contentV2 = getRandomByteArray(PageBlobClient.PAGE_BYTES)
-        def inputV1 = new ByteArrayInputStream(contentV1)
-        def inputV2 = new ByteArrayInputStream(contentV2)
-        def blobItemV1 = blobClient.getPageBlobClient().create(PageBlobClient.PAGE_BYTES)
-        blobClient.getPageBlobClient().uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES-1), inputV1)
-        def blobItemV2 = blobClient.getPageBlobClient().create(PageBlobClient.PAGE_BYTES, true)
-        blobClient.getPageBlobClient().uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES-1), inputV2)
-
-        when:
-        blobClient.getVersionClient(blobItemV1.getVersionId()).getPageBlobClient().delete()
-
-        then:
-        !blobClient.getVersionClient(blobItemV1.getVersionId()).exists()
-        blobClient.getVersionClient(blobItemV2.getVersionId()).exists()
-    }
-
-    def "Delete Append Blob by Version"() {
-        given:
-        def inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8))
-        def inputV2 = new ByteArrayInputStream(contentV2.getBytes(StandardCharsets.UTF_8))
-        def blobItemV1 = blobClient.getAppendBlobClient().create()
-        blobClient.getAppendBlobClient().appendBlock(inputV1, inputV1.available())
-        def blobItemV2 = blobClient.getAppendBlobClient().create(true)
-        blobClient.getAppendBlobClient().appendBlock(inputV2, inputV2.available())
-
-        when:
-        blobClient.getVersionClient(blobItemV1.getVersionId()).getAppendBlobClient().delete()
-
-        then:
-        !blobClient.getVersionClient(blobItemV1.getVersionId()).exists()
-        blobClient.getVersionClient(blobItemV2.getVersionId()).exists()
-    }
-
-    def "Retrieve Block Blob Properties by Version"() {
+    def "Get Blob Properties by Version"() {
         given:
         def key = "key"
         def valV2 = "val2"
@@ -191,55 +113,9 @@ class VersioningTest extends APISpec {
         def versionId3 = responseV3.getHeaders().getValue("x-ms-version-id")
 
         when:
-        def receivedValV1 = blobClient.getVersionClient(versionId1).getBlockBlobClient().getProperties().getMetadata().get(key)
-        def receivedValV2 = blobClient.getVersionClient(versionId2).getBlockBlobClient().getProperties().getMetadata().get(key)
-        def receivedValV3 = blobClient.getVersionClient(versionId3).getBlockBlobClient().getProperties().getMetadata().get(key)
-
-        then:
-        receivedValV1 == null
-        valV2 == receivedValV2
-        valV3 == receivedValV3
-    }
-
-    def "Retrieve Page Blob Properties by Version"() {
-        given:
-        def key = "key"
-        def valV2 = "val2"
-        def valV3 = "val3"
-        def blobItemV1 = blobClient.getPageBlobClient().create(512)
-        def responseV2 = blobClient.getPageBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV2), null, null, Context.NONE);
-        def responseV3 = blobClient.getPageBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV3), null, null, Context.NONE);
-        def versionId1 = blobItemV1.getVersionId()
-        def versionId2 = responseV2.getHeaders().getValue("x-ms-version-id")
-        def versionId3 = responseV3.getHeaders().getValue("x-ms-version-id")
-
-        when:
-        def receivedValV1 = blobClient.getVersionClient(versionId1).getPageBlobClient().getProperties().getMetadata().get(key)
-        def receivedValV2 = blobClient.getVersionClient(versionId2).getPageBlobClient().getProperties().getMetadata().get(key)
-        def receivedValV3 = blobClient.getVersionClient(versionId3).getPageBlobClient().getProperties().getMetadata().get(key)
-
-        then:
-        receivedValV1 == null
-        valV2 == receivedValV2
-        valV3 == receivedValV3
-    }
-
-    def "Retrieve Append Blob Properties by Version"() {
-        given:
-        def key = "key"
-        def valV2 = "val2"
-        def valV3 = "val3"
-        def blobItemV1 = blobClient.getAppendBlobClient().create()
-        def responseV2 = blobClient.getAppendBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV2), null, null, Context.NONE);
-        def responseV3 = blobClient.getAppendBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV3), null, null, Context.NONE);
-        def versionId1 = blobItemV1.getVersionId()
-        def versionId2 = responseV2.getHeaders().getValue("x-ms-version-id")
-        def versionId3 = responseV3.getHeaders().getValue("x-ms-version-id")
-
-        when:
-        def receivedValV1 = blobClient.getVersionClient(versionId1).getAppendBlobClient().getProperties().getMetadata().get(key)
-        def receivedValV2 = blobClient.getVersionClient(versionId2).getAppendBlobClient().getProperties().getMetadata().get(key)
-        def receivedValV3 = blobClient.getVersionClient(versionId3).getAppendBlobClient().getProperties().getMetadata().get(key)
+        def receivedValV1 = blobClient.getVersionClient(versionId1).getProperties().getMetadata().get(key)
+        def receivedValV2 = blobClient.getVersionClient(versionId2).getProperties().getMetadata().get(key)
+        def receivedValV3 = blobClient.getVersionClient(versionId3).getProperties().getMetadata().get(key)
 
         then:
         receivedValV1 == null
@@ -360,5 +236,16 @@ class VersioningTest extends APISpec {
         then:
         versionIdAfterSnapshot != null
         versionIdAfterSnapshot != blobItemV1.getVersionId()
+    }
+
+    def "Versioned Blob URL contains Version"() {
+        given:
+        def blobItem = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        def blobUrl = blobClient.getVersionClient(blobItem.getVersionId()).getBlobUrl()
+
+        then:
+        blobUrl.contains(blobItem.getVersionId())
     }
 }
