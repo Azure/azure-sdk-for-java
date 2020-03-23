@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.jproxy.ProxyServer;
 import com.azure.messaging.servicebus.jproxy.SimpleProxy;
-import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -79,7 +78,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageTracking);
         final ServiceBusSenderAsyncClient sender = builder.buildAsyncSenderClient();
 
-        final ReceiveMessageOptions options = new ReceiveMessageOptions()
+        final ReceiveMessageOptions options = new ReceiveMessageOptions(autoComplete, receiveMode, prefetchCount, maxAutoRenewDuration)
             .setReceiveMode(ReceiveMode.RECEIVE_AND_DELETE);
         final ServiceBusReceiverAsyncClient receiver = builder
             .receiveMessageOptions(options)

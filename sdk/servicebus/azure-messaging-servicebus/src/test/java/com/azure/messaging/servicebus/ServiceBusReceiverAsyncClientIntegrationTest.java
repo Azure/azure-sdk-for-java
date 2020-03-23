@@ -4,8 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -30,8 +28,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     ServiceBusReceiverAsyncClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class));
-        receiveMessageOptions = new ReceiveMessageOptions().setAutoComplete(true);
-        receiveMessageOptionsManual = new ReceiveMessageOptions().setAutoComplete(false);
+        receiveMessageOptions = new ReceiveMessageOptions(autoComplete, receiveMode, prefetchCount, maxAutoRenewDuration).setAutoComplete(true);
+        receiveMessageOptionsManual = new ReceiveMessageOptions(autoComplete, receiveMode, prefetchCount, maxAutoRenewDuration).setAutoComplete(false);
     }
 
     @Override
