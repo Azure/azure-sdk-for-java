@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
@@ -189,22 +190,22 @@ public interface FeedResponseListValidator<T extends Resource> {
                     if (result != null) {
                         if (value instanceof Double) {
 
-                            Double d = result.getDouble(Constants.Properties.VALUE);
+                            Double d = ModelBridgeInternal.getDoubleFromJsonSerializable(result, Constants.Properties.VALUE);
                             assertThat(d).isEqualTo(value);
                         } else if (value instanceof Integer) {
 
-                            Integer d = result.getInt(Constants.Properties.VALUE);
+                            Integer d = ModelBridgeInternal.getIntFromJsonSerializable(result, Constants.Properties.VALUE);
                             assertThat(d).isEqualTo(value);
                         } else if (value instanceof String) {
 
-                            String d = result.getString(Constants.Properties.VALUE);
+                            String d = ModelBridgeInternal.getStringFromJsonSerializable(result, Constants.Properties.VALUE);
                             assertThat(d).isEqualTo(value);
                         } else if (value instanceof Document){
 
                             assertThat(result.toString()).isEqualTo(value.toString());
                         } else {
 
-                            assertThat(result.get(Constants.Properties.VALUE)).isNull();
+                            assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(result, Constants.Properties.VALUE)).isNull();
                             assertThat(value).isNull();
                         }
                     } else {
@@ -234,18 +235,20 @@ public interface FeedResponseListValidator<T extends Resource> {
                         paths.add(compositeIndexIterator.next().getPath().replace("/", ""));
                     }
                     for (int i = 0; i < resultOrderedList.size(); i ++) {
-                        ArrayNode resultValues = (ArrayNode) resultOrderedList.get(i).get("$1");
+                        ArrayNode resultValues = (ArrayNode) ModelBridgeInternal.getObjectFromJsonSerializable(resultOrderedList.get(i), "$1");
                         assertThat(resultValues.size()).isEqualTo(paths.size());
                         for (int j = 0; j < paths.size(); j++) {
                             if (paths.get(j).contains("number")) {
-                                assertThat(expectedOrderedList.get(i).getInt(paths.get(j))).isEqualTo(resultValues.get(j).intValue());
+                                assertThat(ModelBridgeInternal.getIntFromJsonSerializable(expectedOrderedList.get(i), paths.get(j)))
+                                    .isEqualTo(resultValues.get(j).intValue());
                             } else if (paths.get(j).toLowerCase().contains("string")) {
-                                assertThat(expectedOrderedList.get(i).getString(paths.get(j))).isEqualTo(resultValues.get(j).asText());
+                                assertThat(ModelBridgeInternal.getStringFromJsonSerializable(expectedOrderedList.get(i), paths.get(j)))
+                                    .isEqualTo(resultValues.get(j).asText());
                             } else if (paths.get(j).contains("bool")) {
-                                assertThat(expectedOrderedList.get(i).getBoolean(paths.get(j))).isEqualTo(resultValues.get(j).asBoolean());
+                                assertThat(ModelBridgeInternal.getBooleanFromJsonSerializable(expectedOrderedList.get(i), paths.get(j))).isEqualTo(resultValues.get(j).asBoolean());
                             } else {
                                 assertThat(resultValues.get(j).isNull()).isTrue();
-                                assertThat(expectedOrderedList.get(i).get("nullField")).isNull();
+                                assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(expectedOrderedList.get(i), "nullField")).isNull();
                             }
                         }
                     }

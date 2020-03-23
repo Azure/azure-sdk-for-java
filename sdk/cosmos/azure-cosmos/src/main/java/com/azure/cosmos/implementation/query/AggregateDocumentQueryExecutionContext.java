@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.query.aggregation.SumAggregator;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.Constants;

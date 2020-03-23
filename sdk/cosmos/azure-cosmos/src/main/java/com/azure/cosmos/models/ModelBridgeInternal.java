@@ -39,9 +39,11 @@ import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.lang.reflect.InvocationTargetException;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -367,11 +369,11 @@ public final class ModelBridgeInternal {
         jsonSerializable.set(propertyName, value);
     }
 
-    public static ObjectNode getObject(JsonSerializable jsonSerializable, String propertyName) {
+    public static ObjectNode getObjectNodeFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
         return jsonSerializable.getObject(propertyName);
     }
 
-    public static void remove(JsonSerializable jsonSerializable, String propertyName) {
+    public static void removeFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
         jsonSerializable.remove(propertyName);
     }
 
@@ -411,11 +413,47 @@ public final class ModelBridgeInternal {
         }
     }
 
-    public static Map<String, Object> getJsonSerializableMap(JsonSerializable jsonSerializable) {
+    public static Map<String, Object> getMapFromJsonSerializable(JsonSerializable jsonSerializable) {
         return jsonSerializable.getMap();
     }
 
     public static CosmosResourceType fromServiceSerializedFormat(String cosmosResourceType) {
         return CosmosResourceType.fromServiceSerializedFormat(cosmosResourceType);
+    }
+
+    public static Boolean getBooleanFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.getBoolean(propertyName);
+    }
+
+    public static Double getDoubleFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.getDouble(propertyName);
+    }
+
+    public static Object getObjectByPathFromJsonSerializable(JsonSerializable jsonSerializable, List<String> propertyNames) {
+        return jsonSerializable.getObjectByPath(propertyNames);
+    }
+
+    public static ByteBuffer serializeJsonToByteBuffer(JsonSerializable jsonSerializable) {
+        return jsonSerializable.serializeJsonToByteBuffer();
+    }
+
+    public static <T> T toObjectFromJsonSerializable(JsonSerializable jsonSerializable, Class<T> c) {
+        return jsonSerializable.toObject(c);
+    }
+
+    public static Object getObjectFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.get(propertyName);
+    }
+
+    public static String getStringFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.getString(propertyName);
+    }
+
+    public static Integer getIntFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.getInt(propertyName);
+    }
+
+    public static String toJsonFromJsonSerializable(JsonSerializable jsonSerializable) {
+        return jsonSerializable.toJson();
     }
 }

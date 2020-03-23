@@ -59,10 +59,6 @@ public final class BridgeInternal {
         return Document.fromObject(document, mapper);
     }
 
-    public static ByteBuffer serializeJsonToByteBuffer(Document document, ObjectMapper mapper) {
-        return document.serializeJsonToByteBuffer();
-    }
-
     public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
         return CosmosItemProperties.serializeJsonToByteBuffer(document, mapper);
     }
@@ -291,11 +287,11 @@ public final class BridgeInternal {
     }
 
     public static ObjectNode getObject(JsonSerializable jsonSerializable, String propertyName) {
-        return ModelBridgeInternal.getObject(jsonSerializable, propertyName);
+        return ModelBridgeInternal.getObjectNodeFromJsonSerializable(jsonSerializable, propertyName);
     }
 
     public static void remove(JsonSerializable jsonSerializable, String propertyName) {
-        ModelBridgeInternal.remove(jsonSerializable, propertyName);
+        ModelBridgeInternal.removeFromJsonSerializable(jsonSerializable, propertyName);
     }
 
     public static CosmosStoredProcedureProperties createCosmosStoredProcedureProperties(String jsonString) {
