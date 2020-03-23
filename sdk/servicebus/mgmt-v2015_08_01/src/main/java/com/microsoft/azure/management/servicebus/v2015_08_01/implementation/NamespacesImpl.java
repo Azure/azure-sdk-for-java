@@ -175,10 +175,14 @@ class NamespacesImpl extends GroupableResourcesCoreImpl<NamespaceResource, Names
     public Observable<NamespaceSharedAccessAuthorizationRuleResource> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName) {
         NamespacesInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, authorizationRuleName)
-        .map(new Func1<SharedAccessAuthorizationRuleResourceInner, NamespaceSharedAccessAuthorizationRuleResource>() {
+        .flatMap(new Func1<SharedAccessAuthorizationRuleResourceInner, Observable<NamespaceSharedAccessAuthorizationRuleResource>>() {
             @Override
-            public NamespaceSharedAccessAuthorizationRuleResource call(SharedAccessAuthorizationRuleResourceInner inner) {
-                return wrapNamespaceSharedAccessAuthorizationRuleResourceModel(inner);
+            public Observable<NamespaceSharedAccessAuthorizationRuleResource> call(SharedAccessAuthorizationRuleResourceInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((NamespaceSharedAccessAuthorizationRuleResource)wrapNamespaceSharedAccessAuthorizationRuleResourceModel(inner));
+                }
             }
        });
     }
