@@ -3,19 +3,23 @@
 
 package com.azure.core;
 
-import org.junit.jupiter.api.Disabled;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.stream.Stream;
+
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_TRACING_DISABLED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests the configuration API.
  */
-@Disabled("TEMPORARY")
 public class ConfigurationTests {
     private final String runtimeConfigurationName = "configurationAPIRuntimeFound";
     private final String runtimeConfiguration = "runtimeConfiguration";
@@ -64,7 +68,9 @@ public class ConfigurationTests {
      */
     @Test
     public void foundConfigurationPreferredOverDefault() {
-        String configurationValue = Configuration.getGlobalConfiguration().get(environmentConfigurationName, defaultConfiguration);
+        String configurationValue = Configuration.getGlobalConfiguration()
+            .get(environmentConfigurationName, defaultConfiguration);
+
         assertEquals(environmentConfiguration, configurationValue);
     }
 
@@ -73,7 +79,9 @@ public class ConfigurationTests {
      */
     @Test
     public void fallbackToDefaultConfiguration() {
-        String configurationValue = Configuration.getGlobalConfiguration().get("invalidConfiguration", defaultConfiguration);
+        String configurationValue = Configuration.getGlobalConfiguration()
+            .get("invalidConfiguration", defaultConfiguration);
+
         assertEquals(defaultConfiguration, configurationValue);
     }
 
@@ -82,7 +90,9 @@ public class ConfigurationTests {
      */
     @Test
     public void foundConfigurationIsConverted() {
-        String configurationValue = Configuration.getGlobalConfiguration().get(runtimeConfigurationName, String::toUpperCase);
+        String configurationValue = Configuration.getGlobalConfiguration()
+            .get(runtimeConfigurationName, String::toUpperCase);
+
         assertEquals(runtimeConfiguration.toUpperCase(), configurationValue);
     }
 
@@ -91,34 +101,59 @@ public class ConfigurationTests {
      */
     @Test
     public void notFoundConfigurationIsConvertedToNull() {
-        assertNull(Configuration.getGlobalConfiguration().get("invalidConfiguration", String::toUpperCase));
+        assertNull(new Configuration().get("invalidConfiguration", String::toUpperCase));
     }
 
     @Test
-    public void logLevelUpdatesInstantly() {
-        String initialLogLevel = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+    public void cloneConfiguration() {
+        Configuration configuration = new Configuration()
+            .put("variable1", "value1")
+            .put("variable2", "value2");
 
-        try {
-            System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, "123456789");
-            assertNotEquals(initialLogLevel, Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_LOG_LEVEL));
-        } finally {
-            // Cleanup the test
-            if (initialLogLevel != null) {
-                System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, initialLogLevel);
-            }
-        }
+        Configuration configurationClone = configuration.clone();
+
+        // Verify that the clone has the expected values.
+        assertEquals(configuration.get("variable1"), configurationClone.get("variable1"));
+        assertEquals(configuration.get("variable2"), configurationClone.get("variable2"));
+
+        // The clone should be a separate instance, verify its modifications won't affect the original copy.
+        configurationClone.remove("variable2");
+        assertTrue(configuration.contains("variable2"));
     }
 
     @Test
-    public void tracingDisabledUpdatesInstantly() {
-        boolean initialTracingDisabled = Boolean.parseBoolean(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED));
+    public void loadValueTwice() {
+        Configuration configuration = new Configuration();
+        String tracingDisabled = configuration.get(PROPERTY_AZURE_TRACING_DISABLED);
+        String tracingDisabled2 = configuration.get(PROPERTY_AZURE_TRACING_DISABLED);
 
-        try {
-            System.setProperty(Configuration.PROPERTY_AZURE_TRACING_DISABLED, Boolean.toString(!initialTracingDisabled));
-            assertNotEquals(initialTracingDisabled, Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED));
-        } finally {
-            // Cleanup the test
-            System.setProperty(Configuration.PROPERTY_AZURE_TRACING_DISABLED, Boolean.toString(initialTracingDisabled));
-        }
+        assertEquals(tracingDisabled, tracingDisabled2);
+    }
+
+    @ParameterizedTest
+    @MethodSource("getOrDefaultSupplier")
+    public void getOrDefault(String configurationValue, Object defaultValue, Object expectedValue) {
+        Configuration configuration = new Configuration()
+            .put("getOrDefault", configurationValue);
+
+        assertEquals(expectedValue, configuration.get("getOrDefault", defaultValue));
+    }
+
+    private static Stream<Arguments> getOrDefaultSupplier() {
+        return Stream.of(
+            Arguments.of(String.valueOf((byte) 42), (byte) 12, (byte) 42),
+            Arguments.of(String.valueOf((short) 42), (short) 12, (short) 42),
+            Arguments.of(String.valueOf(42), 12, 42),
+            Arguments.of(String.valueOf(42L), 12L, 42L),
+            Arguments.of(String.valueOf(42F), 12F, 42F),
+            Arguments.of(String.valueOf(42D), 12D, 42D),
+            Arguments.of(String.valueOf(true), false, true),
+            Arguments.of("42", "12", "42")
+        );
+    }
+
+    @Test
+    public void getOrDefaultReturnsDefault() {
+        assertEquals("42", new Configuration().get("empty", "42"));
     }
 }

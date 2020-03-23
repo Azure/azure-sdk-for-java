@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import static java.lang.Integer.signum;
 
 public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<T>>, Serializable {
     private static final Logger logger = LoggerFactory.getLogger(OrderbyRowComparer.class);
@@ -62,9 +63,9 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
                 if (cmp != 0) {
                     switch (this.sortOrders.get(i)) {
                     case Ascending:
-                        return cmp;
+                        return signum(cmp);
                     case Descending:
-                        return -cmp;
+                        return -signum(cmp);
                     }
                 }
             }
