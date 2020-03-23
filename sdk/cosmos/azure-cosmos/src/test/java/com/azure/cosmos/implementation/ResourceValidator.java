@@ -35,14 +35,14 @@ public interface ResourceValidator<T extends Resource> {
                 @Override
                 public void validate(T v) {
                     
-                    assertThat(ModelBridgeInternal.getJsonSerializableMap(v).keySet())
+                    assertThat(ModelBridgeInternal.getMapFromJsonSerializable(v).keySet())
                         .describedAs("number of fields")
-                        .hasSize(ModelBridgeInternal.getJsonSerializableMap(expectedValue).keySet().size());
-                    ModelBridgeInternal.getJsonSerializableMap(expectedValue).keySet();
-                    for(String key: ModelBridgeInternal.getJsonSerializableMap(expectedValue).keySet()) {
-                        assertThat(expectedValue.get(key))
+                        .hasSize(ModelBridgeInternal.getMapFromJsonSerializable(expectedValue).keySet().size());
+                    ModelBridgeInternal.getMapFromJsonSerializable(expectedValue).keySet();
+                    for(String key: ModelBridgeInternal.getMapFromJsonSerializable(expectedValue).keySet()) {
+                        assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(expectedValue, key))
                         .describedAs("value for " + key)
-                        .isEqualTo(expectedValue.get(key));
+                        .isEqualTo(ModelBridgeInternal.getObjectFromJsonSerializable(expectedValue, key));
                     }
                 }
             });

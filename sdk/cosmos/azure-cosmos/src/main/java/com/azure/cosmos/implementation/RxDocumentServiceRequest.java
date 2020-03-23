@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
@@ -375,7 +376,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             Object options) {
 
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
-                resource.serializeJsonToByteBuffer(), headers, AuthorizationTokenType.PrimaryMasterKey);
+            ModelBridgeInternal.serializeJsonToByteBuffer(resource), headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         return request;
     }
@@ -449,7 +450,8 @@ public class RxDocumentServiceRequest implements Cloneable {
         case Query:
         default:
             operation = OperationType.Query;
-            return new RxDocumentServiceRequest(operation, resourceType, relativePath, querySpec.serializeJsonToByteBuffer(), headers, AuthorizationTokenType.PrimaryMasterKey);
+            return new RxDocumentServiceRequest(operation, resourceType, relativePath,
+                ModelBridgeInternal.serializeJsonToByteBuffer(querySpec), headers, AuthorizationTokenType.PrimaryMasterKey);
         }
     }
 
@@ -521,7 +523,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             ResourceType resourceType,
             String relativePath,
             Map<String, String> headers) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer();
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceType, relativePath, resourceContent, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -541,7 +543,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             String relativePath,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer();
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceType, relativePath, resourceContent, headers, authorizationTokenType);
     }
 
@@ -593,7 +595,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             ResourceType resourceType,
             Resource resource,
             Map<String, String> headers) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer();
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceId, resourceType, resourceContent, headers, false, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -613,7 +615,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             Resource resource,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer();
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceId, resourceType, resourceContent, headers, false, authorizationTokenType);
     }
 
@@ -662,7 +664,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             Resource resource,
             String resourceFullName,
             ResourceType resourceType) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer();
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operationType,
                 resourceFullName,
                 resourceType,
@@ -679,7 +681,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             String resourceFullName,
             ResourceType resourceType,
             AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer();
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operationType,
                 resourceFullName,
                 resourceType,

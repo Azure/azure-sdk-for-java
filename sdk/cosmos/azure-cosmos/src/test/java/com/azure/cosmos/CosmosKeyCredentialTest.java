@@ -218,9 +218,9 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(docDefinition.get("mypk")));
+        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")));
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readObservable = container.readItem(docDefinition.getId(),
-                                                                                                new PartitionKey(docDefinition.get("mypk")),
+                                                                                                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
                                                                                                 options,
                                                                                                 CosmosItemProperties.class);
 
@@ -247,10 +247,9 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(docDefinition.get("mypk")));
+        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")));
         Mono<CosmosAsyncItemResponse<Object>> deleteObservable = container.deleteItem(docDefinition.getId(),
-                                                                              new PartitionKey(docDefinition.get(
-                                                                                  "mypk")), options);
+                                                                              new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")), options);
 
         CosmosItemResponseValidator validator =
             new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()
@@ -262,7 +261,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readObservable = container.readItem(documentId,
-                                                                          new PartitionKey(docDefinition.get("mypk")),
+                                                                          new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
                                                                           options, CosmosItemProperties.class);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
         validateItemFailure(readObservable, notFoundValidator);

@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.slf4j.Logger;
@@ -129,5 +130,10 @@ public final class OrderByContinuationToken extends JsonSerializable {
 
     private void setInclusive(boolean inclusive) {
         BridgeInternal.setProperty(this, InclusivePropertyName, inclusive);
+    }
+
+    @Override
+    public String toJson() {
+        return super.toJson();
     }
 }

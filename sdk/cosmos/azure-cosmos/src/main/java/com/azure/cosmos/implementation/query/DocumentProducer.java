@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
@@ -198,7 +199,8 @@ class DocumentProducer<T extends Resource> {
                                     + " last continuation token is [{}].",
                                     targetRange.toJson(),
                                     partitionKeyRangesValueHolder.v.stream()
-                                            .map(JsonSerializable::toJson).collect(Collectors.joining(", ")),
+                                                                   .map(ModelBridgeInternal::toJsonFromJsonSerializable)
+                                                                   .collect(Collectors.joining(", ")),
                                     lastResponseContinuationToken);
                         }
                         return Flux.fromIterable(createReplacingDocumentProducersOnSplit(partitionKeyRangesValueHolder.v));

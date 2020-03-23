@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -35,6 +36,8 @@ class ServiceBusMessageProcessorTest {
     private Function<ServiceBusReceivedMessage, Mono<Void>> onComplete;
     @Mock
     private Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon;
+
+    private AmqpRetryOptions retryOptions = new AmqpRetryOptions();
 
     @BeforeEach
     void setup() {
@@ -74,7 +77,7 @@ class ServiceBusMessageProcessorTest {
         };
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
-            .subscribeWith(new ServiceBusMessageProcessor(true, onCompleteMethod, onAbandon));
+            .subscribeWith(new ServiceBusMessageProcessor(true, retryOptions, onCompleteMethod, onAbandon));
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -96,7 +99,7 @@ class ServiceBusMessageProcessorTest {
         };
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
-            .subscribeWith(new ServiceBusMessageProcessor(false, onCompleteMethod, onAbandon));
+            .subscribeWith(new ServiceBusMessageProcessor(false, retryOptions, onCompleteMethod, onAbandon));
 
         // Act & Assert
         StepVerifier.create(processor)

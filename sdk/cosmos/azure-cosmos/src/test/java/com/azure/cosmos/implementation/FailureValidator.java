@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
+import com.azure.cosmos.models.ModelBridgeInternal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +118,8 @@ public interface FailureValidator {
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosClientException.class);
-                    assertThat(((CosmosClientException) t).getError().toJson()).isEqualTo(cosmosError.toJson());
+                    assertThat(ModelBridgeInternal.toJsonFromJsonSerializable(((CosmosClientException) t).getError()))
+                        .isEqualTo(ModelBridgeInternal.toJsonFromJsonSerializable(cosmosError));
                 }
             });
             return this;

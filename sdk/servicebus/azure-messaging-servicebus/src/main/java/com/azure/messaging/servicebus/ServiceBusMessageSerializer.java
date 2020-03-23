@@ -60,6 +60,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     private static final String REQUEST_RESPONSE_MESSAGES = "messages";
     private static final String REQUEST_RESPONSE_MESSAGE = "message";
     private static final String REQUEST_RESPONSE_EXPIRATIONS = "expirations";
+    private static final String LOCK_TOKEN_KEY = "lock-token";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
 
@@ -197,7 +198,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     }
 
     private List<Instant> deserializeListOfInstant(Message amqpMessage) {
-       
+
         if (amqpMessage.getBody() instanceof AmqpValue) {
             AmqpValue amqpValue = ((AmqpValue) amqpMessage.getBody());
             if (amqpValue.getValue() instanceof  Map) {
@@ -258,6 +259,12 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                 messagePayLoad.getLength());
 
             final ServiceBusReceivedMessage receivedMessage = deserializeMessage(responseMessage);
+
+            // if amqp message have lockToken
+            if (((Map) message).containsKey(LOCK_TOKEN_KEY)) {
+                receivedMessage.setLockToken((UUID) ((Map) message).get(LOCK_TOKEN_KEY));
+            }
+
             messageList.add(receivedMessage);
         }
 

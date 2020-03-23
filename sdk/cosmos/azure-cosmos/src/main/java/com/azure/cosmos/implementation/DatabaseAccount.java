@@ -285,4 +285,9 @@ public final class DatabaseAccount extends Resource {
         this.populatePropertyBag();
         return super.toJson();
     }
+
+    @Override
+    public Object get(String propertyName) {
+        return super.get(propertyName);
+    }
 }
