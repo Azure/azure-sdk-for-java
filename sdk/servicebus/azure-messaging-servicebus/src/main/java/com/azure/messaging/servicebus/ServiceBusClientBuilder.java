@@ -323,7 +323,7 @@ public final class ServiceBusClientBuilder {
     }
 
     private static boolean isNullOrEmpty(String item) {
-        return item != null && !item.isEmpty();
+        return item == null || item.isEmpty();
     }
 
     /**
@@ -520,7 +520,7 @@ public final class ServiceBusClientBuilder {
                 throw logger.logExceptionAsError(new IllegalStateException(String.format(
                     "Cannot build receiver with both queueName (%s) and topicName (%s) set.",
                     queueName, topicName)));
-            } else if (hasTopicName) {
+            } else if (hasQueueName) {
                 if (hasConnectionStringEntity && !queueName.equals(connectionStringEntityName)) {
                     throw logger.logExceptionAsError(new IllegalStateException(String.format(
                         "queueName (%s) is different than connectionString entityName (%s).",

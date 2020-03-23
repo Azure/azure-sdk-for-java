@@ -38,8 +38,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .isAutoComplete(true)
             .buildAsyncClient();
 
+        final String queueName = getQueueName();
+        Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
+
         receiverManual = createBuilder()
             .receiverClientBuilder()
+            .queueName(queueName)
             .isAutoComplete(false)
             .buildAsyncClient();
     }
