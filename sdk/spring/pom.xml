@@ -9,11 +9,6 @@
   <packaging>pom</packaging>
   <version>0.0.1</version><!-- Need not change for every release-->
   <modules>
-    <module>../core/azure-core</module>
-    <module>../core/azure-core-test</module>
-    <module>../core/azure-core-http-netty</module>
-    <module>../keyvault/azure-security-keyvault-secrets</module>
-    <module>../identity/azure-identity</module>
     <module>azure-spring-boot</module>
     <module>azure-active-directory-b2c-spring-boot-starter</module>
     <module>azure-active-directory-spring-boot-starter</module>
