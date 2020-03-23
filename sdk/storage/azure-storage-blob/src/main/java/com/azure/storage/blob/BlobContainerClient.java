@@ -99,6 +99,20 @@ public final class BlobContainerClient {
     }
 
     /**
+     * Initializes a new BlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
+     * BlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create the
+     * BlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this package's
+     * getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
+     *
+     * @param blobName A {@code String} representing the name of the blob.
+     * @param versionId the version identifier for the blob.
+     * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
+     */
+    public BlobClient getBlobClientWithVersion(String blobName, String versionId) {
+        return new BlobClient(client.getBlobAsyncClientWithVersion(blobName, versionId));
+    }
+
+    /**
      * Get the container name.
      *
      * <p><strong>Code Samples</strong></p>
