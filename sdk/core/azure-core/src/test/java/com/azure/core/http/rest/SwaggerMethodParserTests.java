@@ -3,15 +3,26 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.FormParam;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Head;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
+import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnValueWireType;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -24,10 +35,16 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import javax.security.auth.login.Configuration;
 import java.lang.reflect.Method;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.azure.core.http.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -64,22 +81,24 @@ public class SwaggerMethodParserTests {
 
     @ParameterizedTest
     @MethodSource("httpMethodSupplier")
-    public void httpMethod(Method method, HttpMethod expectedMethod, String expectedRelativePath) {
+    public void httpMethod(Method method, HttpMethod expectedMethod, String expectedRelativePath,
+        String expectedFullyQualifiedName) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
         assertEquals(expectedMethod, swaggerMethodParser.getHttpMethod());
         assertEquals(expectedRelativePath, swaggerMethodParser.setPath(null));
+        assertEquals(expectedFullyQualifiedName, swaggerMethodParser.getFullyQualifiedMethodName());
     }
 
     private static Stream<Arguments> httpMethodSupplier() throws NoSuchMethodException {
         Class<OperationMethods> clazz = OperationMethods.class;
 
         return Stream.of(
-            Arguments.of(clazz.getDeclaredMethod("getMethod"), HttpMethod.GET, "test"),
-            Arguments.of(clazz.getDeclaredMethod("putMethod"), HttpMethod.PUT, "test"),
-            Arguments.of(clazz.getDeclaredMethod("headMethod"), HttpMethod.HEAD, "test"),
-            Arguments.of(clazz.getDeclaredMethod("deleteMethod"), HttpMethod.DELETE, "test"),
-            Arguments.of(clazz.getDeclaredMethod("postMethod"), HttpMethod.POST, "test"),
-            Arguments.of(clazz.getDeclaredMethod("patchMethod"), HttpMethod.PATCH, "test")
+            Arguments.of(clazz.getDeclaredMethod("getMethod"), HttpMethod.GET, "test", ""),
+            Arguments.of(clazz.getDeclaredMethod("putMethod"), HttpMethod.PUT, "test", ""),
+            Arguments.of(clazz.getDeclaredMethod("headMethod"), HttpMethod.HEAD, "test", ""),
+            Arguments.of(clazz.getDeclaredMethod("deleteMethod"), HttpMethod.DELETE, "test", ""),
+            Arguments.of(clazz.getDeclaredMethod("postMethod"), HttpMethod.POST, "test", ""),
+            Arguments.of(clazz.getDeclaredMethod("patchMethod"), HttpMethod.PATCH, "test", "")
         );
     }
 
@@ -167,26 +186,206 @@ public class SwaggerMethodParserTests {
     }
 
     interface HostSubstitutionMethods {
+        @Get("test")
+        void noSubstitutions(String sub1);
+
+        @Get("test")
+        void substitution(@HostParam("sub1") String sub1);
+
+        @Get("test")
+        void encodingSubstitution(@HostParam(value = "sub1", encoded = false) String sub1);
+    }
+
+    @ParameterizedTest
+    @MethodSource("hostSubstitutionSupplier")
+    public void hostSubstitution(Method method, String rawHost, Object[] arguments, String expectedHost) {
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, rawHost);
+        assertEquals(expectedHost, swaggerMethodParser.setHost(arguments));
+    }
+
+    private static Stream<Arguments> hostSubstitutionSupplier() throws NoSuchMethodException {
+        String sub1RawHost = "https://{sub1}.host.com";
+        String sub2RawHost = "https://{sub2}.host.com";
+
+        Class<HostSubstitutionMethods> clazz = HostSubstitutionMethods.class;
+        Method noSubstitutions = clazz.getDeclaredMethod("noSubstitutions", String.class);
+        Method substitution = clazz.getDeclaredMethod("substitution", String.class);
+        Method encodingSubstitution = clazz.getDeclaredMethod("encodingSubstitution", String.class);
+
+        return Stream.of(
+            Arguments.of(noSubstitutions, sub1RawHost, toObjectArray("raw"), "{sub1}.host.com"),
+            Arguments.of(noSubstitutions, sub2RawHost, toObjectArray("raw"), "{sub2}.host.com"),
+            Arguments.of(substitution, sub1RawHost, toObjectArray("raw"), "raw.host.com"),
+            Arguments.of(substitution, sub1RawHost, toObjectArray("{sub1}"), "{sub1}.host.com"),
+            Arguments.of(substitution, sub1RawHost, toObjectArray((String) null), ".host.com"),
+            Arguments.of(substitution, sub1RawHost, null, "{sub1}.host.com"),
+            Arguments.of(substitution, sub2RawHost, toObjectArray("raw"), "{sub2}.host.com"),
+            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("raw"), "raw.host.com"),
+            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("{sub1}"), "%7bsub1%7d.host.com"),
+            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray((String) null), ".host.com"),
+            Arguments.of(substitution, sub1RawHost, null, "{sub1}.host.com"),
+            Arguments.of(encodingSubstitution, sub2RawHost, toObjectArray("raw"), "{sub2}.host.com")
+        );
     }
 
     interface PathSubstitutionMethods {
+        @Get("{sub1}")
+        void noSubstitutions(String sub1);
 
+        @Get("{sub1}")
+        void substitution(@PathParam("sub1") String sub1);
+
+        @Get("{sub1}")
+        void encodedSubstitution(@PathParam(value = "sub1", encoded = true) String sub1);
+    }
+
+    @ParameterizedTest
+    @MethodSource("pathSubstitutionSupplier")
+    public void pathSubstitution(Method method, Object[] arguments, String expectedPath) {
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+        assertEquals(expectedPath, swaggerMethodParser.setPath(arguments));
+    }
+
+    private static Stream<Arguments> pathSubstitutionSupplier() throws NoSuchMethodException {
+        Class<PathSubstitutionMethods> clazz = PathSubstitutionMethods.class;
+        Method noSubstitutions = clazz.getDeclaredMethod("noSubstitutions", String.class);
+        Method substitution = clazz.getDeclaredMethod("substitution", String.class);
+        Method encodedSubstitution = clazz.getDeclaredMethod("encodedSubstitution", String.class);
+
+        return Stream.of(
+            Arguments.of(noSubstitutions, toObjectArray("path"), "{sub1}"),
+            Arguments.of(encodedSubstitution, toObjectArray("path"), "path"),
+            Arguments.of(encodedSubstitution, toObjectArray("{sub1}"), "{sub1}"),
+            Arguments.of(encodedSubstitution, toObjectArray((String) null), ""),
+            Arguments.of(substitution, toObjectArray("path"), "path"),
+            Arguments.of(substitution, toObjectArray("{sub1}"), "%7bsub1%7d"),
+            Arguments.of(substitution, toObjectArray((String) null), "")
+        );
     }
 
     interface QuerySubstitutionMethods {
+        @Get("test")
+        void substitutions(@QueryParam("sub1") String sub1, @QueryParam("sub2") boolean sub2);
 
+        @Get("test")
+        void encodedSubstitutions(@QueryParam(value = "sub1", encoded = true) String sub1,
+            @QueryParam(value = "sub2", encoded = true) boolean sub2);
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("querySubstitutionSupplier")
+    public void querySubstitution(Method method, Object[] arguments, Map<String, String> expectedParameters) {
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+
+        for (EncodedParameter encodedParameter : swaggerMethodParser.setEncodedQueryParameters(arguments)) {
+            assertEquals(expectedParameters.get(encodedParameter.getName()), encodedParameter.getEncodedValue());
+        }
+    }
+
+    private static Stream<Arguments> querySubstitutionSupplier() throws NoSuchMethodException {
+        Class<QuerySubstitutionMethods> clazz = QuerySubstitutionMethods.class;
+        Method substitution = clazz.getDeclaredMethod("substitutions", String.class, boolean.class);
+        Method encodedSubstitution = clazz.getDeclaredMethod("encodedSubstitutions", String.class, boolean.class);
+
+        return Stream.of(
+            Arguments.of(substitution, null, null),
+            Arguments.of(substitution, toObjectArray("raw", true), createExpectedParameters("raw", true)),
+            Arguments.of(substitution, toObjectArray(null, true), createExpectedParameters(null, true)),
+            Arguments.of(substitution, toObjectArray("{sub1}", false), createExpectedParameters("%7bsub1%7d", false)),
+            Arguments.of(encodedSubstitution, null, null),
+            Arguments.of(encodedSubstitution, toObjectArray("raw", true), createExpectedParameters("raw", true)),
+            Arguments.of(encodedSubstitution, toObjectArray(null, true), createExpectedParameters(null, true)),
+            Arguments.of(encodedSubstitution, toObjectArray("{sub1}", false), createExpectedParameters("{sub1}", false))
+        );
     }
 
     interface HeaderSubstitutionMethods {
+        @Get("test")
+        void addHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
 
+        @Get("test")
+        @Headers({ "sub1:sub1", "sub2:false" })
+        void overrideHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
+    }
+
+    @ParameterizedTest
+    @MethodSource("headerSubstitutionSupplier")
+    public void headerSubstitution(Method method, Object[] arguments, Map<String, String> expectedHeaders) {
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+
+        for (HttpHeader header : swaggerMethodParser.setHeaders(arguments)) {
+            assertEquals(expectedHeaders.get(header.getName()), header.getValue());
+        }
+    }
+
+    private static Stream<Arguments> headerSubstitutionSupplier() throws NoSuchMethodException {
+        Class<HeaderSubstitutionMethods> clazz = HeaderSubstitutionMethods.class;
+        Method addHeaders = clazz.getDeclaredMethod("addHeaders", String.class, boolean.class);
+        Method overrideHeaders = clazz.getDeclaredMethod("overrideHeaders", String.class, boolean.class);
+
+        return Stream.of(
+            Arguments.of(addHeaders, null, null),
+            Arguments.of(addHeaders, toObjectArray("header", true), createExpectedParameters("header", true)),
+            Arguments.of(addHeaders, toObjectArray(null, true), createExpectedParameters(null, true)),
+            Arguments.of(addHeaders, toObjectArray("{sub1}", false), createExpectedParameters("{sub1}", false)),
+            Arguments.of(overrideHeaders, null, createExpectedParameters("sub1", false)),
+            Arguments.of(overrideHeaders, toObjectArray(null, true), createExpectedParameters("sub1", true)),
+            Arguments.of(overrideHeaders, toObjectArray("header", false), createExpectedParameters("header", false)),
+            Arguments.of(overrideHeaders, toObjectArray("{sub1}", true), createExpectedParameters("{sub1}", true))
+        );
     }
 
     interface BodySubstitutionMethods {
+        @Get("test")
+        void applicationJsonBody(@BodyParam(ContentType.APPLICATION_JSON) String jsonBody);
 
+        @Get("test")
+        void formBody(@FormParam("name") String name, @FormParam("age") Integer age,
+            @FormParam("dob") OffsetDateTime dob, @FormParam("favoriteColors") List<String> favoriteColors);
+
+        @Get("test")
+        void encodedFormBody(@FormParam(value = "name", encoded = true) String name, @FormParam("age") Integer age,
+            @FormParam("dob") OffsetDateTime dob, @FormParam("favoriteColors") List<String> favoriteColors);
     }
 
-    interface FormSubstitutionMethods {
+    @ParameterizedTest
+    @MethodSource("bodySubstitutionSupplier")
+    public void bodySubstitution(Method method, Object[] arguments, String expectedBodyContentType,
+        Object expectedBody) {
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
 
+        assertEquals(void.class, swaggerMethodParser.getReturnType());
+        assertEquals(String.class, swaggerMethodParser.getBodyJavaType());
+        assertEquals(expectedBodyContentType, swaggerMethodParser.getBodyContentType());
+        assertEquals(expectedBody, swaggerMethodParser.setBody(arguments));
+    }
+
+    private static Stream<Arguments> bodySubstitutionSupplier() throws NoSuchMethodException {
+        Class<BodySubstitutionMethods> clazz = BodySubstitutionMethods.class;
+        Method jsonBody = clazz.getDeclaredMethod("applicationJsonBody", String.class);
+        Method formBody = clazz.getDeclaredMethod("formBody", String.class, Integer.class, OffsetDateTime.class,
+            List.class);
+        Method encodedFormBody = clazz.getDeclaredMethod("encodedFormBody", String.class, Integer.class,
+            OffsetDateTime.class, List.class);
+
+        OffsetDateTime dob = OffsetDateTime.of(1980, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        List<String> favoriteColors = Arrays.asList("blue", "green");
+
+        return Stream.of(
+            Arguments.of(jsonBody, null, ContentType.APPLICATION_JSON, null),
+            Arguments.of(jsonBody, toObjectArray("{name:John Doe,age:40,dob:01-01-1980}"), ContentType.APPLICATION_JSON,
+                "{name:John Doe,age:40,dob:01-01-1980}"),
+            Arguments.of(formBody, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
+            Arguments.of(formBody, toObjectArray("John Doe", null, dob, null), APPLICATION_X_WWW_FORM_URLENCODED, ""),
+            Arguments.of(formBody, toObjectArray("John Doe", 40, null, favoriteColors),
+                APPLICATION_X_WWW_FORM_URLENCODED, ""),
+            Arguments.of(encodedFormBody, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
+            Arguments.of(encodedFormBody, toObjectArray("John Doe", null, dob, null), APPLICATION_X_WWW_FORM_URLENCODED,
+                ""),
+            Arguments.of(formBody, toObjectArray("John Doe", 40, null, favoriteColors),
+                APPLICATION_X_WWW_FORM_URLENCODED, "")
+        );
     }
 
     @ParameterizedTest
@@ -199,12 +398,13 @@ public class SwaggerMethodParserTests {
         Method method = OperationMethods.class.getDeclaredMethod("getMethod");
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
 
+        Context context = new Context("key", "value");
+
         return Stream.of(
             Arguments.of(swaggerMethodParser, null, Context.NONE),
-            Arguments.of(swaggerMethodParser, new Object[]{}, Context.NONE),
-            Arguments.of(swaggerMethodParser, new Object[]{"string"}, Context.NONE),
-            Arguments.of(swaggerMethodParser, new Object[]{Configuration.getConfiguration()},
-                Configuration.getConfiguration())
+            Arguments.of(swaggerMethodParser, toObjectArray(), Context.NONE),
+            Arguments.of(swaggerMethodParser, toObjectArray("string"), Context.NONE),
+            Arguments.of(swaggerMethodParser, toObjectArray(context), context)
         );
     }
 
@@ -247,5 +447,61 @@ public class SwaggerMethodParserTests {
             Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 429, new int[] {429, 503}, true),
             Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 503, new int[] {429, 503}, true)
         );
+    }
+
+    interface UnexpectedStatusCodeMethods {
+        @Get("test")
+        void noUnexpectedStatusCodes();
+
+        @Get("test")
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {400, 404})
+        void notFoundStatusCode();
+
+        @Get("test")
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {400, 404})
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class)
+        void customDefault();
+    }
+
+    @ParameterizedTest
+    @MethodSource("unexpectedStatusCodeSupplier")
+    public void unexpectedStatusCode(Method method, int statusCode, Class<?> expectedExceptionType) {
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+
+        assertEquals(expectedExceptionType, swaggerMethodParser.getUnexpectedException(statusCode).getExceptionType());
+    }
+
+    private static Stream<Arguments> unexpectedStatusCodeSupplier() throws NoSuchMethodException {
+        Class<UnexpectedStatusCodeMethods> clazz = UnexpectedStatusCodeMethods.class;
+        Method noUnexpectedStatusCodes = clazz.getDeclaredMethod("noUnexpectedStatusCodes");
+        Method notFoundStatusCode = clazz.getDeclaredMethod("notFoundStatusCode");
+        Method customDefault = clazz.getDeclaredMethod("customDefault");
+
+        return Stream.of(
+            Arguments.of(noUnexpectedStatusCodes, 500, HttpResponseException.class),
+            Arguments.of(noUnexpectedStatusCodes, 400, HttpResponseException.class),
+            Arguments.of(noUnexpectedStatusCodes, 404, HttpResponseException.class),
+            Arguments.of(notFoundStatusCode, 500, HttpResponseException.class),
+            Arguments.of(notFoundStatusCode, 400, ResourceNotFoundException.class),
+            Arguments.of(notFoundStatusCode, 404, ResourceNotFoundException.class),
+            Arguments.of(customDefault, 500, ResourceModifiedException.class),
+            Arguments.of(customDefault, 400, ResourceNotFoundException.class),
+            Arguments.of(customDefault, 404, ResourceNotFoundException.class)
+        );
+    }
+
+    private static Object[] toObjectArray(Object... objects) {
+        return objects;
+    }
+
+    private static Map<String, String> createExpectedParameters(String sub1Value, boolean sub2Value) {
+        Map<String, String> expectedParameters = new HashMap<>();
+        if (sub1Value != null) {
+            expectedParameters.put("sub1", sub1Value);
+        }
+
+        expectedParameters.put("sub2", String.valueOf(sub2Value));
+
+        return expectedParameters;
     }
 }

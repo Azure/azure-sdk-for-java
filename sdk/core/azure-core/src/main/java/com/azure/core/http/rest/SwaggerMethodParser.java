@@ -40,7 +40,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -269,25 +268,19 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return an Iterable with the encoded query parameters
      */
     public Iterable<EncodedParameter> setEncodedQueryParameters(Object[] swaggerMethodArguments) {
-        return encodeParameters(swaggerMethodArguments, querySubstitutions);
-    }
-
-    private Iterable<EncodedParameter> encodeParameters(Object[] swaggerMethodArguments,
-        List<Substitution> substitutions) {
-        if (substitutions == null) {
-            return Collections.emptyList();
+        final List<EncodedParameter> result = new ArrayList<>();
+        if (swaggerMethodArguments == null) {
+            return result;
         }
 
-        final List<EncodedParameter> result = new ArrayList<>();
-        final PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
-        for (Substitution substitution : substitutions) {
+        for (Substitution substitution : querySubstitutions) {
             final int parameterIndex = substitution.getMethodParameterIndex();
             if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
                 final Object methodArgument = swaggerMethodArguments[substitution.getMethodParameterIndex()];
                 String parameterValue = serialize(methodArgument);
                 if (parameterValue != null) {
                     if (substitution.shouldEncode()) {
-                        parameterValue = escaper.escape(parameterValue);
+                        parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
                     }
                     result.add(new EncodedParameter(substitution.getUrlParameterName(), parameterValue));
                 }
@@ -304,6 +297,9 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     public Iterable<HttpHeader> setHeaders(Object[] swaggerMethodArguments) {
         final HttpHeaders result = new HttpHeaders(headers);
+        if (swaggerMethodArguments == null) {
+            return result;
+        }
 
         for (Substitution headerSubstitution : headerSubstitutions) {
             final int parameterIndex = headerSubstitution.getMethodParameterIndex();
