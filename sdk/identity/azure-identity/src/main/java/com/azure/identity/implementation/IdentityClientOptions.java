@@ -27,7 +27,7 @@ public final class IdentityClientOptions {
      * Creates an instance of IdentityClientOptions with default settings.
      */
     public IdentityClientOptions() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
         authorityHost = configuration.contains(configuration.PROPERTY_AZURE_AUTHORITY_HOST)
         ? configuration.get(configuration.PROPERTY_AZURE_AUTHORITY_HOST) : DEFAULT_AUTHORITY_HOST;
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
