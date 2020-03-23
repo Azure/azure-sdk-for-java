@@ -285,7 +285,7 @@ class HelperTest extends APISpec {
         false | false | true   | false  | false | false         | "d"
         false | false | false  | true   | false | false         | "c"
         false | false | false  | false  | true  | false         | "a"
-        false | false | false  | false  | false | true          | "a"
+        false | false | false  | false  | false | true          | "x"
         true  | true  | true   | true   | true  | true          | "racwdx"
     }
 
