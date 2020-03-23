@@ -21,7 +21,7 @@ public class ARecord {
     private String ipv4Address;
 
     /**
-     * Get the ipv4Address value.
+     * Get the IPv4 address of this A record.
      *
      * @return the ipv4Address value
      */
@@ -30,7 +30,7 @@ public class ARecord {
     }
 
     /**
-     * Set the ipv4Address value.
+     * Set the IPv4 address of this A record.
      *
      * @param ipv4Address the ipv4Address value to set
      * @return the ARecord object itself.
