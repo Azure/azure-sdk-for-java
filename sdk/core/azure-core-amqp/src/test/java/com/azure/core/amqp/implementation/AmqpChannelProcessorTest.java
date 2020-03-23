@@ -148,7 +148,8 @@ class AmqpChannelProcessorTest {
         final AmqpChannelProcessor<TestObject> processor = createSink(connection1, connection2)
             .subscribeWith(channelProcessor);
 
-        when(retryPolicy.calculateRetryDelay(amqpException, 1)).thenReturn(Duration.ofSeconds(10));
+        when(retryPolicy.calculateRetryDelay(amqpException, 1)).thenReturn(Duration.ofSeconds(1));
+        when(retryPolicy.getMaxRetries()).thenReturn(3);
 
         // Act & Assert
         // Verify that we get the first connection.
