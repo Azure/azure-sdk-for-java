@@ -39,6 +39,7 @@ import java.lang.reflect.Method;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,12 +94,18 @@ public class SwaggerMethodParserTests {
         Class<OperationMethods> clazz = OperationMethods.class;
 
         return Stream.of(
-            Arguments.of(clazz.getDeclaredMethod("getMethod"), HttpMethod.GET, "test", ""),
-            Arguments.of(clazz.getDeclaredMethod("putMethod"), HttpMethod.PUT, "test", ""),
-            Arguments.of(clazz.getDeclaredMethod("headMethod"), HttpMethod.HEAD, "test", ""),
-            Arguments.of(clazz.getDeclaredMethod("deleteMethod"), HttpMethod.DELETE, "test", ""),
-            Arguments.of(clazz.getDeclaredMethod("postMethod"), HttpMethod.POST, "test", ""),
-            Arguments.of(clazz.getDeclaredMethod("patchMethod"), HttpMethod.PATCH, "test", "")
+            Arguments.of(clazz.getDeclaredMethod("getMethod"), HttpMethod.GET, "test",
+                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.getMethod"),
+            Arguments.of(clazz.getDeclaredMethod("putMethod"), HttpMethod.PUT, "test",
+                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.putMethod"),
+            Arguments.of(clazz.getDeclaredMethod("headMethod"), HttpMethod.HEAD, "test",
+                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.headMethod"),
+            Arguments.of(clazz.getDeclaredMethod("deleteMethod"), HttpMethod.DELETE, "test",
+                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.deleteMethod"),
+            Arguments.of(clazz.getDeclaredMethod("postMethod"), HttpMethod.POST, "test",
+                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.postMethod"),
+            Arguments.of(clazz.getDeclaredMethod("patchMethod"), HttpMethod.PATCH, "test",
+                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.patchMethod")
         );
     }
 
@@ -228,6 +235,38 @@ public class SwaggerMethodParserTests {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource("schemeSubstitutionSupplier")
+    public void schemeSubstitution(Method method, String rawHost, Object[] arguments, String expectedScheme) {
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, rawHost);
+        assertEquals(expectedScheme, swaggerMethodParser.setScheme(arguments));
+    }
+
+    private static Stream<Arguments> schemeSubstitutionSupplier() throws NoSuchMethodException {
+        String sub1RawHost = "{sub1}://raw.host.com";
+        String sub2RawHost = "{sub2}://raw.host.com";
+
+        Class<HostSubstitutionMethods> clazz = HostSubstitutionMethods.class;
+        Method noSubstitutions = clazz.getDeclaredMethod("noSubstitutions", String.class);
+        Method substitution = clazz.getDeclaredMethod("substitution", String.class);
+        Method encodingSubstitution = clazz.getDeclaredMethod("encodingSubstitution", String.class);
+
+        return Stream.of(
+            Arguments.of(noSubstitutions, sub1RawHost, toObjectArray("raw"), "{sub1}"),
+            Arguments.of(noSubstitutions, sub2RawHost, toObjectArray("raw"), "{sub2}"),
+            Arguments.of(substitution, sub1RawHost, toObjectArray("raw"), "raw"),
+            Arguments.of(substitution, sub1RawHost, toObjectArray("{sub1}"), "{sub1}"),
+            Arguments.of(substitution, sub1RawHost, toObjectArray((String) null), ""),
+            Arguments.of(substitution, sub1RawHost, null, "{sub1}"),
+            Arguments.of(substitution, sub2RawHost, toObjectArray("raw"), "{sub2}"),
+            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("raw"), "raw"),
+            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray("{sub1}"), "%7bsub1%7d"),
+            Arguments.of(encodingSubstitution, sub1RawHost, toObjectArray((String) null), ""),
+            Arguments.of(substitution, sub1RawHost, null, "{sub1}"),
+            Arguments.of(encodingSubstitution, sub2RawHost, toObjectArray("raw"), "{sub2}")
+        );
+    }
+
     interface PathSubstitutionMethods {
         @Get("{sub1}")
         void noSubstitutions(String sub1);
@@ -307,6 +346,9 @@ public class SwaggerMethodParserTests {
         @Get("test")
         @Headers({ "sub1:sub1", "sub2:false" })
         void overrideHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
+
+        @Get("test")
+        void headerMap(@HeaderParam("x-ms-meta-") Map<String, String> headers);
     }
 
     @ParameterizedTest
@@ -323,6 +365,13 @@ public class SwaggerMethodParserTests {
         Class<HeaderSubstitutionMethods> clazz = HeaderSubstitutionMethods.class;
         Method addHeaders = clazz.getDeclaredMethod("addHeaders", String.class, boolean.class);
         Method overrideHeaders = clazz.getDeclaredMethod("overrideHeaders", String.class, boolean.class);
+        Method headerMap = clazz.getDeclaredMethod("headerMap", Map.class);
+
+        Map<String, String> simpleHeaderMap = Collections.singletonMap("key", "value");
+        Map<String, String> expectedSimpleHeadersMap = Collections.singletonMap("x-ms-meta-key", "value");
+
+        Map<String, String> complexHeaderMap = new HttpHeaders().put("key1", null).put("key2", "value2").toMap();
+        Map<String, String> expectedComplexHeaderMap = Collections.singletonMap("x-ms-meta-key2", "value2");
 
         return Stream.of(
             Arguments.of(addHeaders, null, null),
@@ -332,7 +381,10 @@ public class SwaggerMethodParserTests {
             Arguments.of(overrideHeaders, null, createExpectedParameters("sub1", false)),
             Arguments.of(overrideHeaders, toObjectArray(null, true), createExpectedParameters("sub1", true)),
             Arguments.of(overrideHeaders, toObjectArray("header", false), createExpectedParameters("header", false)),
-            Arguments.of(overrideHeaders, toObjectArray("{sub1}", true), createExpectedParameters("{sub1}", true))
+            Arguments.of(overrideHeaders, toObjectArray("{sub1}", true), createExpectedParameters("{sub1}", true)),
+            Arguments.of(headerMap, null, null),
+            Arguments.of(headerMap, toObjectArray(simpleHeaderMap), expectedSimpleHeadersMap),
+            Arguments.of(headerMap, toObjectArray(complexHeaderMap), expectedComplexHeaderMap)
         );
     }
 
@@ -371,20 +423,26 @@ public class SwaggerMethodParserTests {
 
         OffsetDateTime dob = OffsetDateTime.of(1980, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         List<String> favoriteColors = Arrays.asList("blue", "green");
+        List<String> badFavoriteColors = Arrays.asList(null, "green");
 
         return Stream.of(
             Arguments.of(jsonBody, null, ContentType.APPLICATION_JSON, null),
             Arguments.of(jsonBody, toObjectArray("{name:John Doe,age:40,dob:01-01-1980}"), ContentType.APPLICATION_JSON,
                 "{name:John Doe,age:40,dob:01-01-1980}"),
             Arguments.of(formBody, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
-            Arguments.of(formBody, toObjectArray("John Doe", null, dob, null), APPLICATION_X_WWW_FORM_URLENCODED, ""),
+            Arguments.of(formBody, toObjectArray("John Doe", null, dob, null), APPLICATION_X_WWW_FORM_URLENCODED,
+                "name=John+Doe&dob=1980-01-01T00%3a00%3a00Z"),
             Arguments.of(formBody, toObjectArray("John Doe", 40, null, favoriteColors),
-                APPLICATION_X_WWW_FORM_URLENCODED, ""),
+                APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40&favoriteColors=blue&favoriteColors=green"),
+            Arguments.of(formBody, toObjectArray("John Doe", 40, null, badFavoriteColors),
+                APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40&favoriteColors=green"),
             Arguments.of(encodedFormBody, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
             Arguments.of(encodedFormBody, toObjectArray("John Doe", null, dob, null), APPLICATION_X_WWW_FORM_URLENCODED,
-                ""),
-            Arguments.of(formBody, toObjectArray("John Doe", 40, null, favoriteColors),
-                APPLICATION_X_WWW_FORM_URLENCODED, "")
+                "name=John Doe&dob=1980-01-01T00%3a00%3a00Z"),
+            Arguments.of(encodedFormBody, toObjectArray("John Doe", 40, null, favoriteColors),
+                APPLICATION_X_WWW_FORM_URLENCODED, "name=John Doe&age=40&favoriteColors=blue&favoriteColors=green"),
+            Arguments.of(encodedFormBody, toObjectArray("John Doe", 40, null, badFavoriteColors),
+                APPLICATION_X_WWW_FORM_URLENCODED, "name=John Doe&age=40&favoriteColors=green")
         );
     }
 

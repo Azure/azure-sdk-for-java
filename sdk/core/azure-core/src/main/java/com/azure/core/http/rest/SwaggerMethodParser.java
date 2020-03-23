@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -235,7 +236,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         final String substitutedHost =
             applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments);
         final String[] substitutedHostParts = substitutedHost.split("://");
-        return substitutedHostParts.length < 1 ? null : substitutedHostParts[0];
+        return substitutedHostParts.length == 0 ? null : substitutedHostParts[0];
     }
 
     /**
@@ -277,7 +278,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             final int parameterIndex = substitution.getMethodParameterIndex();
             if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
                 final Object methodArgument = swaggerMethodArguments[substitution.getMethodParameterIndex()];
-                String parameterValue = serialize(methodArgument);
+                String parameterValue = serialize(serializer, methodArgument);
                 if (parameterValue != null) {
                     if (substitution.shouldEncode()) {
                         parameterValue = UrlEscapers.QUERY_ESCAPER.escape(parameterValue);
@@ -311,14 +312,14 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                     final String headerCollectionPrefix = headerSubstitution.getUrlParameterName();
                     for (final Map.Entry<String, ?> headerCollectionEntry : headerCollection.entrySet()) {
                         final String headerName = headerCollectionPrefix + headerCollectionEntry.getKey();
-                        final String headerValue = serialize(headerCollectionEntry.getValue());
+                        final String headerValue = serialize(serializer, headerCollectionEntry.getValue());
                         if (headerValue != null) {
                             result.put(headerName, headerValue);
                         }
                     }
                 } else {
                     final String headerName = headerSubstitution.getUrlParameterName();
-                    final String headerValue = serialize(methodArgument);
+                    final String headerValue = serialize(serializer, methodArgument);
                     if (headerValue != null) {
                         result.put(headerName, headerValue);
                     }
@@ -392,8 +393,9 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
 
         if (!CoreUtils.isNullOrEmpty(formSubstitutions) && swaggerMethodArguments != null) {
             result = formSubstitutions.stream()
-                .map(s -> serializeFormData(s.getUrlParameterName(),
-                    swaggerMethodArguments[s.getMethodParameterIndex()]))
+                .map(substitution -> serializeFormData(serializer, substitution.getUrlParameterName(),
+                    swaggerMethodArguments[substitution.getMethodParameterIndex()], substitution.shouldEncode()))
+                .filter(Objects::nonNull)
                 .collect(Collectors.joining("&"));
         }
 
@@ -440,7 +442,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         return returnValueWireType;
     }
 
-    private String serialize(Object value) {
+    private static String serialize(SerializerAdapter serializer, Object value) {
         String result = null;
         if (value != null) {
             if (value instanceof String) {
@@ -452,18 +454,32 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         return result;
     }
 
-    private String serializeFormData(String key, Object value) {
-        String result = null;
-        if (value != null) {
-            if (value instanceof List<?>) {
-                result = ((List<?>) value).stream()
-                    .map(el -> String.format("%s=%s", key, serialize(el)))
-                    .collect(Collectors.joining("&"));
-            } else {
-                result = String.format("%s=%s", key, serializer.serializeRaw(value));
-            }
+    private static String serializeFormData(SerializerAdapter serializer, String key, Object value,
+        boolean shouldEncode) {
+        if (value == null) {
+            return null;
         }
-        return result;
+
+        if (value instanceof List<?>) {
+            return ((List<?>) value).stream()
+                .map(element -> serializeAndEncodeFormValue(serializer, element, shouldEncode))
+                .filter(Objects::nonNull)
+                .map(formValue -> key + "=" + formValue)
+                .collect(Collectors.joining("&"));
+        } else {
+            return key + "=" + serializeAndEncodeFormValue(serializer, value, shouldEncode);
+        }
+    }
+
+    private static String serializeAndEncodeFormValue(SerializerAdapter serializer, Object value,
+        boolean shouldEncode) {
+        if (value == null) {
+            return null;
+        }
+
+        String serializedValue = serializer.serializeRaw(value);
+
+        return shouldEncode ? UrlEscapers.FORM_ESCAPER.escape(serializedValue) : serializedValue;
     }
 
     private String applySubstitutions(String originalValue, Iterable<Substitution> substitutions,
@@ -476,7 +492,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                 if (0 <= substitutionParameterIndex && substitutionParameterIndex < methodArguments.length) {
                     final Object methodArgument = methodArguments[substitutionParameterIndex];
 
-                    String substitutionValue = serialize(methodArgument);
+                    String substitutionValue = serialize(serializer, methodArgument);
                     if (substitutionValue != null && !substitutionValue.isEmpty() && substitution.shouldEncode()) {
                         substitutionValue = UrlEscapers.PATH_ESCAPER.escape(substitutionValue);
                     }
