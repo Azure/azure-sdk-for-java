@@ -33,8 +33,7 @@ public abstract class JsonDeserializationTests extends TestNamePrinter {
     @Test
     public void deserializeListString() {
         String json = "[{ \"color\" : \"Black\", \"type\" : \"BMW\" }, { \"color\" : \"Red\", \"type\" : \"FIAT\" }]";
-        List<Car> cars = jsonApi.readStringToList(json, new Type<>() {
-        });
+        List<Car> cars = jsonApi.readStringToList(json, new Type<List<Car>>() { });
         Assertions.assertNotNull(cars);
         Assertions.assertEquals(2, cars.size());
         Assertions.assertEquals("Black", cars.get(0).getColor());
@@ -57,8 +56,7 @@ public abstract class JsonDeserializationTests extends TestNamePrinter {
     public void whenDeserializingToGenericObjectThenCorrect() {
         String json = "{\"theValue\":1}";
 
-        GenericFoo<Integer> targetObject = jsonApi.readString(json, new Type<>() {
-        });
+        GenericFoo<Integer> targetObject = jsonApi.readString(json, new Type<GenericFoo<Integer>>() { });
 
         Assertions.assertEquals(targetObject.getTheValue(), Integer.valueOf(1));
     }
@@ -78,7 +76,7 @@ public abstract class JsonDeserializationTests extends TestNamePrinter {
     public void givenJsonHasNonMatchingFieldsWhenDeserializingWithCustomDeserializerThenCorrect() {
         String json = "{\"valueInt\":7,\"valueString\":\"seven\"}";
 
-        jsonApi.registerCustomDeserializer(new Deserializer<>(Foo.class) {
+        jsonApi.registerCustomDeserializer(new Deserializer<Foo>(Foo.class) {
             @Override
             public Foo deserialize(Node node) {
                 int intValue = node.get("valueInt").asInt();
@@ -96,7 +94,7 @@ public abstract class JsonDeserializationTests extends TestNamePrinter {
     public void customDeserializeCar() {
         String json = "{ \"color\" : \"Black\", \"type\" : \"BMW\" }";
 
-        jsonApi.registerCustomDeserializer(new Deserializer<>(Car.class) {
+        jsonApi.registerCustomDeserializer(new Deserializer<Car>(Car.class) {
             @Override
             public Car deserialize(Node node) {
                 Car car = new Car();
