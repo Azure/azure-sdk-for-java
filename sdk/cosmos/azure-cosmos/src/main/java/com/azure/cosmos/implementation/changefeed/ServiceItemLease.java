@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -212,12 +213,12 @@ public class ServiceItemLease implements Lease {
         ServiceItemLease lease = new ServiceItemLease()
             .withId(document.getId())
             .withETag(document.getETag())
-            .withTs(document.getString(Constants.Properties.LAST_MODIFIED))
-            .withOwner(document.getString("Owner"))
-            .withLeaseToken(document.getString("LeaseToken"))
-            .withContinuationToken(document.getString("ContinuationToken"));
+            .withTs(ModelBridgeInternal.getStringFromJsonSerializable(document, Constants.Properties.LAST_MODIFIED))
+            .withOwner(ModelBridgeInternal.getStringFromJsonSerializable(document,"Owner"))
+            .withLeaseToken(ModelBridgeInternal.getStringFromJsonSerializable(document,"LeaseToken"))
+            .withContinuationToken(ModelBridgeInternal.getStringFromJsonSerializable(document,"ContinuationToken"));
 
-        String leaseTimestamp = document.getString("timestamp");
+        String leaseTimestamp = ModelBridgeInternal.getStringFromJsonSerializable(document,"timestamp");
         if (leaseTimestamp != null) {
             return lease.withTimestamp(ZonedDateTime.parse(leaseTimestamp));
         } else {

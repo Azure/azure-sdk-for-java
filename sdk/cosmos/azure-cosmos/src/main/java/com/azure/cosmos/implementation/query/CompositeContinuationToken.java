@@ -97,4 +97,9 @@ public final class CompositeContinuationToken extends JsonSerializable {
         /* TODO: Don't stringify the range */
         BridgeInternal.setProperty(this, RangePropertyName, range.toString());
     }
+
+    @Override
+    public String toJson() {
+        return super.toJson();
+    }
 }

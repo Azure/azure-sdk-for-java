@@ -69,4 +69,9 @@ public final class TakeContinuationToken extends JsonSerializable {
     private void setSourceToken(String sourceToken) {
         BridgeInternal.setProperty(this, SourceTokenPropetryName, sourceToken);
     }
+
+    @Override
+    public String toJson() {
+        return super.toJson();
+    }
 }
