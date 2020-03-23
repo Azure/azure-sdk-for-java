@@ -266,7 +266,7 @@ public class CosmosClientException extends RuntimeException {
         if (cosmosError != null) {
             innerErrorMessage = cosmosError.getMessage();
             if (innerErrorMessage == null) {
-                innerErrorMessage = String.valueOf(cosmosError.get("Errors"));
+                innerErrorMessage = String.valueOf(ModelBridgeInternal.getObjectFromJsonSerializable(cosmosError, "Errors"));
             }
         }
         return innerErrorMessage;

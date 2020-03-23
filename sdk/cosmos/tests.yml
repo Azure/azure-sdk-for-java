@@ -14,6 +14,11 @@ jobs:
         - name: azure-cosmos
           groupId: com.azure
           safeName: azurecosmos
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
@@ -78,6 +83,11 @@ jobs:
         - name: azure-cosmos
           groupId: com.azure
           safeName: azurecosmos
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
@@ -141,6 +151,11 @@ jobs:
         - name: azure-cosmos
           groupId: com.azure
           safeName: azurecosmos
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
@@ -213,6 +228,11 @@ jobs:
         - name: azure-cosmos
           groupId: com.azure
           safeName: azurecosmos
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
@@ -311,6 +331,11 @@ jobs:
         - name: azure-cosmos
           groupId: com.azure
           safeName: azurecosmos
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
@@ -371,6 +396,11 @@ jobs:
         - name: azure-cosmos
           groupId: com.azure
           safeName: azurecosmos
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
       TimeoutInMinutes: 240
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)

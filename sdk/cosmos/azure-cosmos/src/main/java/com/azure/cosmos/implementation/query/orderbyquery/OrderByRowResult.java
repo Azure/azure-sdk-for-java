@@ -46,4 +46,9 @@ public final class OrderByRowResult<T> extends Document {
     public String getSourceBackendContinuationToken() {
         return this.backendContinuationToken;
     }
+
+    @Override
+    public String toJson() {
+        return super.toJson();
+    }
 }
