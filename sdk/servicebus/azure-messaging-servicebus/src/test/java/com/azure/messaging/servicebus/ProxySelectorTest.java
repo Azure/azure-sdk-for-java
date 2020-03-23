@@ -43,6 +43,10 @@ public class ProxySelectorTest extends IntegrationTestBase {
 
     @Test
     public void proxySelectorConnectFailedInvokeTest() throws InterruptedException {
+        final String queueName = getQueueName();
+
+        Assertions.assertNotNull(queueName, "'queueName' is not set in environment variable.");
+
         // doesn't start proxy server and verifies that the connectFailed callback is invoked.
         final CountDownLatch countDownLatch = new CountDownLatch(1);
         ProxySelector.setDefault(new ProxySelector() {
@@ -61,8 +65,10 @@ public class ProxySelectorTest extends IntegrationTestBase {
         final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .retry(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-            .buildAsyncSenderClient();
+            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
+            .senderClientBuilder()
+            .entityName(queueName)
+            .buildAsyncClient();
 
         try {
             StepVerifier.create(sender.send(message))

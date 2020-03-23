@@ -28,20 +28,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     ServiceBusReceiverAsyncClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class));
-        receiveMessageOptions = new ReceiveMessageOptions(autoComplete, receiveMode, prefetchCount, maxAutoRenewDuration).setAutoComplete(true);
-        receiveMessageOptionsManual = new ReceiveMessageOptions(autoComplete, receiveMode, prefetchCount, maxAutoRenewDuration).setAutoComplete(false);
     }
 
     @Override
     protected void beforeTest() {
-        sender = createBuilder().buildAsyncSenderClient();
+        sender = createBuilder().senderClientBuilder().buildAsyncClient();
         receiver = createBuilder()
-            .receiveMessageOptions(receiveMessageOptions)
-            .buildAsyncReceiverClient();
+            .receiverClientBuilder()
+            .isAutoComplete(true)
+            .buildAsyncClient();
 
         receiverManual = createBuilder()
-            .receiveMessageOptions(receiveMessageOptionsManual)
-            .buildAsyncReceiverClient();
+            .receiverClientBuilder()
+            .isAutoComplete(false)
+            .buildAsyncClient();
     }
 
     @Override

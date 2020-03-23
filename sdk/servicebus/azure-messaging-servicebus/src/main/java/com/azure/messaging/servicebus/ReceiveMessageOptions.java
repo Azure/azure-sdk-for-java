@@ -16,8 +16,8 @@ class ReceiveMessageOptions {
     private final int prefetchCount;
     private final Duration maxAutoRenewDuration;
 
-    ReceiveMessageOptions(boolean autoComplete, Duration maxAutoRenewDuration, int prefetchCount,
-        ReceiveMode receiveMode) {
+    ReceiveMessageOptions(boolean autoComplete, ReceiveMode receiveMode, int prefetchCount,
+        Duration maxAutoRenewDuration) {
         this.autoComplete = autoComplete;
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;

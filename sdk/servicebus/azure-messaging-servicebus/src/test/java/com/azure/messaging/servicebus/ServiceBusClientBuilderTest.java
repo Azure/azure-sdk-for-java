@@ -24,11 +24,13 @@ public class ServiceBusClientBuilderTest {
     private static final String QUEUE_NAME = "queueName";
     private static final String SHARED_ACCESS_KEY_NAME = "dummySasKeyName";
     private static final String SHARED_ACCESS_KEY = "dummySasKey";
-    private static final String ENDPOINT = getURI(ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
+    private static final String ENDPOINT = getUri(ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
 
     private static final String PROXY_HOST = "127.0.0.1";
     private static final String PROXY_PORT = "3128";
 
+    private static final String NAMESPACE_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s",
+        ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY);
     private static final String CORRECT_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, QUEUE_NAME);
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
@@ -37,15 +39,19 @@ public class ServiceBusClientBuilderTest {
     public void missingConnectionString() {
         assertThrows(IllegalArgumentException.class, () -> {
             final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-            builder.buildAsyncSenderClient();
+            builder.senderClientBuilder()
+                .entityName(QUEUE_NAME)
+                .buildAsyncClient();
         });
     }
 
     @Test
     public void defaultProxyConfigurationBuilder() {
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-        final ServiceBusSenderAsyncClient client = builder.connectionString(CORRECT_CONNECTION_STRING)
-            .buildAsyncSenderClient();
+        final ServiceBusSenderAsyncClient client = builder.connectionString(NAMESPACE_CONNECTION_STRING)
+            .senderClientBuilder()
+            .entityName(QUEUE_NAME)
+            .buildAsyncClient();
 
         assertNotNull(client);
     }
@@ -63,7 +69,7 @@ public class ServiceBusClientBuilderTest {
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
         // Assert
-        assertNotNull(builder.buildAsyncSenderClient());
+        assertNotNull(builder.senderClientBuilder().buildAsyncClient());
     }
 
     @Test
@@ -79,11 +85,11 @@ public class ServiceBusClientBuilderTest {
                 .proxyOptions(proxyConfig);
 
             // Assert
-            assertNotNull(builder.buildAsyncSenderClient());
+            assertNotNull(builder.senderClientBuilder().buildAsyncClient());
         });
     }
 
-    private static URI getURI(String endpointFormat, String namespace, String domainName) {
+    private static URI getUri(String endpointFormat, String namespace, String domainName) {
         try {
             return new URI(String.format(Locale.US, endpointFormat, namespace, domainName));
         } catch (URISyntaxException exception) {

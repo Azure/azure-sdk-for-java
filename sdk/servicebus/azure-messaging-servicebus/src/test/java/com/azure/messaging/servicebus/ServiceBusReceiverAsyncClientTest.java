@@ -136,9 +136,10 @@ class ServiceBusReceiverAsyncClientTest {
         connectionProcessor =
             Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
                 .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                    ENTITY_PATH, connectionOptions.getRetry()));
+                    connectionOptions.getRetry()));
 
-        receiveOptions = new ReceiveMessageOptions(autoComplete, receiveMode, prefetchCount, maxAutoRenewDuration).setPrefetchCount(PREFETCH);
+        receiveOptions = new ReceiveMessageOptions(false, ReceiveMode.PEEK_LOCK, PREFETCH,
+            Duration.ofSeconds(10));
 
         messageContainer = new MessageLockContainer();
         consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
@@ -219,8 +220,8 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void receivesAndAutoCompletes() {
         // Arrange
-        final ReceiveMessageOptions options = new ReceiveMessageOptions(autoComplete, receiveMode, prefetchCount, maxAutoRenewDuration).setPrefetchCount(PREFETCH)
-            .setAutoComplete(true);
+        final ReceiveMessageOptions options = new ReceiveMessageOptions(true, ReceiveMode.PEEK_LOCK,
+            PREFETCH, null);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
             tracerProvider, messageSerializer, messageContainer);
@@ -273,8 +274,8 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void receivesAndAutoCompleteWithoutLockToken() {
         // Arrange
-        final ReceiveMessageOptions options = new ReceiveMessageOptions(autoComplete, receiveMode, prefetchCount, maxAutoRenewDuration).setPrefetchCount(PREFETCH)
-            .setAutoComplete(true);
+        final ReceiveMessageOptions options = new ReceiveMessageOptions(true, ReceiveMode.PEEK_LOCK,
+            PREFETCH, null);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
             tracerProvider, messageSerializer, messageContainer);
@@ -341,9 +342,8 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void completeInReceiveAndDeleteMode() {
-        final ReceiveMessageOptions options = new ReceiveMessageOptions(autoComplete, receiveMode, prefetchCount, maxAutoRenewDuration)
-            .setAutoComplete(false)
-            .setReceiveMode(ReceiveMode.RECEIVE_AND_DELETE);
+        final ReceiveMessageOptions options = new ReceiveMessageOptions(false,
+            ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, false, options, connectionProcessor, tracerProvider,
             messageSerializer, messageContainer);

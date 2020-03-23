@@ -70,19 +70,25 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     @Test
     public void testReceiverStartOfStreamFilters() {
         // Arrange
+        final String queueName = getQueueName();
+
+        Assertions.assertNotNull(queueName, "'queueName' is not set in environment variable.");
+
         final String messageTracking = UUID.randomUUID().toString();
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .connectionString(getConnectionString());
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageTracking);
-        final ServiceBusSenderAsyncClient sender = builder.buildAsyncSenderClient();
+        final ServiceBusSenderAsyncClient sender = builder.senderClientBuilder()
+            .entityName(queueName)
+            .buildAsyncClient();
 
-        final ReceiveMessageOptions options = new ReceiveMessageOptions(autoComplete, receiveMode, prefetchCount, maxAutoRenewDuration)
-            .setReceiveMode(ReceiveMode.RECEIVE_AND_DELETE);
-        final ServiceBusReceiverAsyncClient receiver = builder
-            .receiveMessageOptions(options)
-            .buildAsyncReceiverClient();
+        final ServiceBusReceiverAsyncClient receiver = builder.receiverClientBuilder()
+            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .queueName(queueName)
+            .isAutoComplete(false)
+            .buildAsyncClient();
 
         // Act & Assert
         try {
