@@ -3,31 +3,31 @@
 
 package com.azure.messaging.servicebus;
 
-import org.junit.jupiter.api.Test;
-import reactor.core.Disposable;
-
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Sample demonstrates how to send an {@link ServiceBusMessage} to an Azure Service Bus queue or topic.
  */
-public class MessageSendAsyncSample {
+public class SendMessageAsyncSample {
     /**
-     * Main method to invoke this demo on how to send a message to an Azure Event Hub.
+     * Main method to invoke this demo on how to send a message to Service Bus.
      */
-    @Test
     public void sendMessage() {
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
-        // 2. Creating an Queue instance.
-        // 3. Creating a "Shared access policy" for your Queue instance.
-        // 4. Copying the connection string from the policy's properties.
-        String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING")
-            + ";EntityPath=hemant-test1";
+        // 2. Go to "Shared access policies"
+        // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
+        String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
+
+        // Create a Queue or Topic in that Service Bus namespace.
+        String queueOrTopicName = "queueOrTopicName";
+
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncSenderClient();
+            .senderClientBuilder()
+            .entityName(queueOrTopicName)
+            .buildAsyncClient();
 
         // Create a message to send.
         ServiceBusMessage message = new ServiceBusMessage("Hello world!".getBytes(UTF_8));
@@ -35,15 +35,18 @@ public class MessageSendAsyncSample {
         // Send that message. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Service queue or topic. It completes with an error if an exception occurred
         // while sending the message.
+        senderAsyncClient.send(message).subscribe(
+            unused -> System.out.println("Sent."),
+            error -> System.err.println("Error occurred while publishing message: " + error),
+            () -> System.out.println("Send complete."));
 
-        Disposable disposable = senderAsyncClient.send(message).subscribe();
+        // .subscribe is not a blocking call. We sleep here so the program does not end before the send is complete.
         try {
             Thread.sleep(5000);
-        } catch (Exception ee) {
-
+        } catch (Exception ignored) {
         }
-        disposable.dispose();
+
+        // Close the sender.
+        senderAsyncClient.close();
     }
-
-
 }
