@@ -1,2 +1,2 @@
-<host1>,<key1>
-<host2>,<key2>
+AccountEndpoint=<Host1>;AccountKey=<Key1>;
+AccountEndpoint=<Host2>;AccountKey=<Key2>;

@@ -48,6 +48,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class AsynReadWithMultipleClients<T> {
     private final static String PARTITION_KEY = "/pk";
+    private final static String ACCOUNT_ENDPOINT_TAG = "AccountEndpoint=";
+    private final static String ACCOUNT_KEY_TAG = "AccountKey=";
     private final Semaphore concurrencyControlSemaphore;
     private final Logger logger;
     private final Configuration configuration;
@@ -89,7 +91,7 @@ public class AsynReadWithMultipleClients<T> {
                 throw e;
             }
         } finally {
-            System.out.println("Container on all client have been deleted successfully");
+            logger.info("Container on all client have been deleted successfully");
         }
     }
 
@@ -209,17 +211,17 @@ public class AsynReadWithMultipleClients<T> {
 
     private void createClients() {
         String csvFile = "clientHostAndKey.txt";
-        BufferedReader br = null;
         String line = "";
-        String splitBy = ",";
-        try {
-            br = new BufferedReader(new FileReader(csvFile));
+        String splitBy = ";";
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             while ((line = br.readLine()) != null) {
                 String[] hostAndKey = line.split(splitBy);
-                if (hostAndKey.length == 2) {
+                if (hostAndKey.length >= 2) {
+                    String endpoint = hostAndKey[0].substring(hostAndKey[0].indexOf(ACCOUNT_ENDPOINT_TAG) + ACCOUNT_ENDPOINT_TAG.length());
+                    String key = hostAndKey[1].substring(hostAndKey[1].indexOf(ACCOUNT_KEY_TAG) + ACCOUNT_KEY_TAG.length());
                     CosmosAsyncClient asyncClient = new CosmosClientBuilder()
-                        .endpoint(hostAndKey[0])
-                        .key(hostAndKey[1])
+                        .endpoint(endpoint)
+                        .key(key)
                         .connectionPolicy(configuration.getConnectionPolicy())
                         .consistencyLevel(configuration.getConsistencyLevel())
                         .connectionReuseAcrossClientsEnabled(true)
@@ -246,37 +248,31 @@ public class AsynReadWithMultipleClients<T> {
                             createDocumentObservables.add(obs);
                         }
                         docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block();
-                        MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
 
-                        if (registry != null) {
-                            BridgeInternal.monitorTelemetry(registry);
-                        }
-
-                        registry = configuration.getGraphiteMeterRegistry();
-
-                        if (registry != null) {
-                            BridgeInternal.monitorTelemetry(registry);
-                        }
-                        System.out.println("Client have been initialized with data created for host " + hostAndKey[0]);
+                        logger.info("Client have been initialized with data created for host {}", hostAndKey[0]);
                     } else {
-                        System.out.println("Client have been initialized with host " + hostAndKey[0]);
+                        logger.info("Client have been initialized with host {}", hostAndKey[0]);
                     }
                     clientDocsMap.put(asyncClient, docsToRead);
                 }
             }
-            System.out.println("Total number of client created for ReadThroughputWithMultipleClient " + clientDocsMap.size());
+            MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
+
+            if (registry != null) {
+                BridgeInternal.monitorTelemetry(registry);
+            }
+
+            registry = configuration.getGraphiteMeterRegistry();
+
+            if (registry != null) {
+                BridgeInternal.monitorTelemetry(registry);
+            }
+
+            logger.info("Total number of client created for ReadThroughputWithMultipleClient {}",clientDocsMap.size());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 

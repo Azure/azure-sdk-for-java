@@ -76,8 +76,8 @@ class Configuration {
     @Parameter(names = "-enableJvmStats", description = "Enables JVM Stats")
     private boolean enableJvmStats;
 
-    @Parameter(names = "-throughPutForMultiClientTest", description = "throughput on each container for multi client test")
-    private int throughPutForMultiClient = 100000;
+    @Parameter(names = "-throughputForMultiClientTest", description = "throughput on each container for multi client test")
+    private int throughputForMultiClient = 100000;
 
     @Parameter(names = "-deleteCollections", description = "Delete collections on all client with collectionId mentioned in the tool")
     private boolean deleteCollections = false;
@@ -231,8 +231,8 @@ class Configuration {
         return numberOfOperations;
     }
 
-    int getthroughPutForMultiClient() {
-        return throughPutForMultiClient;
+    int getthroughputForMultiClient() {
+        return throughputForMultiClient;
     }
 
     String getServiceEndpoint() {
@@ -376,9 +376,9 @@ class Configuration {
                 Strings.emptyToNull(System.getenv().get("NUMBER_OF_OPERATIONS")), Integer.toString(numberOfOperations));
         numberOfOperations = Integer.parseInt(numberOfOperationsValue);
 
-        String  throughPutForMultiClientValue = StringUtils.defaultString(
-            Strings.emptyToNull(System.getenv().get("THROUGHPUT_MULTICLIENT")), Integer.toString(throughPutForMultiClient));
-        throughPutForMultiClient = Integer.parseInt(throughPutForMultiClientValue);
+        String  throughputForMultiClientValue = StringUtils.defaultString(
+                Strings.emptyToNull(System.getenv().get("THROUGHPUT_MULTICLIENT")),Integer.toString(throughputForMultiClient));
+        throughputForMultiClient = Integer.parseInt(throughputForMultiClientValue);
     }
 
     private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {
