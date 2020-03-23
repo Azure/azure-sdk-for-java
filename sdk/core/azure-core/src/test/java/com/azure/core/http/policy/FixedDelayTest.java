@@ -3,17 +3,18 @@
 
 package com.azure.core.http.policy;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import com.azure.core.TestNamePrinter;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Unit tests for {@link FixedDelay}.
  */
-public class FixedDelayTest {
+public class FixedDelayTest extends TestNamePrinter {
 
     @Test
     public void testNullDelay() {

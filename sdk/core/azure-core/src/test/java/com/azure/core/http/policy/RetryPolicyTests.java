@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.TestNamePrinter;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -18,7 +19,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
-public class RetryPolicyTests {
+public class RetryPolicyTests extends TestNamePrinter {
 
     @Test
     public void retryEndOn501() throws Exception {
@@ -86,8 +87,7 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy(new FixedDelay(maxRetries, Duration.ofMillis(delayMillis))))
             .build();
 
-        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
-            new URL("http://localhost/"))).block();
+        pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
     }
 
     @Test
@@ -118,8 +118,7 @@ public class RetryPolicyTests {
             .policies(new RetryPolicy(exponentialBackoff))
             .build();
 
-        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
-            new URL("http://localhost/"))).block();
+        pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
     }
 
 

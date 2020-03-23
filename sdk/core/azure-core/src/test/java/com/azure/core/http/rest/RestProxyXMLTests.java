@@ -3,15 +3,12 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.TestNamePrinter;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.implementation.entities.AccessPolicy;
-import com.azure.core.implementation.entities.SignedIdentifierInner;
-import com.azure.core.implementation.entities.SignedIdentifiersWrapper;
-import com.azure.core.implementation.entities.Slideshow;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -20,9 +17,13 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
-import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.implementation.entities.AccessPolicy;
+import com.azure.core.implementation.entities.SignedIdentifierInner;
+import com.azure.core.implementation.entities.SignedIdentifiersWrapper;
+import com.azure.core.implementation.entities.Slideshow;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -40,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class RestProxyXMLTests {
+public class RestProxyXMLTests extends TestNamePrinter {
     static class MockXMLHTTPClient implements HttpClient {
         private HttpResponse response(HttpRequest request, String resource) throws IOException, URISyntaxException {
             URL url = getClass().getClassLoader().getResource(resource);
@@ -57,7 +58,7 @@ public class RestProxyXMLTests {
                 } else if (request.getUrl().toString().endsWith("GetXMLWithAttributes")) {
                     return Mono.just(response(request, "GetXMLWithAttributes.xml"));
                 } else {
-                    return Mono.<HttpResponse>just(new MockHttpResponse(request, 404));
+                    return Mono.just(new MockHttpResponse(request, 404));
                 }
             } catch (IOException | URISyntaxException e) {
                 return Mono.error(e);
@@ -76,7 +77,7 @@ public class RestProxyXMLTests {
     }
 
     @Test
-    public void canReadXMLResponse() throws Exception {
+    public void canReadXMLResponse() {
         //
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new MockXMLHTTPClient())
@@ -103,7 +104,7 @@ public class RestProxyXMLTests {
                             return new MockHttpResponse(request, 200);
                         });
             } else {
-                return Mono.<HttpResponse>just(new MockHttpResponse(request, 404));
+                return Mono.just(new MockHttpResponse(request, 404));
             }
         }
     }

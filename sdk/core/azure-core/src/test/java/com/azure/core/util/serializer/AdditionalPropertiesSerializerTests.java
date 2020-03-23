@@ -3,13 +3,14 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AdditionalPropertiesSerializerTests {
+public class AdditionalPropertiesSerializerTests extends TestNamePrinter {
     @Test
     public void canSerializeAdditionalProperties() throws Exception {
         Foo foo = new Foo();

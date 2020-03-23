@@ -3,13 +3,14 @@
 
 package com.azure.core.util;
 
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class Base64UrlTests {
+public class Base64UrlTests extends TestNamePrinter {
     @Test
     public void constructorWithNullBytes() {
         final Base64Url base64Url = new Base64Url((byte[]) null);

@@ -3,6 +3,7 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -13,7 +14,7 @@ import java.time.ZoneOffset;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class DateTimeSerializerTests {
+public class DateTimeSerializerTests extends TestNamePrinter {
     @Test
     public void toStringWithNull() {
         assertNull(DateTimeSerializer.toString(null));

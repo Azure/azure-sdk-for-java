@@ -3,11 +3,12 @@
 
 package com.azure.core.http;
 
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class HttpHeaderTests {
+public class HttpHeaderTests extends TestNamePrinter {
     @Test
     public void addValue() {
         final HttpHeader header = new HttpHeader("a", "b");

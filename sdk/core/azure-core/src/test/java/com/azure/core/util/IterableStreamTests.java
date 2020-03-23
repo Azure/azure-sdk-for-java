@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * Tests for {@link IterableStream}.
  */
-public class IterableStreamTests {
+public class IterableStreamTests extends TestNamePrinter {
     @Test
     public void requiresFlux() {
         Assertions.assertThrows(NullPointerException.class, () -> new IterableStream<>((Flux<String>) null));

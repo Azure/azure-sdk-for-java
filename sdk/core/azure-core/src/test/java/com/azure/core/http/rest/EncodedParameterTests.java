@@ -3,11 +3,12 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EncodedParameterTests {
+public class EncodedParameterTests extends TestNamePrinter {
     @Test
     public void constructor() {
         final EncodedParameter ep = new EncodedParameter("ABC", "123");

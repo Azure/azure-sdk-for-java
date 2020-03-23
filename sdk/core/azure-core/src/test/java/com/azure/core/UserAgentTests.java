@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Contains tests for {@link UserAgentPolicy}.
  */
-public class UserAgentTests {
+public class UserAgentTests extends TestNamePrinter {
     private static final String USER_AGENT = "User-Agent";
 
     @ParameterizedTest(name = "{displayName} [{index}]")

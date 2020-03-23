@@ -3,11 +3,12 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.TestNamePrinter;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import org.junit.jupiter.api.Assertions;
@@ -21,7 +22,7 @@ import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
-public class RequestIdPolicyTests {
+public class RequestIdPolicyTests extends TestNamePrinter {
     private final HttpResponse mockResponse = new HttpResponse(null) {
         @Override
         public int getStatusCode() {

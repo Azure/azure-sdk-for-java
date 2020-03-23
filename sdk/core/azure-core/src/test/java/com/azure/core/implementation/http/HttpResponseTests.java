@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.http;
 
+import com.azure.core.TestNamePrinter;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -17,8 +18,9 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
-public class HttpResponseTests {
+public class HttpResponseTests extends TestNamePrinter {
     @Test
     public void testBufferedResponseSubscribeOnceAndDoDeepCopy() {
         // A source Response that throws if body is subscribed more than once.
@@ -30,8 +32,7 @@ public class HttpResponseTests {
         // Validate that buffered Response is not replaying source Response body.
         StepVerifier.create(zipped)
             .thenConsumeWhile(o -> {
-                assertFalse(o.getT1() == o.getT2(),
-                    "Buffered response should not cache shallow copy of source.");
+                assertNotSame(o.getT1(), o.getT2(), "Buffered response should not cache shallow copy of source.");
                 return true;
             })
             .verifyComplete();

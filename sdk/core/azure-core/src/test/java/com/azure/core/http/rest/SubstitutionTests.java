@@ -3,16 +3,18 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SubstitutionTests {
+public class SubstitutionTests extends TestNamePrinter {
     @Test
     public void constructor() {
         final Substitution s = new Substitution("A", 2, true);
         assertEquals("A", s.getUrlParameterName());
         assertEquals(2, s.getMethodParameterIndex());
-        assertEquals(true, s.shouldEncode());
+        assertTrue(s.shouldEncode());
     }
 }

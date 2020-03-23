@@ -3,6 +3,7 @@
 
 package com.azure.core.util.polling;
 
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
-public class PollerTests {
+public class PollerTests extends TestNamePrinter {
     @Mock
     private Function<PollingContext<Response>, Mono<Response>> activationOperation;
 

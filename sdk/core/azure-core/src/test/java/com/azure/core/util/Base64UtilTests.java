@@ -3,13 +3,15 @@
 
 package com.azure.core.util;
 
-import java.util.Arrays;
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class Base64UtilTests {
+public class Base64UtilTests extends TestNamePrinter {
     @Test
     public void testEncodeAndDecode() {
         byte[] src = new byte[] { 65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81 };

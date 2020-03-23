@@ -3,6 +3,7 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -10,7 +11,7 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class DurationSerializerTests {
+public class DurationSerializerTests extends TestNamePrinter {
     @Test
     public void toStringWithNull() {
         assertNull(DurationSerializer.toString(null));

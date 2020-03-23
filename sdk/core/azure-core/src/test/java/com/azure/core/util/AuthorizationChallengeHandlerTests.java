@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.TestNamePrinter;
 import com.azure.core.http.HttpMethod;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests {@link AuthorizationChallengeHandler}.
  */
-public class AuthorizationChallengeHandlerTests {
+public class AuthorizationChallengeHandlerTests extends TestNamePrinter {
     private static final String REALM = "realm";
     private static final String QOP = "qop";
     private static final String ALGORITHM = "algorithm";

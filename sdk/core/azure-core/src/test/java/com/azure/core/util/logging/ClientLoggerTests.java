@@ -3,6 +3,7 @@
 
 package com.azure.core.util.logging;
 
+import com.azure.core.TestNamePrinter;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -27,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests for {@link ClientLogger}.
  */
-public class ClientLoggerTests {
+public class ClientLoggerTests extends TestNamePrinter {
     private PrintStream originalSystemOut;
     private ByteArrayOutputStream logCaptureStream;
 

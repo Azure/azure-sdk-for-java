@@ -3,6 +3,7 @@
 
 package com.azure.core.util.serializer;
 
+import com.azure.core.TestNamePrinter;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FlatteningSerializerTests {
+public class FlatteningSerializerTests extends TestNamePrinter {
     @Test
     public void canFlatten() throws Exception {
         Foo foo = new Foo();

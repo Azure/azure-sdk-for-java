@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.TestNamePrinter;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -20,7 +21,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
-public class AddHeadersFromContextPolicyTest {
+public class AddHeadersFromContextPolicyTest extends TestNamePrinter {
 
     private final HttpResponse mockResponse = new HttpResponse(null) {
         @Override

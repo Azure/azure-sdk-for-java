@@ -3,6 +3,7 @@
 
 package com.azure.core.http;
 
+import com.azure.core.TestNamePrinter;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * This class tests {@link ProxyOptions}.
  */
-public class ProxyOptionsTests {
+public class ProxyOptionsTests extends TestNamePrinter {
     private static final String HTTPS = "https";
     private static final String HTTP = "http";
 

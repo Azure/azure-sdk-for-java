@@ -3,6 +3,7 @@
 
 package com.azure.core.credential;
 
+import com.azure.core.TestNamePrinter;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -18,7 +19,7 @@ import reactor.test.StepVerifier;
 import java.net.URL;
 import java.time.OffsetDateTime;
 
-public class CredentialsTests {
+public class CredentialsTests extends TestNamePrinter {
 
     @Test
     public void basicCredentialsTest() throws Exception {

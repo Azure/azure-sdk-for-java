@@ -3,13 +3,14 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class TypeUtilTests {
+public class TypeUtilTests extends TestNamePrinter {
 
     @Test
     public void testGetClasses() {

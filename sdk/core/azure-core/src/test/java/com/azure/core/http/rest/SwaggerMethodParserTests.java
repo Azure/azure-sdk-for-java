@@ -5,12 +5,13 @@ package com.azure.core.http.rest;
 
 import com.azure.core.MyOtherRestException;
 import com.azure.core.MyRestException;
+import com.azure.core.TestNamePrinter;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.implementation.entities.HttpBinJSON;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.implementation.entities.HttpBinJSON;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class SwaggerMethodParserTests {
+public class SwaggerMethodParserTests extends TestNamePrinter {
 
     interface TestInterface1 {
         void testMethod1();

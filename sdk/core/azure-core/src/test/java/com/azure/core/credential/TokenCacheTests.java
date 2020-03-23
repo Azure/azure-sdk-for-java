@@ -3,6 +3,7 @@
 
 package com.azure.core.credential;
 
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -16,7 +17,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class TokenCacheTests {
+public class TokenCacheTests extends TestNamePrinter {
     private static final Random RANDOM = new Random();
 
     @Test

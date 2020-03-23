@@ -3,42 +3,36 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.TestNamePrinter;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+import reactor.util.context.Context;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static com.azure.core.util.FluxUtil.withContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
-import java.util.Collections;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import reactor.util.context.Context;
-
 /**
  * Unit tests for {@link PagedFlux}
  */
-public class PagedFluxTest {
+public class PagedFluxTest extends TestNamePrinter {
 
     private List<PagedResponse<Integer>> pagedResponses;
     private List<PagedResponse<String>> pagedStringResponses;
-
-    @BeforeEach
-    public void init(TestInfo testInfo) {
-        System.out.println("-------------- Running " + testInfo.getDisplayName() + " -----------------------------");
-    }
 
     @Test
     public void testEmptyResults() throws MalformedURLException {

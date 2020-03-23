@@ -3,6 +3,7 @@
 
 package com.azure.core.http;
 
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class HttpRequestTests {
+public class HttpRequestTests extends TestNamePrinter {
     @Test
     public void constructor() throws MalformedURLException {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));

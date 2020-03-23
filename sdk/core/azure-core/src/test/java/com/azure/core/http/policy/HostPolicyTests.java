@@ -3,11 +3,12 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.TestNamePrinter;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.clients.NoOpHttpClient;
-import com.azure.core.http.HttpPipelineBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
@@ -15,7 +16,7 @@ import java.net.URL;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class HostPolicyTests {
+public class HostPolicyTests extends TestNamePrinter {
     @Test
     public void withNoPort() throws MalformedURLException {
         final HttpPipeline pipeline = createPipeline("localhost", "ftp://localhost");

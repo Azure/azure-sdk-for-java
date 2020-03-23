@@ -3,6 +3,7 @@
 
 package com.azure.core.http;
 
+import com.azure.core.TestNamePrinter;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.http.policy.PortPolicy;
 import com.azure.core.http.policy.ProtocolPolicy;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class HttpPipelineTests {
+public class HttpPipelineTests extends TestNamePrinter {
     @Test
     public void constructorWithNoArguments() {
         HttpPipeline pipeline = new HttpPipelineBuilder()

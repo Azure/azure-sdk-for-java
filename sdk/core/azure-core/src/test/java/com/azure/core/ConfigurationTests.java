@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests the configuration API.
  */
-public class ConfigurationTests {
+public class ConfigurationTests extends TestNamePrinter {
     private final String runtimeConfigurationName = "configurationAPIRuntimeFound";
     private final String runtimeConfiguration = "runtimeConfiguration";
 

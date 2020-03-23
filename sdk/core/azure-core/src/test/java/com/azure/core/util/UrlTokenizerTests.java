@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class UrlTokenizerTests {
+public class UrlTokenizerTests extends TestNamePrinter {
     @Test
     public void constructor() {
         final UrlTokenizer tokenizer = new UrlTokenizer("http://www.bing.com");

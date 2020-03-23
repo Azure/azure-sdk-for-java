@@ -3,9 +3,10 @@
 
 package com.azure.core.http.policy;
 
-import java.time.Duration;
-
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -14,14 +15,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Unit tests for {@link ExponentialBackoff}.
  */
-public class ExponentialBackoffTest {
+public class ExponentialBackoffTest extends TestNamePrinter {
 
     @Test
     public void testZeroBaseDelay() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new ExponentialBackoff(3, Duration.ofSeconds(0),
-                Duration.ofMillis(1000));
-        });
+        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(3, Duration.ofSeconds(0),
+            Duration.ofMillis(1000)));
     }
 
     @Test
@@ -52,8 +51,8 @@ public class ExponentialBackoffTest {
             Duration.ofMillis(1000));
         assertEquals(expBackoff.getMaxRetries(), 3);
         assertTrue(expBackoff.calculateRetryDelay(0).toMillis() <= 1000);
-        assertTrue(expBackoff.calculateRetryDelay(1).toMillis() == 1000);
-        assertTrue(expBackoff.calculateRetryDelay(2).toMillis() == 1000);
+        assertEquals(1000, expBackoff.calculateRetryDelay(1).toMillis());
+        assertEquals(1000, expBackoff.calculateRetryDelay(2).toMillis());
     }
 
     @Test

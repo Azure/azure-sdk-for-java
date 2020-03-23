@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.TestNamePrinter;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -45,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 /**
  * This class contains tests for {@link HttpLoggingPolicy}.
  */
-public class HttpLoggingPolicyTests {
+public class HttpLoggingPolicyTests extends TestNamePrinter {
     private static final String REDACTED = "REDACTED";
     private static final Context CONTEXT = new Context("caller-method", HttpLoggingPolicyTests.class.getName());
 

@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.http;
 
+import com.azure.core.TestNamePrinter;
 import com.azure.core.util.UrlBuilder;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class UrlBuilderTests {
+public class UrlBuilderTests extends TestNamePrinter {
     @Test
     public void scheme() {
         final UrlBuilder builder = new UrlBuilder()

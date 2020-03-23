@@ -3,14 +3,15 @@
 
 package com.azure.core.util;
 
+import com.azure.core.TestNamePrinter;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-public class CoreUtilsTests {
+public class CoreUtilsTests extends TestNamePrinter {
     @Test
     public void findFirstOfTypeEmptyArgs() {
         assertNull(CoreUtils.findFirstOfType(null, Integer.class));

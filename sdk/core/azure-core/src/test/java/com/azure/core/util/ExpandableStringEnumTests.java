@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.TestNamePrinter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests {@link ExpandableStringEnum}
  */
-public class ExpandableStringEnumTests {
+public class ExpandableStringEnumTests extends TestNamePrinter {
     /**
      * Tests that using {@code null} to get an {@link ExpandableStringEnum} will return {@code null}.
      */
