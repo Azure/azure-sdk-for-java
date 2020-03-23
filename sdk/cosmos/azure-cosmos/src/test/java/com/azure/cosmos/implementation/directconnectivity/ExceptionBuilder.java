@@ -3,12 +3,11 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.InvalidPartitionException;
-import com.azure.cosmos.PartitionIsMigratingException;
-import com.azure.cosmos.PartitionKeyRangeGoneException;
-import com.azure.cosmos.PartitionKeyRangeIsSplittingException;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ExceptionBuilder<T extends CosmosClientException> {
+public class ExceptionBuilder {
     private Integer status;
     private List<Map.Entry<String, String>> headerEntries;
     private String message;
@@ -30,7 +29,7 @@ public class ExceptionBuilder<T extends CosmosClientException> {
     }
 
     public ExceptionBuilder withHeader(String key, String value) {
-        headerEntries.add(new AbstractMap.SimpleEntry(key, value));
+        headerEntries.add(new AbstractMap.SimpleEntry<>(key, value));
         return this;
     }
 

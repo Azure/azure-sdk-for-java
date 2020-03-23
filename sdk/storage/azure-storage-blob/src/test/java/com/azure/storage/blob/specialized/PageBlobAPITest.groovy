@@ -17,7 +17,7 @@ import com.azure.storage.blob.models.PageBlobRequestConditions
 import com.azure.storage.blob.models.PageRange
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.SequenceNumberActionType
-import org.junit.Ignore
+import spock.lang.Ignore
 import spock.lang.Unroll
 
 import java.security.MessageDigest

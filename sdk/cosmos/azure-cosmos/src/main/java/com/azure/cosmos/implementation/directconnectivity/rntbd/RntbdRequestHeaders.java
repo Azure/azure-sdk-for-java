@@ -3,8 +3,9 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.IndexingDirective;
+import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.implementation.ContentSerializationFormat;
 import com.azure.cosmos.implementation.EnumerationDirection;
 import com.azure.cosmos.implementation.FanoutOperationState;
@@ -59,7 +60,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         checkNotNull(frame, "frame");
 
         final RxDocumentServiceRequest request = args.serviceRequest();
-        final byte[] content = request.getContent();
+        final byte[] content = request.getContentAsByteArray();
 
         this.getPayloadPresent().setValue(content != null && content.length > 0);
         this.getReplicaPath().setValue(args.replicaPath());
@@ -614,7 +615,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
         if (StringUtils.isNotEmpty(value)) {
 
-            final ConsistencyLevel level = ConsistencyLevel.fromServiceSerializedFormat(value);
+            final ConsistencyLevel level = BridgeInternal.fromServiceSerializedFormat(value);
 
             if (level == null) {
                 final String reason = String.format(Locale.ROOT, RMResources.InvalidRequestHeaderValue,

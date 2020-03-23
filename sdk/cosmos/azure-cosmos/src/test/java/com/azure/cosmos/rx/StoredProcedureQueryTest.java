@@ -6,9 +6,9 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
-import com.azure.cosmos.CosmosStoredProcedureProperties;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -44,8 +44,8 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         int maxItemCount = 5;
-        CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
-                                                                                                       .queryStoredProcedures(query, options);
+        CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
+                                                                                            .queryStoredProcedures(query, options);
 
         List<CosmosStoredProcedureProperties> expectedDocs = createdStoredProcs.stream()
                 .filter(sp -> filterId.equals(sp.getId())).collect(Collectors.toList());
@@ -70,8 +70,8 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
         
-        CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
-                                                                                                       .queryStoredProcedures(query, options);
+        CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
+                                                                                            .queryStoredProcedures(query, options);
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
                 .containsExactly(new ArrayList<>()).numberOfPages(1)
@@ -88,8 +88,8 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         int maxItemCount = 3;
         
-        CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
-                                                                                                       .queryStoredProcedures(query, options);
+        CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
+                                                                                            .queryStoredProcedures(query, options);
 
         List<CosmosStoredProcedureProperties> expectedDocs = createdStoredProcs;
 
@@ -110,8 +110,8 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
         
-        CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
-                                                                                                       .queryStoredProcedures(query, options);
+        CosmosPagedFlux<CosmosStoredProcedureProperties> queryObservable = createdCollection.getScripts()
+                                                                                            .queryStoredProcedures(query, options);
 
         FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosClientException.class)
                 .statusCode(400).notNullActivityId().build();
@@ -125,7 +125,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_StoredProcedureQueryTest() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
@@ -133,7 +133,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
             createdStoredProcs.add(createStoredProc(createdCollection));
         }
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

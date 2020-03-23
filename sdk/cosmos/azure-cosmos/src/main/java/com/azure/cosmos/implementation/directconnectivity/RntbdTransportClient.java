@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.time.Duration;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -70,8 +71,8 @@ public final class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
     }
 
-    RntbdTransportClient(final Configs configs, final int requestTimeoutInSeconds, final UserAgentContainer userAgent) {
-        this(new Options.Builder(requestTimeoutInSeconds).userAgent(userAgent).build(), configs.getSslContext());
+    RntbdTransportClient(final Configs configs, final Duration requestTimeout, final UserAgentContainer userAgent) {
+        this(new Options.Builder(requestTimeout).userAgent(userAgent).build(), configs.getSslContext());
     }
 
     // endregion
@@ -151,7 +152,7 @@ public final class RntbdTransportClient extends TransportClient {
     }
 
     private static Tag tag(long id) {
-        return Tag.of(TAG_NAME, Strings.padStart(Long.toHexString(id).toUpperCase(), 4, '0'));
+        return Tag.of(TAG_NAME, Strings.padStart(Long.toHexString(id).toUpperCase(Locale.ROOT), 4, '0'));
     }
 
     // endregion

@@ -8,8 +8,8 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.NotFoundException;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
@@ -212,7 +212,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
             FeedOptions feedOptions = new FeedOptions();
             if (properties != null) {
-                feedOptions.properties(properties);
+                feedOptions.setProperties(properties);
             }
             return client.readPartitionKeyRanges(coll.getSelfLink(), feedOptions)
                     // maxConcurrent = 1 to makes it in the right getOrder

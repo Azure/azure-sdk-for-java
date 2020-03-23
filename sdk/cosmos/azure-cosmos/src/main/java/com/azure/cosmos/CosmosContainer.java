@@ -3,6 +3,19 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedIterable;
+import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -193,7 +206,10 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public <T> CosmosItemResponse<T> upsertItem(Object item, CosmosItemRequestOptions options) throws CosmosClientException {
+    @SuppressWarnings("unchecked")
+    // Note: @kushagraThapar and @moderakh to ensure this casting is valid
+    public <T> CosmosItemResponse<T> upsertItem(Object item, CosmosItemRequestOptions options) throws
+        CosmosClientException {
         return (CosmosItemResponse<T>) this.mapItemResponseAndBlock(this.asyncContainer.upsertItem(item, options));
     }
 
@@ -204,11 +220,12 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    <T> CosmosItemResponse<T> mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse<T>> itemMono) throws CosmosClientException {
+    <T> CosmosItemResponse<T> mapItemResponseAndBlock(Mono<CosmosAsyncItemResponse<T>> itemMono) throws
+        CosmosClientException {
         try {
-            return (CosmosItemResponse<T>) itemMono
-                       .map(this::convertResponse)
-                       .block();
+            return itemMono
+                .map(this::convertResponse)
+                .block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosClientException) {
@@ -219,8 +236,8 @@ public class CosmosContainer {
         }
     }
 
-    private CosmosItemResponse mapDeleteItemResponseAndBlock(Mono<CosmosAsyncItemResponse> deleteItemMono) throws
-        CosmosClientException {
+    private CosmosItemResponse<Object> mapDeleteItemResponseAndBlock(Mono<CosmosAsyncItemResponse<Object>> deleteItemMono)
+        throws CosmosClientException {
         try {
             return deleteItemMono
                        .map(this::convertResponse)
@@ -236,41 +253,41 @@ public class CosmosContainer {
     }
 
     /**
-     * Read all items {@link CosmosContinuablePagedIterable}.
+     * Read all items {@link CosmosPagedIterable}.
      *
      * @param <T> the type parameter
      * @param options the options
-     * @param klass the klass
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @param classType the classType
+     * @return the {@link CosmosPagedIterable}
      */
-    public <T> CosmosContinuablePagedIterable<T> readAllItems(FeedOptions options, Class<T> klass) {
-        return getCosmosContinuablePagedIterable(this.asyncContainer.readAllItems(options, klass));
+    public <T> CosmosPagedIterable<T> readAllItems(FeedOptions options, Class<T> classType) {
+        return getCosmosPagedIterable(this.asyncContainer.readAllItems(options, classType));
     }
 
     /**
-     * Query items {@link CosmosContinuablePagedIterable}.
+     * Query items {@link CosmosPagedIterable}.
      *
      * @param <T> the type parameter
      * @param query the query
      * @param options the options
-     * @param klass the class type
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @param classType the class type
+     * @return the {@link CosmosPagedIterable}
      */
-    public <T> CosmosContinuablePagedIterable<T> queryItems(String query, FeedOptions options, Class<T> klass) {
-        return getCosmosContinuablePagedIterable(this.asyncContainer.queryItems(query, options, klass));
+    public <T> CosmosPagedIterable<T> queryItems(String query, FeedOptions options, Class<T> classType) {
+        return getCosmosPagedIterable(this.asyncContainer.queryItems(query, options, classType));
     }
 
     /**
-     * Query items {@link CosmosContinuablePagedIterable}.
+     * Query items {@link CosmosPagedIterable}.
      *
      * @param <T> the type parameter
      * @param querySpec the query spec
      * @param options the options
-     * @param klass the class type
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @param classType the class type
+     * @return the {@link CosmosPagedIterable}
      */
-    public <T> CosmosContinuablePagedIterable<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> klass) {
-        return getCosmosContinuablePagedIterable(this.asyncContainer.queryItems(querySpec, options, klass));
+    public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> classType) {
+        return getCosmosPagedIterable(this.asyncContainer.queryItems(querySpec, options, classType));
     }
 
     /**
@@ -283,7 +300,8 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) throws CosmosClientException {
+    public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) throws
+        CosmosClientException {
         return this.mapItemResponseAndBlock(asyncContainer.readItem(itemId,
                                                                     partitionKey,
                                                                     new CosmosItemRequestOptions(),
@@ -301,8 +319,9 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey,
-                                          CosmosItemRequestOptions options, Class<T> itemType) throws CosmosClientException {
+    public <T> CosmosItemResponse<T> readItem(
+        String itemId, PartitionKey partitionKey,
+        CosmosItemRequestOptions options, Class<T> itemType) throws CosmosClientException {
         return this.mapItemResponseAndBlock(asyncContainer.readItem(itemId, partitionKey, options, itemType));
     }
 
@@ -333,7 +352,7 @@ public class CosmosContainer {
      * @return the cosmos sync item response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosItemResponse deleteItem(String itemId, PartitionKey partitionKey,
+    public CosmosItemResponse<Object> deleteItem(String itemId, PartitionKey partitionKey,
                                             CosmosItemRequestOptions options) throws CosmosClientException {
         return  this.mapDeleteItemResponseAndBlock(asyncContainer.deleteItem(itemId, partitionKey, options));
     }
@@ -358,12 +377,12 @@ public class CosmosContainer {
      * @param response the cosmos item response
      * @return the cosmos sync item response
      */
-    private <T> CosmosItemResponse<T> convertResponse(CosmosAsyncItemResponse response) {
-        return new CosmosItemResponse<T>(response);
+    private <T> CosmosItemResponse<T> convertResponse(CosmosAsyncItemResponse<T> response) {
+        return ModelBridgeInternal.<T>createCosmosItemResponse(response);
     }
 
-    private <T> CosmosContinuablePagedIterable<T> getCosmosContinuablePagedIterable(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux) {
-        return new CosmosContinuablePagedIterable<>(cosmosContinuablePagedFlux);
+    private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
+        return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
     }
 
 }

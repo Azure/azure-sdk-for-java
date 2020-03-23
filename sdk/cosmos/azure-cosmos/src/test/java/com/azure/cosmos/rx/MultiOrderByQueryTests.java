@@ -4,17 +4,17 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CompositePath;
-import com.azure.cosmos.CompositePathSortOrder;
+import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosContainerProperties;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.CosmosItemRequestOptions;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -119,7 +119,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_MultiOrderByQueryTests() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         documentCollection = getSharedMultiPartitionCosmosContainerWithCompositeAndSpatialIndexes(client);
         truncateCollection(documentCollection);
 
@@ -163,7 +163,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
         voidBulkInsertBlocking(documentCollection, documents);
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     private CosmosItemProperties generateMultiOrderByDocument() {
@@ -244,7 +244,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
                         List<CosmosItemProperties> expectedOrderedList = top(sort(filter(this.documents, hasFilter), compositeIndex, invert), hasTop, topCount) ;
                         
-                        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = documentCollection.queryItems(query, feedOptions, CosmosItemProperties.class);
+                        CosmosPagedFlux<CosmosItemProperties> queryObservable = documentCollection.queryItems(query, feedOptions, CosmosItemProperties.class);
 
                         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator
                                 .Builder<CosmosItemProperties>()
@@ -263,7 +263,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         BridgeInternal.remove(documentWithEmptyField, NUMBER_FIELD);
         documentCollection.createItem(documentWithEmptyField, new CosmosItemRequestOptions()).block();
         String query = "SELECT [root." + NUMBER_FIELD + ",root." + STRING_FIELD + "] FROM root ORDER BY root." + NUMBER_FIELD + " ASC ,root." + STRING_FIELD + " DESC";
-        CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = documentCollection.queryItems(query, feedOptions, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = documentCollection.queryItems(query, feedOptions, CosmosItemProperties.class);
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(UnsupportedOperationException.class)

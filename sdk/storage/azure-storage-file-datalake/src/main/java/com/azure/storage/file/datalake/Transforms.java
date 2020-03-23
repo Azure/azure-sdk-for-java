@@ -20,6 +20,8 @@ import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
@@ -318,7 +320,7 @@ class Transforms {
             .setVersion(h.getVersion())
             .setAcceptRanges(h.getAcceptRanges())
             .setDateProperty(h.getDateProperty())
-            .setIsServerEncrypted(h.isServerEncrypted())
+            .setServerEncrypted(h.isServerEncrypted())
             .setEncryptionKeySha256(h.getEncryptionKeySha256())
             .setFileContentMd5(h.getBlobContentMD5())
             .setContentCrc64(h.getContentCrc64())
@@ -425,5 +427,21 @@ class Transforms {
                 dataLakeServiceSasSignatureValues.getPermissions()));
         }
         return blobServiceSasSignatureValues;
+    }
+
+    static com.azure.storage.blob.models.ParallelTransferOptions toBlobParallelTransferOptions(
+        ParallelTransferOptions pto) {
+        if (pto == null) {
+            return null;
+        }
+        return new com.azure.storage.blob.models.ParallelTransferOptions(pto.getBlockSize(), pto.getNumBuffers(),
+            Transforms.toBlobProgressReceiver(pto.getProgressReceiver()), pto.getMaxSingleUploadSize());
+    }
+
+    static com.azure.storage.blob.ProgressReceiver toBlobProgressReceiver(ProgressReceiver pr) {
+        if (pr == null) {
+            return null;
+        }
+        return pr::reportProgress;
     }
 }

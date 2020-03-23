@@ -9,14 +9,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public interface DocumentServiceRequestValidator<T extends RxDocumentServiceRequest> {
 
-    static <T extends RxDocumentServiceRequest> Builder builder() {
-        return new Builder();
+    static <T extends RxDocumentServiceRequest> Builder<T> builder() {
+        return new Builder<T>();
     }
 
     void validate(T v);
 
     class Builder<T extends RxDocumentServiceRequest> {
-        private List<DocumentServiceRequestValidator<? extends RxDocumentServiceRequest>> validators = new ArrayList<>();
+        private List<DocumentServiceRequestValidator<T>> validators = new ArrayList<>();
 
         public DocumentServiceRequestValidator<T> build() {
             return new DocumentServiceRequestValidator<T>() {
@@ -24,14 +24,14 @@ public interface DocumentServiceRequestValidator<T extends RxDocumentServiceRequ
                 @SuppressWarnings({ "rawtypes", "unchecked" })
                 @Override
                 public void validate(T v) {
-                    for (DocumentServiceRequestValidator validator : validators) {
+                    for (DocumentServiceRequestValidator<T> validator : validators) {
                         validator.validate(v);
                     }
                 }
             };
         }
 
-        public Builder<T> add(DocumentServiceRequestValidator validator) {
+        public Builder<T> add(DocumentServiceRequestValidator<T> validator) {
             validators.add(validator);
             return this;
         }
@@ -76,8 +76,8 @@ public interface DocumentServiceRequestValidator<T extends RxDocumentServiceRequ
             return this;
         }
 
-        public Builder<T> add(DocumentServiceRequestContextValidator validator) {
-            add(new DocumentServiceRequestValidator() {
+        public Builder<T> add(DocumentServiceRequestContextValidator<DocumentServiceRequestContext> validator) {
+            add(new DocumentServiceRequestValidator<T>() {
                 @Override
                 public void validate(RxDocumentServiceRequest request) {
                     validator.validate(request.requestContext);

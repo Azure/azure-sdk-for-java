@@ -62,7 +62,8 @@ class APISpec extends Specification {
 
     static int defaultDataSize = defaultData.remaining()
 
-    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
+    @Shared
+    public static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
 
     // Prefixes for blobs and containers
     String fileSystemPrefix = "jtfs" // java test file system
@@ -111,7 +112,7 @@ class APISpec extends Specification {
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
-    private TestResourceNamer resourceNamer
+    public TestResourceNamer resourceNamer
     protected String testName
     def fileSystemName
 
@@ -659,11 +660,11 @@ class APISpec extends Specification {
 
     def entryIsInAcl(PathAccessControlEntry entry, List<PathAccessControlEntry> acl) {
         for (PathAccessControlEntry e : acl) {
-            if (e.defaultScope() == entry.defaultScope() &&
-                e.accessControlType().equals(entry.accessControlType()) &&
-                (e.entityID() == null && entry.entityID() == null ||
-                    e.entityID().equals(entry.entityID())) &&
-                e.permissions().equals(entry.permissions())) {
+            if (e.isInDefaultScope() == entry.isInDefaultScope() &&
+                e.getAccessControlType().equals(entry.getAccessControlType()) &&
+                (e.getEntityId() == null && entry.getEntityId() == null ||
+                    e.getEntityId().equals(entry.getEntityId())) &&
+                e.getPermissions().equals(entry.getPermissions())) {
                 return true
             }
         }

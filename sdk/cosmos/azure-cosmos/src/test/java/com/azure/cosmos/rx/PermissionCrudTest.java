@@ -5,14 +5,14 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncPermission;
-import com.azure.cosmos.CosmosAsyncPermissionResponse;
+import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.CosmosPermissionProperties;
+import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.CosmosResponseValidator;
-import com.azure.cosmos.CosmosUserProperties;
-import com.azure.cosmos.PermissionMode;
+import com.azure.cosmos.models.CosmosUserProperties;
+import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.implementation.FailureValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -105,7 +105,7 @@ public class PermissionCrudTest extends TestSuiteBase {
                 .build();
         validateSuccess(deleteObservable, validator);
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
 
         // attempt to read the getPermission which was deleted
         Mono<CosmosAsyncPermissionResponse> readObservable = readBackPermission.getPermission()
@@ -201,7 +201,7 @@ public class PermissionCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_PermissionCrudTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
     }
 

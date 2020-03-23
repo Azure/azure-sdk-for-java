@@ -8,7 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 
-public class FeedResponseDiagnostics {
+/**
+ * The type Feed response diagnostics.
+ */
+public final class FeedResponseDiagnostics {
 
     private Map<String, QueryMetrics> queryMetricsMap;
 
@@ -27,7 +30,8 @@ public class FeedResponseDiagnostics {
 
     /**
      * Returns the textual representation of feed response metrics
-     *
+     * End users are not advised to parse return value and take dependency on parsed object.
+     * Since feed response metrics contain some internal metrics, they may change across different versions.
      * @return Textual representation of feed response metrics
      */
     @Override

@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +35,11 @@ public interface ResourceValidator<T extends Resource> {
                 @Override
                 public void validate(T v) {
                     
-                    assertThat(v.getMap().keySet())
-                    .describedAs("number of fields").
-                    hasSize(expectedValue.getMap().keySet().size());
-                    expectedValue.getMap().keySet();
-                    for(String key: expectedValue.getMap().keySet()) {
+                    assertThat(ModelBridgeInternal.getJsonSerializableMap(v).keySet())
+                        .describedAs("number of fields")
+                        .hasSize(ModelBridgeInternal.getJsonSerializableMap(expectedValue).keySet().size());
+                    ModelBridgeInternal.getJsonSerializableMap(expectedValue).keySet();
+                    for(String key: ModelBridgeInternal.getJsonSerializableMap(expectedValue).keySet()) {
                         assertThat(expectedValue.get(key))
                         .describedAs("value for " + key)
                         .isEqualTo(expectedValue.get(key));

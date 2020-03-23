@@ -205,7 +205,7 @@ class AmqpChannelProcessorTest {
     }
 
     /**
-     * Verifies that when there are no subscribers, no request is fetched from upstream.
+     * Verifies that on initial subscribe, one item is requested.
      */
     @Test
     void noSubscribers() {
@@ -216,14 +216,15 @@ class AmqpChannelProcessorTest {
         channelProcessor.onSubscribe(subscription);
 
         // Assert
-        verify(subscription).request(eq(0L));
+        verify(subscription).request(eq(1L));
     }
 
     /**
-     * Verifies that when the processor has completed (ie. the instance is closed), no more connections are emitted.
+     * Verifies that when the processor has completed (ie. the instance is closed), and we try to subscribe, an error
+     * is thrown.
      */
     @Test
-    void completesWhenTerminated() {
+    void errorsWhenResubscribingOnTerminated() {
         // Arrange
         final AmqpChannelProcessor<TestObject> processor = createSink(connection1, connection2)
             .subscribeWith(channelProcessor);
@@ -240,9 +241,9 @@ class AmqpChannelProcessorTest {
 
         processor.dispose();
 
-        // Verify that it completes without emitting a connection.
+        // Verify that it errors without emitting a connection.
         StepVerifier.create(processor)
-            .expectComplete()
+            .expectError(IllegalStateException.class)
             .verify();
     }
 

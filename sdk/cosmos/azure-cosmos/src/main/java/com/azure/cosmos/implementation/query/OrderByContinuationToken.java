@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.JsonSerializable;
+import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -112,7 +112,7 @@ public final class OrderByContinuationToken extends JsonSerializable {
     }
 
     public boolean getInclusive() {
-        return super.getBoolean(InclusivePropertyName);
+        return Boolean.TRUE.equals(super.getBoolean(InclusivePropertyName));
     }
 
     private void setCompositeContinuationToken(CompositeContinuationToken compositeContinuationToken) {

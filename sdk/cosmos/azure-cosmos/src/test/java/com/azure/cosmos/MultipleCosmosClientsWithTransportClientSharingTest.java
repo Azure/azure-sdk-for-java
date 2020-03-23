@@ -12,7 +12,17 @@ import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.SharedTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
+import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -41,12 +51,12 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
-        this.client = clientBuilder().buildClient();
+        this.client = getClientBuilder().buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container1 = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
 
-        client1 = copyCosmosClientBuilder(clientBuilder()).setConnectionReuseAcrossClientsEnabled(true).buildClient();
-        client2 = copyCosmosClientBuilder(clientBuilder()).setConnectionReuseAcrossClientsEnabled(true).buildClient();
+        client1 = copyCosmosClientBuilder(getClientBuilder()).connectionReuseAcrossClientsEnabled(true).buildClient();
+        client2 = copyCosmosClientBuilder(getClientBuilder()).connectionReuseAcrossClientsEnabled(true).buildClient();
 
         container1 = client1.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
         container2 = client1.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
@@ -118,13 +128,13 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         String newPropValue = UUID.randomUUID().toString();
         BridgeInternal.setProperty(properties, "newProp", newPropValue);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setPartitionKey(new PartitionKey(properties.get("mypk")));
+        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(properties.get("mypk")));
         // replace document
         CosmosItemResponse<CosmosItemProperties> replace = container1.replaceItem(properties,
                                                               properties.getId(),
                                                               new PartitionKey(properties.get("mypk")),
                                                               options);
-        assertThat(replace.getProperties().get("newProp")).isEqualTo(newPropValue);
+        assertThat(BridgeInternal.getProperties(replace).get("newProp")).isEqualTo(newPropValue);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -133,7 +143,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         CosmosItemResponse<CosmosItemProperties> itemResponse = container1.createItem(properties);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
-        CosmosItemResponse<CosmosItemProperties> deleteResponse = container1.deleteItem(properties.getId(),
+        CosmosItemResponse<?> deleteResponse = container1.deleteItem(properties.getId(),
                                                                     new PartitionKey(properties.get("mypk")),
                                                                     options);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
@@ -147,7 +157,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
 
         FeedOptions feedOptions = new FeedOptions();
 
-        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator3 =
+        CosmosPagedIterable<CosmosItemProperties> feedResponseIterator3 =
                 container1.readAllItems(feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
@@ -161,13 +171,13 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator1 =
+        CosmosPagedIterable<CosmosItemProperties> feedResponseIterator1 =
                 container1.queryItems(query, feedOptions, CosmosItemProperties.class);
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator3 =
+        CosmosPagedIterable<CosmosItemProperties> feedResponseIterator3 =
                 container1.queryItems(querySpec, feedOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
@@ -194,7 +204,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         int initialDocumentCount = 3;
         int finalDocumentCount = 0;
 
-        CosmosContinuablePagedIterable<CosmosItemProperties> feedResponseIterator1 =
+        CosmosPagedIterable<CosmosItemProperties> feedResponseIterator1 =
             container1.queryItems(query, feedOptions, CosmosItemProperties.class);
 
         do {
@@ -228,8 +238,8 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
     private void validateItemResponse(CosmosItemProperties containerProperties,
                                       CosmosItemResponse<CosmosItemProperties> createResponse) {
         // Basic validation
-        assertThat(createResponse.getProperties().getId()).isNotNull();
-        assertThat(createResponse.getProperties().getId())
+        assertThat(BridgeInternal.getProperties(createResponse).getId()).isNotNull();
+        assertThat(BridgeInternal.getProperties(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(containerProperties.getId());
     }
@@ -249,11 +259,21 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
 
         TransportClient transportClient2 = ReflectionUtils.getTransportClient(client2);
         assertThat(transportClient2).isSameAs(transportClient1);
+    }
 
-        assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void gatewayHttpClientReferenceValidation() {
+        HttpClient httpClient = ReflectionUtils.getGatewayHttpClient(client);
+        assertThat(httpClient).isNotInstanceOf(SharedGatewayHttpClient.class);
+
+        HttpClient httpClient1 = ReflectionUtils.getGatewayHttpClient(client1);
+        assertThat(httpClient1).isInstanceOf(SharedGatewayHttpClient.class);
+
+        HttpClient httpClient2 = ReflectionUtils.getGatewayHttpClient(client2);
+        assertThat(httpClient2).isSameAs(httpClient1);
     }
 
     private boolean ifDirectMode() {
-        return (clientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT);
+        return (getClientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT);
     }
 }

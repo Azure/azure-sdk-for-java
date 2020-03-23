@@ -12,7 +12,7 @@ class ServiceConfig {
         return instance;
     }
 
-    class SystemReplicationPolicy {
+    static class SystemReplicationPolicy {
         public static final int MaxReplicaSetSize = 4;
     }
 }

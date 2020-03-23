@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.ChangeFeedProcessor;
-import com.azure.cosmos.ChangeFeedProcessorOptions;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -114,7 +114,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @return current Builder.
      */
     @Override
-    public ChangeFeedProcessorBuilderImpl setHostName(String hostName) {
+    public ChangeFeedProcessorBuilderImpl hostName(String hostName) {
         this.hostName = hostName;
         return this;
     }
@@ -126,7 +126,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @return current Builder.
      */
     @Override
-    public ChangeFeedProcessorBuilderImpl setFeedContainer(CosmosAsyncContainer feedDocumentClient) {
+    public ChangeFeedProcessorBuilderImpl feedContainer(CosmosAsyncContainer feedDocumentClient) {
         if (feedDocumentClient == null) {
             throw new IllegalArgumentException("feedContextClient");
         }
@@ -142,7 +142,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @return current Builder.
      */
     @Override
-    public ChangeFeedProcessorBuilderImpl setOptions(ChangeFeedProcessorOptions changeFeedProcessorOptions) {
+    public ChangeFeedProcessorBuilderImpl options(ChangeFeedProcessorOptions changeFeedProcessorOptions) {
         if (changeFeedProcessorOptions == null) {
             throw new IllegalArgumentException("changeFeedProcessorOptions");
         }
@@ -183,7 +183,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     }
 
     @Override
-    public ChangeFeedProcessorBuilderImpl setHandleChanges(Consumer<List<JsonNode>> consumer) {
+    public ChangeFeedProcessorBuilderImpl handleChanges(Consumer<List<JsonNode>> consumer) {
         return this.observerFactory(new DefaultObserverFactory(consumer));
     }
 
@@ -215,7 +215,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @return current Builder.
      */
     @Override
-    public ChangeFeedProcessorBuilderImpl setLeaseContainer(CosmosAsyncContainer leaseDocumentClient) {
+    public ChangeFeedProcessorBuilderImpl leaseContainer(CosmosAsyncContainer leaseDocumentClient) {
         if (leaseDocumentClient == null) {
             throw new IllegalArgumentException("leaseContextClient");
         }
@@ -352,7 +352,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
 
                     String leasePrefix = this.getLeasePrefix();
 
-                    return LeaseStoreManager.Builder()
+                    return LeaseStoreManager.builder()
                         .leasePrefix(leasePrefix)
                         .leaseCollectionLink(this.leaseContextClient.getContainerClient())
                         .leaseContextClient(this.leaseContextClient)

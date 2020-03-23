@@ -22,14 +22,20 @@ public class AdultInfo {
     private boolean isAdultContent;
 
     /**
-     * A value indicating if the image is race.
+     * A value indicating if the image is racy.
      */
     @JsonProperty(value = "isRacyContent")
     private boolean isRacyContent;
 
     /**
-     * Score from 0 to 1 that indicates how much of adult content is within the
-     * image.
+     * A value indicating if the image is gory.
+     */
+    @JsonProperty(value = "isGoryContent")
+    private boolean isGoryContent;
+
+    /**
+     * Score from 0 to 1 that indicates how much the content is considered
+     * adult-oriented within the image.
      */
     @JsonProperty(value = "adultScore")
     private double adultScore;
@@ -39,6 +45,12 @@ public class AdultInfo {
      */
     @JsonProperty(value = "racyScore")
     private double racyScore;
+
+    /**
+     * Score from 0 to 1 that indicates how gory is the image.
+     */
+    @JsonProperty(value = "goreScore")
+    private double goreScore;
 
     /**
      * Get the isAdultContent value.
@@ -81,6 +93,26 @@ public class AdultInfo {
     }
 
     /**
+     * Get the isGoryContent value.
+     *
+     * @return the isGoryContent value
+     */
+    public boolean isGoryContent() {
+        return this.isGoryContent;
+    }
+
+    /**
+     * Set the isGoryContent value.
+     *
+     * @param isGoryContent the isGoryContent value to set
+     * @return the AdultInfo object itself.
+     */
+    public AdultInfo withIsGoryContent(boolean isGoryContent) {
+        this.isGoryContent = isGoryContent;
+        return this;
+    }
+
+    /**
      * Get the adultScore value.
      *
      * @return the adultScore value
@@ -117,6 +149,26 @@ public class AdultInfo {
      */
     public AdultInfo withRacyScore(double racyScore) {
         this.racyScore = racyScore;
+        return this;
+    }
+
+    /**
+     * Get the goreScore value.
+     *
+     * @return the goreScore value
+     */
+    public double goreScore() {
+        return this.goreScore;
+    }
+
+    /**
+     * Set the goreScore value.
+     *
+     * @param goreScore the goreScore value to set
+     * @return the AdultInfo object itself.
+     */
+    public AdultInfo withGoreScore(double goreScore) {
+        this.goreScore = goreScore;
         return this;
     }
 

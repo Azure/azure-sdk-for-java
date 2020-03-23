@@ -5,11 +5,11 @@ package com.azure.storage.blob.nio;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.nio.implementation.util.Utility;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
@@ -20,13 +20,19 @@ import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.nio.file.WatchService;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.FileAttributeView;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.nio.file.attribute.UserPrincipalLookupService;
 import java.nio.file.spi.FileSystemProvider;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * In the hierarchy of this file system, an {@code AzureFileSystem} corresponds to an Azure Blob Storage account. A
@@ -100,11 +106,23 @@ public final class AzureFileSystem extends FileSystem {
      * Expected type: Boolean
      */
     public static final String AZURE_STORAGE_USE_HTTPS = "AzureStorageUseHttps";
-    public static final String AZURE_STORAGE_HTTP_CLIENT = "AzureStorageHttpClient"; // undocumented; for test.
+    static final String AZURE_STORAGE_HTTP_CLIENT = "AzureStorageHttpClient"; // undocumented; for test.
+    static final String AZURE_STORAGE_HTTP_POLICIES = "AzureStorageHttpPolicies"; // undocumented; for test.
 
     public static final String AZURE_STORAGE_FILE_STORES = "AzureStorageFileStores";
 
+    static final String PATH_SEPARATOR = "/";
+
     private static final String AZURE_STORAGE_BLOB_ENDPOINT_TEMPLATE = "%s://%s.blob.core.windows.net";
+
+    static final Map<Class<? extends FileAttributeView>, String> SUPPORTED_ATTRIBUTE_VIEWS;
+    static {
+        Map<Class<? extends FileAttributeView>, String> map = new HashMap<>();
+        map.put(BasicFileAttributeView.class, "basic");
+        map.put(UserDefinedFileAttributeView.class, "user");
+        map.put(AzureStorageFileAttributeView.class, "azureStorage");
+        SUPPORTED_ATTRIBUTE_VIEWS = Collections.unmodifiableMap(map);
+    }
 
     private final AzureFileSystemProvider parentFileSystemProvider;
     private final BlobServiceClient blobServiceClient;
@@ -118,7 +136,7 @@ public final class AzureFileSystem extends FileSystem {
             throws IOException {
         // A FileSystem should only ever be instantiated by a provider.
         if (Objects.isNull(parentFileSystemProvider)) {
-            throw Utility.logError(logger, new IllegalArgumentException("AzureFileSystem cannot be instantiated"
+            throw LoggingUtility.logError(logger, new IllegalArgumentException("AzureFileSystem cannot be instantiated"
                 + " without a parent FileSystemProvider"));
         }
         this.parentFileSystemProvider = parentFileSystemProvider;
@@ -132,10 +150,10 @@ public final class AzureFileSystem extends FileSystem {
             // Initialize and ensure access to FileStores.
             this.fileStores = this.initializeFileStores(config);
         } catch (RuntimeException e) {
-            throw Utility.logError(logger, new IllegalArgumentException("There was an error parsing the configurations "
-                + "map. Please ensure all fields are set to a legal value of the correct type."));
+            throw LoggingUtility.logError(logger, new IllegalArgumentException("There was an error parsing the "
+                + "configurations map. Please ensure all fields are set to a legal value of the correct type."));
         } catch (IOException e) {
-            throw Utility.logError(logger,
+            throw LoggingUtility.logError(logger,
                 new IOException("Initializing FileStores failed. FileSystem could not be opened.", e));
         }
 
@@ -173,6 +191,11 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * Always returns false. It may be the case that the authentication method provided to this file system only
+     * supports read operations and hence the file system is implicitly read only in this view, but that does not
+     * imply the underlying account/file system is inherently read only. Creating/specifying read only file
+     * systems is not supported.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -187,18 +210,38 @@ public final class AzureFileSystem extends FileSystem {
      */
     @Override
     public String getSeparator() {
-        return "/";
+        return AzureFileSystem.PATH_SEPARATOR;
     }
 
     /**
+     * The list of root directories corresponds to the list of available file stores and therefore containers specified
+     * upon initialization. A root directory always takes the form {@code "&lt;file-store-name&gt;:"}. This list will
+     * respect the parameters provided during initialization.
+     * <p>
+     * If a finite list of containers was provided on start up, this list will not change during the lifetime of this
+     * object. If containers are added to the account after initialization, they will be ignored. If a container is
+     * deleted or otherwise becomes unavailable, its root directory will still be returned but operations to it will
+     * fail. If the file system was set to use all containers in the account, the account will be re-queried and the
+     * list may grow or shrink if containers were added or deleted.
+     *
      * {@inheritDoc}
      */
     @Override
     public Iterable<Path> getRootDirectories() {
-        return null;
+        return fileStores.keySet().stream()
+            .map(name -> this.getPath(name + AzurePath.ROOT_DIR_SUFFIX))
+            .collect(Collectors.toList());
     }
 
     /**
+     * This list will respect the parameters provided during initialization.
+     * <p>
+     * If a finite list of containers was provided on start up, this list will not change during the lifetime of this
+     * object. If containers are added to the account after initialization, they will be ignored. If a container is
+     * deleted or otherwise becomes unavailable, its root directory will still be returned but operations to it will
+     * fail. If the file system was set to use all containers in the account, the account will be re-queried and the
+     * list may grow or shrink if containers were added or deleted.
+     *
      * {@inheritDoc}
      */
     @Override
@@ -207,11 +250,18 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * This file system supports the following views:
+     * <ul>
+     *     <li>{@link java.nio.file.attribute.BasicFileAttributeView}</li>
+     *     <li>{@link java.nio.file.attribute.UserDefinedFileAttributeView}</li>
+     *     <li>{@link AzureStorageFileAttributeView}</li>
+     * </ul>
+     *
      * {@inheritDoc}
      */
     @Override
     public Set<String> supportedFileAttributeViews() {
-        return null;
+        return new HashSet<>(SUPPORTED_ATTRIBUTE_VIEWS.values());
     }
 
     /**
@@ -230,27 +280,32 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     /**
+     * Unsupported.
+     *
      * {@inheritDoc}
      */
     @Override
     public PathMatcher getPathMatcher(String s) {
-        throw Utility.logError(logger, new UnsupportedOperationException());
+        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
     }
 
     /**
+     * Unsupported.
      * {@inheritDoc}
      */
     @Override
     public UserPrincipalLookupService getUserPrincipalLookupService() {
-        throw Utility.logError(logger, new UnsupportedOperationException());
+        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
     }
 
     /**
+     * Unsupported.
+     *
      * {@inheritDoc}
      */
     @Override
     public WatchService newWatchService() throws IOException {
-        throw Utility.logError(logger, new UnsupportedOperationException());
+        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
     }
 
     String getFileSystemName() {
@@ -276,8 +331,8 @@ public final class AzureFileSystem extends FileSystem {
         } else if (config.containsKey(AZURE_STORAGE_SAS_TOKEN)) {
             builder.sasToken((String) config.get(AZURE_STORAGE_SAS_TOKEN));
         } else {
-            throw Utility.logError(logger, new IllegalArgumentException(String.format("No credentials were provided. "
-                    + "Please specify one of the following when constructing an AzureFileSystem: %s, %s.",
+            throw LoggingUtility.logError(logger, new IllegalArgumentException(String.format("No credentials were "
+                    + "provided. Please specify one of the following when constructing an AzureFileSystem: %s, %s.",
                 AZURE_STORAGE_ACCOUNT_KEY, AZURE_STORAGE_SAS_TOKEN)));
         }
 
@@ -295,6 +350,11 @@ public final class AzureFileSystem extends FileSystem {
         builder.retryOptions(retryOptions);
 
         builder.httpClient((HttpClient) config.get(AZURE_STORAGE_HTTP_CLIENT));
+        if (config.containsKey(AZURE_STORAGE_HTTP_POLICIES)) {
+            for (HttpPipelinePolicy policy : (HttpPipelinePolicy[]) config.get(AZURE_STORAGE_HTTP_POLICIES)) {
+                builder.addPolicy(policy);
+            }
+        }
 
         return builder.buildClient();
     }
@@ -302,7 +362,8 @@ public final class AzureFileSystem extends FileSystem {
     private Map<String, FileStore> initializeFileStores(Map<String, ?> config) throws IOException {
         String fileStoreNames = (String) config.get(AZURE_STORAGE_FILE_STORES);
         if (CoreUtils.isNullOrEmpty(fileStoreNames)) {
-            throw Utility.logError(logger, new IllegalArgumentException("The list of FileStores cannot be null."));
+            throw LoggingUtility.logError(logger, new IllegalArgumentException("The list of FileStores cannot be "
+                + "null."));
         }
 
         Map<String, FileStore> fileStores = new HashMap<>();
@@ -334,6 +395,14 @@ public final class AzureFileSystem extends FileSystem {
     }
 
     Path getDefaultDirectory() {
-        return this.getPath(this.defaultFileStore.name() + ":");
+        return this.getPath(this.defaultFileStore.name() + AzurePath.ROOT_DIR_SUFFIX);
+    }
+
+    FileStore getFileStore(String name) throws IOException {
+        FileStore store = this.fileStores.get(name);
+        if (store == null) {
+            throw LoggingUtility.logError(logger, new IOException("Invalid file store: " + name));
+        }
+        return store;
     }
 }

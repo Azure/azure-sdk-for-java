@@ -3,6 +3,21 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosAsyncUserResponse;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosUserProperties;
+import com.azure.cosmos.models.CosmosUserResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedIterable;
+import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -251,29 +266,29 @@ public class CosmosDatabase {
      * Read all containers iterator.
      *
      * @param options the options
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @return the {@link CosmosPagedIterable}
      */
-    public CosmosContinuablePagedIterable<CosmosContainerProperties> readAllContainers(FeedOptions options) {
-        return getCosmosContinuablePagedIterable(databaseWrapper.readAllContainers(options));
+    public CosmosPagedIterable<CosmosContainerProperties> readAllContainers(FeedOptions options) {
+        return getCosmosPagedIterable(databaseWrapper.readAllContainers(options));
     }
 
     /**
      * Read all containers iterator.
      *
-     @return the {@link CosmosContinuablePagedIterable}
+     @return the {@link CosmosPagedIterable}
      */
-    public CosmosContinuablePagedIterable<CosmosContainerProperties> readAllContainers() {
-        return getCosmosContinuablePagedIterable(databaseWrapper.readAllContainers());
+    public CosmosPagedIterable<CosmosContainerProperties> readAllContainers() {
+        return getCosmosPagedIterable(databaseWrapper.readAllContainers());
     }
 
     /**
      * Query containers iterator.
      *
      * @param query the query
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @return the {@link CosmosPagedIterable}
      */
-    public CosmosContinuablePagedIterable<CosmosContainerProperties> queryContainers(String query) {
-        return getCosmosContinuablePagedIterable(databaseWrapper.queryContainers(query));
+    public CosmosPagedIterable<CosmosContainerProperties> queryContainers(String query) {
+        return getCosmosPagedIterable(databaseWrapper.queryContainers(query));
     }
 
     /**
@@ -281,20 +296,20 @@ public class CosmosDatabase {
      *
      * @param query the query
      * @param options the options
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @return the {@link CosmosPagedIterable}
      */
-    public CosmosContinuablePagedIterable<CosmosContainerProperties> queryContainers(String query, FeedOptions options) {
-        return getCosmosContinuablePagedIterable(databaseWrapper.queryContainers(query, options));
+    public CosmosPagedIterable<CosmosContainerProperties> queryContainers(String query, FeedOptions options) {
+        return getCosmosPagedIterable(databaseWrapper.queryContainers(query, options));
     }
 
     /**
      * Query containers iterator.
      *
      * @param querySpec the query spec
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @return the {@link CosmosPagedIterable}
      */
-    public CosmosContinuablePagedIterable<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec) {
-        return getCosmosContinuablePagedIterable(databaseWrapper.queryContainers(querySpec));
+    public CosmosPagedIterable<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec) {
+        return getCosmosPagedIterable(databaseWrapper.queryContainers(querySpec));
     }
 
     /**
@@ -302,12 +317,12 @@ public class CosmosDatabase {
      *
      * @param querySpec the query spec
      * @param options the options
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @return the {@link CosmosPagedIterable}
      */
-    public CosmosContinuablePagedIterable<CosmosContainerProperties> queryContainers(
+    public CosmosPagedIterable<CosmosContainerProperties> queryContainers(
         SqlQuerySpec querySpec,
         FeedOptions options) {
-        return getCosmosContinuablePagedIterable(databaseWrapper.queryContainers(querySpec, options));
+        return getCosmosPagedIterable(databaseWrapper.queryContainers(querySpec, options));
     }
 
     /**
@@ -327,7 +342,7 @@ public class CosmosDatabase {
      * @return the cosmos sync container response
      */
     CosmosContainerResponse convertResponse(CosmosAsyncContainerResponse response) {
-        return new CosmosContainerResponse(response, this, client);
+        return ModelBridgeInternal.createCosmosContainerResponse(response, this, client);
     }
 
     /* Users */
@@ -335,84 +350,84 @@ public class CosmosDatabase {
     /**
      * Create user cosmos sync user response.
      *
-     * @param settings the settings
+     * @param userProperties the settings
      * @return the cosmos sync user response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserResponse createUser(CosmosUserProperties settings) throws CosmosClientException {
-        return mapUserResponseAndBlock(databaseWrapper.createUser(settings));
+    public CosmosUserResponse createUser(CosmosUserProperties userProperties) throws CosmosClientException {
+        return mapUserResponseAndBlock(databaseWrapper.createUser(userProperties));
     }
 
     /**
      * Upsert user cosmos sync user response.
      *
-     * @param settings the settings
+     * @param userProperties the settings
      * @return the cosmos sync user response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserResponse upsertUser(CosmosUserProperties settings) throws CosmosClientException {
-        return mapUserResponseAndBlock(databaseWrapper.upsertUser(settings));
+    public CosmosUserResponse upsertUser(CosmosUserProperties userProperties) throws CosmosClientException {
+        return mapUserResponseAndBlock(databaseWrapper.upsertUser(userProperties));
     }
 
     /**
-     * Read all users {@link CosmosContinuablePagedIterable}.
+     * Read all users {@link CosmosPagedIterable}.
      *
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @return the {@link CosmosPagedIterable}
      */
-    public CosmosContinuablePagedIterable<CosmosUserProperties> readAllUsers() {
-        return getCosmosContinuablePagedIterable(databaseWrapper.readAllUsers());
+    public CosmosPagedIterable<CosmosUserProperties> readAllUsers() {
+        return getCosmosPagedIterable(databaseWrapper.readAllUsers());
     }
 
     /**
-     * Read all users {@link CosmosContinuablePagedIterable}.
+     * Read all users {@link CosmosPagedIterable}.
      *
      * @param options the options
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @return the {@link CosmosPagedIterable}
      */
-    public CosmosContinuablePagedIterable<CosmosUserProperties> readAllUsers(FeedOptions options) {
-        return getCosmosContinuablePagedIterable(databaseWrapper.readAllUsers(options));
+    public CosmosPagedIterable<CosmosUserProperties> readAllUsers(FeedOptions options) {
+        return getCosmosPagedIterable(databaseWrapper.readAllUsers(options));
     }
 
     /**
-     * Query users {@link CosmosContinuablePagedIterable}.
+     * Query users {@link CosmosPagedIterable}.
      *
      * @param query the query
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @return the {@link CosmosPagedIterable}
      */
-    public CosmosContinuablePagedIterable<CosmosUserProperties> queryUsers(String query) {
-        return getCosmosContinuablePagedIterable(databaseWrapper.queryUsers(query));
+    public CosmosPagedIterable<CosmosUserProperties> queryUsers(String query) {
+        return getCosmosPagedIterable(databaseWrapper.queryUsers(query));
     }
 
     /**
-     * Query users {@link CosmosContinuablePagedIterable}.
+     * Query users {@link CosmosPagedIterable}.
      *
      * @param query the query
      * @param options the options
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @return the {@link CosmosPagedIterable}
      */
-    public CosmosContinuablePagedIterable<CosmosUserProperties> queryUsers(String query, FeedOptions options) {
-        return getCosmosContinuablePagedIterable(databaseWrapper.queryUsers(query, options));
+    public CosmosPagedIterable<CosmosUserProperties> queryUsers(String query, FeedOptions options) {
+        return getCosmosPagedIterable(databaseWrapper.queryUsers(query, options));
     }
 
     /**
-     * Query users {@link CosmosContinuablePagedIterable}.
+     * Query users {@link CosmosPagedIterable}.
      *
      * @param querySpec the query spec
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @return the {@link CosmosPagedIterable}
      */
-    public CosmosContinuablePagedIterable<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec) {
-        return getCosmosContinuablePagedIterable(databaseWrapper.queryUsers(querySpec));
+    public CosmosPagedIterable<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec) {
+        return getCosmosPagedIterable(databaseWrapper.queryUsers(querySpec));
     }
 
     /**
-     * Query users {@link CosmosContinuablePagedIterable}.
+     * Query users {@link CosmosPagedIterable}.
      *
      * @param querySpec the query spec
      * @param options the options
-     * @return the {@link CosmosContinuablePagedIterable}
+     * @return the {@link CosmosPagedIterable}
      */
-    public CosmosContinuablePagedIterable<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
-        return getCosmosContinuablePagedIterable(databaseWrapper.queryUsers(querySpec, options));
+    public CosmosPagedIterable<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
+        return getCosmosPagedIterable(databaseWrapper.queryUsers(querySpec, options));
     }
 
     /**
@@ -440,7 +455,7 @@ public class CosmosDatabase {
     }
 
     private CosmosUserResponse convertUserResponse(CosmosAsyncUserResponse response) {
-        return new CosmosUserResponse(response, this);
+        return ModelBridgeInternal.createCosmosUserResponse(response, this);
     }
 
     /**
@@ -477,8 +492,8 @@ public class CosmosDatabase {
         }
     }
 
-    private <T> CosmosContinuablePagedIterable<T> getCosmosContinuablePagedIterable(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux) {
-        return new CosmosContinuablePagedIterable<>(cosmosContinuablePagedFlux);
+    private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
+        return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
     }
 
 }

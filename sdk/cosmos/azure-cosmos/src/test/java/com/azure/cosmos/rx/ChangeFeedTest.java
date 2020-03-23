@@ -3,11 +3,11 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ChangeFeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.implementation.ChangeFeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
@@ -35,7 +35,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import static com.azure.cosmos.CommonsBridgeInternal.partitionKeyRangeIdInternal;
 import static org.assertj.core.api.Assertions.assertThat;
 
 //TODO: change to use external TestSuiteBase
@@ -112,7 +111,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
         ChangeFeedOptions changeFeedOption = new ChangeFeedOptions();
         changeFeedOption.setMaxItemCount(3);
-        partitionKeyRangeIdInternal(changeFeedOption, pkRangeId);
+        changeFeedOption.setPartitionKeyRangeId(pkRangeId);
         changeFeedOption.setStartFromBeginning(true);
         List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(getCollectionLink(), changeFeedOption)
                 .collectList().block();

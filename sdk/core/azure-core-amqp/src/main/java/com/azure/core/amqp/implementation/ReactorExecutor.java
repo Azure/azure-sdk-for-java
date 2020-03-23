@@ -159,7 +159,13 @@ class ReactorExecutor implements Closeable {
                     StringUtil.toStackTraceString(e, "scheduleCompletePendingTasks - exception occurred while "
                         + "processing events."));
             } finally {
-                reactor.free();
+                try {
+                    reactor.free();
+                } catch (IllegalStateException ignored) {
+                    // Since reactor is not thread safe, it is possible that another thread has already disposed of the
+                    // session before we were able to schedule this work.
+                }
+
                 disposeSemaphore.release();
             }
         });

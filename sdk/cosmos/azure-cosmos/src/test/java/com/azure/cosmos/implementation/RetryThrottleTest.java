@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.RetryOptions;
+import com.azure.cosmos.ThrottlingRetryOptions;
 import org.assertj.core.api.Assertions;
 import org.mockito.stubbing.Answer;
 import org.testng.annotations.AfterClass;
@@ -16,6 +16,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -37,10 +38,10 @@ public class RetryThrottleTest extends TestSuiteBase {
     @Test(groups = { "long" }, timeOut = LARGE_TIMEOUT, enabled = false)
     public void retryCreateDocumentsOnSpike() throws Exception {
         ConnectionPolicy policy = new ConnectionPolicy();
-        RetryOptions retryOptions = new RetryOptions();
-        retryOptions.setMaxRetryAttemptsOnThrottledRequests(Integer.MAX_VALUE);
-        retryOptions.setMaxRetryWaitTimeInSeconds(LARGE_TIMEOUT);
-        policy.setRetryOptions(retryOptions);
+        ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
+        throttlingRetryOptions.setMaxRetryAttemptsOnThrottledRequests(Integer.MAX_VALUE);
+        throttlingRetryOptions.setMaxRetryWaitTime(Duration.ofSeconds(LARGE_TIMEOUT));
+        policy.setThrottlingRetryOptions(throttlingRetryOptions);
 
         AsyncDocumentClient.Builder builder = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
