@@ -90,6 +90,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--project-dir",
         "-p",
+        dest="target",
         help="The path to the directory containing our package or service. Essentially used as a scoping mechanism for the replacement of the snippets.",
         required=True,
     )
