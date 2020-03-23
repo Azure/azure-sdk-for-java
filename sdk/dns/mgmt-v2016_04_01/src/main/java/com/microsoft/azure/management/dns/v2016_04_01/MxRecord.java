@@ -27,7 +27,7 @@ public class MxRecord {
     private String exchange;
 
     /**
-     * Get the preference value.
+     * Get the preference value for this MX record.
      *
      * @return the preference value
      */
@@ -36,7 +36,7 @@ public class MxRecord {
     }
 
     /**
-     * Set the preference value.
+     * Set the preference value for this MX record.
      *
      * @param preference the preference value to set
      * @return the MxRecord object itself.
@@ -47,7 +47,7 @@ public class MxRecord {
     }
 
     /**
-     * Get the exchange value.
+     * Get the domain name of the mail host for this MX record.
      *
      * @return the exchange value
      */
@@ -56,7 +56,7 @@ public class MxRecord {
     }
 
     /**
-     * Set the exchange value.
+     * Set the domain name of the mail host for this MX record.
      *
      * @param exchange the exchange value to set
      * @return the MxRecord object itself.

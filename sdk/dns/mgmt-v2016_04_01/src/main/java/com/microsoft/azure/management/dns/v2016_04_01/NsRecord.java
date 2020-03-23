@@ -21,7 +21,7 @@ public class NsRecord {
     private String nsdname;
 
     /**
-     * Get the nsdname value.
+     * Get the name server name for this NS record.
      *
      * @return the nsdname value
      */
@@ -30,7 +30,7 @@ public class NsRecord {
     }
 
     /**
-     * Set the nsdname value.
+     * Set the name server name for this NS record.
      *
      * @param nsdname the nsdname value to set
      * @return the NsRecord object itself.
