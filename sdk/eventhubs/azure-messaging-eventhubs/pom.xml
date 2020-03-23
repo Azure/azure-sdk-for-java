@@ -12,6 +12,7 @@
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
+
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs</artifactId>
   <version>5.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
