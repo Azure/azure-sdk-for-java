@@ -45,25 +45,28 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private final Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock;
     private final Deque<ServiceBusReceivedMessage> messageQueue = new ConcurrentLinkedDeque<>();
     private final Map<UUID, PendingComplete> pendingCompletes = new HashMap<>();
-    private final boolean autoLockRenewal;
+    private final boolean isAutoRenewLock;
     private final Duration maxAutoLockRenewal;
     private final MessageLockContainer messageLockContainer;
 
-    ServiceBusMessageProcessor(boolean isAutoComplete, AmqpRetryOptions retryOptions,
+    ServiceBusMessageProcessor(boolean isAutoComplete, boolean isAutoRenewLock, Duration maxAutoLockRenewal,
+        AmqpRetryOptions retryOptions, MessageLockContainer messageLockContainer,
         Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction,
         Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon,
-        boolean autoLockRenewal, Duration maxAutoLockRenewal,
-        Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock,
-        MessageLockContainer messageLockContainer) {
+        Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock) {
+
         super();
-        this.isAutoComplete = isAutoComplete;
+
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.completeFunction = Objects.requireNonNull(completeFunction, "'completeFunction' cannot be null.");
         this.onAbandon = Objects.requireNonNull(onAbandon, "'onAbandon' cannot be null.");
         this.onRenewLock = Objects.requireNonNull(onRenewLock, "'onRenewLock' cannot be null.");
-        this.autoLockRenewal = autoLockRenewal;
+        this.messageLockContainer = Objects.requireNonNull(messageLockContainer,
+            "'messageLockContainer' cannot be null.");
+
+        this.isAutoComplete = isAutoComplete;
+        this.isAutoRenewLock = isAutoRenewLock;
         this.maxAutoLockRenewal = maxAutoLockRenewal;
-        this.messageLockContainer = messageLockContainer;
     }
 
     private volatile boolean isDone;
@@ -306,7 +309,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         }
 
         final Disposable renewLockSubscription;
-        if (autoLockRenewal) {
+        if (isAutoRenewLock) {
             logger.info("seq[{}]. lockToken[{}]. lockedUntil[{}]. Renewing lock every: {}", sequenceNumber, lockToken,
                 message.getLockedUntil(), maxAutoLockRenewal);
             renewLockSubscription = Flux.interval(maxAutoLockRenewal)

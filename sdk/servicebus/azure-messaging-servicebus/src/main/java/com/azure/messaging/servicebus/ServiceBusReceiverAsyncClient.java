@@ -26,7 +26,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -50,14 +49,12 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final boolean isSessionEnabled;
+    private final ReceiveMessageOptions receiveOptions;
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
-    private final Duration maxAutoRenewDuration;
     private final int prefetch;
-    private final boolean isAutoComplete;
     private final ReceiveMode receiveMode;
-    private final boolean isLockAutoRenewed;
     private final MessageLockContainer messageLockContainer;
 
     /**
@@ -67,23 +64,20 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final ConcurrentHashMap<String, ServiceBusAsyncConsumer> openConsumers = new ConcurrentHashMap<>();
 
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-        boolean isSessionEnabled, ReceiveMessageOptions receiveMessageOptions,
+        boolean isSessionEnabled, ReceiveMessageOptions receiveOptions,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, MessageLockContainer messageLockContainer) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        this.receiveOptions = Objects.requireNonNull(receiveOptions, "'receiveMessageOptions' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
 
-        Objects.requireNonNull(receiveMessageOptions, "'receiveMessageOptions' cannot be null.");
-        this.prefetch = receiveMessageOptions.getPrefetchCount();
-        this.maxAutoRenewDuration = receiveMessageOptions.getMaxAutoRenewDuration();
-        this.isAutoComplete = receiveMessageOptions.isAutoComplete();
-        this.receiveMode = receiveMessageOptions.getReceiveMode();
-        this.isLockAutoRenewed = receiveMessageOptions.isLockAutoRenewed();
+        this.prefetch = receiveOptions.getPrefetchCount();
+        this.receiveMode = receiveOptions.getReceiveMode();
 
         this.entityType = entityType;
         this.isSessionEnabled = isSessionEnabled;
@@ -120,7 +114,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                 new IllegalStateException("Cannot receive from a client that is already closed.")));
         }
 
-        if (receiveMode != ReceiveMode.PEEK_LOCK && isAutoComplete) {
+        if (receiveMode != ReceiveMode.PEEK_LOCK && receiveOptions.isAutoComplete()) {
             return Flux.error(logger.logExceptionAsError(new UnsupportedOperationException(
                 "Autocomplete is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.")));
         }
@@ -236,7 +230,6 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     public Mono<Void> deadLetter(ServiceBusReceivedMessage message) {
         return deadLetter(message, DEFAULT_DEAD_LETTER_OPTIONS);
     }
-
 
     /**
      * Moves a {@link ServiceBusMessage} to the deadletter sub-queue with deadletter reason, error description and
@@ -365,7 +358,6 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     private Mono<Boolean> isLockTokenValid(UUID lockToken) {
-        //final Instant lockedUntilUtc = lockTokenExpirationMap.get(lockToken);
         final Instant lockedUntilUtc = messageLockContainer.getLockTokenExpiration(lockToken);
         if (lockedUntilUtc == null) {
             logger.warning("lockToken[{}] is not owned by this receiver.", lockToken);
@@ -399,7 +391,6 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                 "'message.getLockToken()' cannot be null.")));
         }
 
-        //final Instant instant = lockTokenExpirationMap.get(lockToken);
         final Instant instant = messageLockContainer.getLockTokenExpiration(lockToken);
         logger.info("{}: Update started. Disposition: {}. Sequence number: {}. Lock: {}. Expiration: {}",
             entityPath, dispositionStatus, message.getSequenceNumber(), lockToken, instant);
@@ -420,7 +411,6 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             logger.info("{}: Update completed. Disposition: {}. Sequence number: {}. Lock: {}.",
                 entityPath, dispositionStatus, message.getSequenceNumber(), lockToken);
 
-            //lockTokenExpirationMap.remove(lockToken);
             messageLockContainer.remove(lockToken);
         }));
     }
@@ -444,9 +434,10 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
                 new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
 
-            return new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer, isAutoComplete,
-                connectionProcessor.getRetryOptions(), this::complete, this::abandon, isLockAutoRenewed,
-                maxAutoRenewDuration, this::renewMessageLock, messageLockContainer);
+            return new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer,
+                receiveOptions.isAutoComplete(), receiveOptions.isLockAutoRenewed(),
+                receiveOptions.getMaxAutoRenewDuration(), connectionProcessor.getRetryOptions(), messageLockContainer,
+                this::complete, this::abandon, this::renewMessageLock);
         });
     }
 

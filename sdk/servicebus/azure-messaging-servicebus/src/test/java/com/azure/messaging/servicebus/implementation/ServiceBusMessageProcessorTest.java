@@ -14,6 +14,8 @@ import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -36,8 +38,12 @@ class ServiceBusMessageProcessorTest {
     private Function<ServiceBusReceivedMessage, Mono<Void>> onComplete;
     @Mock
     private Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon;
+    @Mock
+    private Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock;
 
-    private AmqpRetryOptions retryOptions = new AmqpRetryOptions();
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
+    private final Duration renewDuration = Duration.ofSeconds(10);
+    private final MessageLockContainer messageContainer = new MessageLockContainer();
 
     @BeforeEach
     void setup() {
@@ -76,9 +82,10 @@ class ServiceBusMessageProcessorTest {
             return Mono.empty();
         };
 
-        //final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
-        //    .subscribeWith(new ServiceBusMessageProcessor(true, retryOptions, onCompleteMethod, onAbandon));
-        final ServiceBusMessageProcessor processor = null;
+        final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
+            .subscribeWith(new ServiceBusMessageProcessor(true, false, renewDuration,
+                retryOptions, messageContainer, onCompleteMethod, onAbandon, onRenewLock));
+
         // Act & Assert
         StepVerifier.create(processor)
             .expectNext(message1, message2, message3, message4)
@@ -98,9 +105,10 @@ class ServiceBusMessageProcessorTest {
             return Mono.empty();
         };
 
-        //final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
-        //    .subscribeWith(new ServiceBusMessageProcessor(false, retryOptions, onCompleteMethod, onAbandon));
-        final ServiceBusMessageProcessor processor = null;
+        final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
+            .subscribeWith(new ServiceBusMessageProcessor(true, false, renewDuration,
+                retryOptions, messageContainer, onCompleteMethod, onAbandon, onRenewLock));
+
         // Act & Assert
         StepVerifier.create(processor)
             .expectNext(message1, message2, message3, message4)

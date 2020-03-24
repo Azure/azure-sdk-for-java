@@ -29,6 +29,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -46,6 +47,8 @@ class ServiceBusAsyncConsumerTest {
     private final FluxSink<AmqpEndpointState> endpointProcessorSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
+    private final MessageLockContainer messageContainer = new MessageLockContainer();
+    private final Duration renewDuration = Duration.ofSeconds(5);
 
     private ServiceBusReceiveLinkProcessor linkProcessor;
 
@@ -63,6 +66,8 @@ class ServiceBusAsyncConsumerTest {
     private Function<ServiceBusReceivedMessage, Mono<Void>> onComplete;
     @Mock
     private Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon;
+    @Mock
+    private Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock;
 
     @BeforeAll
     static void beforeAll() {
@@ -104,9 +109,10 @@ class ServiceBusAsyncConsumerTest {
     void receiveAutoComplete() {
         // Arrange
         final boolean isAutoComplete = true;
-        //final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer, isAutoComplete,
-         //   retryOptions, onComplete, onAbandon);
-        final ServiceBusAsyncConsumer consumer =  null;
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
+            isAutoComplete, false, renewDuration, retryOptions, messageContainer, onComplete, onAbandon,
+            onRenewLock);
+
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
@@ -141,9 +147,10 @@ class ServiceBusAsyncConsumerTest {
     void receiveNoAutoComplete() {
         // Arrange
         final boolean isAutoComplete = false;
-       // final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-       //     isAutoComplete, retryOptions, onComplete, onAbandon);
-        final ServiceBusAsyncConsumer consumer =  null;
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
+            isAutoComplete, false, renewDuration, retryOptions, messageContainer, onComplete, onAbandon,
+            onRenewLock);
+
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
@@ -185,9 +192,10 @@ class ServiceBusAsyncConsumerTest {
             Assertions.fail("Should not complete");
             return Mono.empty();
         };
-        //final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
-        //    isAutoComplete, retryOptions, onComplete, onAbandon);
-        final ServiceBusAsyncConsumer consumer =  null;
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
+            isAutoComplete, false, renewDuration, retryOptions, messageContainer, onComplete, onAbandon,
+            onRenewLock);
+
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
 
