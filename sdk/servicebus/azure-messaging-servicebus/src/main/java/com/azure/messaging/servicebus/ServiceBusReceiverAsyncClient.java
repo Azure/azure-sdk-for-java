@@ -15,7 +15,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageLockContainer;
-import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAsyncConsumer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -130,20 +129,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         //  Python and .NET does not have the same behaviour.
         return Flux.usingWhen(
             Mono.fromCallable(() -> getOrCreateConsumer(entityPath)),
-            consumer -> {
-                return consumer.receive().map(message -> {
-                    final UUID lockToken =  message.getLockToken();
-                    if (lockToken == null || MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken)) {
-                        return message;
-                    }
-
-                    final Instant lockedUntil = messageLockContainer.addOrUpdate(lockToken, message.getLockedUntil());
-                    logger.info("Message {} locked. lockId[{}] lockedUntil[{}]", message.getSequenceNumber(),
-                        lockToken, lockedUntil);
-
-                    return message;
-                });
-            },
+            consumer -> consumer.receive(),
             consumer -> {
                 final String linkName = consumer.getLinkName();
                 logger.info("{}: Receiving completed. Disposing", linkName);
@@ -217,19 +203,14 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Instant> renewMessageLock(ServiceBusReceivedMessage receivedMessage) {
-        System.out.println(getClass().getName() + "!!!! renewMessageLock Entry .. ");
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(serviceBusManagementNode -> {
-                System.out.println(getClass().getName() + "!!!! renewMessageLock got serviceBusManagementNode  .. ");
-                return serviceBusManagementNode
-                .renewMessageLock(receivedMessage.getLockToken());
-            })
+            .flatMap(serviceBusManagementNode ->
+                serviceBusManagementNode.renewMessageLock(receivedMessage.getLockToken()))
             .map(instant -> {
-                System.out.println(getClass().getName() + "!!!! renewMessageLock got instant  .. " +  instant);
-                    receivedMessage.setLockedUntil(instant);
-                    return instant;
-                });
+                receivedMessage.setLockedUntil(instant);
+                return instant;
+            });
     }
 
     /**
@@ -463,12 +444,9 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
                 new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
 
-            Mono<ServiceBusManagementNode> managementNode = connectionProcessor
-                .flatMap(connection -> connection.getManagementNode(entityPath, entityType));
-
             return new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer, isAutoComplete,
                 connectionProcessor.getRetryOptions(), this::complete, this::abandon, isLockAutoRenewed,
-                maxAutoRenewDuration, managementNode, this::renewMessageLock, messageLockContainer);
+                maxAutoRenewDuration, this::renewMessageLock, messageLockContainer);
         });
     }
 

@@ -15,6 +15,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
+import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
@@ -61,7 +62,6 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 class ServiceBusReceiverAsyncClientTest {
@@ -82,6 +82,7 @@ class ServiceBusReceiverAsyncClientTest {
     private ServiceBusConnectionProcessor connectionProcessor;
     private ServiceBusReceiverAsyncClient consumer;
     private ReceiveMessageOptions receiveOptions;
+    private MessageLockContainer messageContainer;
 
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
@@ -139,9 +140,10 @@ class ServiceBusReceiverAsyncClientTest {
 
         receiveOptions = new ReceiveMessageOptions().setPrefetchCount(PREFETCH);
 
+        messageContainer = new MessageLockContainer();
         consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             false, receiveOptions, connectionProcessor, tracerProvider, messageSerializer,
-            false, null, null);
+            messageContainer);
     }
 
     @AfterEach
@@ -221,7 +223,7 @@ class ServiceBusReceiverAsyncClientTest {
             .setAutoComplete(true);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
-            tracerProvider, messageSerializer, false, null, null);
+            tracerProvider, messageSerializer, messageContainer);
 
         final UUID lockToken1 = UUID.randomUUID();
         final UUID lockToken2 = UUID.randomUUID();

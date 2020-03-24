@@ -28,7 +28,6 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -288,11 +287,18 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
     private void next(ServiceBusReceivedMessage message) {
         final UUID lockToken = message.getLockToken();
+        final long sequenceNumber = message.getSequenceNumber();
         final boolean isCompleteMessage = isAutoComplete && lockToken != null
             && !MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken);
 
-        logger.info("sequenceNumber[{}]. lock[{}]. Auto-complete message? [{}]",
-            message.getSequenceNumber(), lockToken, isCompleteMessage);
+        final Instant initialLockedUntil;
+        if (lockToken != null && !MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken)) {
+            initialLockedUntil = messageLockContainer.addOrUpdate(lockToken, message.getLockedUntil());
+        } else {
+            initialLockedUntil = message.getLockedUntil();
+        }
+
+        logger.info("seq[{}]. lock[{}]. lockedUntil[{}].", sequenceNumber, initialLockedUntil, isCompleteMessage);
 
         final PendingComplete pendingComplete = new PendingComplete(message);
         if (isCompleteMessage) {
@@ -301,13 +307,15 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
         final Disposable renewLockSubscription;
         if (autoLockRenewal) {
+            logger.info("seq[{}]. lockToken[{}]. lockedUntil[{}]. Renewing lock every: {}", sequenceNumber, lockToken,
+                message.getLockedUntil(), maxAutoLockRenewal);
             renewLockSubscription = Flux.interval(maxAutoLockRenewal)
                 .flatMap(interval -> onRenewLock.apply(message))
                 .subscribe(lockedUntil -> {
-                    logger.info("Lock renewal successful. seq[{}]. lockToken[{}]. lockedUntil[{}]",
-                        message.getSequenceNumber(), lockToken, lockedUntil);
+                    final Instant updated = messageLockContainer.addOrUpdate(lockToken, lockedUntil);
 
-                    messageLockContainer.addOrUpdate(lockToken, lockedUntil);
+                    logger.info("seq[{}]. lockToken[{}]. lockedUntil[{}]. Lock renewal successful. updated[{}]",
+                        sequenceNumber, lockToken, lockedUntil, updated);
                 }, error -> {
                     logger.error("Error occurred while renewing lock token.", error);
                 }, () -> {
@@ -350,7 +358,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             if (isCompleteMessage && pending != null && !pending.isRunningGetAndSet()) {
                 final ServiceBusReceivedMessage completedMessage = pending.getMessage();
 
-                logger.info("sequenceNumber[{}]. lock[{}]. Completing message.",
+                logger.info("seq[{}]. lock[{}]. Completing message.",
                     completedMessage.getSequenceNumber(), completedMessage.getLockToken());
 
                 completeFunction.apply(completedMessage)

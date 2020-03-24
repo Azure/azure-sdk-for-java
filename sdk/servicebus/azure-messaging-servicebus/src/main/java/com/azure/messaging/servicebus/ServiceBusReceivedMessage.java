@@ -318,7 +318,7 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
      *
      * @param lockedUntil the instant at which the lock of this message expires.
      */
-    void setLockedUntil(Instant lockedUntil) {
+    public void setLockedUntil(Instant lockedUntil) {
         this.lockedUntil = lockedUntil;
     }
 

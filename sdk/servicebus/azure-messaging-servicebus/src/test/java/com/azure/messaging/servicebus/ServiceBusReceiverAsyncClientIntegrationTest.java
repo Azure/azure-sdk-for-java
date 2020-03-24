@@ -5,32 +5,27 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.util.Supplier;
 import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import wiremock.org.eclipse.jetty.util.resource.FileResource;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.RandomAccessFile;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.RandomAccess;
-import java.util.Scanner;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_TRACKING_ID;
+import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessage;
 
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient receiverManual;
-    private ServiceBusReceiverAsyncClient receiverAutoRenewLock;
     private ServiceBusSenderAsyncClient sender;
+
     private ReceiveMessageOptions receiveMessageOptions;
     private ReceiveMessageOptions receiveMessageOptionsManual;
 
@@ -49,11 +44,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         receiverManual = createBuilder()
             .receiveMessageOptions(receiveMessageOptionsManual)
-            .buildAsyncReceiverClient();
-
-        receiverAutoRenewLock = createBuilder()
-            .receiveMessageOptions(receiveMessageOptionsManual)
-            .autoLockRenewal(true)
             .buildAsyncReceiverClient();
     }
 
@@ -84,7 +74,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
-        try{ Thread.sleep(10000); } catch (Exception e) { }
+        try {
+            Thread.sleep(10000);
+        } catch (Exception e) {
+        }
 
     }
 
@@ -235,67 +228,51 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
+    void autoRenewLockOnReceiveMessage() {
+        // Arrange
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getServiceBusMessage("contents", messageId, 0);
 
-    public void autoRenewLockOnReceiveMessageDeleteme()throws InterruptedException{
-    //Arrange
-        final int numberOfEvents = 1;
+        // Send the message to verify.
+        sender.send(message).block(TIMEOUT);
 
-        receiverAutoRenewLock.receive()
-            .take(numberOfEvents)
-            .map(message->{
-                log(getClass().getName() + ". Got Message Locked Until:"+message.getLockToken() + " " + new String(message.getBody()));
-                int count=1;
-                while(count<=3){
-                    log(getClass().getName() + "." + count+" process the message  ("+message.getLockToken()+ ", "+ new String(message.getBody())+") .. Do long process ");
-                    longProcess();
-                    /*receiver.renewMessageLock(message)
-                        .doOnNext(instant->{
-                            log(getClass().getName() +  " " + instant.toString());
-                        })
-                        .then(
-                            Mono.fromCallable(()->{
-                                return Mono.just(true);
-                            })
-                        )
-                        .subscribe();
-                    */
-                    ++count;
+        final ReceiveMessageOptions options = new ReceiveMessageOptions()
+            .setReceiveMode(ReceiveMode.PEEK_LOCK)
+            .setIsLockAutoRenewed(true)
+            .setMaxAutoRenewDuration(Duration.ofSeconds(2));
+        final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
+            .receiveMessageOptions(options)
+            .buildAsyncReceiverClient();
+
+        // Act & Assert
+        StepVerifier.create(receiver.receive())
+            .assertNext(received -> {
+                Assertions.assertNotNull(received.getLockedUntil());
+                Assertions.assertNotNull(received.getLockToken());
+
+                logger.info("{}: lockId[{}]. lockedUntil[{}]",
+                    received.getSequenceNumber(), received.getLockToken(), received.getLockedUntil());
+
+                Instant current = received.getLockedUntil();
+
+                // Simulate some sort of long processing. Verify that the lock token is updated every time.
+                for (int i = 0; i < 3; i++) {
+                    try {
+                        TimeUnit.SECONDS.sleep(15);
+                    } catch (InterruptedException ignored) {
+                    }
+
+                    Instant latest = received.getLockedUntil();
+                    Assertions.assertNotNull(latest);
+                    logger.info("Current: {}. Latest: {}", current, latest);
+
+                    current = latest;
+//                    Assertions.assertTrue(latest.isAfter(current),
+//                        String.format("[%s] latestTime: '%s' is not after the current one: '%s'", i, latest, current));
                 }
-                log(getClass().getName() + "." + count+" process the message DONE!! ");
-                return true;
             })
-            .subscribe();
-
-        Thread.sleep(30000);
-    }
-
-    private void log(String message) {
-        System.out.println(message);
-    }
-    private void longProcess(){
-        long count = -10;
-        long maxCounter = 90000;//Long.MAX_VALUE/20;
-
-        try {
-            File file =  new File("C:\\ht1\\azure-sdk-for-java\\sdk\\servicebus\\azure-messaging-servicebus\\src\\main\\resources\\test.txt");
-            System.out.println(getClass().getName() + " file path = " + file.getPath());
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                System.out.println(getClass().getName() + " file line = " + line);
-            }
-        } catch (Exception ee ) {
-
-        }
-        for (long i = 0; i< maxCounter; ++i) {
-            ++count;
-            if (count == maxCounter/4) {
-                log(getClass() +  " longProcess 1/4 is done" );
-            }else if (count == maxCounter/2) {
-                log(getClass() +  " longProcess 1/2 is done" );
-            } else if (count == 3*maxCounter/4) {
-                log(getClass() +  " longProcess 3/4 is done" );
-            }
-        }
+            .thenCancel()
+            .verify();
     }
 }
