@@ -452,9 +452,9 @@ public class SwaggerMethodParserTests {
             Arguments.of(encodedFormBody, toObjectArray("John Doe", 40, null, badFavoriteColors),
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John Doe&age=40&favoriteColors=green"),
             Arguments.of(encodedFormKey, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
-                "x%3Ams%3Avalue=value"),
+                "x%3ams%3avalue=value"),
             Arguments.of(encodedFormKey2, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
-                "x%3Ams%3Avalue=value")
+                "x%3ams%3avalue=value")
         );
     }
 
