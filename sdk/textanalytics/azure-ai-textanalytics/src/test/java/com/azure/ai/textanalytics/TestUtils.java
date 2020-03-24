@@ -71,13 +71,16 @@ final class TestUtils {
     // "Impossible" and "raison" are common to both English and French and if given with limited context the
     // response will be based on the "US" country hint. If the origin of the text is known to be coming from
     // France that can be given as a hint.
-    static final List<String> FRENCH_SAME_AS_ENGLISH_INPUTS = Arrays.asList("impossible", "raison");
+    static final List<String> FRENCH_SAME_AS_ENGLISH_INPUTS = Arrays.asList("impossible", "impossible");
 
     static final DetectedLanguage DETECTED_LANGUAGE_FRENCH = new DetectedLanguage("French", "fr", 1.0);
     static final DetectedLanguage DETECTED_LANGUAGE_ENGLISH = new DetectedLanguage("English", "en", 1.0);
 
     static final List<DetectedLanguage> DETECT_FRENCH_LANGUAGE_RESULTS = Arrays.asList(
         DETECTED_LANGUAGE_FRENCH, DETECTED_LANGUAGE_FRENCH);
+
+    static final List<DetectedLanguage> DETECT_ENGLISH_LANGUAGE_RESULTS = Arrays.asList(
+        DETECTED_LANGUAGE_ENGLISH, DETECTED_LANGUAGE_ENGLISH);
 
     static final HttpResponseException HTTP_RESPONSE_EXCEPTION_CLASS = new HttpResponseException("", null);
 

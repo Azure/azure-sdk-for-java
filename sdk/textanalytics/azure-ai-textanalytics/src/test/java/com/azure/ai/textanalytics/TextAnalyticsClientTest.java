@@ -4,11 +4,9 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityCategory;
-import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
@@ -42,7 +40,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
-
     private TextAnalyticsClient client;
 
     @Override
@@ -517,105 +514,5 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         analyseBatchSentimentShowStatsRunner((inputs, options) ->
             client.analyzeSentimentBatch(inputs, options, Context.NONE).iterableByPage().forEach(pagedResponse ->
                 validateSentimentWithPagedResponse(true, getExpectedBatchTextSentiment(), pagedResponse)));
-    }
-
-    /**
-     * Test client builder with valid API key
-     */
-    @Test
-    public void clientBuilderWithValidApiKeyCredential() {
-        clientBuilderWithValidApiKeyCredentialRunner(clientBuilder -> (input, output) ->
-            validatePrimaryLanguage(output, clientBuilder.buildClient().detectLanguage(input)));
-    }
-
-    /**
-     * Test client builder with invalid API key
-     */
-    @Test
-    public void clientBuilderWithInvalidApiKeyCredential() {
-        clientBuilderWithInvalidApiKeyCredentialRunner(clientBuilder -> (input, output) ->
-            assertThrows(output.getClass(), () -> clientBuilder.buildClient().detectLanguage(input)));
-    }
-
-    /**
-     * Test client with valid API key but update to invalid key and make call to server.
-     */
-    @Test
-    public void clientBuilderWithRotateToInvalidKey() {
-        clientBuilderWithRotateToInvalidKeyRunner(clientBuilder -> (input, output) ->
-            assertThrows(output.getClass(), () -> clientBuilder.buildClient().detectLanguage(input)));
-    }
-
-    /**
-     * Test client with invalid API key but update to valid key and make call to server.
-     */
-    @Test
-    public void clientBuilderWithRotateToValidKey() {
-        clientBuilderWithRotateToValidKeyRunner(clientBuilder -> (input, output) ->
-            validatePrimaryLanguage(output, clientBuilder.buildClient().detectLanguage(input)));
-    }
-
-    /**
-     * Test for null service version, which would take take the default service version by default
-     */
-    @Test
-    public void clientBuilderWithNullServiceVersion() {
-        clientBuilderWithNullServiceVersionRunner(clientBuilder -> (input, output) ->
-            validatePrimaryLanguage(output, clientBuilder.buildClient().detectLanguage(input)));
-    }
-
-    /**
-     * Test for default pipeline in client builder
-     */
-    @Test
-    public void clientBuilderWithDefaultPipeline() {
-        clientBuilderWithDefaultPipelineRunner(clientBuilder -> (input, output) ->
-            validatePrimaryLanguage(output, clientBuilder.buildClient().detectLanguage(input)));
-    }
-
-    /**
-     * Test for default country hint in client builder for a single document
-     */
-    @Test
-    public void clientBuilderWithDefaultCountryHint() {
-        clientBuilderWithDefaultCountryHintRunner(clientBuilder -> (input, output) ->
-            validatePrimaryLanguage(output, clientBuilder.buildClient().detectLanguage(input)));
-    }
-
-    /**
-     * Test for default country hint in client builder for a batch of documents
-     */
-    @Test
-    public void clientBuilderWithDefaultCountryHintForBatchOperation() {
-        clientBuilderWithDefaultCountryHintForBatchOperationRunner(clientBuilder -> (input, output) -> {
-            final List<DetectLanguageResult> result =
-                clientBuilder.buildClient().detectLanguageBatch(input).stream().collect(Collectors.toList());
-            for (int i = 0; i < result.size(); i++) {
-                validatePrimaryLanguage(output.get(i), result.get(i).getPrimaryLanguage());
-            }
-        });
-    }
-
-    /**
-     * Test for default language in client builder for single document
-     */
-    @Test
-    public void clientBuilderWithDefaultLanguage() {
-        clientBuilderWithDefaultLanguageRunner(clientBuilder -> (input, output) ->
-            assertEquals(output, clientBuilder.buildClient().extractKeyPhrases(input).iterator().next()));
-    }
-
-    /**
-     * Test for default language in client builder for a batch of documents
-     */
-    @Test
-    public void clientBuilderWithDefaultLanguageForBatchOperation() {
-        clientBuilderWithDefaultLanguageForBatchOperationRunner(clientBuilder -> (input, output) -> {
-            final List<ExtractKeyPhraseResult> result =
-                clientBuilder.buildClient().extractKeyPhrasesBatch(input).stream().collect(Collectors.toList());
-            for (int i = 0; i < result.size(); i++) {
-                validateKeyPhrases(output.get(i), result.get(i).getKeyPhrases().stream().collect(Collectors.toList()));
-            }
-        });
     }
 }

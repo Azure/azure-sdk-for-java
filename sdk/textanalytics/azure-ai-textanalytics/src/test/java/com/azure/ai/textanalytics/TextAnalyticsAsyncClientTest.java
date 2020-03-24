@@ -23,7 +23,6 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
@@ -548,118 +547,5 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.analyzeSentimentBatch(inputs, options).byPage())
                 .assertNext(response -> validateSentimentWithPagedResponse(true, getExpectedBatchTextSentiment(), response))
                 .verifyComplete());
-    }
-
-    /**
-     * Test client builder with valid API key
-     */
-    @Test
-    public void clientBuilderWithValidApiKeyCredential() {
-        clientBuilderWithValidApiKeyCredentialRunner(clientBuilder -> (input, output) ->
-            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
-                .assertNext(response -> validatePrimaryLanguage(output, response))
-                .verifyComplete());
-    }
-
-    /**
-     * Test client builder with invalid API key
-     */
-    @Test
-    public void clientBuilderWithInvalidApiKeyCredential() {
-        clientBuilderWithInvalidApiKeyCredentialRunner(clientBuilder -> (input, output) ->
-            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
-                .verifyError(output.getClass()));
-    }
-
-    /**
-     * Test client with valid API key but update to invalid key and make call to server.
-     */
-    @Test
-    public void clientBuilderWithRotateToInvalidKey() {
-        clientBuilderWithRotateToInvalidKeyRunner(clientBuilder -> (input, output) ->
-            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
-                .verifyError(output.getClass()));
-    }
-
-    /**
-     * Test client with invalid API key but update to valid key and make call to server.
-     */
-    @Test
-    public void clientBuilderWithRotateToValidKey() {
-        clientBuilderWithRotateToValidKeyRunner(clientBuilder -> (input, output) ->
-            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
-                .assertNext(response -> validatePrimaryLanguage(output, response))
-                .verifyComplete());
-    }
-
-    /**
-     * Test for null service version, which would take the default service version by default
-     */
-    @Test
-    public void clientBuilderWithNullServiceVersion() {
-        clientBuilderWithNullServiceVersionRunner(clientBuilder -> (input, output) ->
-            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
-                .assertNext(response -> validatePrimaryLanguage(output, response))
-                .verifyComplete());
-    }
-
-    /**
-     * Test for default pipeline in client builder
-     */
-    @Test
-    public void clientBuilderWithDefaultPipeline() {
-        clientBuilderWithDefaultPipelineRunner(clientBuilder -> (input, output) ->
-            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
-                .assertNext(response -> validatePrimaryLanguage(output, response))
-                .verifyComplete());
-    }
-
-    /**
-     * Test for default country hint in client builder for a single document
-     */
-    @Test
-    public void clientBuilderWithDefaultCountryHint() {
-        clientBuilderWithDefaultCountryHintRunner(clientBuilder -> (input, output) ->
-            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage(input))
-                .assertNext(response -> validatePrimaryLanguage(output, response))
-                .verifyComplete());
-    }
-
-    /**
-     * Test for default country hint in client builder for a batch of documents
-     */
-    @Test
-    public void clientBuilderWithDefaultCountryHintForBatchOperation() {
-        clientBuilderWithDefaultCountryHintForBatchOperationRunner(clientBuilder -> (input, output) ->
-            StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguageBatch(input))
-                .assertNext(response -> validatePrimaryLanguage(output.get(0), response.getPrimaryLanguage()))
-                .assertNext(response -> validatePrimaryLanguage(output.get(1), response.getPrimaryLanguage()))
-                .verifyComplete());
-    }
-
-    /**
-     * Test for default language in client builder for a single document
-     */
-    @Test
-    public void clientBuilderWithDefaultLanguage() {
-        clientBuilderWithDefaultLanguageRunner(clientBuilder -> (input, output) ->
-            StepVerifier.create(clientBuilder.buildAsyncClient().extractKeyPhrases(input))
-                .assertNext(response -> assertEquals(output, response))
-                .verifyComplete());
-    }
-
-    /**
-     * Test for default language in client builder for a batch of documents
-     */
-    @Test
-    public void clientBuilderWithDefaultLanguageForBatchOperation() {
-        clientBuilderWithDefaultLanguageForBatchOperationRunner(clientBuilder -> (input, output) ->
-            StepVerifier.create(clientBuilder.buildAsyncClient().extractKeyPhrasesBatch(input))
-                .assertNext(response -> validateKeyPhrases(output.get(0),
-                    response.getKeyPhrases().stream().collect(Collectors.toList())))
-                .assertNext(response -> validateKeyPhrases(output.get(1),
-                    response.getKeyPhrases().stream().collect(Collectors.toList())))
-                .verifyComplete()
-        );
     }
 }
