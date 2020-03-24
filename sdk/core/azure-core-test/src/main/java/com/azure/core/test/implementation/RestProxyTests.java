@@ -1668,12 +1668,35 @@ public abstract class RestProxyTests {
         HttpBinFormDataJSON postForm(@FormParam("custname") String name, @FormParam("custtel") String telephone,
             @FormParam("custemail") String email, @FormParam("size") PizzaSize size,
             @FormParam("toppings") List<String> toppings);
+
+        @Post("post")
+        HttpBinFormDataJSON postEncodedForm(@FormParam("custname") String name, @FormParam("custtel") String telephone,
+            @FormParam(value = "custemail", encoded = true) String email, @FormParam("size") PizzaSize size,
+            @FormParam("toppings") List<String> toppings);
+    }
+
+    @Test
+    public void postUrlForm() {
+        Service26 service = createService(Service26.class);
+        HttpBinFormDataJSON response = service.postForm("Foo", "123", "foo@bar.com", PizzaSize.LARGE,
+            Arrays.asList("Bacon", "Onion"));
+        assertNotNull(response);
+        assertNotNull(response.form());
+        assertEquals("Foo", response.form().customerName());
+        assertEquals("123", response.form().customerTelephone());
+        assertEquals("foo%40bar.com", response.form().customerEmail());
+        assertEquals(PizzaSize.LARGE, response.form().pizzaSize());
+
+        assertEquals(2, response.form().toppings().size());
+        assertEquals("Bacon", response.form().toppings().get(0));
+        assertEquals("Onion", response.form().toppings().get(1));
     }
 
     @Test
     public void postUrlFormEncoded() {
         Service26 service = createService(Service26.class);
-        HttpBinFormDataJSON response = service.postForm("Foo", "123", "foo@bar.com", PizzaSize.LARGE, Arrays.asList("Bacon", "Onion"));
+        HttpBinFormDataJSON response = service.postEncodedForm("Foo", "123", "foo@bar.com", PizzaSize.LARGE,
+            Arrays.asList("Bacon", "Onion"));
         assertNotNull(response);
         assertNotNull(response.form());
         assertEquals("Foo", response.form().customerName());
