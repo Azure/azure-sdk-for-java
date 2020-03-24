@@ -21,7 +21,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        sender = createBuilder().senderClientBuilder().buildAsyncClient();
+        sender = createBuilder().buildSenderClientBuilder().buildAsyncClient();
     }
 
     @Override

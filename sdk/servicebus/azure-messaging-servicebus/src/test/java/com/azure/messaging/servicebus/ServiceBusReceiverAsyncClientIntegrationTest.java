@@ -32,9 +32,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        sender = createBuilder().senderClientBuilder().buildAsyncClient();
+        sender = createBuilder().buildSenderClientBuilder().buildAsyncClient();
         receiver = createBuilder()
-            .receiverClientBuilder()
+            .buildReceiverClientBuilder()
             .isAutoComplete(true)
             .buildAsyncClient();
 
@@ -42,7 +42,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
         receiverManual = createBuilder()
-            .receiverClientBuilder()
+            .buildReceiverClientBuilder()
             .queueName(queueName)
             .isAutoComplete(false)
             .buildAsyncClient();

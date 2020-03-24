@@ -190,7 +190,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return A new instance of {@link ServiceBusSenderClientBuilder}.
      */
-    public ServiceBusSenderClientBuilder senderClientBuilder() {
+    public ServiceBusSenderClientBuilder buildSenderClientBuilder() {
         return new ServiceBusSenderClientBuilder();
     }
 
@@ -199,7 +199,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return A new instance of {@link ServiceBusReceiverClientBuilder}.
      */
-    public ServiceBusReceiverClientBuilder receiverClientBuilder() {
+    public ServiceBusReceiverClientBuilder buildReceiverClientBuilder() {
         return new ServiceBusReceiverClientBuilder();
     }
 
@@ -330,6 +330,7 @@ public final class ServiceBusClientBuilder {
      * Builder for creating {@link ServiceBusSenderClient} and {@link ServiceBusSenderAsyncClient} to publish messages
      * to Service Bus.
      */
+    @ServiceClientBuilder(serviceClients = {ServiceBusSenderClient.class, ServiceBusSenderAsyncClient.class})
     public final class ServiceBusSenderClientBuilder {
         private String queueOrTopicName;
 
@@ -389,9 +390,10 @@ public final class ServiceBusClientBuilder {
      * Builder for creating {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient} to consume
      * messages from Service Bus.
      */
+    @ServiceClientBuilder(serviceClients = {ServiceBusReceiverClient.class, ServiceBusReceiverAsyncClient.class})
     public final class ServiceBusReceiverClientBuilder {
-        // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application receiving
-        // messages at a slow rate. Applications can set it to a higher value if they need better performance.
+        // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application
+        // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
         private static final int DEFAULT_PREFETCH_COUNT = 1;
 
         private boolean autoComplete;

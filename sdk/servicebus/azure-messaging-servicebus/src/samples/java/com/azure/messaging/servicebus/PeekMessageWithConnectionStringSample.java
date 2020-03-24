@@ -26,7 +26,7 @@ public class PeekMessageWithConnectionStringSample {
         // inside the Service Bus namespace.
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .receiverClientBuilder()
+            .buildReceiverClientBuilder()
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 

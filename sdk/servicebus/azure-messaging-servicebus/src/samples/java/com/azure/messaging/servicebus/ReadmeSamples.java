@@ -18,7 +18,7 @@ public class ReadmeSamples {
         String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
         ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .senderClientBuilder()
+            .buildSenderClientBuilder()
             .entityName("<< queue-or-topic-name >>")
             .buildAsyncClient();
     }
@@ -30,7 +30,7 @@ public class ReadmeSamples {
         String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .receiverClientBuilder()
+            .buildReceiverClientBuilder()
             .queueName("<< queue-name >>")
             .buildAsyncClient();
     }

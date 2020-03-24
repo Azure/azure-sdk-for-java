@@ -25,7 +25,7 @@ public class SendMessageAsyncSample {
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .senderClientBuilder()
+            .buildSenderClientBuilder()
             .entityName(queueOrTopicName)
             .buildAsyncClient();
 
