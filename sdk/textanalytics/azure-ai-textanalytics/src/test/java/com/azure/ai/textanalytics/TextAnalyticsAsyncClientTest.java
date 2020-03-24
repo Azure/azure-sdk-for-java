@@ -595,7 +595,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(), credential).buildAsyncClient();
 
         // Update to invalid key
-        credential.updateKey(INVALID_KEY);
+        credential.update(INVALID_KEY);
 
         // Action and Assert
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
@@ -613,7 +613,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(), credential).buildAsyncClient();
 
         // Update to valid key
-        credential.updateKey(getApiKey());
+        credential.update(getApiKey());
 
         // Action and Assert
         StepVerifier.create(client.detectLanguage("This is a test English Text"))

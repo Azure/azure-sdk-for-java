@@ -94,7 +94,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .endpoint("{endpoint}")
     .buildClient();
 
-credential.updateKey("{new_api_key}");
+credential.update("{new_api_key}");
 ```
 ##### **Option 2**: Create TextAnalyticsClient with Azure Active Directory Credential
 To use an [Azure Active Directory (AAD) token credential][aad_credential],

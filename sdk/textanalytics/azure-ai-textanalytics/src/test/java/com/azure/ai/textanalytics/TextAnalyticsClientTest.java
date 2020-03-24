@@ -561,7 +561,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         final TextAnalyticsClient client = createClientBuilder(getEndpoint(), credential).buildClient();
 
         // Update to invalid key
-        credential.updateKey(INVALID_KEY);
+        credential.update(INVALID_KEY);
 
         // Action and Assert
         assertThrows(HttpResponseException.class, () -> client.detectLanguage("This is a test English Text"));
@@ -578,7 +578,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         final TextAnalyticsClient client = createClientBuilder(getEndpoint(), credential).buildClient();
 
         // Update to valid key
-        credential.updateKey(getApiKey());
+        credential.update(getApiKey());
 
         // Action and Assert
         validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0),

@@ -52,7 +52,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        credential.updateKey("{new_api_key}");
+        credential.update("{new_api_key}");
         // END: com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential
     }
 

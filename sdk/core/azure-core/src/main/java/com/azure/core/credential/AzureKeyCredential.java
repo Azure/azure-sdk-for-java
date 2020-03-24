@@ -47,7 +47,7 @@ public class AzureKeyCredential {
      * @throws NullPointerException If {@code key} is {@code null}.
      * @throws IllegalArgumentException If {@code key} is an empty string.
      */
-    public AzureKeyCredential updateKey(String key) {
+    public AzureKeyCredential update(String key) {
         Objects.requireNonNull(key);
         if (key.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));

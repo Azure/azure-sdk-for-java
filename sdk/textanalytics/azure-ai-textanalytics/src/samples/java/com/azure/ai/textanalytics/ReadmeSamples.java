@@ -76,7 +76,7 @@ public class ReadmeSamples {
             .endpoint("{endpoint}")
             .buildClient();
 
-        credential.updateKey("{new_api_key}");
+        credential.update("{new_api_key}");
     }
 
     /**

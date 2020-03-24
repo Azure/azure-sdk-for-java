@@ -34,7 +34,7 @@ public class RotateApiKeyAsync {
             () -> System.out.println("Key phrases extracted."));
 
         // Update the API key
-        credential.updateKey("{valid_api_key}");
+        credential.update("{valid_api_key}");
 
         System.out.println("Extracted phrases:");
         client.extractKeyPhrases(document).subscribe(
