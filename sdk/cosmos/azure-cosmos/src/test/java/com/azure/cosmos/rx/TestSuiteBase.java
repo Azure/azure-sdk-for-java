@@ -21,6 +21,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
@@ -243,7 +244,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 Object propertyValue = null;
                 if (paths != null && !paths.isEmpty()) {
                     List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                    propertyValue = doc.getObjectByPath(pkPath);
+                    propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
                     if (propertyValue == null) {
                         partitionKey = PartitionKey.NONE;
                     } else {

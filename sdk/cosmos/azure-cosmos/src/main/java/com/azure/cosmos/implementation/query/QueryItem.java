@@ -29,4 +29,9 @@ public final class QueryItem extends JsonSerializable {
 
         return this.item;
     }
+
+    @Override
+    public String toJson() {
+        return super.toJson();
+    }
 }

@@ -56,12 +56,6 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
         }
     }
 
-    public Mono<Void> disposeAsync() {
-        close();
-
-        return processor.disposeAsync();
-    }
-
     /**
      * Begin consuming events until there are no longer any subscribers.
      *

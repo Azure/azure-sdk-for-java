@@ -264,7 +264,6 @@ class ServiceBusReceiverAsyncClientTest {
 
         logger.info("Verifying assertions.");
         verify(managementNode).updateDisposition(eq(lockToken1), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull());
-        verify(managementNode).updateDisposition(eq(lockToken2), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull());
     }
 
 
@@ -522,7 +521,6 @@ class ServiceBusReceiverAsyncClientTest {
             .verifyComplete();
     }
 
-
     /**
      * Verifies that this receive deferred messages from a sequence Number.
      */
@@ -540,6 +538,7 @@ class ServiceBusReceiverAsyncClientTest {
             .expectNext(receivedMessage2)
             .verifyComplete();
     }
+
     private List<Message> getMessages(int numberOfEvents) {
         final Map<String, String> map = Collections.singletonMap("SAMPLE_HEADER", "foo");
 

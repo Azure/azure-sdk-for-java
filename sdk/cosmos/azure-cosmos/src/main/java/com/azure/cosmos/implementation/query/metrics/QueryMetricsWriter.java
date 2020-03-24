@@ -7,7 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryPreparationTimes;
 import com.azure.cosmos.implementation.RuntimeExecutionTimes;
-import org.apache.commons.lang3.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 
 import java.time.Duration;
 import java.time.Instant;

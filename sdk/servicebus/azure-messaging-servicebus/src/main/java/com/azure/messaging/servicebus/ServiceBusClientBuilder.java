@@ -56,7 +56,7 @@ public final class ServiceBusClientBuilder {
     private static final AmqpRetryOptions DEFAULT_RETRY =
         new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
 
-    private static final String SERVICEBUS_PROPERTIES_FILE = "azure-messaging-servicebus.properties";
+    private static final String SERVICE_BUS_PROPERTIES_FILE = "azure-messaging-servicebus.properties";
     private static final String NAME_KEY = "name";
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
@@ -265,7 +265,7 @@ public final class ServiceBusClientBuilder {
         final ReactorProvider provider = new ReactorProvider();
         final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider);
 
-        final Map<String, String> properties = CoreUtils.getProperties(SERVICEBUS_PROPERTIES_FILE);
+        final Map<String, String> properties = CoreUtils.getProperties(SERVICE_BUS_PROPERTIES_FILE);
         final String product = properties.getOrDefault(NAME_KEY, UNKNOWN);
         final String clientVersion = properties.getOrDefault(VERSION_KEY, UNKNOWN);
 

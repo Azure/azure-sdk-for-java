@@ -4,10 +4,10 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents a trigger in the Azure Cosmos DB database service.

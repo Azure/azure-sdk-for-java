@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.common.base.Stopwatch;
 import io.micrometer.core.instrument.Timer;
 import io.netty.channel.ChannelHandlerContext;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 
 import java.net.URI;

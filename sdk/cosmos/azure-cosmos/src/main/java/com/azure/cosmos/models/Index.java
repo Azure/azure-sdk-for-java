@@ -4,7 +4,8 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.IndexKind;
 
 /**
  * Represents the index of a collection in the Azure Cosmos DB database service.
@@ -107,7 +108,7 @@ public abstract class Index extends JsonSerializable {
      *
      * @return the index kind.
      */
-    public IndexKind getKind() {
+    IndexKind getKind() {
         IndexKind result = null;
         try {
             result = IndexKind.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.INDEX_KIND)));

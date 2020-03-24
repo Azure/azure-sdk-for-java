@@ -171,8 +171,6 @@ public class SecretClientTest extends SecretClientTestBase {
             assertNotNull(deletedSecret.getRecoveryId());
             assertNotNull(deletedSecret.getScheduledPurgeDate());
             assertEquals(secretToDelete.getName(), deletedSecret.getName());
-            client.purgeDeletedSecret(secretToDelete.getName());
-            pollOnSecretPurge(secretToDelete.getName());
         });
     }
 
@@ -203,9 +201,6 @@ public class SecretClientTest extends SecretClientTestBase {
             assertNotNull(deletedSecret.getRecoveryId());
             assertNotNull(deletedSecret.getScheduledPurgeDate());
             assertEquals(secretToDeleteAndGet.getName(), deletedSecret.getName());
-            client.purgeDeletedSecret(secretToDeleteAndGet.getName());
-            pollOnSecretPurge(secretToDeleteAndGet.getName());
-            sleepInRecordMode(10000);
         });
     }
 
@@ -396,36 +391,8 @@ public class SecretClientTest extends SecretClientTestBase {
             List<SecretProperties> secretVersionsList = new ArrayList<>();
             secretVersionsOutput.forEach(secretVersionsList::add);
             assertEquals(secretVersions.size(), secretVersionsList.size());
-
-            SyncPoller<DeletedSecret, Void> poller = client.beginDeleteSecret(secretName);
-            PollResponse<DeletedSecret> pollResponse = poller.poll();
-            while (!pollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(1000);
-                pollResponse = poller.poll();
-            }
-
-            client.purgeDeletedSecret(secretName);
-            pollOnSecretPurge(secretName);
         });
 
-    }
-
-    private void pollOnSecretDeletion(String secretName) {
-        int pendingPollCount = 0;
-        while (pendingPollCount < 30) {
-            DeletedSecret deletedSecret = null;
-            try {
-                deletedSecret = client.getDeletedSecret(secretName);
-            } catch (ResourceNotFoundException e) {
-            }
-            if (deletedSecret == null) {
-                sleepInRecordMode(2000);
-                pendingPollCount += 1;
-            } else {
-                return;
-            }
-        }
-        System.err.printf("Deleted Secret %s not found \n", secretName);
     }
 
     private void pollOnSecretPurge(String secretName) {
