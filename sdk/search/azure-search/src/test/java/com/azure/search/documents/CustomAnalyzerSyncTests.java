@@ -316,14 +316,12 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     @Test
     public void canUseAllRegexFlags() {
         Index index = createTestIndex()
-            .setAnalyzers(RegexFlags.values()
-                .stream()
-                .map(rf -> new PatternAnalyzer()
+            .setAnalyzers(Collections.singletonList(new PatternAnalyzer()
+                    .setStopwords(Arrays.asList("stop1", "stop2"))
                     .setLowerCaseTerms(true)
                     .setPattern(".*")
-                    .setFlags(rf)
-                    .setName(generateName()))
-                .collect(Collectors.toList()));
+                    .setFlags(new ArrayList<>(RegexFlags.values()))
+                    .setName(generateName())));
 
         Index createdIndex = searchServiceClient.createIndex(index);
 
@@ -638,7 +636,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 new PatternAnalyzer()
                     .setLowerCaseTerms(false)
                     .setPattern("abc")
-                    .setFlags(RegexFlags.DOTALL)
+                    .setFlags(Collections.singletonList(RegexFlags.DOTALL))
                     .setStopwords(Collections.singletonList("the"))
                     .setName(generateName()),
                 new StandardAnalyzer()
@@ -691,7 +689,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                     .setName(generateName()),
                 new PatternTokenizer()
                     .setPattern(".*")
-                    .setFlags(RegexFlags.MULTILINE)
+                    .setFlags(Collections.singletonList(RegexFlags.MULTILINE))
                     .setGroup(0)
                     .setName(generateName()),
                 new StandardTokenizerV2()

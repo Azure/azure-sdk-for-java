@@ -7,6 +7,10 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.implementation.util.CustomPatternTokenizerDeserializer;
+import com.azure.search.documents.implementation.util.CustomPatternTokenizerSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,6 +23,8 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.PatternTokenizer")
 @Fluent
+@JsonSerialize(using = CustomPatternTokenizerSerializer.class)
+@JsonDeserialize(using = CustomPatternTokenizerDeserializer.class)
 public final class PatternTokenizer extends Tokenizer {
     /*
      * A regular expression pattern to match token separators. Default is an

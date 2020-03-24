@@ -12,6 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.models.AnalyzeRequest;
 import com.azure.search.documents.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.documents.implementation.SearchServiceRestClientImpl;
@@ -68,6 +69,7 @@ public final class SearchServiceAsyncClient {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
+
 
         this.restClient = new SearchServiceRestClientBuilder()
             .endpoint(endpoint)

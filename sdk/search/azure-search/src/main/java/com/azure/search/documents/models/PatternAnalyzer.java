@@ -7,6 +7,10 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.implementation.util.CustomPatternAnalyzerDeserializer;
+import com.azure.search.documents.implementation.util.CustomPatternAnalyzerSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,6 +23,8 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.PatternAnalyzer")
 @Fluent
+@JsonSerialize(using = CustomPatternAnalyzerSerializer.class)
+@JsonDeserialize(using = CustomPatternAnalyzerDeserializer.class)
 public final class PatternAnalyzer extends Analyzer {
     /*
      * A value indicating whether terms should be lower-cased. Default is true.

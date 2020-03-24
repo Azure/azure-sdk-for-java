@@ -349,4 +349,21 @@ directive:
                 "$ref" : "#/definitions/RegexFlags"
             }
         }
+    
+    # Added custom serializer and deserializer for PatternAnalyzer and PatternTokenizer
+    - from: 
+      - PatternTokenizer.java
+      where: $
+      transform: >-
+        return $
+        .replace(/(\@Fluent)/g, "$1\n\@JsonSerialize(using = CustomPatternTokenizerSerializer\.class)\n\@JsonDeserialize(using = CustomPatternTokenizerDeserializer\.class)")
+        .replace(/(import com\.azure\.core\.annotation\.Fluent\;)/g, "$1\nimport com.azure.search.documents.implementation.util.CustomPatternTokenizerDeserializer;\nimport com.azure.search.documents.implementation.util.CustomPatternTokenizerSerializer;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;\nimport com.fasterxml.jackson.databind.annotation.JsonSerialize;")
+    
+    - from: 
+      - PatternAnalyzer.java
+      where: $
+      transform: >-
+        return $
+        .replace(/(\@Fluent)/g, "$1\n\@JsonSerialize(using = CustomPatternAnalyzerSerializer\.class)\n\@JsonDeserialize(using = CustomPatternAnalyzerDeserializer\.class)")
+        .replace(/(import com\.azure\.core\.annotation\.Fluent\;)/g, "$1\nimport com.azure.search.documents.implementation.util.CustomPatternAnalyzerDeserializer;\nimport com.azure.search.documents.implementation.util.CustomPatternAnalyzerSerializer;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;\nimport com.fasterxml.jackson.databind.annotation.JsonSerialize;")
 ```
