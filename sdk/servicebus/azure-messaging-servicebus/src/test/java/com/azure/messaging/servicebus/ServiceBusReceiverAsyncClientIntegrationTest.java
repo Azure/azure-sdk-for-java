@@ -36,9 +36,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sender = createBuilder().buildSenderClientBuilder().entityName(queueName).buildAsyncClient();
         receiver = createBuilder()
             .buildReceiverClientBuilder()
+            .queueName(queueName)
             .isAutoComplete(true)
             .buildAsyncClient();
-
 
         receiverManual = createBuilder()
             .buildReceiverClientBuilder()
@@ -109,7 +109,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(sender.send(message).then(receiver.peek(fromSequenceNumber)))
             .assertNext(receivedMessage -> {
-                Assertions.assertEquals(contents, new String(receivedMessage.getBody()));
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
@@ -224,6 +223,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .buildReceiverClientBuilder()
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .isLockAutoRenewed(true)
+            .queueName(getQueueName())
             .maxAutoLockRenewalDuration(Duration.ofSeconds(2))
             .buildAsyncClient();
 
