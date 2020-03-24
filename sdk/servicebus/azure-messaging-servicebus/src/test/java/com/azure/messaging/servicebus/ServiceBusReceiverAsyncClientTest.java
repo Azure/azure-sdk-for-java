@@ -62,6 +62,7 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 class ServiceBusReceiverAsyncClientTest {
@@ -270,14 +271,14 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that if there is no lock token, the message is not completed.
      */
-    /*@Test
+    @Test
     void receivesAndAutoCompleteWithoutLockToken() {
         // Arrange
         final ReceiveMessageOptions options = new ReceiveMessageOptions().setPrefetchCount(PREFETCH)
             .setAutoComplete(true);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
-            tracerProvider, messageSerializer);
+            tracerProvider, messageSerializer, messageContainer);
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
         final MessageWithLockToken message2 = mock(MessageWithLockToken.class);
@@ -307,7 +308,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         verifyZeroInteractions(managementNode);
     }
-    */
+
 
     /**
      * Verifies that we error if we try to complete a message without a lock token.
@@ -340,14 +341,14 @@ class ServiceBusReceiverAsyncClientTest {
     /**
      * Verifies that we error if we complete in RECEIVE_AND_DELETE mode.
      */
-    /*@Test
+    @Test
     void completeInReceiveAndDeleteMode() {
         final ReceiveMessageOptions options = new ReceiveMessageOptions()
             .setAutoComplete(false)
             .setReceiveMode(ReceiveMode.RECEIVE_AND_DELETE);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, false, options, connectionProcessor, tracerProvider,
-            messageSerializer);
+            messageSerializer, messageContainer);
 
         final UUID lockToken1 = UUID.randomUUID();
 
@@ -360,7 +361,7 @@ class ServiceBusReceiverAsyncClientTest {
         } finally {
             client.close();
         }
-    }*/
+    }
 
     /**
      * Verifies that this peek batch of messages.
