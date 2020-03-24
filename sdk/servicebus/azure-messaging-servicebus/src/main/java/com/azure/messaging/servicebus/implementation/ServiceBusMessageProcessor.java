@@ -8,12 +8,12 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
+import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Operators;
-import reactor.core.scheduler.Schedulers;
 import reactor.util.context.Context;
 
 import java.time.Duration;
@@ -43,32 +43,27 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private final AmqpRetryOptions retryOptions;
     private final Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction;
     private final Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon;
-    private final Function<ServiceBusReceivedMessage, Mono<Instant>> renewLockFunction;
+    private final Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock;
     private final Deque<ServiceBusReceivedMessage> messageQueue = new ConcurrentLinkedDeque<>();
     private final Map<UUID, PendingComplete> pendingCompletes = new HashMap<>();
     private final boolean autoLockRenewal;
-    private final Duration maxAutoLockRenewalDuration;
-    private final Mono<ServiceBusManagementNode> managementNodeMono;
+    private final Duration maxAutoLockRenewal;
     private final MessageLockContainer messageLockContainer;
-
-    //private final Map<UUID, Disposable> autoLockRenewMap = new HashMap<>();
 
     ServiceBusMessageProcessor(boolean isAutoComplete, AmqpRetryOptions retryOptions,
         Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction,
         Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon,
-        boolean autoLockRenewal, Duration maxAutoLockRenewalDuration,
-        Mono<ServiceBusManagementNode> managementNodeMono,
-        Function<ServiceBusReceivedMessage, Mono<Instant>> renewLockFunction,
+        boolean autoLockRenewal, Duration maxAutoLockRenewal,
+        Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock,
         MessageLockContainer messageLockContainer) {
         super();
         this.isAutoComplete = isAutoComplete;
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.completeFunction = Objects.requireNonNull(completeFunction, "'completeFunction' cannot be null.");
         this.onAbandon = Objects.requireNonNull(onAbandon, "'onAbandon' cannot be null.");
+        this.onRenewLock = Objects.requireNonNull(onRenewLock, "'onRenewLock' cannot be null.");
         this.autoLockRenewal = autoLockRenewal;
-        this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
-        this.managementNodeMono = managementNodeMono;
-        this.renewLockFunction = renewLockFunction;
+        this.maxAutoLockRenewal = maxAutoLockRenewal;
         this.messageLockContainer = messageLockContainer;
     }
 
@@ -126,7 +121,6 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         }
 
         messageQueue.add(message);
-        print(this.getClass(), "onNext", "Going to drain the queue .. ");
         drain();
     }
 
@@ -159,13 +153,11 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         }
 
         isDone = true;
-        print(this.getClass(), "onComplete", "Going to drain the queue .. ");
         drain();
     }
 
     @Override
     public void request(long request) {
-        print(this.getClass(), "request", "Entry .. ");
         logger.info("Back-pressure request: {}", request);
         if (Operators.validate(request)) {
             Operators.addCap(REQUESTED, this, request);
@@ -173,7 +165,6 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             if (upstream != null) {
                 upstream.request(request);
             }
-            print(this.getClass(), "request", "Going to drain the queue .. ");
             drain();
         }
     }
@@ -186,7 +177,6 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
         logger.info("Cancelling subscription.");
         isCancelled = true;
-        print(this.getClass(), "cancel", "Going to drain the queue .. ");
         drain();
     }
 
@@ -198,7 +188,6 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
         logger.info("Disposing subscription.");
         isDone = true;
-        print(this.getClass(), "dispose", "Going to drain the queue .. ");
         drain();
     }
 
@@ -230,7 +219,6 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             if (isCancelled) {
                 this.downstream = null;
             } else {
-                print(this.getClass(), "subscribe", "Going to drain the queue .. ");
                 drain();
             }
         } else {
@@ -246,7 +234,6 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         }
 
         try {
-            print(this.getClass(), "drain", "Going to call drainQueue() .. ");
             drainQueue();
         } finally {
             if (WIP.decrementAndGet(this) != 0) {
@@ -282,34 +269,24 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
                 return;
             }
 
-            print(this.getClass(), "drainQueue" , message.getLockToken() + "( "+new String(message.getBody())+") calling next() with this message" );
             next(message);
 
             message = messageQueue.poll();
         }
 
         // Emit the message which is equal to lastMessage.
-        print(this.getClass(), "drainQueue" , message.getLockToken() + " ( "+new String(message.getBody())+") calling next() with this last message" );
-
         next(message);
-        print(this.getClass(), "drainQueue" , message.getLockToken() + " ( "+new String(message.getBody())+") After calling next() isDone = "+ isDone );
 
         if (isDone) {
             if (error != null) {
                 downstream.onError(error);
             } else if (messageQueue.peekLast() == null) {
-                print(this.getClass(), "drainQueue", "Going to call downstream.onComplete .. ");
                 downstream.onComplete();
             }
         }
     }
 
-    // TODO : Here  look for Disposable.. to renewLock autometically
     private void next(ServiceBusReceivedMessage message) {
-        AtomicReference<Disposable> disposeRenewLockTimer = new  AtomicReference<Disposable>();
-        final int renewLockAfterSeconds = 5;
-
-        print(this.getClass(), "next" , "Entry " + message.getLockToken() + ", " + new String(message.getBody()));
         final UUID lockToken = message.getLockToken();
         final boolean isCompleteMessage = isAutoComplete && lockToken != null
             && !MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken);
@@ -321,27 +298,26 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         if (isCompleteMessage) {
             pendingCompletes.put(lockToken, pendingComplete);
         }
+
+        final Disposable renewLockSubscription;
         if (autoLockRenewal) {
-            Disposable renewLockDisposable = renewLockFunction.apply(message)
-                .repeat()
-                .delayElements(Duration.ofSeconds(renewLockAfterSeconds))
-                .doOnNext(instant -> {
-                    // This will ensure that we are getting valid refresh time
-                    if (instant != null) {
-                        logger.info(" Received new refresh time " + instant);
-                        print(this.getClass(), "next" , "!!!!! Received new refresh time " + instant);
-                        messageLockContainer.update(message.getLockToken(), instant);
-                    }
-                })
-                .subscribe();
+            renewLockSubscription = Flux.interval(maxAutoLockRenewal)
+                .flatMap(interval -> onRenewLock.apply(message))
+                .subscribe(lockedUntil -> {
+                    logger.info("Lock renewal successful. seq[{}]. lockToken[{}]. lockedUntil[{}]",
+                        message.getSequenceNumber(), lockToken, lockedUntil);
 
-            disposeRenewLockTimer.set(renewLockDisposable);
-
-            // autoLockRenewMap.put(message.getLockToken(), disposeRenewLockTimer);
+                    messageLockContainer.addOrUpdate(lockToken, lockedUntil);
+                }, error -> {
+                    logger.error("Error occurred while renewing lock token.", error);
+                }, () -> {
+                    logger.info("Renewing lock token task completed.");
+                });
+        } else {
+            renewLockSubscription = Disposables.disposed();
         }
 
         try {
-            print(this.getClass(), "next" , "calling downstream.onNext  " + message.getLockToken() + ", Calling downstream onNext");
             downstream.onNext(message);
         } catch (Exception e) {
             logger.error("Exception occurred while handling downstream onNext operation.", e);
@@ -364,6 +340,8 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             }
 
             downstream.onError(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
+        } finally {
+            renewLockSubscription.dispose();
         }
 
         try {
@@ -388,22 +366,9 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
                         logger.info("lock[{}]. Complete status: [{}]", completedMessage.getLockToken(), signal);
 
                         pendingCompletes.remove(lockToken);
-                        print(this.getClass(), "next" , " pendingCompletes.remove" + message.getLockToken() + ", After removing from pendingCompletes");
 
                     })
                     .block(retryOptions.getTryTimeout());
-            } else {
-                print(this.getClass(), "next" , " Token :" + message.getLockToken() + ", isCompleteMessage = "+ isCompleteMessage  + ", pending isrunning: "+ pending);
-
-            }
-
-            //TODO(hemanttanwar) : dispose AutoLockRenew subscriber
-            if (autoLockRenewal
-                && disposeRenewLockTimer.get() != null
-                && !disposeRenewLockTimer.get().isDisposed()){
-                // dispose the renewLockTimer : if it was started in first place
-                print(this.getClass(), "next" , " Token :" + message.getLockToken() + ", Stopping auto lock Renew subscriber.");
-                disposeRenewLockTimer.get().dispose();
             }
         } catch (Exception e) {
             logger.error("Exception occurred while auto-completing message. Sequence: {}. Lock token: {}",
@@ -411,13 +376,6 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             e.printStackTrace();
             downstream.onError(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
         }
-        print(this.getClass(), "next" , "  " + message.getLockToken() + ", Exit ..");
-
-    }
-
-    private Instant renewLock(ServiceBusReceivedMessage message){
-        print(getClass(), "renewLock", "  Renew Lock here  by making call to ManagementChannel ... lock token =" + message.getLockToken());
-        return Instant.now().plusSeconds(30);
     }
 
     private static final class PendingComplete {
@@ -453,8 +411,5 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         private ServiceBusReceivedMessage getMessage() {
             return message;
         }
-    }
-    private void print(Class clazz, String method, String message) {
-        System.out.println(clazz.getName() + "." +  method + " " + message);
     }
 }

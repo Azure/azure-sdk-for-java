@@ -72,9 +72,6 @@ public final class ServiceBusClientBuilder {
     private AmqpTransportType transport = AmqpTransportType.AMQP;
     private String fullyQualifiedNamespace;
     private String serviceBusResourceName;
-    private Duration maxAutoLockRenewalDuration;
-
-    private boolean autoLockRenewal;
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
@@ -179,18 +176,6 @@ public final class ServiceBusClientBuilder {
         return this;
     }
 
-
-    public ServiceBusClientBuilder maxAutoLockRenewalDuration(Duration maxAutoLockRenewalDuration) {
-        this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
-        return this;
-    }
-
-    public ServiceBusClientBuilder autoLockRenewal(boolean autoLockRenewal) {
-        this.autoLockRenewal = autoLockRenewal;
-        return this;
-    }
-
-
     /**
      * @param transportType to use.
      *
@@ -256,8 +241,7 @@ public final class ServiceBusClientBuilder {
         final MessageLockContainer messageLockContainer = new MessageLockContainer();
         return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
             serviceBusResourceName, MessagingEntityType.QUEUE, false, receiveMessageOptions,
-            connectionProcessor, tracerProvider, messageSerializer, autoLockRenewal, maxAutoLockRenewalDuration
-            , messageLockContainer);
+            connectionProcessor, tracerProvider, messageSerializer, messageLockContainer);
     }
 
     /**

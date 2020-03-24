@@ -47,7 +47,6 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
-    private final ConcurrentHashMap<UUID, Instant> lockTokenExpirationMap = new ConcurrentHashMap<>();
     private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final MessagingEntityType entityType;
@@ -59,8 +58,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final int prefetch;
     private final boolean isAutoComplete;
     private final ReceiveMode receiveMode;
-    private final Duration maxAutoLockRenewalDuration;
-    private final boolean autoLockRenewal;
+    private final boolean isLockAutoRenewed;
     private final MessageLockContainer messageLockContainer;
 
     /**
@@ -72,8 +70,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
         boolean isSessionEnabled, ReceiveMessageOptions receiveMessageOptions,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, boolean autoLockRenewal, Duration maxAutoLockRenewalDuration,
-        MessageLockContainer messageLockContainer) {
+        MessageSerializer messageSerializer, MessageLockContainer messageLockContainer) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
@@ -87,11 +84,10 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         this.maxAutoRenewDuration = receiveMessageOptions.getMaxAutoRenewDuration();
         this.isAutoComplete = receiveMessageOptions.isAutoComplete();
         this.receiveMode = receiveMessageOptions.getReceiveMode();
+        this.isLockAutoRenewed = receiveMessageOptions.isLockAutoRenewed();
 
         this.entityType = entityType;
         this.isSessionEnabled = isSessionEnabled;
-        this.autoLockRenewal = autoLockRenewal;
-        this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
         this.messageLockContainer =  messageLockContainer;
     }
 
@@ -136,19 +132,14 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             Mono.fromCallable(() -> getOrCreateConsumer(entityPath)),
             consumer -> {
                 return consumer.receive().map(message -> {
-                    if (message.getLockToken() == null || MessageUtils.ZERO_LOCK_TOKEN.equals(message.getLockToken())) {
+                    final UUID lockToken =  message.getLockToken();
+                    if (lockToken == null || MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken)) {
                         return message;
                     }
-                    messageLockContainer.update(message.getLockToken(), message.getLockedUntil());
-                   /* lockTokenExpirationMap.compute(message.getLockToken(), (key, existing) -> {
-                        if (existing == null) {
-                            return message.getLockedUntil();
-                        } else {
-                            return existing.isBefore(message.getLockedUntil())
-                                ? message.getLockedUntil()
-                                : existing;
-                        }
-                    });*/
+
+                    final Instant lockedUntil = messageLockContainer.addOrUpdate(lockToken, message.getLockedUntil());
+                    logger.info("Message {} locked. lockId[{}] lockedUntil[{}]", message.getSequenceNumber(),
+                        lockToken, lockedUntil);
 
                     return message;
                 });
@@ -476,8 +467,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType));
 
             return new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer, isAutoComplete,
-                connectionProcessor.getRetryOptions(), this::complete, this::abandon, autoLockRenewal,
-                maxAutoLockRenewalDuration, managementNode, this::renewMessageLock, messageLockContainer);
+                connectionProcessor.getRetryOptions(), this::complete, this::abandon, isLockAutoRenewed,
+                maxAutoRenewDuration, managementNode, this::renewMessageLock, messageLockContainer);
         });
     }
 

@@ -25,8 +25,15 @@ public class MessageLockContainer {
         lockTokenExpirationMap.remove(lockToken);
     }
 
-    public void update(UUID lockToken, Instant lockTokenExpiration) {
-        lockTokenExpirationMap.put(lockToken, lockTokenExpiration);
+    public Instant addOrUpdate(UUID lockToken, Instant lockTokenExpiration) {
+        return lockTokenExpirationMap.compute(lockToken, (key, existing) -> {
+            if (existing == null) {
+                return lockTokenExpiration;
+            } else {
+                return existing.isBefore(lockTokenExpiration)
+                    ? lockTokenExpiration
+                    : existing;
+            }
+        });
     }
-
 }
