@@ -3,7 +3,6 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.ApiKeyCredentialPolicy;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
@@ -170,7 +169,7 @@ public final class TextAnalyticsClientBuilder {
                 // User token based policy
                 policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
             } else if (credential != null) {
-                policies.add(new ApiKeyCredentialPolicy(credential));
+                policies.add(new TextAnalyticsApiKeyCredentialPolicy(credential));
             } else {
                 // Throw exception that credential and tokenCredential cannot be null
                 throw logger.logExceptionAsError(
