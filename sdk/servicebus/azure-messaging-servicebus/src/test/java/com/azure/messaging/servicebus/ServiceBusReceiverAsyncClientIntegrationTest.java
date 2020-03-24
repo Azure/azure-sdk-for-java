@@ -65,12 +65,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(sender.send(message).then(sender.send(message))
-            .thenMany(receiverManual.receive().take(2)))
+            .thenMany(receiverManual.receive()))
             .assertNext(receivedMessage ->
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
             .assertNext(receivedMessage ->
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
-            .verifyComplete();
+            .thenCancel()
+            .verify();
     }
 
     /**

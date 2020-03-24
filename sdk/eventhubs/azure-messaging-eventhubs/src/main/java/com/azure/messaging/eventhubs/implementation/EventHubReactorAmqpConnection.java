@@ -53,6 +53,8 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     private final TokenCredential tokenCredential;
     private final Scheduler scheduler;
 
+    private volatile ManagementChannel managementChannel;
+
     /**
      * Creates a new AMQP connection that uses proton-j.
      *
@@ -87,9 +89,15 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
                 "connectionId[%s]: Connection is disposed. Cannot get management instance", connectionId))));
         }
 
-        return Mono.defer(() -> getReactorConnection().thenReturn(new ManagementChannel(
-                createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
-                eventHubName, tokenCredential, tokenManagerProvider, this.messageSerializer, scheduler)));
+        return getReactorConnection().then(Mono.fromCallable(() -> {
+            if (managementChannel == null) {
+                this.managementChannel = new ManagementChannel(
+                    createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
+                    eventHubName, tokenCredential, tokenManagerProvider, this.messageSerializer, scheduler);
+            }
+
+            return managementChannel;
+        }));
     }
 
     /**
