@@ -64,9 +64,9 @@ import static com.azure.data.cosmos.internal.HttpConstants.StatusCodes;
 import static com.azure.data.cosmos.internal.HttpConstants.SubStatusCodes;
 import static com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdClientChannelHealthChecker.Timestamps;
 import static com.azure.data.cosmos.internal.directconnectivity.rntbd.RntbdConstants.RntbdResponseHeader;
-import static com.azure.data.cosmos.internal.guava27.Strings.lenientFormat;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.azure.data.cosmos.internal.guava27.Strings.lenientFormat;
 
 public final class RntbdRequestManager implements ChannelHandler, ChannelInboundHandler, ChannelOutboundHandler {
 
@@ -157,11 +157,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     /**
-     * The {@link Channel} of the {@link ChannelHandlerContext} has read a message from its peer
-     * <p>
+     * The {@link Channel} of the {@link ChannelHandlerContext} has read a message from its peer.
      *
-     * @param context {@link ChannelHandlerContext} to which this {@link RntbdRequestManager} belongs
-     * @param message The message read
+     * @param context {@link ChannelHandlerContext} to which this {@link RntbdRequestManager} belongs.
+     * @param message The message read.
      */
     @Override
     public void channelRead(final ChannelHandlerContext context, final Object message) {
@@ -169,7 +168,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         this.traceOperation(context, "channelRead");
 
         try {
-            if (message instanceof RntbdResponse) {
+            if (message.getClass() == RntbdResponse.class) {
 
                 try {
                     this.messageReceived(context, (RntbdResponse) message);
@@ -200,7 +199,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     /**
-     * The {@link Channel} of the {@link ChannelHandlerContext} has fully consumed the most-recent message read
+     * The {@link Channel} of the {@link ChannelHandlerContext} has fully consumed the most-recent message read.
      * <p>
      * If {@link ChannelOption#AUTO_READ} is off, no further attempt to read inbound data from the current
      * {@link Channel} will be made until {@link ChannelHandlerContext#read} is called. This leaves time
@@ -483,17 +482,15 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         this.traceOperation(context, "write", message);
 
-        if (message instanceof RntbdRequestRecord) {
+        if (message.getClass() == RntbdRequestRecord.class) {
 
-            RntbdRequestRecord record = (RntbdRequestRecord) message;
+            final RntbdRequestRecord record = (RntbdRequestRecord) message;
             this.timestamps.channelWriteAttempted();
 
-            context.writeAndFlush(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
+            context.write(this.addPendingRequestRecord(context, record), promise).addListener(completed -> {
+                record.stage(RntbdRequestRecord.Stage.SENT);
                 if (completed.isSuccess()) {
-                    record.stage(RntbdRequestRecord.Stage.SENT);
                     this.timestamps.channelWriteCompleted();
-                } else {
-                    record.stage(RntbdRequestRecord.Stage.UNSENT);
                 }
             });
 
@@ -502,7 +499,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         if (message == RntbdHealthCheckRequest.MESSAGE) {
 
-            context.writeAndFlush(RntbdHealthCheckRequest.MESSAGE, promise).addListener(completed -> {
+            context.write(RntbdHealthCheckRequest.MESSAGE, promise).addListener(completed -> {
                 if (completed.isSuccess()) {
                     this.timestamps.channelPingCompleted();
                 }
@@ -511,7 +508,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             return;
         }
 
-        final IllegalStateException error = new IllegalStateException(lenientFormat("message of %s: %s", message.getClass(), message));
+        final IllegalStateException error = new IllegalStateException(lenientFormat("message of %s: %s",
+                message.getClass(),
+                message));
+
         reportIssue(context, "", error);
         this.exceptionCaught(context, error);
     }
@@ -557,12 +557,11 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
     // region Private methods
 
-    private RntbdRequestArgs addPendingRequestRecord(final ChannelHandlerContext context, final RntbdRequestRecord record) {
+    private RntbdRequestRecord addPendingRequestRecord(final ChannelHandlerContext context, final RntbdRequestRecord record) {
 
         return this.pendingRequests.compute(record.transportRequestId(), (id, current) -> {
 
             reportIssueUnless(current == null, context, "id: {}, current: {}, request: {}", record);
-            record.stage(RntbdRequestRecord.Stage.QUEUED);
 
             final Timeout pendingRequestTimeout = record.newTimeout(timeout -> {
 
@@ -581,9 +580,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 pendingRequestTimeout.cancel();
             });
 
-            return record.stage(RntbdRequestRecord.Stage.QUEUED);
+            return record;
 
-        }).args();
+        });
     }
 
     private void completeAllPendingRequestsExceptionally(
@@ -678,10 +677,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     /**
-     * This method is called for each incoming message of type {@link StoreResponse} to complete a request
+     * This method is called for each incoming message of type {@link RntbdResponse} to complete a request.
      *
-     * @param context  {@link ChannelHandlerContext} encode to which this {@link RntbdRequestManager} belongs
-     * @param response the message encode handle
+     * @param context  {@link ChannelHandlerContext} to which this {@link RntbdRequestManager request manager} belongs.
+     * @param response the {@link RntbdResponse message} received.
      */
     private void messageReceived(final ChannelHandlerContext context, final RntbdResponse response) {
 
@@ -699,10 +698,14 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             return;
         }
 
+        requestRecord.responseLength(response.getMessageLength());
+        requestRecord.stage(RntbdRequestRecord.Stage.RECEIVED);
+
         final HttpResponseStatus status = response.getStatus();
         final UUID activityId = response.getActivityId();
+        final int statusCode = status.code();
 
-        if (HttpResponseStatus.OK.code() <= status.code() && status.code() < HttpResponseStatus.MULTIPLE_CHOICES.code()) {
+        if (HttpResponseStatus.OK.code() <= statusCode && statusCode < HttpResponseStatus.MULTIPLE_CHOICES.code()) {
 
             final StoreResponse storeResponse = response.toStoreResponse(this.contextFuture.getNow(null));
             requestRecord.complete(storeResponse);
@@ -720,9 +723,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             // ..Create Error instance
 
-            final CosmosError error = response.hasPayload() ?
-                BridgeInternal.createCosmosError(RntbdObjectMapper.readTree(response)) :
-                new CosmosError(Integer.toString(status.code()), status.reasonPhrase(), status.codeClass().name());
+            final CosmosError error = response.hasPayload()
+                ? BridgeInternal.createCosmosError(RntbdObjectMapper.readTree(response))
+                : new CosmosError(Integer.toString(statusCode), status.reasonPhrase(), status.codeClass().name());
 
             // ..Map RNTBD response headers to HTTP response headers
 
@@ -845,7 +848,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     private void traceOperation(final ChannelHandlerContext context, final String operationName, final Object... args) {
-        logger.trace("{}\n{}\n{}", operationName, context, args);
+        logger.debug("{}\n{}\n{}", operationName, context, args);
     }
 
     // endregion

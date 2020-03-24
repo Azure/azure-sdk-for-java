@@ -3,6 +3,7 @@
 
 package com.azure.data.cosmos.internal.directconnectivity;
 
+import com.azure.data.cosmos.BridgeInternal;
 import com.azure.data.cosmos.internal.Configs;
 import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
 import com.azure.data.cosmos.internal.UserAgentContainer;
@@ -23,7 +24,6 @@ import io.netty.handler.ssl.SslContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.SignalType;
 
 import java.io.File;
 import java.io.IOException;
@@ -122,14 +122,19 @@ public final class RntbdTransportClient extends TransportClient {
 
         logger.debug("RntbdTransportClient.invokeStoreAsync({}, {}): {}", address, request, record);
 
-        return Mono.fromFuture(record).doFinally(signalType -> {
-            logger.debug("SignalType.{} received from reactor: {\n  endpoint: {},\n  record: {}\n}",
-                signalType.name(),
-                endpoint,
-                record);
-            if (signalType == SignalType.CANCEL) {
-                record.stage(RntbdRequestRecord.Stage.CANCELLED_BY_CLIENT);
+        return Mono.fromFuture(record.whenComplete((response, throwable) -> {
+
+            record.stage(RntbdRequestRecord.Stage.COMPLETED);
+
+            if (request.requestContext.cosmosResponseDiagnostics == null) {
+                request.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
             }
+
+            if(response != null) {
+                logger.debug("%s", record.takeTimelineSnapshot());
+            }
+        })).doOnCancel(() -> {
+            logger.debug("REQUEST CANCELLED: {}", record);
         });
     }
 
@@ -319,6 +324,48 @@ public final class RntbdTransportClient extends TransportClient {
 
         // region Types
 
+        /**
+         * A builder for constructing {@link Options} instances.
+         *
+         * <h3>Using system properties to set the default {@link Options} used by an {@link Builder}</h3>
+         * <p>
+         * A default options instance is created when the {@link Builder} class is initialized. This instance specifies
+         * the default options used by every {@link Builder} instance. In priority order the default options instance
+         * is created from:
+         * <ol>
+         * <li>The JSON value of system property {@code azure.cosmos.directTcp.defaultOptions}.
+         * <p>Example:
+         * <pre>{@code -Dazure.cosmos.directTcp.defaultOptions={\"maxChannelsPerEndpoint\":5,\"maxRequestsPerChannel\":30}}</pre>
+         * </li>
+         * <li>The contents of the JSON file located by system property {@code azure.cosmos.directTcp
+         * .defaultOptionsFile}.
+         * <p>Example:
+         * <pre>{@code -Dazure.cosmos.directTcp.defaultOptionsFile=/path/to/default/options/file}</pre>
+         * </li>
+         * <li>The contents of JSON resource file {@code azure.cosmos.directTcp.defaultOptions.json}.
+         * <p>Specifically, the resource file is read from this stream:
+         * <pre>{@code RntbdTransportClient.class.getClassLoader().getResourceAsStream("azure.cosmos.directTcp.defaultOptions.json")}</pre>
+         * <p>Example: <pre>{@code {
+         *   "bufferPageSize": 8192,
+         *   "connectionTimeout": "PT1M",
+         *   "idleChannelTimeout": "PT0S",
+         *   "idleEndpointTimeout": "PT1M10S",
+         *   "maxBufferCapacity": 8388608,
+         *   "maxChannelsPerEndpoint": 10,
+         *   "maxRequestsPerChannel": 30,
+         *   "receiveHangDetectionTime": "PT1M5S",
+         *   "requestExpiryInterval": "PT5S",
+         *   "requestTimeout": "PT1M",
+         *   "requestTimerResolution": "PT0.5S",
+         *   "sendHangDetectionTime": "PT10S",
+         *   "shutdownTimeout": "PT15S"
+         * }}</pre>
+         * </li>
+         * </ol>
+         * <p>JSON value errors are logged and then ignored. If none of the above values are available or all available
+         * values are in error, the default options instance is created from the private parameterless constructor for
+         * {@link Options}.
+         */
         @SuppressWarnings("UnusedReturnValue")
         public static class Builder {
 
@@ -328,16 +375,6 @@ public final class RntbdTransportClient extends TransportClient {
             private static final Options DEFAULT_OPTIONS;
 
             static {
-
-                // In priority order we take default Direct TCP options from:
-                //
-                // 1. the string value of system property "azure.cosmos.directTcp.options", or
-                // 2. the contents of the file located by the system property "azure.cosmos.directTcp.optionsFile", or
-                // 3. the contents of the resource file named "azure.cosmos.directTcp.options.json"
-                //
-                // Otherwise, if none of these values are set or an error occurs we create default options based on a
-                // set of hard-wired values defined in the default private parameterless constructor for
-                // RntbdTransportClient.Options.
 
                 Options options = null;
 
@@ -373,7 +410,7 @@ public final class RntbdTransportClient extends TransportClient {
                         final ClassLoader loader = RntbdTransportClient.class.getClassLoader();
                         final String name = DEFAULT_OPTIONS_PROPERTY_NAME + ".json";
 
-                        try (final InputStream stream = loader.getResourceAsStream(name)) {
+                        try (InputStream stream = loader.getResourceAsStream(name)) {
                             if (stream != null) {
                                 // Attempt to load default options from the JSON resource file "{propertyName}.json"
                                 options = RntbdObjectMapper.readValue(stream, Options.class);
@@ -383,7 +420,14 @@ public final class RntbdTransportClient extends TransportClient {
                         }
                     }
                 } finally {
-                    DEFAULT_OPTIONS = options != null ? options : new Options();
+                    if (options == null) {
+                        DEFAULT_OPTIONS = new Options();
+                    } else {
+                        logger.info("Updated default Direct TCP options from system property {}: {}",
+                            DEFAULT_OPTIONS_PROPERTY_NAME,
+                            options);
+                        DEFAULT_OPTIONS = options;
+                    }
                 }
             }
 
@@ -553,7 +597,9 @@ public final class RntbdTransportClient extends TransportClient {
 
     static final class JsonSerializer extends StdSerializer<RntbdTransportClient> {
 
-        public JsonSerializer() {
+        private static final long serialVersionUID = 1007663695768825670L;
+
+        JsonSerializer() {
             super(RntbdTransportClient.class);
         }
 
