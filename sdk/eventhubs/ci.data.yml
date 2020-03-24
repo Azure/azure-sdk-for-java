@@ -20,10 +20,10 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/eventhubs/
+      - sdk/eventhubs/*
     exclude:
-      - sdk/eventhubs/azure
-      - sdk/eventhubs/mgmt-
+      - sdk/eventhubs/azure-*
+      - sdk/eventhubs/mgmt-*
 
 pr:
   branches:
@@ -34,10 +34,10 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/eventhubs/
+      - sdk/eventhubs/*
     exclude:
-      - sdk/eventhubs/azure
-      - sdk/eventhubs/mgmt-
+      - sdk/eventhubs/azure-*
+      - sdk/eventhubs/mgmt-*
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
