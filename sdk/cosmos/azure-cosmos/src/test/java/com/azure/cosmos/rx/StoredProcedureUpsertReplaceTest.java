@@ -45,7 +45,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
                 .getProperties();
 
         // read stored procedure to validate creation
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         Mono<CosmosAsyncStoredProcedureResponse> readObservable = createdCollection.getScripts()
                 .getStoredProcedure(readBackSp.getId()).read(null);
 
@@ -91,7 +91,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_StoredProcedureUpsertReplaceTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 

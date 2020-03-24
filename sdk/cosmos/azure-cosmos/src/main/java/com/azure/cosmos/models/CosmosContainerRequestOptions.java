@@ -42,7 +42,7 @@ public final class CosmosContainerRequestOptions {
      *
      * @return true if PopulateQuotaInfo is enabled
      */
-    public boolean getPopulateQuotaInfo() {
+    public boolean isQuotaInfoPopulated() {
         return populateQuotaInfo;
     }
 
@@ -54,7 +54,7 @@ public final class CosmosContainerRequestOptions {
      * @param populateQuotaInfo a boolean value indicating whether PopulateQuotaInfo is enabled or not
      * @return the current request options
      */
-    public CosmosContainerRequestOptions setPopulateQuotaInfo(boolean populateQuotaInfo) {
+    public CosmosContainerRequestOptions setQuotaInfoPopulated(boolean populateQuotaInfo) {
         this.populateQuotaInfo = populateQuotaInfo;
         return this;
     }

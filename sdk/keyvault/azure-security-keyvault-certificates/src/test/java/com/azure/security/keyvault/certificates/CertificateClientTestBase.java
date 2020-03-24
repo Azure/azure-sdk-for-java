@@ -648,7 +648,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         }
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
-            serviceVersion.toString().equals(configuredServiceVersion.trim()));
+            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 }
 

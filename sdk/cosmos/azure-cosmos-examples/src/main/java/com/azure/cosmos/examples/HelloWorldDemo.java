@@ -17,8 +17,8 @@ public class HelloWorldDemo {
         // Create a new CosmosAsyncClient via the CosmosClientBuilder
         // It only requires endpoint and key, but other useful settings are available
         CosmosAsyncClient client = new CosmosClientBuilder()
-            .setEndpoint("<YOUR ENDPOINT HERE>")
-            .setKey("<YOUR KEY HERE>")
+            .endpoint("<YOUR ENDPOINT HERE>")
+            .key("<YOUR KEY HERE>")
             .buildAsyncClient();
 
         // Get a reference to the container

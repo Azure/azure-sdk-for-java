@@ -3,15 +3,15 @@
 
 package com.azure.storage.blob.perf;
 
+import com.azure.perf.test.core.PerfStressOptions;
 import java.util.UUID;
 
-import com.azure.perf.test.core.CountOptions;
 import com.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class ListBlobsTest extends ContainerTest<CountOptions> {
-    public ListBlobsTest(CountOptions options) {
+public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
+    public ListBlobsTest(PerfStressOptions options) {
         super(options);
     }
 

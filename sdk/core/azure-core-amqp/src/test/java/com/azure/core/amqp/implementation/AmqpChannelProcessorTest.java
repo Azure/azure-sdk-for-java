@@ -205,7 +205,7 @@ class AmqpChannelProcessorTest {
     }
 
     /**
-     * Verifies that when there are no subscribers, no request is fetched from upstream.
+     * Verifies that on initial subscribe, one item is requested.
      */
     @Test
     void noSubscribers() {
@@ -216,7 +216,7 @@ class AmqpChannelProcessorTest {
         channelProcessor.onSubscribe(subscription);
 
         // Assert
-        verify(subscription).request(eq(0L));
+        verify(subscription).request(eq(1L));
     }
 
     /**

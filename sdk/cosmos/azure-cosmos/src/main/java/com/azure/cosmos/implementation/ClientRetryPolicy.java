@@ -74,8 +74,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.retryContext = null;
         // Received 403.3 on write region, initiate the endpoint re-discovery
         CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
-        if (clientException != null && clientException.getCosmosResponseDiagnostics() != null) {
-            this.cosmosResponseDiagnostics = clientException.getCosmosResponseDiagnostics();
+        if (clientException != null && clientException.getResponseDiagnostics() != null) {
+            this.cosmosResponseDiagnostics = clientException.getResponseDiagnostics();
         }
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.FORBIDDEN) &&

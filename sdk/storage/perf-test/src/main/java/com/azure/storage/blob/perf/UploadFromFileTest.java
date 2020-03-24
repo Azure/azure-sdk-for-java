@@ -3,21 +3,22 @@
 
 package com.azure.storage.blob.perf;
 
+import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputStream;
+
+import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.storage.blob.perf.core.BlobTestBase;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import com.azure.perf.test.core.RandomStream;
-import com.azure.perf.test.core.SizeOptions;
-import com.azure.storage.blob.perf.core.BlobTestBase;
 import reactor.core.publisher.Mono;
 
-public class UploadFromFileTest extends BlobTestBase<SizeOptions> {
+public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
     private static final Path TEMP_FILE;
+
     static {
         try {
             TEMP_FILE = Files.createTempFile(null, null);
@@ -26,7 +27,7 @@ public class UploadFromFileTest extends BlobTestBase<SizeOptions> {
         }
     }
 
-    public UploadFromFileTest(SizeOptions options) {
+    public UploadFromFileTest(PerfStressOptions options) {
         super(options);
     }
 
@@ -41,7 +42,7 @@ public class UploadFromFileTest extends BlobTestBase<SizeOptions> {
     }
 
     private Mono<Void> createTempFile() {
-        try (InputStream inputStream = RandomStream.create(options.getSize());
+        try (InputStream inputStream = createRandomInputStream(options.getSize());
              OutputStream outputStream = new FileOutputStream(TEMP_FILE.toString())) {
             copyStream(inputStream, outputStream);
             return Mono.empty();

@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.IndexKind;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -19,7 +20,7 @@ public final class RangeIndex extends Index {
      *
      * @param dataType the data type.
      */
-    public RangeIndex(DataType dataType) {
+    RangeIndex(DataType dataType) {
         super(IndexKind.RANGE);
         this.setDataType(dataType);
     }
@@ -31,7 +32,7 @@ public final class RangeIndex extends Index {
      * @param dataType the data type of the RangeIndex
      * @param precision the precision of the RangeIndex
      */
-    public RangeIndex(DataType dataType, int precision) {
+    RangeIndex(DataType dataType, int precision) {
         super(IndexKind.RANGE);
         this.setDataType(dataType);
         this.setPrecision(precision);
