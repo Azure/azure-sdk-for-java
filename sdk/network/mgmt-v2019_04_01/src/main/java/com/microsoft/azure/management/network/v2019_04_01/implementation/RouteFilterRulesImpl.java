@@ -64,10 +64,14 @@ class RouteFilterRulesImpl extends WrapperImpl<RouteFilterRulesInner> implements
     public Observable<RouteFilterRule> getAsync(String resourceGroupName, String routeFilterName, String ruleName) {
         RouteFilterRulesInner client = this.inner();
         return client.getAsync(resourceGroupName, routeFilterName, ruleName)
-        .map(new Func1<RouteFilterRuleInner, RouteFilterRule>() {
+        .flatMap(new Func1<RouteFilterRuleInner, Observable<RouteFilterRule>>() {
             @Override
-            public RouteFilterRule call(RouteFilterRuleInner inner) {
-                return wrapModel(inner);
+            public Observable<RouteFilterRule> call(RouteFilterRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RouteFilterRule)wrapModel(inner));
+                }
             }
        });
     }
