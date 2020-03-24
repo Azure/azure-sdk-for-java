@@ -49,6 +49,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private final boolean autoLockRenewal;
     private final Duration maxAutoLockRenewalDuration;
     private final Mono<ServiceBusManagementNode> managementNodeMono;
+    private final MessageLockContainer messageLockContainer;
 
     //private final Map<UUID, Disposable> autoLockRenewMap = new HashMap<>();
 
@@ -57,7 +58,8 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon,
         boolean autoLockRenewal, Duration maxAutoLockRenewalDuration,
         Mono<ServiceBusManagementNode> managementNodeMono,
-        Function<ServiceBusReceivedMessage, Mono<Instant>> renewLockFunction) {
+        Function<ServiceBusReceivedMessage, Mono<Instant>> renewLockFunction,
+        MessageLockContainer messageLockContainer) {
         super();
         this.isAutoComplete = isAutoComplete;
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
@@ -67,6 +69,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
         this.managementNodeMono = managementNodeMono;
         this.renewLockFunction = renewLockFunction;
+        this.messageLockContainer = messageLockContainer;
     }
 
     private volatile boolean isDone;
@@ -327,7 +330,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
                     if (instant != null) {
                         logger.info(" Received new refresh time " + instant);
                         print(this.getClass(), "next" , "!!!!! Received new refresh time " + instant);
-
+                        messageLockContainer.update(message.getLockToken(), instant);
                     }
                 })
                 .subscribe();

@@ -256,7 +256,8 @@ public final class ServiceBusClientBuilder {
         final MessageLockContainer messageLockContainer = new MessageLockContainer();
         return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
             serviceBusResourceName, MessagingEntityType.QUEUE, false, receiveMessageOptions,
-            connectionProcessor, tracerProvider, messageSerializer, autoLockRenewal, maxAutoLockRenewalDuration);
+            connectionProcessor, tracerProvider, messageSerializer, autoLockRenewal, maxAutoLockRenewalDuration
+            , messageLockContainer);
     }
 
     /**

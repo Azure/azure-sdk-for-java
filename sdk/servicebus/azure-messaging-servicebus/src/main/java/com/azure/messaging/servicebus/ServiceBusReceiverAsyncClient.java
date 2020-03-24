@@ -14,6 +14,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
+import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAsyncConsumer;
@@ -60,6 +61,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final ReceiveMode receiveMode;
     private final Duration maxAutoLockRenewalDuration;
     private final boolean autoLockRenewal;
+    private final MessageLockContainer messageLockContainer;
 
     /**
      * Map containing linkNames and their associated consumers. Key: linkName Value: consumer associated with that
@@ -70,7 +72,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
         boolean isSessionEnabled, ReceiveMessageOptions receiveMessageOptions,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, boolean autoLockRenewal, Duration maxAutoLockRenewalDuration) {
+        MessageSerializer messageSerializer, boolean autoLockRenewal, Duration maxAutoLockRenewalDuration,
+        MessageLockContainer messageLockContainer) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
@@ -89,6 +92,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         this.isSessionEnabled = isSessionEnabled;
         this.autoLockRenewal = autoLockRenewal;
         this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
+        this.messageLockContainer =  messageLockContainer;
     }
 
     /**
@@ -135,8 +139,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                     if (message.getLockToken() == null || MessageUtils.ZERO_LOCK_TOKEN.equals(message.getLockToken())) {
                         return message;
                     }
-
-                    lockTokenExpirationMap.compute(message.getLockToken(), (key, existing) -> {
+                    messageLockContainer.update(message.getLockToken(), message.getLockedUntil());
+                   /* lockTokenExpirationMap.compute(message.getLockToken(), (key, existing) -> {
                         if (existing == null) {
                             return message.getLockedUntil();
                         } else {
@@ -144,7 +148,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                                 ? message.getLockedUntil()
                                 : existing;
                         }
-                    });
+                    });*/
 
                     return message;
                 });
@@ -389,7 +393,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     private Mono<Boolean> isLockTokenValid(UUID lockToken) {
-        final Instant lockedUntilUtc = lockTokenExpirationMap.get(lockToken);
+        //final Instant lockedUntilUtc = lockTokenExpirationMap.get(lockToken);
+        final Instant lockedUntilUtc = messageLockContainer.getLockTokenExpiration(lockToken);
         if (lockedUntilUtc == null) {
             logger.warning("lockToken[{}] is not owned by this receiver.", lockToken);
             return Mono.just(false);
@@ -422,7 +427,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                 "'message.getLockToken()' cannot be null.")));
         }
 
-        final Instant instant = lockTokenExpirationMap.get(lockToken);
+        //final Instant instant = lockTokenExpirationMap.get(lockToken);
+        final Instant instant = messageLockContainer.getLockTokenExpiration(lockToken);
         logger.info("{}: Update started. Disposition: {}. Sequence number: {}. Lock: {}. Expiration: {}",
             entityPath, dispositionStatus, message.getSequenceNumber(), lockToken, instant);
 
@@ -442,7 +448,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             logger.info("{}: Update completed. Disposition: {}. Sequence number: {}. Lock: {}.",
                 entityPath, dispositionStatus, message.getSequenceNumber(), lockToken);
 
-            lockTokenExpirationMap.remove(lockToken);
+            //lockTokenExpirationMap.remove(lockToken);
+            messageLockContainer.remove(lockToken);
         }));
     }
 
@@ -470,7 +477,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
 
             return new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer, isAutoComplete,
                 connectionProcessor.getRetryOptions(), this::complete, this::abandon, autoLockRenewal,
-                maxAutoLockRenewalDuration, managementNode, this::renewMessageLock);
+                maxAutoLockRenewalDuration, managementNode, this::renewMessageLock, messageLockContainer);
         });
     }
 

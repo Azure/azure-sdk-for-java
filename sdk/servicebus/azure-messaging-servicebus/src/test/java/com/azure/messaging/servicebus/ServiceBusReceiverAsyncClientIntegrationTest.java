@@ -274,8 +274,19 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
     private void longProcess(){
         long count = -10;
-        long maxCounter = 50000;//Long.MAX_VALUE/20;
+        long maxCounter = 90000;//Long.MAX_VALUE/20;
 
+        try {
+            File file =  new File("C:\\ht1\\azure-sdk-for-java\\sdk\\servicebus\\azure-messaging-servicebus\\src\\main\\resources\\test.txt");
+            System.out.println(getClass().getName() + " file path = " + file.getPath());
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                System.out.println(getClass().getName() + " file line = " + line);
+            }
+        } catch (Exception ee ) {
+
+        }
         for (long i = 0; i< maxCounter; ++i) {
             ++count;
             if (count == maxCounter/4) {

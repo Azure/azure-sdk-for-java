@@ -12,11 +12,21 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MessageLockContainer {
     private final ConcurrentHashMap<UUID, Instant> lockTokenExpirationMap;
+
     public MessageLockContainer() {
         lockTokenExpirationMap = new ConcurrentHashMap<>();
     }
 
-    public Instant getExpiryTime(UUID lockToken) {
-           return null;
+    public Instant getLockTokenExpiration(UUID lockToken) {
+        return lockTokenExpirationMap.get(lockToken);
     }
+
+    public void remove(UUID lockToken) {
+        lockTokenExpirationMap.remove(lockToken);
+    }
+
+    public void update(UUID lockToken, Instant lockTokenExpiration) {
+        lockTokenExpirationMap.put(lockToken, lockTokenExpiration);
+    }
+
 }

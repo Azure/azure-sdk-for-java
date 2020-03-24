@@ -34,7 +34,8 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
         Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon,
         boolean autoLockRenewal, Duration maxAutoLockRenewalDuration,
         Mono<ServiceBusManagementNode> managementNodeMono,
-        Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock) {
+        Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock,
+        MessageLockContainer messageLockContainer) {
         this.linkName = linkName;
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
@@ -42,7 +43,7 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
         this.processor = amqpReceiveLinkProcessor
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
             .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, retryOptions, onComplete, onAbandon,
-                autoLockRenewal, maxAutoLockRenewalDuration, managementNodeMono, onRenewLock));
+                autoLockRenewal, maxAutoLockRenewalDuration, managementNodeMono, onRenewLock, messageLockContainer));
     }
 
     public String getLinkName() {

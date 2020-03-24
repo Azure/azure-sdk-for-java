@@ -141,7 +141,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             false, receiveOptions, connectionProcessor, tracerProvider, messageSerializer,
-            false, null);
+            false, null, null);
     }
 
     @AfterEach
@@ -221,7 +221,7 @@ class ServiceBusReceiverAsyncClientTest {
             .setAutoComplete(true);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
-            tracerProvider, messageSerializer, false, null);
+            tracerProvider, messageSerializer, false, null, null);
 
         final UUID lockToken1 = UUID.randomUUID();
         final UUID lockToken2 = UUID.randomUUID();
