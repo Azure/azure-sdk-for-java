@@ -10,11 +10,11 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
+import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +33,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public TextAnalyticsAsyncClient createTextAnalyticsAsyncClient() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
@@ -45,15 +45,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
      */
     public void rotateApiKey() {
         // BEGIN: com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential
-        TextAnalyticsApiKeyCredential credential =
-            new TextAnalyticsApiKeyCredential("{api_key}");
+        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
 
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
             .apiKey(credential)
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        credential.updateCredential("{new_api_key}");
+        credential.updateKey("{new_api_key}");
         // END: com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential
     }
 

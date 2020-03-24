@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import org.junit.jupiter.api.Test;
 
@@ -90,14 +91,14 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
     private SearchServiceClient getSearchService() {
         return new SearchServiceClientBuilder()
             .endpoint("https://test1.search.windows.net")
-            .credential(new SearchApiKeyCredential("api-key"))
+            .credential(new AzureKeyCredential("api-key"))
             .buildClient();
     }
 
     private SearchServiceAsyncClient getAsyncSearchService() {
         return new SearchServiceClientBuilder()
             .endpoint("https://test1.search.windows.net")
-            .credential(new SearchApiKeyCredential("api-key"))
+            .credential(new AzureKeyCredential("api-key"))
             .buildAsyncClient();
     }
 }

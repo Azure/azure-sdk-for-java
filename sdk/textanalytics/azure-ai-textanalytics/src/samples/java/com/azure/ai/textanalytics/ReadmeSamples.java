@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -41,7 +41,7 @@ public class ReadmeSamples {
      */
     public void useApiKeySyncClient() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
     }
@@ -51,7 +51,7 @@ public class ReadmeSamples {
      */
     public void useApiKeyAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
     }
@@ -70,13 +70,13 @@ public class ReadmeSamples {
      * Code snippet for rotating API key of the client
      */
     public void rotatingApiKey() {
-        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
+        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .apiKey(credential)
             .endpoint("{endpoint}")
             .buildClient();
 
-        credential.updateCredential("{new_api_key}");
+        credential.updateKey("{new_api_key}");
     }
 
     /**

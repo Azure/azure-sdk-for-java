@@ -3,14 +3,15 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.GetIndexStatisticsResult;
-import com.azure.search.documents.models.IndexerExecutionInfo;
 import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.models.GetIndexStatisticsResult;
+import com.azure.search.documents.models.IndexerExecutionInfo;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SuggestOptions;
@@ -113,7 +114,7 @@ public class RunningSearchSolutionExample {
     private static SearchIndexClient createIndexClient() {
         return new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(ADMIN_KEY))
+            .credential(new AzureKeyCredential(ADMIN_KEY))
             .indexName(INDEX_NAME)
             .buildClient();
     }
@@ -121,7 +122,7 @@ public class RunningSearchSolutionExample {
     private static SearchServiceClient createServiceClient() {
         return new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(ADMIN_KEY))
+            .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
     }
 }

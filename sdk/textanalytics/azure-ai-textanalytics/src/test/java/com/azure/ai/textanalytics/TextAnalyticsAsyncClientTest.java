@@ -11,9 +11,9 @@ import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -562,7 +562,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void validKey() {
         // Arrange
         final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(),
-            new TextAnalyticsApiKeyCredential(getApiKey())).buildAsyncClient();
+            new AzureKeyCredential(getApiKey())).buildAsyncClient();
 
         // Action and Assert
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
@@ -578,7 +578,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void invalidKey() {
         // Arrange
         final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(),
-            new TextAnalyticsApiKeyCredential(INVALID_KEY)).buildAsyncClient();
+            new AzureKeyCredential(INVALID_KEY)).buildAsyncClient();
 
         // Action and Assert
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
@@ -591,11 +591,11 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void updateToInvalidKey() {
         // Arrange
-        final TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential(getApiKey());
+        final AzureKeyCredential credential = new AzureKeyCredential(getApiKey());
         final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(), credential).buildAsyncClient();
 
         // Update to invalid key
-        credential.updateCredential(INVALID_KEY);
+        credential.updateKey(INVALID_KEY);
 
         // Action and Assert
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
@@ -608,13 +608,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void updateToValidKey() {
         // Arrange
-        final TextAnalyticsApiKeyCredential credential =
-            new TextAnalyticsApiKeyCredential(INVALID_KEY);
+        final AzureKeyCredential credential = new AzureKeyCredential(INVALID_KEY);
 
         final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(), credential).buildAsyncClient();
 
         // Update to valid key
-        credential.updateCredential(getApiKey());
+        credential.updateKey(getApiKey());
 
         // Action and Assert
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
@@ -631,7 +630,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         // Arrange
         final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint())
-            .apiKey(new TextAnalyticsApiKeyCredential(getApiKey()))
+            .apiKey(new AzureKeyCredential(getApiKey()))
             .retryPolicy(new RetryPolicy())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(null);
@@ -658,7 +657,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         // Arrange
         final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint())
-            .apiKey(new TextAnalyticsApiKeyCredential(getApiKey()))
+            .apiKey(new AzureKeyCredential(getApiKey()))
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 

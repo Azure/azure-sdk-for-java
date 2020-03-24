@@ -18,13 +18,13 @@ import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -747,10 +747,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * Create a client builder with endpoint and API key credential.
      *
      * @param endpoint the given endpoint
-     * @param credential the given {@link TextAnalyticsApiKeyCredential} credential
+     * @param credential the given {@link AzureKeyCredential} credential
      * @return {@link TextAnalyticsClientBuilder}
      */
-    TextAnalyticsClientBuilder createClientBuilder(String endpoint, TextAnalyticsApiKeyCredential credential) {
+    TextAnalyticsClientBuilder createClientBuilder(String endpoint, AzureKeyCredential credential) {
         final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
             .apiKey(credential)
             .endpoint(endpoint);
