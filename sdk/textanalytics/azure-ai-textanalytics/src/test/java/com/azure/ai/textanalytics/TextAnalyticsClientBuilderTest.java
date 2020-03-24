@@ -5,14 +5,11 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
-import static com.azure.ai.textanalytics.TestUtils.VALID_HTTPS_LOCALHOST;
 import static com.azure.ai.textanalytics.TextAnalyticsClientTestBase.validateKeyPhrases;
 import static com.azure.ai.textanalytics.TextAnalyticsClientTestBase.validatePrimaryLanguage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
