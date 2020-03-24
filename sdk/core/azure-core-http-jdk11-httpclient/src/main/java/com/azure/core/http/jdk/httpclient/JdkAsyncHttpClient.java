@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.jdk11.httpclient;
+package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
@@ -32,7 +32,7 @@ import static java.net.http.HttpRequest.BodyPublishers.*;
 /**
  * HttpClient implementation for the JDK 11 HttpClient.
  */
-class Jdk11AsyncHttpClient implements HttpClient {
+class JdkAsyncHttpClient implements HttpClient {
     private final java.net.http.HttpClient jdk11HttpClient;
 
     private static final Set<String> JDK11_RESTRICTED_HEADERS;
@@ -50,7 +50,7 @@ class Jdk11AsyncHttpClient implements HttpClient {
         JDK11_RESTRICTED_HEADERS = Collections.unmodifiableSet(treeSet);
     }
 
-    Jdk11AsyncHttpClient(java.net.http.HttpClient httpClient) {
+    JdkAsyncHttpClient(java.net.http.HttpClient httpClient) {
         this.jdk11HttpClient = httpClient;
     }
 

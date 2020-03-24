@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.jdk11.httpclient.implementation;
+package com.azure.core.http.jdk.httpclient.implementation;
 
 import java.io.IOException;
 import java.net.Proxy;
@@ -15,12 +15,12 @@ import java.util.regex.Pattern;
 /**
  * This class handles selecting the proxy during a request.
  */
-public final class Jdk11HttpClientProxySelector extends ProxySelector {
+public final class JdkHttpClientProxySelector extends ProxySelector {
     private final Proxy.Type proxyType;
     private final SocketAddress proxyAddress;
     private final Pattern nonProxyHostsPattern;
 
-    public Jdk11HttpClientProxySelector(Proxy.Type proxyType, SocketAddress proxyAddress, String nonProxyHosts) {
+    public JdkHttpClientProxySelector(Proxy.Type proxyType, SocketAddress proxyAddress, String nonProxyHosts) {
         this.proxyType = proxyType;
         this.proxyAddress = proxyAddress;
         this.nonProxyHostsPattern = (nonProxyHosts == null)

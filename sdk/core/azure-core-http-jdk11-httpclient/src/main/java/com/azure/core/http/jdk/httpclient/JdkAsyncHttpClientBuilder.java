@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.jdk11.httpclient;
+package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.jdk11.httpclient.implementation.Jdk11HttpClientProxySelector;
+import com.azure.core.http.jdk.httpclient.implementation.JdkHttpClientProxySelector;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -17,10 +17,11 @@ import java.util.Objects;
 import java.util.concurrent.Executor;
 
 /**
- * Builder to configure and build an implementation of {@link HttpClient} for JDK 11 HttpClient.
+ * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpClient APIs,
+ * first introduced as preview in JDK 9, but made generally available from JDK 11 onwards.
  */
-public class Jdk11AsyncHttpClientBuilder {
-    private final ClientLogger logger = new ClientLogger(Jdk11AsyncHttpClientBuilder.class);
+public class JdkAsyncHttpClientBuilder {
+    private final ClientLogger logger = new ClientLogger(JdkAsyncHttpClientBuilder.class);
 
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
 
@@ -31,28 +32,19 @@ public class Jdk11AsyncHttpClientBuilder {
     private Executor executor;
 
     /**
-     * Creates OkHttpAsyncHttpClientBuilder.
+     * Creates JdkAsyncHttpClientBuilder.
      */
-    public Jdk11AsyncHttpClientBuilder() {
+    public JdkAsyncHttpClientBuilder() {
     }
 
     /**
-     * Creates OkHttpAsyncHttpClientBuilder from the builder of an existing OkHttpClient.
+     * Creates JdkAsyncHttpClientBuilder from the builder of an existing {@link java.net.http.HttpClient.Builder}.
      *
      * @param httpClientBuilder the HttpClient builder to use
      */
-    public Jdk11AsyncHttpClientBuilder(java.net.http.HttpClient.Builder httpClientBuilder) {
+    public JdkAsyncHttpClientBuilder(java.net.http.HttpClient.Builder httpClientBuilder) {
         this.httpClientBuilder = Objects.requireNonNull(httpClientBuilder, "'httpClientBuilder' cannot be null.");
     }
-
-//    /**
-//     * Creates OkHttpAsyncHttpClientBuilder from the builder of an existing OkHttpClient.
-//     *
-//     * @param httpClient the httpclient
-//     */
-//    public static Jdk11AsyncHttpClient wrap(java.net.http.HttpClient httpClient) {
-//        return new Jdk11AsyncHttpClient(httpClient);
-//    }
 
     /**
      * Sets the executor to be used for asynchronous and dependent tasks. This cannot be null.
@@ -63,7 +55,7 @@ public class Jdk11AsyncHttpClientBuilder {
      * @param executor the executor to be used for asynchronous and dependent tasks
      * @return the updated Jdk11AsyncHttpClientBuilder object
      */
-    public Jdk11AsyncHttpClientBuilder executor(Executor executor) {
+    public JdkAsyncHttpClientBuilder executor(Executor executor) {
         this.executor = Objects.requireNonNull(executor, "executor can not be null");
         return this;
     }
@@ -74,9 +66,9 @@ public class Jdk11AsyncHttpClientBuilder {
      * The default connection timeout is 60 seconds.
      *
      * @param connectionTimeout the connection timeout
-     * @return the updated OkHttpAsyncHttpClientBuilder object
+     * @return the updated JdkAsyncHttpClientBuilder object
      */
-    public Jdk11AsyncHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
+    public JdkAsyncHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
         // setConnectionTimeout can be null
         this.connectionTimeout = connectionTimeout;
         return this;
@@ -87,12 +79,12 @@ public class Jdk11AsyncHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions}
+     * {@codesnippet com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder.proxy#ProxyOptions}
      *
      * @param proxyOptions The proxy configuration to use.
-     * @return the updated {@link Jdk11AsyncHttpClientBuilder} object
+     * @return the updated {@link JdkAsyncHttpClientBuilder} object
      */
-    public Jdk11AsyncHttpClientBuilder proxy(ProxyOptions proxyOptions) {
+    public JdkAsyncHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         // proxyOptions can be null
         this.proxyOptions = proxyOptions;
         return this;
@@ -105,9 +97,9 @@ public class Jdk11AsyncHttpClientBuilder {
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
-     * @return The updated OkHttpAsyncHttpClientBuilder object.
+     * @return The updated JdkAsyncHttpClientBuilder object.
      */
-    public Jdk11AsyncHttpClientBuilder configuration(Configuration configuration) {
+    public JdkAsyncHttpClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -139,8 +131,9 @@ public class Jdk11AsyncHttpClientBuilder {
         }
 
         if (buildProxyOptions != null) {
-            httpClientBuilder = httpClientBuilder.proxy(new Jdk11HttpClientProxySelector(
-                mapProxyType(buildProxyOptions.getType(), logger), buildProxyOptions.getAddress(),
+            httpClientBuilder = httpClientBuilder.proxy(new JdkHttpClientProxySelector(
+                buildProxyOptions.getType().toProxyType(),
+                buildProxyOptions.getAddress(),
                 buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
@@ -152,21 +145,6 @@ public class Jdk11AsyncHttpClientBuilder {
                 });
             }
         }
-        return new Jdk11AsyncHttpClient(httpClientBuilder.build());
-    }
-
-    private static Proxy.Type mapProxyType(ProxyOptions.Type type, ClientLogger logger) {
-        Objects.requireNonNull(type, "'ProxyOptions.getType()' cannot be null.");
-
-        switch (type) {
-            case HTTP:
-                return Proxy.Type.HTTP;
-            case SOCKS4:
-            case SOCKS5:
-                return Proxy.Type.SOCKS;
-            default:
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    String.format("Unknown proxy type '%s' in use. Use a proxy type from 'ProxyOptions.Type'.", type)));
-        }
+        return new JdkAsyncHttpClient(httpClientBuilder.build());
     }
 }

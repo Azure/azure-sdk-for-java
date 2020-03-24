@@ -205,7 +205,8 @@ public class OkHttpAsyncHttpClientBuilder {
 
         if (buildProxyOptions != null) {
             httpClientBuilder = httpClientBuilder.proxySelector(new OkHttpProxySelector(
-                mapProxyType(buildProxyOptions.getType(), logger), buildProxyOptions.getAddress(),
+                buildProxyOptions.getType().toProxyType(),
+                buildProxyOptions.getAddress(),
                 buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
@@ -218,24 +219,5 @@ public class OkHttpAsyncHttpClientBuilder {
         }
 
         return new OkHttpAsyncHttpClient(httpClientBuilder.build());
-    }
-
-    /*
-     * Maps a 'ProxyOptions.Type' to a 'ProxyProvider.Proxy', if the type is unknown or cannot be mapped an
-     * IllegalStateException will be thrown.
-     */
-    private static Proxy.Type mapProxyType(ProxyOptions.Type type, ClientLogger logger) {
-        Objects.requireNonNull(type, "'ProxyOptions.getType()' cannot be null.");
-
-        switch (type) {
-            case HTTP:
-                return Proxy.Type.HTTP;
-            case SOCKS4:
-            case SOCKS5:
-                return Proxy.Type.SOCKS;
-            default:
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    String.format("Unknown proxy type '%s' in use. Use a proxy type from 'ProxyOptions.Type'.", type)));
-        }
     }
 }

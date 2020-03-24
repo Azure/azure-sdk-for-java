@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.jdk11.httpclient;
+package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.jdk11.httpclient.Jdk11AsyncHttpClientBuilder;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -36,7 +35,7 @@ import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class Jdk11AsyncHttpClientTests {
+public class JdkAsyncHttpClientTests {
 
     private static final String SHORT_BODY = "hi there";
     private static final String LONG_BODY = createLongBody();
@@ -74,7 +73,7 @@ public class Jdk11AsyncHttpClientTests {
     }
 
     @Test
-    @Disabled("This tests behaviour of reactor netty's ByteBufFlux, not applicable for OkHttp")
+    @Disabled("This tests behaviour of reactor netty's ByteBufFlux, not applicable for httpclient")
     public void testMultipleSubscriptionsEmitsError() {
         HttpResponse response = getResponse("/short");
         // Subscription:1
@@ -132,7 +131,7 @@ public class Jdk11AsyncHttpClientTests {
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-                .setHeader("Content-Length", String.valueOf(contentChunk.length() * repetitions))
+                .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
                 .setBody(Flux.just(contentChunk)
                         .repeat(repetitions)
                         .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
@@ -258,7 +257,7 @@ public class Jdk11AsyncHttpClientTests {
     }
 
     private static HttpResponse getResponse(String path) {
-        HttpClient client = new Jdk11AsyncHttpClientBuilder().build();
+        HttpClient client = new JdkAsyncHttpClientBuilder().build();
         return getResponse(client, path);
     }
 
@@ -285,7 +284,7 @@ public class Jdk11AsyncHttpClientTests {
     }
 
     private void checkBodyReceived(String expectedBody, String path) {
-        HttpClient client = new Jdk11AsyncHttpClientBuilder().build();
+        HttpClient client = new JdkAsyncHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).getBodyAsByteArray())
             .assertNext(bytes -> Assertions.assertEquals(expectedBody, new String(bytes, StandardCharsets.UTF_8)))
             .verifyComplete();

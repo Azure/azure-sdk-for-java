@@ -1,20 +1,21 @@
-# Azure Core OkHttp HTTP client library for Java
+# Azure Core JDK HttpClient library for Java
 
-Azure Core OkHttp HTTP client is a plugin for the azure-core HTTP client API. 
+This is an azure-core HTTP client that makes use of the asynchronous HttpClient that was made generally available as 
+part of JDK 11. 
 
 ## Getting started
 
 ### Prerequisites
 
-- Java Development Kit (JDK) with version 8 or above
+- Java Development Kit (JDK) with version 11 or above
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
+[//]: # ({x-version-update-start;com.azure:azure-core-http-jdk-httpclient;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-core-http-okhttp</artifactId>
+    <artifactId>azure-core-http-jdk-httpclient</artifactId>
     <version>1.1.0</version>
 </dependency>
 ```
@@ -31,20 +32,20 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a Simple Client
 
-Create an OkHttp client using a connection timeout of 60 seconds and a read timeout of 120 seconds.
+Create an HttpClient using a connection timeout of 60 seconds and a read timeout of 120 seconds.
 
-<!-- embedme ./src/samples/java/com/azure/core/http/okhttp/ReadmeSamples.java#L23-L23 -->
+<!-- embedme ./src/samples/java/com/azure/core/http/jdk/httpclient/ReadmeSamples.java#L23-L23 -->
 ```java
-HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
+HttpClient client = new JdkAsyncHttpClientBuilder().build();
 ```
 
 ### Create a Client with Proxy
 
-Create an OkHttp client that is using a proxy.
+Create an HttpClient that is using a proxy.
 
-<!-- embedme ./src/samples/java/com/azure/core/http/okhttp/ReadmeSamples.java#L30-L32 -->
+<!-- embedme ./src/samples/java/com/azure/core/http/jdk/httpclient/ReadmeSamples.java#L30-L32 -->
 ```java
-HttpClient client = new OkHttpAsyncHttpClientBuilder()
+HttpClient client = new JdkAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
     .build();
 ```
@@ -64,4 +65,4 @@ Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-http-okhttp%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-http-jdk-httpclient%2FREADME.png)
