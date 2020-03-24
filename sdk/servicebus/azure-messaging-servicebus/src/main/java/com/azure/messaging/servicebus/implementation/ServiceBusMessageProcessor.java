@@ -288,11 +288,8 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
                     logger.info("seq[{}]. lockToken[{}]. lockedUntil[{}]. Lock renewal successful.",
                         sequenceNumber, lockToken, updated);
-                }, error -> {
-                    logger.error("Error occurred while renewing lock token.", error);
-                }, () -> {
-                    logger.info("Renewing lock token task completed.");
-                });
+                }, error -> logger.error("Error occurred while renewing lock token.", error),
+                    () -> logger.info("Renewing lock token task completed."));
         } else {
             renewLockSubscription = Disposables.disposed();
         }

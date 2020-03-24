@@ -8,7 +8,6 @@ import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -190,11 +189,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(receiverManual.receive().take(1).map(m -> {
-                Assertions.assertNotNull(m.getLockedUntil());
-                receivedMessage.set(m);
-                initialLock.set(m.getLockedUntil());
-                return m;
-            })
+            Assertions.assertNotNull(m.getLockedUntil());
+            receivedMessage.set(m);
+            initialLock.set(m.getLockedUntil());
+            return m;
+        })
             .then(Mono.delay(Duration.ofSeconds(10)))
             .then(receiverManual.renewMessageLock(receivedMessage.get())))
             .assertNext(lockedUntil -> {

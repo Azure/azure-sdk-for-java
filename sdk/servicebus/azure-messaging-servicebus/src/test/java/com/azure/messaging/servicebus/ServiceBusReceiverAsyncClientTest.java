@@ -309,7 +309,6 @@ class ServiceBusReceiverAsyncClientTest {
         verifyZeroInteractions(managementNode);
     }
 
-
     /**
      * Verifies that we error if we try to complete a message without a lock token.
      */
