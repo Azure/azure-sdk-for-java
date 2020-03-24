@@ -74,11 +74,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
-        try {
-            Thread.sleep(10000);
-        } catch (Exception e) {
-        }
-
     }
 
     /**
@@ -184,49 +179,37 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @Test
     void renewMessageLock() {
         // Arrange
-        Duration renewAfterSeconds = Duration.ofSeconds(1);
-        long takeTimeToProcessMessageMillis = 10000;
         final String contents = "Some-contents";
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, "id-1", 0);
 
-        AtomicReference<Integer> renewMessageLockCounter = new AtomicReference<>(0);
+        final AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
+        final AtomicReference<Instant> initialLock = new AtomicReference<>();
+
+        // Blocking here because it is not part of the scenario we want to test.
+        sender.send(message).block(Duration.ofSeconds(20));
+
         // Assert & Act
-        StepVerifier.create(sender.send(message).thenMany(receiverManual.receive()
-            .take(1)
-            .delayElements(renewAfterSeconds)
-            .map(receivedMessage -> {
-                //  keep renewing the lock whole you process the message.
-                Disposable disposable = receiverManual.renewMessageLock(receivedMessage)
-                    .repeat()
-                    .delayElements(renewAfterSeconds)
-                    .doOnNext(instant -> {
-                        // This will ensure that we are getting valid refresh time
-                        if (instant != null) {
-                            logger.info(" Received new refresh time " + instant);
-                            renewMessageLockCounter.set(renewMessageLockCounter.get() + 1);
-                        }
-                    })
-                    .subscribe();
+        StepVerifier.create(receiverManual.receive().take(1).map(m -> {
+                Assertions.assertNotNull(m.getLockedUntil());
+                receivedMessage.set(m);
+                initialLock.set(m.getLockedUntil());
+                return m;
+            })
+            .then(Mono.delay(Duration.ofSeconds(10)))
+            .then(receiverManual.renewMessageLock(receivedMessage.get())))
+            .assertNext(lockedUntil -> {
+                Assertions.assertTrue(lockedUntil.isAfter(initialLock.get()),
+                    String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
+                        lockedUntil, initialLock.get()));
 
-
-                // This just shows that user is taking time to process.
-                // Real production code will not have sleep in it will have message processing code instead.
-                try {
-                    Thread.sleep(takeTimeToProcessMessageMillis);
-                } catch (InterruptedException ignored) {
-
-                }
-                disposable.dispose();
-                return receivedMessage;
-            })))
-            .assertNext(receivedMessage -> {
-                Assertions.assertNotNull(receivedMessage.getLockedUntil());
+                Assertions.assertEquals(receivedMessage.get().getLockedUntil(), lockedUntil);
             })
             .verifyComplete();
-        // ensure that renew lock is called atleast once.
-        Assertions.assertTrue(renewMessageLockCounter.get() > 0);
     }
 
+    /**
+     * Verifies that the lock can be automatically renewed.
+     */
     @Test
     void autoRenewLockOnReceiveMessage() {
         // Arrange
