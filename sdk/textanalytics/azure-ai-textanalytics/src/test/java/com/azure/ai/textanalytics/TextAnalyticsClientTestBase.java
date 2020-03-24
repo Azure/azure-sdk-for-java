@@ -412,7 +412,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     String getEndpoint() {
         return interceptorManager.isPlaybackMode()
-            ? "http://localhost:8080"
+            ? "https://localhost:8080"
             : Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
     }
 
