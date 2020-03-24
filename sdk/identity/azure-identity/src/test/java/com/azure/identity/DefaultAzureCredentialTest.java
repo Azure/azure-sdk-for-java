@@ -184,11 +184,12 @@ public class DefaultAzureCredentialTest {
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
+                                                .excludeEnvironmentCredential(true)
                                                 .excludeSharedTokenCacheCredential(true)
                                                 .build();
         StepVerifier.create(credential.getToken(request1))
             .expectErrorMatches(t -> t instanceof RuntimeException && t.getMessage()
-                                      .startsWith("Tried EnvironmentCredential, "
+                                      .startsWith("Tried "
                                                       + "ManagedIdentityCredential, "
                                                       + "AzureCliCredential"))
             .verify();
@@ -201,11 +202,12 @@ public class DefaultAzureCredentialTest {
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
+                                                .excludeEnvironmentCredential(true)
                                                 .excludeAzureCliCredential(true)
                                                 .build();
         StepVerifier.create(credential.getToken(request1))
             .expectErrorMatches(t -> t instanceof RuntimeException && t.getMessage()
-                                      .startsWith("Tried EnvironmentCredential, "
+                                      .startsWith("Tried "
                                                       + "ManagedIdentityCredential, "
                                                       + "SharedTokenCacheCredential but"))
             .verify();
