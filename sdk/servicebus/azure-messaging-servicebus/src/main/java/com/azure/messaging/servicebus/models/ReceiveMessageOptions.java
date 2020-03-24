@@ -16,6 +16,7 @@ public class ReceiveMessageOptions {
     private static final int DEFAULT_PREFETCH_COUNT = 1;
 
     private boolean autoComplete;
+    private boolean isAutoRenewed;
     private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
     private int prefetchCount = DEFAULT_PREFETCH_COUNT;
     private Duration maxAutoRenewDuration;
@@ -90,6 +91,17 @@ public class ReceiveMessageOptions {
     }
 
     /**
+     * Gets if lock should be automatically renewed.
+     *
+     * @param isLockAutoRenewed {@code true} if the lock should be automatically renewed; {@code false} otherwise.
+     * @return The updated {@link ReceiveMessageOptions} object.
+     */
+    public ReceiveMessageOptions setIsLockAutoRenewed(boolean isLockAutoRenewed) {
+        this.isAutoRenewed = isLockAutoRenewed;
+        return this;
+    }
+
+    /**
      * Gets the maximum duration within which the lock will be renewed automatically. This value should be greater than
      * the longest message lock duration.
      *
@@ -97,6 +109,16 @@ public class ReceiveMessageOptions {
      */
     public Duration getMaxAutoRenewDuration() {
         return maxAutoRenewDuration;
+    }
+
+
+    /**
+     * Gets if lock should be automatically renewed.
+     *
+     * @return {@code true} if the lock should be automatically renewed; {@code false} otherwise.
+     */
+    public boolean isLockAutoRenewed() {
+        return isAutoRenewed;
     }
 
     /**

@@ -25,6 +25,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
@@ -235,10 +236,10 @@ public final class ServiceBusClientBuilder {
         final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
         final ServiceBusConnectionProcessor connectionProcessor = createConnectionProcessor(messageSerializer);
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-
+        final MessageLockContainer messageLockContainer = new MessageLockContainer();
         return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
             serviceBusResourceName, MessagingEntityType.QUEUE, false, receiveMessageOptions,
-            connectionProcessor, tracerProvider, messageSerializer);
+            connectionProcessor, tracerProvider, messageSerializer, messageLockContainer);
     }
 
     /**

@@ -10,6 +10,8 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
@@ -23,18 +25,20 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
     private final ServiceBusMessageProcessor processor;
     private final String linkName;
 
-    public ServiceBusAsyncConsumer(
-        String linkName,
-        ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
-        MessageSerializer messageSerializer, boolean isAutoComplete, AmqpRetryOptions retryOptions,
+    public ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
+        MessageSerializer messageSerializer, boolean isAutoComplete, boolean autoLockRenewal,
+        Duration autoLockRenewalDuration, AmqpRetryOptions retryOptions, MessageLockContainer messageLockContainer,
         Function<ServiceBusReceivedMessage, Mono<Void>> onComplete,
-        Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon) {
+        Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon,
+        Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock) {
+
         this.linkName = linkName;
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
         this.processor = amqpReceiveLinkProcessor
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
-            .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, retryOptions, onComplete, onAbandon));
+            .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, autoLockRenewal, autoLockRenewalDuration,
+                retryOptions, messageLockContainer, onComplete, onAbandon, onRenewLock));
     }
 
     public String getLinkName() {
