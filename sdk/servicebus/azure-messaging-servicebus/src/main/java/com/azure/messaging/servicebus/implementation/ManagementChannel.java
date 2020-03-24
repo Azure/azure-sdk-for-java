@@ -36,17 +36,17 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.ASSOCIATED_LINK_NAME_KEY;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.FROM_SEQUENCE_NUMBER;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE_COUNT_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.PEEK_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.RENEW_LOCK_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.FROM_SEQUENCE_NUMBER;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.SERVER_TIMEOUT;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.UPDATE_DISPOSITION_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.SEQUENCE_NUMBERS;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.RECEIVER_SETTLE_MODE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.RECEIVE_BY_SEQUENCE_NUMBER_OPERATION;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.RENEW_LOCK_OPERATION;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.SEQUENCE_NUMBERS;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.SERVER_TIMEOUT;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.UPDATE_DISPOSITION_OPERATION;
 
 /**
  * Channel responsible for Service Bus related metadata, peek  and management plane operations. Management plane

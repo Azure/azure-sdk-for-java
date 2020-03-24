@@ -15,6 +15,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
+import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
@@ -82,6 +83,7 @@ class ServiceBusReceiverAsyncClientTest {
     private ServiceBusConnectionProcessor connectionProcessor;
     private ServiceBusReceiverAsyncClient consumer;
     private ReceiveMessageOptions receiveOptions;
+    private MessageLockContainer messageContainer;
 
     @Mock
     private AmqpReceiveLink amqpReceiveLink;
@@ -139,8 +141,10 @@ class ServiceBusReceiverAsyncClientTest {
 
         receiveOptions = new ReceiveMessageOptions().setPrefetchCount(PREFETCH);
 
+        messageContainer = new MessageLockContainer();
         consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            false, receiveOptions, connectionProcessor, tracerProvider, messageSerializer);
+            false, receiveOptions, connectionProcessor, tracerProvider, messageSerializer,
+            messageContainer);
     }
 
     @AfterEach
@@ -220,7 +224,7 @@ class ServiceBusReceiverAsyncClientTest {
             .setAutoComplete(true);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
-            tracerProvider, messageSerializer);
+            tracerProvider, messageSerializer, messageContainer);
 
         final UUID lockToken1 = UUID.randomUUID();
         final UUID lockToken2 = UUID.randomUUID();
@@ -263,6 +267,7 @@ class ServiceBusReceiverAsyncClientTest {
         verify(managementNode).updateDisposition(eq(lockToken1), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull());
     }
 
+
     /**
      * Verifies that if there is no lock token, the message is not completed.
      */
@@ -273,7 +278,7 @@ class ServiceBusReceiverAsyncClientTest {
             .setAutoComplete(true);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
-            tracerProvider, messageSerializer);
+            tracerProvider, messageSerializer, messageContainer);
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
         final MessageWithLockToken message2 = mock(MessageWithLockToken.class);
@@ -342,7 +347,7 @@ class ServiceBusReceiverAsyncClientTest {
             .setReceiveMode(ReceiveMode.RECEIVE_AND_DELETE);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, false, options, connectionProcessor, tracerProvider,
-            messageSerializer);
+            messageSerializer, messageContainer);
 
         final UUID lockToken1 = UUID.randomUUID();
 
