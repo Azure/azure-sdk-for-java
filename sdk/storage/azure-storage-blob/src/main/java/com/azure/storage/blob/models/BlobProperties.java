@@ -142,7 +142,7 @@ public final class BlobProperties {
      * @param committedBlockCount Number of blocks committed to an append blob, if the blob is a block or page blob
      * pass {@code null}.
      * @param versionId The version identifier of the blob.
-     * @param isCurrentVersion Flag indication if version identifier points to current version of the blob.
+     * @param isCurrentVersion Flag indicating if version identifier points to current version of the blob.
      */
     public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
                           final long blobSize, final String contentType, final byte[] contentMd5,
@@ -429,7 +429,7 @@ public final class BlobProperties {
     }
 
     /**
-     * @return the a flag indicating whether version identifier points to current version of the blob.
+     * @return the flag indicating whether version identifier points to current version of the blob.
      */
     public Boolean isCurrentVersion() {
         return isCurrentVersion;
