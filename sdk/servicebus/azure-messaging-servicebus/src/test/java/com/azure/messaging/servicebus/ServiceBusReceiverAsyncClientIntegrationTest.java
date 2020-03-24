@@ -259,17 +259,17 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 // Simulate some sort of long processing. Verify that the lock token is updated every time.
                 for (int i = 0; i < 3; i++) {
                     try {
-                        TimeUnit.SECONDS.sleep(15);
+                        TimeUnit.SECONDS.sleep(10);
                     } catch (InterruptedException ignored) {
                     }
 
                     Instant latest = received.getLockedUntil();
                     Assertions.assertNotNull(latest);
-                    logger.info("Current: {}. Latest: {}", current, latest);
+                    Assertions.assertTrue(latest.isAfter(current),
+                        String.format("[%s] latestTime: '%s' is not after the current one: '%s'", i, latest, current));
 
                     current = latest;
-//                    Assertions.assertTrue(latest.isAfter(current),
-//                        String.format("[%s] latestTime: '%s' is not after the current one: '%s'", i, latest, current));
+
                 }
             })
             .thenCancel()

@@ -314,8 +314,8 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
                 .subscribe(lockedUntil -> {
                     final Instant updated = messageLockContainer.addOrUpdate(lockToken, lockedUntil);
 
-                    logger.info("seq[{}]. lockToken[{}]. lockedUntil[{}]. Lock renewal successful. updated[{}]",
-                        sequenceNumber, lockToken, lockedUntil, updated);
+                    logger.info("seq[{}]. lockToken[{}]. lockedUntil[{}]. Lock renewal successful.",
+                        sequenceNumber, lockToken, updated);
                 }, error -> {
                     logger.error("Error occurred while renewing lock token.", error);
                 }, () -> {
