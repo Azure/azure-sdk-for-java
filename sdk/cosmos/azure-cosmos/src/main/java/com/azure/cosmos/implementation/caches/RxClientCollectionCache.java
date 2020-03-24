@@ -104,7 +104,7 @@ public class RxClientCollectionCache extends RxCollectionCache {
         return responseObs.map(response -> {
             if(metaDataDiagnosticsContext != null) {
                 ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
-                MetadataDiagnosticsContext.MetadataDiagnostic metaDataDiagnostic  = new MetadataDiagnosticsContext.MetadataDiagnostic(addressCallStartTime,
+                MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic  = new MetadataDiagnosticsContext.MetadataDiagnostics(addressCallStartTime,
                     addressCallEndTime,
                     MetadataDiagnosticsContext.MetadataType.CONTAINER_LOOK_UP);
                 metaDataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);

@@ -233,7 +233,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                     .flatMap(p -> {
                         if(metaDataDiagnosticsContext != null) {
                             ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
-                            MetadataDiagnosticsContext.MetadataDiagnostic metaDataDiagnostic  = new MetadataDiagnosticsContext.MetadataDiagnostic(addressCallStartTime,
+                            MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic  = new MetadataDiagnosticsContext.MetadataDiagnostics(addressCallStartTime,
                                 addressCallEndTime,
                                 MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP);
                             metaDataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);

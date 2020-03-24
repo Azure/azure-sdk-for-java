@@ -438,7 +438,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
-            serializationDiagnosticsContext.addMetaDataDiagnostic(serializationDiagnostics);
+            serializationDiagnosticsContext.addSeriazationDiagnostics(serializationDiagnostics);
             return this.create(request, retryPolicyInstance).map(response -> toResourceResponse(response, Database.class));
         } catch (Exception e) {
             logger.debug("Failure in creating a database. due to [{}]", e.getMessage(), e);
@@ -613,7 +613,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
-            serializationDiagnosticsContext.addMetaDataDiagnostic(serializationDiagnostics);
+            serializationDiagnosticsContext.addSeriazationDiagnostics(serializationDiagnostics);
             return this.create(request, retryPolicyInstance).map(response -> toResourceResponse(response, DocumentCollection.class))
                 .doOnNext(resourceResponse -> {
                     // set the session token
@@ -663,7 +663,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
-            serializationDiagnosticsContext.addMetaDataDiagnostic(serializationDiagnostics);
+            serializationDiagnosticsContext.addSeriazationDiagnostics(serializationDiagnostics);
             return this.replace(request, retryPolicyInstance).map(response -> toResourceResponse(response, DocumentCollection.class))
                 .doOnNext(resourceResponse -> {
                     if (resourceResponse.getResource() != null) {
@@ -1029,7 +1029,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
-        serializationDiagnosticsContext.addMetaDataDiagnostic(serializationDiagnostics);
+        serializationDiagnosticsContext.addSeriazationDiagnostics(serializationDiagnostics);
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
         return addPartitionKeyInformation(request, content, document, options, collectionObs);
     }
@@ -1294,7 +1294,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
-        serializationDiagnosticsContext.addMetaDataDiagnostic(serializationDiagnostics);
+        serializationDiagnosticsContext.addSeriazationDiagnostics(serializationDiagnostics);
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
         Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, content, document, options, collectionObs);
 

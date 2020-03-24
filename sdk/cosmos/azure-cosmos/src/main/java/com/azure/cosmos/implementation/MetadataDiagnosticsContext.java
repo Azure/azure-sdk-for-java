@@ -17,9 +17,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class MetadataDiagnosticsContext {
-    public volatile List<MetadataDiagnostic> metadataDiagnosticList;
+    public volatile List<MetadataDiagnostics> metadataDiagnosticList;
 
-    public void addMetaDataDiagnostic(MetadataDiagnostic metaDataDiagnostic) {
+    public void addMetaDataDiagnostic(MetadataDiagnostics metaDataDiagnostic) {
         if (metadataDiagnosticList == null) {
             metadataDiagnosticList = Collections.synchronizedList(new ArrayList<>());
         }
@@ -28,26 +28,26 @@ public class MetadataDiagnosticsContext {
     }
 
     @JsonSerialize(using = MetaDataDiagnosticSerializer.class)
-    public static class MetadataDiagnostic {
+    public static class MetadataDiagnostics {
         public volatile ZonedDateTime startTimeUTC;
         public volatile ZonedDateTime endTimeUTC;
         public volatile MetadataType metaDataName;
 
-        public MetadataDiagnostic(ZonedDateTime startTimeUTC, ZonedDateTime endTimeUTC, MetadataType metaDataName) {
+        public MetadataDiagnostics(ZonedDateTime startTimeUTC, ZonedDateTime endTimeUTC, MetadataType metaDataName) {
             this.startTimeUTC = startTimeUTC;
             this.endTimeUTC = endTimeUTC;
             this.metaDataName = metaDataName;
         }
     }
 
-    static class MetaDataDiagnosticSerializer extends StdSerializer<MetadataDiagnostic> {
+    static class MetaDataDiagnosticSerializer extends StdSerializer<MetadataDiagnostics> {
 
         public MetaDataDiagnosticSerializer() {
-            super(MetadataDiagnostic.class);
+            super(MetadataDiagnostics.class);
         }
 
         @Override
-        public void serialize(MetadataDiagnostic metaDataDiagnostic, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+        public void serialize(MetadataDiagnostics metaDataDiagnostic, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
             Duration durationinMS = metaDataDiagnostic.startTimeUTC == null ?
                 null : metaDataDiagnostic.endTimeUTC == null ?
                 Duration.ZERO : Duration.between(metaDataDiagnostic.startTimeUTC, metaDataDiagnostic.endTimeUTC);

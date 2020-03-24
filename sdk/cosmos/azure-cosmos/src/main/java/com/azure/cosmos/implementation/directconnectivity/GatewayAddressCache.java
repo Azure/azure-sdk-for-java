@@ -307,7 +307,7 @@ public class GatewayAddressCache implements IAddressCache {
         return dsrObs.map(
                 dsr -> {
                     ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
-                    MetadataDiagnostic metaDataDiagnostic  = new MetadataDiagnostic(addressCallStartTime,
+                    MetadataDiagnostics metaDataDiagnostic  = new MetadataDiagnostics(addressCallStartTime,
                         addressCallEndTime,
                         MetadataType.SERVER_ADDRESS_LOOKUP);
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics).addMetaDataDiagnostic(metaDataDiagnostic);
@@ -490,7 +490,7 @@ public class GatewayAddressCache implements IAddressCache {
         return dsrObs.map(
                 dsr -> {
                     ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
-                    MetadataDiagnostic metaDataDiagnostic  = new MetadataDiagnostic(addressCallStartTime,
+                    MetadataDiagnostics metaDataDiagnostic  = new MetadataDiagnostics(addressCallStartTime,
                         addressCallEndTime,
                         MetadataType.MASTER_ADDRESS_LOOK_UP);
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics).addMetaDataDiagnostic(metaDataDiagnostic);
