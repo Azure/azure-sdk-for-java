@@ -18,7 +18,7 @@ public final class PiiEntity {
     /*
      * Personally Identifiable Information entity category, such as Person/Location/Org/SSN etc
      */
-    private final String category;
+    private final EntityCategory category;
 
     /*
      * Personally Identifiable Information entity sub category, such as Age/Year/TimeRange etc
@@ -26,19 +26,19 @@ public final class PiiEntity {
     private final String subCategory;
 
     /*
-     * Start position (in Unicode characters) for the entity text.
+     * Grapheme start position for the entity text.
      */
     private final int offset;
 
     /*
-     * Length (in Unicode characters) for the entity text.
+     * Grapheme length for the entity text.
      */
     private final int length;
 
     /*
      * Confidence score between 0 and 1 of the extracted entity.
      */
-    private final double score;
+    private final double confidenceScore;
 
     /**
      * Creates a Personally Identifiable Information entity model that describes entity.
@@ -46,23 +46,24 @@ public final class PiiEntity {
      * @param text Personally Identifiable Information entity text as appears in the request
      * @param category Personally Identifiable Information entity category, such as Person/Location/Org/SSN etc
      * @param subCategory Personally Identifiable Information entity sub category, such as Age/Year/TimeRange etc
-     * @param offset start position (in Unicode characters) for the entity text
-     * @param length length (in Unicode characters) for the entity text
-     * @param score confidence score between 0 and 1 of the extracted entity
+     * @param offset Grapheme start position for the entity text
+     * @param length Grapheme length for the entity text
+     * @param confidenceScore Confidence score between 0 and 1 of the extracted entity
      */
-    public PiiEntity(String text, String category, String subCategory, int offset, int length, double score) {
+    public PiiEntity(String text, EntityCategory category, String subCategory, int offset, int length,
+        double confidenceScore) {
         this.text = text;
         this.category = category;
         this.subCategory = subCategory;
         this.offset = offset;
         this.length = length;
-        this.score = score;
+        this.confidenceScore = confidenceScore;
     }
 
     /**
      * Get the text property: Personally Identifiable Information entity text as appears in the request.
      *
-     * @return the text value.
+     * @return The text value.
      */
     public String getText() {
         return this.text;
@@ -72,9 +73,9 @@ public final class PiiEntity {
      * Get the category property: Personally Identifiable Information entity category, such as
      * Person/Location/Org/SSN etc.
      *
-     * @return the category value.
+     * @return The category value.
      */
-    public String getCategory() {
+    public EntityCategory getCategory() {
         return this.category;
     }
 
@@ -82,36 +83,36 @@ public final class PiiEntity {
      * Get the subcategory property: Personally Identifiable Information entity sub category, such as
      * Age/Year/TimeRange etc.
      *
-     * @return the subcategory value.
+     * @return The subcategory value.
      */
     public String getSubCategory() {
         return this.subCategory;
     }
 
     /**
-     * Get the offset property: Start position (in Unicode characters) for the entity text.
+     * Get the offset property: Grapheme start position for the entity text.
      *
-     * @return the offset value.
+     * @return The offset value.
      */
-    public int getOffset() {
+    public int getGraphemeOffset() {
         return this.offset;
     }
 
     /**
-     * Get the length property: Length (in Unicode characters) for the entity text.
+     * Get the length property: Grapheme length for the entity text.
      *
-     * @return the length value.
+     * @return The length value.
      */
-    public int getLength() {
+    public int getGraphemeLength() {
         return this.length;
     }
 
     /**
      * Get the score property: Confidence score between 0 and 1 of the extracted entity.
      *
-     * @return the score value.
+     * @return The score value.
      */
-    public double getScore() {
-        return this.score;
+    public double getConfidenceScore() {
+        return this.confidenceScore;
     }
 }

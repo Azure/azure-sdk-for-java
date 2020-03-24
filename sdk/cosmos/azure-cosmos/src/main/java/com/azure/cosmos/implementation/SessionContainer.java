@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosClientException;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -263,7 +263,7 @@ public final class SessionContainer implements ISessionContainer {
                 if (existingTokens == null) {
                     logger.info("Registering a new collection resourceId [{}] in SessionTokens", resourceId);
                     ConcurrentHashMap<String, ISessionToken> tokens =
-                        new ConcurrentHashMap(200, 0.75f, 2000);
+                        new ConcurrentHashMap<String, ISessionToken>(200, 0.75f, 2000);
                     tokens.put(partitionKeyRangeId, parsedSessionToken);
                     return tokens;
                 }

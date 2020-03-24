@@ -8,9 +8,9 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import org.apache.commons.lang3.Range;
@@ -180,7 +180,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             ResourceResponse<Document> childResource = writeClient.createDocument(parentResource.getSelfLink(), documentDefinition, null, true).block();
             logger.info("Created {} child resource", childResource.getResource().getResourceId());
 
-            String token = childResource.getSessionToken().split(":")[0] + ":" + this.createSessionToken(SessionTokenHelper.parse(childResource.getSessionToken()), 100000000).convertToString();
+            String token = childResource.getSessionToken().split(":")[0] + ":" + ConsistencyTestsBase.createSessionToken(SessionTokenHelper.parse(childResource.getSessionToken()), 100000000).convertToString();
 
             FeedOptions feedOptions = new FeedOptions();
             feedOptions.setPartitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
@@ -237,7 +237,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             Mono<Void> task2 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> {
                 try {
                     FeedOptions feedOptions = new FeedOptions();
-                    feedOptions.setAllowEmptyPages(true);
+                    feedOptions.setEmptyPagesAllowed(true);
                     FeedResponse<Document> queryResponse = client.queryDocuments(createdCollection.getSelfLink(),
                                                                                  "SELECT * FROM c WHERE c.Id = " +
                                                                                          "'foo'", feedOptions)

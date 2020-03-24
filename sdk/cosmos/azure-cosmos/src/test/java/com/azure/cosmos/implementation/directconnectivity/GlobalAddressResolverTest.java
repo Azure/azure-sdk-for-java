@@ -15,13 +15,14 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import org.apache.commons.collections4.list.UnmodifiableList;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
@@ -67,7 +68,7 @@ public class GlobalAddressResolverTest {
         urlforWrite3 = new URI("http://testWrite3.com/");
 
         connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setEnableReadRequestsFallback(true);
+        connectionPolicy.setReadRequestsFallbackEnabled(true);
         httpClient = Mockito.mock(HttpClient.class);
         endpointManager = Mockito.mock(GlobalEndpointManager.class);
 
@@ -75,13 +76,13 @@ public class GlobalAddressResolverTest {
         readEndPointList.add(urlforRead1);
         readEndPointList.add(urlforRead2);
         readEndPointList.add(urlforRead3);
-        UnmodifiableList readList = new UnmodifiableList(readEndPointList);
+        UnmodifiableList<URI> readList = new UnmodifiableList<>(readEndPointList);
 
         List<URI> writeEndPointList = new ArrayList<>();
         writeEndPointList.add(urlforWrite1);
         writeEndPointList.add(urlforWrite2);
         writeEndPointList.add(urlforWrite3);
-        UnmodifiableList writeList = new UnmodifiableList(writeEndPointList);
+        UnmodifiableList<URI> writeList = new UnmodifiableList<>(writeEndPointList);
 
         Mockito.when(endpointManager.getReadEndpoints()).thenReturn(readList);
         Mockito.when(endpointManager.getWriteEndpoints()).thenReturn(writeList);
@@ -141,7 +142,7 @@ public class GlobalAddressResolverTest {
 
         DocumentCollection documentCollection = new DocumentCollection();
         documentCollection.setId("TestColl");
-        documentCollection.setResourceId("IXYFAOHEBPM=");
+        ModelBridgeInternal.setResourceId(documentCollection, "IXYFAOHEBPM=");
         CollectionRoutingMap collectionRoutingMap = Mockito.mock(CollectionRoutingMap.class);
         PartitionKeyRange range = new PartitionKeyRange("0", PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
                 PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey);
@@ -152,7 +153,7 @@ public class GlobalAddressResolverTest {
         Mockito.when(routingMapProvider.tryLookupAsync(Mockito.any(MetaDataDiagnosticsContext.class), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(collectionRoutingMapSingle);
 
         List<PartitionKeyRangeIdentity> ranges = new ArrayList<>();
-        for (PartitionKeyRange partitionKeyRange : (List<PartitionKeyRange>) collectionRoutingMap.getOrderedPartitionKeyRanges()) {
+        for (PartitionKeyRange partitionKeyRange : collectionRoutingMap.getOrderedPartitionKeyRanges()) {
             PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(documentCollection.getResourceId(), partitionKeyRange.getId());
             ranges.add(partitionKeyRangeIdentity);
         }

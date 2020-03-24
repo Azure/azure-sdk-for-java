@@ -15,6 +15,8 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 
 public abstract class BlobTestBase<TOptions extends PerfStressOptions> extends ContainerTest<TOptions> {
+
+    public static final int DEFAULT_BUFFER_SIZE = 8192;
     protected final BlobClient blobClient;
     protected final BlockBlobClient blockBlobClient;
     protected final BlobAsyncClient blobAsyncClient;
@@ -34,9 +36,9 @@ public abstract class BlobTestBase<TOptions extends PerfStressOptions> extends C
 
     public long copyStream(InputStream input, OutputStream out) throws IOException {
         long transferred = 0;
-        byte[] buffer = new byte[8192];
+        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
         int read;
-        while ((read = input.read(buffer, 0, 8192)) >= 0) {
+        while ((read = input.read(buffer, 0, DEFAULT_BUFFER_SIZE)) >= 0) {
             out.write(buffer, 0, read);
             transferred += read;
         }

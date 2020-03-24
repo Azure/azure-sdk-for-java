@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -17,7 +17,6 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 
 import java.lang.reflect.Field;
-import java.net.URI;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +129,7 @@ public class GlobalEndPointManagerTest {
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void refreshLocationAsyncForConnectivityIssueWithPreferredLocation() throws Exception {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setEnableEndpointDiscovery(true);
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
         List<String> preferredLocation = new ArrayList<>();
         preferredLocation.add("East US");
         preferredLocation.add("East Asia");
@@ -221,7 +220,7 @@ public class GlobalEndPointManagerTest {
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void backgroundRefreshForMultiMaster() throws Exception {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setEnableEndpointDiscovery(true);
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
         connectionPolicy.setUsingMultipleWriteLocations(true);
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson4);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
@@ -239,7 +238,7 @@ public class GlobalEndPointManagerTest {
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void startRefreshLocationTimerAsync() throws Exception {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setEnableEndpointDiscovery(true);
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
         connectionPolicy.setUsingMultipleWriteLocations(true);
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson1);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
@@ -293,7 +292,9 @@ public class GlobalEndPointManagerTest {
         Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadEndpointByLocation");
         availableReadEndpointByLocationField.setAccessible(true);
 
-        return (Map<String, URI>) availableWriteEndpointByLocationField.get(locationInfo);
+        @SuppressWarnings("unchecked")
+        Map<String, URI> map = (Map<String, URI>) availableWriteEndpointByLocationField.get(locationInfo);
+        return map;
     }
 
     private Map<String, URI> getAvailableReadEndpointByLocation(LocationCache locationCache) throws Exception {
@@ -305,7 +306,9 @@ public class GlobalEndPointManagerTest {
         Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadEndpointByLocation");
         availableReadEndpointByLocationField.setAccessible(true);
 
-        return (Map<String, URI>) availableReadEndpointByLocationField.get(locationInfo);
+        @SuppressWarnings("unchecked")
+        Map<String, URI> map = (Map<String, URI>) availableReadEndpointByLocationField.get(locationInfo);
+        return map;
     }
 
     private AtomicBoolean getIsRefreshing(GlobalEndpointManager globalEndPointManager) throws Exception {
@@ -330,7 +333,7 @@ public class GlobalEndPointManagerTest {
 
     private GlobalEndpointManager getGlobalEndPointManager() throws Exception {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setEnableEndpointDiscovery(true);
+        connectionPolicy.setEndpointDiscoveryEnabled(true);
         connectionPolicy.setUsingMultipleWriteLocations(true); // currently without this proper, background refresh will not work
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson1);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));

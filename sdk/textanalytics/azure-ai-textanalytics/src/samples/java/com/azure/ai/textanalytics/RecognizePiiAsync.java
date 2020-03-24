@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class RecognizePiiAsync {
     /**
      * Main method to invoke this demo about how to recognize the Personally Identifiable Information entities of
-     * an input text.
+     * document.
      *
      * @param args Unused arguments to the program.
      */
@@ -25,18 +25,13 @@ public class RecognizePiiAsync {
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that needs be analyzed.
-        String text = "My SSN is 555-55-5555";
+        // The document that needs be analyzed.
+        String document = "My SSN is 555-55-5555";
 
-        client.recognizePiiEntities(text).subscribe(
+        client.recognizePiiEntities(document).subscribe(
             entity -> System.out.printf(
-                "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, offset: %s, length: %s, score: %.2f.%n",
-                entity.getText(),
-                entity.getCategory(),
-                entity.getSubCategory() == null || entity.getSubCategory().isEmpty() ? "N/A" : entity.getSubCategory(),
-                entity.getOffset(),
-                entity.getLength(),
-                entity.getScore()),
+                "Recognized personal identifiable information entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
+                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()),
             error -> System.err.printf(
                 "There was an error recognizing Personally Identifiable Information entities of the text. %s%n", error),
             () -> System.out.println("Personally Identifiable Information entities recognized."));

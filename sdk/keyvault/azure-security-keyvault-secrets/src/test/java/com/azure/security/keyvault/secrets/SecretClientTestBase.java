@@ -8,7 +8,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -20,9 +19,11 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -30,13 +31,16 @@ import java.time.ZoneOffset;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
+import org.junit.jupiter.params.provider.Arguments;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class SecretClientTestBase extends TestBase {
+    static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
+    private static final String AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS = "AZURE_KEYVAULT_TEST_SECRETS_SERVICE_VERSIONS";
+    private static final String SERVICE_VERSION_FROM_ENV = Configuration.getGlobalConfiguration().get(AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS);
 
     private static final String SECRET_NAME = "javaSecretTemp";
     private static final String SECRET_VALUE = "Chocolate is hidden in the toothpaste cabinet";
@@ -52,7 +56,7 @@ public abstract class SecretClientTestBase extends TestBase {
     void beforeTestSetup() {
     }
 
-    <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
+    HttpPipeline getHttpPipeline(HttpClient httpClient, SecretServiceVersion serviceVersion) {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -69,10 +73,9 @@ public abstract class SecretClientTestBase extends TestBase {
                                 .build();
         }
 
-        HttpClient httpClient;
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), SecretServiceVersion.getLatest()));
+        policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), serviceVersion));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
         if (credential != null) {
@@ -82,26 +85,19 @@ public abstract class SecretClientTestBase extends TestBase {
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
         if (interceptorManager.isPlaybackMode()) {
-            httpClient = interceptorManager.getPlaybackClient();
-            policies.add(interceptorManager.getRecordPolicy());
-        } else {
-            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
             policies.add(interceptorManager.getRecordPolicy());
         }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
 
-        T client;
-        client = clientBuilder.apply(pipeline);
-
-        return Objects.requireNonNull(client);
+        return pipeline;
     }
 
     @Test
-    public abstract void setSecret();
+    public abstract void setSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void setSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         final Map<String, String> tags = new HashMap<>();
@@ -118,10 +114,10 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void setSecretEmptyName();
+    public abstract void setSecretEmptyName(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     @Test
-    public abstract void setSecretEmptyValue();
+    public abstract void setSecretEmptyValue(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void setSecretEmptyValueRunner(Consumer<KeyVaultSecret> testRunner) {
         String resourceId = generateResourceId(SECRET_NAME);
@@ -129,11 +125,11 @@ public abstract class SecretClientTestBase extends TestBase {
         testRunner.accept(secret);
     }
 
-    @Test public abstract void setSecretNull();
+    @Test public abstract void setSecretNull(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
 
     @Test
-    public abstract void updateSecret();
+    public abstract void updateSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void updateSecretRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
 
@@ -156,7 +152,7 @@ public abstract class SecretClientTestBase extends TestBase {
 
 
     @Test
-    public abstract void updateDisabledSecret();
+    public abstract void updateDisabledSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void updateDisabledSecretRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
         final Map<String, String> tags = new HashMap<>();
@@ -175,7 +171,7 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getSecret();
+    public abstract void getSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void getSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         String resourceId = generateResourceId("testSecretGet");
@@ -186,7 +182,7 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getSecretSpecificVersion();
+    public abstract void getSecretSpecificVersion(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void getSecretSpecificVersionRunner(BiConsumer<KeyVaultSecret, KeyVaultSecret> testRunner) {
         String resourceId = generateResourceId("testSecretGetVersion");
@@ -201,10 +197,10 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getSecretNotFound();
+    public abstract void getSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     @Test
-    public abstract void deleteSecret();
+    public abstract void deleteSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void deleteSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         String resourceId = generateResourceId("testSecretDelete");
@@ -216,10 +212,10 @@ public abstract class SecretClientTestBase extends TestBase {
 
 
     @Test
-    public abstract void deleteSecretNotFound();
+    public abstract void deleteSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     @Test
-    public abstract void getDeletedSecret();
+    public abstract void getDeletedSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void getDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         String resourceId = generateResourceId("testSecretGetDeleted");
@@ -230,10 +226,10 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getDeletedSecretNotFound();
+    public abstract void getDeletedSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     @Test
-    public abstract void recoverDeletedSecret();
+    public abstract void recoverDeletedSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void recoverDeletedSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         String resourceId = generateResourceId("testSecretRecover");
@@ -244,10 +240,10 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void recoverDeletedSecretNotFound();
+    public abstract void recoverDeletedSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     @Test
-    public abstract void backupSecret();
+    public abstract void backupSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void backupSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         final KeyVaultSecret secretToBackup = new KeyVaultSecret(generateResourceId("testSecretBackup"), "testSecretBackupVal")
@@ -257,10 +253,10 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void backupSecretNotFound();
+    public abstract void backupSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     @Test
-    public abstract void restoreSecret();
+    public abstract void restoreSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void restoreSecretRunner(Consumer<KeyVaultSecret> testRunner) {
         final KeyVaultSecret secretToBackupAndRestore = new KeyVaultSecret(generateResourceId("testSecretRestore"), "testSecretRestoreVal")
@@ -270,10 +266,10 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void restoreSecretFromMalformedBackup();
+    public abstract void restoreSecretFromMalformedBackup(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     @Test
-    public abstract void listSecrets();
+    public abstract void listSecrets(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void listSecretsRunner(Consumer<HashMap<String, KeyVaultSecret>> testRunner) {
         HashMap<String, KeyVaultSecret> secrets = new HashMap<>();
@@ -291,7 +287,7 @@ public abstract class SecretClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listDeletedSecrets();
+    public abstract void listDeletedSecrets(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void listDeletedSecretsRunner(Consumer<HashMap<String, KeyVaultSecret>> testRunner) {
         HashMap<String, KeyVaultSecret> secrets = new HashMap<>();
@@ -309,7 +305,7 @@ public abstract class SecretClientTestBase extends TestBase {
 
 
     @Test
-    public abstract void listSecretVersions();
+    public abstract void listSecretVersions(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void listSecretVersionsRunner(Consumer<List<KeyVaultSecret>> testRunner) {
         List<KeyVaultSecret> secrets = new ArrayList<>();
@@ -436,5 +432,52 @@ public abstract class SecretClientTestBase extends TestBase {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
+     * service versions that should be tested.
+     *
+     * @return A stream of HttpClient and service version combinations to test.
+     */
+    static Stream<Arguments> getTestParameters() {
+        // when this issues is closed, the newer version of junit will have better support for
+        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+        List<Arguments> argumentsList = new ArrayList<>();
+
+        getHttpClients()
+            .forEach(httpClient -> {
+                Arrays.stream(SecretServiceVersion.values()).filter(SecretClientTestBase::shouldServiceVersionBeTested)
+                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+            });
+        return argumentsList.stream();
+    }
+
+    /**
+     * Returns whether the given service version match the rules of test framework.
+     *
+     * <ul>
+     * <li>Using latest service version as default if no environment variable is set.</li>
+     * <li>If it's set to ALL, all Service versions in {@link SecretServiceVersion} will be tested.</li>
+     * <li>Otherwise, Service version string should match env variable.</li>
+     * </ul>
+     *
+     * Environment values currently supported are: "ALL", "${version}".
+     * Use comma to separate http clients want to test.
+     * e.g. {@code set AZURE_TEST_SERVICE_VERSIONS = V1_0, V2_0}
+     *
+     * @param serviceVersion ServiceVersion needs to check
+     * @return Boolean indicates whether filters out the service version or not.
+     */
+    private static boolean shouldServiceVersionBeTested(SecretServiceVersion serviceVersion) {
+        if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
+            return SecretServiceVersion.getLatest().equals(serviceVersion);
+        }
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
+            return true;
+        }
+        String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
+        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
+            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 }

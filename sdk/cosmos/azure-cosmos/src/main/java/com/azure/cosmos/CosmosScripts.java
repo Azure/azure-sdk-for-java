@@ -3,6 +3,22 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
+import com.azure.cosmos.models.CosmosStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.CosmosTriggerResponse;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedIterable;
+import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -113,7 +129,7 @@ public class CosmosScripts {
      * @return the cosmos sync user defined function response
      * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosUserDefinedFunctionResponse createUserDefinedFunction(CosmosUserDefinedFunctionProperties properties) 
+    public CosmosUserDefinedFunctionResponse createUserDefinedFunction(CosmosUserDefinedFunctionProperties properties)
         throws CosmosClientException {
         return mapUDFResponseAndBlock(asyncScripts.createUserDefinedFunction(properties));
     }
@@ -167,6 +183,8 @@ public class CosmosScripts {
                                              asyncScripts.getUserDefinedFunction(id));
     }
 
+    /* Trigger Operations */
+
     /**
      * Create trigger
      *
@@ -174,7 +192,6 @@ public class CosmosScripts {
      * @return the cosmos sync trigger response
      * @throws CosmosClientException the cosmos client exception
      */
-    /* Trigger Operations */
     public CosmosTriggerResponse createTrigger(CosmosTriggerProperties properties) throws CosmosClientException {
         return mapTriggerResponseAndBlock(asyncScripts.createTrigger(properties));
     }
@@ -256,9 +273,9 @@ public class CosmosScripts {
      */
     CosmosStoredProcedureResponse convertResponse(CosmosAsyncStoredProcedureResponse response) {
         if (response.getStoredProcedure() != null) {
-            return new CosmosStoredProcedureResponse(response, getStoredProcedure(response.getStoredProcedure().id()));
+            return ModelBridgeInternal.createCosmosStoredProcedureResponse(response, getStoredProcedure(response.getStoredProcedure().id()));
         } else {
-            return new CosmosStoredProcedureResponse(response, null);
+            return ModelBridgeInternal.createCosmosStoredProcedureResponse(response, null);
         }
     }
 
@@ -293,11 +310,11 @@ public class CosmosScripts {
      */
     CosmosUserDefinedFunctionResponse convertResponse(CosmosAsyncUserDefinedFunctionResponse response) {
         if (response.getUserDefinedFunction() != null) {
-            return new CosmosUserDefinedFunctionResponse(response,
+            return ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response,
                                                          getUserDefinedFunction(response.getUserDefinedFunction()
                                                                                     .getId()));
         } else {
-            return new CosmosUserDefinedFunctionResponse(response, null);
+            return ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response, null);
         }
     }
 
@@ -334,14 +351,14 @@ public class CosmosScripts {
      */
     CosmosTriggerResponse convertResponse(CosmosAsyncTriggerResponse response) {
         if (response.getTrigger() != null) {
-            return new CosmosTriggerResponse(response,
+            return ModelBridgeInternal.createCosmosTriggerResponse(response,
                                              getTrigger(response.getTrigger().getId()));
         } else {
-            return new CosmosTriggerResponse(response, null);
+            return ModelBridgeInternal.createCosmosTriggerResponse(response, null);
         }
     }
 
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
-        return new CosmosPagedIterable<>(cosmosPagedFlux);
+        return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
     }
 }

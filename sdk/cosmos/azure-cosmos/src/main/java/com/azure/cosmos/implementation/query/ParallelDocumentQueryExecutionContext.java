@@ -4,10 +4,10 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -17,7 +17,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
-import org.apache.commons.lang3.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
@@ -102,7 +102,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
         FeedOptions feedOptions, String collectionRid, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
-        
+
         List<PartitionKeyRange> ranges = new ArrayList<>();
         ranges.addAll(rangeQueryMap.keySet());
 
@@ -124,7 +124,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                                 activityId, collectionRid);
         return Flux.just(context);
     }
-    
+
 
     private void initialize(
             String collectionRid,
@@ -189,7 +189,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             CompositeContinuationToken compositeContinuationToken,
             List<PartitionKeyRange> partitionKeyRanges) throws CosmosClientException {
         // Find the partition key range we left off on
-        int startIndex = this.FindTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
+        int startIndex = this.findTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
                 compositeContinuationToken.getRange());
 
         List<PartitionKeyRange> rightHandSideRanges = new ArrayList<PartitionKeyRange>();
@@ -259,7 +259,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             // results.
             return source.filter(documentProducerFeedResponse -> {
                 if (documentProducerFeedResponse.pageResult.getResults().isEmpty()
-                        && !this.feedOptions.isAllowEmptyPages()) {
+                        && !this.feedOptions.isEmptyPagesAllowed()) {
                     // filter empty pages and accumulate charge
                     tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                     return false;

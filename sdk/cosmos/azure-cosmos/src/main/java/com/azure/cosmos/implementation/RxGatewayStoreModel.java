@@ -5,7 +5,8 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosError;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -14,11 +15,10 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -30,6 +30,7 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 /**
@@ -80,7 +81,7 @@ class RxGatewayStoreModel implements RxStoreModel {
         this.sessionContainer = sessionContainer;
     }
 
-    private Mono<RxDocumentServiceResponse> doCreate(RxDocumentServiceRequest request) {
+    private Mono<RxDocumentServiceResponse> create(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.POST);
     }
 
@@ -147,13 +148,9 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
-            Flux<ByteBuf> byteBufObservable = Flux.empty();
-
-            if (request.getContentObservable() != null) {
-                byteBufObservable = request.getContentObservable().map(Unpooled::wrappedBuffer);
-            } else if (request.getContentAsByteBufFlux() != null){
-                byteBufObservable = request.getContentAsByteBufFlux();
-            }
+            // The RxDocumentServiceRequest::getContentAsByteBufFlux guaranteed to return
+            // a valid flux (including Flux.empty) hence null check is not required here.
+            Flux<ByteBuf> byteBufObservable = request.getContentAsByteBufFlux();
 
             HttpRequest httpRequest = new HttpRequest(method,
                     uri,
@@ -221,7 +218,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     private String ensureSlashPrefixed(String path) {
         if (path == null) {
-            return path;
+            return null;
         }
 
         if (path.startsWith("/")) {
@@ -243,7 +240,7 @@ class RxGatewayStoreModel implements RxStoreModel {
      * @return {@link Mono}
      */
     private Mono<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<HttpResponse> httpResponseMono,
-                                                                            RxDocumentServiceRequest request) {
+                                                                      RxDocumentServiceRequest request) {
 
         return httpResponseMono.flatMap(httpResponse ->  {
 
@@ -317,7 +314,10 @@ class RxGatewayStoreModel implements RxStoreModel {
                    });
     }
 
-    private void validateOrThrow(RxDocumentServiceRequest request, HttpResponseStatus status, HttpHeaders headers, byte[] bodyAsBytes) throws CosmosClientException {
+    private void validateOrThrow(RxDocumentServiceRequest request,
+                                 HttpResponseStatus status,
+                                 HttpHeaders headers,
+                                 byte[] bodyAsBytes) throws CosmosClientException {
 
         int statusCode = status.code();
 
@@ -328,7 +328,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             String body = bodyAsBytes != null ? new String(bodyAsBytes) : null;
             CosmosError cosmosError;
-            cosmosError = (StringUtils.isNotEmpty(body)) ? BridgeInternal.createCosmosError(body) : new CosmosError();
+            cosmosError = (StringUtils.isNotEmpty(body)) ? ModelBridgeInternal.createCosmosError(body) : new CosmosError();
             cosmosError = new CosmosError(statusCodeString,
                     String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                     cosmosError.getPartitionedQueryExecutionInfo());
@@ -342,7 +342,7 @@ class RxGatewayStoreModel implements RxStoreModel {
     private Mono<RxDocumentServiceResponse> invokeAsyncInternal(RxDocumentServiceRequest request)  {
         switch (request.getOperationType()) {
             case Create:
-                return this.doCreate(request);
+                return this.create(request);
             case Upsert:
                 return this.upsert(request);
             case Delete:
@@ -420,9 +420,9 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     private void applySessionToken(RxDocumentServiceRequest request) {
         Map<String, String> headers = request.getHeaders();
+        Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
 
-        if (headers != null &&
-                !Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
             if (ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
                 request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
             }

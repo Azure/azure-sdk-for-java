@@ -6,11 +6,12 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlParameterList;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlParameterList;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -24,7 +25,6 @@ import com.azure.cosmos.implementation.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -213,11 +213,12 @@ implements IDocumentQueryExecutionContext<T> {
             SqlQuerySpec querySpec) {
         RxDocumentServiceRequest executeQueryRequest;
 
-        String queryText;
         switch (this.client.getQueryCompatibilityMode()) {
         case SqlQuery:
             SqlParameterList params = querySpec.getParameters();
-            Utils.checkStateOrThrow(params != null && params.size() > 0, "query.parameters",
+            // SqlQuerySpec::getParameters is guaranteed to return non-null SqlParameterList list
+            // hence no null check for params is necessary.
+            Utils.checkStateOrThrow(params.size() > 0, "query.parameters",
                     "Unsupported argument in query compatibility mode '%s'",
                     this.client.getQueryCompatibilityMode().toString());
 
@@ -227,7 +228,7 @@ implements IDocumentQueryExecutionContext<T> {
                     requestHeaders);
 
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.JSON);
-            queryText = querySpec.getQueryText();
+            executeQueryRequest.setContentBytes(Utils.getUTF8Bytes(querySpec.getQueryText()));
             break;
 
         case Default:
@@ -239,16 +240,8 @@ implements IDocumentQueryExecutionContext<T> {
                     requestHeaders);
 
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
-            queryText = querySpec.toJson();
+            executeQueryRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpec));
             break;
-        }
-
-        try {
-            executeQueryRequest.setContentBytes(queryText.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            // TODO: exception should be handled differently
-            e.printStackTrace();
         }
 
         return executeQueryRequest;

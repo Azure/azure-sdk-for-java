@@ -3,9 +3,9 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PermissionMode;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseForTest;
@@ -13,7 +13,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
-import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.User;
 import org.testng.annotations.AfterClass;
@@ -76,7 +76,7 @@ public class PermissionQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        
+
         Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 
@@ -95,7 +95,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(3);
-        
+
         Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 
@@ -118,7 +118,7 @@ public class PermissionQueryTest extends TestSuiteBase {
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
-        
+
         Flux<FeedResponse<Permission>> queryObservable = client
                 .queryPermissions(getUserLink(), query, options);
 

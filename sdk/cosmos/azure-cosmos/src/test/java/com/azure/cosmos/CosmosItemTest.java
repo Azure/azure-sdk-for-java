@@ -7,8 +7,16 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -33,7 +41,7 @@ public class CosmosItemTest extends TestSuiteBase {
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
-        this.client = clientBuilder().buildClient();
+        this.client = getClientBuilder().buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
@@ -82,7 +90,7 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
         CosmosItemResponse<CosmosItemProperties> readResponse1 = container.readItem(properties.getId(),
-                                                                                    new PartitionKey(properties.get("mypk")),
+                                                                                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
                                                                                     new CosmosItemRequestOptions(),
                                                                                     CosmosItemProperties.class);
         validateItemResponse(properties, readResponse1);
@@ -98,13 +106,13 @@ public class CosmosItemTest extends TestSuiteBase {
         String newPropValue = UUID.randomUUID().toString();
         BridgeInternal.setProperty(properties, "newProp", newPropValue);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        options.setPartitionKey(new PartitionKey(properties.get("mypk")));
+        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")));
         // replace document
         CosmosItemResponse<CosmosItemProperties> replace = container.replaceItem(properties,
                                                               properties.getId(),
-                                                              new PartitionKey(properties.get("mypk")),
+                                                              new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
                                                               options);
-        assertThat(replace.getProperties().get("newProp")).isEqualTo(newPropValue);
+        assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(BridgeInternal.getProperties(replace), "newProp")).isEqualTo(newPropValue);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -113,8 +121,8 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
-        CosmosItemResponse<CosmosItemProperties> deleteResponse = container.deleteItem(properties.getId(),
-                                                                    new PartitionKey(properties.get("mypk")),
+        CosmosItemResponse<?> deleteResponse = container.deleteItem(properties.getId(),
+                                                                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
                                                                     options);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
     }
@@ -208,8 +216,8 @@ public class CosmosItemTest extends TestSuiteBase {
     private void validateItemResponse(CosmosItemProperties containerProperties,
                                       CosmosItemResponse<CosmosItemProperties> createResponse) {
         // Basic validation
-        assertThat(createResponse.getProperties().getId()).isNotNull();
-        assertThat(createResponse.getProperties().getId())
+        assertThat(BridgeInternal.getProperties(createResponse).getId()).isNotNull();
+        assertThat(BridgeInternal.getProperties(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(containerProperties.getId());
     }

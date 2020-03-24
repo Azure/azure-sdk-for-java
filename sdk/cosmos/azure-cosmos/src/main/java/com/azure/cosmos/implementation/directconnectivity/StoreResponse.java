@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.CosmosResponseDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,29 +23,15 @@ public class StoreResponse {
     final private int status;
     final private String[] responseHeaderNames;
     final private String[] responseHeaderValues;
-    final private InputStream httpEntityStream;
     final private byte[] content;
 
     private CosmosResponseDiagnostics cosmosResponseDiagnostics;
     private RequestTimeline requestTimeline;
 
-    public StoreResponse(int status, List<Entry<String, String>> headerEntries, InputStream inputStream) {
-        this(status, headerEntries, null, inputStream);
-    }
-
-    public StoreResponse(int status, List<Entry<String, String>> headerEntries, byte[] content) {
-        this(status, headerEntries, content, null);
-    }
-
-    public StoreResponse(int status, List<Entry<String, String>> headerEntries, String content) {
-        this(status, headerEntries, safeToByteArray(content), null);
-    }
-
-    private StoreResponse(
+    public StoreResponse(
             int status,
             List<Entry<String, String>> headerEntries,
-            byte[] content,
-            InputStream inputStream) {
+            byte[] content) {
 
         requestTimeline = RequestTimeline.empty();
         responseHeaderNames = new String[headerEntries.size()];
@@ -60,9 +46,7 @@ public class StoreResponse {
         }
 
         this.status = status;
-
         this.content = content;
-        this.httpEntityStream = inputStream;
     }
 
     public int getStatus() {
@@ -77,21 +61,8 @@ public class StoreResponse {
         return responseHeaderValues;
     }
 
-    public byte[] getResponseBodyAsByteArray() {
+    public byte[] getResponseBody() {
         return this.content;
-    }
-
-    public String getResponseBody() {
-        if (this.content == null) {
-            return null;
-        }
-
-        return new String(this.content);
-    }
-
-    public InputStream getResponseStream() {
-        // Some operation type doesn't have a response stream so this can be null
-        return this.httpEntityStream;
     }
 
     public long getLSN() {
@@ -153,17 +124,5 @@ public class StoreResponse {
             }
         }
         return subStatusCode;
-    }
-
-    static private byte[] safeToByteArray(String content) {
-        if (content == null) {
-            return null;
-        }
-
-        try {
-            return content.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException(e);
-        }
     }
 }

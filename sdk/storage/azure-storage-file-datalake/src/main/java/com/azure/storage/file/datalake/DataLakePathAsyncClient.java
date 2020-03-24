@@ -56,15 +56,15 @@ public class DataLakePathAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(DataLakePathAsyncClient.class);
 
-    protected final DataLakeStorageClientImpl dataLakeStorage;
+    final DataLakeStorageClientImpl dataLakeStorage;
     private final String accountName;
     private final String fileSystemName;
     private final String pathName;
     private final DataLakeServiceVersion serviceVersion;
 
-    protected PathResourceType pathResourceType;
+    final PathResourceType pathResourceType;
 
-    protected final BlockBlobAsyncClient blockBlobAsyncClient;
+    final BlockBlobAsyncClient blockBlobAsyncClient;
 
     /**
      * Package-private constructor for use by {@link DataLakePathClientBuilder}.
@@ -452,6 +452,9 @@ public class DataLakePathAsyncClient {
 
     /**
      * Determines if the path this client represents exists in the cloud.
+     * <p>Note that this method does not guarantee that the path type (file/directory) matches expectations.</p>
+     * <p>For example, a DataLakeFileClient representing a path to a datalake directory will return true, and vice
+     * versa.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -469,6 +472,9 @@ public class DataLakePathAsyncClient {
 
     /**
      * Determines if the path this client represents exists in the cloud.
+     * <p>Note that this method does not guarantee that the path type (file/directory) matches expectations.</p>
+     * <p>For example, a DataLakeFileClient representing a path to a datalake directory will return true, and vice
+     * versa.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *

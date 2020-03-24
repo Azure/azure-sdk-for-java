@@ -3,12 +3,10 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 
-import java.net.URI;
 import java.util.Map;
 
 /**
@@ -31,18 +29,18 @@ public class GatewayServiceConfigurationReader {
     }
 
     public ReplicationPolicy getUserReplicationPolicy() {
-        return BridgeInternal.getReplicationPolicy(this.globalEndpointManager.getLatestDatabaseAccount());
+        return this.globalEndpointManager.getLatestDatabaseAccount().getReplicationPolicy();
     }
 
     public ReplicationPolicy getSystemReplicationPolicy() {
-        return BridgeInternal.getSystemReplicationPolicy(this.globalEndpointManager.getLatestDatabaseAccount());
+        return this.globalEndpointManager.getLatestDatabaseAccount().getSystemReplicationPolicy();
     }
 
     public ConsistencyLevel getDefaultConsistencyLevel() {
-        return BridgeInternal.getConsistencyPolicy(this.globalEndpointManager.getLatestDatabaseAccount()).getDefaultConsistencyLevel();
+        return this.globalEndpointManager.getLatestDatabaseAccount().getConsistencyPolicy().getDefaultConsistencyLevel();
     }
 
     public Map<String, Object> getQueryEngineConfiguration() {
-        return BridgeInternal.getQueryEngineConfiuration(this.globalEndpointManager.getLatestDatabaseAccount());
+        return this.globalEndpointManager.getLatestDatabaseAccount().getQueryEngineConfiguration();
     }
 }

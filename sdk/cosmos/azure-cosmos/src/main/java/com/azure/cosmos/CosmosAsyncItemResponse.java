@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 import java.util.Map;
@@ -149,7 +148,7 @@ public class CosmosAsyncItemResponse<T> {
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
     public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
-        return resourceResponse.getCosmosResponseDiagnostics();
+        return resourceResponse.getResponseDiagnostics();
     }
 
     /**

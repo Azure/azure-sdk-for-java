@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datafactory.v2018_06_01;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -48,6 +49,13 @@ public class CosmosDbMongoDbApiSource extends CopySource {
      */
     @JsonProperty(value = "queryTimeout")
     private Object queryTimeout;
+
+    /**
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects (or Expression with resultType array of objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private List<AdditionalColumns> additionalColumns;
 
     /**
      * Get specifies selection filter using query operators. To return all documents in a collection, omit this parameter or pass an empty document ({}). Type: string (or Expression with resultType string).
@@ -126,6 +134,26 @@ public class CosmosDbMongoDbApiSource extends CopySource {
      */
     public CosmosDbMongoDbApiSource withQueryTimeout(Object queryTimeout) {
         this.queryTimeout = queryTimeout;
+        return this;
+    }
+
+    /**
+     * Get specifies the additional columns to be added to source data. Type: array of objects (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value
+     */
+    public List<AdditionalColumns> additionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set specifies the additional columns to be added to source data. Type: array of objects (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set
+     * @return the CosmosDbMongoDbApiSource object itself.
+     */
+    public CosmosDbMongoDbApiSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 

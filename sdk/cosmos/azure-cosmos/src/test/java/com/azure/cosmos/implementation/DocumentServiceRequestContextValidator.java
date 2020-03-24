@@ -12,14 +12,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public interface DocumentServiceRequestContextValidator<T extends DocumentServiceRequestContext> {
 
-    static <T extends DocumentServiceRequestContext> Builder builder() {
-        return new Builder();
+    static <T extends DocumentServiceRequestContext> Builder<T> builder() {
+        return new Builder<T>();
     }
 
     void validate(T v);
 
     class Builder<T extends DocumentServiceRequestContext> {
-        private List<DocumentServiceRequestContextValidator<? extends DocumentServiceRequestContext>> validators = new ArrayList<>();
+        private List<DocumentServiceRequestContextValidator<T>> validators = new ArrayList<>();
 
         public DocumentServiceRequestContextValidator<T> build() {
             return new DocumentServiceRequestContextValidator<T>() {
@@ -27,7 +27,7 @@ public interface DocumentServiceRequestContextValidator<T extends DocumentServic
                 @SuppressWarnings({ "rawtypes", "unchecked" })
                 @Override
                 public void validate(T v) {
-                    for (DocumentServiceRequestContextValidator validator : validators) {
+                    for (DocumentServiceRequestContextValidator<T> validator : validators) {
                         validator.validate(v);
                     }
                 }
@@ -35,13 +35,13 @@ public interface DocumentServiceRequestContextValidator<T extends DocumentServic
         }
 
 
-        public Builder<T> add(DocumentServiceRequestContextValidator validator) {
+        public Builder<T> add(DocumentServiceRequestContextValidator<T> validator) {
             validators.add(validator);
             return this;
         }
 
         public Builder<T> qurorumSelectedLSN(long quoriumSelectedLSN) {
-            add(new DocumentServiceRequestContextValidator() {
+            add(new DocumentServiceRequestContextValidator<T>() {
                 @Override
                 public void validate(DocumentServiceRequestContext v) {
                     assertThat(v.quorumSelectedLSN).isEqualTo(quoriumSelectedLSN);
@@ -51,7 +51,7 @@ public interface DocumentServiceRequestContextValidator<T extends DocumentServic
         }
 
         public Builder<T> globalCommittedSelectedLSN(long globalCommittedSelectedLSN) {
-            add(new DocumentServiceRequestContextValidator() {
+            add(new DocumentServiceRequestContextValidator<T>() {
                 @Override
                 public void validate(DocumentServiceRequestContext v) {
                     assertThat(v.globalCommittedSelectedLSN).isEqualTo(globalCommittedSelectedLSN);
@@ -61,7 +61,7 @@ public interface DocumentServiceRequestContextValidator<T extends DocumentServic
         }
 
         public Builder<T> storeResponses(List<StoreResponse> storeResponses) {
-            add(new DocumentServiceRequestContextValidator() {
+            add(new DocumentServiceRequestContextValidator<T>() {
                 @Override
                 public void validate(DocumentServiceRequestContext v) {
                     assertThat(v.storeResponses).isEqualTo(storeResponses);

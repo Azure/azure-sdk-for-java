@@ -26,12 +26,21 @@ Write-Host "serviceDirectory=$($serviceDirectory)"
 # Scan each pom file under the service directory until we find the pom file for the input groupId/artifactId. If
 # found then scan that pomfile for any unreleased dependency tags.
 Get-ChildItem -Path $serviceDirectory -Filter pom*.xml -Recurse -File | ForEach-Object {
+    $libraryIsBeta = $false
     $pomFile = $_.FullName
     $xmlPomFile = New-Object xml
     $xmlPomFile.Load($pomFile)
     if (($xmlPomFile.project.groupId -eq $inputGroupId) -and ($xmlPomFile.project.artifactId -eq $inputArtifactId)) {
         $script:FoundPomFile = $true
         Write-Host "Found pom file with matching groupId($($inputGroupId))/artifactId($($inputArtifactId)), pomFile=$($pomFile)"
+        $version = $xmlPomFile.project.version
+        if ($version -like '*-beta.*')
+        {
+            $libraryIsBeta = $true
+            Write-Host "Library is releasing as Beta, version=$($version)"
+        } else {
+            Write-Host "Library is not releasing as Beta, version=$($version)"
+        }
 
         # Verify there are no unreleased dependencies
         foreach($dependencyNode in $xmlPomFile.GetElementsByTagName("dependency"))
@@ -51,8 +60,32 @@ Get-ChildItem -Path $serviceDirectory -Filter pom*.xml -Recurse -File | ForEach-
                 $versionUpdateTag = $versionNode.NextSibling.Value.Trim()
                 if ($versionUpdateTag -match "{x-version-update;unreleased_$($groupId)")
                 {
+                    # before reporting an error, check to see if there's a scope element and
+                    # if the scope is test then don't fail
+                    $scopeNode = $dependencyNode.GetElementsByTagName("scope")[0]
+                    if ($scopeNode -and $scopeNode.InnerText.Trim() -eq "test")
+                    {
+                        continue
+                    }
                     $script:FoundError = $true
                     Write-Error-With-Color "Error: Cannot release libraries with unreleased dependencies. dependency=$($versionUpdateTag)"
+                    continue
+                } elseif ($versionUpdateTag -match "{x-version-update;beta_$($groupId)") {
+                    # before reporting an error, check to see if there's a scope element and
+                    # if the scope is test then don't fail
+                    $scopeNode = $dependencyNode.GetElementsByTagName("scope")[0]
+                    if ($scopeNode -and $scopeNode.InnerText.Trim() -eq "test")
+                    {
+                        continue
+                    }
+                    # if the library being released is beta then a beta_ dependency is fine otherwise
+                    # report an error since we can't have a library that isn't beta releasing with a
+                    # beta dependency
+                    if (!$libraryIsBeta)
+                    {
+                        $script:FoundError = $true
+                        Write-Error-With-Color "Error: Cannot release non-beta libraries with beta_ dependencies. dependency=$($versionUpdateTag)"
+                    }
                     continue
                 }
             }

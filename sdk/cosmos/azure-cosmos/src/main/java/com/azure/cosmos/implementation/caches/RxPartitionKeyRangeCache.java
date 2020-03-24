@@ -3,14 +3,15 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.implementation.MetaDataDiagnosticsContext;
+import com.azure.cosmos.implementation.apachecommons.collections.CollectionUtils;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.NotFoundException;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
@@ -19,8 +20,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.IServerIdentity;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;

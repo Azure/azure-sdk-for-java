@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.GoneException;
 import com.azure.cosmos.implementation.IRetryPolicy.ShouldRetryResult;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseValidator;
@@ -34,6 +33,7 @@ public class RetryUtilsTest {
     private StoreResponse storeResponse;
 
     @BeforeClass(groups = { "unit" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void before_RetryUtilsTest() throws Exception {
         retryPolicy = Mockito.mock(IRetryPolicy.class);
         request = Mockito.mock(RxDocumentServiceRequest.class);

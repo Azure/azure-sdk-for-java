@@ -5,7 +5,6 @@ package com.azure.storage.blob.nio;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.nio.implementation.util.Utility;
 
 import java.io.IOException;
 import java.nio.file.FileStore;
@@ -29,8 +28,8 @@ public final class AzureFileStore extends FileStore {
     AzureFileStore(AzureFileSystem parentFileSystem, String containerName) throws IOException {
         // A FileStore should only ever be created by a FileSystem.
         if (Objects.isNull(parentFileSystem)) {
-            throw Utility.logError(logger, new IllegalStateException("AzureFileStore cannot be instantiated without "
-                + "a parent FileSystem"));
+            throw LoggingUtility.logError(logger, new IllegalStateException("AzureFileStore cannot be instantiated "
+                + "without a parent FileSystem"));
         }
         this.parentFileSystem = parentFileSystem;
         this.containerClient = this.parentFileSystem.getBlobServiceClient().getBlobContainerClient(containerName);
@@ -41,7 +40,7 @@ public final class AzureFileStore extends FileStore {
                 this.containerClient.create();
             }
         } catch (Exception e) {
-            throw Utility.logError(logger, new IOException("There was an error in establishing the existence of "
+            throw LoggingUtility.logError(logger, new IOException("There was an error in establishing the existence of "
                 + "container: " + containerName, e));
         }
     }

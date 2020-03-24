@@ -3,22 +3,18 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ChangeFeedOptions;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -29,7 +25,7 @@ import java.util.UUID;
 /**
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
  */
-public class RxDocumentServiceRequest {
+public class RxDocumentServiceRequest implements Cloneable {
     private static final char PREFER_HEADER_SEPERATOR = ';';
     private static final String PREFER_HEADER_VALUE_FORMAT = "%s=%s";
 
@@ -57,8 +53,6 @@ public class RxDocumentServiceRequest {
     // has the non serialized value of the partition-key
     private PartitionKeyInternal partitionKeyInternal;
 
-    private Flux<byte[]> contentObservable;
-
     private byte[] contentAsByteArray;
 
     // NOTE: TODO: these fields are copied from .Net SDK
@@ -69,7 +63,6 @@ public class RxDocumentServiceRequest {
 
     private volatile boolean isDisposed = false;
     public volatile String entityId;
-    public volatile String queryString;
     public volatile boolean isFeed;
     public volatile AuthorizationTokenType authorizationTokenType;
     public volatile Map<String, Object> properties;
@@ -216,13 +209,11 @@ public class RxDocumentServiceRequest {
      * @param resourceId        the resource Id.
      * @param resourceType      the resource type.
      * @param byteBuffer           the byte content observable\
-     * @param contentObservable the byte content observable
      * @param headers           the request headers.
      */
     private RxDocumentServiceRequest(OperationType operationType,
                                      String resourceId,
                                      ResourceType resourceType,
-                                     Flux<byte[]> contentObservable,
                                      ByteBuffer byteBuffer,
                                      String path,
                                      Map<String, String> headers,
@@ -234,7 +225,6 @@ public class RxDocumentServiceRequest {
             headers);
         this.authorizationTokenType = authorizationTokenType;
         this.contentAsByteArray = toByteArray(byteBuffer);
-        this.contentObservable = contentObservable;
     }
 
 
@@ -244,35 +234,16 @@ public class RxDocumentServiceRequest {
      * @param resourceId        the resource Id.
      * @param resourceType      the resource type.
      * @param content           the byte content observable\
-     * @param contentObservable the byte content observable
      * @param headers           the request headers.
      */
     private RxDocumentServiceRequest(OperationType operationType,
             String resourceId,
             ResourceType resourceType,
-            Flux<byte[]> contentObservable,
             byte[] content,
             String path,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        this(operationType, resourceId, resourceType, contentObservable, wrapByteBuffer(content), path, headers, authorizationTokenType);
-    }
-
-    /**
-     * Creates a DocumentServiceRequest with an HttpEntity.
-     *
-     * @param resourceType          the resource type.
-     * @param path                  the relative URI path.
-     * @param contentObservable     the byte content observable
-     * @param headers               the request headers.
-     */
-    private RxDocumentServiceRequest(OperationType operationType,
-            ResourceType resourceType,
-            String path,
-            Flux<byte[]> contentObservable,
-            Map<String, String> headers,
-            AuthorizationTokenType authorizationTokenType) {
-        this(operationType, extractIdFromUri(path), resourceType, contentObservable, (ByteBuffer) null, path, headers, authorizationTokenType);
+        this(operationType, resourceId, resourceType, wrapByteBuffer(content), path, headers, authorizationTokenType);
     }
 
     /**
@@ -289,7 +260,7 @@ public class RxDocumentServiceRequest {
                                      ByteBuffer byteBuffer,
                                      Map<String, String> headers,
                                      AuthorizationTokenType authorizationTokenType) {
-        this(operationType, extractIdFromUri(path), resourceType, null, byteBuffer, path, headers, authorizationTokenType);
+        this(operationType, extractIdFromUri(path), resourceType, byteBuffer, path, headers, authorizationTokenType);
     }
 
     /**
@@ -306,7 +277,7 @@ public class RxDocumentServiceRequest {
             byte[] byteContent,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        this(operationType, extractIdFromUri(path), resourceType, null, byteContent, path, headers, authorizationTokenType);
+        this(operationType, extractIdFromUri(path), resourceType, byteContent, path, headers, authorizationTokenType);
     }
 
     /**
@@ -321,7 +292,7 @@ public class RxDocumentServiceRequest {
             String path,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        this(operationType, extractIdFromUri(path), resourceType, null , (ByteBuffer) null, path, headers, authorizationTokenType);
+        this(operationType, extractIdFromUri(path), resourceType, (byte[]) null, path, headers, authorizationTokenType);
     }
 
     public void setContentBytes(byte[] contentBytes) {
@@ -332,41 +303,21 @@ public class RxDocumentServiceRequest {
         this.contentAsByteArray = toByteArray(byteBuffer);
     }
 
-    /**
-     * Creates a DocumentServiceRequest with a stream.
+    /** Creates a DocumentServiceRequest with a stream.
      *
      * @param operation    the operation type.
      * @param resourceType the resource type.
      * @param relativePath the relative URI path.
-     * @param content      the content observable
+     * @param bytes        the body content.
      * @param headers      the request headers.
      * @return the created document service request.
      */
     public static RxDocumentServiceRequest create(OperationType operation,
             ResourceType resourceType,
             String relativePath,
-            Flux<byte[]> content,
+            byte[] bytes,
             Map<String, String> headers) {
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath, content, headers, AuthorizationTokenType.PrimaryMasterKey);
-    }
-
-    /**
-     * Creates a DocumentServiceRequest with a stream.
-     *
-     * @param operation    the operation type.
-     * @param resourceType the resource type.
-     * @param relativePath the relative URI path.
-     * @param content      the content observable
-     * @param headers      the request headers.
-     * @return the created document service request.
-     */
-    public static RxDocumentServiceRequest create(OperationType operation,
-            ResourceType resourceType,
-            String relativePath,
-            Flux<byte[]> content,
-            Map<String, String> headers,
-            AuthorizationTokenType authorizationTokenType) {
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath, content, headers, authorizationTokenType);
+        return new RxDocumentServiceRequest(operation, resourceType, relativePath, bytes, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
     /** Creates a DocumentServiceRequest with a stream.
@@ -374,25 +325,7 @@ public class RxDocumentServiceRequest {
      * @param operation    the operation type.
      * @param resourceType the resource type.
      * @param relativePath the relative URI path.
-     * @param inputStream  the input stream.
-     * @param headers      the request headers.
-     * @return the created document service request.
-     */
-    public static RxDocumentServiceRequest create(OperationType operation,
-            ResourceType resourceType,
-            String relativePath,
-            InputStream inputStream,
-            Map<String, String> headers) throws IOException {
-        Flux<byte[]> byteFlux = Flux.just(IOUtils.toByteArray(inputStream));
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath, byteFlux, headers, AuthorizationTokenType.PrimaryMasterKey);
-    }
-
-    /** Creates a DocumentServiceRequest with a stream.
-     *
-     * @param operation    the operation type.
-     * @param resourceType the resource type.
-     * @param relativePath the relative URI path.
-     * @param inputStream  the input stream.
+     * @param bytes        the byte array content.
      * @param headers      the request headers.
      * @param authorizationTokenType      the request authorizationTokenType.
      * @return the created document service request.
@@ -400,11 +333,10 @@ public class RxDocumentServiceRequest {
     public static RxDocumentServiceRequest create(OperationType operation,
             ResourceType resourceType,
             String relativePath,
-            InputStream inputStream,
+            byte[] bytes,
             Map<String, String> headers,
-            AuthorizationTokenType authorizationTokenType) throws IOException {
-        Flux<byte[]> byteFlux = Flux.just(IOUtils.toByteArray(inputStream));
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath, byteFlux, headers, authorizationTokenType);
+            AuthorizationTokenType authorizationTokenType) {
+        return new RxDocumentServiceRequest(operation, resourceType, relativePath, bytes, headers, authorizationTokenType);
     }
 
     /**
@@ -444,8 +376,7 @@ public class RxDocumentServiceRequest {
             Object options) {
 
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
-                // TODO: this re-encodes, can we improve performance here?
-                resource.toJson().getBytes(StandardCharsets.UTF_8), headers, AuthorizationTokenType.PrimaryMasterKey);
+            ModelBridgeInternal.serializeJsonToByteBuffer(resource), headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         return request;
     }
@@ -464,12 +395,12 @@ public class RxDocumentServiceRequest {
     }
 
     /**
-     * Creates a DocumentServiceRequest with a query.
+     * Creates a DocumentServiceRequest with a body.
      *
      * @param operation    the operation type.
      * @param resourceType the resource type.
      * @param relativePath the relative URI path.
-     * @param query        the query.
+     * @param body         the body.
      * @param headers      the request headers.
      * @param options      the request/feed/changeFeed options.
      * @return the created document service request.
@@ -477,34 +408,13 @@ public class RxDocumentServiceRequest {
     public static RxDocumentServiceRequest create(OperationType operation,
             ResourceType resourceType,
             String relativePath,
-            String query,
+            String body,
             Map<String, String> headers,
             Object options) {
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
-                query.getBytes(StandardCharsets.UTF_8), headers, AuthorizationTokenType.PrimaryMasterKey);
+            body.getBytes(StandardCharsets.UTF_8), headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         return request;
-    }
-
-    /**
-     * Creates a DocumentServiceRequest with a query.
-     *
-     * @param operation    the operation type.
-     * @param resourceType the resource type.
-     * @param relativePath the relative URI path.
-     * @param query        the query.
-     * @param headers      the request headers.
-     * @param authorizationTokenType      the request authorizationTokenType.
-     * @return the created document service request.
-     */
-    public static RxDocumentServiceRequest create(OperationType operation,
-            ResourceType resourceType,
-            String relativePath,
-            String query,
-            Map<String, String> headers,
-            AuthorizationTokenType authorizationTokenType) {
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath,
-                query.getBytes(StandardCharsets.UTF_8), headers, authorizationTokenType);
     }
 
     /**
@@ -523,29 +433,26 @@ public class RxDocumentServiceRequest {
             QueryCompatibilityMode queryCompatibilityMode,
             Map<String, String> headers) {
         OperationType operation;
-        String queryText;
         switch (queryCompatibilityMode) {
         case SqlQuery:
-            if (querySpec.getParameters() != null && querySpec.getParameters().size() > 0) {
+            // The querySpec.getParameters() method always ensure the returned value is non-null
+            // hence null check is not required here.
+            if (querySpec.getParameters().size() > 0) {
                 throw new IllegalArgumentException(
                         String.format("Unsupported argument in query compatibility mode '{%s}'",
                                 queryCompatibilityMode.toString()));
             }
 
             operation = OperationType.SqlQuery;
-            queryText = querySpec.getQueryText();
-            break;
+            return new RxDocumentServiceRequest(operation, resourceType, relativePath, Utils.getUTF8Bytes(querySpec.getQueryText()), headers, AuthorizationTokenType.PrimaryMasterKey);
 
         case Default:
         case Query:
         default:
             operation = OperationType.Query;
-            queryText = querySpec.toJson();
-            break;
+            return new RxDocumentServiceRequest(operation, resourceType, relativePath,
+                ModelBridgeInternal.serializeJsonToByteBuffer(querySpec), headers, AuthorizationTokenType.PrimaryMasterKey);
         }
-
-        Flux<byte[]> body = Flux.just(queryText).map(s -> StandardCharsets.UTF_8.encode(s).array());
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath, body, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
     /**
@@ -616,7 +523,7 @@ public class RxDocumentServiceRequest {
             ResourceType resourceType,
             String relativePath,
             Map<String, String> headers) {
-        byte[] resourceContent = resource.toJson().getBytes(StandardCharsets.UTF_8);
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceType, relativePath, resourceContent, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -636,7 +543,7 @@ public class RxDocumentServiceRequest {
             String relativePath,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        byte[] resourceContent = resource.toJson().getBytes(StandardCharsets.UTF_8);
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceType, relativePath, resourceContent, headers, authorizationTokenType);
     }
 
@@ -688,7 +595,7 @@ public class RxDocumentServiceRequest {
             ResourceType resourceType,
             Resource resource,
             Map<String, String> headers) {
-        byte[] resourceContent = resource.toJson().getBytes(StandardCharsets.UTF_8);
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceId, resourceType, resourceContent, headers, false, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -708,7 +615,7 @@ public class RxDocumentServiceRequest {
             Resource resource,
             Map<String, String> headers,
             AuthorizationTokenType authorizationTokenType) {
-        byte[] resourceContent = resource.toJson().getBytes(StandardCharsets.UTF_8);
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operation, resourceId, resourceType, resourceContent, headers, false, authorizationTokenType);
     }
 
@@ -757,7 +664,7 @@ public class RxDocumentServiceRequest {
             Resource resource,
             String resourceFullName,
             ResourceType resourceType) {
-        byte[] resourceContent = resource.toJson().getBytes(StandardCharsets.UTF_8);
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operationType,
                 resourceFullName,
                 resourceType,
@@ -774,7 +681,7 @@ public class RxDocumentServiceRequest {
             String resourceFullName,
             ResourceType resourceType,
             AuthorizationTokenType authorizationTokenType) {
-        byte[] resourceContent = resource.toJson().getBytes(StandardCharsets.UTF_8);
+        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
         return new RxDocumentServiceRequest(operationType,
                 resourceFullName,
                 resourceType,
@@ -1049,7 +956,7 @@ public class RxDocumentServiceRequest {
         this.headers.put(HttpConstants.HttpHeaders.PREFER, preferHeader);
     }
 
-    public static RxDocumentServiceRequest CreateFromResource(RxDocumentServiceRequest request, Resource modifiedResource) {
+    public static RxDocumentServiceRequest createFromResource(RxDocumentServiceRequest request, Resource modifiedResource) {
         RxDocumentServiceRequest modifiedRequest;
         if (!request.getIsNameBased()) {
             modifiedRequest = RxDocumentServiceRequest.create(request.getOperationType(),
@@ -1071,10 +978,6 @@ public class RxDocumentServiceRequest {
         this.requestContext.resolvedPartitionKeyRange = null;
     }
 
-    public Flux<byte[]> getContentObservable() {
-        return contentObservable;
-    }
-
     public synchronized Flux<ByteBuf> getContentAsByteBufFlux() {
         if (contentAsByteArray == null) {
             return Flux.empty();
@@ -1087,6 +990,7 @@ public class RxDocumentServiceRequest {
         return contentAsByteArray;
     }
 
+    @Override
     public RxDocumentServiceRequest clone() {
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
@@ -1098,16 +1002,14 @@ public class RxDocumentServiceRequest {
         rxDocumentServiceRequest.setIsMedia(this.getIsMedia());
         rxDocumentServiceRequest.setOriginalSessionToken(this.getOriginalSessionToken());
         rxDocumentServiceRequest.setPartitionKeyRangeIdentity(this.getPartitionKeyRangeIdentity());
-        rxDocumentServiceRequest.contentObservable = this.getContentObservable();
         rxDocumentServiceRequest.forceCollectionRoutingMapRefresh = this.forceCollectionRoutingMapRefresh;
         rxDocumentServiceRequest.forcePartitionKeyRangeRefresh = this.forcePartitionKeyRangeRefresh;
         rxDocumentServiceRequest.UseGatewayMode = this.UseGatewayMode;
-        rxDocumentServiceRequest.queryString = this.queryString;
         rxDocumentServiceRequest.requestContext = this.requestContext;
         return rxDocumentServiceRequest;
     }
 
-    public void Dispose() {
+    public void dispose() {
         if (this.isDisposed) {
             return;
         }
@@ -1133,14 +1035,6 @@ public class RxDocumentServiceRequest {
         }
     }
 
-    private static ByteBuffer wrapByteBuffer(String content) {
-        if (content == null) {
-            return null;
-        }
-
-        return wrapByteBuffer(Utils.getUTF8Bytes(content));
-    }
-
     public static byte[] toByteArray(ByteBuffer byteBuffer) {
         if (byteBuffer == null) {
             return null;
@@ -1154,9 +1048,5 @@ public class RxDocumentServiceRequest {
 
     private static ByteBuffer wrapByteBuffer(byte[] bytes) {
         return bytes != null ? ByteBuffer.wrap(bytes) : null;
-    }
-
-    public String summaryToString() {
-        return operationType + ":" + resourceType;
     }
 }

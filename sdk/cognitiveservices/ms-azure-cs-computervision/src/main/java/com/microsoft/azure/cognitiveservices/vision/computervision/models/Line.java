@@ -12,23 +12,23 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Line model.
+ * An object representing a recognized text line.
  */
 public class Line {
     /**
-     * The boundingBox property.
+     * Bounding box of a recognized line.
      */
     @JsonProperty(value = "boundingBox")
-    private List<Integer> boundingBox;
+    private List<Double> boundingBox;
 
     /**
-     * The text property.
+     * The text content of the line.
      */
     @JsonProperty(value = "text")
     private String text;
 
     /**
-     * The words property.
+     * List of words in the text line.
      */
     @JsonProperty(value = "words")
     private List<Word> words;
@@ -38,7 +38,7 @@ public class Line {
      *
      * @return the boundingBox value
      */
-    public List<Integer> boundingBox() {
+    public List<Double> boundingBox() {
         return this.boundingBox;
     }
 
@@ -48,7 +48,7 @@ public class Line {
      * @param boundingBox the boundingBox value to set
      * @return the Line object itself.
      */
-    public Line withBoundingBox(List<Integer> boundingBox) {
+    public Line withBoundingBox(List<Double> boundingBox) {
         this.boundingBox = boundingBox;
         return this;
     }

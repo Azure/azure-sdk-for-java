@@ -6,14 +6,13 @@ import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosAsyncContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosContainerProperties;
-import com.azure.cosmos.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.SerializationFormattingPolicy;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -95,10 +94,10 @@ public class SampleChangeFeedProcessor {
 
     public static ChangeFeedProcessor getChangeFeedProcessor(String hostName, CosmosAsyncContainer feedContainer, CosmosAsyncContainer leaseContainer) {
         return ChangeFeedProcessor.changeFeedProcessorBuilder()
-            .setHostName(hostName)
-            .setFeedContainer(feedContainer)
-            .setLeaseContainer(leaseContainer)
-            .setHandleChanges((List<JsonNode> docs) -> {
+            .hostName(hostName)
+            .feedContainer(feedContainer)
+            .leaseContainer(leaseContainer)
+            .handleChanges((List<JsonNode> docs) -> {
                 System.out.println("--->setHandleChanges() START");
 
                 for (JsonNode document : docs) {
@@ -118,10 +117,10 @@ public class SampleChangeFeedProcessor {
     public static CosmosAsyncClient getCosmosClient() {
 
         return new CosmosClientBuilder()
-                .setEndpoint(SampleConfigurations.HOST)
-                .setKey(SampleConfigurations.MASTER_KEY)
-                .setConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
-                .setConsistencyLevel(ConsistencyLevel.EVENTUAL)
+                .endpoint(SampleConfigurations.HOST)
+                .key(SampleConfigurations.MASTER_KEY)
+                .connectionPolicy(ConnectionPolicy.getDefaultPolicy())
+                .consistencyLevel(ConsistencyLevel.EVENTUAL)
                 .buildAsyncClient();
     }
 
