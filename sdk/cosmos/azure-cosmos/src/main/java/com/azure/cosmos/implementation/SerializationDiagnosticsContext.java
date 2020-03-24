@@ -21,7 +21,7 @@ import java.util.concurrent.Callable;
 public class SerializationDiagnosticsContext {
     public volatile List<SerializationDiagnosticsContext.SerializationDiagnostics> serializationDiagnosticsList;
 
-    public void addSeriazationDiagnostics(SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics) {
+    public void addSerializationDiagnostics(SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics) {
         if (serializationDiagnosticsList == null) {
             serializationDiagnosticsList = Collections.synchronizedList(new ArrayList<>());
         }
