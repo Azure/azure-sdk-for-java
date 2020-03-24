@@ -4,6 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -38,7 +39,7 @@ import java.util.Objects;
  * <ul>
  *     <li>{@link #endpoint(String)}</li>
  *     <li>{@link #indexName(String)}</li>
- *     <li>{@link #credential(SearchApiKeyCredential)} or {@link #pipeline(HttpPipeline)}</li>
+ *     <li>{@link #credential(AzureKeyCredential)} or {@link #pipeline(HttpPipeline)}</li>
  * </ul>
  */
 @ServiceClientBuilder(serviceClients = {SearchIndexClient.class, SearchIndexAsyncClient.class})
@@ -60,7 +61,7 @@ public final class SearchIndexClientBuilder {
     private final String clientName;
     private final String clientVersion;
 
-    private SearchApiKeyCredential searchApiKeyCredential;
+    private AzureKeyCredential keyCredential;
     private SearchServiceVersion serviceVersion;
     private String endpoint;
     private HttpClient httpClient;
@@ -131,8 +132,8 @@ public final class SearchIndexClientBuilder {
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        if (searchApiKeyCredential != null) {
-            this.policies.add(new SearchApiKeyPipelinePolicy(searchApiKeyCredential));
+        if (keyCredential != null) {
+            this.policies.add(new SearchApiKeyPipelinePolicy(keyCredential));
         }
 
         policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
@@ -165,22 +166,22 @@ public final class SearchIndexClientBuilder {
     }
 
     /**
-     * Sets the {@link SearchApiKeyCredential} used to authenticate HTTP requests.
+     * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
-     * @param searchApiKeyCredential The {@link SearchApiKeyCredential} used to authenticate HTTP requests.
+     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchIndexClientBuilder object.
-     * @throws NullPointerException If {@code searchApiKeyCredential} is {@code null}.
-     * @throws IllegalArgumentException If {@link SearchApiKeyCredential#getApiKey()} is {@code null} or empty.
+     * @throws NullPointerException If {@code keyCredential} is {@code null}.
+     * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
-    public SearchIndexClientBuilder credential(SearchApiKeyCredential searchApiKeyCredential) {
-        if (searchApiKeyCredential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'searchApiKeyCredential' cannot be null."));
+    public SearchIndexClientBuilder credential(AzureKeyCredential keyCredential) {
+        if (keyCredential == null) {
+            throw logger.logExceptionAsError(new NullPointerException("'keyCredential' cannot be null."));
         }
-        if (CoreUtils.isNullOrEmpty(searchApiKeyCredential.getApiKey())) {
+        if (CoreUtils.isNullOrEmpty(keyCredential.getKey())) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("'searchApiKeyCredential' cannot have a null or empty API key."));
+                new IllegalArgumentException("'keyCredential' cannot have a null or empty API key."));
         }
-        this.searchApiKeyCredential = searchApiKeyCredential;
+        this.keyCredential = keyCredential;
         return this;
     }
 

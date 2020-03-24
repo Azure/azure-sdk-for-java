@@ -5,8 +5,8 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -26,6 +26,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.temporal.ChronoUnit;
@@ -41,7 +42,7 @@ import java.util.Objects;
  *
  * <p>
  * The client needs the service endpoint of the Azure Text Analytics to access the resource service.
- * {@link #apiKey(TextAnalyticsApiKeyCredential) apiKey(TextAnalyticsApiKeyCredential)} or
+ * {@link #apiKey(AzureKeyCredential) apiKey(TextAnalyticsApiKeyCredential)} or
  * {@link #credential(TokenCredential) credential(TokenCredential)} give the builder access credential.
  * </p>
  *
@@ -87,7 +88,7 @@ public final class TextAnalyticsClientBuilder {
     private String defaultCountryHint;
     private String defaultLanguage;
     private Configuration configuration;
-    private TextAnalyticsApiKeyCredential credential;
+    private AzureKeyCredential credential;
     private String endpoint;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
@@ -125,7 +126,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @return A {@link TextAnalyticsClient} with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #apiKey(TextAnalyticsApiKeyCredential) apiKey} has not been set.
+     * {@link #apiKey(AzureKeyCredential) apiKey} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsClient buildClient() {
@@ -144,7 +145,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @return A {@link TextAnalyticsAsyncClient} with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #apiKey(TextAnalyticsApiKeyCredential) apiKey} has not been set.
+     * {@link #apiKey(AzureKeyCredential) apiKey} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsAsyncClient buildAsyncClient() {
@@ -256,13 +257,13 @@ public final class TextAnalyticsClientBuilder {
     /**
      * Sets the credential to use when authenticating HTTP requests for this {@link TextAnalyticsClientBuilder}.
      *
-     * @param apiKeyCredential API key credential
+     * @param keyCredential API key credential
      *
      * @return The updated {@link TextAnalyticsClientBuilder} object.
-     * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
+     * @throws NullPointerException If {@code keyCredential} is {@code null}
      */
-    public TextAnalyticsClientBuilder apiKey(TextAnalyticsApiKeyCredential apiKeyCredential) {
-        this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
+    public TextAnalyticsClientBuilder apiKey(AzureKeyCredential keyCredential) {
+        this.credential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
 
