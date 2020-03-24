@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -41,6 +42,7 @@ public class ProxySelectorTest extends IntegrationTestBase {
         ProxySelector.setDefault(defaultProxySelector);
     }
 
+    @Disabled("Fix when proxy error is propagated back up to receiver.")
     @Test
     public void proxySelectorConnectFailedInvokeTest() throws InterruptedException {
         final String queueName = getQueueName();

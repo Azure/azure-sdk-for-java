@@ -399,6 +399,7 @@ public final class ServiceBusClientBuilder {
         private boolean autoComplete;
         private Duration maxAutoLockRenewalDuration;
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
+        private boolean isLockAutoRenewed;
         private String queueName;
         private String subscriptionName;
         private String topicName;
@@ -417,6 +418,17 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusReceiverClientBuilder isAutoComplete(boolean autoComplete) {
             this.autoComplete = autoComplete;
+            return this;
+        }
+
+        /**
+         * Sets if lock should be automatically renewed.
+         *
+         * @param isLockAutoRenewed {@code true} if the lock should be automatically renewed; {@code false} otherwise.
+         * @return The updated {@link ServiceBusReceiverClientBuilder} object.
+         */
+        public ServiceBusReceiverClientBuilder isLockAutoRenewed(boolean isLockAutoRenewed) {
+            this.isLockAutoRenewed = isLockAutoRenewed;
             return this;
         }
 
@@ -462,16 +474,14 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the name of the topic.
+         * Sets the receive mode for the receiver.
          *
-         * @param topicName Name of the topic.
+         * @param receiveMode Mode for receiving messages.
          *
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
-         *
-         * @see #subscriptionName A subscription name should be set as well.
          */
-        public ServiceBusReceiverClientBuilder topicName(String topicName) {
-            this.topicName = topicName;
+        public ServiceBusReceiverClientBuilder receiveMode(ReceiveMode receiveMode) {
+            this.receiveMode = receiveMode;
             return this;
         }
 
@@ -490,14 +500,16 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the receive mode for the receiver.
+         * Sets the name of the topic.
          *
-         * @param receiveMode Mode for receiving messages.
+         * @param topicName Name of the topic.
          *
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         *
+         * @see #subscriptionName A subscription name should be set as well.
          */
-        public ServiceBusReceiverClientBuilder receiveMode(ReceiveMode receiveMode) {
-            this.receiveMode = receiveMode;
+        public ServiceBusReceiverClientBuilder topicName(String topicName) {
+            this.topicName = topicName;
             return this;
         }
 
@@ -552,13 +564,14 @@ public final class ServiceBusClientBuilder {
                     maxAutoLockRenewalDuration)));
             }
 
+            final MessageLockContainer messageLockContainer = new MessageLockContainer();
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiveMessageOptions receiveMessageOptions = new ReceiveMessageOptions(autoComplete, receiveMode,
-                prefetchCount, maxAutoLockRenewalDuration);
+                prefetchCount, isLockAutoRenewed, maxAutoLockRenewalDuration);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, false, receiveMessageOptions, connectionProcessor,
-                tracerProvider, messageSerializer);
+                entityType, false, receiveMessageOptions, connectionProcessor, tracerProvider,
+                messageSerializer, messageLockContainer);
         }
 
         /**

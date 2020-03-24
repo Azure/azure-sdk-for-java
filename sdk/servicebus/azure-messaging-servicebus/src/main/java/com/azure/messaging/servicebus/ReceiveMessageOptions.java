@@ -14,13 +14,15 @@ class ReceiveMessageOptions {
     private final boolean autoComplete;
     private final ReceiveMode receiveMode;
     private final int prefetchCount;
+    private final boolean isLockAutoRenewed;
     private final Duration maxAutoRenewDuration;
 
-    ReceiveMessageOptions(boolean autoComplete, ReceiveMode receiveMode, int prefetchCount,
+    ReceiveMessageOptions(boolean autoComplete, ReceiveMode receiveMode, int prefetchCount, boolean isLockAutoRenewed,
         Duration maxAutoRenewDuration) {
         this.autoComplete = autoComplete;
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
+        this.isLockAutoRenewed = isLockAutoRenewed;
         this.maxAutoRenewDuration = maxAutoRenewDuration;
     }
 
@@ -31,6 +33,15 @@ class ReceiveMessageOptions {
      */
     boolean isAutoComplete() {
         return autoComplete;
+    }
+
+    /**
+     * Gets if lock should be automatically renewed.
+     *
+     * @return {@code true} if the lock should be automatically renewed; {@code false} otherwise.
+     */
+    boolean isLockAutoRenewed() {
+        return isLockAutoRenewed;
     }
 
     /**

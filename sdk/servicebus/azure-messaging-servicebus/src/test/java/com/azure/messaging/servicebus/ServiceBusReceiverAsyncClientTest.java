@@ -138,7 +138,7 @@ class ServiceBusReceiverAsyncClientTest {
                 .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                     connectionOptions.getRetry()));
 
-        receiveOptions = new ReceiveMessageOptions(false, ReceiveMode.PEEK_LOCK, PREFETCH,
+        receiveOptions = new ReceiveMessageOptions(false, ReceiveMode.PEEK_LOCK, PREFETCH, false,
             Duration.ofSeconds(10));
 
         messageContainer = new MessageLockContainer();
@@ -221,7 +221,7 @@ class ServiceBusReceiverAsyncClientTest {
     void receivesAndAutoCompletes() {
         // Arrange
         final ReceiveMessageOptions options = new ReceiveMessageOptions(true, ReceiveMode.PEEK_LOCK,
-            PREFETCH, null);
+            PREFETCH, false, null);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
             tracerProvider, messageSerializer, messageContainer);
@@ -275,7 +275,7 @@ class ServiceBusReceiverAsyncClientTest {
     void receivesAndAutoCompleteWithoutLockToken() {
         // Arrange
         final ReceiveMessageOptions options = new ReceiveMessageOptions(true, ReceiveMode.PEEK_LOCK,
-            PREFETCH, null);
+            PREFETCH, false, null);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
             tracerProvider, messageSerializer, messageContainer);
@@ -343,7 +343,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void completeInReceiveAndDeleteMode() {
         final ReceiveMessageOptions options = new ReceiveMessageOptions(false,
-            ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, null);
+            ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, false, null);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, false, options, connectionProcessor, tracerProvider,
             messageSerializer, messageContainer);

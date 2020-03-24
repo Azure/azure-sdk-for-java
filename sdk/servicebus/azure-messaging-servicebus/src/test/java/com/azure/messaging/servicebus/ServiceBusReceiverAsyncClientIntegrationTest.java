@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -23,23 +24,21 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusReceiverAsyncClient receiverManual;
     private ServiceBusSenderAsyncClient sender;
 
-    private ReceiveMessageOptions receiveMessageOptions;
-    private ReceiveMessageOptions receiveMessageOptionsManual;
-
     ServiceBusReceiverAsyncClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class));
     }
 
     @Override
     protected void beforeTest() {
-        sender = createBuilder().buildSenderClientBuilder().buildAsyncClient();
+        final String queueName = getQueueName();
+        Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
+
+        sender = createBuilder().buildSenderClientBuilder().entityName(queueName).buildAsyncClient();
         receiver = createBuilder()
             .buildReceiverClientBuilder()
             .isAutoComplete(true)
             .buildAsyncClient();
 
-        final String queueName = getQueueName();
-        Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
         receiverManual = createBuilder()
             .buildReceiverClientBuilder()
@@ -220,14 +219,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Send the message to verify.
         sender.send(message).block(TIMEOUT);
 
-        final ReceiveMessageOptions options = new ReceiveMessageOptions()
-            .setReceiveMode(ReceiveMode.PEEK_LOCK)
-            .setIsLockAutoRenewed(true)
-            .setMaxAutoRenewDuration(Duration.ofSeconds(2));
         final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
-            .receiveMessageOptions(options)
-            .buildAsyncReceiverClient();
+            .buildReceiverClientBuilder()
+            .receiveMode(ReceiveMode.PEEK_LOCK)
+            .isLockAutoRenewed(true)
+            .maxAutoLockRenewalDuration(Duration.ofSeconds(2))
+            .buildAsyncClient();
 
         // Act & Assert
         StepVerifier.create(receiver.receive())
