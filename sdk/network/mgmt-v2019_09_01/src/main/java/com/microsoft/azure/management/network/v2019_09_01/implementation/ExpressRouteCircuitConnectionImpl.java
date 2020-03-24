@@ -145,6 +145,12 @@ class ExpressRouteCircuitConnectionImpl extends CreatableUpdatableImpl<ExpressRo
     }
 
     @Override
+    public ExpressRouteCircuitConnectionImpl withCircuitConnectionStatus(CircuitConnectionStatus circuitConnectionStatus) {
+        this.inner().withCircuitConnectionStatus(circuitConnectionStatus);
+        return this;
+    }
+
+    @Override
     public ExpressRouteCircuitConnectionImpl withExpressRouteCircuitPeering(SubResource expressRouteCircuitPeering) {
         this.inner().withExpressRouteCircuitPeering(expressRouteCircuitPeering);
         return this;
