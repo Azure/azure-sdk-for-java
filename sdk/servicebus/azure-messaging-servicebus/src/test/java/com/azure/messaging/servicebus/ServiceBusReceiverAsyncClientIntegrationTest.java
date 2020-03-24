@@ -254,23 +254,26 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 logger.info("{}: lockId[{}]. lockedUntil[{}]",
                     received.getSequenceNumber(), received.getLockToken(), received.getLockedUntil());
 
-                Instant current = received.getLockedUntil();
+                final Instant initial = received.getLockedUntil();
+                Instant latest = Instant.MIN;
 
-                // Simulate some sort of long processing. Verify that the lock token is updated every time.
+                // Simulate some sort of long processing.
                 for (int i = 0; i < 3; i++) {
                     try {
-                        TimeUnit.SECONDS.sleep(10);
-                    } catch (InterruptedException ignored) {
+                        TimeUnit.SECONDS.sleep(15);
+                    } catch (InterruptedException error) {
+                        logger.error("Error occurred while sleeping: " + error);
                     }
 
-                    Instant latest = received.getLockedUntil();
-                    Assertions.assertNotNull(latest);
-                    Assertions.assertTrue(latest.isAfter(current),
-                        String.format("[%s] latestTime: '%s' is not after the current one: '%s'", i, latest, current));
-
-                    current = latest;
-
+                    Assertions.assertNotNull(received.getLockedUntil());
+                    latest = received.getLockedUntil();
                 }
+
+                Assertions.assertTrue(initial.isBefore(latest),
+                    String.format("Latest should be after initial. initial: %s. latest: %s", initial, latest));
+
+                logger.info("Completing message.");
+                receiver.complete(received).block(Duration.ofSeconds(15));
             })
             .thenCancel()
             .verify();
