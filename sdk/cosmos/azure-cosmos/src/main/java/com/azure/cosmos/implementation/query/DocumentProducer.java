@@ -23,8 +23,8 @@ import com.azure.cosmos.implementation.query.metrics.FetchExecutionRangeAccumula
 import com.azure.cosmos.implementation.query.metrics.SchedulingStopwatch;
 import com.azure.cosmos.implementation.query.metrics.SchedulingTimeSpan;
 import com.azure.cosmos.implementation.routing.Range;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
