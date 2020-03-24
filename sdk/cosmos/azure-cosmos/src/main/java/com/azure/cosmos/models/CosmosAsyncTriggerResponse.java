@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncTrigger;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.Trigger;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 /**
  * The type Cosmos async trigger response.

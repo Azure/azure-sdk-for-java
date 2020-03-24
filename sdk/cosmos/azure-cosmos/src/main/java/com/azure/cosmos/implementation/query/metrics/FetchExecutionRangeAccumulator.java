@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query.metrics;
 
-import org.apache.commons.lang3.time.StopWatch;
+import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 
 import java.time.Duration;
 import java.time.Instant;

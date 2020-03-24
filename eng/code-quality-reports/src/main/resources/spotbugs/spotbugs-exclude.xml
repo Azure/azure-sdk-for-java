@@ -1887,4 +1887,17 @@
     REC_CATCH_EXCEPTION"/>
   </Match>
 
+  <!-- Exclude vendor-ed apache-commons types from spotbug -->
+  <Match>
+    <Class name="~com\.azure\.cosmos\.implementation\.apachecommons(.+)"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
+    IS2_INCONSISTENT_SYNC,
+    BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
+    SE_BAD_FIELD,
+    SE_TRANSIENT_FIELD_NOT_RESTORED,
+    ES_COMPARING_PARAMETER_STRING_WITH_EQ,
+    PZLA_PREFER_ZERO_LENGTH_ARRAYS,
+    DM_CONVERT_CASE"/>
+  </Match>
+
 </FindBugsFilter>

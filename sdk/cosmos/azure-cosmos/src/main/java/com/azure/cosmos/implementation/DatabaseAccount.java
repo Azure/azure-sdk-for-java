@@ -11,8 +11,8 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.ObjectUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
