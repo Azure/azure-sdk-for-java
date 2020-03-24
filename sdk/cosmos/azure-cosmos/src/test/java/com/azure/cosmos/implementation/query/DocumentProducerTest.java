@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
-import com.azure.cosmos.implementation.MetaDataDiagnosticsContext;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RetryPolicy;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -21,7 +21,6 @@ import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
@@ -525,7 +524,7 @@ public class DocumentProducerTest {
         RxPartitionKeyRangeCache cache = Mockito.mock(RxPartitionKeyRangeCache.class);
         doReturn(cache).when(client).getPartitionKeyRangeCache();
         doReturn(Mono.just(new Utils.ValueHolder<>(replacementRanges))).when(cache).
-                tryGetOverlappingRangesAsync(any(MetaDataDiagnosticsContext.class), anyString(), any(Range.class), anyBoolean(), Matchers.anyMapOf(String.class, Object.class));
+                tryGetOverlappingRangesAsync(any(MetadataDiagnosticsContext.class), anyString(), any(Range.class), anyBoolean(), Matchers.anyMapOf(String.class, Object.class));
         return client;
     }
 

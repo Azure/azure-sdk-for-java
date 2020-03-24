@@ -13,40 +13,41 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class MetaDataDiagnosticsContext {
-    public volatile List<MetaDataDiagnostic> metaDataDiagnosticList;
+public class MetadataDiagnosticsContext {
+    public volatile List<MetadataDiagnostic> metadataDiagnosticList;
 
-    public void addMetaDataDiagnostic(MetaDataDiagnostic metaDataDiagnostic) {
-        if (metaDataDiagnosticList == null) {
-            metaDataDiagnosticList = new ArrayList<>();
+    public void addMetaDataDiagnostic(MetadataDiagnostic metaDataDiagnostic) {
+        if (metadataDiagnosticList == null) {
+            metadataDiagnosticList = Collections.synchronizedList(new ArrayList<>());
         }
 
-        metaDataDiagnosticList.add(metaDataDiagnostic);
+        metadataDiagnosticList.add(metaDataDiagnostic);
     }
 
     @JsonSerialize(using = MetaDataDiagnosticSerializer.class)
-    public static class MetaDataDiagnostic {
+    public static class MetadataDiagnostic {
         public volatile ZonedDateTime startTimeUTC;
         public volatile ZonedDateTime endTimeUTC;
-        public volatile MetaDataEnum metaDataName;
+        public volatile MetadataType metaDataName;
 
-        public MetaDataDiagnostic(ZonedDateTime startTimeUTC, ZonedDateTime endTimeUTC, MetaDataEnum metaDataName) {
+        public MetadataDiagnostic(ZonedDateTime startTimeUTC, ZonedDateTime endTimeUTC, MetadataType metaDataName) {
             this.startTimeUTC = startTimeUTC;
             this.endTimeUTC = endTimeUTC;
             this.metaDataName = metaDataName;
         }
     }
 
-    static class MetaDataDiagnosticSerializer extends StdSerializer<MetaDataDiagnostic> {
+    static class MetaDataDiagnosticSerializer extends StdSerializer<MetadataDiagnostic> {
 
         public MetaDataDiagnosticSerializer() {
-            super(MetaDataDiagnostic.class);
+            super(MetadataDiagnostic.class);
         }
 
         @Override
-        public void serialize(MetaDataDiagnostic metaDataDiagnostic, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+        public void serialize(MetadataDiagnostic metaDataDiagnostic, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
             Duration durationinMS = metaDataDiagnostic.startTimeUTC == null ?
                 null : metaDataDiagnostic.endTimeUTC == null ?
                 Duration.ZERO : Duration.between(metaDataDiagnostic.startTimeUTC, metaDataDiagnostic.endTimeUTC);
@@ -61,11 +62,11 @@ public class MetaDataDiagnosticsContext {
             jsonGenerator.writeEndObject();
         }
     }
-    public enum  MetaDataEnum{
-        ContainerLookUp,
-        PartitionKeyRangeLookUp,
-        ServerAddressLookup,
-        MasterAddressLookUp
+    public enum MetadataType {
+        CONTAINER_LOOK_UP,
+        PARTITION_KEY_RANGE_LOOK_UP,
+        SERVER_ADDRESS_LOOKUP,
+        MASTER_ADDRESS_LOOK_UP
     }
 
 }

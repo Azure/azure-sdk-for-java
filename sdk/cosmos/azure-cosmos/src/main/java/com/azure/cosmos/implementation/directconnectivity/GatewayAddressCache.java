@@ -12,7 +12,7 @@ import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.JavaStreamUtils;
-import com.azure.cosmos.implementation.MetaDataDiagnosticsContext.*;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext.*;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -307,9 +307,9 @@ public class GatewayAddressCache implements IAddressCache {
         return dsrObs.map(
                 dsr -> {
                     ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
-                    MetaDataDiagnostic metaDataDiagnostic  = new MetaDataDiagnostic(addressCallStartTime,
+                    MetadataDiagnostic metaDataDiagnostic  = new MetadataDiagnostic(addressCallStartTime,
                         addressCallEndTime,
-                        MetaDataEnum.ServerAddressLookup);
+                        MetadataType.SERVER_ADDRESS_LOOKUP);
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics).addMetaDataDiagnostic(metaDataDiagnostic);
                     if (logger.isDebugEnabled()) {
                         logger.debug("getServerAddressesViaGatewayAsync deserializes result");
@@ -490,9 +490,9 @@ public class GatewayAddressCache implements IAddressCache {
         return dsrObs.map(
                 dsr -> {
                     ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
-                    MetaDataDiagnostic metaDataDiagnostic  = new MetaDataDiagnostic(addressCallStartTime,
+                    MetadataDiagnostic metaDataDiagnostic  = new MetadataDiagnostic(addressCallStartTime,
                         addressCallEndTime,
-                        MetaDataEnum.MasterAddressLookUp);
+                        MetadataType.MASTER_ADDRESS_LOOK_UP);
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics).addMetaDataDiagnostic(metaDataDiagnostic);
                     logAddressResolutionEnd(request, identifier);
                     return dsr.getQueryResponse(Address.class);

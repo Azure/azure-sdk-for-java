@@ -15,7 +15,7 @@ import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
-import com.azure.cosmos.implementation.MetaDataDiagnosticsContext;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
@@ -341,7 +341,7 @@ public class AddressResolverTest {
             }
 
             return new Utils.ValueHolder<>(null);
-        }).when(this.collectionCache).resolveCollectionAsync(Mockito.any(MetaDataDiagnosticsContext.class), Mockito.any(RxDocumentServiceRequest.class));
+        }).when(this.collectionCache).resolveCollectionAsync(Mockito.any(MetadataDiagnosticsContext.class), Mockito.any(RxDocumentServiceRequest.class));
 
         // Routing map cache
         Map<String, CollectionRoutingMap> currentRoutingMap =
@@ -354,7 +354,7 @@ public class AddressResolverTest {
 
             return collectionRoutingMapCache.tryLookupAsync(null, collectionRid, previousValue, false, null);
         }).when(this.collectionRoutingMapCache).tryLookupAsync(
-            Mockito.any(MetaDataDiagnosticsContext.class),
+            Mockito.any(MetadataDiagnosticsContext.class),
             Mockito.anyString(),
             Mockito.any(CollectionRoutingMap.class),
             Mockito.anyMapOf(String.class, Object.class));
@@ -394,7 +394,7 @@ public class AddressResolverTest {
 
             return Mono.error(new NotImplementedException("not mocked"));
         }).when(this.collectionRoutingMapCache).tryLookupAsync(
-            Mockito.any(MetaDataDiagnosticsContext.class),
+            Mockito.any(MetadataDiagnosticsContext.class),
             Mockito.anyString(),
             Mockito.any(CollectionRoutingMap.class),
             Mockito.anyBoolean(),

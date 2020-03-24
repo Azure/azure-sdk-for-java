@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.MetaDataDiagnosticsContext;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -395,8 +395,8 @@ public final class BridgeInternal {
         cosmosResponseDiagnostics.clientSideRequestStatistics().recordRetryContext(request);
     }
 
-    public static MetaDataDiagnosticsContext getMetaDataDiagnosticContext(CosmosResponseDiagnostics cosmosResponseDiagnostics){
-        return cosmosResponseDiagnostics.clientSideRequestStatistics().getMetaDataDiagnosticsContext();
+    public static MetadataDiagnosticsContext getMetaDataDiagnosticContext(CosmosResponseDiagnostics cosmosResponseDiagnostics){
+        return cosmosResponseDiagnostics.clientSideRequestStatistics().getMetadataDiagnosticsContext();
     }
 
     public static SerializationDiagnosticsContext getSerializationDiagnosticsContext(CosmosResponseDiagnostics cosmosResponseDiagnostics){

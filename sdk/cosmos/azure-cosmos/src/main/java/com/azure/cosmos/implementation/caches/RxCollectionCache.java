@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.MetaDataDiagnosticsContext;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -41,7 +41,7 @@ public abstract class RxCollectionCache {
      * @return an instance of Single&lt;DocumentCollection&gt;
      */
     public Mono<Utils.ValueHolder<DocumentCollection>> resolveCollectionAsync(
-        MetaDataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {
+        MetadataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {
         //  Mono Void to represent only terminal events specifically complete and error
         Mono<Void> init = null;
         if (request.getIsNameBased()) {
@@ -98,7 +98,7 @@ public abstract class RxCollectionCache {
      * This method is only used in retry policy as it doesn't have request handy.
      * @param resourceAddress
      */
-    public void refresh(MetaDataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
+    public void refresh(MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
         if (PathsHelper.isNameBased(resourceAddress)) {
             String resourceFullName = PathsHelper.getCollectionPath(resourceAddress);
 
@@ -111,11 +111,11 @@ public abstract class RxCollectionCache {
         }
     }
 
-    protected abstract Mono<DocumentCollection> getByRidAsync(MetaDataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties);
+    protected abstract Mono<DocumentCollection> getByRidAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties);
 
-    protected abstract Mono<DocumentCollection> getByNameAsync(MetaDataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties);
+    protected abstract Mono<DocumentCollection> getByNameAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties);
 
-    private Mono<Utils.ValueHolder<DocumentCollection>> resolveByPartitionKeyRangeIdentityAsync(MetaDataDiagnosticsContext metaDataDiagnosticsContext,
+    private Mono<Utils.ValueHolder<DocumentCollection>> resolveByPartitionKeyRangeIdentityAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext,
                                                                                                 PartitionKeyRangeIdentity partitionKeyRangeIdentity,
                                                                                                 Map<String, Object> properties) {
         // if request is targeted at specific partition using x-ms-documentd-partitionkeyrangeid header,
@@ -137,7 +137,7 @@ public abstract class RxCollectionCache {
     }
 
     private Mono<Utils.ValueHolder<DocumentCollection>> resolveByRidAsync(
-            MetaDataDiagnosticsContext metaDataDiagnosticsContext,
+            MetadataDiagnosticsContext metaDataDiagnosticsContext,
             String resourceId,
             Map<String, Object> properties) {
 
@@ -152,7 +152,7 @@ public abstract class RxCollectionCache {
     }
 
     private Mono<DocumentCollection> resolveByNameAsync(
-        MetaDataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
+        MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
 
         String resourceFullName = PathsHelper.getCollectionPath(resourceAddress);
 
@@ -165,7 +165,7 @@ public abstract class RxCollectionCache {
                 });
     }
 
-    private Mono<Void> refreshAsync(MetaDataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {
+    private Mono<Void> refreshAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {
         // TODO System.Diagnostics.Debug.Assert(request.IsNameBased);
 
         String resourceFullName = PathsHelper.getCollectionPath(request.getResourceAddress());

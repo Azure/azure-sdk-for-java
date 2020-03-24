@@ -12,7 +12,7 @@ import com.azure.cosmos.implementation.ClearingSessionContainerClientRetryPolicy
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
-import com.azure.cosmos.implementation.MetaDataDiagnosticsContext;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PathsHelper;
@@ -52,21 +52,21 @@ public class RxClientCollectionCache extends RxCollectionCache {
         this.sessionContainer = sessionContainer;
     }
 
-    protected Mono<DocumentCollection> getByRidAsync(MetaDataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties) {
+    protected Mono<DocumentCollection> getByRidAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties) {
         DocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy());
         return ObservableHelper.inlineIfPossible(
                 () -> this.readCollectionAsync(metaDataDiagnosticsContext, PathsHelper.generatePath(ResourceType.DocumentCollection, collectionRid, false), retryPolicyInstance, properties)
                 , retryPolicyInstance);
     }
 
-    protected Mono<DocumentCollection> getByNameAsync(MetaDataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
+    protected Mono<DocumentCollection> getByNameAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
         DocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy());
         return ObservableHelper.inlineIfPossible(
                 () -> this.readCollectionAsync(metaDataDiagnosticsContext, resourceAddress, retryPolicyInstance, properties),
                 retryPolicyInstance);
     }
 
-    private Mono<DocumentCollection> readCollectionAsync(MetaDataDiagnosticsContext metaDataDiagnosticsContext,
+    private Mono<DocumentCollection> readCollectionAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext,
                                                          String collectionLink,
                                                          DocumentClientRetryPolicy retryPolicyInstance,
                                                          Map<String, Object> properties) {
@@ -104,9 +104,9 @@ public class RxClientCollectionCache extends RxCollectionCache {
         return responseObs.map(response -> {
             if(metaDataDiagnosticsContext != null) {
                 ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
-                MetaDataDiagnosticsContext.MetaDataDiagnostic metaDataDiagnostic  = new MetaDataDiagnosticsContext.MetaDataDiagnostic(addressCallStartTime,
+                MetadataDiagnosticsContext.MetadataDiagnostic metaDataDiagnostic  = new MetadataDiagnosticsContext.MetadataDiagnostic(addressCallStartTime,
                     addressCallEndTime,
-                    MetaDataDiagnosticsContext.MetaDataEnum.ContainerLookUp);
+                    MetadataDiagnosticsContext.MetadataType.CONTAINER_LOOK_UP);
                 metaDataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
             }
 

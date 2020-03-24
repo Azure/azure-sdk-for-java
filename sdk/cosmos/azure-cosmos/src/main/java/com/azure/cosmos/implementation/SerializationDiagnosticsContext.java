@@ -14,6 +14,7 @@ import java.time.Duration;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -22,7 +23,7 @@ public class SerializationDiagnosticsContext {
 
     public void addMetaDataDiagnostic(SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics) {
         if (serializationDiagnosticsList == null) {
-            serializationDiagnosticsList = new ArrayList<>();
+            serializationDiagnosticsList = Collections.synchronizedList(new ArrayList<>());
         }
 
         serializationDiagnosticsList.add(serializationDiagnostics);
@@ -39,7 +40,7 @@ public class SerializationDiagnosticsContext {
 
         ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
         if (serializationDiagnosticsList == null) {
-            serializationDiagnosticsList = new ArrayList<>();
+            serializationDiagnosticsList = Collections.synchronizedList(new ArrayList<>());
         }
 
         serializationDiagnosticsList.add(new SerializationDiagnostics(serializationStartTime, serializationEndTime, serializationType));
@@ -74,17 +75,21 @@ public class SerializationDiagnosticsContext {
             jsonGenerator.writeObjectField("serializationType", serializationDiagnostics.serializationType);
             jsonGenerator.writeStringField("startTimeUTC", ZonedDateTimeSerializer.formatDateTime(serializationDiagnostics.startTimeUTC));
             jsonGenerator.writeStringField("endTimeUTC", ZonedDateTimeSerializer.formatDateTime(serializationDiagnostics.endTimeUTC));
-            if(durationinMS != null) {
-                jsonGenerator.writeNumberField("durationInMicroSec", durationinMS.toNanos()/1000);
+            if (durationinMS != null) {
+                jsonGenerator.writeNumberField("durationInMicroSec", durationinMS.toNanos() / 1000);
             }
 
             jsonGenerator.writeEndObject();
         }
     }
-    public enum  SerializationType{
-        DatabaseSerialization,
-        ContainerSerialization,
-        ItemSerialization,
-        PartitionKeyFetchSerialization
+
+    public enum SerializationType {
+        DATABASE_DESERIALIZATION,
+        DATABASE_SERIALIZATION,
+        CONTAINER_DESERIALIZATION,
+        CONTAINER_SERIALIZATION,
+        ITEM_DESERIALIZATION,
+        ITEM_SERIALIZATION,
+        PARTITION_KEY_FETCH_SERIALIZATION
     }
 }

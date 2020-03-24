@@ -14,7 +14,7 @@ import java.util.Map;
  **/
 public interface ICollectionRoutingMapCache {
     default Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(
-            MetaDataDiagnosticsContext metaDataDiagnosticsContext,
+            MetadataDiagnosticsContext metaDataDiagnosticsContext,
             String collectionRid,
             CollectionRoutingMap previousValue,
             Map<String, Object> properties) {
@@ -22,7 +22,7 @@ public interface ICollectionRoutingMapCache {
     }
 
     Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(
-            MetaDataDiagnosticsContext metaDataDiagnosticsContext,
+            MetadataDiagnosticsContext metaDataDiagnosticsContext,
             String collectionRid,
             CollectionRoutingMap previousValue,
             boolean forceRefreshCollectionRoutingMap,

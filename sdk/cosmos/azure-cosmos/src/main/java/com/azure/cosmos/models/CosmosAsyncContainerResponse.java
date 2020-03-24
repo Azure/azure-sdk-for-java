@@ -31,7 +31,7 @@ public class CosmosAsyncContainerResponse extends CosmosResponse<CosmosContainer
                 return new CosmosContainerProperties(bodyAsString);
             };
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getResponseDiagnostics());
-            CosmosContainerProperties props = serializationDiagnosticsContext.getResource(createCosmosContainerPropertiesCallable, SerializationDiagnosticsContext.SerializationType.ContainerSerialization);
+            CosmosContainerProperties props = serializationDiagnosticsContext.getResource(createCosmosContainerPropertiesCallable, SerializationDiagnosticsContext.SerializationType.CONTAINER_DESERIALIZATION);
             super.setProperties(props);
             container = BridgeInternal.createCosmosAsyncContainer(this.getProperties().getId(), database);
         }

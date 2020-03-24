@@ -48,7 +48,7 @@ public class CosmosAsyncItemResponse<T> {
             Callable<T> createItemPropertiesFunction = () -> {
                 return (T) getProperties();
             };
-            item = serializationDiagnosticsContext.getResource(createItemPropertiesFunction, SerializationDiagnosticsContext.SerializationType.ItemSerialization);
+            item = serializationDiagnosticsContext.getResource(createItemPropertiesFunction, SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION);
             return item;
         }
 
@@ -58,7 +58,7 @@ public class CosmosAsyncItemResponse<T> {
                     Callable<T> createTypedItemFunction = () -> {
                         return Utils.parse(responseBodyAsByteArray, itemClassType);
                     };
-                    item = serializationDiagnosticsContext.getResource(createTypedItemFunction, SerializationDiagnosticsContext.SerializationType.ItemSerialization);
+                    item = serializationDiagnosticsContext.getResource(createTypedItemFunction, SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION);
 
                 }
             }

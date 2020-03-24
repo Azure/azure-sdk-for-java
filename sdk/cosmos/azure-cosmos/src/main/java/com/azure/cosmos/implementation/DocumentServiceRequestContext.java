@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DocumentServiceRequestContext implements Cloneable {
@@ -88,9 +89,9 @@ public class DocumentServiceRequestContext implements Cloneable {
             }
 
             if (retryPolicy.getStatusAndSubStatusCodes() != null) {
-                this.retryContext.genericRetrySpecificStatusAndSubStatusCodes = new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes());
+                this.retryContext.genericRetrySpecificStatusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes()));
             } else {
-                this.retryContext.genericRetrySpecificStatusAndSubStatusCodes = new ArrayList<>();
+                this.retryContext.genericRetrySpecificStatusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>());
             }
             this.retryContext.retryCount = retryPolicy.getRetryCount();
             this.retryContext.statusAndSubStatusCodes = retryPolicy.getStatusAndSubStatusCodes();
@@ -109,9 +110,9 @@ public class DocumentServiceRequestContext implements Cloneable {
             }
 
             if (retryPolicy.getStatusAndSubStatusCodes() != null) {
-                this.retryContext.directRetrySpecificStatusAndSubStatusCodes = new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes());
+                this.retryContext.directRetrySpecificStatusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes()));
             } else {
-                this.retryContext.directRetrySpecificStatusAndSubStatusCodes = new ArrayList<>();
+                this.retryContext.directRetrySpecificStatusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>());
             }
             this.retryContext.retryCount = retryPolicy.getRetryCount();
             this.retryContext.statusAndSubStatusCodes = retryPolicy.getStatusAndSubStatusCodes();

@@ -3,7 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.MetaDataDiagnosticsContext;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
@@ -59,7 +59,7 @@ class ClientSideRequestStatistics {
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
     private RequestTimeline transportRequestTimeline;
-    private MetaDataDiagnosticsContext metaDataDiagnosticsContext;
+    private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
 
     ClientSideRequestStatistics() {
@@ -72,7 +72,7 @@ class ClientSideRequestStatistics {
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
         this.connectionMode = ConnectionMode.DIRECT;
-        this.metaDataDiagnosticsContext = new MetaDataDiagnosticsContext();
+        this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
     }
 
@@ -219,8 +219,8 @@ class ClientSideRequestStatistics {
         this.regionsContacted = Collections.synchronizedSet(regionsContacted);
     }
 
-    MetaDataDiagnosticsContext getMetaDataDiagnosticsContext(){
-        return this.metaDataDiagnosticsContext;
+    MetadataDiagnosticsContext getMetadataDiagnosticsContext(){
+        return this.metadataDiagnosticsContext;
     }
 
     SerializationDiagnosticsContext getSerializationDiagnosticsContext(){
@@ -302,7 +302,7 @@ class ClientSideRequestStatistics {
             generator.writeObjectField("addressResolutionStatistics", statistics.addressResolutionStatistics);
             generator.writeObjectField("regionsContacted", statistics.regionsContacted);
             generator.writeObjectField("retryContext", statistics.retryContext);
-            generator.writeObjectField("metaDataDiagnosticsContext", statistics.getMetaDataDiagnosticsContext());
+            generator.writeObjectField("metadataDiagnosticsContext", statistics.getMetadataDiagnosticsContext());
             generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
 
