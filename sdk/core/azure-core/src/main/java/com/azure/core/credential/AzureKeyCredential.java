@@ -15,7 +15,7 @@ public class AzureKeyCredential {
     private String key;
 
     /**
-     * Creates a credential that authorizes request via an key.
+     * Creates a credential that authorizes request with the given key.
      *
      * @param key The key used to authorize requests.
      * @throws NullPointerException If {@code key} is {@code null}.
@@ -33,7 +33,7 @@ public class AzureKeyCredential {
     /**
      * Retrieves the key associated to this credential.
      *
-     * @return The key.
+     * @return The key being used to authorize requests.
      */
     public String getKey() {
         return key;

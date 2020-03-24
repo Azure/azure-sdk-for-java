@@ -17,18 +17,18 @@ import java.util.Objects;
  * authorizes requests sent to the Azure Text Analytics service.
  *
  * <p>
- * Requests sent to the Azure Service using this pipeline policy are required to use {@code HTTPS}. If the request isn't
- * using {@code HTTPS} an exception will be thrown to prevent leaking the key.
+ * Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using {@code HTTPS}
+ * an exception will be thrown to prevent leaking the key.
  */
 public final class TextAnalyticsApiKeyCredentialPolicy implements HttpPipelinePolicy {
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
     private final AzureKeyCredential credential;
 
     /**
-     * Creates a pipeline policy that using the passed {@link AzureKeyCredential} used to authorize requests sent to the
+     * Creates a pipeline policy that uses the passed {@link AzureKeyCredential} used to authorize requests sent to the
      * Text Analytics service.
      *
-     * @param credential A {@link AzureKeyCredential} containing the key used to authorize Text Analytics service
+     * @param credential An {@link AzureKeyCredential} containing the key used to authorize Text Analytics service
      * requests.
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
@@ -39,6 +39,10 @@ public final class TextAnalyticsApiKeyCredentialPolicy implements HttpPipelinePo
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+            return Mono.error(new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
+        }
+
         context.getHttpRequest().setHeader(OCP_APIM_SUBSCRIPTION_KEY, credential.getKey());
         return next.process();
     }
