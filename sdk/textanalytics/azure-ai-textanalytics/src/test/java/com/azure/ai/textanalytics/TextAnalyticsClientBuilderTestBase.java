@@ -22,9 +22,9 @@ import java.util.function.Function;
 
 import static com.azure.ai.textanalytics.TestUtils.DETECTED_LANGUAGE_ENGLISH;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_ENGLISH_LANGUAGE_RESULTS;
-import static com.azure.ai.textanalytics.TestUtils.DETECT_FRENCH_LANGUAGE_RESULTS;
+import static com.azure.ai.textanalytics.TestUtils.DETECT_SPANISH_LANGUAGE_RESULTS;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
-import static com.azure.ai.textanalytics.TestUtils.FRENCH_SAME_AS_ENGLISH_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.SPANISH_SAME_AS_ENGLISH_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.HTTP_RESPONSE_EXCEPTION_CLASS;
 import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASE_FRENCH_INPUTS;
 
@@ -117,22 +117,22 @@ public abstract class TextAnalyticsClientBuilderTestBase  extends TestBase {
     void clientBuilderWithDefaultCountryHintRunner(
         Function<TextAnalyticsClientBuilder, BiConsumer<String, DetectedLanguage>> testRunner) {
         testRunner.apply(
-            createClientBuilder(getEndpoint(), new TextAnalyticsApiKeyCredential(getApiKey())).defaultCountryHint("FR"))
-            .accept(FRENCH_SAME_AS_ENGLISH_INPUTS.get(0), DETECT_FRENCH_LANGUAGE_RESULTS.get(0));
+            createClientBuilder(getEndpoint(), new TextAnalyticsApiKeyCredential(getApiKey())).defaultCountryHint("MX"))
+            .accept(SPANISH_SAME_AS_ENGLISH_INPUTS.get(0), DETECT_SPANISH_LANGUAGE_RESULTS.get(0));
     }
 
     void clientBuilderWithDefaultCountryHintForBatchOperationRunner(
         Function<TextAnalyticsClientBuilder, BiConsumer<List<String>, List<DetectedLanguage>>> testRunner) {
         testRunner.apply(
-            createClientBuilder(getEndpoint(), new TextAnalyticsApiKeyCredential(getApiKey())).defaultCountryHint("FR"))
-            .accept(FRENCH_SAME_AS_ENGLISH_INPUTS, DETECT_FRENCH_LANGUAGE_RESULTS);
+            createClientBuilder(getEndpoint(), new TextAnalyticsApiKeyCredential(getApiKey())).defaultCountryHint("MX"))
+            .accept(SPANISH_SAME_AS_ENGLISH_INPUTS, DETECT_SPANISH_LANGUAGE_RESULTS);
     }
 
     void clientBuilderWithNewCountryHintForBatchOperationRunner(
         Function<TextAnalyticsClientBuilder, BiConsumer<List<String>, List<DetectedLanguage>>> testRunner) {
         testRunner.apply(
-            createClientBuilder(getEndpoint(), new TextAnalyticsApiKeyCredential(getApiKey())).defaultCountryHint("FR"))
-            .accept(FRENCH_SAME_AS_ENGLISH_INPUTS, DETECT_ENGLISH_LANGUAGE_RESULTS);
+            createClientBuilder(getEndpoint(), new TextAnalyticsApiKeyCredential(getApiKey())).defaultCountryHint("MX"))
+            .accept(SPANISH_SAME_AS_ENGLISH_INPUTS, DETECT_ENGLISH_LANGUAGE_RESULTS);
     }
 
     void clientBuilderWithDefaultLanguageRunner(

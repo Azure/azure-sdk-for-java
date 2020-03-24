@@ -68,16 +68,16 @@ final class TestUtils {
     static final List<String> DETECT_LANGUAGE_INPUTS = Arrays.asList(
         "This is written in English", "Este es un documento escrito en Español.", "~@!~:)");
 
-    // "Impossible" and "raison" are common to both English and French and if given with limited context the
+    // "personal" and "social" are common to both English and Spanish and if given with limited context the
     // response will be based on the "US" country hint. If the origin of the text is known to be coming from
-    // France that can be given as a hint.
-    static final List<String> FRENCH_SAME_AS_ENGLISH_INPUTS = Arrays.asList("impossible", "impossible");
+    // Spanish that can be given as a hint.
+    static final List<String> SPANISH_SAME_AS_ENGLISH_INPUTS = Arrays.asList("personal", "social");
 
-    static final DetectedLanguage DETECTED_LANGUAGE_FRENCH = new DetectedLanguage("French", "fr", 1.0);
+    static final DetectedLanguage DETECTED_LANGUAGE_SPANISH = new DetectedLanguage("Spanish", "es", 1.0);
     static final DetectedLanguage DETECTED_LANGUAGE_ENGLISH = new DetectedLanguage("English", "en", 1.0);
 
-    static final List<DetectedLanguage> DETECT_FRENCH_LANGUAGE_RESULTS = Arrays.asList(
-        DETECTED_LANGUAGE_FRENCH, DETECTED_LANGUAGE_FRENCH);
+    static final List<DetectedLanguage> DETECT_SPANISH_LANGUAGE_RESULTS = Arrays.asList(
+        DETECTED_LANGUAGE_SPANISH, DETECTED_LANGUAGE_SPANISH);
 
     static final List<DetectedLanguage> DETECT_ENGLISH_LANGUAGE_RESULTS = Arrays.asList(
         DETECTED_LANGUAGE_ENGLISH, DETECTED_LANGUAGE_ENGLISH);

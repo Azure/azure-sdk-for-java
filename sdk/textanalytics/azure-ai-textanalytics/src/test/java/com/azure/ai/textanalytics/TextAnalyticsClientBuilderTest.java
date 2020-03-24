@@ -92,7 +92,7 @@ public class TextAnalyticsClientBuilderTest extends TextAnalyticsClientBuilderTe
     @Test
     public void clientBuilderWithNewCountryHint() {
         clientBuilderWithDefaultCountryHintRunner(clientBuilder -> (input, output) ->
-            validatePrimaryLanguage(output, clientBuilder.buildClient().detectLanguage(input, "FR")));
+            validatePrimaryLanguage(output, clientBuilder.buildClient().detectLanguage(input, "MX")));
     }
 
     /**
@@ -168,90 +168,5 @@ public class TextAnalyticsClientBuilderTest extends TextAnalyticsClientBuilderTe
                 validateKeyPhrases(output.get(i), result.get(i).getKeyPhrases().stream().collect(Collectors.toList()));
             }
         });
-    }
-
-    // Unit Tests
-
-    /**
-     * Test for missing endpoint
-     */
-    @Test
-    public void missingEndpointAsyncClient() {
-        assertThrows(NullPointerException.class, () -> {
-            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.buildAsyncClient();
-        });
-    }
-
-    /**
-     * Test for missing endpoint
-     */
-    @Test
-    public void missingEndpoint() {
-        assertThrows(NullPointerException.class, () -> {
-            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.buildClient();
-        });
-    }
-
-    /**
-     * Test for invalid endpoint
-     */
-    @Test
-    public void invalidProtocol() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.endpoint(TestUtils.INVALID_URL);
-        });
-    }
-
-    /**
-     * Test for null API key
-     */
-    @Test
-    public void nullApiKey() {
-        assertThrows(NullPointerException.class, () -> {
-            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.endpoint(VALID_HTTPS_LOCALHOST).apiKey(null);
-        });
-    }
-
-    /**
-     * Test for empty Api Key without any other authentication
-     */
-    @Test
-    public void emptyApiKey() {
-        assertThrows(IllegalArgumentException.class, () -> new TextAnalyticsApiKeyCredential(""));
-    }
-
-    /**
-     * Test for null AAD credential
-     */
-    @Test
-    public void nullAADCredential() {
-        assertThrows(NullPointerException.class, () -> {
-            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(null);
-        });
-    }
-
-    /**
-     * Test for default country hint in client builder
-     */
-    @Test
-    public void defaultCountryHintAndLanguage() {
-        // Arrange
-        final String countryHint = "FR";
-        final String language = "es";
-        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .endpoint(VALID_HTTPS_LOCALHOST)
-            .apiKey(new TextAnalyticsApiKeyCredential(FAKE_API_KEY))
-            .defaultCountryHint(countryHint)
-            .defaultLanguage(language);
-
-        // Action and Assert
-        TextAnalyticsAsyncClient asyncClient = clientBuilder.buildAsyncClient();
-        assertEquals(countryHint, asyncClient.getDefaultCountryHint());
-        assertEquals(language, asyncClient.getDefaultLanguage());
     }
 }
