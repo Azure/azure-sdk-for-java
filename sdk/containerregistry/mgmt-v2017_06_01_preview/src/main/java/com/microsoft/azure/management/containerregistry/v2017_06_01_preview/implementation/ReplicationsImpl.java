@@ -64,10 +64,14 @@ class ReplicationsImpl extends WrapperImpl<ReplicationsInner> implements Replica
     public Observable<Replication> getAsync(String resourceGroupName, String registryName, String replicationName) {
         ReplicationsInner client = this.inner();
         return client.getAsync(resourceGroupName, registryName, replicationName)
-        .map(new Func1<ReplicationInner, Replication>() {
+        .flatMap(new Func1<ReplicationInner, Observable<Replication>>() {
             @Override
-            public Replication call(ReplicationInner inner) {
-                return wrapModel(inner);
+            public Observable<Replication> call(ReplicationInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Replication)wrapModel(inner));
+                }
             }
        });
     }
