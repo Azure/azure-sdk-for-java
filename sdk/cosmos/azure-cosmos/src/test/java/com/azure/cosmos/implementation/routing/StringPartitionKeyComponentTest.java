@@ -23,6 +23,6 @@ public class StringPartitionKeyComponentTest {
         StringPartitionKeyComponent spkc1 = new StringPartitionKeyComponent(str1);
         StringPartitionKeyComponent spkc2 = new StringPartitionKeyComponent(str2);
 
-        assertThat(Integer.signum(spkc1.CompareTo(spkc2))).isEqualTo(Integer.signum(expectedCompare));
+        assertThat(Integer.signum(spkc1.compareTo(spkc2))).isEqualTo(Integer.signum(expectedCompare));
     }
 }

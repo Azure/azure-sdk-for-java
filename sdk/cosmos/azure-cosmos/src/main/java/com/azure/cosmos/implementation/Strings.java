@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -36,10 +36,6 @@ public class Strings {
 
     public static boolean containsIgnoreCase(String str1, String str2) {
         return StringUtils.containsIgnoreCase(str1, str2);
-    }
-
-    public static int compare(String str1, String str2) {
-        return StringUtils.compare(str1, str2);
     }
 
     public static String fromCamelCaseToUpperCase(String str) {

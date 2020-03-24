@@ -3,15 +3,18 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.RequestVerb;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
@@ -128,7 +131,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         // Skipping lower casing of resourceId since it may now contain "ID" of the resource as part of the FullName
         StringBuilder body = new StringBuilder();
-        body.append(verb.toLowerCase())
+        body.append(ModelBridgeInternal.toLower(verb))
                 .append('\n')
                 .append(resourceSegment)
                 .append('\n')
@@ -136,20 +139,20 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
                 .append('\n');
 
         if (headers.containsKey(HttpConstants.HttpHeaders.X_DATE)) {
-            body.append(headers.get(HttpConstants.HttpHeaders.X_DATE).toLowerCase());
+            body.append(headers.get(HttpConstants.HttpHeaders.X_DATE).toLowerCase(Locale.ROOT));
         }
 
         body.append('\n');
 
         if (headers.containsKey(HttpConstants.HttpHeaders.HTTP_DATE)) {
-            body.append(headers.get(HttpConstants.HttpHeaders.HTTP_DATE).toLowerCase());
+            body.append(headers.get(HttpConstants.HttpHeaders.HTTP_DATE).toLowerCase(Locale.ROOT));
         }
 
         body.append('\n');
 
         Mac mac = getMacInstance();
 
-        byte[] digest = mac.doFinal(body.toString().getBytes());
+        byte[] digest = mac.doFinal(body.toString().getBytes(StandardCharsets.UTF_8));
 
         String auth = Utils.encodeBase64String(digest);
 
@@ -237,18 +240,18 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         String authResourceId = getAuthorizationResourceIdOrFullName(resourceType, resourceIdValue);
         String payLoad = generateMessagePayload(verb, authResourceId, resourceType, headers);
         Mac mac = this.getMacInstance();
-        byte[] digest = mac.doFinal(payLoad.getBytes());
+        byte[] digest = mac.doFinal(payLoad.getBytes(StandardCharsets.UTF_8));
         String authorizationToken = Utils.encodeBase64String(digest);
         String authtoken = AUTH_PREFIX + authorizationToken;
         return HttpUtils.urlEncode(authtoken);
     }
 
     private Mac getMacInstance() {
-        int masterKeyLatestHashCode = this.cosmosKeyCredential.getKeyHashCode();
+        int masterKeyLatestHashCode = BridgeInternal.getHashCode(this.cosmosKeyCredential);
 
         //  Master key has changed, or this is the first time we are getting mac instance
         if (masterKeyLatestHashCode != this.masterKeyHashCode) {
-            byte[] masterKeyBytes = this.cosmosKeyCredential.getKey().getBytes();
+            byte[] masterKeyBytes = this.cosmosKeyCredential.getKey().getBytes(StandardCharsets.UTF_8);
             byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
             SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
             try {
@@ -283,19 +286,19 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
 
         // for name based, it is case sensitive, we won't use the lower case
         if (!PathsHelper.isNameBased(resourceId)) {
-            resourceId = resourceId.toLowerCase();
+            resourceId = resourceId.toLowerCase(Locale.ROOT);
         }
 
         StringBuilder payload = new StringBuilder();
-        payload.append(verb.toLowerCase())
+        payload.append(ModelBridgeInternal.toLower(verb))
                 .append('\n')
-                .append(resourceType.toLowerCase())
+                .append(resourceType.toLowerCase(Locale.ROOT))
                 .append('\n')
                 .append(resourceId)
                 .append('\n')
-                .append(xDate.toLowerCase())
+                .append(xDate.toLowerCase(Locale.ROOT))
                 .append('\n')
-                .append(StringUtils.isEmpty(xDate) ? date.toLowerCase() : "")
+                .append(StringUtils.isEmpty(xDate) ? date.toLowerCase(Locale.ROOT) : "")
                 .append('\n');
 
         return payload.toString();

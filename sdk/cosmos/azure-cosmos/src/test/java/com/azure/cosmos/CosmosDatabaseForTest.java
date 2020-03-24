@@ -3,11 +3,16 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlParameterList;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -103,7 +108,7 @@ public class CosmosDatabaseForTest {
     }
 
     public interface DatabaseManager {
-        CosmosContinuablePagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec query);
+        CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec query);
         Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition);
         CosmosAsyncDatabase getDatabase(String id);
     }

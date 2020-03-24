@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.routing;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -13,8 +14,10 @@ import java.util.function.Function;
 // https://commons.apache.org/proper/commons-collections/javadocs/api-3.2.2/org/apache/commons/collections/map/CaseInsensitiveMap.html
 public class CaseInsensitiveHashMap<V> extends HashMap<String, V> {
 
+    private static final long serialVersionUID = -3187010666577892790L;
+
     private static String safeToLower(String key) {
-        return key != null ? key.toLowerCase() : null;
+        return key != null ? key.toLowerCase(Locale.ROOT) : null;
     }
 
     @Override

@@ -30,6 +30,16 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
     DeadLetterDestination deadLetterDestination();
 
     /**
+     * @return the deadLetterWithResourceIdentity value.
+     */
+    DeadLetterWithResourceIdentity deadLetterWithResourceIdentity();
+
+    /**
+     * @return the deliveryWithResourceIdentity value.
+     */
+    DeliveryWithResourceIdentity deliveryWithResourceIdentity();
+
+    /**
      * @return the destination value.
      */
     EventSubscriptionDestination destination();
@@ -118,10 +128,37 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithDeadLetterDestination {
             /**
              * Specifies deadLetterDestination.
-             * @param deadLetterDestination The DeadLetter destination of the event subscription
+             * @param deadLetterDestination The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
+ Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery / dead-lettering
              * @return the next definition stage
              */
             WithCreate withDeadLetterDestination(DeadLetterDestination deadLetterDestination);
+        }
+
+        /**
+         * The stage of the eventsubscription definition allowing to specify DeadLetterWithResourceIdentity.
+         */
+        interface WithDeadLetterWithResourceIdentity {
+            /**
+             * Specifies deadLetterWithResourceIdentity.
+             * @param deadLetterWithResourceIdentity The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
+ Uses the managed identity setup on the parent resource (namely, topic or domain) to acquire the authentication tokens being used during delivery / dead-lettering
+             * @return the next definition stage
+             */
+            WithCreate withDeadLetterWithResourceIdentity(DeadLetterWithResourceIdentity deadLetterWithResourceIdentity);
+        }
+
+        /**
+         * The stage of the eventsubscription definition allowing to specify DeliveryWithResourceIdentity.
+         */
+        interface WithDeliveryWithResourceIdentity {
+            /**
+             * Specifies deliveryWithResourceIdentity.
+             * @param deliveryWithResourceIdentity Information about the destination where events have to be delivered for the event subscription.
+ Uses the managed identity setup on the parent resource (namely, topic or domain) to acquire the authentication tokens being used during delivery / dead-lettering
+             * @return the next definition stage
+             */
+            WithCreate withDeliveryWithResourceIdentity(DeliveryWithResourceIdentity deliveryWithResourceIdentity);
         }
 
         /**
@@ -130,7 +167,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithDestination {
             /**
              * Specifies destination.
-             * @param destination Information about the destination where events have to be delivered for the event subscription
+             * @param destination Information about the destination where events have to be delivered for the event subscription.
+ Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery / dead-lettering
              * @return the next definition stage
              */
             WithCreate withDestination(EventSubscriptionDestination destination);
@@ -201,13 +239,13 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<EventSubscription>, DefinitionStages.WithDeadLetterDestination, DefinitionStages.WithDestination, DefinitionStages.WithEventDeliverySchema, DefinitionStages.WithExpirationTimeUtc, DefinitionStages.WithFilter, DefinitionStages.WithLabels, DefinitionStages.WithRetryPolicy {
+        interface WithCreate extends Creatable<EventSubscription>, DefinitionStages.WithDeadLetterDestination, DefinitionStages.WithDeadLetterWithResourceIdentity, DefinitionStages.WithDeliveryWithResourceIdentity, DefinitionStages.WithDestination, DefinitionStages.WithEventDeliverySchema, DefinitionStages.WithExpirationTimeUtc, DefinitionStages.WithFilter, DefinitionStages.WithLabels, DefinitionStages.WithRetryPolicy {
         }
     }
     /**
      * The template for a EventSubscription update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<EventSubscription>, UpdateStages.WithDeadLetterDestination, UpdateStages.WithDestination, UpdateStages.WithEventDeliverySchema, UpdateStages.WithExpirationTimeUtc, UpdateStages.WithFilter, UpdateStages.WithLabels, UpdateStages.WithRetryPolicy {
+    interface Update extends Appliable<EventSubscription>, UpdateStages.WithDeadLetterDestination, UpdateStages.WithDeadLetterWithResourceIdentity, UpdateStages.WithDeliveryWithResourceIdentity, UpdateStages.WithDestination, UpdateStages.WithEventDeliverySchema, UpdateStages.WithExpirationTimeUtc, UpdateStages.WithFilter, UpdateStages.WithLabels, UpdateStages.WithRetryPolicy {
     }
 
     /**
@@ -220,10 +258,37 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithDeadLetterDestination {
             /**
              * Specifies deadLetterDestination.
-             * @param deadLetterDestination The DeadLetter destination of the event subscription
+             * @param deadLetterDestination The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
+ Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery / dead-lettering
              * @return the next update stage
              */
             Update withDeadLetterDestination(DeadLetterDestination deadLetterDestination);
+        }
+
+        /**
+         * The stage of the eventsubscription update allowing to specify DeadLetterWithResourceIdentity.
+         */
+        interface WithDeadLetterWithResourceIdentity {
+            /**
+             * Specifies deadLetterWithResourceIdentity.
+             * @param deadLetterWithResourceIdentity The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
+ Uses the managed identity setup on the parent resource (topic / domain) to acquire the authentication tokens being used during delivery / dead-lettering
+             * @return the next update stage
+             */
+            Update withDeadLetterWithResourceIdentity(DeadLetterWithResourceIdentity deadLetterWithResourceIdentity);
+        }
+
+        /**
+         * The stage of the eventsubscription update allowing to specify DeliveryWithResourceIdentity.
+         */
+        interface WithDeliveryWithResourceIdentity {
+            /**
+             * Specifies deliveryWithResourceIdentity.
+             * @param deliveryWithResourceIdentity Information about the destination where events have to be delivered for the event subscription.
+ Uses the managed identity setup on the parent resource (topic / domain) to acquire the authentication tokens being used during delivery / dead-lettering
+             * @return the next update stage
+             */
+            Update withDeliveryWithResourceIdentity(DeliveryWithResourceIdentity deliveryWithResourceIdentity);
         }
 
         /**
@@ -232,7 +297,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithDestination {
             /**
              * Specifies destination.
-             * @param destination Information about the destination where events have to be delivered for the event subscription
+             * @param destination Information about the destination where events have to be delivered for the event subscription.
+ Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery / dead-lettering
              * @return the next update stage
              */
             Update withDestination(EventSubscriptionDestination destination);

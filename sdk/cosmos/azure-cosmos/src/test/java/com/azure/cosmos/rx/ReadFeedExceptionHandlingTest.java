@@ -5,10 +5,11 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
-import com.azure.cosmos.CosmosDatabaseProperties;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.util.UtilBridgeInternal;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
@@ -45,10 +46,10 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
                                                                     .mergeWith(Flux.error(BridgeInternal.createCosmosClientException(0)))
                                                                     .mergeWith(Flux.fromIterable(frps));
 
-        final CosmosAsyncClient mockClient = Mockito.spy(client);
-        Mockito.when(mockClient.readAllDatabases(null)).thenReturn(BridgeInternal.createCosmosContinuablePagedFlux(pagedFluxOptions -> response));
+        final CosmosAsyncClientWrapper mockedClientWrapper = Mockito.spy(new CosmosAsyncClientWrapper(client));
+        Mockito.when(mockedClientWrapper.readAllDatabases(null)).thenReturn(UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> response));
         TestSubscriber<FeedResponse<CosmosDatabaseProperties>> subscriber = new TestSubscriber<>();
-        mockClient.readAllDatabases(null).byPage().subscribe(subscriber);
+        mockedClientWrapper.readAllDatabases(null).byPage().subscribe(subscriber);
         assertThat(subscriber.valueCount()).isEqualTo(2);
         assertThat(subscriber.assertNotComplete());
         assertThat(subscriber.assertTerminated());
@@ -57,11 +58,23 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedExceptionHandlingTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.client);
+    }
+
+    static class CosmosAsyncClientWrapper {
+        private CosmosAsyncClient cosmosAsyncClient;
+
+        CosmosAsyncClientWrapper(CosmosAsyncClient cosmosAsyncClient) {
+            this.cosmosAsyncClient = cosmosAsyncClient;
+        }
+
+        CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions feedOptions) {
+            return cosmosAsyncClient.readAllDatabases(feedOptions);
+        }
     }
 }

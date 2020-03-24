@@ -4,7 +4,14 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
+import com.azure.cosmos.models.CosmosStoredProcedureResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -31,7 +38,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosSyncStoredProcTest() {
         assertThat(this.client).isNull();
-        this.client = clientBuilder().buildClient();
+        this.client = getClientBuilder().buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
@@ -160,7 +167,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
 
         FeedOptions feedOptions = new FeedOptions();
         
-        CosmosContinuablePagedIterable<CosmosStoredProcedureProperties> feedResponseIterator3 =
+        CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator3 =
                 container.getScripts().readAllStoredProcedures(feedOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
 
@@ -174,12 +181,12 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        CosmosContinuablePagedIterable<CosmosStoredProcedureProperties> feedResponseIterator1 =
+        CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator1 =
                 container.getScripts().queryStoredProcedures(query, feedOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosContinuablePagedIterable<CosmosStoredProcedureProperties> feedResponseIterator2 =
+        CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator2 =
                 container.getScripts().queryStoredProcedures(query, feedOptions);
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
     }

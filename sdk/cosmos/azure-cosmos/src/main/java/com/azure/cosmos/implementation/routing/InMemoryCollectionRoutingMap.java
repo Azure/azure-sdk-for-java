@@ -4,9 +4,9 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+import com.azure.cosmos.implementation.apachecommons.collections.CollectionUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -196,7 +196,7 @@ public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
     }
 
     @Override
-    public boolean IsGone(String partitionKeyRangeId) {
+    public boolean isGone(String partitionKeyRangeId) {
         return this.goneRanges.contains(partitionKeyRangeId);
     }
 

@@ -47,16 +47,20 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     protected void beforeTest(AmqpTransportType transportType) {
         client = createBuilder()
             .transportType(transportType)
-            .shareConnection()
             .buildAsyncClient();
 
         if (HAS_PUSHED_EVENTS.getAndSet(true)) {
-            logger.warning("Already pushed events to partition. Skipping.");
+            logger.info("Already pushed events to partition. Skipping.");
         } else {
-            logger.warning("Pushing... events to partition.");
+            logger.info("Pushing... events to partition.");
+
+            final EventHubAsyncClient testClient = createBuilder()
+                .transportType(transportType)
+                .shareConnection()
+                .buildAsyncClient();
 
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(client.createProducer(), NUMBER_OF_EVENTS, options);
+            testData = setupEventTestData(testClient.createProducer(), NUMBER_OF_EVENTS, options);
             logger.warning("Pushed events to partition.");
         }
     }
@@ -76,15 +80,20 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         beforeTest(transportType);
         // Arrange
         final EventHubConsumerAsyncClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, 2);
-        final EventPosition startingPosition = EventPosition.fromEnqueuedTime(testData.getEnqueuedTime());
+        final EventPosition startingPosition = EventPosition.fromEnqueuedTime(testData.getEnqueuedTime().minus(Duration.ofMinutes(1)));
 
         // Act & Assert
-        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, startingPosition)
-            .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
-            .take(NUMBER_OF_EVENTS))
-            .expectNextCount(NUMBER_OF_EVENTS)
-            .expectComplete()
-            .verify(Duration.ofMinutes(1));
+        try {
+            StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, startingPosition)
+                .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
+                .take(NUMBER_OF_EVENTS))
+                .expectNextCount(NUMBER_OF_EVENTS)
+                .expectComplete()
+                .verify(Duration.ofMinutes(1));
+        } finally {
+            consumer.close();
+        }
+
     }
 
     /**
@@ -166,13 +175,17 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             .buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client.getProperties())
-            .assertNext(properties -> {
-                Assertions.assertEquals(getEventHubName(), properties.getName());
-                Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
+        try {
+            StepVerifier.create(client.getProperties())
+                .assertNext(properties -> {
+                    Assertions.assertEquals(getEventHubName(), properties.getName());
+                    Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
+                })
+                .expectComplete()
+                .verify(TIMEOUT);
+        } finally {
+            client.close();
+        }
     }
 
     /**
@@ -184,14 +197,18 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         final EventHubAsyncClient theClient = createBuilder(true)
             .buildAsyncClient();
 
-        for (int i = 0; i < 10; i++) {
-            // Act & Assert
-            StepVerifier.create(theClient.getProperties())
-                .assertNext(properties -> {
-                    Assertions.assertEquals(getEventHubName(), properties.getName());
-                    Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
-                })
-                .verifyComplete();
+        try {
+            for (int i = 0; i < 10; i++) {
+                // Act & Assert
+                StepVerifier.create(theClient.getProperties())
+                    .assertNext(properties -> {
+                        Assertions.assertEquals(getEventHubName(), properties.getName());
+                        Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
+                    })
+                    .verifyComplete();
+            }
+        } finally {
+            theClient.close();
         }
     }
 }

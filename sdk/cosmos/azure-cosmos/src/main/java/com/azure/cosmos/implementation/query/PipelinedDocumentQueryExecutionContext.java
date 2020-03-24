@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
@@ -56,7 +56,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
         if (queryInfo.hasOrderBy()) {
             createBaseComponentFunction = (continuationToken) -> {
                 FeedOptions orderByFeedOptions = new FeedOptions(feedOptions);
-                orderByFeedOptions.requestContinuation(continuationToken);
+                orderByFeedOptions.setRequestContinuation(continuationToken);
                 return OrderByDocumentQueryExecutionContext.createAsync(client, resourceTypeEnum, resourceType,
                         expression, orderByFeedOptions, resourceLink, collectionRid, partitionedQueryExecutionInfo,
                         targetRanges, initialPageSize, isContinuationExpected, getLazyFeedResponse,
@@ -65,7 +65,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
         } else {
             createBaseComponentFunction = (continuationToken) -> {
                 FeedOptions parallelFeedOptions = new FeedOptions(feedOptions);
-                parallelFeedOptions.requestContinuation(continuationToken);
+                parallelFeedOptions.setRequestContinuation(continuationToken);
                 return ParallelDocumentQueryExecutionContext.createAsync(client, resourceTypeEnum, resourceType,
                         expression, parallelFeedOptions, resourceLink, collectionRid, partitionedQueryExecutionInfo,
                         targetRanges, initialPageSize, isContinuationExpected, getLazyFeedResponse,
@@ -120,7 +120,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
             createTakeComponentFunction = createTopComponentFunction;
         }
 
-        int actualPageSize = Utils.getValueOrDefault(feedOptions.maxItemCount(),
+        int actualPageSize = Utils.getValueOrDefault(feedOptions.getMaxItemCount(),
                 ParallelQueryConfig.ClientInternalPageSize);
 
         if (actualPageSize == -1) {
@@ -128,7 +128,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
         }
 
         int pageSize = Math.min(actualPageSize, Utils.getValueOrDefault(queryInfo.getTop(), (actualPageSize)));
-        return createTakeComponentFunction.apply(feedOptions.requestContinuation())
+        return createTakeComponentFunction.apply(feedOptions.getRequestContinuation())
                 .map(c -> new PipelinedDocumentQueryExecutionContext<>(c, pageSize, correlatedActivityId));
     }
 

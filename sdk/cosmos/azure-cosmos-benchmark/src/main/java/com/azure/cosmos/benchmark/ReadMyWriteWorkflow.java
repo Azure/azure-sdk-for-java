@@ -8,12 +8,12 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.NotFoundException;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.SqlParameter;
-import com.azure.cosmos.SqlParameterList;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlParameterList;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
@@ -259,7 +259,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      */
     private Flux<Document> singlePartitionQuery(Document d) {
         FeedOptions options = new FeedOptions();
-        options.partitionKey(new PartitionKey(d.get(partitionKey)));
+        options.setPartitionKey(new PartitionKey(d.get(partitionKey)));
 
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(String.format("Select top 100 * from c where c.%s = '%s'",
                                                                    QUERY_FIELD_NAME,

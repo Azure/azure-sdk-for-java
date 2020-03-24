@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosError;
+import com.azure.cosmos.models.CosmosError;
 import com.google.common.collect.ImmutableMap;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;

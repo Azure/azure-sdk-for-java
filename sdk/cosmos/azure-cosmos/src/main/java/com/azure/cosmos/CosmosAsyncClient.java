@@ -7,12 +7,21 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.Permission;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.io.Closeable;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -25,7 +34,7 @@ import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxIt
 @ServiceClient(
     builder = CosmosClientBuilder.class,
     isAsync = true)
-public class CosmosAsyncClient implements AutoCloseable {
+public final class CosmosAsyncClient implements Closeable {
 
     // Async document client wrapper
     private final Configs configs;
@@ -35,7 +44,7 @@ public class CosmosAsyncClient implements AutoCloseable {
     private final ConnectionPolicy connectionPolicy;
     private final ConsistencyLevel desiredConsistencyLevel;
     private final List<Permission> permissions;
-    private final TokenResolver tokenResolver;
+    private final CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private final CosmosKeyCredential cosmosKeyCredential;
     private final boolean sessionCapturingOverride;
     private final boolean enableTransportClientSharing;
@@ -47,8 +56,8 @@ public class CosmosAsyncClient implements AutoCloseable {
         this.connectionPolicy = builder.getConnectionPolicy();
         this.desiredConsistencyLevel = builder.getConsistencyLevel();
         this.permissions = builder.getPermissions();
-        this.tokenResolver = builder.getTokenResolver();
-        this.cosmosKeyCredential = builder.getCosmosKeyCredential();
+        this.cosmosAuthorizationTokenResolver = builder.getAuthorizationTokenResolver();
+        this.cosmosKeyCredential = builder.getKeyCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionReuseAcrossClientsEnabled();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
@@ -58,19 +67,10 @@ public class CosmosAsyncClient implements AutoCloseable {
                                        .withConsistencyLevel(this.desiredConsistencyLevel)
                                        .withSessionCapturingOverride(this.sessionCapturingOverride)
                                        .withConfigs(this.configs)
-                                       .withTokenResolver(this.tokenResolver)
+                                       .withTokenResolver(this.cosmosAuthorizationTokenResolver)
                                        .withCosmosKeyCredential(this.cosmosKeyCredential)
                                        .withTransportClientSharing(this.enableTransportClientSharing)
                                        .build();
-    }
-
-    /**
-     * Instantiate the cosmos client builder to build cosmos client
-     *
-     * @return {@link CosmosClientBuilder}
-     */
-    public static CosmosClientBuilder cosmosClientBuilder() {
-        return new CosmosClientBuilder();
     }
 
     AsyncDocumentClient getContextClient() {
@@ -149,8 +149,8 @@ public class CosmosAsyncClient implements AutoCloseable {
      *
      * @return the token resolver
      */
-    TokenResolver getTokenResolver() {
-        return tokenResolver;
+    CosmosAuthorizationTokenResolver getCosmosAuthorizationTokenResolver() {
+        return cosmosAuthorizationTokenResolver;
     }
 
     /**
@@ -222,8 +222,8 @@ public class CosmosAsyncClient implements AutoCloseable {
         }
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
-        return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions())
-                   .map(databaseResourceResponse -> new CosmosAsyncDatabaseResponse(databaseResourceResponse,
+        return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
+                   .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
                        this))
                    .single();
     }
@@ -277,11 +277,11 @@ public class CosmosAsyncClient implements AutoCloseable {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
-        options.setOfferThroughput(throughput);
+        ModelBridgeInternal.setOfferThroughput(options, throughput);
         Database wrappedDatabase = new Database();
         wrappedDatabase.setId(databaseSettings.getId());
-        return asyncDocumentClient.createDatabase(wrappedDatabase, options.toRequestOptions())
-                   .map(databaseResourceResponse -> new CosmosAsyncDatabaseResponse(databaseResourceResponse,
+        return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
+                   .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
                        this))
                    .single();
     }
@@ -300,7 +300,7 @@ public class CosmosAsyncClient implements AutoCloseable {
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseSettings, int throughput) {
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        options.setOfferThroughput(throughput);
+        ModelBridgeInternal.setOfferThroughput(options, throughput);
         return createDatabase(databaseSettings, options);
     }
 
@@ -318,7 +318,7 @@ public class CosmosAsyncClient implements AutoCloseable {
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabase(String id, int throughput) {
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        options.setOfferThroughput(throughput);
+        ModelBridgeInternal.setOfferThroughput(options, throughput);
         return createDatabase(new CosmosDatabaseProperties(id), options);
     }
 
@@ -326,19 +326,19 @@ public class CosmosAsyncClient implements AutoCloseable {
      * Reads all databases.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options {@link FeedOptions}
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
-        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+    public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
                                         .map(response ->
                                             BridgeInternal.createFeedResponse(
-                                                CosmosDatabaseProperties.getFromV2Results(response.getResults()),
+                                                ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
                                                 response.getResponseHeaders()));
         });
     }
@@ -347,12 +347,12 @@ public class CosmosAsyncClient implements AutoCloseable {
      * Reads all databases.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosDatabaseProperties> readAllDatabases() {
+    public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases() {
         return readAllDatabases(new FeedOptions());
     }
 
@@ -361,14 +361,14 @@ public class CosmosAsyncClient implements AutoCloseable {
      * Query for databases.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosDatabaseProperties> queryDatabases(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(String query, FeedOptions options) {
         return queryDatabases(new SqlQuerySpec(query), options);
     }
 
@@ -376,25 +376,21 @@ public class CosmosAsyncClient implements AutoCloseable {
      * Query for databases.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosContinuablePagedFlux} will contain one or several feed response of the read databases.
-     * In case of failure the {@link CosmosContinuablePagedFlux} will error.
+     * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
+     * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return a {@link CosmosContinuablePagedFlux} containing one or several feed response pages of read databases or an error.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public CosmosContinuablePagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
-        return new CosmosContinuablePagedFlux<>(pagedFluxOptions -> {
+    public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                                         .map(response -> BridgeInternal.createFeedResponse(
-                                            CosmosDatabaseProperties.getFromV2Results(response.getResults()),
+                                            ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
                                             response.getResponseHeaders()));
         });
-    }
-
-    public Mono<DatabaseAccount> readDatabaseAccount() {
-        return asyncDocumentClient.getDatabaseAccount().single();
     }
 
     /**

@@ -5,14 +5,14 @@ package com.azure.cosmos.examples;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosContainerProperties;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
-import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -31,9 +31,9 @@ public class BasicDemo {
 
     private void start() {
         // Get client
-        client = CosmosAsyncClient.cosmosClientBuilder()
-                     .setEndpoint(AccountSettings.HOST)
-                     .setKey(AccountSettings.MASTER_KEY)
+        client = new CosmosClientBuilder()
+                     .endpoint(AccountSettings.HOST)
+                     .key(AccountSettings.MASTER_KEY)
                      .buildAsyncClient();
 
         //CREATE a database and a container
@@ -82,7 +82,7 @@ public class BasicDemo {
                              .doOnError(throwable -> log("CREATE 3", throwable))
                              .publishOn(Schedulers.elastic())
                              .block()
-                             .getResource();
+                             .getItem();
         } catch (RuntimeException e) {
             log("Couldn't create items due to above exceptions");
         }
@@ -114,7 +114,7 @@ public class BasicDemo {
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(2);
-        CosmosContinuablePagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
+        CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
 
         queryFlux.byPage()
                  .publishOn(Schedulers.elastic())
@@ -129,12 +129,12 @@ public class BasicDemo {
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
         FeedOptions options = new FeedOptions();
-        options.populateQueryMetrics(true);
-        options.maxItemCount(1);
+        options.setPopulateQueryMetrics(true);
+        options.setMaxItemCount(1);
         String continuation = null;
         do {
-            options.requestContinuation(continuation);
-            CosmosContinuablePagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
+            options.setRequestContinuation(continuation);
+            CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
             FeedResponse<TestObject> page = queryFlux.byPage().blockFirst();
             assert page != null;
             log(page.getResults());

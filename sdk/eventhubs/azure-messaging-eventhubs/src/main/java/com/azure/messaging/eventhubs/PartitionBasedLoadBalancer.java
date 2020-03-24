@@ -8,8 +8,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import java.util.function.Consumer;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -112,6 +114,12 @@ final class PartitionBasedLoadBalancer {
         final Mono<List<String>> partitionsMono = eventHubAsyncClient
             .getPartitionIds()
             .timeout(Duration.ofMinutes(1))
+            .onErrorResume(TimeoutException.class, error -> {
+                // In the subsequent step where it tries to balance the load, it'll propagate an error to the user.
+                // So it is okay to return an empty Flux.
+                logger.warning("Unable to get partitionIds from eventHubAsyncClient.");
+                return Flux.empty();
+            })
             .collectList();
 
         Mono.zip(partitionOwnershipMono, partitionsMono)

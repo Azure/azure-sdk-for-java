@@ -6,11 +6,11 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContainerProperties;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.apache.commons.lang3.StringUtils;
@@ -47,7 +47,7 @@ public class CollectionQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
-        CosmosContinuablePagedFlux<CosmosContainerProperties> queryObservable = createdDatabase.queryContainers(query, options);
+        CosmosPagedFlux<CosmosContainerProperties> queryObservable = createdDatabase.queryContainers(query, options);
 
         List<CosmosAsyncContainer> expectedCollections = createdCollections.stream()
                 .filter(c -> StringUtils.equals(filterCollectionId, c.getId()) ).collect(Collectors.toList());
@@ -74,7 +74,7 @@ public class CollectionQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
-        CosmosContinuablePagedFlux<CosmosContainerProperties> queryObservable = createdDatabase.queryContainers(query, options);
+        CosmosPagedFlux<CosmosContainerProperties> queryObservable = createdDatabase.queryContainers(query, options);
 
         List<CosmosAsyncContainer> expectedCollections = createdCollections;
 
@@ -98,7 +98,7 @@ public class CollectionQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        CosmosContinuablePagedFlux<CosmosContainerProperties> queryObservable = createdDatabase.queryContainers(query, options);
+        CosmosPagedFlux<CosmosContainerProperties> queryObservable = createdDatabase.queryContainers(query, options);
 
         FeedResponseListValidator<CosmosContainerProperties> validator = new FeedResponseListValidator.Builder<CosmosContainerProperties>()
                 .containsExactly(new ArrayList<>())
@@ -111,7 +111,7 @@ public class CollectionQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_CollectionQueryTest() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
 
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();

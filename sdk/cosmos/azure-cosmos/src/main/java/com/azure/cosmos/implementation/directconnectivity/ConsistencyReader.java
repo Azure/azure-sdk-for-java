@@ -6,10 +6,10 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.GoneException;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.ISessionContainer;
-import com.azure.cosmos.NotFoundException;
-import com.azure.cosmos.RequestTimeoutException;
+import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
@@ -334,7 +334,7 @@ public class ConsistencyReader {
     ReadMode deduceReadMode(RxDocumentServiceRequest request,
                             ValueHolder<ConsistencyLevel> targetConsistencyLevel,
                             ValueHolder<Boolean> useSessionToken) throws CosmosClientException {
-        targetConsistencyLevel.v = RequestHelper.GetConsistencyLevelToUse(this.serviceConfigReader, request);
+        targetConsistencyLevel.v = RequestHelper.getConsistencyLevelToUse(this.serviceConfigReader, request);
         useSessionToken.v = (targetConsistencyLevel.v == ConsistencyLevel.SESSION);
 
         if (request.getDefaultReplicaIndex() != null) {

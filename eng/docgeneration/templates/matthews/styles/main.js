@@ -78,21 +78,13 @@ function httpGetAsync(targetUrl, callback) {
 }
 
 function populateIndexList(selector, packageName) {
-    url = "https://azuresdkdocs.blob.core.windows.net/$web?restype=container&comp=list&prefix=" + SELECTED_LANGUAGE + "/" + packageName + "/versions/"
+    url = "https://azuresdkdocs.blob.core.windows.net/$web/" + SELECTED_LANGUAGE + "/" + packageName + "/versioning/versions"
 
     httpGetAsync(url, function (responseText) {
 
         var publishedversions = document.createElement("ul")
         if (responseText) {
-            parser = new DOMParser();
-            xmlDoc = parser.parseFromString(responseText, "text/xml");
-
-            nameElements = Array.from(xmlDoc.getElementsByTagName('Name'))
-            options = []
-
-            for (var i in nameElements) {
-                options.push(nameElements[i].textContent.split('/')[3])
-            }
+            options = responseText.match(/[^\r\n]+/g)
 
             for (var i in options) {
                 $(publishedversions).append('<li><a href="' + getPackageUrl(SELECTED_LANGUAGE, packageName, options[i]) + '" target="_blank">' + options[i] + '</a></li>')

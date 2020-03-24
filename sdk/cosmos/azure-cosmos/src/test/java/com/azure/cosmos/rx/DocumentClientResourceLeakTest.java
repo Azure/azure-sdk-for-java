@@ -40,7 +40,7 @@ public class DocumentClientResourceLeakTest extends TestSuiteBase {
 
         for (int i = 0; i < MAX_NUMBER; i++) {
             logger.info("CLIENT {}", i);
-            CosmosAsyncClient client = this.clientBuilder().buildAsyncClient();
+            CosmosAsyncClient client = this.getClientBuilder().buildAsyncClient();
             try {
                 logger.info("creating document");
                 createDocument(client.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId()),
@@ -66,7 +66,7 @@ public class DocumentClientResourceLeakTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_DocumentClientResourceLeakTest() {
-        CosmosAsyncClient client = this.clientBuilder().buildAsyncClient();
+        CosmosAsyncClient client = this.getClientBuilder().buildAsyncClient();
         try {
             createdDatabase = getSharedCosmosDatabase(client);
             createdCollection = getSharedMultiPartitionCosmosContainer(client);

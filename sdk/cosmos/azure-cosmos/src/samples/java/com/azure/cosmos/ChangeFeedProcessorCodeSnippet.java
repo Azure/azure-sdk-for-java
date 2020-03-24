@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos;
 
 /**
@@ -11,10 +13,10 @@ public class ChangeFeedProcessorCodeSnippet {
         CosmosAsyncContainer leaseContainer = null;
         // BEGIN: com.azure.cosmos.changeFeedProcessor.builder
         ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
-            .setHostName(hostName)
-            .setFeedContainer(feedContainer)
-            .setLeaseContainer(leaseContainer)
-            .setHandleChanges(docs -> {
+            .hostName(hostName)
+            .feedContainer(feedContainer)
+            .leaseContainer(leaseContainer)
+            .handleChanges(docs -> {
                 // Implementation for handling and processing CosmosItemProperties list goes here
             })
             .build();

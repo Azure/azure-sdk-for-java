@@ -13,7 +13,7 @@ class MaxNumberPartitionKeyComponent implements IPartitionKeyComponent {
     public static final MaxNumberPartitionKeyComponent VALUE = new MaxNumberPartitionKeyComponent();
 
     @Override
-    public int CompareTo(IPartitionKeyComponent other) {
+    public int compareTo(IPartitionKeyComponent other) {
         MaxNumberPartitionKeyComponent otherMaxNumber = Utils.as(other, MaxNumberPartitionKeyComponent.class);
         if (otherMaxNumber == null) {
             throw new IllegalArgumentException("other");
@@ -23,27 +23,27 @@ class MaxNumberPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public int GetTypeOrdinal() {
+    public int getTypeOrdinal() {
         return PartitionKeyComponentType.MAXNUMBER.ordinal();
     }
 
     @Override
-    public void JsonEncode(JsonGenerator writer) {
+    public void jsonEncode(JsonGenerator writer) {
         PartitionKeyInternal.PartitionKeyInternalJsonSerializer.jsonEncode(this, writer);
     }
 
     @Override
-    public void WriteForHashing(OutputStream outputStream) {
+    public void writeForHashing(OutputStream outputStream) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void WriteForHashingV2(OutputStream outputStream) {
+    public void writeForHashingV2(OutputStream outputStream) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void WriteForBinaryEncoding(OutputStream outputStream) {
+    public void writeForBinaryEncoding(OutputStream outputStream) {
         try {
             outputStream.write((byte) PartitionKeyComponentType.MAXNUMBER.type);
         } catch (IOException e) {
@@ -52,7 +52,7 @@ class MaxNumberPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public IPartitionKeyComponent Truncate() {
+    public IPartitionKeyComponent truncate() {
         return this;
     }
 }

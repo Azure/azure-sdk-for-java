@@ -6,8 +6,8 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.InternalServerErrorException;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.JavaStreamUtils;
@@ -16,7 +16,7 @@ import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import org.apache.commons.lang3.tuple.Pair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -320,9 +320,9 @@ public class QuorumReader {
                         (ReplicatedResourceClient.isGlobalStrongEnabled() && this.serviceConfigReader.getDefaultConsistencyLevel() == ConsistencyLevel.STRONG) &&
                             (entity.requestContext.originalRequestConsistencyLevel == null || entity.requestContext.originalRequestConsistencyLevel == ConsistencyLevel.STRONG);
 
-                    ValueHolder<Long> readLsn = new ValueHolder(-1);
-                    ValueHolder<Long> globalCommittedLSN = new ValueHolder(-1);
-                    ValueHolder<StoreResult> storeResult = new ValueHolder(null);
+                    ValueHolder<Long> readLsn = new ValueHolder<>(-1L);
+                    ValueHolder<Long> globalCommittedLSN = new ValueHolder<>(-1L);
+                    ValueHolder<StoreResult> storeResult = new ValueHolder<>(null);
 
                     if (this.isQuorumMet(
                         responseResult,
