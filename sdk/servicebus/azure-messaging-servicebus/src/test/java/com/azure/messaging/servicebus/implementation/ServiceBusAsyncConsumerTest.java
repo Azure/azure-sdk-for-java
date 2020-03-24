@@ -137,7 +137,6 @@ class ServiceBusAsyncConsumerTest {
             .verifyComplete();
 
         verify(onComplete).apply(receivedMessage1);
-        verify(onComplete).apply(receivedMessage2);
     }
 
     /**
