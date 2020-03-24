@@ -129,7 +129,7 @@ public class ServiceBusSenderAsyncClientTest {
      */
     @Test
     void verifyProperties() {
-        Assertions.assertEquals(ENTITY_NAME, sender.getEntityName());
+        Assertions.assertEquals(ENTITY_NAME, sender.getEntityNamePath());
         Assertions.assertEquals(NAMESPACE, sender.getFullyQualifiedNamespace());
     }
 
