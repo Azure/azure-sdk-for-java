@@ -44,16 +44,12 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      */
     private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
     private final String connectionId;
-    private final String eventHubName;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
     private final TokenManagerProvider tokenManagerProvider;
     private final AmqpRetryOptions retryOptions;
     private final MessageSerializer messageSerializer;
-    private final TokenCredential tokenCredential;
-    private final Scheduler scheduler;
-
-    private volatile ManagementChannel managementChannel;
+    private final ManagementChannel managementChannel;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -72,14 +68,17 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
         this.connectionId = connectionId;
-        this.eventHubName = eventHubName;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = tokenManagerProvider;
         this.retryOptions = connectionOptions.getRetry();
         this.messageSerializer = messageSerializer;
-        this.tokenCredential = connectionOptions.getTokenCredential();
-        this.scheduler = connectionOptions.getScheduler();
+        TokenCredential tokenCredential = connectionOptions.getTokenCredential();
+        Scheduler scheduler = connectionOptions.getScheduler();
+
+        managementChannel = new ManagementChannel(
+            createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
+            eventHubName, tokenCredential, tokenManagerProvider, this.messageSerializer, scheduler);
     }
 
     @Override
@@ -89,15 +88,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
                 "connectionId[%s]: Connection is disposed. Cannot get management instance", connectionId))));
         }
 
-        return getReactorConnection().then(Mono.fromCallable(() -> {
-            if (managementChannel == null) {
-                this.managementChannel = new ManagementChannel(
-                    createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
-                    eventHubName, tokenCredential, tokenManagerProvider, this.messageSerializer, scheduler);
-            }
-
-            return managementChannel;
-        }));
+        return getReactorConnection().thenReturn(managementChannel);
     }
 
     /**
