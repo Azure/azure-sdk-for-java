@@ -218,6 +218,15 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
+     * Creates an {@link ServiceBusSenderClient} for transmitting {@link ServiceBusMessage} to a Service Bus queue.
+     *
+     * @return A new {@link ServiceBusSenderClient} for transmitting to a Service queue or topic.
+     */
+    public ServiceBusSenderClient buildSenderClient() {
+        return new ServiceBusSenderClient(buildAsyncSenderClient(), retryOptions.getTryTimeout());
+    }
+
+    /**
      * Creates an Service Bus receiver responsible for reading {@link ServiceBusMessage messages} from a specific queue
      * or topic.
      *
