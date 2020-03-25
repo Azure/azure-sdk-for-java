@@ -5,7 +5,7 @@ package com.azure.cosmos;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.models.Permission;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.util.List;
 

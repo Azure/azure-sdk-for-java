@@ -71,7 +71,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificateWithPolicy expected = certPoller.getFinalResult();
             assertEquals(certName, expected.getName());
             assertNotNull(expected.getProperties().getCreatedOn());
-            deleteAndPurgeCertificate(certName);
         });
     }
 
@@ -120,7 +119,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificate keyVaultCertificate = client.updateCertificateProperties(certificate.getProperties().setTags(updatedTags));
             Map<String, String> returnedTags = keyVaultCertificate.getProperties().getTags();
             validateMapResponse(updatedTags, returnedTags);
-            deleteAndPurgeCertificate(certName);
         });
     }
 
@@ -146,7 +144,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
             Map<String, String> returnedTags = keyVaultCertificate.getProperties().getTags();
             validateMapResponse(updatedTags, returnedTags);
             assertFalse(keyVaultCertificate.getProperties().isEnabled());
-            deleteAndPurgeCertificate(certName);
         });
     }
 
@@ -162,7 +159,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
             KeyVaultCertificateWithPolicy getCertificate = client.getCertificate(certificateName);
             validatePolicy(certificate.getPolicy(), getCertificate.getPolicy());
-            deleteAndPurgeCertificate(certificateName);
         });
     }
 
@@ -178,7 +174,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
             KeyVaultCertificate getCertificate = client.getCertificateVersion(certificateName, certificate.getProperties().getVersion());
             validateCertificate(certificate, getCertificate);
-            deleteAndPurgeCertificate(certificateName);
         });
     }
 
@@ -209,8 +204,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
             assertNotNull(deletedCertificate.getRecoveryId());
             assertNotNull(deletedCertificate.getScheduledPurgeDate());
             assertEquals(certificateName, deletedCertificate.getName());
-            client.purgeDeletedCertificate(certificateName);
-            pollOnCertificatePurge(certificateName);
         });
     }
 
@@ -241,8 +234,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
             assertNotNull(deletedCertificate.getRecoveryId());
             assertNotNull(deletedCertificate.getScheduledPurgeDate());
             assertEquals(certificateName, deletedCertificate.getName());
-            client.purgeDeletedCertificate(certificateName);
-            pollOnCertificatePurge(certificateName);
         });
     }
 
@@ -277,7 +268,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
             recoverPoller.waitForCompletion();
             assertEquals(certificateName, recoveredCert.getName());
             validateCertificate(createdCertificate, recoveredCert);
-            deleteAndPurgeCertificate(certificateName);
         });
     }
 
@@ -329,7 +319,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificateWithPolicy restoredCertificate = client.restoreCertificateBackup(backupBytes);
             assertEquals(certificateName, restoredCertificate.getName());
             validatePolicy(restoredCertificate.getPolicy(), createdCert.getPolicy());
-            deleteAndPurgeCertificate(certificateName);
         });
     }
 
@@ -348,7 +337,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
             validateCertificate(expectedCert, reteievedCert);
             validatePolicy(expectedCert.getPolicy(),
                 reteievedCert.getPolicy());
-            deleteAndPurgeCertificate(certName);
         });
     }
 
@@ -391,7 +379,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
             certPoller.waitForCompletion();
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
             validatePolicy(setupPolicy(), certificate.getPolicy());
-            deleteAndPurgeCertificate(certName);
         });
     }
 
@@ -407,7 +394,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
             certificate.getPolicy().setExportable(false);
             CertificatePolicy policy = client.updateCertificatePolicy(certName, certificate.getPolicy());
             validatePolicy(certificate.getPolicy(), policy);
-            deleteAndPurgeCertificate(certName);
         });
     }
 
@@ -439,9 +425,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
                 }
             }
             assertEquals(0, certificatesToList.size());
-            for (String certName : certificates) {
-                deleteAndPurgeCertificate(certName);
-            }
         });
     }
 
@@ -597,7 +580,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
             assertEquals(certificateProperties.getName(), certName);
         }
         assertEquals(counter, countRecv);
-        deleteAndPurgeCertificate(certName);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -661,7 +643,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
             assertTrue(x509Certificate.getSubjectX500Principal().getName().equals("CN=KeyVaultTest"));
             assertTrue(x509Certificate.getIssuerX500Principal().getName().equals("CN=Root Agency"));
-            deleteAndPurgeCertificate(importCertificateOptions.getName());
         });
     }
 
@@ -681,8 +662,6 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificateWithPolicy importedCertificate = client.importCertificate(importCertificateOptions);
             assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
             assertEquals(CertificateContentType.PEM, importedCertificate.getPolicy().getContentType());
-
-            deleteAndPurgeCertificate(importCertificateOptions.getName());
         });
     }
 

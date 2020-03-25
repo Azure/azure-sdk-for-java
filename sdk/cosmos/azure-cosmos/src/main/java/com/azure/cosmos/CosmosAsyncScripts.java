@@ -274,7 +274,7 @@ public class CosmosAsyncScripts {
      * @return an {@link Mono} containing the single resource response with the created trigger or an error.
      */
     public Mono<CosmosAsyncTriggerResponse> createTrigger(CosmosTriggerProperties properties) {
-        Trigger trigger = new Trigger(properties.toJson());
+        Trigger trigger = new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(properties));
 
         return database.getDocClientWrapper()
                    .createTrigger(container.getLink(), trigger, null)
