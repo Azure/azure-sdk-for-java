@@ -1,7 +1,7 @@
-# Azure cognitive search client library for Java
+# Azure cognitive search documents client library for Java
 
-This is the Java client library for [Azure Cognitive Search](https://docs.microsoft.com/en-us/rest/api/searchservice/).
-Azure Cognitive Search is a fully managed cloud search service that provides a rich search experience to custom applications.
+This is the Java client library for [Azure Cognitive Search Documents](https://docs.microsoft.com/en-us/rest/api/searchservice/).
+Azure Cognitive Search Documents is a fully managed cloud search service that provides a rich search experience to custom applications.
 This library provides an easy (native) way for a Java developer to interact with the service to accomplish tasks like: 
 create and manage indexes, load data, implement search features, execute queries, and handle results.
 
@@ -17,11 +17,11 @@ create and manage indexes, load data, implement search features, execute queries
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-search;current})
+[//]: # ({x-version-update-start;com.azure:azure-search-documents;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-search</artifactId>
+    <artifactId>azure-search-documents</artifactId>
     <version>11.0.0-beta.1</version>
 </dependency>
 ```
@@ -29,7 +29,7 @@ create and manage indexes, load data, implement search features, execute queries
 
 ## Key concepts
 
-Azure Cognitive Search has the concepts of search services and indexes and documents, where a search service contains 
+Azure Cognitive Search Documents has the concepts of search services and indexes and documents, where a search service contains 
 one or more indexes that provides persistent storage of searchable data, and data is loaded in the form of JSON documents. 
 Data can be pushed to an index from an external data source, but if you use an indexer, it's possible to crawl a data 
 source to extract and load data into an index.
@@ -44,7 +44,7 @@ There are several types of operations that can be executed against the service:
 
 ### Authenticate the client
 
-In order to interact with the Cognitive Search service you'll need to create an instance of the Search Client class. 
+In order to interact with the Cognitive Search service you'll need to create an instance of the Search Documents Client class. 
 To make this possible you will need an [api-key of the Cognitive Search service](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
 
 The SDK provides two clients.
@@ -142,7 +142,7 @@ Samples are explained in detail [here][samples_readme].
 
 ### General
 
-When you interact with Azure Cognitive Search using this Java client library, errors returned by the service correspond 
+When you interact with Azure Cognitive Search Documents using this Java client library, errors returned by the service correspond 
 to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a document 
 that doesn't exist in your index, a `404` error is returned, indicating `Not Found`.
 
@@ -181,7 +181,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [search_docs]: https://docs.microsoft.com/en-us/azure/search/
 [azure_subscription]: https://azure.microsoft.com/free
 [maven]: https://maven.apache.org/
-[package]: https://search.maven.org/artifact/com.azure/azure-search
+[package]: https://search.maven.org/artifact/com.azure/azure-search-documents
 [samples]: src/samples/java/com/azure/search
 [samples_readme]: src/samples/README.md
 [source_code]: src
@@ -193,4 +193,4 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
 [rest_api]: https://docs.microsoft.com/en-us/rest/api/searchservice/http-status-codes
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fsearch%2Fazure-search%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fsearch%2Fazure-search-documents%2FREADME.png)
