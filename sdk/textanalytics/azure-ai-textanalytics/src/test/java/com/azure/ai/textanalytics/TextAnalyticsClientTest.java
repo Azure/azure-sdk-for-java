@@ -18,11 +18,6 @@ import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Test;
@@ -46,7 +41,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
-
     private TextAnalyticsClient client;
 
     @Override
@@ -521,116 +515,5 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         analyseBatchSentimentShowStatsRunner((inputs, options) ->
             client.analyzeSentimentBatch(inputs, options, Context.NONE).iterableByPage().forEach(pagedResponse ->
                 validateSentimentWithPagedResponse(true, getExpectedBatchTextSentiment(), pagedResponse)));
-    }
-
-    /**
-     * Test client builder with valid API key
-     */
-    @Test
-    public void validKey() {
-        // Arrange
-        final TextAnalyticsClient client = createClientBuilder(getEndpoint(),
-            new AzureKeyCredential(getApiKey())).buildClient();
-
-        // Action and Assert
-        validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0),
-            client.detectLanguage("This is a test English Text"));
-    }
-
-    /**
-     * Test client builder with invalid API key
-     */
-    @Test
-    public void invalidKey() {
-        // Arrange
-        final TextAnalyticsClient client = createClientBuilder(getEndpoint(),
-            new AzureKeyCredential(INVALID_KEY)).buildClient();
-
-        // Action and Assert
-        assertThrows(HttpResponseException.class, () -> client.detectLanguage("This is a test English Text"));
-    }
-
-    /**
-     * Test client with valid API key but update to invalid key and make call to server.
-     */
-    @Test
-    public void updateToInvalidKey() {
-        // Arrange
-        final AzureKeyCredential credential = new AzureKeyCredential(getApiKey());
-
-        final TextAnalyticsClient client = createClientBuilder(getEndpoint(), credential).buildClient();
-
-        // Update to invalid key
-        credential.update(INVALID_KEY);
-
-        // Action and Assert
-        assertThrows(HttpResponseException.class, () -> client.detectLanguage("This is a test English Text"));
-    }
-
-    /**
-     * Test client with invalid API key but update to valid key and make call to server.
-     */
-    @Test
-    public void updateToValidKey() {
-        // Arrange
-        final AzureKeyCredential credential = new AzureKeyCredential(INVALID_KEY);
-
-        final TextAnalyticsClient client = createClientBuilder(getEndpoint(), credential).buildClient();
-
-        // Update to valid key
-        credential.update(getApiKey());
-
-        // Action and Assert
-        validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0),
-            client.detectLanguage("This is a test English Text"));
-    }
-
-    /**
-     * Test for null service version, which would take take the default service version by default
-     */
-    @Test
-    public void nullServiceVersion() {
-        // Arrange
-        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .endpoint(getEndpoint())
-            .apiKey(new AzureKeyCredential(getApiKey()))
-            .retryPolicy(new RetryPolicy())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(null);
-
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        // Action and Assert
-        validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0),
-            clientBuilder.buildClient().detectLanguage("This is a test English Text"));
-    }
-
-    /**
-     * Test for default pipeline in client builder
-     */
-    @Test
-    public void defaultPipeline() {
-        // Arrange
-        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .endpoint(getEndpoint())
-            .apiKey(new AzureKeyCredential(getApiKey()))
-            .configuration(Configuration.getGlobalConfiguration())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        // Action and Assert
-        validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0),
-            clientBuilder.buildClient().detectLanguage("This is a test English Text"));
     }
 }

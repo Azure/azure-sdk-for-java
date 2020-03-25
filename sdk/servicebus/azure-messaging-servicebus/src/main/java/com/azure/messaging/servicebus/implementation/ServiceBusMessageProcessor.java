@@ -275,7 +275,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             initialLockedUntil = message.getLockedUntil();
         }
 
-        logger.info("seq[{}]. lock[{}]. lockedUntil[{}].", sequenceNumber, initialLockedUntil, isCompleteMessage);
+        logger.info("seq[{}]. lock[{}]. lockedUntil[{}].", sequenceNumber, initialLockedUntil, initialLockedUntil);
 
         final Disposable renewLockSubscription;
         if (isAutoRenewLock) {
