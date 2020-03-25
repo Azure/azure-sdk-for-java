@@ -422,7 +422,6 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         Index createdIndex = searchServiceClient.createIndex(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
-          System.out.println(RegexFlags.values());
     }
 
     @Test
