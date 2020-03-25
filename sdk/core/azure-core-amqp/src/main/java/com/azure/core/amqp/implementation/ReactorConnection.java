@@ -109,7 +109,7 @@ public class ReactorConnection implements AmqpConnection {
         this.subscriptions = Disposables.composite(
             this.handler.getEndpointStates().subscribe(
                 state -> {
-                    logger.verbose("Connection state: {}", state);
+                    logger.verbose("connectionId[{}]: Connection state: {}", connectionId, state);
                     endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state));
                 }, error -> {
                     logger.error("connectionId[{}] Error occurred in connection endpoint.", connectionId, error);
@@ -144,8 +144,8 @@ public class ReactorConnection implements AmqpConnection {
     @Override
     public Mono<ClaimsBasedSecurityNode> getClaimsBasedSecurityNode() {
         if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(
-                "Connection is disposed. Cannot get CBS node.")));
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "connectionId[%s]: Connection is disposed. Cannot get CBS node.", connectionId))));
         }
 
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = RetryUtil.withRetry(
@@ -213,11 +213,12 @@ public class ReactorConnection implements AmqpConnection {
                 final Disposable subscription = amqpSession.getEndpointStates()
                     .subscribe(state -> {
                     }, error -> {
-                            logger.info("sessionName[{}]: Error occurred. Removing and disposing session.",
-                                sessionName, error);
+                            logger.info("connectionId[{}] sessionName[{}]: Error occurred. Removing and disposing"
+                                    + " session.", connectionId, sessionName, error);
                             removeSession(key);
                         }, () -> {
-                            logger.info("sessionName[{}]: Complete. Removing and disposing session.", sessionName);
+                            logger.info("connectionId[{}] sessionName[{}]: Complete. Removing and disposing session.",
+                                connectionId, sessionName);
                             removeSession(key);
                         });
 
@@ -335,7 +336,8 @@ public class ReactorConnection implements AmqpConnection {
 
     private synchronized Connection getOrCreateConnection() throws IOException {
         if (connection == null) {
-            logger.info("Creating and starting connection to {}:{}", handler.getHostname(), handler.getProtocolPort());
+            logger.info("connectionId[{}] Creating and starting connection to {}:{}", connectionId,
+                handler.getHostname(), handler.getProtocolPort());
 
             final Reactor reactor = reactorProvider.createReactor(connectionId, handler.getMaxFrameSize());
             connection = reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler);
