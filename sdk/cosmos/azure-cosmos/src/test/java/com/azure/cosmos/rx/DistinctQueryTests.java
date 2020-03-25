@@ -5,7 +5,6 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -14,6 +13,8 @@ import com.azure.cosmos.implementation.query.UnorderedDistinctMap;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -81,10 +82,13 @@ public class DistinctQueryTests extends TestSuiteBase {
         options.setMaxItemCount(5);
         options.setPopulateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options,
-                                                                                             CosmosItemProperties.class);
-        
-        List<Object> nameList = docs.stream().map(d -> d.get(FIELD)).collect(Collectors.toList());
+        CosmosPagedFlux<CosmosItemProperties> queryObservable =
+            createdCollection.queryItems(query,
+                                         options,
+                                         CosmosItemProperties.class);
+        List<Object> nameList = docs.stream()
+                                    .map(d -> ModelBridgeInternal.getObjectFromJsonSerializable(d, FIELD))
+                                    .collect(Collectors.toList());
         List<Object> distinctNameList = nameList.stream().distinct().collect(Collectors.toList());
 
         FeedResponseListValidator<CosmosItemProperties> validator =
@@ -251,14 +255,17 @@ public class DistinctQueryTests extends TestSuiteBase {
             FeedResponse<CosmosItemProperties> next = iterator.next();
             itemPropertiesList.addAll(next.getResults());
         }
-        
+
         assertThat(itemPropertiesList.size()).isEqualTo(2);
-        List<Object> intpropList = itemPropertiesList.stream()
-                                   .map(cosmosItemProperties -> cosmosItemProperties.get("intprop"))
+        List<Object> intpropList = itemPropertiesList
+                                       .stream()
+                                       .map(cosmosItemProperties ->
+                                                ModelBridgeInternal.getObjectFromJsonSerializable(
+                                                    cosmosItemProperties, "intprop"))
                                    .collect(Collectors.toList());
         // We insert two documents witn intprop as 5.0 and 5. Distinct should consider them as one
         assertThat(intpropList).containsExactlyInAnyOrder(null, 5);
-        
+
     }
 
     public void bulkInsert() {
@@ -319,13 +326,13 @@ public class DistinctQueryTests extends TestSuiteBase {
 
     @BeforeClass(groups = {"simple"}, timeOut = 3 * SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = this.clientBuilder().buildAsyncClient();
+        client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
         bulkInsert();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
     }
 
     public enum City {

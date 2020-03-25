@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import reactor.core.publisher.Flux;
 
@@ -15,17 +16,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 public class DistinctDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
     private final IDocumentQueryExecutionComponent<T> component;
     private final DistinctMap distinctMap;
-    private final DistinctQueryType distinctQueryType;
-    private String lastHash;
+    private final AtomicReference<String> lastHash;
 
-    public DistinctDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component,
-                                                 DistinctQueryType distinctQueryType,
-                                                 String previousHash) {
+    private DistinctDocumentQueryExecutionContext(
+        IDocumentQueryExecutionComponent<T> component,
+        DistinctQueryType distinctQueryType,
+        String previousHash) {
         if (distinctQueryType == DistinctQueryType.NONE) {
             throw new IllegalArgumentException("Invalid distinct query type");
         }
@@ -34,9 +36,9 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
             throw new IllegalArgumentException("documentQueryExecutionComponent cannot be null");
         }
 
-        this.distinctQueryType = distinctQueryType;
         this.component = component;
         this.distinctMap = DistinctMap.create(distinctQueryType, previousHash);
+        this.lastHash = new AtomicReference<>();
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
@@ -81,24 +83,24 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
     @Override
     public Flux<FeedResponse<T>> drainAsync(int maxPageSize) {
         return this.component.drainAsync(maxPageSize).map(tFeedResponse -> {
-
             final List<T> distinctResults = new ArrayList<>();
 
             tFeedResponse.getResults().forEach(document -> {
                 Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
                 if (this.distinctMap.add(document, outHash)) {
                     distinctResults.add(document);
-                    lastHash = outHash.v;
+                    this.lastHash.set(outHash.v);
                 }
             });
-
             Map<String, String> headers = new HashMap<>(tFeedResponse.getResponseHeaders());
             if (tFeedResponse.getContinuationToken() != null) {
 
                 final String sourceContinuationToken = tFeedResponse.getContinuationToken();
-                final DistinctContinuationToken distinctContinuationToken = new DistinctContinuationToken(this.lastHash,
-                                                                                                          sourceContinuationToken);
-                headers.put(HttpConstants.HttpHeaders.CONTINUATION, distinctContinuationToken.toJson());
+                final DistinctContinuationToken distinctContinuationToken =
+                    new DistinctContinuationToken(this.lastHash.get(),
+                        sourceContinuationToken);
+                headers.put(HttpConstants.HttpHeaders.CONTINUATION,
+                            ModelBridgeInternal.toJsonFromJsonSerializable(distinctContinuationToken));
             }
 
             return BridgeInternal.createFeedResponseWithQueryMetrics(distinctResults,

@@ -29,7 +29,6 @@ public class DistinctMapTest {
         DistinctMap distinctMap = DistinctMap.create(queryType, null);
         Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
         boolean add = distinctMap.add(resource, outHash);
-        System.out.println("outHash5 = " + outHash.v);
         assertThat(add).as("Value should be added first time").isTrue();
         boolean add2 = distinctMap.add(resource, outHash);
         assertThat(add2).as("same value should not be added again").isFalse();
@@ -65,7 +64,7 @@ public class DistinctMapTest {
                                             + "}", 117546, "xxyyzz-abc");
         Document resource = new Document(resourceString);
         DistinctMap distinctMap = DistinctMap.create(queryType, null);
-        
+
         Utils.ValueHolder<String> outHash = new Utils.ValueHolder<>();
         boolean add = distinctMap.add(resource, outHash);
         assertThat(add).as("Value should be added first time").isTrue();
@@ -138,5 +137,5 @@ public class DistinctMapTest {
         boolean add2 = distinctMap.add(resource, outHash);
         assertThat(add2).as("Order of objects in map should be treated same").isFalse();
     }
-    
+
 }
