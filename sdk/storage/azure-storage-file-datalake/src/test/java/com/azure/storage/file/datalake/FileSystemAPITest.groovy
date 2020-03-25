@@ -1157,4 +1157,19 @@ class FileSystemAPITest extends APISpec {
         items.hasNext()
     }
 
+    def "Set ACL root directory"() {
+        setup:
+        def dc = fsc.getRootDirectoryClient()
+
+        List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
+
+        when:
+        def resp = dc.setAccessControlList(pathAccessControlEntries, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        resp.getETag()
+        resp.getLastModified()
+    }
+
 }

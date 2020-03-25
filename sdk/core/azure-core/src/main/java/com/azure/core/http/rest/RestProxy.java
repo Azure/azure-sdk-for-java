@@ -335,7 +335,7 @@ public final class RestProxy implements InvocationHandler {
     private Mono<HttpDecodedResponse> ensureExpectedStatus(Mono<HttpDecodedResponse> asyncDecodedResponse,
                                                            final SwaggerMethodParser methodParser) {
         return asyncDecodedResponse
-            .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser, null));
+            .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser));
     }
 
     private static Exception instantiateUnexpectedException(UnexpectedExceptionInformation exception,
@@ -377,20 +377,18 @@ public final class RestProxy implements InvocationHandler {
      * @param decodedResponse The HttpResponse to check.
      * @param methodParser The method parser that contains information about the service interface
      *     method that initiated the HTTP request.
-     * @param additionalAllowedStatusCodes Additional allowed status codes that are permitted based
-     *     on the context of the HTTP request.
      * @return An async-version of the provided decodedResponse.
      */
     private Mono<HttpDecodedResponse> ensureExpectedStatus(final HttpDecodedResponse decodedResponse,
-                final SwaggerMethodParser methodParser, int[] additionalAllowedStatusCodes) {
+                final SwaggerMethodParser methodParser) {
         final int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
         final Mono<HttpDecodedResponse> asyncResult;
-        if (!methodParser.isExpectedResponseStatusCode(responseStatusCode, additionalAllowedStatusCodes)) {
+        if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
             Mono<String> bodyAsString = decodedResponse.getSourceResponse().getBodyAsString();
             //
             asyncResult = bodyAsString.flatMap((Function<String, Mono<HttpDecodedResponse>>) responseContent -> {
                 // bodyAsString() emits non-empty string, now look for decoded version of same string
-                Mono<Object> decodedErrorBody = decodedResponse.getDecodedBody();
+                Mono<Object> decodedErrorBody = decodedResponse.getDecodedBody(responseContent);
                 //
                 return decodedErrorBody
                     .flatMap((Function<Object, Mono<HttpDecodedResponse>>) responseDecodedErrorObject -> {
@@ -506,7 +504,7 @@ public final class RestProxy implements InvocationHandler {
             asyncResult = Mono.just(response.getSourceResponse().getBody());
         } else {
             // Mono<Object> or Mono<Page<T>>
-            asyncResult = response.getDecodedBody();
+            asyncResult = response.getDecodedBody(null);
         }
         return asyncResult;
     }

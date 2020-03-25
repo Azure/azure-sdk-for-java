@@ -1,54 +1,54 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestssetpropertieserror83603d7030c4?restype=share",
+    "Uri" : "https://gaprastg71.file.core.windows.net/directoryasyncapitestssetpropertieserror20668ddc8a4c?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "4698cb5e-1ebb-4797-b2d3-cf98f76450d8"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "cdb07c6c-d4be-4162-af0d-a33e7af0d765"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7519F67D4C743",
-      "Last-Modified" : "Tue, 15 Oct 2019 18:42:17 GMT",
+      "ETag" : "0x8D77911C2085E8F",
+      "Last-Modified" : "Wed, 04 Dec 2019 23:29:07 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "8639c752-701a-00fe-7e88-830c13000000",
-      "Date" : "Tue, 15 Oct 2019 18:42:17 GMT",
-      "x-ms-client-request-id" : "4698cb5e-1ebb-4797-b2d3-cf98f76450d8"
+      "x-ms-request-id" : "172f8991-101a-0047-3ffa-aaf960000000",
+      "Date" : "Wed, 04 Dec 2019 23:29:07 GMT",
+      "x-ms-client-request-id" : "cdb07c6c-d4be-4162-af0d-a33e7af0d765"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.file.core.windows.net/directoryasyncapitestssetpropertieserror83603d7030c4/directoryasyncapitestssetpropertieserror6270865c6d86?restype=directory",
+    "Uri" : "https://gaprastg71.file.core.windows.net/directoryasyncapitestssetpropertieserror20668ddc8a4c/directoryasyncapitestssetpropertieserror413433b10a73?restype=directory",
     "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-storage-file/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "08d0be39-d616-4cf3-8839-99661264c7ab"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "8bebd206-9d58-47b1-bfa0-c1a50650dddb"
     },
     "Response" : {
-      "x-ms-version" : "2019-02-02",
-      "x-ms-file-permission-key" : "16004293428625128841*13168958551941065216",
+      "x-ms-version" : "2019-07-07",
+      "x-ms-file-permission-key" : "1887593946193683302*8280205063999649007",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-10-15T18:42:18.0448153Z",
-      "Last-Modified" : "Tue, 15 Oct 2019 18:42:18 GMT",
+      "x-ms-file-creation-time" : "2019-12-04T23:29:07.3869854Z",
+      "Last-Modified" : "Wed, 04 Dec 2019 23:29:07 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 15 Oct 2019 18:42:17 GMT",
-      "ETag" : "0x8D7519F67DDB799",
+      "Date" : "Wed, 04 Dec 2019 23:29:07 GMT",
+      "ETag" : "0x8D77911C216701E",
       "x-ms-file-attributes" : "Directory",
-      "x-ms-file-change-time" : "2019-10-15T18:42:18.0448153Z",
+      "x-ms-file-change-time" : "2019-12-04T23:29:07.3869854Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "8639c755-701a-00fe-8088-830c13000000",
-      "x-ms-client-request-id" : "08d0be39-d616-4cf3-8839-99661264c7ab",
-      "x-ms-file-last-write-time" : "2019-10-15T18:42:18.0448153Z"
+      "x-ms-request-id" : "172f8993-101a-0047-40fa-aaf960000000",
+      "x-ms-client-request-id" : "8bebd206-9d58-47b1-bfa0-c1a50650dddb",
+      "x-ms-file-last-write-time" : "2019-12-04T23:29:07.3869854Z"
     },
     "Exception" : null
   } ],
-  "variables" : [ "directoryasyncapitestssetpropertieserror83603d7030c4", "directoryasyncapitestssetpropertieserror6270865c6d86" ]
+  "variables" : [ "directoryasyncapitestssetpropertieserror20668ddc8a4c", "directoryasyncapitestssetpropertieserror413433b10a73" ]
 }

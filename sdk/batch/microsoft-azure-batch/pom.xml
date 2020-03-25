@@ -37,13 +37,13 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>1.6.15</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
+      <version>1.7.2</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>adal4j</artifactId>
-      <version>1.6.4</version> <!-- {x-version-update;com.microsoft.azure:adal4j;external_dependency} -->
+      <version>1.6.5</version> <!-- {x-version-update;com.microsoft.azure:adal4j;external_dependency} -->
     </dependency>
 
     <dependency>

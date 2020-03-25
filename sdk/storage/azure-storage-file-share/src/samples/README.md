@@ -1,20 +1,24 @@
+---
+page_type: sample
+languages:
+  - java
+products:
+  - azure
+  - azure-file
+  - azure-storage
+urlFragment: storage-file-share-samples
+---
 
-## Azure Azure Storage File Samples client library for Java
+# Azure Storage File Samples client library for Java
 This document explains samples and how to use them.
 
 ## Key concepts
 More detail is defined at [file key concept][file_key_concept].
 
-# Samples Azure Storage Blob Batch APIs
-This document describes how to use samples and what is done in each sample.
-
 ## Getting started
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
-
-## How to run
-These sample can be run in your IDE with default JDK.
 
 ## Examples
 Following are examples for some common use-cases.

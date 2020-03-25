@@ -4,13 +4,13 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -27,6 +27,7 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.util.ArrayList;
@@ -44,10 +45,14 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
+import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
+import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 
 /**
@@ -101,9 +106,12 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final String eventHubName;
     private final EventHubConnectionProcessor connectionProcessor;
     private final AmqpRetryOptions retryOptions;
+    private final AmqpRetryPolicy retryPolicy;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
+    private final Scheduler scheduler;
     private final boolean isSharedConnection;
+    private final Runnable onClientClose;
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
@@ -112,7 +120,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, boolean isSharedConnection) {
+        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
@@ -121,6 +129,10 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
+        this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
+
+        this.retryPolicy = getRetryPolicy(retryOptions);
+        this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
     }
 
@@ -350,7 +362,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
 
-        return sendInternal(events, options);
+        return sendInternal(events, options).publishOn(scheduler);
     }
 
     /**
@@ -371,12 +383,12 @@ public class EventHubProducerAsyncClient implements Closeable {
         }
 
         if (!CoreUtils.isNullOrEmpty(batch.getPartitionId())) {
-            logger.info("Sending batch with size[{}] to partitionId[{}].", batch.getCount(), batch.getPartitionId());
+            logger.verbose("Sending batch with size[{}] to partitionId[{}].", batch.getCount(), batch.getPartitionId());
         } else if (!CoreUtils.isNullOrEmpty(batch.getPartitionKey())) {
-            logger.info("Sending batch with size[{}] with partitionKey[{}].",
+            logger.verbose("Sending batch with size[{}] with partitionKey[{}].",
                 batch.getCount(), batch.getPartitionKey());
         } else {
-            logger.info("Sending batch with size[{}] to be distributed round-robin in service.", batch.getCount());
+            logger.verbose("Sending batch with size[{}] to be distributed round-robin in service.", batch.getCount());
         }
 
         final String partitionKey = batch.getPartitionKey();
@@ -386,7 +398,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             : null;
 
         Context sharedContext = null;
-        List<Message> messages = new ArrayList<>();
+        final List<Message> messages = new ArrayList<>();
 
         for (int i = 0; i < batch.getEvents().size(); i++) {
             final EventData event = batch.getEvents().get(i);
@@ -409,20 +421,24 @@ public class EventHubProducerAsyncClient implements Closeable {
             messages.add(message);
         }
 
-        Context finalSharedContext = sharedContext;
-        return getSendLink(batch.getPartitionId())
-            .flatMap(link -> {
-                if (isTracingEnabled) {
-                    Context entityContext = finalSharedContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
-                    // start send span and store updated context
-                    parentContext.set(tracerProvider.startSpan(
-                        entityContext.addData(HOST_NAME_KEY, link.getHostname()), ProcessKind.SEND));
-                }
-                return messages.size() == 1
-                    ? link.send(messages.get(0))
-                    : link.send(messages);
+        if (isTracingEnabled) {
+            final Context finalSharedContext = sharedContext == null
+                ? Context.NONE
+                : sharedContext
+                    .addData(ENTITY_PATH_KEY, eventHubName)
+                    .addData(HOST_NAME_KEY, fullyQualifiedNamespace)
+                    .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+            // Start send span and store updated context
+            parentContext.set(tracerProvider.startSpan(finalSharedContext, ProcessKind.SEND));
+        }
 
-            }).doOnEach(signal -> {
+        return withRetry(getSendLink(batch.getPartitionId())
+            .flatMap(link ->
+                messages.size() == 1
+                    ? link.send(messages.get(0))
+                    : link.send(messages)), retryOptions.getTryTimeout(), retryPolicy)
+            .publishOn(scheduler)
+            .doOnEach(signal -> {
                 if (isTracingEnabled) {
                     tracerProvider.endSpan(parentContext.get(), signal);
                 }
@@ -470,19 +486,12 @@ public class EventHubProducerAsyncClient implements Closeable {
             : String.format(Locale.US, SENDER_ENTITY_PATH_FORMAT, eventHubName, partitionId);
     }
 
-    private String getLinkName(String partitionId) {
-        return CoreUtils.isNullOrEmpty(partitionId)
-            ? StringUtil.getRandomString("EC")
-            : StringUtil.getRandomString("PS");
-    }
-
     private Mono<AmqpSendLink> getSendLink(String partitionId) {
         final String entityPath = getEntityPath(partitionId);
+        final String linkName = getEntityPath(partitionId);
 
         return connectionProcessor
-            .flatMap(connection -> {
-                return connection.createSendLink(getLinkName(partitionId), entityPath, retryOptions);
-            });
+            .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
     }
 
     /**
@@ -495,7 +504,9 @@ public class EventHubProducerAsyncClient implements Closeable {
             return;
         }
 
-        if (!isSharedConnection) {
+        if (isSharedConnection) {
+            onClientClose.run();
+        } else {
             connectionProcessor.dispose();
         }
     }

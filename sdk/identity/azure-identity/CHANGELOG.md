@@ -1,5 +1,24 @@
 # Release History
 
+## 1.1.0-beta.3 (Unreleased)
+
+## 1.1.0-beta.2 (2020-03-11)
+
+### Added
+- Added 'authorityHost' set method in `DefaultAzureCredentialBuilder`
+- Added `executorService` set method in all the credential builders except `ManagedIdentityCredentialBuilder`
+- Added `authorityHost` set method to `DefaultAzureCredentialBuilder`
+- Added `tokenRefreshOffset` set method in all the credential builders.
+- Added `httpClient` set method in all the credential builders.
+- Updated `DefaultAzureCredential` to enable authenticating through the Azure CLI
+
+## 1.1.0-beta.1 (2020-02-12)
+- All credential builders support setting a pipeline via `httpPipeline` method.
+- SharedTokenCacheCredentialBuilder supports setting the tenant id via `tenantId` method.
+
+## 1.0.3 (2020-01-13)
+- Support datetime format `M/d/yyyy K:mm:ss a XXX` for token `expires_on` property on Windows App Services.
+
 ## 1.0.2 (2020-01-07)
 - Fix MSI_ENDPOINT and MSI_SECRET environment variable lookup issue in `ManagedIdentityCredential` when running on App Service
 
@@ -8,7 +27,7 @@
 
 - The `getToken(TokenRequest tokenRequest)` methods on all the credentials are changed to `getToken(TokenRequestContext tokenRequestContext)`. 
 - All credentials are moved from `com.azure.identity.credential` package to `com.azure.identity` package
-- `DeviceCodeChallenge` is renamed to `DeviceCodeInfo`, with `int expiresIn()` replaced with `OffsetDateTime expiresOn()` returning the time of the device code expiration
+- `DeviceCodeChallenge` is renamed to r`DeviceCodeInfo`, with `int expiresIn()` replaced with `OffsetDateTime expiresOn()` returning the time of the device code expiration
 - All methods containing `uri` is renamed to contain `url` for consistency
 
 **Known issues**

@@ -3,27 +3,28 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+
 /**
- * Sample demonstrates how to extract the key phrases of an input text.
+ * Sample demonstrates how to extract the key phrases of document.
  */
 public class ExtractKeyPhrases {
     /**
-     * Main method to invoke this demo about how to extract the key phrases of an input text.
+     * Main method to invoke this demo about how to extract the key phrases of document.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("{subscription_key}")
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that need be analysed.
-        String text = "My cat might need to see a veterinarian.";
+        // The document that needs be analyzed.
+        String document = "My cat might need to see a veterinarian.";
 
-        for (String keyPhrase : client.extractKeyPhrases(text).getKeyPhrases()) {
-            System.out.printf("Recognized phrases: %s.%n", keyPhrase);
-        }
+        System.out.println("Extracted phrases:");
+        client.extractKeyPhrases(document).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
     }
 }

@@ -3,37 +3,37 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously recognize the linked entities of an input text.
+ * Sample demonstrates how to asynchronously recognize the linked entities of document.
  */
 public class RecognizeLinkedEntitiesAsync {
     /**
-     * Main method to invoke this demo about how to recognize the linked entities of an input text.
+     * Main method to invoke this demo about how to recognize the linked entities of document.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("{subscription_key}")
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analysed.
-        String text = "Old Faithful is a geyser at Yellowstone Park.";
+        // The document that needs be analyzed.
+        String document = "Old Faithful is a geyser at Yellowstone Park.";
 
-        client.recognizeLinkedEntities(text).subscribe(
-            result -> {
-                for (LinkedEntity linkedEntity : result.getLinkedEntities()) {
-                    System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
-                        linkedEntity.getName(),
-                        linkedEntity.getUrl(),
-                        linkedEntity.getDataSource());
-                }
+        client.recognizeLinkedEntities(document).subscribe(
+            linkedEntity -> {
+                System.out.println("Linked Entities:");
+                System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
+                    linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
+                    linkedEntity.getDataSource());
+                linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                    "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
             },
             error -> System.err.println("There was an error recognizing linked entity of the text." + error),
             () -> System.out.println("Linked entity recognized."));

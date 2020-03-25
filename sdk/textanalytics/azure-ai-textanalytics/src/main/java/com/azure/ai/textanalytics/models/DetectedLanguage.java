@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The DetectedLanguage model.
+ * The {@link DetectedLanguage} model.
  */
 @Immutable
 public final class DetectedLanguage {
@@ -28,12 +28,11 @@ public final class DetectedLanguage {
     private final double score;
 
     /**
-     * Creates a {@code DetectedLanguage} model that describes detected language content.
+     * Creates a {@link DetectedLanguage} model that describes detected language content.
      *
-     * @param name name of a detected language
-     * @param iso6391Name a two letter representation of the detected language according to the
-     * ISO 639-1 standard
-     * @param score a confidence score between 0 and 1
+     * @param name The name of a detected language.
+     * @param iso6391Name A two letter representation of the detected language according to the ISO 639-1 standard.
+     * @param score A confidence score between 0 and 1.
      */
     public DetectedLanguage(String name, String iso6391Name, double score) {
         this.name = name;
@@ -42,10 +41,9 @@ public final class DetectedLanguage {
     }
 
     /**
-     * Get the name property: Long name of a detected language (e.g. English,
-     * French).
+     * Get the name property: Long name of a detected language (e.g. English, French).
      *
-     * @return the name value.
+     * @return The name value.
      */
     public String getName() {
         return this.name;
@@ -55,7 +53,7 @@ public final class DetectedLanguage {
      * Get the iso6391Name property: A two letter representation of the
      * detected language according to the ISO 639-1 standard (e.g. en, fr).
      *
-     * @return the iso6391Name value.
+     * @return The iso6391Name value.
      */
     public String getIso6391Name() {
         return this.iso6391Name;
@@ -65,7 +63,7 @@ public final class DetectedLanguage {
      * Get the score property: A confidence score between 0 and 1. Scores close
      * to 1 indicate 100% certainty that the identified language is true.
      *
-     * @return the score value.
+     * @return The score value.
      */
     public double getScore() {
         return this.score;

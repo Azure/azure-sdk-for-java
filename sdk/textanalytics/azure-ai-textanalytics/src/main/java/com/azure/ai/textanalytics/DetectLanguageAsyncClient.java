@@ -7,26 +7,27 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.core.http.rest.Response;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.Transforms.mapByIndex;
+import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
+import static com.azure.ai.textanalytics.Transforms.toLanguageInput;
+import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Helper class for managing detect language endpoint.
@@ -36,7 +37,7 @@ class DetectLanguageAsyncClient {
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code DetectLanguageAsyncClient} that sends requests to the Text Analytics services's detect language
+     * Create a {@link DetectLanguageAsyncClient} that sends requests to the Text Analytics services's detect language
      * endpoint.
      *
      * @param service The proxy service used to perform REST calls.
@@ -45,80 +46,117 @@ class DetectLanguageAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint, Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
-        List<DetectLanguageInput> languageInputs = Collections.singletonList(new DetectLanguageInput("0",
-            text, countryHint));
-        return detectBatchLanguagesWithResponse(languageInputs, null, context).map(response ->
-            new SimpleResponse<>(response, response.getValue().iterator().next()));
-    }
+    /**
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link DetectLanguageResult}.
+     *
+     * @param documents The list of documents to detect languages for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     *
+     * @return The {@link TextAnalyticsPagedFlux} of {@link DetectLanguageResult}.
+     */
+    TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(Iterable<DetectLanguageInput> documents,
+        TextAnalyticsRequestOptions options) {
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
 
-    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(List<String> textInputs,
-        String countryHint, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-        List<DetectLanguageInput> detectLanguageInputs = mapByIndex(textInputs, (index, value) ->
-            new DetectLanguageInput(index, value, countryHint));
-
-        return detectBatchLanguagesWithResponse(detectLanguageInputs, null, context);
-    }
-
-    Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguagesWithResponse(
-        List<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        final LanguageBatchInput languageBatchInput = new LanguageBatchInput()
-            .setDocuments(textInputs.stream().map(detectLanguageInput -> new LanguageInput()
-                .setId(detectLanguageInput.getId()).setText(detectLanguageInput.getText())
-                .setCountryHint(detectLanguageInput.getCountryHint())).collect(Collectors.toList()));
-
-        return service.languagesWithRestResponseAsync(
-            languageBatchInput, options == null ? null : options.getModelVersion(),
-            options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of language input - {}", textInputs.toString()))
-            .doOnSuccess(response -> logger.info("A batch of detected language output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to detect languages - {}", error))
-            .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
+        try {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
+                getDetectedLanguageResponseInPage(documents, options, context)).flux());
+        } catch (RuntimeException ex) {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
+        }
     }
 
     /**
-     * Helper method to convert the service response of {@link LanguageResult} to {@link DocumentResultCollection}.
+     * Helper function for calling service with max overloaded parameters with {@link Context} that a returns
+     * {@link TextAnalyticsPagedFlux} which is a paged flux that contains {@link DetectLanguageResult}.
      *
-     * @param languageResult the {@link LanguageResult} returned by the service.
+     * @param documents The list of documents to detect languages for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return the {@link DocumentResultCollection} of {@link DetectLanguageResult} to be returned by the SDK.
+     * @return The {@link TextAnalyticsPagedFlux} of {@link DetectLanguageResult}.
      */
-    private DocumentResultCollection<DetectLanguageResult> toDocumentResultCollection(
-        final LanguageResult languageResult) {
+    TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatchWithContext(
+        Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
+        return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
+            getDetectedLanguageResponseInPage(documents, options, context).flux());
+    }
+
+    /**
+     * Helper method to convert the service response of {@link LanguageResult} to {@link TextAnalyticsPagedResponse}
+     * of {@link DetectLanguageResult}.
+     *
+     * @param response the {@link SimpleResponse} of {@link LanguageResult} returned by the service.
+     *
+     * @return the {@link TextAnalyticsPagedResponse} of {@link DetectLanguageResult} to be returned by the SDK.
+     */
+    private TextAnalyticsPagedResponse<DetectLanguageResult> toTextAnalyticsPagedResponse(
+        SimpleResponse<LanguageResult> response) {
+
+        final LanguageResult languageResult = response.getValue();
 
         final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
         for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
             DetectedLanguage primaryLanguage = null;
-            if (documentLanguage.getDetectedLanguages().size() >= 1) {
+            List<com.azure.ai.textanalytics.implementation.models.DetectedLanguage> detectedLanguages =
+                documentLanguage.getDetectedLanguages();
+            if (detectedLanguages.size() >= 1) {
+                detectedLanguages.sort(
+                    Comparator.comparing(com.azure.ai.textanalytics.implementation.models.DetectedLanguage::getScore));
                 com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguageResult =
-                    documentLanguage.getDetectedLanguages().get(0);
+                    detectedLanguages.get(0);
                 primaryLanguage = new DetectedLanguage(detectedLanguageResult.getName(),
                     detectedLanguageResult.getIso6391Name(), detectedLanguageResult.getScore());
             }
+
             detectLanguageResults.add(new DetectLanguageResult(documentLanguage.getId(),
                 documentLanguage.getStatistics() == null
                     ? null : Transforms.toTextDocumentStatistics(documentLanguage.getStatistics()),
                 null,
-                primaryLanguage,
-                documentLanguage.getDetectedLanguages().stream().map(detectedLanguage ->
-                    new DetectedLanguage(detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
-                        detectedLanguage.getScore())).collect(Collectors.toList())));
+                primaryLanguage));
         }
 
         for (DocumentError documentError : languageResult.getErrors()) {
             com.azure.ai.textanalytics.models.TextAnalyticsError error =
                 Transforms.toTextAnalyticsError(documentError.getError());
+            final String documentId = documentError.getId();
+
             detectLanguageResults.add(
-                new DetectLanguageResult(documentError.getId(), null, error, null, null));
+                new DetectLanguageResult(documentId, null, error, null));
         }
 
-        return new DocumentResultCollection<>(detectLanguageResults, languageResult.getModelVersion(),
-            languageResult.getStatistics() == null ? null
-                : Transforms.toBatchStatistics(languageResult.getStatistics()));
+        return new TextAnalyticsPagedResponse<>(
+            response.getRequest(),
+            response.getStatusCode(),
+            response.getHeaders(),
+            detectLanguageResults,
+            null,
+            languageResult.getModelVersion(),
+            languageResult.getStatistics() == null ? null : toBatchStatistics(languageResult.getStatistics()));
     }
 
+    /**
+     * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
+     * {@link DetectLanguageResult} from a {@link SimpleResponse} of {@link LanguageResult}.
+     *
+     * @param documents The list of documents to detect languages for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link DetectLanguageResult}.
+     */
+    private Mono<TextAnalyticsPagedResponse<DetectLanguageResult>> getDetectedLanguageResponseInPage(
+        Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        return service.languagesWithRestResponseAsync(
+            new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
+            options == null ? null : options.getModelVersion(),
+            options == null ? null : options.isIncludeStatistics(), context)
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
+            .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
+                response.getValue()))
+            .doOnError(error -> logger.warning("Failed to detect language - {}", error))
+            .map(this::toTextAnalyticsPagedResponse);
+    }
 }

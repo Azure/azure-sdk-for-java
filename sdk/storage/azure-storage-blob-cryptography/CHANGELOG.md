@@ -1,5 +1,30 @@
 # Release History
 
+## 12.6.0-beta.1 (Unreleased)
+
+
+## 12.5.0 (2020-03-11)
+- Fixed a bug where the EncryptedBlockClientBuilder.pipeline method would not allow the client to support decryption.
+- Added support for specifying a customer provided key.
+- Fixed a bug that would cause EncryptedBlobClient.upload(InputStream, long) to not encrypt the data.
+- Changed getAppendBlobClient, getBlockBlobClient, and getPageBlobClient on EncryptedBlobClient to throw as working with such clients is not supported. 
+
+## 12.4.0 (2020-02-12)
+- Added support for upload via OutputStream by adding EncryptedBlobClient.getOutputStream methods
+
+## 12.3.1 (2020-02-10)
+- Updated `azure-core-http-netty` to version 1.3.0
+- Update `azure-storage-blob` to version 12.3.1
+
+## 12.3.0 (2020-01-15)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob-cryptography_12.3.0/sdk/storage/azure-storage-blob-cryptography/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob-cryptography_12.3.0/sdk/storage/azure-storage-blob-cryptography/src/samples/java/com/azure/storage/blob/cryptography)
+
+- Upgraded to version 12.3.0 of Azure Storage Blob.
+- Added .blobClient(BlobClient) and .blobAsyncClient(BlobAsyncClient) methods on EncryptedBlobClientBuilder to create an EncryptedBlobClient from a BlobClient.
+
 ## 12.2.0 (2020-01-08)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob-cryptography_12.2.0/sdk/storage/azure-storage-blob-cryptography/README.md)

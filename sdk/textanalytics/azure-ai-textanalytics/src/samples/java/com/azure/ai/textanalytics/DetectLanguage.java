@@ -3,40 +3,30 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
- * Sample demonstrates how to detect the language of an input text.
+ * Sample demonstrates how to detect the language of document.
  */
 public class DetectLanguage {
     /**
-     * Main method to invoke this demo about how to detect the language of an input text.
+     * Main method to invoke this demo about how to detect the language of document.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("{subscription_key}")
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that need be analysed.
-        String text = "hello world";
+        // The document that needs be analyzed.
+        String document = "hello world";
 
-        final DetectLanguageResult detectLanguageResult = client.detectLanguage(text, "US");
-        final DetectedLanguage detectedPrimaryLanguage = detectLanguageResult.getPrimaryLanguage();
-        System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %s.%n",
-            detectedPrimaryLanguage.getName(),
-            detectedPrimaryLanguage.getIso6391Name(),
-            detectedPrimaryLanguage.getScore());
-
-        for (DetectedLanguage detectedLanguage : detectLanguageResult.getDetectedLanguages()) {
-            System.out.printf("Another detected language: %s, ISO 6391 name: %s, score: %s.%n",
-                detectedLanguage.getName(),
-                detectedLanguage.getIso6391Name(),
-                detectedLanguage.getScore());
-        }
+        final DetectedLanguage detectedLanguage = client.detectLanguage(document);
+        System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %f.%n",
+            detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
     }
 }

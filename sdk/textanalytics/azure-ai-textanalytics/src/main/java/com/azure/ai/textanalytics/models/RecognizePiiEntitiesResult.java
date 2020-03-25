@@ -4,37 +4,39 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * The RecognizePiiEntitiesResult model.
+ * The {@link RecognizePiiEntitiesResult} model.
  */
 @Immutable
 public final class RecognizePiiEntitiesResult extends DocumentResult {
-    private final List<NamedEntity> namedEntities;
+    private final IterableStream<PiiEntity> entities;
 
     /**
-     * Creates a {@code RecognizePiiEntitiesResult} model that describes recognized entities result
+     * Creates a {@link RecognizePiiEntitiesResult} model that describes recognized entities result.
      *
-     * @param id unique, non-empty document identifier
-     * @param textDocumentStatistics text document statistics
-     * @param error the document error
-     * @param namedEntities a list of {@link NamedEntity}
+     * @param id Unique, non-empty document identifier.
+     * @param textDocumentStatistics The text document statistics.
+     * @param error The document error.
+     * @param entities An {@link IterableStream} of {@link PiiEntity}.
+
      */
     public RecognizePiiEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error, List<NamedEntity> namedEntities) {
+        TextAnalyticsError error, IterableStream<PiiEntity> entities) {
         super(id, textDocumentStatistics, error);
-        this.namedEntities = namedEntities == null ? new ArrayList<>() : namedEntities;
+        this.entities = entities == null ? new IterableStream<>(new ArrayList<>()) : entities;
     }
 
     /**
-     * Get a list of named entities string
+     * Get an {@link IterableStream} of {@link PiiEntity}.
      *
-     * @return a list of {@link NamedEntity}
+     * @return An {@link IterableStream} of {@link PiiEntity}.
      */
-    public List<NamedEntity> getNamedEntities() {
-        return namedEntities;
+    public IterableStream<PiiEntity> getEntities() {
+        throwExceptionIfError();
+        return entities;
     }
 }

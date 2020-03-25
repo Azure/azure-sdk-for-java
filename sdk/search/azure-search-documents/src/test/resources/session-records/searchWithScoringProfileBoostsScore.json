@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk970046fd4fa.search.windows.net/indexes('hotels')/docs/search.index?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "e0ac9c53-27f2-40b4-972a-b1f1ff7552a5",
+      "StatusCode" : "200",
+      "Date" : "Mon, 24 Feb 2020 19:51:41 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "168",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "794",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk970046fd4fa.search.windows.net/indexes('hotels')/$metadata#Collection(Microsoft.Azure.Search.V2019_05_06.IndexResult)\",\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"3\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"4\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"5\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"6\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"7\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"8\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"9\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"10\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk970046fd4fa.search.windows.net/indexes('hotels')/docs/search.post.search?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "202ea91a-4b47-4be6-87e4-86fc9f524ddf",
+      "StatusCode" : "200",
+      "Date" : "Mon, 24 Feb 2020 19:51:43 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "49",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "1641",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk970046fd4fa.search.windows.net/indexes('hotels')/$metadata#docs(*)\",\"value\":[{\"@search.score\":0.094138205,\"HotelId\":\"2\",\"HotelName\":\"Roach Motel\",\"Description\":\"Cheapest hotel in town. Infact, a motel.\",\"Description_fr\":\"H\\u00c3\\u00b4tel le moins cher en ville. Infact, un motel.\",\"Category\":\"Budget\",\"Tags\":[\"motel\",\"budget\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":\"1982-04-28T00:00:00Z\",\"Rating\":1,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,49.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":null,\"Rooms\":[]},{\"@search.score\":0.056351528,\"HotelId\":\"1\",\"HotelName\":\"Fancy Stay\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":\"Meilleur h\\u00c3\\u00b4tel en ville si vous aimez les h\\u00c3\\u00b4tels de luxe. Ils ont une magnifique piscine \\u00c3\\u00a0 d\\u00c3\\u00a9bordement, un spa et un concierge tr\\u00c3\\u00a8s utile. L'emplacement est parfait \\u00e2\\u20ac\\u201c en plein centre, \\u00c3\\u00a0 proximit\\u00c3\\u00a9 de toutes les attractions touristiques. Nous recommandons fortement cet h\\u00c3\\u00b4tel.\",\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":false,\"SmokingAllowed\":false,\"LastRenovationDate\":\"2010-06-27T00:00:00Z\",\"Rating\":5,\"Location\":{\"type\":\"Point\",\"coordinates\":[-122.131577,47.678581],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":null,\"Rooms\":[]}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk970046fd4fa" ]
+}

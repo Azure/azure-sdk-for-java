@@ -4,32 +4,34 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
-import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.NamedEntity;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.EntityCategory;
+import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.core.http.rest.Response;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
+import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
-import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
-import static com.azure.ai.textanalytics.Transforms.mapByIndex;
+import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Helper class for managing recognize entity endpoint.
@@ -39,8 +41,8 @@ class RecognizeEntityAsyncClient {
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code RecognizeEntityAsyncClient} that sends requests to the Text Analytics services's recognize entity
-     * endpoint.
+     * Create a {@link RecognizeEntityAsyncClient} that sends requests to the Text Analytics services's
+     * recognize entity endpoint.
      *
      * @param service The proxy service used to perform REST calls.
      */
@@ -48,67 +50,135 @@ class RecognizeEntityAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<RecognizeEntitiesResult>> recognizeEntitiesWithResponse(String text, String language,
-        Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
+    /**
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link CategorizedEntity}.
+     *
+     * @param document A single document.
+     * @param language The language code.
+     *
+     * @return The {@link TextAnalyticsPagedFlux} of {@link CategorizedEntity}.
+     */
+    TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String document, String language) {
+        return new TextAnalyticsPagedFlux<>(() ->
+            (continuationToken, pageSize) -> recognizeEntitiesBatch(
+                Collections.singletonList(new TextDocumentInput("0", document, language)), null)
+                .byPage()
+                .map(resOfResult -> {
+                    Iterator<RecognizeCategorizedEntitiesResult> iterator = resOfResult.getValue().iterator();
+                    // Collection will never empty
+                    if (!iterator.hasNext()) {
+                        throw logger.logExceptionAsError(new IllegalStateException(
+                            "An empty collection returned which is an unexpected error."));
+                    }
 
-        return recognizeBatchEntitiesWithResponse(
-            Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
-    }
+                    final RecognizeCategorizedEntitiesResult entitiesResult = iterator.next();
+                    if (entitiesResult.isError()) {
+                        throw logger.logExceptionAsError(
+                            Transforms.toTextAnalyticsException(entitiesResult.getError()));
+                    }
 
-    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(
-        List<String> textInputs, String language, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
-            new TextDocumentInput(index, value, language));
-        return recognizeBatchEntitiesWithResponse(documentInputs, null, context);
-    }
-
-    Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeBatchEntitiesWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-            .setDocuments(Transforms.toMultiLanguageInput(textInputs));
-        return service.entitiesRecognitionGeneralWithRestResponseAsync(
-            batchInput,
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of named entities input - {}", textInputs.toString()))
-            .doOnSuccess(response -> logger.info("A batch of named entities output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to recognize named entities - {}", error))
-            .map(response -> new SimpleResponse<>(response, toDocumentResultCollection(response.getValue())));
+                    return new TextAnalyticsPagedResponse<>(
+                        resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
+                        entitiesResult.getEntities().stream().collect(Collectors.toList()), null,
+                        resOfResult.getModelVersion(), resOfResult.getStatistics());
+                }));
     }
 
     /**
-     * Helper method to convert the service response of {@link EntitiesResult} to {@link DocumentResultCollection}.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link RecognizeCategorizedEntitiesResult}.
      *
-     * @param entitiesResult the {@link EntitiesResult} returned by the service.
+     * @param documents The list of documents to recognize entities for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
-     * @return the {@link DocumentResultCollection} of {@link DetectLanguageResult} to be returned by the SDK.
+     * @return The {@link TextAnalyticsPagedFlux} of {@link RecognizeCategorizedEntitiesResult}.
      */
-    private DocumentResultCollection<RecognizeEntitiesResult> toDocumentResultCollection(
-        final EntitiesResult entitiesResult) {
-        List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
-        for (DocumentEntities documentEntities : entitiesResult.getDocuments()) {
-            recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentEntities.getId(),
+    TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
+        try {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
+                getRecognizedEntitiesResponseInPage(documents, options, context)).flux());
+        } catch (RuntimeException ex) {
+            return new TextAnalyticsPagedFlux<>(() ->
+                (continuationToken, pageSize) -> fluxError(logger, ex));
+        }
+    }
+
+    /**
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link RecognizeCategorizedEntitiesResult}.
+     *
+     * @param documents The list of documents to recognize entities for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return the {@link TextAnalyticsPagedFlux} of {@link RecognizeCategorizedEntitiesResult} to be returned by
+     * the SDK.
+     */
+    TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatchWithContext(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
+        return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
+            getRecognizedEntitiesResponseInPage(documents, options, context).flux());
+    }
+
+    /**
+     * Helper method to convert the service response of {@link EntitiesResult} to {@link TextAnalyticsPagedResponse}.
+     * of {@link RecognizeCategorizedEntitiesResult}}
+     *
+     * @param response the {@link SimpleResponse} of {@link EntitiesResult} returned by the service.
+     *
+     * @return the {@link TextAnalyticsPagedResponse} of {@link RecognizeCategorizedEntitiesResult} to be returned
+     * by the SDK.
+     */
+    private TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult> toTextAnalyticsPagedResponse(
+        final SimpleResponse<EntitiesResult> response) {
+        EntitiesResult entitiesResult = response.getValue();
+        // List of documents results
+        List<RecognizeCategorizedEntitiesResult> recognizeCategorizedEntitiesResults = new ArrayList<>();
+        entitiesResult.getDocuments().forEach(documentEntities ->
+            recognizeCategorizedEntitiesResults.add(new RecognizeCategorizedEntitiesResult(
+                documentEntities.getId(),
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
-                null, documentEntities.getEntities().stream().map(entity ->
-                new NamedEntity(entity.getText(), entity.getType(), entity.getSubtype(), entity.getOffset(),
-                    entity.getLength(), entity.getScore())).collect(Collectors.toList())));
-        }
+                null,
+                new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
+                    new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getType()),
+                        entity.getSubtype(), entity.getOffset(), entity.getLength(), entity.getScore()))
+                    .collect(Collectors.toList())))));
+        // Document errors
+        entitiesResult.getErrors().forEach(documentError -> recognizeCategorizedEntitiesResults.add(
+            new RecognizeCategorizedEntitiesResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null)));
 
-        for (DocumentError documentError : entitiesResult.getErrors()) {
-            final com.azure.ai.textanalytics.models.TextAnalyticsError error =
-                toTextAnalyticsError(documentError.getError());
-            recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null, error, null));
-        }
+        return new TextAnalyticsPagedResponse<>(
+            response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            recognizeCategorizedEntitiesResults, null, entitiesResult.getModelVersion(),
+            entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics()));
+    }
 
-        return new DocumentResultCollection<>(recognizeEntitiesResults,
-            entitiesResult.getModelVersion(), entitiesResult.getStatistics() == null ? null
-            : toBatchStatistics(entitiesResult.getStatistics()));
+    /**
+     * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
+     * {@link RecognizeCategorizedEntitiesResult} from a {@link SimpleResponse} of {@link EntitiesResult}.
+     *
+     * @param documents A list of documents to recognize PII entities for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link RecognizeCategorizedEntitiesResult}.
+     */
+    private Mono<TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult>> getRecognizedEntitiesResponseInPage(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        return service.entitiesRecognitionGeneralWithRestResponseAsync(
+            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
+            options == null ? null : options.getModelVersion(),
+            options == null ? null : options.isIncludeStatistics(), context)
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
+            .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
+                response.getValue()))
+            .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
+            .map(this::toTextAnalyticsPagedResponse);
     }
 }

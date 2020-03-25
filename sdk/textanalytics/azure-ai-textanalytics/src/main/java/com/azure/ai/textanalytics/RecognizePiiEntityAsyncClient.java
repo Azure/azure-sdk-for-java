@@ -4,43 +4,45 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
-import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.EntityCategory;
+import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.core.http.rest.Response;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
-import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
+import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * Helper class for managing recognize pii entity endpoint.
+ * Helper class for managing recognize Personally Identifiable Information entity endpoint.
  */
 class RecognizePiiEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(RecognizePiiEntityAsyncClient.class);
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@code RecognizePiiEntityAsyncClient} that sends requests to the Text Analytics services's recognize pii
-     * entity endpoint.
+     * Create a {@link RecognizePiiEntityAsyncClient} that sends requests to the Text Analytics services's
+     * recognize Personally Identifiable Information entity endpoint.
      *
      * @param service The proxy service used to perform REST calls.
      */
@@ -48,66 +50,133 @@ class RecognizePiiEntityAsyncClient {
         this.service = service;
     }
 
-    Mono<Response<RecognizePiiEntitiesResult>> recognizePiiEntitiesWithResponse(String text, String language,
-        Context context) {
-        Objects.requireNonNull(text, "'text' cannot be null.");
+    /**
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link PiiEntity}.
+     *
+     * @param document A single document.
+     * @param language The language code.
+     *
+     * @return The {@link TextAnalyticsPagedFlux} of {@link PiiEntity}.
+     */
+    TextAnalyticsPagedFlux<PiiEntity> recognizePiiEntities(String document, String language) {
+        return new TextAnalyticsPagedFlux<>(() ->
+            (continuationToken, pageSize) -> recognizePiiEntitiesBatch(
+                Collections.singletonList(new TextDocumentInput("0", document, language)), null)
+                .byPage()
+                .map(resOfResult -> {
+                    final Iterator<RecognizePiiEntitiesResult> iterator = resOfResult.getValue().iterator();
+                    // Collection will never empty
+                    if (!iterator.hasNext()) {
+                        throw logger.logExceptionAsError(new IllegalStateException(
+                            "An empty collection returned which is an unexpected error."));
+                    }
 
-        return recognizeBatchPiiEntitiesWithResponse(
-            Collections.singletonList(new TextDocumentInput("0", text, language)), null, context)
-            .map(response -> new SimpleResponse<>(response, response.getValue().iterator().next()));
-    }
+                    final RecognizePiiEntitiesResult entitiesResult = iterator.next();
+                    if (entitiesResult.isError()) {
+                        throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
+                    }
 
-    Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesWithResponse(
-        List<String> textInputs, String language, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-
-        List<TextDocumentInput> documentInputs = mapByIndex(textInputs, (index, value) ->
-            new TextDocumentInput(index, value, language));
-        return recognizeBatchPiiEntitiesWithResponse(documentInputs, null, context);
-    }
-
-    Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizeBatchPiiEntitiesWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
-        final MultiLanguageBatchInput batchInput = new MultiLanguageBatchInput()
-            .setDocuments(toMultiLanguageInput(textInputs));
-        return service.entitiesRecognitionPiiWithRestResponseAsync(
-            batchInput,
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.showStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of PII entities input - {}", textInputs.toString()))
-            .doOnSuccess(response -> logger.info("A batch of PII entities output - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to recognize PII entities - {}", error))
-            .map(response -> new SimpleResponse<>(response, toPiiDocumentResultCollection(response.getValue())));
+                    return new TextAnalyticsPagedResponse<>(
+                        resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
+                        entitiesResult.getEntities().stream().collect(Collectors.toList()),
+                        null, resOfResult.getModelVersion(), resOfResult.getStatistics());
+                }));
     }
 
     /**
-     * Helper method to convert the service response of {@link EntitiesResult} to {@link DocumentResultCollection}.
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link RecognizePiiEntitiesResult}.
      *
-     * @param entitiesResult the {@link EntitiesResult} returned by the service.
+     * @param documents A list of documents to recognize PII entities for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
-     * @return the {@link DocumentResultCollection} of {@link RecognizePiiEntitiesResult} to be returned by the SDK.
+     * @return The {@link TextAnalyticsPagedFlux} of {@link RecognizePiiEntitiesResult}.
      */
-    private DocumentResultCollection<RecognizePiiEntitiesResult> toPiiDocumentResultCollection(
-        final EntitiesResult entitiesResult) {
-        List<RecognizePiiEntitiesResult> recognizePiiEntitiesResults = new ArrayList<>();
-        for (DocumentEntities documentEntities : entitiesResult.getDocuments()) {
-            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(documentEntities.getId(),
+    TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
+        try {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
+                getRecognizedPiiEntitiesResponseInPage(documents, options, context)).flux());
+        } catch (RuntimeException ex) {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
+        }
+    }
+
+    /**
+     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
+     * which is a paged flux that contains {@link RecognizePiiEntitiesResult}.
+     *
+     * @param documents A list of documents to recognize PII entities for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return the {@link TextAnalyticsPagedFlux} of {@link RecognizePiiEntitiesResult} to be returned by the SDK.
+     */
+    TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatchWithContext(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
+        return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
+            getRecognizedPiiEntitiesResponseInPage(documents, options, context).flux());
+    }
+
+    /**
+     * Helper method to convert the service response of {@link EntitiesResult} to {@link TextAnalyticsPagedResponse}
+     * of {@link RecognizePiiEntitiesResult}.
+     *
+     * @param response the {@link SimpleResponse} of {@link EntitiesResult} returned by the service.
+     *
+     * @return the {@link TextAnalyticsPagedResponse} of {@link RecognizePiiEntitiesResult} to be returned by the SDK.
+     */
+    private TextAnalyticsPagedResponse<RecognizePiiEntitiesResult> toTextAnalyticsPagedResponse(
+        SimpleResponse<EntitiesResult> response) {
+
+        final EntitiesResult entitiesResult = response.getValue();
+        // List of documents results
+        final List<RecognizePiiEntitiesResult> recognizePiiEntitiesResults = new ArrayList<>();
+        entitiesResult.getDocuments().forEach(documentEntities -> recognizePiiEntitiesResults.add(
+            new RecognizePiiEntitiesResult(
+                documentEntities.getId(),
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
-                null, documentEntities.getEntities().stream().map(entity ->
-                new NamedEntity(entity.getText(), entity.getType(), entity.getSubtype(), entity.getOffset(),
-                    entity.getLength(), entity.getScore())).collect(Collectors.toList())));
-        }
+                null,
+                new IterableStream<>(documentEntities.getEntities().stream().map(entity -> new PiiEntity(
+                    entity.getText(), EntityCategory.fromString(entity.getType()), entity.getSubtype(),
+                    entity.getOffset(), entity.getLength(), entity.getScore())).collect(Collectors.toList())))));
+        // Document errors
+        entitiesResult.getErrors().forEach(documentError -> recognizePiiEntitiesResults.add(
+            new RecognizePiiEntitiesResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null)));
 
-        for (DocumentError documentError : entitiesResult.getErrors()) {
-            final com.azure.ai.textanalytics.models.TextAnalyticsError error =
-                toTextAnalyticsError(documentError.getError());
-            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null, error, null));
-        }
+        return new TextAnalyticsPagedResponse<>(
+            response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            recognizePiiEntitiesResults, null, entitiesResult.getModelVersion(),
+            entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics()));
+    }
 
-        return new DocumentResultCollection<>(recognizePiiEntitiesResults,
-            entitiesResult.getModelVersion(), entitiesResult.getStatistics() == null ? null
-            : toBatchStatistics(entitiesResult.getStatistics()));
+    /**
+     * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
+     * {@link RecognizePiiEntitiesResult} from a {@link SimpleResponse} of {@link EntitiesResult}.
+     *
+     * @param documents A list of documents to recognize PII entities for.
+     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link RecognizePiiEntitiesResult}.
+     */
+    private Mono<TextAnalyticsPagedResponse<RecognizePiiEntitiesResult>> getRecognizedPiiEntitiesResponseInPage(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        return service.entitiesRecognitionPiiWithRestResponseAsync(
+            new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(documents)),
+            options == null ? null : options.getModelVersion(),
+            options == null ? null : options.isIncludeStatistics(), context)
+            .doOnSubscribe(ignoredValue ->
+                logger.info("Processing a batch of document that contains Personally Identifiable Information"))
+            .doOnSuccess(response ->
+                logger.info("Recognized Personally Identifiable Information entities for a batch of documents"))
+            .doOnError(error ->
+                logger.warning("Failed to recognize Personally Identifiable Information entities - {}", error))
+            .map(this::toTextAnalyticsPagedResponse);
     }
 }

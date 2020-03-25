@@ -1,5 +1,40 @@
 # Release History
 
+## 12.6.0-beta.1 (Unreleased)
+- Fixed a bug that would prevent client initialization against Azurite in some containerized environments.
+- Fixed a bug that would prevent progress from being reported when uploading small files.
+
+## 12.5.0 (2020-03-11)
+- Fixed a bug that was adding an invalid 'include' query-parameter for list blob item requests if no dataset-include options were specified.
+- Fixed a bug in ReliableDownload that would cause multiple subscriber errors.
+- Added logic to ReliableDownload to retry on TimeoutException
+- Added default timeout to download stream to timeout if a certain amount of time passes without seeing any data.
+- Fixed a bug that would cause IOExceptions to be swallowed in BlobClient.upload(InputStream, long) 
+
+## 12.4.0 (2020-02-12)
+- Added ability to access BlobProperties from BlobInputStream.
+- Modified downloadToFile to populate BlobProperties.blobSize to be the actual blob size instead of the content length of the first range. 
+- Added upload methods on BlobClient to upload from an InputStream.
+
+- Added support for the 2019-07-07 service version.
+- Added support for encryption scopes service, container and blob builders now accept an encryption scope parameter and service and container builders accept a BlobContainerEncryptionScope parameter.
+- Added support for managed disk page range diff for managed disk accounts.
+
+## 12.3.1 (2020-02-10)
+- Updated `azure-core-http-netty` to version 1.3.0
+- Update `azure-storage-common` to version 12.3.1
+
+## 12.3.0 (2020-01-16)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.3.0/sdk/storage/azure-storage-blob/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.3.0/sdk/storage/azure-storage-blob/src/samples/java/com/azure/storage/blob)
+
+- Added ability to create service clients anonymously and should only be used to create anonymous container and blob clients. Anonymous service clients will throw on attempting to create network requests.
+- Added an overload to listBlobs to include a continuation token.
+- Added a check in BlobServiceClient.setAccountProperties to block invalid requests.
+- Fixed a bug that could result in data corruption on download when using the downloadToFile method.
+
 ## 12.2.0 (2020-01-08)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-blob_12.2.0/sdk/storage/azure-storage-blob/README.md)

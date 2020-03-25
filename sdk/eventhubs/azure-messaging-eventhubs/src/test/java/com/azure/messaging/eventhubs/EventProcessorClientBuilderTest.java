@@ -68,12 +68,13 @@ public class EventProcessorClientBuilderTest {
                     + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition {}, {}",
+                System.out.printf("Error occurred in partition processor for partition %s, %s",
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })
             .checkpointStore(new InMemoryCheckpointStore())
             .buildEventProcessorClient();
+
         assertNotNull(eventProcessorClient);
     }
 

@@ -25,60 +25,10 @@ Add a dependency on Azure Storage File Datalake
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-datalake</artifactId>
-    <version>12.0.0-beta.9</version>
+    <version>12.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-### Default HTTP Client
-All client libraries, by default, use the Netty HTTP client. Adding the above dependency will automatically configure 
-Storage Data Lake to use the Netty HTTP client. 
-
-### Alternate HTTP client
-If, instead of Netty it is preferable to use OkHTTP, there is an HTTP client available for that too. Exclude the default
-Netty and include the OkHTTP client in your pom.xml.
-
-[//]: # ({x-version-update-start;com.azure:azure-storage-file-datalake;current})
-```xml
-<!-- Add the Storage Data Lake dependency without the Netty HTTP client -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-storage-file-datalake</artifactId>
-    <version>12.0.0-beta.9</version>
-    <exclusions>
-        <exclusion>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-core-http-netty</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-[//]: # ({x-version-update-start;com.azure:azure-core-http-okhttp;current})
-```xml
-<!-- Add the OkHTTP client to use with Storage Data Lake -->
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-core-http-okhttp</artifactId>
-    <version>1.1.0</version>
-</dependency>
-```
-[//]: # ({x-version-update-end})
-
-### Configuring HTTP Clients
-When an HTTP client is included on the classpath, as shown above, it is not necessary to specify it in the client library [builders](#create-datalakeserviceclient) unless you want to customize the HTTP client in some fashion. If this is desired, the `httpClient` builder method is often available to achieve just this by allowing users to provide custom (or customized) `com.azure.core.http.HttpClient` instances.
-
-For starters, by having the Netty or OkHTTP dependencies on your classpath, as shown above, you can create new instances of these `HttpClient` types using their builder APIs. For example, here is how you would create a Netty HttpClient instance:
-
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides better performance compared to the default SSL implementation within the JDK. For more information, including how to reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
-
-```java
-HttpClient client = new NettyAsyncHttpClientBuilder()
-        .port(8080)
-        .wiretap(true)
-        .build();
-```
 
 ### Create a Storage Account
 To create a Storage Account you can use the [Azure Portal][storage_account_create_portal] or [Azure CLI][storage_account_create_cli].
@@ -170,10 +120,10 @@ In the past, cloud-based analytics had to compromise in areas of performance, ma
 
 Data Lake Storage Gen2 offers two types of resources:
 
-- The _filesystem used via 'DataLakeFileSystemClient'
-- The _path used via 'DataLakeFileClient' or 'DataLakeDirectoryClient'
+- The `_filesystem` used via 'DataLakeFileSystemClient'
+- The `_path` used via 'DataLakeFileClient' or 'DataLakeDirectoryClient'
 
-|ADLS Gen2                     | Blob       |
+|ADLS Gen2                  | Blob       |
 | --------------------------| ---------- |
 |Filesystem                 | Container  | 
 |Path (File or Directory)   | Blob       |
@@ -198,17 +148,28 @@ The following sections provide several code snippets covering some of the most c
 
 Create a `DataLakeServiceClient` using the [`sasToken`](#get-credentials) generated above.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L25-L28 -->
 ```java
 DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
-        .endpoint("<your-storage-dfs-url>")
-        .sasToken("<your-sasToken>")
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .buildClient();
+```
+
+or
+
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L32-L34 -->
+```java
+DataLakeServiceClient dataLakeServiceClient = new DataLakeServiceClientBuilder()
+    .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
+    .buildClient();
 ```
 
 ### Create a `DataLakeFileSystemClient`
 
 Create a `DataLakeFileSystemClient` using a `DataLakeServiceClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L38-L38 -->
 ```java
 DataLakeFileSystemClient dataLakeFileSystemClient = dataLakeServiceClient.getFileSystemClient("myfilesystem");
 ```
@@ -217,18 +178,29 @@ or
 
 Create a `DataLakeFileSystemClient` from the builder [`sasToken`](#get-credentials) generated above.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L42-L46 -->
 ```java
 DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder()
-        .endpoint("<your-storage-dfs-url>")
-        .sasToken("<your-sasToken>")
-        .containerName("myfilesystem")
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .fileSystemName("myfilesystem")
+    .buildClient();
+```
+
+or
+
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L50-L52 -->
+```java
+DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder()
+    .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "?" + "<your-sasToken>")
+    .buildClient();
 ```
 
 ### Create a `DataLakeFileClient`
 
 Create a `DataLakeFileClient` using a `DataLakeFileSystemClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L56-L56 -->
 ```java
 DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
 ```
@@ -237,19 +209,30 @@ or
 
 Create a `FileClient` from the builder [`sasToken`](#get-credentials) generated above.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L60-L65 -->
 ```java
 DataLakeFileClient fileClient = new DataLakePathClientBuilder()
-        .endpoint("<your-storage-dfs-url>")
-        .sasToken("<your-sasToken>")
-        .fileSystemName("myfilesystem")
-        .pathName("myfile")
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .fileSystemName("myfilesystem")
+    .pathName("myfile")
+    .buildFileClient();
+```
+
+or
+
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L69-L71 -->
+```java
+DataLakeFileClient fileClient = new DataLakePathClientBuilder()
+    .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "myfile" + "?" + "<your-sasToken>")
+    .buildFileClient();
 ```
 
 ### Create a `DataLakeDirectoryClient`
 
 Get a `DataLakeDirectoryClient` using a `DataLakeFileSystemClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L75-L75 -->
 ```java
 DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("mydir");
 ```
@@ -258,19 +241,30 @@ or
 
 Create a `DirectoryClient` from the builder [`sasToken`](#get-credentials) generated above.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L79-L84 -->
 ```java
 DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder()
-        .endpoint("<your-storage-dfs-url>")
-        .sasToken("<your-sasToken>")
-        .fileSystemName("myfilesystem")
-        .pathName("mydir")
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .sasToken("<your-sasToken>")
+    .fileSystemName("myfilesystem")
+    .pathName("mydir")
+    .buildDirectoryClient();
+```
+
+or
+
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L88-L90 -->
+```java
+DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder()
+    .endpoint("<your-storage-account-url>" + "/" + "myfilesystem" + "/" + "mydir" + "?" + "<your-sasToken>")
+    .buildDirectoryClient();
 ```
 
 ### Create a file system
 
 Create a file system using a `DataLakeServiceClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L94-L94 -->
 ```java
 dataLakeServiceClient.createFileSystem("myfilesystem");
 ```
@@ -279,69 +273,49 @@ or
 
 Create a file system using a `DataLakeFileSystemClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L98-L98 -->
 ```java
 dataLakeFileSystemClient.create();
-```
-
-### Upload a file from a stream
-
-Upload from an `InputStream` to a blob using a `DataLakeFileClient` generated from a `DataLakeFileSystemClient`.
-
-```java
-DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
-fileClient.create();
-String dataSample = "samples";
-try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
-    fileClient.append(dataStream, 0, dataSample.length());
-}
-fileClient.flush(dataSample.length());
-```
-
-### Download a file to a stream
-
-Download a file to an `OutputStream` using a `DataLakeFileClient`.
-
-```java
-try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-    fileClient.read(outputStream);
-}
 ```
 
 ### Enumerate paths
 
 Enumerating all paths using a `DataLakeFileSystemClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L102-L104 -->
 ```java
-dataLakeFileSystemClient.listPaths()
-        .forEach(
-            pathItem -> System.out.println("This is the path name: " + pathItem.getName())
-        );
+for (PathItem pathItem : dataLakeFileSystemClient.listPaths()) {
+    System.out.println("This is the path name: " + pathItem.getName());
+}
 ```
 
 ### Rename a file
 
 Rename a file using a `DataLakeFileClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L108-L110 -->
 ```java
 DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
 fileClient.create();
-fileClient.rename("new-file-name")
+fileClient.rename("new-file-system-name", "new-file-name");
 ```
 
 ### Rename a directory
 
 Rename a directory using a `DataLakeDirectoryClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L114-L116 -->
 ```java
 DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("mydir");
 directoryClient.create();
-directoryClient.rename("new-directory-name")
+directoryClient.rename("new-file-system-name", "new-directory-name");
 ```
 
 ### Get file properties
 
 Get properties from a file using a `DataLakeFileClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L120-L122 -->
 ```java
 DataLakeFileClient fileClient = dataLakeFileSystemClient.getFileClient("myfile");
 fileClient.create();
@@ -352,6 +326,7 @@ PathProperties properties = fileClient.getProperties();
 
 Get properties from a directory using a `DataLakeDirectoryClient`.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L126-L128 -->
 ```java
 DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("mydir");
 directoryClient.create();
@@ -362,11 +337,12 @@ PathProperties properties = directoryClient.getProperties();
 
 The [Azure Identity library][identity] provides Azure Active Directory support for authenticating with Azure Storage.
 
+<!-- embedme ./src/samples/java/com/azure/storage/file/datalake/ReadmeSamples.java#L132-L135 -->
 ```java
 DataLakeServiceClient storageClient = new DataLakeServiceClientBuilder()
-        .endpoint(endpoint)
-        .credential(new DefaultAzureCredentialBuilder().build())
-        .buildClient();
+    .endpoint("<your-storage-account-url>")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 ## Troubleshooting
@@ -374,6 +350,17 @@ DataLakeServiceClient storageClient = new DataLakeServiceClientBuilder()
 When interacting with data lake using this Java client library, errors returned by the service correspond to the same HTTP
 status codes returned for [REST API][error_codes] requests. For example, if you try to retrieve a file system or path that
 doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`.
+
+### Default HTTP Client
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
+the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
+better performance compared to the default SSL implementation within the JDK. For more information, including how to 
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
 

@@ -8,8 +8,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import java.util.function.Consumer;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -112,14 +114,20 @@ final class PartitionBasedLoadBalancer {
         final Mono<List<String>> partitionsMono = eventHubAsyncClient
             .getPartitionIds()
             .timeout(Duration.ofMinutes(1))
+            .onErrorResume(TimeoutException.class, error -> {
+                // In the subsequent step where it tries to balance the load, it'll propagate an error to the user.
+                // So it is okay to return an empty Flux.
+                logger.warning("Unable to get partitionIds from eventHubAsyncClient.");
+                return Flux.empty();
+            })
             .collectList();
 
         Mono.zip(partitionOwnershipMono, partitionsMono)
             .flatMap(this::loadBalance)
-            // if there was an error, log warning and TODO: call user provided error handler
+            // if there was an error, log warning
             .subscribe(ignored -> { },
                 ex -> {
-                    logger.warning(Messages.LOAD_BALANCING_FAILED, ex.getMessage());
+                    logger.warning(Messages.LOAD_BALANCING_FAILED, ex.getMessage(), ex);
                     ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
                     processError.accept(errorContext);
                 }, () -> logger.info("Load balancing completed successfully"));
@@ -131,7 +139,7 @@ final class PartitionBasedLoadBalancer {
      */
     private Mono<Void> loadBalance(final Tuple2<Map<String, PartitionOwnership>, List<String>> tuple) {
         return Mono.fromRunnable(() -> {
-            logger.info("Starting load balancer");
+            logger.info("Starting load balancer for {}", this.ownerId);
             Map<String, PartitionOwnership> partitionOwnershipMap = tuple.getT1();
 
             List<String> partitionIds = tuple.getT2();
@@ -143,8 +151,8 @@ final class PartitionBasedLoadBalancer {
             }
 
             int numberOfPartitions = partitionIds.size();
-            logger.info("Partition manager returned {} ownership records", partitionOwnershipMap.size());
-            logger.info("EventHubAsyncClient returned {} partitions", numberOfPartitions);
+            logger.info("CheckpointStore returned {} ownership records", partitionOwnershipMap.size());
+            logger.info("Event Hubs service returned {} partitions", numberOfPartitions);
             if (!isValid(partitionOwnershipMap)) {
                 // User data is corrupt.
                 throw logger.logExceptionAsError(Exceptions.propagate(
@@ -372,7 +380,8 @@ final class PartitionBasedLoadBalancer {
                 .warning(Messages.FAILED_TO_CLAIM_OWNERSHIP, ownershipRequest.getPartitionId(),
                     ex.getMessage(), ex))
             .collectList()
-            .zipWith(checkpointStore.listCheckpoints(fullyQualifiedNamespace, eventHubName, consumerGroupName)
+            .zipWhen(ownershipList -> checkpointStore.listCheckpoints(fullyQualifiedNamespace, eventHubName,
+                consumerGroupName)
                 .collectMap(checkpoint -> checkpoint.getPartitionId(), Function.identity()))
             .subscribe(ownedPartitionCheckpointsTuple -> {
                 ownedPartitionCheckpointsTuple.getT1()
@@ -381,7 +390,10 @@ final class PartitionBasedLoadBalancer {
                         ownedPartitionCheckpointsTuple.getT2().get(po.getPartitionId())));
             },
                 ex -> {
-                    throw logger.logExceptionAsError(new RuntimeException("Error while listing checkpoints", ex));
+                    logger.warning("Error while listing checkpoints", ex);
+                    ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
+                    processError.accept(errorContext);
+                    throw logger.logExceptionAsError(new IllegalStateException("Error while listing checkpoints", ex));
                 });
     }
 

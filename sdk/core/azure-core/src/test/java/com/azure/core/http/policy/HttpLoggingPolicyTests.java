@@ -15,6 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -37,6 +39,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**
@@ -44,44 +47,40 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
  */
 public class HttpLoggingPolicyTests {
     private static final String REDACTED = "REDACTED";
-    private static final Context CONTEXT = new Context("caller-method", "HttpLoggingPolicyTests");
+    private static final Context CONTEXT = new Context("caller-method", HttpLoggingPolicyTests.class.getName());
 
     private String originalLogLevel;
-    private PrintStream originalErr;
+    private PrintStream originalSystemOut;
     private ByteArrayOutputStream logCaptureStream;
 
     @BeforeEach
     public void prepareForTest() {
         // Set the log level to information for the test.
-        originalLogLevel = System.getProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL);
-        System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, "2");
+        originalLogLevel = Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_LOG_LEVEL);
+        Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL,
+            String.valueOf(LogLevel.INFORMATIONAL.getLogLevel()));
 
         /*
-         * Indicate to SLF4J to enable trace level logging for a logger named
-         * com.azure.core.util.logging.ClientLoggerTests. Trace is the maximum level of logging supported by the
-         * ClientLogger.
+         * DefaultLogger uses System.out to log. Inject a custom PrintStream to log into for the duration of the test to
+         * capture the log messages.
          */
-        System.setProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.HttpLoggingPolicyTests", "trace");
-
-        // Override System.err as that is where SLF4J will log by default.
-        originalErr = System.err;
+        originalSystemOut = System.out;
         logCaptureStream = new ByteArrayOutputStream();
-        System.setErr(new PrintStream(logCaptureStream));
+        System.setOut(new PrintStream(logCaptureStream));
     }
 
     @AfterEach
-    public void cleanupAfterTest() {
+    public void cleanupAfterTest() throws IOException {
         // Reset or clear the log level after the test completes.
         if (CoreUtils.isNullOrEmpty(originalLogLevel)) {
-            System.clearProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL);
+            Configuration.getGlobalConfiguration().remove(PROPERTY_AZURE_LOG_LEVEL);
         } else {
-            System.setProperty(Configuration.PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
+            Configuration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL, originalLogLevel);
         }
 
-        System.clearProperty("org.slf4j.simpleLogger.log.com.azure.core.util.logging.HttpLoggingPolicyTests");
-
         // Reset System.err to the original PrintStream.
-        System.setErr(originalErr);
+        System.setOut(originalSystemOut);
+        logCaptureStream.close();
     }
 
     /**

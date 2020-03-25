@@ -23,6 +23,11 @@ import com.microsoft.azure.management.storage.v2019_06_01.implementation.Storage
  */
 public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, Indexable, Refreshable<ImmutabilityPolicy>, Updatable<ImmutabilityPolicy.Update>, HasManager<StorageManager> {
     /**
+     * @return the allowProtectedAppendWrites value.
+     */
+    Boolean allowProtectedAppendWrites();
+
+    /**
      * @return the etag value.
      */
     String etag();
@@ -35,7 +40,7 @@ public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, I
     /**
      * @return the immutabilityPeriodSinceCreationInDays value.
      */
-    int immutabilityPeriodSinceCreationInDays();
+    Integer immutabilityPeriodSinceCreationInDays();
 
     /**
      * @return the name value.
@@ -55,7 +60,7 @@ public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, I
     /**
      * The entirety of the ImmutabilityPolicy definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithContainer, DefinitionStages.WithIfMatch, DefinitionStages.WithImmutabilityPeriodSinceCreationInDays, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithContainer, DefinitionStages.WithIfMatch, DefinitionStages.WithImmutabilityPeriodSinceCreationInDays, DefinitionStages.WithAllowProtectedAppendWrites, DefinitionStages.WithCreate {
     }
 
     /**
@@ -103,7 +108,19 @@ public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, I
             * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days
             * @return the next definition stage
             */
-            WithCreate withImmutabilityPeriodSinceCreationInDays(int immutabilityPeriodSinceCreationInDays);
+            WithAllowProtectedAppendWrites withImmutabilityPeriodSinceCreationInDays(Integer immutabilityPeriodSinceCreationInDays);
+        }
+
+        /**
+         * The stage of the immutabilitypolicy definition allowing to specify AllowProtectedAppendWrites.
+         */
+        interface WithAllowProtectedAppendWrites {
+           /**
+            * Specifies allowProtectedAppendWrites.
+            * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API
+            * @return the next definition stage
+            */
+            WithCreate withAllowProtectedAppendWrites(Boolean allowProtectedAppendWrites);
         }
 
         /**
@@ -117,7 +134,7 @@ public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, I
     /**
      * The template for a ImmutabilityPolicy update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ImmutabilityPolicy>, UpdateStages.WithIfMatch, UpdateStages.WithImmutabilityPeriodSinceCreationInDays {
+    interface Update extends Appliable<ImmutabilityPolicy>, UpdateStages.WithIfMatch, UpdateStages.WithImmutabilityPeriodSinceCreationInDays, UpdateStages.WithAllowProtectedAppendWrites {
     }
 
     /**
@@ -145,7 +162,19 @@ public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, I
              * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days
              * @return the next update stage
              */
-            Update withImmutabilityPeriodSinceCreationInDays(int immutabilityPeriodSinceCreationInDays);
+            Update withImmutabilityPeriodSinceCreationInDays(Integer immutabilityPeriodSinceCreationInDays);
+        }
+
+        /**
+         * The stage of the immutabilitypolicy update allowing to specify AllowProtectedAppendWrites.
+         */
+        interface WithAllowProtectedAppendWrites {
+            /**
+             * Specifies allowProtectedAppendWrites.
+             * @param allowProtectedAppendWrites This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API
+             * @return the next update stage
+             */
+            Update withAllowProtectedAppendWrites(Boolean allowProtectedAppendWrites);
         }
 
     }

@@ -260,20 +260,11 @@ class SubscriptionDescriptionSerializer {
 
     static void normalizeDescription(SubscriptionDescription subscriptionDescription, URI baseAddress) {
         if (subscriptionDescription.getForwardTo() != null) {
-            subscriptionDescription.setForwardTo(normalizeForwardToAddress(subscriptionDescription.getForwardTo(), baseAddress));
+            subscriptionDescription.setForwardTo(EntityNameHelper.normalizeForwardToAddress(subscriptionDescription.getForwardTo(), baseAddress));
         }
 
         if (subscriptionDescription.getForwardDeadLetteredMessagesTo() != null) {
-            subscriptionDescription.setForwardDeadLetteredMessagesTo(normalizeForwardToAddress(subscriptionDescription.getForwardDeadLetteredMessagesTo(), baseAddress));
-        }
-    }
-
-    private static String normalizeForwardToAddress(String forwardTo, URI baseAddress) {
-        try {
-            new URI(forwardTo);
-            return forwardTo;
-        } catch (URISyntaxException e) {
-            return baseAddress.resolve(forwardTo).toString();
+            subscriptionDescription.setForwardDeadLetteredMessagesTo(EntityNameHelper.normalizeForwardToAddress(subscriptionDescription.getForwardDeadLetteredMessagesTo(), baseAddress));
         }
     }
 }

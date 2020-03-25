@@ -45,7 +45,6 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 
-
 /**
  * Client to a file system. It may only be instantiated through a {@link DataLakeFileSystemClientBuilder} or via the
  * method {@link DataLakeServiceAsyncClient#getFileSystemAsyncClient(String)}. This class does not hold any state about
@@ -59,7 +58,9 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
  * {@link DataLakeServiceAsyncClient}.
  *
  * <p>
- * Please refer to the <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json>
+ * Please refer to the
+ *
+ * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">
  *     Azure Docs</a> for more information on file systems.
  *
  * <p>
@@ -73,9 +74,7 @@ public class DataLakeFileSystemAsyncClient {
 
     public static final String ROOT_FILESYSTEM_NAME = "$root";
 
-//    public static final String STATIC_WEBSITE_FILESYSTEM_NAME = "$web";
-
-//    public static final String LOG_FILESYSTEM_NAME = "$logs";
+    private static final String ROOT_DIRECTORY_NAME = "";
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileSystemAsyncClient.class);
     private final DataLakeStorageClientImpl azureDataLakeStorage;
@@ -110,7 +109,7 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
-     * Creates a new DataLakeFileAsyncClient object by concatenating fileName to the end of
+     * Initializes a new DataLakeFileAsyncClient object by concatenating fileName to the end of
      * DataLakeFileSystemAsyncClient's URL. The new DataLakeFileAsyncClient uses the same request policy pipeline as
      * the DataLakeFileSystemAsyncClient.
      *
@@ -135,7 +134,7 @@ public class DataLakeFileSystemAsyncClient {
     }
 
     /**
-     * Creates a new DataLakeDirectoryAsyncClient object by concatenating directoryName to the end of
+     * Initializes a new DataLakeDirectoryAsyncClient object by concatenating directoryName to the end of
      * DataLakeFileSystemAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline
      * as the DataLakeFileSystemAsyncClient.
      *
@@ -156,6 +155,22 @@ public class DataLakeFileSystemAsyncClient {
             StorageImplUtils.appendToUrlPath(getFileSystemUrl(), Utility.urlEncode(Utility.urlDecode(directoryName)))
                 .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), directoryName,
             blockBlobAsyncClient);
+    }
+
+    /**
+     * Initializes a new DataLakeDirectoryAsyncClient object by concatenating {@code ""} to the end of
+     * DataLakeFileSystemAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline
+     * as the DataLakeFileSystemAsyncClient.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient}
+     *
+     * @return A new {@link DataLakeDirectoryAsyncClient} object which references the root directory
+     * in this file system.
+     */
+    DataLakeDirectoryAsyncClient getRootDirectoryAsyncClient() {
+        return getDirectoryAsyncClient(DataLakeFileSystemAsyncClient.ROOT_DIRECTORY_NAME);
     }
 
     /**

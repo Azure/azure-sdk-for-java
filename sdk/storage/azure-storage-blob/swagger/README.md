@@ -3,28 +3,19 @@
 > see https://aka.ms/autorest
 
 ### Setup
-```ps
-cd C:\work
-git clone --recursive https://github.com/Azure/autorest.java/
-cd autorest.java
-git checkout v3
-npm install
-cd ..
-git clone --recursive https://github.com/jianghaolu/autorest.modeler/
-cd autorest.modeler
-git checkout headerprefixfix
-npm install
-```
+
+Increase max memory if you're using Autorest older than 3. Set the environment variable `NODE_OPTIONS` to `--max-old-space-size=8192`.
 
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest --use=C:/work/autorest.java --use=C:/work/autorest.modeler --version=2.0.4280
+# You may need to repeat this command few times if you're getting "TypeError: Cannot read property 'filename' of undefined" error
+autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.modeler#440af3935c504cea4410133e1fd940b78f6af749  --version=2.0.4280
 ```
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-02-02/blob.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-07-07/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -34,7 +25,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobDownloadHeaders,BlobHttpHeaders,BlobContainerItem,BlobItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobItemProperties,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey
 custom-types-subpackage: models
 ```
 
@@ -694,6 +685,7 @@ directive:
             etag["x-ms-client-name"] = "eTag";
             $.BlobContainerItemProperties.properties.Etag = etag;
         }
+        $.BlobContainerItemProperties.properties.DenyEncryptionScopeOverride["x-ms-client-name"] = "EncryptionScopeOverridePrevented";
     }
     if (!$.BlobContainerItem) {
         $.BlobContainerItem = $.ContainerItem;
@@ -1265,5 +1257,55 @@ directive:
     delete $.LeaseIdOptional["x-ms-parameter-grouping"];
 ```
 
+### Rename container-cpk-scope-info to blob-container-encryption-scope
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    $.DenyEncryptionScopeOverride["x-ms-client-name"] = "EncryptionScopeOverridePrevented";
+    $.DefaultEncryptionScope["x-ms-parameter-grouping"]["name"] = "blob-container-encryption-scope";
+    $.DenyEncryptionScopeOverride["x-ms-parameter-grouping"]["name"] = "blob-container-encryption-scope";
+```
+
+### Rename cpk-scope-info to encryption-scope	
+``` yaml	
+directive:	
+- from: swagger-document	
+  where: $.parameters	
+  transform: >	
+    $.EncryptionScope["x-ms-parameter-grouping"]["name"] = "encryption-scope";	
+```
+
+### BlobContainerEncryptionScope Boolean Fix
+``` yaml
+directive:
+- from: BlobContainerEncryptionScope.java
+  where: $
+  transform: >
+    return $.replace('private Boolean encryptionScopeOverridePrevented;', 'private boolean encryptionScopeOverridePrevented;').
+      replace('public Boolean isEncryptionScopeOverridePrevented() {', 'public boolean isEncryptionScopeOverridePrevented() {').
+      replace('public BlobContainerEncryptionScope setEncryptionScopeOverridePrevented(Boolean preventEncryptionScopeOverride) {', 'public BlobContainerEncryptionScope setEncryptionScopeOverridePrevented(boolean preventEncryptionScopeOverride) {');
+```
+
+### ContainersImpl Boolean Fix
+``` yaml
+directive:
+- from: ContainersImpl.java
+  where: $
+  transform: >
+    return $.replace('preventEncryptionScopeOverride = blobContainerEncryptionScope.isPreventEncryptionScopeOverride();', 'preventEncryptionScopeOverride = blobContainerEncryptionScope.preventEncryptionScopeOverride();');
+```
+
+### BlobContainerItemProperties Boolean Fix
+``` yaml
+directive:
+- from: BlobContainerItemProperties.java
+  where: $
+  transform: >
+    return $.replace('private Boolean encryptionScopeOverridePrevented;', 'private boolean encryptionScopeOverridePrevented;').
+      replace('public Boolean isEncryptionScopeOverridePrevented() {', 'public boolean isEncryptionScopeOverridePrevented() {').
+      replace('public BlobContainerItemProperties setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {', 'public BlobContainerItemProperties setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented) {');
+```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

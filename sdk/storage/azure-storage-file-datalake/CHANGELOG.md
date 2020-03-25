@@ -1,5 +1,31 @@
 # Release History
 
+## 12.1.0-beta.1 (Unreleased)
+
+
+## 12.0.1 (2020-03-11)
+- GA release. 
+- Fixed bug that caused rename to fail on paths that are url encoded.
+- Mapped StorageErrorException and BlobStorageException to DataLakeStorageException on DataLakeServiceClient.listFileSystems
+- Removed DataLakeFileSystem.getRootDirectory methods to get the root directory in a file system.
+
+## 12.0.0-beta.12 (2020-02-12)
+- Added ability to rename files and directories across file systems.
+- Added DataLakeFileSystem.getRootDirectory methods to get the root directory in a file system.
+- Fixed bug which caused NullPointerException when creating a PathItem.
+
+## 12.0.0-beta.11 (2020-02-10)
+- Updated `azure-core-http-netty` to version 1.3.0
+- Update `azure-storage-blob` to version 12.3.1
+
+## 12.0.0-beta.10 (2020-01-15)
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-datalake_12.0.0-beta.10/sdk/storage/azure-storage-file-datalake/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-datalake_12.0.0-beta.10/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
+
+- Upgraded to version 12.3.0 of Azure Storage Blob.
+
 ## 12.0.0-beta.9 (2020-01-08)
 This package's
 [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-storage-file-datalake_12.0.0-beta.9/sdk/storage/azure-storage-file-datalake/README.md)

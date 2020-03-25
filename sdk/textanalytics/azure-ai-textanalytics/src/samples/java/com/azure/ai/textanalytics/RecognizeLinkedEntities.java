@@ -3,33 +3,34 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
- * Sample demonstrates how to recognize the linked entities of an input text.
+ * Sample demonstrates how to recognize the linked entities of document.
  */
 public class RecognizeLinkedEntities {
     /**
-     * Main method to invoke this demo about how to recognize the linked entities of an input text.
+     * Main method to invoke this demo about how to recognize the linked entities of document.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("{subscription_key}")
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that need be analysed.
-        String text = "Old Faithful is a geyser at Yellowstone Park.";
+        // The document that needs be analyzed.
+        String document = "Old Faithful is a geyser at Yellowstone Park.";
 
-        for (LinkedEntity linkedEntity : client.recognizeLinkedEntities(text).getLinkedEntities()) {
-            System.out.printf("Recognized linked entity: %s, URL: %s, data source: %s.%n",
-                linkedEntity.getName(),
-                linkedEntity.getUrl(),
+        client.recognizeLinkedEntities(document).forEach(linkedEntity -> {
+            System.out.println("Linked Entities:");
+            System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
+                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                 linkedEntity.getDataSource());
-        }
+            linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+        });
     }
-
 }

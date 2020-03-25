@@ -492,7 +492,6 @@ public final class BlobServiceSasSignatureValues {
      * parameters.
      *
      * <p><strong>Notes on SAS generation</strong></p>
-     * <p>
      * <ul>
      * <li>If {@link #setVersion(String) version} is not set, the {@link BlobServiceVersion#getLatest() latest service
      * version} is used.</li>
@@ -542,7 +541,6 @@ public final class BlobServiceSasSignatureValues {
      * Uses a user delegation key to sign these signature values to produce the proper SAS query parameters.
      *
      * <p><strong>Notes on SAS generation</strong></p>
-     * <p>
      * <ul>
      * <li>If {@link #setVersion(String) version} is not set, the {@link BlobServiceVersion#getLatest() latest service
      * version} is used.</li>

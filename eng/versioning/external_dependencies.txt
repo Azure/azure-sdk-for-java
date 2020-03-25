@@ -1,19 +1,19 @@
 # Format;
 # groupId:artifactId;dependency-version
-com.fasterxml.jackson.core:jackson-annotations;2.10.0
-com.fasterxml.jackson.core:jackson-core;2.10.0
-com.fasterxml.jackson.core:jackson-databind;2.10.0
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.10.0
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.10.0
+com.fasterxml.jackson.core:jackson-annotations;2.10.1
+com.fasterxml.jackson.core:jackson-core;2.10.1
+com.fasterxml.jackson.core:jackson-databind;2.10.1
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.10.1
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.10.1
 com.fasterxml.uuid:java-uuid-generator;3.2.0
 com.github.spotbugs:spotbugs;4.0.0-beta3
 com.github.spotbugs:spotbugs-maven-plugin;3.1.12.2
 com.google.code.gson:gson;2.8.5
 com.google.guava:guava;24.1.1-jre
 com.microsoft.azure:azure-annotations;1.7.0
-com.microsoft.azure:azure-arm-client-runtime;1.6.15
-com.microsoft.azure:azure-client-authentication;1.6.15
-com.microsoft.azure:azure-client-runtime;1.6.15
+com.microsoft.azure:azure-arm-client-runtime;1.7.2
+com.microsoft.azure:azure-client-authentication;1.7.2
+com.microsoft.azure:azure-client-runtime;1.7.2
 com.microsoft.azure:azure-core;0.9.8
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:client-runtime;1.6.15
@@ -26,48 +26,47 @@ commons-codec:commons-codec;1.13
 io.micrometer:micrometer-core;1.2.0
 io.micrometer:micrometer-registry-azure-monitor;1.2.0
 io.micrometer:micrometer-registry-graphite;1.2.0
-io.netty:netty-buffer;4.1.42.Final
-io.netty:netty-codec-http;4.1.42.Final
-io.netty:netty-codec-http2;4.1.42.Final
-io.netty:netty-handler;4.1.42.Final
-io.netty:netty-handler-proxy;4.1.42.Final
-io.netty:netty-tcnative;2.0.26.Final
-io.netty:netty-tcnative-boringssl-static;2.0.26.Final
-io.netty:netty-transport-native-epoll;4.1.42.Final
-io.netty:netty-transport-native-unix-common;4.1.42.Final
-io.opencensus:opencensus-api;0.24.0
-io.opencensus:opencensus-impl;0.24.0
-io.projectreactor.netty:reactor-netty;0.9.0.RELEASE
-io.projectreactor:reactor-core;3.3.0.RELEASE
+io.netty:netty-buffer;4.1.45.Final
+io.netty:netty-codec-http;4.1.45.Final
+io.netty:netty-codec-http2;4.1.45.Final
+io.netty:netty-handler;4.1.45.Final
+io.netty:netty-handler-proxy;4.1.45.Final
+io.netty:netty-tcnative;2.0.27.Final
+io.netty:netty-tcnative-boringssl-static;2.0.27.Final
+io.netty:netty-transport-native-epoll;4.1.45.Final
+io.netty:netty-transport-native-unix-common;4.1.45.Final
+io.projectreactor.netty:reactor-netty;0.9.5.RELEASE
+io.projectreactor:reactor-core;3.3.3.RELEASE
 io.reactivex:rxjava;1.2.4
 org.apache.httpcomponents:httpclient;4.3.6
 org.apache.logging.log4j:log4j-api;2.11.1
 org.apache.logging.log4j:log4j-core;2.11.1
+org.apache.logging.log4j:log4j-slf4j-impl;2.13.0
 org.apache.qpid:proton-j;0.33.2
-org.asynchttpclient:async-http-client;2.10.4
+org.asynchttpclient:async-http-client;2.10.5
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
 org.powermock:powermock-api-mockito2;2.0.2
 org.powermock:powermock-module-junit4;2.0.2
 org.slf4j:slf4j-api;1.7.28
-org.slf4j:slf4j-log4j12;1.7.0
 org.slf4j:slf4j-simple;1.7.25
 
 ## Test dependency versions
 cglib:cglib-nodep;3.2.7
 com.github.tomakehurst:wiremock-standalone;2.24.1
-com.microsoft.azure:adal4j;1.6.4
+com.microsoft.azure:adal4j;1.6.5
 com.microsoft.azure:azure-mgmt-graph-rbac;1.3.0
 com.microsoft.azure:azure-mgmt-keyvault;1.11.1
 com.microsoft.azure:azure-mgmt-resources;1.3.0
 com.microsoft.azure:azure-mgmt-storage;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
-com.microsoft.azure:msal4j;0.5.0-preview
+com.microsoft.azure:msal4j;1.3.0
+com.sun.activation:jakarta.activation;1.2.1
+commons-collections:commons-collections;3.2.2
 io.opentelemetry:opentelemetry-api;0.2.0
 io.opentelemetry:opentelemetry-sdk;0.2.0
 io.projectreactor:reactor-test;3.3.0.RELEASE
 junit:junit;4.13-beta-3
-log4j:log4j;1.2.17
 org.assertj:assertj-core;3.11.1
 org.bouncycastle:bcprov-jdk15on;1.60
 org.eclipse.jetty:jetty-http;9.4.11.v20180605
@@ -97,7 +96,11 @@ org.openjdk.jmh:jmh-core;1.22
 org.openjdk.jmh:jmh-generator-annprocess;1.22
 org.spockframework:spock-core;1.3-groovy-2.5
 org.testng:testng;6.14.3
+ognl:ognl;3.0.12
 uk.org.lidalia:slf4j-test;1.2.0
+org.unitils:unitils-core;3.4.6
+com.microsoft.azure:azure;1.24.1
+com.microsoft.azure:azure-mgmt-search;1.24.1
 
 ## Maven Tools versions
 com.azure:sdk-build-tools;1.0.0
@@ -105,7 +108,7 @@ com.beust:jcommander;1.58
 com.google.code.findbugs:jsr305;3.0.2
 com.nimbusds:nimbus-jose-jwt;6.0.1
 com.nimbusds:oauth2-oidc-sdk;6.14
-com.puppycrawl.tools:checkstyle;8.24
+com.puppycrawl.tools:checkstyle;8.29
 commons-io:commons-io;2.5
 commons-validator:commons-validator;1.6
 io.dropwizard.metrics:metrics-core;4.0.5
@@ -113,11 +116,12 @@ io.dropwizard.metrics:metrics-graphite;4.0.5
 io.dropwizard.metrics:metrics-jvm;4.0.5
 io.reactivex.rxjava2:rxjava;2.2.4
 net.java.dev.jna:jna-platform;5.4.0
+net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.3
 org.apache.commons:commons-collections4;4.2
 org.apache.commons:commons-lang3;3.8.1
 org.apache.commons:commons-text;1.6
 org.apache.maven.plugins:maven-antrun-plugin;1.8
-org.apache.maven.plugins:maven-assembly-plugin;2.2
+org.apache.maven.plugins:maven-assembly-plugin;3.2.0
 org.apache.maven.plugins:maven-checkstyle-plugin;3.1.0
 org.apache.maven.plugins:maven-clean-plugin;3.0.0
 org.apache.maven.plugins:maven-compiler-plugin;3.8.1
@@ -133,15 +137,15 @@ org.apache.maven.plugins:maven-resources-plugin;2.4.3
 org.apache.maven.plugins:maven-site-plugin;3.7.1
 org.apache.maven.plugins:maven-source-plugin;3.0.1
 org.apache.maven.plugins:maven-surefire-plugin;3.0.0-M3
-org.apidesign.javadoc:codesnippet-doclet;0.32
+org.apidesign.javadoc:codesnippet-doclet;0.53
 org.codehaus.mojo:build-helper-maven-plugin;3.0.0
 org.codehaus.mojo:exec-maven-plugin;1.2.1
 org.codehaus.mojo:properties-maven-plugin;1.0.0
 org.codehaus.mojo:xml-maven-plugin;1.0
 org.eclipse.jetty:jetty-maven-plugin;9.3.22.v20171030
 org.eclipse.m2e:lifecycle-mapping;1.0.0
-org.jacoco:jacoco-maven-plugin;0.8.4
-org.jacoco:org.jacoco.agent;0.8.4
+org.jacoco:jacoco-maven-plugin;0.8.5
+org.jacoco:org.jacoco.agent;0.8.5
 org.mockito:mockito-core;3.0.0
 org.nanohttpd:nanohttpd;2.3.1
 org.revapi:revapi-java;0.20.0
@@ -164,21 +168,23 @@ org.revapi:revapi-maven-plugin;0.11.2
 # sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
-# sdk\applicationinsights\microsoft-azure-applicationinsights-query\pom.xml
-applicationinsights_com.microsoft.azure:azure-arm-client-runtime;1.6.3
-applicationinsights_com.microsoft.azure:azure-client-runtime;1.6.3
-applicationinsights_com.microsoft.azure:azure-client-authentication;1.6.3
-
 # everything under sdk\cosmos
-cosmos_org.mockito:mockito-core;1.10.19
-cosmos_com.google.guava:guava;27.0.1-jre
+cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.10.1
+cosmos_com.google.guava:guava;25.0-jre
 cosmos_io.dropwizard.metrics:metrics-core;4.1.0
-cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
 cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
+cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
+cosmos_io.netty:netty-buffer;4.1.45.Final
+cosmos_io.netty:netty-codec-http;4.1.45.Final
+cosmos_io.netty:netty-codec-http2;4.1.45.Final
+cosmos_io.netty:netty-handler;4.1.45.Final
+cosmos_io.netty:netty-handler-proxy;4.1.45.Final
+cosmos_io.netty:netty-tcnative;2.0.27.Final
+cosmos_io.netty:netty-transport-native-epoll;4.1.45.Final
+cosmos_io.projectreactor:reactor-core;3.3.3.RELEASE
+cosmos_org.mockito:mockito-core;1.10.19
 
 # sdk\eventgrid\microsoft-azure-eventgrid\pom.xml
-eventgrid_com.microsoft.azure:azure-client-runtime;1.5.0
-eventgrid_com.microsoft.azure:azure-client-authentication;1.5.0
 eventgrid_commons-io:commons-io;2.6
 
 # sdk\eventhubs\microsoft-azure-eventhubs-eph\pom.xml
@@ -189,11 +195,6 @@ eventhubs_com.microsoft.azure:msal4j;0.4.0-preview
 keyvault_org.mockito:mockito-core;1.10.19
 # sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
 keyvault_com.microsoft.azure:azure-storage;4.4.0
-
-# sdk\loganalytics\microsoft-azure-loganalytics\pom.xml
-loganalytics_com.microsoft.azure:azure-arm-client-runtime;1.6.3
-loganalytics_com.microsoft.azure:azure-client-authentication;1.6.3
-loganalytics_com.microsoft.azure:azure-client-runtime;1.6.3
 
 # sdk\mediaservices\microsoft-azure-media\pom.xml which hasn't been released for 2 years
 # all of these unique references below are listed here because they're old, some are over 10 years old
@@ -206,9 +207,6 @@ media_commons-logging:commons-logging;1.1.1
 media_io.jsonwebtoken:jjwt;0.5.1
 media_org.mockito:mockito-all;1.9.0
 media_com.microsoft.azure:adal4j;1.2.0
-
-# sdk\servicebus\microsoft-azure-servicebus\pom.xml
-servicebus_com.microsoft.azure:azure-client-authentication;1.7.0
 
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0

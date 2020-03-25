@@ -1,6 +1,16 @@
 # Release History
 
+## 1.0.0-beta.4 (Unreleased)
+- Keyvault: add az namespace info attribute to all outgoing spans.
+
+
+## 1.0.0-beta.3 (2020-03-06)
+
+- EventHubs: add enqueueTime to Process span links.
+- EventHubs: add az namespace attribute to all outgoing spans. 
+
 ## 1.0.0-beta.2 (2020-01-07)
+
 - Add `EventHubs.*` properties to attributes of processing spans.
 - Remove `Azure` prefix from convenience layer span names.
 - Add links for batch send operation in Event Hubs client library. 

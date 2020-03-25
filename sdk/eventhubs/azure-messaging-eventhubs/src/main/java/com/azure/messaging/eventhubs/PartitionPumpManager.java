@@ -3,12 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -26,6 +20,8 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
+import reactor.core.publisher.Signal;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.Locale;
@@ -33,7 +29,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
-import reactor.core.publisher.Signal;
+
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessorClient}.
@@ -47,7 +51,6 @@ import reactor.core.publisher.Signal;
  * </p>
  */
 class PartitionPumpManager {
-
     private final ClientLogger logger = new ClientLogger(PartitionPumpManager.class);
     private final CheckpointStore checkpointStore;
     private final Map<String, EventHubConsumerAsyncClient> partitionPumps = new ConcurrentHashMap<>();
@@ -106,7 +109,7 @@ class PartitionPumpManager {
      */
     void startPartitionPump(PartitionOwnership claimedOwnership, Checkpoint checkpoint) {
         if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
-            logger.info("Consumer is already running for this partition  {}", claimedOwnership.getPartitionId());
+            logger.verbose("Consumer is already running for this partition  {}", claimedOwnership.getPartitionId());
             return;
         }
 
@@ -134,7 +137,8 @@ class PartitionPumpManager {
             } else {
                 startFromEventPosition = EventPosition.latest();
             }
-
+            logger.info("Starting event processing from {} for partition {}", startFromEventPosition,
+                claimedOwnership.getPartitionId());
             ReceiveOptions receiveOptions = new ReceiveOptions().setOwnerLevel(0L)
                 .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
 
@@ -231,11 +235,14 @@ class PartitionPumpManager {
             return Context.NONE;
         }
 
-        Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE);
-        Context entityContext = spanContext.addData(ENTITY_PATH_KEY, eventHubName);
-
-        return tracerProvider.startSpan(entityContext.addData(HOST_NAME_KEY, fullyQualifiedNamespace),
-            ProcessKind.PROCESS);
+        Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE)
+            .addData(ENTITY_PATH_KEY, eventHubName)
+            .addData(HOST_NAME_KEY, fullyQualifiedNamespace)
+            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+        spanContext = eventData.getEnqueuedTime() == null
+            ? spanContext
+            : spanContext.addData(MESSAGE_ENQUEUED_TIME, eventData.getEnqueuedTime().getEpochSecond());
+        return tracerProvider.startSpan(spanContext, ProcessKind.PROCESS);
     }
 
     /*

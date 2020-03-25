@@ -28,7 +28,7 @@ public class OcrRegion {
     private String boundingBox;
 
     /**
-     * The lines property.
+     * An array of recognized lines of text.
      */
     @JsonProperty(value = "lines")
     private List<OcrLine> lines;

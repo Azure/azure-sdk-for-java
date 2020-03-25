@@ -5,33 +5,38 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
+import com.azure.ai.textanalytics.models.DetectedLanguage;
+import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsClientOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
+import java.util.Collections;
 
+import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Text Analytics.
- * Operations allowed by the client are language detection, sentiment analysis, and recognition entities, PII entities,
- * and linked entities of a text input or list of test inputs.
+ * Operations allowed by the client are language detection, sentiment analysis, and recognition entities,
+ * Personally Identifiable Information entities, and linked entities of a document or a list of documents.
  *
  * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>
  * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation}
@@ -55,22 +60,20 @@ public final class TextAnalyticsAsyncClient {
     final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
 
     /**
-     * Create a {@code TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint. Each
+     * Create a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint. Each
      * service call goes through the {@link TextAnalyticsClientBuilder#pipeline http pipeline}.
      *
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Text Analytics supported by this client library.
-     * @param clientOptions The {@link TextAnalyticsClientOptions client option} contains
-     * {@link TextAnalyticsClientOptions#getDefaultLanguage default language} and
-     * {@link TextAnalyticsClientOptions#getDefaultCountryHint()} default country hint} that could be used as default
-     * values for each request.
+     * @param defaultCountryHint The default country hint.
+     * @param defaultLanguage The default language.
      */
     TextAnalyticsAsyncClient(TextAnalyticsClientImpl service, TextAnalyticsServiceVersion serviceVersion,
-        TextAnalyticsClientOptions clientOptions) {
+        String defaultCountryHint, String defaultLanguage) {
         this.service = service;
         this.serviceVersion = serviceVersion;
-        defaultCountryHint = clientOptions == null ? null : clientOptions.getDefaultCountryHint();
-        defaultLanguage = clientOptions == null ? null : clientOptions.getDefaultLanguage();
+        this.defaultCountryHint = defaultCountryHint;
+        this.defaultLanguage = defaultLanguage;
         this.detectLanguageAsyncClient = new DetectLanguageAsyncClient(service);
         this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(service);
         this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(service);
@@ -107,795 +110,1051 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns the detected language and a numeric score between zero and one. Scores close to one indicate 100%
+     * Returns the detected language and a confidence score between zero and one. Scores close to one indicate 100%
      * certainty that the identified language is true.
      *
-     * @param text The text to be analyzed.
+     * This method will use the default country hint that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultCountryHint(String)}. If none is specified, service will use 'US' as
+     * the country hint.
      *
-     * @return A {@link Mono} containing the {@link DetectLanguageResult detected language} of the text.
+     * <p><strong>Code sample</strong></p>
+     * <p>Detects language in a document. Subscribes to the call asynchronously and prints out the detected language
+     * details when a response is received.</p>
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string}
+     *
+     * @param document The document to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     *
+     * @return A {@link Mono} containing the {@link DetectedLanguage detected language} of the document.
+     *
+     * @throws NullPointerException if the document is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectLanguageResult> detectLanguage(String text) {
-        try {
-            return detectLanguageWithResponse(text, defaultCountryHint).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Mono<DetectedLanguage> detectLanguage(String document) {
+        return detectLanguage(document, defaultCountryHint);
     }
 
     /**
-     * Returns a {@link Response} containing the detected language and a numeric score between zero and one. Scores
+     * Returns a {@link Response} contains the detected language and a confidence score between zero and one. Scores
      * close to one indicate 100% certainty that the identified language is true.
      *
-     * @param text The text to be analyzed.
+     * <p><strong>Code sample</strong></p>
+     * <p>Detects language with http response in a document with a provided country hint. Subscribes to the call
+     * asynchronously and prints out the detected language details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string-string}
+     *
+     * @param document The document to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
-     * specified.
+     * specified. To remove this behavior you can reset this parameter by setting this value to empty string
+     * {@code countryHint} = "" or "none".
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link DetectLanguageResult detected language} of the text.
+     * @return A {@link Mono} contains a {@link DetectedLanguage detected language} of the document.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if the document is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DetectLanguageResult>> detectLanguageWithResponse(String text, String countryHint) {
-        try {
-            return withContext(context ->
-                detectLanguageAsyncClient.detectLanguageWithResponse(text, countryHint, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Mono<DetectedLanguage> detectLanguage(String document, String countryHint) {
+        // TODO: follow the sample pattern as other endpoint.
+        return detectLanguageBatch(Collections.singletonList(document), countryHint, null)
+            .map(detectLanguageResult -> {
+                if (detectLanguageResult.isError()) {
+                    throw logger.logExceptionAsError(
+                        Transforms.toTextAnalyticsException(detectLanguageResult.getError()));
+                }
+                return detectLanguageResult.getPrimaryLanguage();
+            }).last();
     }
 
     /**
-     * Returns the detected language for a batch of input.
+     * Returns the detected language for each of documents.
      *
-     * @param textInputs The list of texts to be analyzed.
+     * This method will use the default country hint that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultCountryHint(String)}. If none is specified, service will use 'US' as
+     * the country hint.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected languages}.
+     * <p><strong>Code sample</strong></p>
+     * <p>Detects language in a list of documents. Subscribes to the call asynchronously and prints out the
+     * detected language details when a response is received.</p>
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable}
+     *
+     * @param documents The list of documents to detect languages for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link DetectLanguageResult detected language document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<DetectLanguageResult>> detectLanguages(List<String> textInputs) {
-        try {
-            return detectLanguagesWithResponse(textInputs, defaultCountryHint).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(Iterable<String> documents) {
+        return detectLanguageBatch(documents, defaultCountryHint, null);
     }
 
     /**
-     * Returns the detected language for a batch of input with the provided country hint.
+     * Returns the detected language for each of documents with the provided country hint.
      *
-     * @param textInputs The list of texts to be analyzed.
-     * @param countryHint A country hint for the entire batch. Accepts two letter country codes specified by ISO
-     * 3166-1 alpha-2. Defaults to "US" if not specified.
+     * <p><strong>Code sample</strong></p>
+     * <p>Detects language in a list of documents with a provided country hint for the batch. Subscribes to the
+     * call asynchronously and prints out the detected language details when a response is received.</p>
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected languages}.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-String}
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     * @param documents The list of documents to detect languages for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
+     * specified. To remove this behavior you can reset this parameter by setting this value to empty string
+     * {@code countryHint} = "" or "none".
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link DetectLanguageResult detected language document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectLanguagesWithResponse(
-        List<String> textInputs, String countryHint) {
-        try {
-            return withContext(context -> detectLanguageAsyncClient.detectLanguagesWithResponse(textInputs, countryHint,
-                context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(
+        Iterable<String> documents, String countryHint) {
+        return detectLanguageBatch(documents, countryHint, null);
     }
 
     /**
-     * Returns the detected language for a batch of input.
+     * Returns the detected language for each of documents with the provided country hint and request option.
      *
-     * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
+     * <p><strong>Code sample</strong></p>
+     * <p>Detects language in a list of documents with a provided country hint and request option for the batch.
+     * Subscribes to the call asynchronously and prints out the detected language details when a response is received.
+     * </p>
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link DetectLanguageResult detected languages}.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<DetectLanguageResult>> detectBatchLanguages(
-        List<DetectLanguageInput> textInputs) {
-        try {
-            return detectBatchLanguagesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Returns the detected language for a batch of input.
-     *
-     * @param textInputs The list of {@link DetectLanguageInput inputs/documents} to be analyzed.
+     * @param documents The list of documents to detect languages for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
+     * specified. To remove this behavior you can reset this parameter by setting this value to empty string
+     * {@code countryHint} = "" or "none".
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link DetectLanguageResult detected languages}.
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link DetectLanguageResult detected language document result}.
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     * @throws NullPointerException if {@code documents} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<DetectLanguageResult>>> detectBatchLanguagesWithResponse(
-        List<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options) {
-        try {
-            return withContext(
-                context -> detectLanguageAsyncClient.detectBatchLanguagesWithResponse(textInputs, options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(
+        Iterable<String> documents, String countryHint, TextAnalyticsRequestOptions options) {
+        if (countryHint != null && countryHint.equalsIgnoreCase("none")) {
+            countryHint = "";
         }
-    }
-
-    // Named Entity
-    /**
-     * Returns a list of general named entities in the provided text. For a list of supported entity types, check:
-     * <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
-     * check: <a href="https://aka.ms/talangs"></a>
-     *
-     * @param text the text to recognize entities for.
-     *
-     * @return A {@link Mono} containing the {@link RecognizeEntitiesResult named entity} of the text.
-     *
-     * @throws NullPointerException if {@code text} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecognizeEntitiesResult> recognizeEntities(String text) {
-        try {
-            return recognizeEntitiesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        final String finalCountryHint = countryHint;
+        return detectLanguageBatch(
+            mapByIndex(documents, (index, value) ->
+                new DetectLanguageInput(index, value, finalCountryHint)), options);
     }
 
     /**
-     * Returns a list of general named entities in the provided text. For a list of supported entity types, check:
-     * <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
-     * check: <a href="https://aka.ms/talangs"></a>
+     * Returns the detected language for a batch of {@link DetectLanguageInput document} with provided request options.
      *
-     * @param text the text to recognize entities for.
-     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
-     * default.
+     * <p><strong>Code sample</strong></p>
+     * <p>Detects language in a batch of {@link DetectLanguageInput document} with provided request options. Subscribes
+     * to the call asynchronously and prints out the detected language details when a response is received.</p>
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link RecognizeEntitiesResult named entity} of the text.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-TextAnalyticsRequestOptions}
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecognizeEntitiesResult>> recognizeEntitiesWithResponse(String text, String language) {
-        try {
-            return withContext(context ->
-                recognizeEntityAsyncClient.recognizeEntitiesWithResponse(text, language, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Returns a list of general named entities for the provided list of texts.
-     *
-     * @param textInputs A list of texts to recognize entities for.
-     *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult named entity} of the text.
-     *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizeEntities(List<String> textInputs) {
-        try {
-            return recognizeEntitiesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Returns a list of general named entities for the provided list of texts.
-     *
-     * @param textInputs A list of texts to recognize entities for.
-     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
-     * default.
-     *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult named entity}.
-     *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesWithResponse(
-        List<String> textInputs, String language) {
-        try {
-            return withContext(context -> recognizeEntityAsyncClient.recognizeEntitiesWithResponse(textInputs, language,
-                context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Returns a list of general named entities for the provided list of text inputs.
-     *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
-     *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult named entity}.
-     *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizeEntitiesResult>> recognizeBatchEntities(
-        List<TextDocumentInput> textInputs) {
-        try {
-            return recognizeBatchEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Returns a list of general named entities for the provided list of text inputs.
-     *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize entities for.
+     * @param documents The list of {@link DetectLanguageInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult named entity}.
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link DetectLanguageResult detected language document result}.
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     * @throws NullPointerException if {@code documents} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizeEntitiesResult>>> recognizeBatchEntitiesWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
-        try {
-            return withContext(context ->
-                recognizeEntityAsyncClient.recognizeBatchEntitiesWithResponse(textInputs, options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(
+        Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options) {
+        return detectLanguageAsyncClient.detectLanguageBatch(documents, options);
     }
 
-    // PII Entity
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text. For the list of
-     * supported entity types, check <a href="https://aka.ms/tanerpii"></a>. See <a href="https://aka.ms/talangs"></a>
-     * for the list of enabled languages.
-     *
-     * @param text the text to recognize PII entities for.
-     *
-     * @return A {@link Mono} containing the {@link RecognizeEntitiesResult PII entity} of the text.
-     *
-     * @throws NullPointerException if {@code text} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecognizePiiEntitiesResult> recognizePiiEntities(String text) {
-        try {
-            return recognizePiiEntitiesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
+    // Categorized Entity
 
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the text. For the list of
-     * supported entity types, check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
-     * check: <a href="https://aka.ms/talangs"></a>.
+     * Returns a list of general categorized entities in the provided document.
      *
-     * @param text the text to recognize PII entities for.
-     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
-     * English as default.
+     * For a list of supported entity types, check: <a href="https://aka.ms/taner"></a>.
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link RecognizeEntitiesResult named entity} of the text.
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize entities in a document. Subscribes to the call asynchronously and prints out the recognized entity
+     * details when a response is received.</p>
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string}
+     *
+     * @param document The document to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link CategorizedEntity recognized categorized entities}.
+     *
+     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecognizePiiEntitiesResult>> recognizePiiEntitiesWithResponse(String text, String language) {
-        try {
-            return withContext(context -> recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(text, language,
-                context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String document) {
+        return recognizeEntities(document, defaultLanguage);
     }
 
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts. For the list
-     * of supported entity types, check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
-     * check: <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     * Returns a list of general categorized entities in the provided document.
      *
-     * @param textInputs A list of text to recognize PII entities for.
-     *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult named entity} of the text.
-     *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizePiiEntities(List<String> textInputs) {
-        try {
-            return recognizePiiEntitiesWithResponse(textInputs, defaultLanguage)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of texts. For the list
-     * of supported entity types, check <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
-     * check: <a href="https://aka.ms/talangs"></a>.
-     *
-     * @param textInputs A list of text to recognize PII entities for.
-     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
-     * English as default.
-     *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult named entity}.
-     *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizePiiEntitiesWithResponse(
-        List<String> textInputs, String language) {
-        try {
-            return withContext(context -> recognizePiiEntityAsyncClient.recognizePiiEntitiesWithResponse(textInputs,
-                language, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs. For
-     * the list of supported entity types, check: <a href="https://aka.ms/taner"></a>
+     * For a list of supported entity types, check: <a href="https://aka.ms/taner"></a>.
      * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
      *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize entities in a document with provided language code. Subscribes to the call asynchronously and prints
+     * out the entity details when a response is received.</p>
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeEntitiesResult named entity}.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string-string}
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     * @param document the text to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
+     * default.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link CategorizedEntity recognized categorized entities}.
+     *
+     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizePiiEntitiesResult>> recognizeBatchPiiEntities(
-        List<TextDocumentInput> textInputs) {
-        try {
-            return recognizeBatchPiiEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String document, String language) {
+        return recognizeEntityAsyncClient.recognizeEntities(document, language);
     }
 
     /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of document inputs. For
-     * the list of supported entity types,check: <a href="https://aka.ms/taner"></a>. For a list of enabled languages,
-     * check: <a href="https://aka.ms/talangs"></a>.
+     * Returns a list of general categorized entities for the provided list of documents.
      *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize PII entities for.
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize entities in a document. Subscribes to the call asynchronously and prints out the entity details
+     * when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable}
+     *
+     * @param documents A list of documents to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+        Iterable<String> documents) {
+        return recognizeEntitiesBatch(documents, defaultLanguage, null);
+    }
+
+    /**
+     * Returns a list of general categorized entities for the provided list of documents with provided language code.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize entities in a document with the provided language code. Subscribes to the call asynchronously and
+     * prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-String}
+     *
+     * @param documents A list of documents to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
+     * default.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+        Iterable<String> documents, String language) {
+        return recognizeEntitiesBatch(documents, language, null);
+    }
+
+    /**
+     * Returns a list of general categorized entities for the provided list of documents with the provided language code
+     * and request options.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize entities in a document with the provided language code. Subscribes to the call asynchronously and
+     * prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
+     *
+     * @param documents A list of documents to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
+     * default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizeEntitiesResult named entity}.
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     * @throws NullPointerException if {@code documents} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizePiiEntitiesResult>>> recognizeBatchPiiEntitiesWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
-        try {
-            return withContext(context ->
-                recognizePiiEntityAsyncClient.recognizeBatchPiiEntitiesWithResponse(textInputs, options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        return recognizeEntitiesBatch(
+            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
+    }
+
+    /**
+     * Returns a list of general categorized entities for the provided list of {@link TextDocumentInput document} with
+     * provided request options.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize entities in a list of {@link TextDocumentInput document}. Subscribes to the call asynchronously
+     * and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-TextAnalyticsRequestOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to recognize entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        return recognizeEntityAsyncClient.recognizeEntitiesBatch(documents, options);
+    }
+
+    // Personally Identifiable Information Entity
+
+    /**
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the document.
+     *
+     * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     *
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize Personally Identifiable Information entities in a document. Subscribes to the call asynchronously
+     * and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string}
+     *
+     * @param document The text to recognize Personally Identifiable Information entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link PiiEntity Personally Identifiable Information entities}.
+     *
+     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<PiiEntity> recognizePiiEntities(String document) {
+        return recognizePiiEntities(document, defaultLanguage);
+    }
+
+    /**
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the document with provided
+     * language code.
+     *
+     * For the list of supported entity types, check: <a href="https://aka.ms/taner"></a>.
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize Personally Identifiable Information entities in a document with provided language code. Subscribes
+     * to the call asynchronously and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string}
+     *
+     * @param document The document to recognize Personally Identifiable Information entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
+     * English as default.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link PiiEntity Personally Identifiable Information entities}.
+     *
+     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<PiiEntity> recognizePiiEntities(String document, String language) {
+        return recognizePiiEntityAsyncClient.recognizePiiEntities(document, language);
+    }
+
+    /**
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of documents.
+     *
+     * For the list of supported entity types, check: <a href="https://aka.ms/taner"></a>.
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     *
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize Personally Identifiable Information entities in a list of documents. Subscribes to the call
+     * asynchronously and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable}
+     *
+     * @param documents A list of documents to recognize Personally Identifiable Information entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
+        Iterable<String> documents) {
+        return recognizePiiEntitiesBatch(documents, defaultLanguage, null);
+    }
+
+    /**
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of documents with
+     * provided language code.
+     *
+     * For the list of supported entity types, check <a href="https://aka.ms/taner"></a>.
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize Personally Identifiable Information entities in a list of documents with provided language code.
+     * Subscribes to the call asynchronously and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String}
+     *
+     * @param documents A list of documents to recognize Personally Identifiable Information entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
+     * English as default.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
+        Iterable<String> documents, String language) {
+        return recognizePiiEntitiesBatch(documents, language, null);
+    }
+
+    /**
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of documents with
+     * provided language code and request options.
+     *
+     * For the list of supported entity types, check <a href="https://aka.ms/taner"></a>.
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize Personally Identifiable Information entities in a list of documents with provided language code and
+     * request options. Subscribes to the call asynchronously and prints out the entity details when a response is
+     * received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
+     *
+     * @param documents A list of documents to recognize Personally Identifiable Information entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
+     * English as default.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
+        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        return recognizePiiEntitiesBatch(
+            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
+    }
+
+    /**
+     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of
+     * {@link TextDocumentInput document} with provided request options.
+     *
+     * For the list of supported entity types,check: <a href="https://aka.ms/taner"></a>.
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
+     *
+     * <p><strong>Code sample</strong></p>
+     * <p>Recognize Personally Identifiable Information entities in a list of {@link TextDocumentInput document} with
+     * provided request options. Subscribes to the call asynchronously and prints out the entity details when a
+     * response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to recognize
+     * Personally Identifiable Information entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        return recognizePiiEntityAsyncClient.recognizePiiEntitiesBatch(documents, options);
     }
 
     // Linked Entity
+
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the provided text. See
+     * Returns a list of recognized entities with links to a well-known knowledge base for the provided document. See
      * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
-     * @param text the text to recognize linked entities for.
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
      *
-     * @return A {@link Mono} containing the {@link RecognizeLinkedEntitiesResult linked entity} of the text.
+     * <p>Recognize linked entities in a document. Subscribes to the call asynchronously and prints out the
+     * entity details when a response is received.</p>
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string}
+     *
+     * @param document The document to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of {@link LinkedEntity recognized linked entities}.
+     *
+     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecognizeLinkedEntitiesResult> recognizeLinkedEntities(String text) {
-        try {
-            return recognizeLinkedEntitiesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<LinkedEntity> recognizeLinkedEntities(String document) {
+        return recognizeLinkedEntities(document, defaultLanguage);
     }
 
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the provided text. See
+     * Returns a list of recognized entities with links to a well-known knowledge base for the provided document. See
      * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
-     * @param text the text to recognize linked entities for.
+     * <p>Recognize linked entities in a text with provided language code. Subscribes to the call asynchronously
+     * and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string-string}
+     *
+     * @param document The document to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
+     * English as default.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of {@link LinkedEntity recognized linked entities}.
+     *
+     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<LinkedEntity> recognizeLinkedEntities(String document, String language) {
+        return recognizeLinkedEntityAsyncClient.recognizeLinkedEntities(document, language);
+    }
+
+    /**
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of documents. See
+     * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     *
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
+     *
+     * <p>Recognize linked entities in a list of documents. Subscribes to the call asynchronously and prints out the
+     * entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable}
+     *
+     * @param documents A list of documents to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link LinkedEntity recognized linked entities document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
+        Iterable<String> documents) {
+        return recognizeLinkedEntitiesBatch(documents, defaultLanguage, null);
+    }
+
+    /**
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of documents with
+     * provided language code.
+     *
+     * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     *
+     * <p>Recognize linked entities in a list of documents with provided language code. Subscribes to the call
+     * asynchronously and prints out the entity details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-String}
+     *
+     * @param documents A list of documents to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link RecognizeLinkedEntitiesResult named entity} of the text.
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link LinkedEntity recognized linked entities document result}.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code documents} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesWithResponse(String text,
-        String language) {
-        try {
-            return withContext(context -> recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(text,
-                language, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
+        Iterable<String> documents, String language) {
+        return recognizeLinkedEntitiesBatch(documents, language, null);
     }
 
     /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts. See
-     * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of documents with
+     * provided language code and request options.
      *
-     * @param textInputs A list of text to recognize linked entities for.
+     * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeLinkedEntitiesResult linked entity} of the text.
+     * <p>Recognize linked entities in a list of documents with provided language code. Subscribes to the call
+     * asynchronously and prints out the entity details when a response is received.</p>
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntities(
-        List<String> textInputs) {
-        try {
-            return recognizeLinkedEntitiesWithResponse(textInputs, defaultLanguage)
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of texts. See
-     * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
-     * @param textInputs A list of text to recognize linked entities for.
+     * @param documents A list of documents to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
-     *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeLinkedEntitiesResult linked entity}.
-     *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesWithResponse(
-        List<String> textInputs, String language) {
-        try {
-            return withContext(context ->
-                recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesWithResponse(textInputs, language, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs. See
-     * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
-     *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
-     *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link RecognizeLinkedEntitiesResult linked entity}.
-     *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<RecognizeLinkedEntitiesResult>> recognizeBatchLinkedEntities(
-        List<TextDocumentInput> textInputs) {
-        try {
-            return recognizeBatchLinkedEntitiesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of inputs. See
-     * <a href="https://aka.ms/talangs"></a> supported languages in Text Analytics API.
-     *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to recognize linked entities for.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link RecognizeLinkedEntitiesResult linked entity}.
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link LinkedEntity recognized linked entities document result}.
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     * @throws NullPointerException if {@code documents} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<RecognizeLinkedEntitiesResult>>>
-        recognizeBatchLinkedEntitiesWithResponse(List<TextDocumentInput> textInputs,
-        TextAnalyticsRequestOptions options) {
-        try {
-            return withContext(context -> recognizeLinkedEntityAsyncClient.recognizeBatchLinkedEntitiesWithResponse(
-                textInputs, options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
+        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        return recognizeLinkedEntitiesBatch(
+            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
+    }
+
+    /**
+     * Returns a list of recognized entities with links to a well-known knowledge base for the list of
+     * {@link TextDocumentInput document} with provided request options.
+     *
+     * See <a href="https://aka.ms/talangs"></a> supported languages in Text Analytics API.
+     *
+     * <p>Recognize linked  entities in a list of {@link TextDocumentInput document} and provided request options to
+     * show statistics. Subscribes to the call asynchronously and prints out the entity details when a response is
+     * received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-TextAnalyticsRequestOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to recognize linked entities for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link LinkedEntity recognized linked entities document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        return recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatch(documents, options);
     }
 
     // Key Phrases
+
     /**
-     * Returns a list of strings denoting the key phrases in the input text.
+     * Returns a list of strings denoting the key phrases in the document.
      *
-     * @param text the text to be analyzed.
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
      *
-     * @return A {@link Mono} containing the {@link ExtractKeyPhraseResult key phrases} of the text.
+     * <p>Extract key phrases in a document. Subscribes to the call asynchronously and prints out the
+     * key phrases when a response is received.</p>
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string}
+     *
+     * @param document The document to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of extracted key phrases.
+     *
+     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExtractKeyPhraseResult> extractKeyPhrases(String text) {
-        try {
-            return extractKeyPhrasesWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<String> extractKeyPhrases(String document) {
+        return extractKeyPhrases(document, defaultLanguage);
     }
 
     /**
-     * Returns a list of strings denoting the key phrases in the input text. See <a href="https://aka.ms/talangs"></a>
-     * for the list of enabled languages.
+     * Returns a list of strings denoting the key phrases in the document.
      *
-     * @param text the text to be analyzed.
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     *
+     * <p>Extract key phrases in a document with a provided language code. Subscribes to the call asynchronously and
+     * prints out the key phrases when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#string-string}
+     *
+     * @param document The document to be analyzed. For text length limits, maximum batch size, and supported text
+     * encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link ExtractKeyPhraseResult key phrases} of the text.
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of extracted key phrases.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExtractKeyPhraseResult>> extractKeyPhrasesWithResponse(String text, String language) {
-        try {
-            return withContext(context -> extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(text, language,
-                context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<String> extractKeyPhrases(String document, String language) {
+        return extractKeyPhraseAsyncClient.extractKeyPhrasesSingleText(document, language);
     }
 
     /**
-     * Returns a list of strings denoting the key phrases in the input text.
+     * Returns a list of strings denoting the key phrases in the document.
      *
-     * @param textInputs A list of text to be analyzed.
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link ExtractKeyPhraseResult key phrases} of the text.
+     * <p>Extract key phrases in a list of documents. Subscribes to the call asynchronously and prints out the
+     * key phrases when a response is received.</p>
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatch#Iterable}
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link ExtractKeyPhraseResult extracted key phrases document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<ExtractKeyPhraseResult>> extractKeyPhrases(List<String> textInputs) {
-        try {
-            return extractKeyPhrasesWithResponse(textInputs, defaultLanguage).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrasesBatch(Iterable<String> documents) {
+        return extractKeyPhrasesBatch(documents, defaultLanguage, null);
     }
 
     /**
-     * Returns a list of strings denoting the key phrases in the input text. See <a href="https://aka.ms/talangs"></a>
-     * for the list of enabled languages.
+     * Returns a list of strings denoting the key phrases in the document with provided language code.
      *
-     * @param textInputs A list of text to be analyzed.
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     *
+     * <p>Extract key phrases in a list of documents with a provided language code. Subscribes to the call
+     * asynchronously and prints out the key phrases when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatch#Iterable-String}
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link ExtractKeyPhraseResult key phrases}.
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     * @throws NullPointerException if {@code documents} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesWithResponse(
-        List<String> textInputs, String language) {
-        try {
-            return withContext(context -> extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(textInputs,
-                language, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
+        Iterable<String> documents, String language) {
+        return extractKeyPhrasesBatch(documents, language, null);
     }
 
     /**
-     * Returns a list of strings denoting the key phrases in the input text.
+     * Returns a list of strings denoting the key phrases in the document with provided language code and request
+     * options.
      *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link ExtractKeyPhraseResult key phrases}.
+     * <p>Extract key phrases in a list of documents with a provided language and request options. Subscribes to the
+     * call asynchronously and prints out the key phrases when a response is received.</p>
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<ExtractKeyPhraseResult>> extractBatchKeyPhrases(
-        List<TextDocumentInput> textInputs) {
-        try {
-            return extractBatchKeyPhrasesWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Returns a list of strings denoting the key phrases in the input text. See <a href="https://aka.ms/talangs"></a>
-     * for the list of enabled languages.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
+     * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link ExtractKeyPhraseResult key phrases}.
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link ExtractKeyPhraseResult extracted key phrases document result}.
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     * @throws NullPointerException if {@code documents} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<ExtractKeyPhraseResult>>> extractBatchKeyPhrasesWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
-        try {
-            return withContext(context ->
-                extractKeyPhraseAsyncClient.extractBatchKeyPhrasesWithResponse(textInputs, options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
+        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        return extractKeyPhrasesBatch(
+            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
+    }
+
+    /**
+     * Returns a list of strings denoting the key phrases in the document with provided request options.
+     *
+     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     *
+     * <p>Extract key phrases in a list of {@link TextDocumentInput document} with provided request options.
+     * Subscribes to the call asynchronously and prints out the key phrases when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatch#Iterable-TextAnalyticsRequestOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents}  to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link ExtractKeyPhraseResult extracted key phrases document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        return extractKeyPhraseAsyncClient.extractKeyPhrases(documents, options);
     }
 
     // Sentiment
+
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
-     * Neutral) for the document and each sentence within i
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
+     * Neutral) for the document and each sentence within it.
      *
-     * @param text the text to be analyzed.
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
      *
-     * @return A {@link Mono} containing the {@link AnalyzeSentimentResult text sentiment} of the text.
+     * <p>Analyze sentiment in a list of documents. Subscribes to the call asynchronously and prints out the
+     * sentiment details when a response is received.</p>
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string}
+     *
+     * @param document The document to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     *
+     * @return A {@link Mono} contains the {@link DocumentSentiment analyzed document sentiment} of the document.
+     *
+     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeSentimentResult> analyzeSentiment(String text) {
+    public Mono<DocumentSentiment> analyzeSentiment(String document) {
         try {
-            return analyzeSentimentWithResponse(text, defaultLanguage).flatMap(FluxUtil::toMono);
+            return analyzeSentiment(document, defaultLanguage);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
-     * Neutral) for the document and each sentence within i
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
+     * Neutral) for the document and each sentence within it.
      *
-     * @param text the text to be analyzed.
+     * <p>Analyze sentiment in a list of documents. Subscribes to the call asynchronously and prints out the
+     * sentiment details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#string-string}
+     *
+     * @param document The document to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} has the
-     * {@link AnalyzeSentimentResult text sentiment} of the text.
+     * @return A {@link Mono} contains the {@link DocumentSentiment analyzed document sentiment} of the document.
      *
-     * @throws NullPointerException if {@code text} is {@code null}.
+     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnalyzeSentimentResult>> analyzeSentimentWithResponse(String text, String language) {
-        try {
-            return withContext(context ->
-                analyzeSentimentAsyncClient.analyzeSentimentWithResponse(text, language, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Mono<DocumentSentiment> analyzeSentiment(String document, String language) {
+        return analyzeSentimentBatch(Collections.singletonList(document), language, null)
+            .map(sentimentResult -> {
+                if (sentimentResult.isError()) {
+                    throw logger.logExceptionAsError(Transforms.toTextAnalyticsException(sentimentResult.getError()));
+                }
+
+                return sentimentResult.getDocumentSentiment();
+            }).last();
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
-     * @param textInputs A list of text to be analyzed.
+     * This method will use the default language that sets up in
+     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
+     * the language.
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link AnalyzeSentimentResult text sentiment} of the text.
+     * <p>Analyze sentiment in a list of documents. Subscribes to the call asynchronously and prints out the
+     * sentiment details when a response is received.</p>
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable}
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<AnalyzeSentimentResult>> analyzeSentiment(List<String> textInputs) {
-        try {
-            return analyzeSentimentWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(Iterable<String> documents) {
+        return analyzeSentimentBatch(documents, defaultLanguage, null);
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
-     * @param textInputs A list of text to be analyzed.
-     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
+     * <p>Analyze sentiment in a list of documents with provided language code. Subscribes to the
+     * call asynchronously and prints out the sentiment details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-String}
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Response} of {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link AnalyzeSentimentResult text sentiment}.
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     * @throws NullPointerException if {@code documents} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeSentimentWithResponse(
-        List<String> textInputs, String language) {
-        try {
-            return withContext(context -> analyzeSentimentAsyncClient.analyzeSentimentWithResponse(textInputs, language,
-                context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(
+        Iterable<String> documents, String language) {
+        return analyzeSentimentBatch(documents, language, null);
     }
 
     /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
      * Neutral) for the document and each sentence within it.
      *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents} to be analyzed.
+     * <p>Analyze sentiment in a list of documents with provided language code and request options. Subscribes to the
+     * call asynchronously and prints out the sentiment details when a response is received.</p>
      *
-     * @return A {@link Mono} containing the {@link DocumentResultCollection batch} of the
-     * {@link AnalyzeSentimentResult text sentiment}.
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-String-TextAnalyticsRequestOptions}
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DocumentResultCollection<AnalyzeSentimentResult>> analyzeBatchSentiment(
-        List<TextDocumentInput> textInputs) {
-        try {
-            return analyzeBatchSentimentWithResponse(textInputs, null).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Returns a sentiment prediction, as well as sentiment scores for each sentiment class (Positive, Negative, and
-     * Neutral) for the document and each sentence within it.
-     *
-     * @param textInputs A list of {@link TextDocumentInput inputs/documents}  to be analyzed.
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
+     * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DocumentResultCollection batch} of {@link AnalyzeSentimentResult text sentiment}.
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
      *
-     * @throws NullPointerException if {@code textInputs} is {@code null}.
+     * @throws NullPointerException if {@code documents} is {@code null}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentResultCollection<AnalyzeSentimentResult>>> analyzeBatchSentimentWithResponse(
-        List<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
-        try {
-            return withContext(context -> analyzeSentimentAsyncClient.analyzeBatchSentimentWithResponse(textInputs,
-                options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(
+        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        return analyzeSentimentBatch(
+            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
+    }
+
+    /**
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
+     * Neutral) for the document and each sentence within it.
+     *
+     * <p>Analyze sentiment in a list of {@link TextDocumentInput document} with provided request options. Subscribes
+     * to the call asynchronously and prints out the sentiment details when a response is received.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-TextAnalyticsRequestOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents}  to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
+     * and show statistics.
+     *
+     * @return A {@link TextAnalyticsPagedFlux} contains a list of
+     * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        return analyzeSentimentAsyncClient.analyzeSentimentBatch(documents, options);
     }
 }

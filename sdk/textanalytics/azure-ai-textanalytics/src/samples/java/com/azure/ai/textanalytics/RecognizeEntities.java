@@ -3,36 +3,29 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.NamedEntity;
+import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
- * Sample demonstrates how to recognize the entities of an input text.
+ * Sample demonstrates how to recognize the entities of document.
  */
 public class RecognizeEntities {
     /**
-     * Main method to invoke this demo about how to recognize the entities of an input text.
+     * Main method to invoke this demo about how to recognize the entities of document.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .subscriptionKey("{subscription_key}")
-            .endpoint("https://{servicename}.cognitiveservices.azure.com/")
+            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that need be analysed.
-        String text = "Satya Nadella is the CEO of Microsoft";
+        // The document that needs be analyzed.
+        String document = "Satya Nadella is the CEO of Microsoft";
 
-        for (NamedEntity entity : client.recognizeEntities(text).getNamedEntities()) {
-            System.out.printf(
-                "Recognized entity: %s, entity type: %s, entity subtype: %s, offset: %s, length: %s, score: %s.%n",
-                entity.getText(),
-                entity.getType(),
-                entity.getSubtype() == null || entity.getSubtype().isEmpty() ? "N/A" : entity.getSubtype(),
-                entity.getOffset(),
-                entity.getLength(),
-                entity.getScore());
-        }
+        client.recognizeEntities(document).forEach(entity -> System.out.printf(
+            "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
+            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
     }
 }

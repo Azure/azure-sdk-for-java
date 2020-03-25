@@ -3,15 +3,15 @@
 
 package com.azure.core.util.logging;
 
+import com.azure.core.implementation.logging.DefaultLogger;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.helpers.NOPLogger;
 
 import java.util.Arrays;
 import java.util.Objects;
-
-import static com.azure.core.implementation.LoggingUtil.getEnvironmentLoggingLevel;
 
 /**
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
@@ -50,9 +50,28 @@ public class ClientLogger {
      * Retrieves a logger for the passed class name using the {@link LoggerFactory}.
      *
      * @param className Class name creating the logger.
+     * @throws RuntimeException it is an error.
      */
     public ClientLogger(String className) {
-        logger = LoggerFactory.getLogger(className);
+        Logger initLogger = LoggerFactory.getLogger(className);
+        logger = initLogger instanceof NOPLogger ? new DefaultLogger(className) : initLogger;
+    }
+
+    /**
+     * Logs a message at {@code verbose} log level.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging a message at verbose log level.</p>
+     *
+     * {@codesnippet com.azure.core.util.logging.clientlogger.verbose}
+     *
+     * @param message The message to log.
+     */
+    public void verbose(String message) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(message);
+        }
     }
 
     /**
@@ -62,14 +81,33 @@ public class ClientLogger {
      *
      * <p>Logging a message at verbose log level.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.verbose}
+     * {@codesnippet com.azure.core.util.logging.clientlogger.verbose#string-object}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
      *     {@link Throwable}.
      */
     public void verbose(String format, Object... args) {
-        log(LogLevel.VERBOSE, format, args);
+        if (logger.isDebugEnabled()) {
+            performLogging(LogLevel.VERBOSE, false, format, args);
+        }
+    }
+
+    /**
+     * Logs a message at {@code info} log level.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging a message at verbose log level.</p>
+     *
+     * {@codesnippet com.azure.core.util.logging.clientlogger.info}
+     *
+     * @param message The message to log.
+     */
+    public void info(String message) {
+        if (logger.isInfoEnabled()) {
+            logger.info(message);
+        }
     }
 
     /**
@@ -79,14 +117,33 @@ public class ClientLogger {
      *
      * <p>Logging a message at informational log level.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.info}
+     * {@codesnippet com.azure.core.util.logging.clientlogger.info#string-object}
      *
      * @param format The formattable message to log
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
      *     {@link Throwable}.
      */
     public void info(String format, Object... args) {
-        log(LogLevel.INFORMATIONAL, format, args);
+        if (logger.isInfoEnabled()) {
+            performLogging(LogLevel.INFORMATIONAL, false, format, args);
+        }
+    }
+
+    /**
+     * Logs a message at {@code warning} log level.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging a message at verbose log level.</p>
+     *
+     * {@codesnippet com.azure.core.util.logging.clientlogger.warning}
+     *
+     * @param message The message to log.
+     */
+    public void warning(String message) {
+        if (logger.isWarnEnabled()) {
+            logger.warn(message);
+        }
     }
 
     /**
@@ -96,14 +153,33 @@ public class ClientLogger {
      *
      * <p>Logging a message at warning log level.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.warning}
+     * {@codesnippet com.azure.core.util.logging.clientlogger.warning#string-object}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
      *     {@link Throwable}.
      */
     public void warning(String format, Object... args) {
-        log(LogLevel.WARNING, format, args);
+        if (logger.isWarnEnabled()) {
+            performLogging(LogLevel.WARNING, false, format, args);
+        }
+    }
+
+    /**
+     * Logs a message at {@code error} log level.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging a message at verbose log level.</p>
+     *
+     * {@codesnippet com.azure.core.util.logging.clientlogger.error}
+     *
+     * @param message The message to log.
+     */
+    public void error(String message) {
+        if (logger.isErrorEnabled()) {
+            logger.error(message);
+        }
     }
 
     /**
@@ -113,73 +189,90 @@ public class ClientLogger {
      *
      * <p>Logging an error with stack trace.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.error}
+     * {@codesnippet com.azure.core.util.logging.clientlogger.error#string-object}
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the
      *     {@link Throwable}.
      */
     public void error(String format, Object... args) {
-        log(LogLevel.ERROR, format, args);
-    }
-
-    /*
-     * This method logs the formattable message if the {@code logLevel} is enabled
-     *
-     * @param logLevel The log level at which this message should be logged
-     * @param format The formattable message to log
-     * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
-     */
-    private void log(LogLevel logLevel, String format, Object... args) {
-        LogLevel environmentLoggingLevel = getEnvironmentLoggingLevel();
-
-        if (canLogAtLevel(logLevel, environmentLoggingLevel)) {
-            performLogging(logLevel, environmentLoggingLevel, false, format, args);
+        if (logger.isErrorEnabled()) {
+            performLogging(LogLevel.ERROR, false, format, args);
         }
     }
 
     /**
      * Logs the {@link RuntimeException} at the warning level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a runtime exception type needs to be thrown and logged. If a {@link Throwable} is
+     * being logged use {@link #logThowableAsWarning(Throwable)} instead.
      *
      * @param runtimeException RuntimeException to be logged and returned.
-     * @return The passed {@code RuntimeException}.
+     * @return The passed {@link RuntimeException}.
      * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
     public RuntimeException logExceptionAsWarning(RuntimeException runtimeException) {
-        return logException(runtimeException, LogLevel.WARNING);
+        Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
+
+        return logThowableAsWarning(runtimeException);
+    }
+
+    /**
+     * Logs the {@link Throwable} at the warning level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
+     * RuntimeException} is being logged use {@link #logExceptionAsWarning(RuntimeException)} instead.
+     *
+     * @param throwable Throwable to be logged and returned.
+     * @param <T> Type of the Throwable being logged.
+     * @return The passed {@link Throwable}.
+     * @throws NullPointerException If {@code throwable} is {@code null}.
+     */
+    public <T extends Throwable> T logThowableAsWarning(T throwable) {
+        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
+        if (!logger.isWarnEnabled()) {
+            return throwable;
+        }
+
+        performLogging(LogLevel.WARNING, true, throwable.getMessage(), throwable);
+        return throwable;
     }
 
     /**
      * Logs the {@link RuntimeException} at the error level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a runtime exception type needs to be thrown and logged. If a {@link Throwable} is
+     * being logged use {@link #logThrowableAsError(Throwable)} instead.
      *
      * @param runtimeException RuntimeException to be logged and returned.
      * @return The passed {@code RuntimeException}.
      * @throws NullPointerException If {@code runtimeException} is {@code null}.
      */
     public RuntimeException logExceptionAsError(RuntimeException runtimeException) {
-        return logException(runtimeException, LogLevel.ERROR);
-    }
-
-    private RuntimeException logException(RuntimeException runtimeException, LogLevel logLevel) {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
 
-        LogLevel environmentLoggingLevel = getEnvironmentLoggingLevel();
-
-        if (canLogAtLevel(logLevel, environmentLoggingLevel)) {
-            performLogging(logLevel, environmentLoggingLevel, true, runtimeException.getMessage(), runtimeException);
-        }
-
-        return runtimeException;
+        return logThrowableAsError(runtimeException);
     }
 
     /**
-     * Determines if the environment and logger support logging at the given log level.
+     * Logs the {@link Throwable} at the error level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
+     * RuntimeException} is being logged use {@link #logExceptionAsError(RuntimeException)} instead.
      *
-     * @param logLevel The {@link LogLevel} being validated as supported.
-     * @return Flag indicating if the environment and logger support logging at the given log level.
+     * @param throwable Throwable to be logged and returned.
+     * @param <T> Type of the Throwable being logged.
+     * @return The passed {@link Throwable}.
+     * @throws NullPointerException If {@code throwable} is {@code null}.
      */
-    public boolean canLogAtLevel(LogLevel logLevel) {
-        return canLogAtLevel(logLevel, getEnvironmentLoggingLevel());
+    public <T extends Throwable> T logThrowableAsError(T throwable) {
+        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
+        if (!logger.isErrorEnabled()) {
+            return throwable;
+        }
+
+        performLogging(LogLevel.ERROR, true, throwable.getMessage(), throwable);
+        return throwable;
     }
 
     /*
@@ -188,8 +281,7 @@ public class ClientLogger {
      * @param format formattable message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    private void performLogging(LogLevel logLevel, LogLevel environmentLogLevel, boolean isExceptionLogging,
-        String format, Object... args) {
+    private void performLogging(LogLevel logLevel, boolean isExceptionLogging, String format, Object... args) {
         // If the logging level is less granular than verbose remove the potential throwable from the args.
         String throwableMessage = "";
         if (doesArgsHaveThrowable(args)) {
@@ -207,7 +299,7 @@ public class ClientLogger {
              * Environment is logging at a level higher than verbose, strip out the throwable as it would log its
              * stack trace which is only expected when logging at a verbose level.
              */
-            if (environmentLogLevel.getLogLevel() > LogLevel.VERBOSE.getLogLevel()) {
+            if (!logger.isDebugEnabled()) {
                 args = removeThrowable(args);
             }
         }
@@ -235,27 +327,19 @@ public class ClientLogger {
                 // Don't do anything, this state shouldn't be possible.
                 break;
         }
+
     }
 
-    /*
-     * Determines if the environment and logger support logging at the given log level.
+    /**
+     * Determines if the app or environment logger support logging at the given log level.
      *
      * @param logLevel Logging level for the log message.
-     * @param environmentLoggingLevel Logging level the environment is set to support.
      * @return Flag indicating if the environment and logger are configured to support logging at the given log level.
      */
-    private boolean canLogAtLevel(LogLevel logLevel, LogLevel environmentLoggingLevel) {
-        // Do not log if logLevel is null is not set.
+    public boolean canLogAtLevel(LogLevel logLevel) {
         if (logLevel == null) {
             return false;
         }
-
-        // Attempting to log at a level not supported by the environment.
-        if (logLevel.getLogLevel() < environmentLoggingLevel.getLogLevel()) {
-            return false;
-        }
-
-        // Determine if the logger configuration supports logging at the level.
         switch (logLevel) {
             case VERBOSE:
                 return logger.isDebugEnabled();

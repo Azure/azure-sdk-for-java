@@ -5,7 +5,12 @@
       "filter": {
         "packages": {
           "regex": true,
-          "exclude": [ "com\\.azure\\..+\\.implementation(\\..+)?" ]
+          "exclude": [
+            "com\\.azure\\..+\\.implementation(\\..+)?",
+            "com\\.fasterxml\\.jackson\\..+",
+            "reactor\\.netty\\..+",
+            "io\\.netty\\..+"
+          ]
         }
       }
     }
@@ -28,61 +33,76 @@
       {
         "regex": true,
         "code": "java\\.missing\\.(oldClass|newClass)",
-        "new": "missing\\-class org\\.reactivestreams\\.Publisher",
-        "justification": "This class is part of the reactive streams initiative in Java."
-      },
-      {
-        "regex": true,
-        "code": "java\\.missing\\.(oldClass|newClass)",
-        "new": "missing\\-class reactor\\.util\\.context\\.Context",
-        "justification": "Reactor is allowed in the public API. Since we don't analyze dependencies, these show up as being unresolved."
-      },
-      {
-        "regex": true,
-        "code": "java\\.missing\\.(oldClass|newClass)",
         "new": "missing\\-class com\\.fasterxml\\.jackson\\.databind\\.ObjectMapper",
         "exampleUseChainInNewApi": ".*com\\.azure\\.core\\.util\\.serializer\\.JacksonAdapter.*",
         "justification": "We allow this in com.azure.core.util.serializer.JacksonAdapter."
       },
       {
         "regex": true,
-        "code": "java\\.missing\\.(oldClass|newClass)",
-        "new": "missing\\-class reactor\\.core(\\..+)?",
-        "justification": "Reactor is allowed in the public API. Since we don't analyze dependencies, these show up as being unresolved."
+        "code": "java\\.missing\\.(oldSuperType|newSuperType)",
+        "new": "class com\\.azure\\.core\\.http\\.rest\\.((PagedFlux<T extends java\\.lang\\.Object>)|(PagedFluxBase<T extends java\\.lang\\.Object.*>)).*",
+        "justification": "azure.core 1.3.0 will introduce a new base type for GAed PagedFlux. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
+      },
+      {
+        "code": "java.method.addedToInterface",
+        "new": "method com.azure.core.util.IterableStream<T> com.azure.core.util.paging.ContinuablePage<C, T>::getElements() @ com.azure.core.http.rest.PagedResponse<T>",
+        "justification": "Exposed through revapi transitive dependency checking. azure.core 1.3.0 will introduce a new base type for GAed PagedFlux. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
+      },
+      {
+        "code": "java.method.parameterTypeChanged",
+        "new": "parameter java.lang.Iterable<P> com.azure.core.util.paging.ContinuablePagedIterable<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::iterableByPage(===int===) @ com.azure.core.http.rest.PagedIterableBase<T, P extends com.azure.core.http.rest.PagedResponse<T extends java.lang.Object>>",
+        "justification": "A new overload which shares the same number of parameters was introduced, confusing revapi. azure.core 1.3.0 will introduce a new base type for GAed PagedIterable. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
+      },
+      {
+        "code": "java.method.parameterTypeChanged",
+        "new": "parameter java.lang.Iterable<P> com.azure.core.util.paging.ContinuablePagedIterable<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::iterableByPage(===int===) @ com.azure.core.http.rest.PagedIterable<T>",
+        "justification": "A new overload which shares the same number of parameters was introduced, confusing revapi. azure.core 1.3.0 will introduce a new base type for GAed PagedIterable. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
+      },
+      {
+        "code": "java.method.parameterTypeChanged",
+        "new": "parameter java.util.stream.Stream<P> com.azure.core.util.paging.ContinuablePagedIterable<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::streamByPage(===int===) @ com.azure.core.http.rest.PagedIterableBase<T, P extends com.azure.core.http.rest.PagedResponse<T extends java.lang.Object>>",
+        "justification": "A new overload which shares the same number of parameters was introduced, confusing revapi. azure.core 1.3.0 will introduce a new base type for GAed PagedIterable. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
+      },
+      {
+        "code": "java.method.parameterTypeChanged",
+        "new": "parameter java.util.stream.Stream<P> com.azure.core.util.paging.ContinuablePagedIterable<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::streamByPage(===int===) @ com.azure.core.http.rest.PagedIterable<T>",
+        "justification": "A new overload which shares the same number of parameters was introduced, confusing revapi. azure.core 1.3.0 will introduce a new base type for GAed PagedIterable. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
       },
       {
         "regex": true,
-        "code": "java\\.missing\\.(oldClass|newClass)",
-        "new": "missing\\-class com\\.azure\\.core(?!\\.implementation)(\\..+)?",
-        "justification": "com.azure.core.* classes are allowed in the public API. Since we don't analyze dependencies, these show up as being unresolved."
+        "code": "java\\.class\\.(noLongerInheritsFromClass|nonFinalClassInheritsFromNewClass)",
+        "class": "com.azure.identity.SharedTokenCacheCredentialBuilder",
+        "justification": "SharedTokenCacheCredentialBuilder now inherites AadCredentialBuilderBase instead of CredentialBuilderBase thus being reported. However, AadCredentialBuilderBase also extends CredentialBuilderBase so it's not a breaking change."
       },
       {
         "regex": true,
-        "code": "java\\.missing\\.(oldClass|newClass)",
-        "new": "missing\\-class (io|reactor)\\.netty\\..+",
-        "exampleUseChainInOldApi": ".*com\\.azure\\.core\\.http\\.netty\\.NettyAsyncHttpClientBuilder.*",
-        "justification": "Dependencies are not checked. io.netty and reactor.netty are allowed in azure-core-http-netty."
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(interface|enum|class) reactor\\..*",
+        "justification": "We allow reactor classes in our external APIs. This also occurs because we check transitive dependencies, so it checks reactor jars."
       },
       {
         "regex": true,
-        "code": "java\\.missing\\.(oldClass|newClass)",
-        "new": "missing\\-class okhttp3\\..+",
-        "exampleUseChainInOldApi": ".*com\\.azure\\.core\\.http\\.okhttp\\.OkHttpAsyncHttpClientBuilder.*",
-        "justification": "Dependencies are not checked. okhttp3 is allowed in azure-core-http-okhttp."
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(interface|class|enum) com\\.azure\\.core.*",
+        "justification": "azure-core classes are allowed to be exposed by dependencies using them."
       },
       {
         "regex": true,
-        "code": "java\\.missing\\.(oldClass|newClass)",
-        "new": "missing\\-class com\\.azure\\.storage\\..+",
-        "exampleUseChainInOldApi": ".*com\\.azure\\.storage\\..*",
-        "justification": "Dependencies are not checked. azure-storage-common is used in the storage modules."
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "interface org\\.reactivestreams\\.(Publisher|Subscriber|Subscription).*",
+        "justification": "These classes exposed are publisher, subscriber, and Subscription."
       },
       {
         "regex": true,
-        "code": "java\\.missing\\.(oldClass|newClass)",
-        "new": "missing\\-class ((com\\.azure\\.messaging\\.eventhubs\\.models\\..+)|(com\\.azure\\.storage\\.blob\\.BlobContainerAsyncClient))",
-        "exampleUseChainInNewApi": ".*com\\.azure\\.messaging\\.eventhubs\\.checkpointstore\\.blob\\..*",
-        "justification": "azure-messaging-eventhubs and azure-storage-blob are used in the Event Hubs checkpoint store."
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(class|interface|enum) com\\.azure\\.storage\\..*",
+        "justification": "azure-storage-common and storage blob classes are allowed to be exposed."
+      },
+      {
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(class|interface|enum) com\\.azure\\.perf\\.test\\.core\\..*",
+        "justification": "perf-test classes are allowed to be exposed."
       }
     ]
   }
