@@ -63,7 +63,7 @@ public class AadCredentialTest extends TestBase {
         final String value = "newValue";
 
         ConfigurationSetting addedSetting = client.setConfigurationSetting(key, null, value);
-        Assertions.assertEquals(addedSetting.getKey(), key);
+        Assertions.assertEquals(addedSetting.getKey(), "key1");
         Assertions.assertEquals(addedSetting.getValue(), value);
     }
 
