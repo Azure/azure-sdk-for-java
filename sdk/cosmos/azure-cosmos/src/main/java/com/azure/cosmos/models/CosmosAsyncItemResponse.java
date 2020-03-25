@@ -11,6 +11,8 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
 
 import java.time.Duration;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -45,21 +47,30 @@ public class CosmosAsyncItemResponse<T> {
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getResponseDiagnostics());
         if (item == null && this.itemClassType == CosmosItemProperties.class) {
-            Callable<T> createItemPropertiesFunction = () -> {
-                return (T) getProperties();
-            };
-            item = serializationDiagnosticsContext.getResource(createItemPropertiesFunction, SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION);
+            ZonedDateTime serializationStartTime = ZonedDateTime.now();
+            item =(T) getProperties();
+            ZonedDateTime serializationEndTime = ZonedDateTime.now();
+            SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTime,
+                serializationEndTime,
+                SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+            );
+            serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
             return item;
         }
 
         if (item == null) {
             synchronized (this) {
                 if (item == null && !Utils.isEmpty(responseBodyAsByteArray)) {
-                    Callable<T> createTypedItemFunction = () -> {
-                        return Utils.parse(responseBodyAsByteArray, itemClassType);
-                    };
-                    item = serializationDiagnosticsContext.getResource(createTypedItemFunction, SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION);
-
+                    ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+                    item = Utils.parse(responseBodyAsByteArray, itemClassType);
+                    ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                    SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                        serializationStartTime,
+                        serializationEndTime,
+                        SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+                    );
+                    serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
                 }
             }
         }
