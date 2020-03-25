@@ -84,7 +84,8 @@ public class BlobClientBase {
     /**
      * Creates a new {@link BlobClientBase} linked to the {@code version} of this blob resource.
      *
-     * @param versionId the identifier for a specific version of this blob
+     * @param versionId the identifier for a specific version of this blob,
+     * pass {@code null} to interact with the latest blob version.
      * @return a {@link BlobClientBase} used to interact with the specific version.
      */
     public BlobClientBase getVersionClient(String versionId) {

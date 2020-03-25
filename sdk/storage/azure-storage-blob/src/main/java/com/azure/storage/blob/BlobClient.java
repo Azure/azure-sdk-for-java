@@ -92,7 +92,8 @@ public class BlobClient extends BlobClientBase {
     /**
      * Creates a new {@link BlobClient} linked to the {@code version} of this blob resource.
      *
-     * @param versionId the identifier for a specific version of this blob
+     * @param versionId the identifier for a specific version of this blob,
+     * pass {@code null} to interact with the latest blob version.
      * @return A {@link BlobClient} used to interact with the specific version.
      */
     @Override

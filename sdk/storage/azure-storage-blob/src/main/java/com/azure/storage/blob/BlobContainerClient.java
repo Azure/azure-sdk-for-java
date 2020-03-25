@@ -99,7 +99,7 @@ public final class BlobContainerClient {
      * BlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
      * @param blobName A {@code String} representing the name of the blob.
-     * @param versionId the version identifier for the blob.
+     * @param versionId the version identifier for the blob, pass {@code null} to interact with the latest blob version.
      * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
     public BlobClient getBlobClientWithVersion(String blobName, String versionId) {

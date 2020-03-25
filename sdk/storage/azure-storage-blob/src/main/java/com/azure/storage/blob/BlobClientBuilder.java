@@ -333,7 +333,7 @@ public final class BlobClientBuilder {
     /**
      * Sets the version identifier of the blob.
      *
-     * @param versionId Version identifier for the blob.
+     * @param versionId Version identifier for the blob, pass {@code null} to interact with the latest blob version.
      * @return the updated BlobClientBuilder object
      */
     public BlobClientBuilder versionId(String versionId) {
