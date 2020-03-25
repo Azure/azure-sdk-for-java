@@ -259,6 +259,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     $pomFile = $_.FullName
     $xmlPomFile = $null
 
+    Write-Host "POM Full Name: $($_.FullName)"
     if ($_.FullName -like "*\sdk\parents\azure-arm-parent\pom.xml")
     {
         return
