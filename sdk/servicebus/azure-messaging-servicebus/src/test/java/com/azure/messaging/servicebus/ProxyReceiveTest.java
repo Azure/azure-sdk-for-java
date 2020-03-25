@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.jproxy.ProxyServer;
 import com.azure.messaging.servicebus.jproxy.SimpleProxy;
-import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -71,19 +70,25 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     @Test
     public void testReceiverStartOfStreamFilters() {
         // Arrange
+        final String queueName = getQueueName();
+
+        Assertions.assertNotNull(queueName, "'queueName' is not set in environment variable.");
+
         final String messageTracking = UUID.randomUUID().toString();
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .connectionString(getConnectionString());
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageTracking);
-        final ServiceBusSenderAsyncClient sender = builder.buildAsyncSenderClient();
+        final ServiceBusSenderAsyncClient sender = builder.buildSenderClientBuilder()
+            .entityName(queueName)
+            .buildAsyncClient();
 
-        final ReceiveMessageOptions options = new ReceiveMessageOptions()
-            .setReceiveMode(ReceiveMode.RECEIVE_AND_DELETE);
-        final ServiceBusReceiverAsyncClient receiver = builder
-            .receiveMessageOptions(options)
-            .buildAsyncReceiverClient();
+        final ServiceBusReceiverAsyncClient receiver = builder.buildReceiverClientBuilder()
+            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .queueName(queueName)
+            .isAutoComplete(false)
+            .buildAsyncClient();
 
         // Act & Assert
         try {

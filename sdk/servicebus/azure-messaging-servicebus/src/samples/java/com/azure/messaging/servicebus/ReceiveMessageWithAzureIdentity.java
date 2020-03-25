@@ -10,14 +10,13 @@ import reactor.core.Disposable;
 import java.time.Duration;
 
 /**
- * Sample demonstrates how to peek an {@link ServiceBusReceivedMessage} from an Azure Service Bus using Azure Identity.
+ * Sample demonstrates how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue using
+ * Azure Identity.
  */
-public class PeekMessageWithAzureIdentity {
-    private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(20);
-
+public class ReceiveMessageWithAzureIdentity {
     /**
-     * Main method to invoke this demo on how to send an {@link ServiceBusMessage} to an Azure Service Bus
-     * queue or topic.
+     * Main method to invoke this demo on how to receive an {@link ServiceBusMessage} from an Azure Service Bus
+     * Queue
      *
      * @param args Unused arguments to the program.
      */
@@ -35,37 +34,35 @@ public class PeekMessageWithAzureIdentity {
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .build();
 
-        // Create the client.
+        // Create a receiver.
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // "<<queue-or-topic-name>>" will be the name of the Service Bus queue or topic instance you created
+        // "<<queue-name>>" will be the name of the Service Bus queue instance you created
         // inside the Service Bus namespace.
         ServiceBusReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
-            .credential(
-                "<<fully-qualified-namespace>>",
-                "<<queue-or-topic-name>>",
-                credential)
-            .buildAsyncReceiverClient();
+            .credential("<<fully-qualified-namespace>>", credential)
+            .buildReceiverClientBuilder()
+            .queueName("<<queue-name>>")
+            .buildAsyncClient();
 
-        Disposable disposable = receiverAsyncClient
-            .peek()
-            .doOnNext(message -> {
-                log(" Received Message Id :" + message.getMessageId());
-                log(" Received Message :" + new String(message.getBody()));
-            })
-            .subscribe();
+        Disposable subscription = receiverAsyncClient.receive()
+            .subscribe(message -> {
+                System.out.println("Received Message Id:" + message.getMessageId());
+                System.out.println("Received Message:" + new String(message.getBody()));
+            }, error -> System.err.println("Error occurred while receiving message: " + error),
+                () -> System.out.println("Receiving complete."));
 
-        //wait for client to finish processing.
+
+        // Receiving messages from the queue for a duration of 20 seconds.
+        // Subscribe is not a blocking call so we sleep here so the program does not end.
         try {
-            Thread.sleep(OPERATION_TIMEOUT.toMillis());
+            Thread.sleep(Duration.ofSeconds(20).toMillis());
         } catch (InterruptedException ignored) {
-
         }
-        log("Closing the receiver");
-        disposable.dispose();
-        log("End!! ");
-    }
 
-    private static void log(String message) {
-        System.out.println(message);
+        // Disposing of the subscription will cancel the receive() operation.
+        subscription.dispose();
+
+        // Close the receiver.
+        receiverAsyncClient.close();
     }
 }
