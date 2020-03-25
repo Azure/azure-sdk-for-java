@@ -22,7 +22,7 @@ public class AzureKeyCredential {
      * @throws IllegalArgumentException If {@code key} is an empty string.
      */
     public AzureKeyCredential(String key) {
-        Objects.requireNonNull(key);
+        Objects.requireNonNull(key, "'key' cannot be null.");
         if (key.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
         }
@@ -48,7 +48,7 @@ public class AzureKeyCredential {
      * @throws IllegalArgumentException If {@code key} is an empty string.
      */
     public AzureKeyCredential update(String key) {
-        Objects.requireNonNull(key);
+        Objects.requireNonNull(key, "'key' cannot be null.");
         if (key.isEmpty()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
         }
