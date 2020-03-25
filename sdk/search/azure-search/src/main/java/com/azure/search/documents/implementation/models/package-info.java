@@ -5,8 +5,8 @@
 // regenerated.
 
 /**
- * Package containing classes for SearchServiceRestClient.
- * Client that can be used to manage and query indexes and documents, as well
- * as manage other resources, on a search service.
+ * Package containing the data models for SearchIndexRestClient.
+ * Client that can be used to query an index and upload, merge, or delete
+ * documents.
  */
 package com.azure.search.documents.implementation.models;
