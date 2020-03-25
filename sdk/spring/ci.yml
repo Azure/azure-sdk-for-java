@@ -41,39 +41,39 @@ stages:
         - name: azure-spring-boot
           groupId: com.azure
           safeName: azurespringboot
-        - name: azure-active-directory-b2c-spring-boot-starter
-          groupId: com.azure
-          safeName: azureactivedirectoryb2cspringbootstarter
-        - name: azure-active-directory-spring-boot-starter
-          groupId: com.azure
-          safeName: azureactivedirectoryspringbootstarter
-        - name: azure-cosmosdb-spring-boot-starter
-          groupId: com.azure
-          safeName: azurecosmosdbspringbootstarter
-        - name: azure-keyvault-secrets-spring-boot-starter
-          groupId: com.azure
-          safeName: azurekeyvaultsecretsspringbootstarter
-        - name: azure-mediaservices-spring-boot-starter
-          groupId: com.azure
-          safeName: azuremediaservicesspringbootstarter
-        - name: azure-servicebus-jms-spring-boot-starter
-          groupId: com.azure
-          safeName: azureservicebusjmsspringbootstarter
-        - name: azure-servicebus-spring-boot-starter
-          groupId: com.azure
-          safeName: azureservicebusspringbootstarter
-        - name: azure-spring-boot-metrics-starter
-          groupId: com.azure
-          safeName: azurespringbootmetricsstarter
         - name: azure-spring-boot-starter
           groupId: com.azure
           safeName: azurespringbootstarter
-        - name: azure-storage-spring-boot-starter
+        - name: azure-spring-boot-starter-active-directory
           groupId: com.azure
-          safeName: azurestoragespringbootstarter
-        - name: spring-data-gremlin-boot-starter
+          safeName: azurespringbootstarteractivedirectory
+        - name: azure-spring-boot-starter-active-directory-b2c
           groupId: com.azure
-          safeName: springdatagremlinbootstarter
+          safeName: azurespringbootstarteractivedirectoryb2c
+        - name: azure-spring-boot-starter-cosmosdb
+          groupId: com.azure
+          safeName: azurespringbootstartercosmosdb
+        - name: azure-spring-boot-starter-data-gremlin
+          groupId: com.azure
+          safeName: azurespringbootstarterdatagremlin
+        - name: azure-spring-boot-starter-keyvault-secrets
+          groupId: com.azure
+          safeName: azurespringbootstarterkeyvaultsecrets
+        - name: azure-spring-boot-starter-mediaservices
+          groupId: com.azure
+          safeName: azurespringbootstartermediaservices
+        - name: azure-spring-boot-starter-metrics
+          groupId: com.azure
+          safeName: azurespringbootstartermetrics
+        - name: azure-spring-boot-starter-servicebus
+          groupId: com.azure
+          safeName: azurespringbootstarterservicebus
+        - name: azure-spring-boot-starter-servicebus-jms
+          groupId: com.azure
+          safeName: azurespringbootstarterservicebusjms
+        - name: azure-spring-boot-starter-storage
+          groupId: com.azure
+          safeName: azurespringbootstarterstorage
 
 
 
