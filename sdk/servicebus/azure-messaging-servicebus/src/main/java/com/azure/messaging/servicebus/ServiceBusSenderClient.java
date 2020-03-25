@@ -3,13 +3,22 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
-import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.time.Duration;
 import java.util.Objects;
 
+/**
+ * A <b>synchronous</b> sender responsible for sending {@link ServiceBusMessage} to  specific queue or topic on
+ * Azure Service Bus.
+ *
+ * @see ServiceBusClientBuilder
+ * @see ServiceBusSenderAsyncClient See ServiceBusSenderAsyncClient to communicate with a Service Bus resource using
+ *     an asynchronous client.
+ */
+@ServiceClient(builder = ServiceBusClientBuilder.class)
 public class ServiceBusSenderClient implements Closeable {
     private final ServiceBusSenderAsyncClient asyncClient;
     private final Duration tryTimeout;
@@ -47,8 +56,6 @@ public class ServiceBusSenderClient implements Closeable {
      *
      * @param message Message to be sent to Service Bus queue or topic.
      *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     *
      * @throws NullPointerException if {@code message} is {@code null}.
      */
     public void send(ServiceBusMessage message) {
@@ -81,8 +88,6 @@ public class ServiceBusSenderClient implements Closeable {
      * Sends a message batch to the Azure Service Bus entity this sender is connected to.
      *
      * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
-     *
-     * @return A {@link Mono} the finishes this operation on service bus resource.
      *
      * @throws NullPointerException if {@code batch} is {@code null}.
      */

@@ -127,7 +127,7 @@ public class ServiceBusSenderClientTest {
         singleMessageCaptor = null;
         messagesCaptor = null;
         asyncSender.close();
-        sender.close();;
+        sender.close();
     }
 
     @Test
