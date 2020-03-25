@@ -12,6 +12,7 @@
     <module>sdk/appconfiguration</module>
     <module>sdk/authorization</module>
     <module>sdk/batch</module>
+    <module>sdk/boms</module>
     <module>sdk/core</module>
     <module>sdk/cosmos</module>
     <module>sdk/cognitiveservices</module>
