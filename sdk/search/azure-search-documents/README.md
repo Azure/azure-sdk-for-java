@@ -1,7 +1,7 @@
-# Azure cognitive search documents client library for Java
+# Azure cognitive search client library for Java
 
-This is the Java client library for [Azure Cognitive Search Documents](https://docs.microsoft.com/en-us/rest/api/searchservice/).
-Azure Cognitive Search Documents is a fully managed cloud search service that provides a rich search experience to custom applications.
+This is the Java client library for [Azure Cognitive Search](https://docs.microsoft.com/en-us/rest/api/searchservice/).
+Azure Cognitive Search is a fully managed cloud search service that provides a rich search experience to custom applications.
 This library provides an easy (native) way for a Java developer to interact with the service to accomplish tasks like: 
 create and manage indexes, load data, implement search features, execute queries, and handle results.
 
@@ -29,7 +29,7 @@ create and manage indexes, load data, implement search features, execute queries
 
 ## Key concepts
 
-Azure Cognitive Search Documents has the concepts of search services and indexes and documents, where a search service contains 
+Azure Cognitive Search has the concepts of search services and indexes and documents, where a search service contains 
 one or more indexes that provides persistent storage of searchable data, and data is loaded in the form of JSON documents. 
 Data can be pushed to an index from an external data source, but if you use an indexer, it's possible to crawl a data 
 source to extract and load data into an index.
@@ -44,7 +44,7 @@ There are several types of operations that can be executed against the service:
 
 ### Authenticate the client
 
-In order to interact with the Cognitive Search service you'll need to create an instance of the Search Documents Client class. 
+In order to interact with the Cognitive Search service you'll need to create an instance of the Search Client class. 
 To make this possible you will need an [api-key of the Cognitive Search service](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
 
 The SDK provides two clients.
@@ -142,7 +142,7 @@ Samples are explained in detail [here][samples_readme].
 
 ### General
 
-When you interact with Azure Cognitive Search Documents using this Java client library, errors returned by the service correspond 
+When you interact with Azure Cognitive Search using this Java client library, errors returned by the service correspond 
 to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a document 
 that doesn't exist in your index, a `404` error is returned, indicating `Not Found`.
 
