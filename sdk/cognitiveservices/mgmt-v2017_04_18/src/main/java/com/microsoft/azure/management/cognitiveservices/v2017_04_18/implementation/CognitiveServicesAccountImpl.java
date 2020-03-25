@@ -13,6 +13,7 @@ import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveSer
 import rx.Observable;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccountProperties;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Sku;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Identity;
 
 class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveServicesAccount, CognitiveServicesAccountInner, CognitiveServicesAccountImpl, CognitiveServicesManager> implements CognitiveServicesAccount, CognitiveServicesAccount.Definition, CognitiveServicesAccount.Update {
     CognitiveServicesAccountImpl(String name, CognitiveServicesAccountInner inner, CognitiveServicesManager manager) {
@@ -51,6 +52,11 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
     }
 
     @Override
+    public Identity identity() {
+        return this.inner().identity();
+    }
+
+    @Override
     public String kind() {
         return this.inner().kind();
     }
@@ -63,6 +69,12 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
     @Override
     public Sku sku() {
         return this.inner().sku();
+    }
+
+    @Override
+    public CognitiveServicesAccountImpl withIdentity(Identity identity) {
+        this.inner().withIdentity(identity);
+        return this;
     }
 
     @Override
