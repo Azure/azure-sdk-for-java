@@ -49,6 +49,14 @@ public class ServerUpdateParameters {
     private SslEnforcementEnum sslEnforcement;
 
     /**
+     * Whether or not public network access is allowed for this server. Value
+     * is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible
+     * values include: 'Enabled', 'Disabled'.
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccessEnum publicNetworkAccess;
+
+    /**
      * The replication role of the server.
      */
     @JsonProperty(value = "properties.replicationRole")
@@ -157,6 +165,26 @@ public class ServerUpdateParameters {
      */
     public ServerUpdateParameters withSslEnforcement(SslEnforcementEnum sslEnforcement) {
         this.sslEnforcement = sslEnforcement;
+        return this;
+    }
+
+    /**
+     * Get whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @return the publicNetworkAccess value
+     */
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set
+     * @return the ServerUpdateParameters object itself.
+     */
+    public ServerUpdateParameters withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 
