@@ -19,7 +19,7 @@ import java.util.Objects;
  *     an asynchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
-public class ServiceBusSenderClient implements Closeable {
+public class ServiceBusSenderClient implements AutoCloseable {
     private final ServiceBusSenderAsyncClient asyncClient;
     private final Duration tryTimeout;
 
