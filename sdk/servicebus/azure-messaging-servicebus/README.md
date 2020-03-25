@@ -121,7 +121,7 @@ ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
 
 The snippet below creates an asynchronous Service Bus Receiver.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L30-35 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L30-L35 -->
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
