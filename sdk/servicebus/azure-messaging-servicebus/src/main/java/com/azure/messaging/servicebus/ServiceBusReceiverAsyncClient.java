@@ -14,19 +14,17 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
-import com.azure.messaging.servicebus.implementation.MessageUtils;
+import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAsyncConsumer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
-import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
@@ -37,25 +35,28 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
  * topic on Azure Service Bus.
+ *
+ * @see ServiceBusClientBuilder
+ * @see ServiceBusReceiverClient See ServiceBusReceiverClient to communicate with a Service Bus resource using a
+ *     synchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements Closeable {
-    private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS =  new DeadLetterOptions();
+    private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
-    private final ConcurrentHashMap<UUID, Instant> lockTokenExpirationMap = new ConcurrentHashMap<>();
     private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final boolean isSessionEnabled;
+    private final ReceiveMessageOptions receiveOptions;
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
-    private final Duration maxAutoRenewDuration;
     private final int prefetch;
-    private final boolean isAutoComplete;
     private final ReceiveMode receiveMode;
+    private final MessageLockContainer messageLockContainer;
 
     /**
      * Map containing linkNames and their associated consumers. Key: linkName Value: consumer associated with that
@@ -64,25 +65,24 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final ConcurrentHashMap<String, ServiceBusAsyncConsumer> openConsumers = new ConcurrentHashMap<>();
 
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-        boolean isSessionEnabled, ReceiveMessageOptions receiveMessageOptions,
+        boolean isSessionEnabled, ReceiveMessageOptions receiveOptions,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer) {
+        MessageSerializer messageSerializer, MessageLockContainer messageLockContainer) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        this.receiveOptions = Objects.requireNonNull(receiveOptions, "'receiveMessageOptions' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
 
-        Objects.requireNonNull(receiveMessageOptions, "'receiveMessageOptions' cannot be null.");
-        this.prefetch = receiveMessageOptions.getPrefetchCount();
-        this.maxAutoRenewDuration = receiveMessageOptions.getMaxAutoRenewDuration();
-        this.isAutoComplete = receiveMessageOptions.isAutoComplete();
-        this.receiveMode = receiveMessageOptions.getReceiveMode();
+        this.prefetch = receiveOptions.getPrefetchCount();
+        this.receiveMode = receiveOptions.getReceiveMode();
 
         this.entityType = entityType;
         this.isSessionEnabled = isSessionEnabled;
+        this.messageLockContainer =  messageLockContainer;
     }
 
     /**
@@ -115,7 +115,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                 new IllegalStateException("Cannot receive from a client that is already closed.")));
         }
 
-        if (receiveMode != ReceiveMode.PEEK_LOCK && isAutoComplete) {
+        if (receiveMode != ReceiveMode.PEEK_LOCK && receiveOptions.isAutoComplete()) {
             return Flux.error(logger.logExceptionAsError(new UnsupportedOperationException(
                 "Autocomplete is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.")));
         }
@@ -124,25 +124,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         //  Python and .NET does not have the same behaviour.
         return Flux.usingWhen(
             Mono.fromCallable(() -> getOrCreateConsumer(entityPath)),
-            consumer -> {
-                return consumer.receive().map(message -> {
-                    if (message.getLockToken() == null || MessageUtils.ZERO_LOCK_TOKEN.equals(message.getLockToken())) {
-                        return message;
-                    }
-
-                    lockTokenExpirationMap.compute(message.getLockToken(), (key, existing) -> {
-                        if (existing == null) {
-                            return message.getLockedUntil();
-                        } else {
-                            return existing.isBefore(message.getLockedUntil())
-                                ? message.getLockedUntil()
-                                : existing;
-                        }
-                    });
-
-                    return message;
-                });
-            },
+            consumer -> consumer.receive(),
             consumer -> {
                 final String linkName = consumer.getLinkName();
                 logger.info("{}: Receiving completed. Disposing", linkName);
@@ -206,24 +188,6 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on the
-     * setting specified on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is
-     * locked on the server for this receiver instance for a duration as specified during the Queue creation
-     * (LockDuration). If processing of the message requires longer than this duration, the lock needs to be renewed.
-     * For each renewal, the lock is reset to the entity's LockDuration value.
-     *
-     * @param messageLock The {@link UUID} value of the message lock to renew.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Instant> renewMessageLock(UUID messageLock) {
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(serviceBusManagementNode -> serviceBusManagementNode
-                .renewMessageLock(messageLock));
-    }
-
-    /**
      * Asynchronously renews the lock on the specified message. The lock will be renewed based on the setting specified
      * on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is locked on the
      * server for this receiver instance for a duration as specified during the Queue creation (LockDuration). If
@@ -235,14 +199,16 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Instant> renewMessageLock(ServiceBusReceivedMessage receivedMessage) {
+        Objects.requireNonNull(receivedMessage, "'receivedMessage' cannot be null.");
+
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(serviceBusManagementNode -> serviceBusManagementNode
-                .renewMessageLock(receivedMessage.getLockToken())
-                .map(instant -> {
-                    receivedMessage.setLockedUntil(instant);
-                    return instant;
-                }));
+            .flatMap(serviceBusManagementNode ->
+                serviceBusManagementNode.renewMessageLock(receivedMessage.getLockToken()))
+            .map(instant -> {
+                receivedMessage.setLockedUntil(instant);
+                return instant;
+            });
     }
 
     /**
@@ -282,7 +248,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         Objects.requireNonNull(deadLetterOptions, "'deadLetterOptions' cannot be null.");
 
         return updateDisposition(message, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
-                deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify());
+            deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify());
 
     }
 
@@ -313,10 +279,11 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred messages can only be received by using
-     * sequence number.
+     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred messages can only be received by using sequence
+     * number.
      *
      * @param sequenceNumbers of the messages to be received.
+     *
      * @return The {@link Flux} of deferred {@link ServiceBusReceivedMessage}.
      */
     public Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(long... sequenceNumbers) {
@@ -388,7 +355,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     private Mono<Boolean> isLockTokenValid(UUID lockToken) {
-        final Instant lockedUntilUtc = lockTokenExpirationMap.get(lockToken);
+        final Instant lockedUntilUtc = messageLockContainer.getLockTokenExpiration(lockToken);
         if (lockedUntilUtc == null) {
             logger.warning("lockToken[{}] is not owned by this receiver.", lockToken);
             return Mono.just(false);
@@ -421,7 +388,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                 "'message.getLockToken()' cannot be null.")));
         }
 
-        final Instant instant = lockTokenExpirationMap.get(lockToken);
+        final Instant instant = messageLockContainer.getLockTokenExpiration(lockToken);
         logger.info("{}: Update started. Disposition: {}. Sequence number: {}. Lock: {}. Expiration: {}",
             entityPath, dispositionStatus, message.getSequenceNumber(), lockToken, instant);
 
@@ -441,7 +408,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             logger.info("{}: Update completed. Disposition: {}. Sequence number: {}. Lock: {}.",
                 entityPath, dispositionStatus, message.getSequenceNumber(), lockToken);
 
-            lockTokenExpirationMap.remove(lockToken);
+            messageLockContainer.remove(lockToken);
         }));
     }
 
@@ -464,8 +431,10 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
                 new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
 
-            return new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer, isAutoComplete,
-                connectionProcessor.getRetryOptions(), this::complete, this::abandon);
+            return new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer,
+                receiveOptions.isAutoComplete(), receiveOptions.isLockAutoRenewed(),
+                receiveOptions.getMaxAutoRenewDuration(), connectionProcessor.getRetryOptions(), messageLockContainer,
+                this::complete, this::abandon, this::renewMessageLock);
         });
     }
 

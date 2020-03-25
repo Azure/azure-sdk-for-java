@@ -74,14 +74,20 @@ public class ProxySendTest extends IntegrationTestBase {
     @Test
     public void sendEvents() {
         // Arrange
+        final String queueName = getQueueName();
+
+        Assertions.assertNotNull(queueName, "'queueName' is not set in environment variable.");
+
         final String messageId = UUID.randomUUID().toString();
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageId);
         final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .retry(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-            .buildAsyncSenderClient();
+            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
+            .buildSenderClientBuilder()
+            .entityName(queueName)
+            .buildAsyncClient();
 
         try {
             // Act & Assert

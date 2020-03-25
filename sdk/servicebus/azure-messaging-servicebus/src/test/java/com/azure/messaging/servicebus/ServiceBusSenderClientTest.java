@@ -112,7 +112,7 @@ public class ServiceBusSenderClientTest {
 
         connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
             new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                ENTITY_NAME, connectionOptions.getRetry()));
+                connectionOptions.getRetry()));
         asyncSender = new ServiceBusSenderAsyncClient(ENTITY_NAME, connectionProcessor, retryOptions,
             tracerProvider, messageSerializer);
         sender = new ServiceBusSenderClient(asyncSender, retryOptions.getTryTimeout());

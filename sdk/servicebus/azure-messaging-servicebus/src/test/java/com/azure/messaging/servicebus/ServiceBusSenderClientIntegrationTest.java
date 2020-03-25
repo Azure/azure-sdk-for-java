@@ -20,7 +20,7 @@ public class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        sender = createBuilder().buildSenderClient();
+        sender = createBuilder().buildSenderClientBuilder().buildClient();
     }
 
     @Override

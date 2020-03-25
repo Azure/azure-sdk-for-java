@@ -7,11 +7,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
+import reactor.core.Disposable;
+import reactor.core.Disposables;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 import reactor.util.context.Context;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Deque;
 import java.util.Objects;
 import java.util.UUID;
@@ -31,16 +36,30 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private final AmqpRetryOptions retryOptions;
     private final Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction;
     private final Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon;
+    private final Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock;
     private final Deque<ServiceBusReceivedMessage> messageQueue = new ConcurrentLinkedDeque<>();
+    private final boolean isAutoRenewLock;
+    private final Duration maxAutoLockRenewal;
+    private final MessageLockContainer messageLockContainer;
 
-    ServiceBusMessageProcessor(boolean isAutoComplete, AmqpRetryOptions retryOptions,
+    ServiceBusMessageProcessor(boolean isAutoComplete, boolean isAutoRenewLock, Duration maxAutoLockRenewal,
+        AmqpRetryOptions retryOptions, MessageLockContainer messageLockContainer,
         Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction,
-        Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon) {
+        Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon,
+        Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock) {
+
         super();
-        this.isAutoComplete = isAutoComplete;
+
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.completeFunction = Objects.requireNonNull(completeFunction, "'completeFunction' cannot be null.");
         this.onAbandon = Objects.requireNonNull(onAbandon, "'onAbandon' cannot be null.");
+        this.onRenewLock = Objects.requireNonNull(onRenewLock, "'onRenewLock' cannot be null.");
+        this.messageLockContainer = Objects.requireNonNull(messageLockContainer,
+            "'messageLockContainer' cannot be null.");
+
+        this.isAutoComplete = isAutoComplete;
+        this.isAutoRenewLock = isAutoRenewLock;
+        this.maxAutoLockRenewal = maxAutoLockRenewal;
     }
 
     private volatile boolean isDone;
@@ -249,8 +268,31 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         final boolean isCompleteMessage = isAutoComplete && lockToken != null
             && !MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken);
 
-        logger.info("sequenceNumber[{}]. lock[{}]. Auto-complete message? [{}]",
-            sequenceNumber, lockToken, isCompleteMessage);
+        final Instant initialLockedUntil;
+        if (lockToken != null && !MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken)) {
+            initialLockedUntil = messageLockContainer.addOrUpdate(lockToken, message.getLockedUntil());
+        } else {
+            initialLockedUntil = message.getLockedUntil();
+        }
+
+        logger.info("seq[{}]. lock[{}]. lockedUntil[{}].", sequenceNumber, initialLockedUntil, initialLockedUntil);
+
+        final Disposable renewLockSubscription;
+        if (isAutoRenewLock) {
+            logger.info("seq[{}]. lockToken[{}]. lockedUntil[{}]. Renewing lock every: {}", sequenceNumber, lockToken,
+                message.getLockedUntil(), maxAutoLockRenewal);
+            renewLockSubscription = Flux.interval(maxAutoLockRenewal)
+                .flatMap(interval -> onRenewLock.apply(message))
+                .subscribe(lockedUntil -> {
+                    final Instant updated = messageLockContainer.addOrUpdate(lockToken, lockedUntil);
+
+                    logger.info("seq[{}]. lockToken[{}]. lockedUntil[{}]. Lock renewal successful.",
+                        sequenceNumber, lockToken, updated);
+                }, error -> logger.error("Error occurred while renewing lock token.", error),
+                    () -> logger.info("Renewing lock token task completed."));
+        } else {
+            renewLockSubscription = Disposables.disposed();
+        }
 
         try {
             downstream.onNext(message);
@@ -267,6 +309,8 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             }
 
             downstream.onError(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
+        } finally {
+            renewLockSubscription.dispose();
         }
 
         try {
