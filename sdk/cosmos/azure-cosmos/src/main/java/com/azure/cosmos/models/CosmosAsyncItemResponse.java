@@ -47,9 +47,9 @@ public class CosmosAsyncItemResponse<T> {
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getResponseDiagnostics());
         if (item == null && this.itemClassType == CosmosItemProperties.class) {
-            ZonedDateTime serializationStartTime = ZonedDateTime.now();
+            ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
             item =(T) getProperties();
-            ZonedDateTime serializationEndTime = ZonedDateTime.now();
+            ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
             SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTime,
                 serializationEndTime,

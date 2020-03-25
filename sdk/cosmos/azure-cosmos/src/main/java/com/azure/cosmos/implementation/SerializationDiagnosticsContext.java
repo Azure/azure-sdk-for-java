@@ -29,24 +29,6 @@ public class SerializationDiagnosticsContext {
         serializationDiagnosticsList.add(serializationDiagnostics);
     }
 
-    public <T> T getResource(Callable<T> function, SerializationType serializationType) {
-        ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
-        T t = null;
-        try {
-            t = function.call();
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-
-        ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
-        if (serializationDiagnosticsList == null) {
-            serializationDiagnosticsList = Collections.synchronizedList(new ArrayList<>());
-        }
-
-        serializationDiagnosticsList.add(new SerializationDiagnostics(serializationStartTime, serializationEndTime, serializationType));
-        return t;
-    }
-
     @JsonSerialize(using = SerializationDiagnosticsContext.SerializationDiagnosticsSerializer.class)
     public static class SerializationDiagnostics {
         public volatile ZonedDateTime startTimeUTC;
