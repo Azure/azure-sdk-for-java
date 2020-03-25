@@ -186,7 +186,7 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * A new instance of {@link ServiceBusSenderClientBuilder} used to configure Service Bus message producers.
+     * A new instance of {@link ServiceBusSenderClientBuilder} used to configure Service Bus message senders.
      *
      * @return A new instance of {@link ServiceBusSenderClientBuilder}.
      */
@@ -436,12 +436,12 @@ public final class ServiceBusClientBuilder {
          * Sets the maximum duration within which the lock will be renewed automatically. This value should be greater
          * than the longest message lock duration.
          *
-         * @param renewDuration The maximum duration within which the lock will be renewed automatically.
+         * @param renewalDuration The maximum duration within which the lock will be renewed automatically.
          *
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
          */
-        public ServiceBusReceiverClientBuilder maxAutoLockRenewalDuration(Duration renewDuration) {
-            this.maxAutoLockRenewalDuration = renewDuration;
+        public ServiceBusReceiverClientBuilder maxAutoLockRenewalDuration(Duration renewalDuration) {
+            this.maxAutoLockRenewalDuration = renewalDuration;
             return this;
         }
 
