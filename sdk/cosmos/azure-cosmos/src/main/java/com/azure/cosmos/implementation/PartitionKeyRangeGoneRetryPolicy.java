@@ -38,6 +38,7 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
         this.collectionLink = collectionLink;
         this.nextRetryPolicy = nextRetryPolicy;
         this.feedOptions = feedOptions;
+        this.request = null;
     }
 
     /// <summary>
