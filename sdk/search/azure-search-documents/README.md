@@ -17,11 +17,11 @@ create and manage indexes, load data, implement search features, execute queries
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-search;current})
+[//]: # ({x-version-update-start;com.azure:azure-search-documents;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-search</artifactId>
+    <artifactId>azure-search-documents</artifactId>
     <version>11.0.0-beta.1</version>
 </dependency>
 ```
@@ -181,7 +181,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [search_docs]: https://docs.microsoft.com/en-us/azure/search/
 [azure_subscription]: https://azure.microsoft.com/free
 [maven]: https://maven.apache.org/
-[package]: https://search.maven.org/artifact/com.azure/azure-search
+[package]: https://search.maven.org/artifact/com.azure/azure-search-documents
 [samples]: src/samples/java/com/azure/search
 [samples_readme]: src/samples/README.md
 [source_code]: src
@@ -193,4 +193,4 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [add_headers_from_context_policy]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/AddHeadersFromContextPolicy.java
 [rest_api]: https://docs.microsoft.com/en-us/rest/api/searchservice/http-status-codes
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fsearch%2Fazure-search%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fsearch%2Fazure-search-documents%2FREADME.png)

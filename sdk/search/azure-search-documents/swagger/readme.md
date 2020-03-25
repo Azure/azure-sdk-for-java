@@ -1,4 +1,4 @@
-# Azure Search for Java
+# Azure Search Documents for Java
     
 > see https://aka.ms/autorest
 
