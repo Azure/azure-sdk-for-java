@@ -130,9 +130,10 @@ public class ServiceBusSenderClientTest {
             null);
         when(asyncSender.createBatch(options)).thenReturn(Mono.just(batch));
 
-        // Act & Assert
+        // Act
         ServiceBusMessageBatch messageBatch = sender.createBatch(options);
 
+        //Assert
         Assertions.assertEquals(batch, messageBatch);
     }
 

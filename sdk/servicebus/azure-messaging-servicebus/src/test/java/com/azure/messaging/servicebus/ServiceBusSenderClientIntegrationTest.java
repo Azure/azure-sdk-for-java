@@ -26,7 +26,9 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        sender.close();
+        if (sender!= null ) {
+            sender.close();
+        }
     }
 
     /**
@@ -59,6 +61,5 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
             Assertions.assertTrue(batch.tryAdd(message));
         }
         sender.send(batch);
-
     }
 }
