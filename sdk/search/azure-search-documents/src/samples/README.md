@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-search
+  - azure-search-documents
 urlFragment: search-samples
 ---
 

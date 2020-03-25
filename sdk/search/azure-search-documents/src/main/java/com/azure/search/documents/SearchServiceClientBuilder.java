@@ -47,7 +47,7 @@ public final class SearchServiceClientBuilder {
      */
     private static final String ECHO_REQUEST_ID_HEADER = "return-client-request-id";
 
-    private static final String SEARCH_PROPERTIES = "azure-search.properties";
+    private static final String SEARCH_PROPERTIES = "azure-search-documents.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
 

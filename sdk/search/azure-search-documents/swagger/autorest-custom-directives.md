@@ -1,4 +1,4 @@
-# Azure Search for Java
+# Azure Search Documents for Java
 
 ```yaml
 # Declare a directive that can be invoked in the pipeline
