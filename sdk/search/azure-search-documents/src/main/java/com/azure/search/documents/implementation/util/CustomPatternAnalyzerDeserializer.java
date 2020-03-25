@@ -42,7 +42,7 @@ public class CustomPatternAnalyzerDeserializer extends JsonDeserializer<PatternA
                 analyzer.setName(field.getValue().asText());
             } else if ("pattern".equals(field.getKey())) {
                 analyzer.setPattern(field.getValue().asText());
-            } else if ("flags".equals(field.getKey())) {
+            } else if ("flags".equals(field.getKey()) && !"null".equals(field.getValue().asText())) {
                 List<RegexFlags> regexFlags = Arrays.stream(field.getValue().asText().split(DELIMITER))
                     .map(RegexFlags::fromString).collect(Collectors.toList());
                 analyzer.setFlags(regexFlags);

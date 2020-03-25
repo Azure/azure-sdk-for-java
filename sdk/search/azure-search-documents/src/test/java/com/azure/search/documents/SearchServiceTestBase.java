@@ -22,6 +22,7 @@ import com.azure.search.documents.models.FreshnessScoringParameters;
 import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.MagnitudeScoringFunction;
 import com.azure.search.documents.models.MagnitudeScoringParameters;
+import com.azure.search.documents.models.RegexFlags;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.ResourceCounter;
 import com.azure.search.documents.models.ScoringFunctionAggregation;

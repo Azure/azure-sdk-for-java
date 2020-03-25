@@ -39,7 +39,7 @@ public class CustomPatternTokenizerDeserializer extends JsonDeserializer<Pattern
                 tokenizer.setName(field.getValue().asText());
             } else if ("pattern".equals(field.getKey())) {
                 tokenizer.setPattern(field.getValue().asText());
-            } else if ("flags".equals(field.getKey())) {
+            } else if ("flags".equals(field.getKey()) && !"null".equals(field.getValue().asText())) {
                 List<RegexFlags> regexFlags = Arrays.stream(field.getValue().asText().split(DELIMITER))
                     .map(RegexFlags::fromString).collect(Collectors.toList());
                 tokenizer.setFlags(regexFlags);

@@ -314,14 +314,274 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     }
 
     @Test
-    public void canUseAllRegexFlags() {
+    public void canUseAllRegexFlagsAnalyzer() {
         Index index = createTestIndex()
             .setAnalyzers(Collections.singletonList(new PatternAnalyzer()
-                    .setStopwords(Arrays.asList("stop1", "stop2"))
-                    .setLowerCaseTerms(true)
-                    .setPattern(".*")
-                    .setFlags(new ArrayList<>(RegexFlags.values()))
-                    .setName(generateName())));
+                .setStopwords(Arrays.asList("stop1", "stop2"))
+                .setLowerCaseTerms(true)
+                .setPattern(".*")
+                .setFlags(new ArrayList<>(RegexFlags.values()))
+                .setName(generateName())));
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullAnalyzer() {
+        Index index = createTestIndex()
+            .setAnalyzers(null);
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyAnalyzer() {
+        Index index = createTestIndex()
+            .setAnalyzers(new ArrayList<>());
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullNameAnalyzer() {
+        Index index = createTestIndex()
+            .setAnalyzers(Collections.singletonList(
+                new PatternAnalyzer().setName(null)
+            ));
+
+        assertHttpResponseException(
+            () -> searchServiceClient.createIndex(index),
+            HttpResponseStatus.BAD_REQUEST,
+            "The name field is required."
+        );
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyNameAnalyzer() {
+        Index index = createTestIndex()
+            .setAnalyzers(Collections.singletonList(
+                new PatternAnalyzer().setName("")
+            ));
+
+        assertHttpResponseException(
+            () -> searchServiceClient.createIndex(index),
+            HttpResponseStatus.BAD_REQUEST,
+            "The name field is required."
+        );
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullLowerCaseAnalyzer() {
+        Index index = createTestIndex()
+            .setAnalyzers(Collections.singletonList(
+                new PatternAnalyzer().setLowerCaseTerms(null).setName(generateName())
+            ));
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullPatternAnalyzer() {
+        Index index = createTestIndex()
+            .setAnalyzers(Collections.singletonList(
+                new PatternAnalyzer().setPattern(null).setName(generateName())
+            ));
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyPatternAnalyzer() {
+        Index index = createTestIndex()
+            .setAnalyzers(Collections.singletonList(
+                new PatternAnalyzer().setPattern("").setName(generateName())
+            ));
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullFlagsAnalyzer() {
+        Index index = createTestIndex()
+            .setAnalyzers(Collections.singletonList(
+                new PatternAnalyzer().setFlags(null).setName(generateName())
+            ));
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+          System.out.println(RegexFlags.values());
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyFlagsAnalyzer() {
+        Index index = createTestIndex()
+            .setAnalyzers(Collections.singletonList(
+                new PatternAnalyzer().setFlags(new ArrayList<>()).setName(generateName())
+            ));
+
+        assertHttpResponseException(
+            () -> searchServiceClient.createIndex(index),
+            HttpResponseStatus.BAD_REQUEST,
+            "Values of property \\\"flags\\\" must belong to the set of allowed values"
+        );
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullStopwordsAnalyzer() {
+        Index index = createTestIndex()
+            .setAnalyzers(Collections.singletonList(new PatternAnalyzer()
+                .setStopwords(null)
+                .setName(generateName())));
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyStopwordsAnalyzer() {
+        Index index = createTestIndex()
+            .setAnalyzers(Collections.singletonList(new PatternAnalyzer()
+                .setStopwords(new ArrayList<>())
+                .setName(generateName())));
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+    }
+
+    @Test
+    public void canUseAllRegexFlagsTokenizer() {
+        Index index = createTestIndex()
+            .setTokenizers(Collections.singletonList(new PatternTokenizer()
+                .setPattern(".*")
+                .setFlags(new ArrayList<>(RegexFlags.values()))
+                .setGroup(0)
+                .setName(generateName())));
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullTokenizer() {
+        Index index = createTestIndex()
+            .setTokenizers(null);
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyTokenizer() {
+        Index index = createTestIndex()
+            .setTokenizers(new ArrayList<>());
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullNameTokenizer() {
+        Index index = createTestIndex()
+            .setTokenizers(Collections.singletonList(new PatternTokenizer()
+                .setName(null)
+            ));
+
+        assertHttpResponseException(
+            () -> searchServiceClient.createIndex(index),
+            HttpResponseStatus.BAD_REQUEST,
+            "The name field is required."
+        );
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyNameTokenizer() {
+        Index index = createTestIndex()
+            .setTokenizers(Collections.singletonList(new PatternTokenizer()
+                .setName("")
+            ));
+
+        assertHttpResponseException(
+            () -> searchServiceClient.createIndex(index),
+            HttpResponseStatus.BAD_REQUEST,
+            "The name field is required."
+        );
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullPatternTokenizer() {
+        Index index = createTestIndex()
+            .setTokenizers(Collections.singletonList(new PatternTokenizer()
+                .setPattern(null).setName(generateName())
+            ));
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyPatternTokenizer() {
+        Index index = createTestIndex()
+            .setTokenizers(Collections.singletonList(new PatternTokenizer()
+                .setPattern("").setName(generateName())
+            ));
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullFlagsTokenizer() {
+        Index index = createTestIndex()
+            .setTokenizers(Collections.singletonList(new PatternTokenizer()
+                .setFlags(null).setName(generateName())
+            ));
+
+        Index createdIndex = searchServiceClient.createIndex(index);
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+        System.out.println(RegexFlags.values());
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyFlagsTokenizer() {
+        Index index = createTestIndex()
+            .setTokenizers(Collections.singletonList(new PatternTokenizer()
+                .setFlags(new ArrayList<>()).setName(generateName())
+            ));
+
+        assertHttpResponseException(
+            () -> searchServiceClient.createIndex(index),
+            HttpResponseStatus.BAD_REQUEST,
+            "Values of property \\\"flags\\\" must belong to the set of allowed values"
+        );
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullGroupTokenizer() {
+        Index index = createTestIndex()
+            .setTokenizers(Collections.singletonList(new PatternTokenizer()
+                .setGroup(null)
+                .setName(generateName())));
 
         Index createdIndex = searchServiceClient.createIndex(index);
 
