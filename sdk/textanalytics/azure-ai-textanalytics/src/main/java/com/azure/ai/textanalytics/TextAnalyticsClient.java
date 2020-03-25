@@ -25,9 +25,8 @@ import com.azure.core.util.Context;
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Text Analytics.
- * Operations allowed by the client are, detect language, recognize entities, recognize
- * Personally Identifiable Information entities, recognize linked entities, and analyze sentiment for a document or
- * a list of documents.
+ * Operations allowed by the client are language detection, entities recognition, linked entities recognition,
+ * key phrases extraction, and sentiment analysis of a document or a list of documents.
  *
  * <p><strong>Instantiating a synchronous Text Analytics Client</strong></p>
  * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.instantiation}

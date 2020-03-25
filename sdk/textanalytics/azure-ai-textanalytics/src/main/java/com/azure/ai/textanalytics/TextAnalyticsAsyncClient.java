@@ -33,8 +33,8 @@ import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Text Analytics.
- * Operations allowed by the client are language detection, sentiment analysis, and recognition entities,
- * Personally Identifiable Information entities, and linked entities of a document or a list of documents.
+ * Operations allowed by the client are language detection, entities recognition, linked entities recognition,
+ * key phrases extraction, and sentiment analysis of a document or a list of documents.
  *
  * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>
  * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation}
