@@ -31,7 +31,7 @@ class VirtualMachineScaleSetExtensionImpl extends CreatableUpdatableImpl<Virtual
         this.manager = manager;
         // Set resource name
         this.vmssExtensionName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.vmScaleSetName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualMachineScaleSets");
         this.vmssExtensionName = IdParsingUtils.getValueFromIdByName(inner.id(), "extensions");
