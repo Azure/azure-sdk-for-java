@@ -31,9 +31,6 @@ public class CustomPatternTokenizerDeserializer extends JsonDeserializer<Pattern
     public PatternTokenizer deserialize(final JsonParser p, final DeserializationContext ctxt) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode root = mapper.readTree(p);
-        JsonNode flattenFlags = root.get("flags");
-        List<RegexFlags> regexFlags = Arrays.stream(flattenFlags.asText().split(DELIMITER))
-            .map(RegexFlags::fromString).collect(Collectors.toList());
         Iterator<Map.Entry<String, JsonNode>> fields = root.fields();
         PatternTokenizer tokenizer = new PatternTokenizer();
         while (fields.hasNext()) {
@@ -43,6 +40,8 @@ public class CustomPatternTokenizerDeserializer extends JsonDeserializer<Pattern
             } else if ("pattern".equals(field.getKey())) {
                 tokenizer.setPattern(field.getValue().asText());
             } else if ("flags".equals(field.getKey())) {
+                List<RegexFlags> regexFlags = Arrays.stream(field.getValue().asText().split(DELIMITER))
+                    .map(RegexFlags::fromString).collect(Collectors.toList());
                 tokenizer.setFlags(regexFlags);
             } else if ("group".equals(field.getKey())){
                 tokenizer.setGroup(field.getValue().asInt());

@@ -50,9 +50,6 @@ public class CustomPatternAnalyzerSerializer extends JsonSerializer<PatternAnaly
     @Override
     public void serialize(final PatternAnalyzer analyzer, final JsonGenerator jsonGenerator,
         final SerializerProvider serializerProvider) throws IOException {
-        if (analyzer == null) {
-            return;
-        }
         if(analyzer.getName() != null) {
             jsonGenerator.writeStringField("name", analyzer.getName());
         }

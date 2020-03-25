@@ -33,9 +33,6 @@ public class CustomPatternAnalyzerDeserializer extends JsonDeserializer<PatternA
     public PatternAnalyzer deserialize(final JsonParser p, final DeserializationContext ctxt) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode root = mapper.readTree(p);
-        JsonNode flattenFlags = root.get("flags");
-        List<RegexFlags> regexFlags = Arrays.stream(flattenFlags.asText().split(DELIMITER))
-            .map(RegexFlags::fromString).collect(Collectors.toList());
 
         Iterator<Map.Entry<String, JsonNode>> fields = root.fields();
         PatternAnalyzer analyzer = new PatternAnalyzer();
@@ -46,6 +43,8 @@ public class CustomPatternAnalyzerDeserializer extends JsonDeserializer<PatternA
             } else if ("pattern".equals(field.getKey())) {
                 analyzer.setPattern(field.getValue().asText());
             } else if ("flags".equals(field.getKey())) {
+                List<RegexFlags> regexFlags = Arrays.stream(field.getValue().asText().split(DELIMITER))
+                    .map(RegexFlags::fromString).collect(Collectors.toList());
                 analyzer.setFlags(regexFlags);
             } else if ("lowercase".equals(field.getKey())){
                 analyzer.setLowerCaseTerms(field.getValue().asBoolean());
