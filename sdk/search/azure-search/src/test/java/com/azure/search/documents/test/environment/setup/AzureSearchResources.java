@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.test.environment.setup;
 
+import com.azure.core.test.TestBase;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -19,9 +20,9 @@ import com.microsoft.azure.management.storage.StorageAccountKey;
 import java.security.SecureRandom;
 import java.util.Objects;
 
-public class AzureSearchResources {
-    private static final String RESOURCE_GROUP_NAME_PREFIX = "azs-java";
-    private static final String SEARCH_SERVICE_NAME_PREFIX = "azs-java";
+public class AzureSearchResources extends TestBase {
+    private static final String RESOURCE_GROUP_NAME_PREFIX = "azsjava";
+    private static final String SEARCH_SERVICE_NAME_PREFIX = "azsjava";
     private static final String BLOB_DATASOURCE_NAME_PREFIX = "azsjavablob";
     private static final String STORAGE_NAME_PREFIX = "azsjavastor";
     private static final String AZURE_RESOURCEGROUP_NAME = "AZURE_RESOURCEGROUP_NAME";
@@ -91,7 +92,7 @@ public class AzureSearchResources {
      * Creates an Azure Service in an existing resource group
      */
     public void createService(TestResourceNamer testResourceNamer) {
-        searchServiceName = testResourceNamer.randomName(SEARCH_SERVICE_NAME_PREFIX, 24);
+        searchServiceName = testResourceNamer.randomName(SEARCH_SERVICE_NAME_PREFIX, 60);
         System.out.println("Creating Azure Cognitive Search service: " + searchServiceName);
         searchService = azure.searchServices()
             .define(searchServiceName)
