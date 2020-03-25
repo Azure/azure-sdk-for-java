@@ -26,7 +26,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        if (sender!= null ) {
+        if (sender != null) {
             sender.close();
         }
     }
