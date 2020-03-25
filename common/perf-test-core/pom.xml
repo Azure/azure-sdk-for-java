@@ -32,6 +32,11 @@
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
   </scm>
 
+  <properties>
+    <javadoc.failOnError>false</javadoc.failOnError>
+    <javadoc.failOnWarnings>false</javadoc.failOnWarnings>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
