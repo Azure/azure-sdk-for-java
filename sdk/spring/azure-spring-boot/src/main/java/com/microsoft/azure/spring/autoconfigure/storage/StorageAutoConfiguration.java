@@ -3,13 +3,13 @@
 
 package com.microsoft.azure.spring.autoconfigure.storage;
 
+import com.microsoft.azure.spring.telemetry.TelemetrySender;
 import com.microsoft.azure.storage.blob.ContainerURL;
 import com.microsoft.azure.storage.blob.PipelineOptions;
 import com.microsoft.azure.storage.blob.ServiceURL;
 import com.microsoft.azure.storage.blob.SharedKeyCredentials;
 import com.microsoft.azure.storage.blob.StorageURL;
 import com.microsoft.azure.storage.blob.TelemetryOptions;
-import com.microsoft.azure.telemetry.TelemetrySender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,9 @@ import java.security.InvalidKeyException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.microsoft.azure.telemetry.TelemetryData.HASHED_ACCOUNT_NAME;
-import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
-import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.microsoft.azure.spring.telemetry.TelemetryData.HASHED_ACCOUNT_NAME;
+import static com.microsoft.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
+import static com.microsoft.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
 @Configuration

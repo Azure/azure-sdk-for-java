@@ -1,16 +1,31 @@
 rootProject.name = 'azure-spring-boot-samples'
-include ':azure-active-directory-spring-boot-sample'
-include ':azure-cosmosdb-spring-boot-sample'
-include ':azure-keyvault-secrets-spring-boot-sample'
-include ':azure-mediaservices-spring-boot-sample'
-include ':azure-servicebus-spring-boot-sample'
-include ':azure-storage-spring-boot-sample'
-include ':azure-cloud-foundry-service-sample'
 
-project(':azure-active-directory-spring-boot-sample').projectDir = "$rootDir/azure-active-directory-spring-boot-sample" as File
-project(':azure-cosmosdb-spring-boot-sample').projectDir = "$rootDir/azure-cosmosdb-spring-boot-sample" as File
-project(':azure-keyvault-secrets-spring-boot-sample').projectDir = "$rootDir/azure-keyvault-secrets-spring-boot-sample" as File
-project(':azure-mediaservices-spring-boot-sample').projectDir = "$rootDir/azure-mediaservices-spring-boot-sample" as File
-project(':azure-servicebus-spring-boot-sample').projectDir = "$rootDir/azure-servicebus-spring-boot-sample" as File
-project(':azure-storage-spring-boot-sample').projectDir = "$rootDir/azure-storage-spring-boot-sample" as File
-project(':azure-cloud-foundry-service-sample').projectDir = "$rootDir/azure-cloud-foundry-service-sample" as File
+include ':azure-spring-boot-sample-active-directory'
+include ':azure-spring-boot-sample-active-directory-b2c-oidc'
+include ':azure-spring-boot-sample-active-directory-backend'
+include ':azure-spring-boot-sample-active-directory-backend-v2'
+include ':azure-spring-boot-sample-active-directory-stateless'
+include ':azure-spring-boot-sample-cosmosdb'
+include ':azure-spring-boot-sample-cloud-foundry'
+include ':azure-spring-boot-sample-data-gremlin'
+include ':azure-spring-boot-sample-keyvault-secrets'
+include ':azure-spring-boot-sample-mediaservices'
+include ':azure-spring-boot-sample-servicebus'
+include ':azure-spring-boot-sample-servicebus-jms-queue'
+include ':azure-spring-boot-sample-servicebus-jms-topic'
+include ':azure-spring-boot-sample-storage'
+
+project(':azure-spring-boot-sample-active-directory').projectDir = "$rootDir/azure-spring-boot-sample-active-directory" as File
+project(':azure-spring-boot-sample-active-directory-b2c-oidc').projectDir = "$rootDir/azure-spring-boot-sample-active-directory-b2c-oidc" as File
+project(':azure-spring-boot-sample-active-directory-backend').projectDir = "$rootDir/azure-spring-boot-sample-active-directory-backend" as File
+project(':azure-spring-boot-sample-active-directory-backend-v2').projectDir = "$rootDir/azure-spring-boot-sample-active-directory-backend-v2" as File
+project(':azure-spring-boot-sample-active-directory-stateless').projectDir = "$rootDir/azure-spring-boot-sample-active-directory-stateless" as File
+project(':azure-spring-boot-sample-cosmosdb').projectDir = "$rootDir/azure-spring-boot-sample-cosmosdb" as File
+project(':azure-spring-boot-sample-cloud-foundry').projectDir = "$rootDir/azure-spring-boot-sample-cloud-foundry" as File
+project(':azure-spring-boot-sample-data-gremlin').projectDir = "$rootDir/azure-spring-boot-sample-data-gremlin" as File
+project(':azure-spring-boot-sample-keyvault-secrets').projectDir = "$rootDir/azure-spring-boot-sample-keyvault-secrets" as File
+project(':azure-spring-boot-sample-mediaservices').projectDir = "$rootDir/azure-spring-boot-sample-mediaservices" as File
+project(':azure-spring-boot-sample-servicebus').projectDir = "$rootDir/azure-spring-boot-sample-servicebus" as File
+project(':azure-spring-boot-sample-servicebus-jms-queue').projectDir = "$rootDir/azure-spring-boot-sample-servicebus-jms-queue" as File
+project(':azure-spring-boot-sample-servicebus-jms-topic').projectDir = "$rootDir/azure-spring-boot-sample-servicebus-jms-topic" as File
+project(':azure-spring-boot-sample-storage').projectDir = "$rootDir/azure-spring-boot-sample-storage" as File

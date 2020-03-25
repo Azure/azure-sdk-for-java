@@ -4,7 +4,7 @@ package com.microsoft.azure.spring.autoconfigure.cosmosdb;
 
 import com.azure.data.cosmos.ConnectionMode;
 import com.azure.data.cosmos.ConsistencyLevel;
-import com.microsoft.azure.utils.PropertyLoader;
+import com.microsoft.azure.spring.utils.PropertyLoader;
 
 import java.util.Arrays;
 import java.util.List;

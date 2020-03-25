@@ -8,7 +8,7 @@ import com.microsoft.azure.servicebus.SubscriptionClient;
 import com.microsoft.azure.servicebus.TopicClient;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import com.microsoft.azure.telemetry.TelemetrySender;
+import com.microsoft.azure.spring.telemetry.TelemetrySender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,9 +24,9 @@ import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.microsoft.azure.telemetry.TelemetryData.HASHED_NAMESPACE;
-import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
-import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.microsoft.azure.spring.telemetry.TelemetryData.HASHED_NAMESPACE;
+import static com.microsoft.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
+import static com.microsoft.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 import static org.apache.commons.codec.digest.DigestUtils.sha256Hex;
 
 @Lazy

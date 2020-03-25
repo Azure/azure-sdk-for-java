@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
-import static com.microsoft.azure.spring.autoconfigure.btoc.AADB2CConstants.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class AADB2CAutoConfigurationTest {
@@ -15,12 +14,12 @@ public class AADB2CAutoConfigurationTest {
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AADB2CAutoConfiguration.class))
             .withPropertyValues(
-                    String.format("%s=%s", TENANT, TEST_TENANT),
-                    String.format("%s=%s", CLIENT_ID, TEST_CLIENT_ID),
-                    String.format("%s=%s", CLIENT_SECRET, TEST_CLIENT_SECRET),
-                    String.format("%s=%s", REPLY_URL, TEST_REPLY_URL),
-                    String.format("%s=%s", LOGOUT_SUCCESS_URL, TEST_LOGOUT_SUCCESS_URL),
-                    String.format("%s=%s", SIGN_UP_OR_SIGN_IN, TEST_SIGN_UP_OR_IN_NAME)
+                    String.format("%s=%s", AADB2CConstants.TENANT, AADB2CConstants.TEST_TENANT),
+                    String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
+                    String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
+                    String.format("%s=%s", AADB2CConstants.REPLY_URL, AADB2CConstants.TEST_REPLY_URL),
+                    String.format("%s=%s", AADB2CConstants.LOGOUT_SUCCESS_URL, AADB2CConstants.TEST_LOGOUT_SUCCESS_URL),
+                    String.format("%s=%s", AADB2CConstants.SIGN_UP_OR_SIGN_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME)
             );
 
     @Test
@@ -38,14 +37,14 @@ public class AADB2CAutoConfigurationTest {
             final AADB2CProperties properties = c.getBean(AADB2CProperties.class);
 
             assertThat(properties).isNotNull();
-            assertThat(properties.getTenant()).isEqualTo(TEST_TENANT);
-            assertThat(properties.getClientId()).isEqualTo(TEST_CLIENT_ID);
-            assertThat(properties.getClientSecret()).isEqualTo(TEST_CLIENT_SECRET);
-            assertThat(properties.getReplyUrl()).isEqualTo(TEST_REPLY_URL);
+            assertThat(properties.getTenant()).isEqualTo(AADB2CConstants.TEST_TENANT);
+            assertThat(properties.getClientId()).isEqualTo(AADB2CConstants.TEST_CLIENT_ID);
+            assertThat(properties.getClientSecret()).isEqualTo(AADB2CConstants.TEST_CLIENT_SECRET);
+            assertThat(properties.getReplyUrl()).isEqualTo(AADB2CConstants.TEST_REPLY_URL);
 
             final String signUpOrSignIn = properties.getUserFlows().getSignUpOrSignIn();
 
-            assertThat(signUpOrSignIn).isEqualTo(TEST_SIGN_UP_OR_IN_NAME);
+            assertThat(signUpOrSignIn).isEqualTo(AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME);
         });
     }
 

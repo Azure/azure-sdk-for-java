@@ -12,7 +12,7 @@
             "io\\.netty\\..+",
             "org\\.springframework\\..+",
             "com\\.nimbusds(\\..+)?",
-            "com\\.microsoft\\.azure\\..+"
+            "com\\.microsoft\\.azure\\.spring\\..+"
           ]
         }
       }
