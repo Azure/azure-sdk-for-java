@@ -11,7 +11,11 @@ import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.microsoft.azure.spring.autoconfigure.gremlin.PropertiesUtil.*;
+import static com.microsoft.azure.spring.autoconfigure.gremlin.PropertiesUtil.GREMLIN_ENDPOINT_CONFIG;
+import static com.microsoft.azure.spring.autoconfigure.gremlin.PropertiesUtil.GREMLIN_PASSWORD_CONFIG;
+import static com.microsoft.azure.spring.autoconfigure.gremlin.PropertiesUtil.GREMLIN_PORT_CONFIG;
+import static com.microsoft.azure.spring.autoconfigure.gremlin.PropertiesUtil.GREMLIN_TELEMETRY_CONFIG_ALLOWED;
+import static com.microsoft.azure.spring.autoconfigure.gremlin.PropertiesUtil.GREMLIN_USERNAME_CONFIG;
 
 public class GremlinAutoConfigurationUnitTest {
 

@@ -2,15 +2,9 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.aad;
 
-import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
-import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
-
-import com.microsoft.azure.telemetry.TelemetrySender;
+import com.microsoft.azure.spring.telemetry.TelemetrySender;
 import com.nimbusds.jose.util.DefaultResourceRetriever;
 import com.nimbusds.jose.util.ResourceRetriever;
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -23,6 +17,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.ClassUtils;
+
+import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.microsoft.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
+import static com.microsoft.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 @Configuration
 @ConditionalOnWebApplication

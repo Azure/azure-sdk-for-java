@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.spring.autoconfigure.mediaservices;
 
+import com.microsoft.azure.spring.utils.TestUtils;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.media.MediaContract;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -11,17 +12,27 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.*;
-import static com.microsoft.azure.utils.TestUtils.propPair;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.CLIENT_ID;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.CLIENT_ID_PROP;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.CLIENT_SECRET;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.CLIENT_SECRET_PROP;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.PROXY_HOST;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.PROXY_HOST_PROP;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.PROXY_PORT;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.PROXY_PORT_PROP;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.REST_API_ENDPOINT;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.REST_API_ENDPOINT_PROP;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.TENANT;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.TENANT_PROP;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MediaServicesAutoConfigurationTest {
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(MediaServicesAutoConfiguration.class))
-            .withPropertyValues(propPair(TENANT_PROP, TENANT),
-                    propPair(CLIENT_ID_PROP, CLIENT_ID),
-                    propPair(CLIENT_SECRET_PROP, CLIENT_SECRET),
-                    propPair(REST_API_ENDPOINT_PROP, REST_API_ENDPOINT));
+            .withPropertyValues(TestUtils.propPair(TENANT_PROP, TENANT),
+                    TestUtils.propPair(CLIENT_ID_PROP, CLIENT_ID),
+                    TestUtils.propPair(CLIENT_SECRET_PROP, CLIENT_SECRET),
+                    TestUtils.propPair(REST_API_ENDPOINT_PROP, REST_API_ENDPOINT));
 
     @Test
     public void mediaContractBeanCanBeCreated() {
@@ -37,7 +48,7 @@ public class MediaServicesAutoConfigurationTest {
 
     @Test
     public void createMediaServiceAccountWithProxyHostMissing() {
-        contextRunner.withPropertyValues(propPair(PROXY_PORT_PROP, PROXY_PORT)).run(context -> {
+        contextRunner.withPropertyValues(TestUtils.propPair(PROXY_PORT_PROP, PROXY_PORT)).run(context -> {
             try {
                 context.getBean(MediaContract.class);
             } catch (IllegalStateException e) {
@@ -48,7 +59,7 @@ public class MediaServicesAutoConfigurationTest {
 
     @Test
     public void createMediaServiceAccountWithProxyPortMissing() {
-        contextRunner.withPropertyValues(propPair(PROXY_HOST_PROP, PROXY_HOST)).run(context -> {
+        contextRunner.withPropertyValues(TestUtils.propPair(PROXY_HOST_PROP, PROXY_HOST)).run(context -> {
             try {
                 context.getBean(MediaContract.class);
             } catch (IllegalStateException e) {

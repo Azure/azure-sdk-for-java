@@ -3,22 +3,29 @@
 
 package com.microsoft.azure.spring.autoconfigure.mediaservices;
 
+import com.microsoft.azure.spring.utils.TestUtils;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBindException;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.*;
-import static com.microsoft.azure.utils.TestUtils.propPair;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.CLIENT_ID;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.CLIENT_ID_PROP;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.CLIENT_SECRET;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.CLIENT_SECRET_PROP;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.REST_API_ENDPOINT;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.REST_API_ENDPOINT_PROP;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.TENANT;
+import static com.microsoft.azure.spring.autoconfigure.mediaservices.Constants.TENANT_PROP;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MediaServicesPropertiesTest {
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(MediaServicesAutoConfiguration.class))
-            .withPropertyValues(propPair(TENANT_PROP, TENANT),
-                    propPair(CLIENT_ID_PROP, CLIENT_ID),
-                    propPair(CLIENT_SECRET_PROP, CLIENT_SECRET),
-                    propPair(REST_API_ENDPOINT_PROP, REST_API_ENDPOINT));
+            .withPropertyValues(TestUtils.propPair(TENANT_PROP, TENANT),
+                    TestUtils.propPair(CLIENT_ID_PROP, CLIENT_ID),
+                    TestUtils.propPair(CLIENT_SECRET_PROP, CLIENT_SECRET),
+                    TestUtils.propPair(REST_API_ENDPOINT_PROP, REST_API_ENDPOINT));
 
     @Test
     public void canSetProperties() {
@@ -35,8 +42,8 @@ public class MediaServicesPropertiesTest {
 
     @Test
     public void emptyTenantNotAllowed() {
-        contextRunner.withPropertyValues(propPair(TENANT_PROP, ""), propPair(CLIENT_ID_PROP, CLIENT_ID),
-                propPair(CLIENT_SECRET_PROP, CLIENT_SECRET), propPair(REST_API_ENDPOINT_PROP, REST_API_ENDPOINT))
+        contextRunner.withPropertyValues(TestUtils.propPair(TENANT_PROP, ""), TestUtils.propPair(CLIENT_ID_PROP, CLIENT_ID),
+                TestUtils.propPair(CLIENT_SECRET_PROP, CLIENT_SECRET), TestUtils.propPair(REST_API_ENDPOINT_PROP, REST_API_ENDPOINT))
                 .run(context -> {
                     try {
                         context.getBean(MediaServicesProperties.class);
@@ -48,8 +55,8 @@ public class MediaServicesPropertiesTest {
 
     @Test
     public void emptyClientIdtNotAllowed() {
-        contextRunner.withPropertyValues(propPair(TENANT_PROP, TENANT), propPair(CLIENT_ID_PROP, ""),
-                propPair(CLIENT_SECRET_PROP, CLIENT_SECRET), propPair(REST_API_ENDPOINT_PROP, REST_API_ENDPOINT))
+        contextRunner.withPropertyValues(TestUtils.propPair(TENANT_PROP, TENANT), TestUtils.propPair(CLIENT_ID_PROP, ""),
+                TestUtils.propPair(CLIENT_SECRET_PROP, CLIENT_SECRET), TestUtils.propPair(REST_API_ENDPOINT_PROP, REST_API_ENDPOINT))
                 .run(context -> {
                     try {
                         context.getBean(MediaServicesProperties.class);
@@ -61,8 +68,8 @@ public class MediaServicesPropertiesTest {
 
     @Test
     public void emptyClientSecretNotAllowed() {
-        contextRunner.withPropertyValues(propPair(TENANT_PROP, ""), propPair(CLIENT_ID_PROP, CLIENT_ID),
-                propPair(CLIENT_SECRET_PROP, ""), propPair(REST_API_ENDPOINT_PROP, REST_API_ENDPOINT))
+        contextRunner.withPropertyValues(TestUtils.propPair(TENANT_PROP, ""), TestUtils.propPair(CLIENT_ID_PROP, CLIENT_ID),
+                TestUtils.propPair(CLIENT_SECRET_PROP, ""), TestUtils.propPair(REST_API_ENDPOINT_PROP, REST_API_ENDPOINT))
                 .run(context -> {
                     try {
                         context.getBean(MediaServicesProperties.class);
@@ -74,8 +81,8 @@ public class MediaServicesPropertiesTest {
 
     @Test
     public void emptyRestApiEndpointNotAllowed() {
-        contextRunner.withPropertyValues(propPair(TENANT_PROP, ""), propPair(CLIENT_ID_PROP, CLIENT_ID),
-                propPair(CLIENT_SECRET_PROP, CLIENT_SECRET), propPair(REST_API_ENDPOINT_PROP, ""))
+        contextRunner.withPropertyValues(TestUtils.propPair(TENANT_PROP, ""), TestUtils.propPair(CLIENT_ID_PROP, CLIENT_ID),
+                TestUtils.propPair(CLIENT_SECRET_PROP, CLIENT_SECRET), TestUtils.propPair(REST_API_ENDPOINT_PROP, ""))
                 .run(context -> {
                     try {
                         context.getBean(MediaServicesProperties.class);

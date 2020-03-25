@@ -5,7 +5,7 @@
 
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-spring-boot-bom</artifactId>
-    <version>2.2.3-SNAPSHOT</version>
+    <version>1.0.0-beta.1</version>
     <packaging>pom</packaging>
 
     <name>Azure Spring Boot BOM</name>
@@ -46,9 +46,9 @@
     </scm>
 
     <properties>
-        <azure.spring.boot.version>2.2.3-SNAPSHOT</azure.spring.boot.version>
+        <azure.spring.boot.version>1.0.0-beta.1</azure.spring.boot.version>
         <azure.dependencies.bom.version>2.2.0.M4</azure.dependencies.bom.version>
-        <spring.data.cosmosdb.version>2.2.2</spring.data.cosmosdb.version>
+        <spring.data.cosmosdb.version>2.2.3</spring.data.cosmosdb.version>
         <spring.data.gremlin.version>2.2.2</spring.data.gremlin.version>
     </properties>
 
@@ -74,64 +74,64 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>com.microsoft.azure</groupId>
+              <groupId>com.azure</groupId>
+              <artifactId>azure-spring-boot</artifactId>
+              <version>${azure.spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.azure</groupId>
                 <artifactId>azure-spring-boot-starter</artifactId>
                 <version>${azure.spring.boot.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.microsoft.azure</groupId>
-                <artifactId>azure-active-directory-spring-boot-starter</artifactId>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-spring-boot-starter-active-directory</artifactId>
                 <version>${azure.spring.boot.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.microsoft.azure</groupId>
-                <artifactId>azure-active-directory-b2c-spring-boot-starter</artifactId>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
                 <version>${azure.spring.boot.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.microsoft.azure</groupId>
-                <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-spring-boot-starter-cosmosdb</artifactId>
                 <version>${azure.spring.boot.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.microsoft.azure</groupId>
-                <artifactId>azure-storage-spring-boot-starter</artifactId>
+              <groupId>com.azure</groupId>
+              <artifactId>azure-spring-boot-starter-data-gremlin</artifactId>
+              <version>${azure.spring.boot.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>com.azure</groupId>
+              <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
+              <version>${azure.spring.boot.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>com.azure</groupId>
+              <artifactId>azure-spring-boot-starter-mediaservices</artifactId>
+              <version>${azure.spring.boot.version}</version>
+            </dependency>
+            <dependency>
+              <groupId>com.azure</groupId>
+              <artifactId>azure-spring-boot-starter-metrics</artifactId>
+              <version>${azure.spring.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-spring-boot-starter-servicebus</artifactId>
                 <version>${azure.spring.boot.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.microsoft.azure</groupId>
-                <artifactId>azure-servicebus-spring-boot-starter</artifactId>
+                <groupId>com.azure</groupId>
+                <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
                 <version>${azure.spring.boot.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.microsoft.azure</groupId>
-                <artifactId>azure-servicebus-jms-spring-boot-starter</artifactId>
-                <version>${azure.spring.boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.microsoft.azure</groupId>
-                <artifactId>azure-keyvault-secrets-spring-boot-starter</artifactId>
-                <version>${azure.spring.boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.microsoft.azure</groupId>
-                <artifactId>azure-mediaservices-spring-boot-starter</artifactId>
-                <version>${azure.spring.boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.microsoft.azure</groupId>
-                <artifactId>spring-data-gremlin-boot-starter</artifactId>
-                <version>${azure.spring.boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.microsoft.azure</groupId>
-                <artifactId>azure-spring-boot-metrics-starter</artifactId>
-                <version>${azure.spring.boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.microsoft.azure</groupId>
-                <artifactId>azure-spring-boot</artifactId>
-                <version>${azure.spring.boot.version}</version>
+              <groupId>com.azure</groupId>
+              <artifactId>azure-spring-boot-starter-storage</artifactId>
+              <version>${azure.spring.boot.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

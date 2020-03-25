@@ -15,8 +15,8 @@ allprojects {
     apply plugin: 'maven'
     apply plugin: 'io.spring.dependency-management'
 
-    group = 'com.microsoft.azure'
-    version = '0.0.1-SNAPSHOT'
+    group = 'com.azure'
+    version = '0.0.1-beta.1'
 
     ext {
         azureSpringBootStartersVersion = '2.2.0'

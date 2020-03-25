@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.btoc;
 
-import com.microsoft.azure.telemetry.TelemetrySender;
+import com.microsoft.azure.spring.telemetry.TelemetrySender;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -28,9 +28,9 @@ import java.util.Map;
 
 import static com.microsoft.azure.spring.autoconfigure.btoc.AADB2CProperties.PREFIX;
 import static com.microsoft.azure.spring.autoconfigure.btoc.AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN;
-import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
-import static com.microsoft.azure.telemetry.TelemetryData.TENANT_NAME;
-import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
+import static com.microsoft.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
+import static com.microsoft.azure.spring.telemetry.TelemetryData.TENANT_NAME;
+import static com.microsoft.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 @Configuration
 @ConditionalOnWebApplication
