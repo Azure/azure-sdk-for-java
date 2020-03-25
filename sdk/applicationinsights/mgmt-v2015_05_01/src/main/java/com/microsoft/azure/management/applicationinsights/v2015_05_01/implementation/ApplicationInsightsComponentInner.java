@@ -119,6 +119,30 @@ public class ApplicationInsightsComponentInner extends ComponentsResource {
     private Double samplingPercentage;
 
     /**
+     * Application Insights component connection string.
+     */
+    @JsonProperty(value = "properties.ConnectionString", access = JsonProperty.Access.WRITE_ONLY)
+    private String connectionString;
+
+    /**
+     * Retention period in days.
+     */
+    @JsonProperty(value = "properties.RetentionInDays")
+    private Integer retentionInDays;
+
+    /**
+     * Disable IP masking.
+     */
+    @JsonProperty(value = "properties.DisableIpMasking")
+    private Boolean disableIpMasking;
+
+    /**
+     * Purge data immediately after 30 days.
+     */
+    @JsonProperty(value = "properties.ImmediatePurgeDataOn30Days")
+    private Boolean immediatePurgeDataOn30Days;
+
+    /**
      * Get the kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone.
      *
      * @return the kind value
@@ -298,6 +322,75 @@ public class ApplicationInsightsComponentInner extends ComponentsResource {
      */
     public ApplicationInsightsComponentInner withSamplingPercentage(Double samplingPercentage) {
         this.samplingPercentage = samplingPercentage;
+        return this;
+    }
+
+    /**
+     * Get application Insights component connection string.
+     *
+     * @return the connectionString value
+     */
+    public String connectionString() {
+        return this.connectionString;
+    }
+
+    /**
+     * Get retention period in days.
+     *
+     * @return the retentionInDays value
+     */
+    public Integer retentionInDays() {
+        return this.retentionInDays;
+    }
+
+    /**
+     * Set retention period in days.
+     *
+     * @param retentionInDays the retentionInDays value to set
+     * @return the ApplicationInsightsComponentInner object itself.
+     */
+    public ApplicationInsightsComponentInner withRetentionInDays(Integer retentionInDays) {
+        this.retentionInDays = retentionInDays;
+        return this;
+    }
+
+    /**
+     * Get disable IP masking.
+     *
+     * @return the disableIpMasking value
+     */
+    public Boolean disableIpMasking() {
+        return this.disableIpMasking;
+    }
+
+    /**
+     * Set disable IP masking.
+     *
+     * @param disableIpMasking the disableIpMasking value to set
+     * @return the ApplicationInsightsComponentInner object itself.
+     */
+    public ApplicationInsightsComponentInner withDisableIpMasking(Boolean disableIpMasking) {
+        this.disableIpMasking = disableIpMasking;
+        return this;
+    }
+
+    /**
+     * Get purge data immediately after 30 days.
+     *
+     * @return the immediatePurgeDataOn30Days value
+     */
+    public Boolean immediatePurgeDataOn30Days() {
+        return this.immediatePurgeDataOn30Days;
+    }
+
+    /**
+     * Set purge data immediately after 30 days.
+     *
+     * @param immediatePurgeDataOn30Days the immediatePurgeDataOn30Days value to set
+     * @return the ApplicationInsightsComponentInner object itself.
+     */
+    public ApplicationInsightsComponentInner withImmediatePurgeDataOn30Days(Boolean immediatePurgeDataOn30Days) {
+        this.immediatePurgeDataOn30Days = immediatePurgeDataOn30Days;
         return this;
     }
 
