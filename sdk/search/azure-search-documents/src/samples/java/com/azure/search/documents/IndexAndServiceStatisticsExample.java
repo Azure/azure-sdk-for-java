@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.models.AnalyzerName;
 import com.azure.search.documents.models.CorsOptions;
@@ -422,7 +423,7 @@ public class IndexAndServiceStatisticsExample {
      * @return async service client
      */
     private static SearchServiceClient createClient() {
-        SearchApiKeyCredential searchApiKeyCredential = new SearchApiKeyCredential(ADMIN_KEY);
+        AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential(ADMIN_KEY);
         return new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
             .credential(searchApiKeyCredential)

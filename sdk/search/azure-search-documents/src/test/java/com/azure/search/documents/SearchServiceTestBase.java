@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -103,7 +104,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     private String searchServiceName;
     private String searchDnsSuffix;
     protected String endpoint;
-    SearchApiKeyCredential searchApiKeyCredential;
+    AzureKeyCredential searchApiKeyCredential;
 
     private static String testEnvironment;
     private static AzureSearchResources azureSearchResources;
@@ -130,7 +131,7 @@ public abstract class SearchServiceTestBase extends TestBase {
 
         if (!interceptorManager.isPlaybackMode()) {
             azureSearchResources.createService(testResourceNamer);
-            searchApiKeyCredential = new SearchApiKeyCredential(azureSearchResources.getSearchAdminKey());
+            searchApiKeyCredential = new AzureKeyCredential(azureSearchResources.getSearchAdminKey());
         }
         searchServiceName = azureSearchResources.getSearchServiceName();
         endpoint = String.format("https://%s.%s", searchServiceName, searchDnsSuffix);

@@ -4,6 +4,7 @@
 **Breaking changes**
 - Renamed all input parameters `text` to `document`, and `inputTexts` to `documents`.
 - Removed all PII endpoints and update with related changes, such as remove related models, samples, codesnippets, docstrings, etc from this library. 
+- Replaced `TextAnalyticsApiKeyCredential` with `AzureKeyCredential`.
 
 ## 1.0.0-beta.3 (2020-03-10)
 **New features**

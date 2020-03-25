@@ -102,7 +102,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
             // In RECORDING mode (only), create a new index:
             SearchIndexService searchIndexService = new SearchIndexService(
                 endpoint,
-                searchApiKeyCredential.getApiKey());
+                searchApiKeyCredential.getKey());
 
             searchIndexService.initializeAndCreateIndex(index);
         }
@@ -113,7 +113,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
             // In RECORDING mode (only), create a new index:
             SearchIndexService searchIndexService = new SearchIndexService(
                 endpoint,
-                searchApiKeyCredential.getApiKey());
+                searchApiKeyCredential.getKey());
             try {
                 searchIndexService.initializeAndCreateIndex(jsonFile);
             } catch (IOException e) {

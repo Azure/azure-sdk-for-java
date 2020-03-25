@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
@@ -34,7 +35,7 @@ public class IndexClientConfigurationExample {
     private static SearchIndexClient createMinimalClient() {
         return new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(API_KEY))
+            .credential(new AzureKeyCredential(API_KEY))
             .indexName("hotels")
             .buildClient();
     }
@@ -47,7 +48,7 @@ public class IndexClientConfigurationExample {
     private static SearchIndexAsyncClient createAdvancedClient() {
         return new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(API_KEY))
+            .credential(new AzureKeyCredential(API_KEY))
             .indexName("hotels")
             .serviceVersion(SearchServiceVersion.V2019_05_06)
             .addPolicy(new RetryPolicy())

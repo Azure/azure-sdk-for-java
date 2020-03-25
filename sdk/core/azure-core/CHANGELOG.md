@@ -2,6 +2,7 @@
 
 ## 1.4.0-beta.1 (Unreleased)
 
+- Added `AzureKeyCredential` to support generic key based authorizations.
 
 ## 1.3.0 (2020-03-06)
 
