@@ -35,8 +35,6 @@ public interface IMessageSessionEntity {
 
     /**
      * Gets the message sessions, enabling you to browse sessions on queues.
-     * Only sessions with active messages in the queue are returned.
-     * The sessions on the deadletter queue or sessions having a SessionState as 'active' and no messages are not returned with this call.
      *
      * @return A collection of sessions.
      * @throws InterruptedException if the current thread was interrupted while waiting.
