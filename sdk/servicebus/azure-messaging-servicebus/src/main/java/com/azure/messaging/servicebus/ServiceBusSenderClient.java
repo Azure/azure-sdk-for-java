@@ -27,7 +27,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code asyncClient} or {@code tryTimeout} is null.
      */
-    ServiceBusSenderClient(ServiceBusSenderAsyncClient asyncClient,  Duration tryTimeout) {
+    ServiceBusSenderClient(ServiceBusSenderAsyncClient asyncClient, Duration tryTimeout) {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.tryTimeout = Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
     }
