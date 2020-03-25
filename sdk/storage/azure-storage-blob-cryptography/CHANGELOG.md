@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.6.0-beta.1 (Unreleased)
-
+- Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
 
 ## 12.5.0 (2020-03-11)
 - Fixed a bug where the EncryptedBlockClientBuilder.pipeline method would not allow the client to support decryption.
