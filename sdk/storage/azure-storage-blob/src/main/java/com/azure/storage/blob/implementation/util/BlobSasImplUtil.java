@@ -91,20 +91,7 @@ public class BlobSasImplUtil {
      * @param containerName The container name
      */
     public BlobSasImplUtil(BlobServiceSasSignatureValues sasValues, String containerName) {
-        this(sasValues, containerName, null, null);
-    }
-
-    /**
-     * Creates a new {@link BlobSasImplUtil} with the specified parameters
-     *
-     * @param sasValues {@link BlobServiceSasSignatureValues}
-     * @param containerName The container name
-     * @param blobName The blob name
-     * @param snapshotId The snapshot id
-     */
-    public BlobSasImplUtil(BlobServiceSasSignatureValues sasValues, String containerName, String blobName,
-        String snapshotId) {
-        this(sasValues, containerName, blobName, snapshotId, null);
+        this(sasValues, containerName, null, null, null);
     }
 
     /**
