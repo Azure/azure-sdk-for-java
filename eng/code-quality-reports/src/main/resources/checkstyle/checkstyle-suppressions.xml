@@ -145,6 +145,10 @@
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]tracing[/\\]opentelemetry[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
 
+  <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved:
+    https://github.com/Azure/azure-sdk/issues/321 -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*EventHubClientBuilder.java"/>
+
   <!-- Suppress warnings for KeyEncryptionKey as it is a specialized client and doesn't follow the guidelines completely -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*KeyEncryptionKeyClientBuilder.java"/>
 
