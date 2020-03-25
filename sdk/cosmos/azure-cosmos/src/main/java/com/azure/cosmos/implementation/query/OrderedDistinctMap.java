@@ -3,9 +3,9 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.commons.lang3.StringUtils;
 
 import java.security.NoSuchAlgorithmException;
 
