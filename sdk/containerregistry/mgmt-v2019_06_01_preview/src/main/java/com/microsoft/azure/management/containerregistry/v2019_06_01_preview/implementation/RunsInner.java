@@ -11,8 +11,8 @@ package com.microsoft.azure.management.containerregistry.v2019_06_01_preview.imp
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.ErrorResponseException;
 import com.microsoft.azure.management.containerregistry.v2019_06_01_preview.RunUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -101,7 +101,7 @@ public class RunsInner {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RunInner&gt; object if successful.
      */
@@ -221,7 +221,7 @@ public class RunsInner {
      * @param filter The runs filter to apply on the operation. Arithmetic operators are not supported. The allowed string function is 'contains'. All logical operators except 'Not', 'Has', 'All' are allowed.
      * @param top $top is supported for get list of runs, which limits the maximum number of runs to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RunInner&gt; object if successful.
      */
@@ -339,10 +339,10 @@ public class RunsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<RunInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<RunInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<RunInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RunInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RunInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -353,7 +353,7 @@ public class RunsInner {
      * @param registryName The name of the container registry.
      * @param runId The run ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RunInner object if successful.
      */
@@ -432,10 +432,10 @@ public class RunsInner {
             });
     }
 
-    private ServiceResponse<RunInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RunInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<RunInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RunInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RunInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -446,7 +446,7 @@ public class RunsInner {
      * @param registryName The name of the container registry.
      * @param runId The run ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RunInner object if successful.
      */
@@ -525,7 +525,7 @@ public class RunsInner {
      * @param runId The run ID.
      * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RunInner object if successful.
      */
@@ -606,7 +606,7 @@ public class RunsInner {
      * @param registryName The name of the container registry.
      * @param runId The run ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RunInner object if successful.
      */
@@ -696,7 +696,7 @@ public class RunsInner {
      * @param runId The run ID.
      * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RunInner object if successful.
      */
@@ -780,11 +780,11 @@ public class RunsInner {
             });
     }
 
-    private ServiceResponse<RunInner> beginUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RunInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<RunInner> beginUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RunInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RunInner>() { }.getType())
                 .register(201, new TypeToken<RunInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -795,7 +795,7 @@ public class RunsInner {
      * @param registryName The name of the container registry.
      * @param runId The run ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RunGetLogResultInner object if successful.
      */
@@ -874,10 +874,10 @@ public class RunsInner {
             });
     }
 
-    private ServiceResponse<RunGetLogResultInner> getLogSasUrlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RunGetLogResultInner, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<RunGetLogResultInner> getLogSasUrlDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RunGetLogResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RunGetLogResultInner>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -888,7 +888,7 @@ public class RunsInner {
      * @param registryName The name of the container registry.
      * @param runId The run ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void cancel(String resourceGroupName, String registryName, String runId) {
@@ -963,7 +963,7 @@ public class RunsInner {
      * @param registryName The name of the container registry.
      * @param runId The run ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void beginCancel(String resourceGroupName, String registryName, String runId) {
@@ -1041,11 +1041,11 @@ public class RunsInner {
             });
     }
 
-    private ServiceResponse<Void> beginCancelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> beginCancelDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -1054,7 +1054,7 @@ public class RunsInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RunInner&gt; object if successful.
      */
@@ -1153,10 +1153,10 @@ public class RunsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<RunInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<RunInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<RunInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RunInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RunInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
