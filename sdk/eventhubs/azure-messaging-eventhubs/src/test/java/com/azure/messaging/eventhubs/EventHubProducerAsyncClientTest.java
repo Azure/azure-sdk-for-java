@@ -81,6 +81,7 @@ class EventHubProducerAsyncClientTest {
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
     private static final String ENTITY_PATH = HOSTNAME + ".servicebus.windows.net";
+
     @Mock
     private AmqpSendLink sendLink;
     @Mock
