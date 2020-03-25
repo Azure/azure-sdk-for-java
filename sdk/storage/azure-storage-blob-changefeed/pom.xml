@@ -94,6 +94,12 @@
       <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro</artifactId>
+      <version>1.9.2</version>
+    </dependency>
+
     <!--    <dependency>-->
 <!--      <groupId>io.projectreactor</groupId>-->
 <!--      <artifactId>reactor-test</artifactId>-->
