@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.cognitiveservices.v2017_04_18;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -46,6 +47,18 @@ public class CognitiveServicesAccountProperties {
      */
     @JsonProperty(value = "networkAcls")
     private NetworkRuleSet networkAcls;
+
+    /**
+     * The encryption properties for this resource.
+     */
+    @JsonProperty(value = "encryption")
+    private Encryption encryption;
+
+    /**
+     * The storage accounts for this resource.
+     */
+    @JsonProperty(value = "userOwnedStorage")
+    private List<UserOwnedStorage> userOwnedStorage;
 
     /**
      * The api properties for special APIs.
@@ -117,6 +130,46 @@ public class CognitiveServicesAccountProperties {
      */
     public CognitiveServicesAccountProperties withNetworkAcls(NetworkRuleSet networkAcls) {
         this.networkAcls = networkAcls;
+        return this;
+    }
+
+    /**
+     * Get the encryption properties for this resource.
+     *
+     * @return the encryption value
+     */
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption properties for this resource.
+     *
+     * @param encryption the encryption value to set
+     * @return the CognitiveServicesAccountProperties object itself.
+     */
+    public CognitiveServicesAccountProperties withEncryption(Encryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the storage accounts for this resource.
+     *
+     * @return the userOwnedStorage value
+     */
+    public List<UserOwnedStorage> userOwnedStorage() {
+        return this.userOwnedStorage;
+    }
+
+    /**
+     * Set the storage accounts for this resource.
+     *
+     * @param userOwnedStorage the userOwnedStorage value to set
+     * @return the CognitiveServicesAccountProperties object itself.
+     */
+    public CognitiveServicesAccountProperties withUserOwnedStorage(List<UserOwnedStorage> userOwnedStorage) {
+        this.userOwnedStorage = userOwnedStorage;
         return this;
     }
 
