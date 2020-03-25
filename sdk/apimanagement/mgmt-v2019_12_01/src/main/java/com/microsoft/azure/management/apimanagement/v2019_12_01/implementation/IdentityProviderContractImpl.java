@@ -30,7 +30,7 @@ class IdentityProviderContractImpl extends CreatableUpdatableImpl<IdentityProvid
         super(name, new IdentityProviderContractInner());
         this.manager = manager;
         // Set resource name
-        this.identityProviderName = name;
+        this.identityProviderName = IdentityProviderType.fromString(name);
         //
         this.createOrUpdateParameter = new IdentityProviderCreateContract();
     }
@@ -39,7 +39,7 @@ class IdentityProviderContractImpl extends CreatableUpdatableImpl<IdentityProvid
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.identityProviderName = inner.name();
+        this.identityProviderName = IdentityProviderType.fromString(inner.name());
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.serviceName = IdParsingUtils.getValueFromIdByName(inner.id(), "service");

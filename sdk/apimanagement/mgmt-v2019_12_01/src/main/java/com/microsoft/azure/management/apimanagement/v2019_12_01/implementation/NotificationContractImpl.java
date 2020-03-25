@@ -27,7 +27,7 @@ class NotificationContractImpl extends CreatableUpdatableImpl<NotificationContra
         super(name, new NotificationContractInner());
         this.manager = manager;
         // Set resource name
-        this.notificationName = name;
+        this.notificationName = NotificationName.fromString(name);
         //
     }
 
@@ -35,7 +35,7 @@ class NotificationContractImpl extends CreatableUpdatableImpl<NotificationContra
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.notificationName = inner.name();
+        this.notificationName = NotificationName.fromString(inner.name());
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.serviceName = IdParsingUtils.getValueFromIdByName(inner.id(), "service");

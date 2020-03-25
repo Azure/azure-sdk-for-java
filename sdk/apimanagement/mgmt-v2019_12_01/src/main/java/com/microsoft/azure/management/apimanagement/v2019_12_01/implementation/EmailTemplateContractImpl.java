@@ -31,7 +31,7 @@ class EmailTemplateContractImpl extends CreatableUpdatableImpl<EmailTemplateCont
         super(name, new EmailTemplateContractInner());
         this.manager = manager;
         // Set resource name
-        this.templateName = name;
+        this.templateName = TemplateName.fromString(name);
         //
         this.createOrUpdateParameter = new EmailTemplateUpdateParameters();
     }
@@ -40,7 +40,7 @@ class EmailTemplateContractImpl extends CreatableUpdatableImpl<EmailTemplateCont
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.templateName = inner.name();
+        this.templateName = TemplateName.fromString(inner.name());
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.serviceName = IdParsingUtils.getValueFromIdByName(inner.id(), "service");
